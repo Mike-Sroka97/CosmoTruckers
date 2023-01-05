@@ -8,12 +8,17 @@ public class TurnOrder : MonoBehaviour
     CharacterSpeed[] livingCharacters;
     private void Start()
     {
+        DetermineTurnOrder();
+    }
+
+    public void DetermineTurnOrder()
+    {
         livingCharacters = FindObjectsOfType<CharacterSpeed>();
         Array.Sort(livingCharacters, new SpeedComparer());
 
-        foreach(CharacterSpeed speed in livingCharacters)
+        foreach (CharacterSpeed speed in livingCharacters)
         {
-            if(speed.GetComponent<PlayerCharacter>())
+            if (speed.GetComponent<PlayerCharacter>())
             {
                 Debug.Log(speed.GetComponent<PlayerCharacter>().GetName() + " " + speed.speed);
             }
