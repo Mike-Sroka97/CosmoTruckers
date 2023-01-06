@@ -7,10 +7,12 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] string characterName;
     [SerializeField] int health;
 
+    TurnOrder turnOrder;
     int currentHealth;
 
     private void Start()
     {
+        turnOrder = FindObjectOfType<TurnOrder>();
         currentHealth = health;
     }
     public void TakeDamage(int damage)
@@ -25,8 +27,15 @@ public class PlayerCharacter : MonoBehaviour
     private void Die()
     {
         GetComponent<CharacterSpeed>().enabled = false;
-        FindObjectOfType<TurnOrder>().RemoveFromSpeedList(GetComponent<CharacterSpeed>());
-        FindObjectOfType<TurnOrder>().DetermineTurnOrder();
+        turnOrder.RemoveFromSpeedList(GetComponent<CharacterSpeed>());
+        turnOrder.DetermineTurnOrder();
+    }
+    public void Resurect(int newHealth)
+    {
+        currentHealth = newHealth;
+        GetComponent<CharacterSpeed>().enabled = true;
+        turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
+        turnOrder.DetermineTurnOrder();
     }
     public string GetName() { return characterName; }
 }

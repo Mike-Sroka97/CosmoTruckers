@@ -35,6 +35,17 @@ public class TurnOrder : MonoBehaviour
         }
     }
 
+    public void AdjustSpeed(CharacterSpeed characterSpeed)
+    {
+        foreach(CharacterSpeed speed in speedList)
+        {
+            if(speed.gameObject.name == characterSpeed.name)
+            {
+                speed.speed = characterSpeed.speed;
+            }
+        }
+    }
+
     public void RemoveFromSpeedList(CharacterSpeed characterSpeed)
     {
         foreach(CharacterSpeed speed in speedList)

@@ -7,15 +7,18 @@ public class CharacterSpeed : MonoBehaviour
 {
     [SerializeField] public int speed;
 
+    TurnOrder turnOrder;
+
     private void Start()
     {
-        
+        turnOrder = FindObjectOfType<TurnOrder>();
     }
 
-    private void SpeedChange(int newSpeed)
+    public void SpeedChange(int speedMod)
     {
-        speed = newSpeed;
-        FindObjectOfType<TurnOrder>().DetermineTurnOrder();
+        speed += speedMod;
+        turnOrder.AdjustSpeed(this);
+        turnOrder.DetermineTurnOrder();
     }
 
     public void SetSpeed(int newSpeed) { speed = newSpeed; }
