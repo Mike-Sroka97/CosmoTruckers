@@ -7,6 +7,7 @@ public class TurnOrder : MonoBehaviour
 {
     List<CharacterSpeed> speedList;
     CharacterSpeed[] livingCharacters;
+    int currentCharactersTurn = 0;
     private void Start()
     {
         speedList = new List<CharacterSpeed>();
@@ -15,7 +16,9 @@ public class TurnOrder : MonoBehaviour
         {
             speedList.Add(speed);
         }
+
         DetermineTurnOrder();
+        StartTurn();
     }
 
     public void DetermineTurnOrder()
@@ -35,15 +38,71 @@ public class TurnOrder : MonoBehaviour
         }
     }
 
-    public void AdjustSpeed(CharacterSpeed characterSpeed)
+    private void StartTurn()
     {
-        foreach(CharacterSpeed speed in speedList)
+        //give player control if player
+        //give ai control if AI
+
+        Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
+    }
+
+    public void EndTurn()
+    {
+        currentCharactersTurn++;
+        if(currentCharactersTurn >= livingCharacters.Length)
+        {
+            currentCharactersTurn = 0;
+        }
+        StartTurn();
+    }
+
+    public bool AdjustSpeed(CharacterSpeed characterSpeed, bool increase)
+    {
+        //prevents the skipping of a characters turn
+        if(increase)
+        {
+            if (currentCharactersTurn + 1 < livingCharacters.Length)
+            {
+                if (livingCharacters[currentCharactersTurn + 1].name == characterSpeed.name)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (livingCharacters[0].name == characterSpeed.name)
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            if (currentCharactersTurn - 1 > 0)
+            {
+                if (livingCharacters[currentCharactersTurn - 1].name == characterSpeed.name)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (livingCharacters[livingCharacters.Length - 1].name == characterSpeed.name)
+                {
+                    return false;
+                }
+            }
+        }
+
+        foreach (CharacterSpeed speed in speedList)
         {
             if(speed.gameObject.name == characterSpeed.name)
             {
+                Debug.Log("here");
                 speed.speed = characterSpeed.speed;
             }
         }
+        return true;
     }
 
     public void RemoveFromSpeedList(CharacterSpeed characterSpeed)

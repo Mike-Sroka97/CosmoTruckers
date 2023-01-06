@@ -16,9 +16,25 @@ public class CharacterSpeed : MonoBehaviour
 
     public void SpeedChange(int speedMod)
     {
+        bool turnOrderAdjusted;
+        int tempSpeed = speed;
         speed += speedMod;
-        turnOrder.AdjustSpeed(this);
-        turnOrder.DetermineTurnOrder();
+        if(tempSpeed > speed)
+        {
+            turnOrderAdjusted = turnOrder.AdjustSpeed(this, false);
+        }
+        else
+        {
+            turnOrderAdjusted = turnOrder.AdjustSpeed(this, true);
+        }
+        if(turnOrderAdjusted)
+        {
+            turnOrder.DetermineTurnOrder();
+        }
+        else
+        {
+            speed = tempSpeed;
+        }
     }
 
     public void SetSpeed(int newSpeed) { speed = newSpeed; }
