@@ -5,15 +5,21 @@ using UnityEngine;
 
 public class TurnOrder : MonoBehaviour
 {
+    List<CharacterSpeed> speedList;
     CharacterSpeed[] livingCharacters;
     private void Start()
     {
+        speedList = new List<CharacterSpeed>();
+        livingCharacters = FindObjectsOfType<CharacterSpeed>();
+        foreach(CharacterSpeed speed in livingCharacters)
+        {
+            speedList.Add(speed);
+        }
         DetermineTurnOrder();
     }
 
     public void DetermineTurnOrder()
-    {
-        livingCharacters = FindObjectsOfType<CharacterSpeed>();
+    {        
         Array.Sort(livingCharacters, new SpeedComparer());
 
         foreach (CharacterSpeed speed in livingCharacters)
@@ -27,5 +33,18 @@ public class TurnOrder : MonoBehaviour
                 Debug.Log(speed.GetComponent<Enemy>().GetName() + " " + speed.speed);
             }
         }
+    }
+
+    public void RemoveFromSpeedList(CharacterSpeed characterSpeed)
+    {
+        foreach(CharacterSpeed speed in speedList)
+        {
+            if(speed.gameObject.name == characterSpeed.name)
+            {
+                speedList.Remove(speed);
+                break;
+            }
+        }
+        livingCharacters = speedList.ToArray();
     }
 }

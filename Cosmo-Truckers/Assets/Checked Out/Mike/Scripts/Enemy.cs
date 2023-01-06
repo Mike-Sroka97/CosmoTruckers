@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         GetComponent<CharacterSpeed>().enabled = false;
+        FindObjectOfType<TurnOrder>().RemoveFromSpeedList(GetComponent<CharacterSpeed>());
         FindObjectOfType<TurnOrder>().DetermineTurnOrder();
     }
     public string GetName() { return characterName; }
