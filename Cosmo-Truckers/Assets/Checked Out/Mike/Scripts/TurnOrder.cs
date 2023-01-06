@@ -47,4 +47,17 @@ public class TurnOrder : MonoBehaviour
         }
         livingCharacters = speedList.ToArray();
     }
+
+    public void AddToSpeedList(CharacterSpeed characterSpeed)
+    {
+        foreach (CharacterSpeed speed in speedList)
+        {
+            if (speed.gameObject.name == characterSpeed.name)
+            {
+                return;
+            }
+        }
+        speedList.Add(characterSpeed);
+        livingCharacters = speedList.ToArray();
+    }
 }

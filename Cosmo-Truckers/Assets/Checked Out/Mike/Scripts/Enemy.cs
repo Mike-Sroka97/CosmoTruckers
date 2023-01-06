@@ -29,5 +29,13 @@ public class Enemy : MonoBehaviour
         FindObjectOfType<TurnOrder>().RemoveFromSpeedList(GetComponent<CharacterSpeed>());
         FindObjectOfType<TurnOrder>().DetermineTurnOrder();
     }
+
+    public void Resurect(int newHealth)
+    {
+        currentHealth = newHealth;
+        GetComponent<CharacterSpeed>().enabled = true;
+        FindObjectOfType<TurnOrder>().AddToSpeedList(GetComponent<CharacterSpeed>());
+        FindObjectOfType<TurnOrder>().DetermineTurnOrder();
+    }
     public string GetName() { return characterName; }
 }
