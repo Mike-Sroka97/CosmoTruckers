@@ -39,5 +39,16 @@ public class Enemy : MonoBehaviour
         turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
         turnOrder.DetermineTurnOrder();
     }
+
+    public void StartTurn()
+    {
+        StartCoroutine(ProcessTurn());
+    }
+
+    IEnumerator ProcessTurn()
+    {
+        yield return new WaitForSeconds(2f);
+        turnOrder.EndTurn();
+    }
     public string GetName() { return characterName; }
 }

@@ -42,12 +42,25 @@ public class TurnOrder : MonoBehaviour
     {
         //give player control if player
         //give ai control if AI
+        if(livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
+        {
+            livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().StartTurn();
+        }
+        else
+        {
+            livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
+        }
 
         Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
     }
 
     public void EndTurn()
     {
+        if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
+        {
+            livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();
+        }
+
         currentCharactersTurn++;
         if(currentCharactersTurn >= livingCharacters.Length)
         {

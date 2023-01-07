@@ -6,6 +6,7 @@ public class PlayerCharacter : MonoBehaviour
 {
     [SerializeField] string characterName;
     [SerializeField] int health;
+    [SerializeField] GameObject myButton;
 
     TurnOrder turnOrder;
     int currentHealth;
@@ -36,6 +37,15 @@ public class PlayerCharacter : MonoBehaviour
         GetComponent<CharacterSpeed>().enabled = true;
         turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
         turnOrder.DetermineTurnOrder();
+    }
+
+    public void StartTurn()
+    {
+        myButton.SetActive(true);
+    }
+    public void EndTurn()
+    {
+        myButton.SetActive(false);
     }
     public string GetName() { return characterName; }
 }
