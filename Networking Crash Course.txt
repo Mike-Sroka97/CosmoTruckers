@@ -1,0 +1,56 @@
+This file is just to help with the basics of mirror networing with unity and will not cover everything.
+
+-Every mono behavior that will be seen or interface with the network will need to derive from NetworkBehavior and not monoBehavior.
+
+
+-Clients can not make calls to objects they dont have athority over (with some exceptions)
+
+CREATE / DESTORY
+-When an object is instasiated and needs to be know across the network you will also need to call spawn on the network with the network ID of the client who has athority over the object.
+	-If the object is server/host side only you can leave the network id blank and it will default to no clients having 	athority over it.
+
+-When an object that is on the network is destoryed it will need to be removed from the server/host side as well.
+	-The network has a Destroy function the same as unity just needs to be assesed from NetworkServer . operator function
+
+COMMANDS
+-The command header will allow clients to send a call to the server/host for the server to execute.
+	-If you mark the header as [Command(requiresathority = false)] then any client can make the call to that function with 	out the need for athority (keeping in mind this could be dangourus and should be used with some caution)
+	-All command functions will need to have Cmd in front of the function name
+		-[Command]
+		public void CmdFooBar(){}
+
+
+CLIENT RPC
+-The Client RPC header will allow the server/host to call that function for all active clients
+	-These functions can only be called server/host side and clients will have to call a Command that in turn calls these 	function
+	-All Client RPC function will need to have Rpc in front of the function name
+		-[Command]
+		public void CmdFooBar() => RpcSendToAll(); 
+		[ClientRpc]
+		private void RpcSendToAll() { //Something you need called on all clients }
+
+
+TARGET RPC
+-The Target Rpc header will allow the server/host to call a function on a spesific target client
+	-Only the server/host will be able to call Target RPC's and all other clients will need to make a command call first
+	-Will need to pass in the network connection of the targeted client
+	-Network connection can be obtained by the . function on the network ID of and object that the client has athority over
+	-All Target RPC function will need to have Target in front of the function name
+		-[Command]
+		public void CmdFooBar(GameObject obj)
+		{ 
+			NetworkIdentity ID = obj.GetComponent<NetworkIdentity>();
+			TargetToClient(ID.connectionToClient); 
+		}
+		[TargetRpc]
+		private void TargetToClientNetworkConnection ID){ //Do something on a targeted clients application }
+
+SYNC VAR
+-The header sync var will allow a variable to be updated accross all clients
+	-Will only update if called on server/host side (ie inside a command funcion)
+	-Some sync var will need a hook as well (ie structs and enums)
+		-Hooks will allow you to update thoes data types 'manually' with a function
+		[SyncVar(hook = nameof(UpdateVar))] public EnumManager.GamePhase Phase;
+		 private void PhaseUpdate(EnumManager.GamePhase _old, EnumManager.GamePhase _new) { _old = _new; }
+	-Once a variable is marked as Sync Var, the inspector will have a slider for how often the variable gets updated across the network
+
