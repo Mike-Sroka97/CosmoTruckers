@@ -55,6 +55,6 @@ public class Attack : MonoBehaviour
 
     private void StartMiniGame()
     {
-        FindObjectOfType<ClockOutKnockOut>().StartAttack();
+        //FindObjectOfType<ClockOutKnockOut>().StartAttack();
     }
 }
