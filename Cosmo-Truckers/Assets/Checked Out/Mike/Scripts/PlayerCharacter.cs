@@ -6,7 +6,8 @@ public class PlayerCharacter : MonoBehaviour
 {
     [SerializeField] string characterName;
     [SerializeField] int health;
-    [SerializeField] GameObject myButton;
+    [SerializeField] Canvas myButtons;
+    [SerializeField] Attack[] attacks;
 
     TurnOrder turnOrder;
     int currentHealth;
@@ -41,11 +42,17 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartTurn()
     {
-        myButton.SetActive(true);
+        foreach(GameObject child in myButtons.GetComponentsInChildren<GameObject>())
+        {
+            child.SetActive(true);
+        }
     }
     public void EndTurn()
     {
-        myButton.SetActive(false);
+        foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
+        {
+            child.SetActive(false);
+        }
     }
     public string GetName() { return characterName; }
 }
