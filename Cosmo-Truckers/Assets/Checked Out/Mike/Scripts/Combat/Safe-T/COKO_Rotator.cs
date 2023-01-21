@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class COKO_Rotator : MonoBehaviour
@@ -20,7 +21,11 @@ public class COKO_Rotator : MonoBehaviour
     [SerializeField] Sprite sadPC;
     //Success Calculation
     [SerializeField] GameObject target;
-
+    //Combat
+    [SerializeField] GameObject sprite;
+    [SerializeField] int maxAttacks = 3;
+    //Timer
+    [SerializeField] TextMeshProUGUI timer;
 
     //Determined ranges for speed
     float currentSpeed;
@@ -32,6 +37,10 @@ public class COKO_Rotator : MonoBehaviour
 
     //tells the game to stop tracking time 
     bool done = false;
+    
+    //Used for damage
+    int currentAttack = 0;
+    float success = 0;
 
     private void Start()
     {
@@ -39,6 +48,9 @@ public class COKO_Rotator : MonoBehaviour
         currentSpeed = Random.Range(minStartSpeed, maxStartSpeed + 1);
         maxSpeed = Random.Range(minMaxSpeed, maxMaxSpeed + 1);
         acceleration = Random.Range(minAcceleration, maxAcceleration);
+
+        //Puts the target somewhere random on the circle
+        target.transform.position = Random.insideUnitCircle.normalized * 2.5f;
     }
 
     private void Update()
@@ -47,6 +59,15 @@ public class COKO_Rotator : MonoBehaviour
         {
             TrackTime();
             Accelerate();
+            TargetColor();
+        }
+    }
+
+    private void TargetColor()
+    {
+        if(currentTime > 0)
+        {
+            target.GetComponent<SpriteRenderer>().color = new Color(target.GetComponent<SpriteRenderer>().color.r, 1 - currentTime / maxGameTime, target.GetComponent<SpriteRenderer>().color.b, target.GetComponent<SpriteRenderer>().color.a);
         }
     }
 
@@ -78,7 +99,14 @@ public class COKO_Rotator : MonoBehaviour
             //add player interaction
             if(Input.GetMouseButtonDown(0))
             {
-                done = true;
+                currentAttack++;
+                Instantiate(sprite, PC.transform.position, PC.transform.rotation);
+                if(currentAttack >= maxAttacks)
+                {
+                    PC.enabled = false;
+                    done = true;
+                }
+
                 CalculateSuccess();
             }
             transform.Rotate(new Vector3(0, 0, Time.deltaTime * currentSpeed));
@@ -89,21 +117,22 @@ public class COKO_Rotator : MonoBehaviour
         }
 
         currentTime += Time.deltaTime;
+        timer.text = ((int)(maxGameTime - currentTime)).ToString();
     }
 
     private void CalculateSuccess()
     {
         //Calculates distance to determine success
-        int success = 0;
+
         float distance = Mathf.Sqrt(Mathf.Pow(PC.transform.position.x - target.transform.position.x, 2) + Mathf.Pow(PC.transform.position.y - target.transform.position.y, 2));
 
         //Sets score
-        success = Score(success, distance);
+        success += Score(success, distance);
 
         Debug.Log(success);
     }
 
-    private static int Score(int success, float distance)
+    private float Score(float success, float distance)
     {
         if (distance <= 0.02f)
         {
@@ -144,6 +173,15 @@ public class COKO_Rotator : MonoBehaviour
         else if (distance <= 0.2f)
         {
             success = 1;
+        }
+
+        //Adjusts damage based on time
+        success *= currentTime / 10;
+
+        //Fuck floats
+        if(success > 0)
+        {
+            success = (int)success;
         }
 
         return success;
