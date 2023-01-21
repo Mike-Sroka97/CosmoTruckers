@@ -29,11 +29,11 @@ public class TurnOrder : MonoBehaviour
         {
             if (speed.GetComponent<PlayerCharacter>())
             {
-                Debug.Log(speed.GetComponent<PlayerCharacter>().GetName() + " " + speed.speed);
+                //Debug.Log(speed.GetComponent<PlayerCharacter>().GetName() + " " + speed.speed);
             }
             else
             {
-                Debug.Log(speed.GetComponent<Enemy>().GetName() + " " + speed.speed);
+                //Debug.Log(speed.GetComponent<Enemy>().GetName() + " " + speed.speed);
             }
         }
     }

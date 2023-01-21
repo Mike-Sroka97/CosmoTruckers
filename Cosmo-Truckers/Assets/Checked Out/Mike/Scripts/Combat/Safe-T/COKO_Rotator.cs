@@ -24,6 +24,7 @@ public class COKO_Rotator : MonoBehaviour
     //Combat
     [SerializeField] GameObject sprite;
     [SerializeField] int maxAttacks = 3;
+    [SerializeField] float[] successDistance;
     //Timer
     [SerializeField] TextMeshProUGUI timer;
 
@@ -125,64 +126,72 @@ public class COKO_Rotator : MonoBehaviour
         //Calculates distance to determine success
 
         float distance = Mathf.Sqrt(Mathf.Pow(PC.transform.position.x - target.transform.position.x, 2) + Mathf.Pow(PC.transform.position.y - target.transform.position.y, 2));
+        Debug.Log("Distance = " + distance);
 
         //Sets score
         success += Score(success, distance);
 
-        Debug.Log(success);
+        if(currentAttack == 3)
+        {
+            Debug.Log("Total attack value: " + success);
+        }
     }
 
     private float Score(float success, float distance)
     {
-        if (distance <= 0.02f)
+        success = 0;
+
+        if (distance <= successDistance[0])
         {
             success = 10;
         }
-        else if (distance <= 0.04f)
+        else if (distance <= successDistance[1])
         {
             success = 9;
         }
-        else if (distance <= 0.06f)
+        else if (distance <= successDistance[2])
         {
             success = 8;
         }
-        else if (distance <= 0.08f)
+        else if (distance <= successDistance[3])
         {
             success = 7;
         }
-        else if (distance <= 0.1f)
+        else if (distance <= successDistance[4])
         {
             success = 6;
         }
-        else if (distance <= 0.12f)
+        else if (distance <= successDistance[5])
         {
             success = 5;
         }
-        else if (distance <= 0.14f)
+        else if (distance <= successDistance[6])
         {
             success = 4;
         }
-        else if (distance <= 0.16f)
+        else if (distance <= successDistance[7])
         {
             success = 3;
         }
-        else if (distance <= 0.18f)
+        else if (distance <= successDistance[8])
         {
             success = 2;
         }
-        else if (distance <= 0.2f)
+        else if (distance <= successDistance[9])
         {
             success = 1;
         }
 
         //Adjusts damage based on time
-        success *= currentTime / 10;
+        //success *= currentTime / 10;
 
         //Fuck floats
         if(success > 0)
         {
             success = (int)success;
         }
+
+        Debug.Log("Current attack value: " + success);
 
         return success;
     }
