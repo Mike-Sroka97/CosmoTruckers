@@ -10,15 +10,44 @@ public class TestNetworkColor : NetworkBehaviour
 
     [SerializeField] float speed = 5;
 
+    public override void OnStartServer()
+    {
+        NetworkTestManager.OnClientChange.AddListener(delegate
+        {
+            foreach (GameObject player in NetworkTestManager.Instance.GetPlayers)
+            {
+                player.GetComponent<TestNetworkColor>().ColorChange();
+            }
+        });
+
+        base.OnStartServer();
+    }
+    public override void OnStopServer()
+    {
+        NetworkTestManager.OnClientChange.RemoveAllListeners();
+        base.OnStartServer();
+    }
+
     public override void OnStartClient()
     {
-        if (!hasAuthority) return;
+        if (!hasAuthority)
+        {
+            //GetComponentInChildren<Camera>().enabled = false;
+            return;
+        }
 
         NetworkTestManager.Instance.AddPlayers(this.gameObject);
 
         CmdColor();
         Position();
         gameObject.name = "PlayerOBJ";
+    }
+    public override void OnStopClient()
+    {
+        if (isServer) return;
+
+        NetworkTestManager.Instance.RemovePlayer(this.gameObject);
+        base.OnStopClient();
     }
 
     private void Update()

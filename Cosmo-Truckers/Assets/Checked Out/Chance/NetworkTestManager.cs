@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.Events;
 
 public class NetworkTestManager : NetworkBehaviour
 {
     public static NetworkTestManager Instance;
+    public static UnityEvent OnClientChange = new UnityEvent();
 
     [SerializeField] [SyncVar] List<GameObject> Players = new List<GameObject>();
+    public List<GameObject> GetPlayers { get => Players; }
+
     [SerializeField] [SyncVar] int playerCount = 0;
     [SyncVar] int prevPlayerCount = 0;
 
@@ -21,6 +25,11 @@ public class NetworkTestManager : NetworkBehaviour
     {
         CmdAddPlayers(obj);
     }
+    public void RemovePlayer(GameObject obj)
+    {
+        if (NetworkClient.active)
+            CmdRemovePlayer(obj);
+    }
 
     [Command(requiresAuthority = false)]
     public void CmdAddPlayers(GameObject obj)
@@ -29,16 +38,21 @@ public class NetworkTestManager : NetworkBehaviour
         playerCount++;
     }
 
+    [Command(requiresAuthority = false)]
+    public void CmdRemovePlayer(GameObject obj)
+    {
+        Players.Remove(obj);
+        playerCount--;
+        prevPlayerCount--;
+    }
+
     private void Update()
     {
         if (!isServer) return;
 
         if(playerCount != prevPlayerCount)
         {
-            foreach(GameObject player in Players)
-            {
-                player.GetComponent<TestNetworkColor>().ColorChange();
-            }
+            OnClientChange?.Invoke();
 
             prevPlayerCount = playerCount;
         }
