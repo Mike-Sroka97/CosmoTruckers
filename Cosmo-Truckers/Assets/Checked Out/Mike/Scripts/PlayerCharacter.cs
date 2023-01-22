@@ -42,7 +42,7 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartTurn()
     {
-        foreach(GameObject child in myButtons.GetComponentsInChildren<GameObject>())
+        foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
         {
             child.SetActive(true);
         }
