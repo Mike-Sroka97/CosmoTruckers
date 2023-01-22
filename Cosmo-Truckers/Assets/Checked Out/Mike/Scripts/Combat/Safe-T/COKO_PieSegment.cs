@@ -18,4 +18,10 @@ public class COKO_PieSegment : MonoBehaviour
         //transform.LookAt(lookToObj.transform);
         //transform.rotation = new Quaternion(0, 0, transform.rotation.z, 1);
     }
+
+    private void Update()
+    {
+        //sliceImage.fillAmount = fillAmount - (FindObjectOfType<COKO_Rotator>().GetCurrentTime() / FindObjectOfType<COKO_Rotator>().GetMaxTime() / 10);
+        //transform.Rotate(new Vector3(0, 0, -(FindObjectOfType<COKO_Rotator>().GetCurrentTime() / FindObjectOfType<COKO_Rotator>().GetMaxTime() / 20)));
+    }
 }

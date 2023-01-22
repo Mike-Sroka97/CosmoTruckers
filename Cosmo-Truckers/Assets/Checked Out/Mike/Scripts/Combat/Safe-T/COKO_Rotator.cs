@@ -205,4 +205,7 @@ public class COKO_Rotator : MonoBehaviour
 
         return success;
     }
+
+    public float GetCurrentTime() { return currentTime; }
+    public float GetMaxTime() { return maxGameTime; }
 }
