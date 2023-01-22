@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class COKO_Rotator : MonoBehaviour
 {
@@ -21,8 +22,10 @@ public class COKO_Rotator : MonoBehaviour
     [SerializeField] Sprite sadPC;
     //Success Calculation
     [SerializeField] GameObject target;
+    [SerializeField] Canvas targetCanvas;
     //Combat
     [SerializeField] GameObject sprite;
+    [SerializeField] TextMeshProUGUI damageCounter;
     [SerializeField] int maxAttacks = 3;
     [SerializeField] float[] successDistance;
     //Timer
@@ -43,15 +46,20 @@ public class COKO_Rotator : MonoBehaviour
     int currentAttack = 0;
     float success = 0;
 
+    private void Awake()
+    {
+        //Puts the target somewhere random on the circle
+        float randomRotation = Random.Range(0, 361);
+        targetCanvas.transform.Rotate(new Vector3(0, 0, randomRotation));
+        //target.transform.position = Random.insideUnitCircle.normalized * 2.5f;
+    }
+
     private void Start()
     {
         //Assigns values to random elements of the attack
         currentSpeed = Random.Range(minStartSpeed, maxStartSpeed + 1);
         maxSpeed = Random.Range(minMaxSpeed, maxMaxSpeed + 1);
         acceleration = Random.Range(minAcceleration, maxAcceleration);
-
-        //Puts the target somewhere random on the circle
-        target.transform.position = Random.insideUnitCircle.normalized * 2.5f;
     }
 
     private void Update()
@@ -68,7 +76,7 @@ public class COKO_Rotator : MonoBehaviour
     {
         if(currentTime > 0)
         {
-            target.GetComponent<SpriteRenderer>().color = new Color(target.GetComponent<SpriteRenderer>().color.r, 1 - currentTime / maxGameTime, target.GetComponent<SpriteRenderer>().color.b, target.GetComponent<SpriteRenderer>().color.a);
+            target.GetComponentInChildren<Image>().color = new Color(target.GetComponent<SpriteRenderer>().color.r, 1 - currentTime / maxGameTime, target.GetComponent<SpriteRenderer>().color.b, target.GetComponent<SpriteRenderer>().color.a);
         }
     }
 
@@ -133,6 +141,8 @@ public class COKO_Rotator : MonoBehaviour
 
         if(currentAttack == 3)
         {
+            damageCounter.text = success.ToString();
+            damageCounter.color = new Color(1, 1 - success / 30, 1 - success / 30); //30 is max damage
             Debug.Log("Total attack value: " + success);
         }
     }

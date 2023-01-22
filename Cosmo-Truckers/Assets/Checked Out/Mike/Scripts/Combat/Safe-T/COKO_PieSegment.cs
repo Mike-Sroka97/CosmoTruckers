@@ -2,11 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class COKO_PieSegment : MonoBehaviour
-{
-    private void Start()
+{    
+    [SerializeField] float fillAmount = 0.1f;
+    [SerializeField] GameObject lookToObj;
+
+    Image sliceImage;
+
+    void Start()
     {
-        //Handles.DrawSolidArc(transform.position, Vector3.zero, Vector3.right, 45f, transform.localScale.x);
+        sliceImage = GetComponent<Image>();
+        sliceImage.fillAmount = fillAmount;
+        //transform.LookAt(lookToObj.transform);
+        //transform.rotation = new Quaternion(0, 0, transform.rotation.z, 1);
     }
 }
