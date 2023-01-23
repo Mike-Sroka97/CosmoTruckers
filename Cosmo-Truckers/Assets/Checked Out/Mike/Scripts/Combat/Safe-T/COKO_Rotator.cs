@@ -138,13 +138,8 @@ public class COKO_Rotator : MonoBehaviour
 
         //Sets score
         success += Score(success, distance);
-
-        if(currentAttack == 3)
-        {
-            damageCounter.text = success.ToString();
-            damageCounter.color = new Color(1, 1 - success / 30, 1 - success / 30); //30 is max damage
-            Debug.Log("Total attack value: " + success);
-        }
+        damageCounter.text = success.ToString();
+        damageCounter.color = new Color(1, 1 - success / 30, 1 - success / 30); //30 is max damage
     }
 
     private float Score(float success, float distance)
