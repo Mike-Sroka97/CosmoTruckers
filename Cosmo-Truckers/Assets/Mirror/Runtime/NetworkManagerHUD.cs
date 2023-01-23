@@ -26,7 +26,8 @@ namespace Mirror
             GUILayout.BeginArea(new Rect(10 + offsetX, 40 + offsetY, Screen.width / 4, 99999));
             if (!NetworkClient.isConnected && !NetworkServer.active)
             {
-                StartButtons();
+                //StartButtons();
+                ConnectingMessage();
             }
             else
             {
@@ -51,6 +52,19 @@ namespace Mirror
             GUILayout.EndArea();
         }
 
+        void ConnectingMessage()
+        {
+            if (NetworkClient.active)
+            {
+                // Connecting
+                GUILayout.Label($"Connecting to {manager.networkAddress}..");
+                if (GUILayout.Button("Cancel Connection Attempt"))
+                {
+                    manager.StopClient();
+                }
+            }
+        }
+
         void StartButtons()
         {
             if (!NetworkClient.active)
@@ -70,19 +84,19 @@ namespace Mirror
                 {
                     manager.StartClient();
                 }
-                manager.networkAddress = GUILayout.TextField(manager.networkAddress);
+                //manager.networkAddress = GUILayout.TextField(manager.networkAddress);
                 GUILayout.EndHorizontal();
 
                 // Server Only
-                if (Application.platform == RuntimePlatform.WebGLPlayer)
-                {
-                    // cant be a server in webgl build
-                    GUILayout.Box("(  WebGL cannot be server  )");
-                }
-                else
-                {
-                    if (GUILayout.Button("Server Only")) manager.StartServer();
-                }
+                //if (Application.platform == RuntimePlatform.WebGLPlayer)
+                //{
+                //    // cant be a server in webgl build
+                //    GUILayout.Box("(  WebGL cannot be server  )");
+                //}
+                //else
+                //{
+                //    if (GUILayout.Button("Server Only")) manager.StartServer();
+                //}
             }
             else
             {
