@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class MathCC
+{
+    public static int GetRandomWeightedIndex(List<int> weights)
+    {
+        int weightSum = 0;
+        //Get total sum of all weights
+        for (int i = 0; i < weights.Count; i++)
+            weightSum += weights[i];
+
+        int index = 0;
+
+        int lastIndex = weights.Count - 1;
+
+        //Loop over 'all' weights
+        while (index < lastIndex)
+        {
+            //If random number is less than the current index we return that index
+            if (UnityEngine.Random.Range(0, weightSum) < weights[index])
+                return index;
+
+            //Remove weight from total sum
+            weightSum -= weights[index++];
+        }
+
+        return index;
+    }
+}
