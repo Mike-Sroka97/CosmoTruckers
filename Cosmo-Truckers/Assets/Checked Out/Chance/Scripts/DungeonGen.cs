@@ -8,8 +8,15 @@ public class DungeonGen : MonoBehaviour
 {
     [SerializeField] GameObject[] Levels;
     [SerializeField] List<Node.DungeonNode> AllNodes;
-    [SerializeField] GameObject DungeonNodePreFab;
 
+    [Header("Line Options")]
+    [SerializeField] Color LineStartColor;
+    [SerializeField] Color LineEndColor;
+    [SerializeField] float LineStartWidth;
+    [SerializeField] float LineEndWidth;
+
+    [Header("Prefabs")]
+    [SerializeField] GameObject DungeonNodePreFab;
     [SerializeField] LineRenderer line;
     [SerializeField] GameObject ConnectionHolder;
 
@@ -24,6 +31,7 @@ public class DungeonGen : MonoBehaviour
             List<Node.DungeonNode> tempNodes = new List<Node.DungeonNode>(AllNodes);
 
             Levels[i].GetComponent<HorizontalLayoutGroup>().enabled = true;
+            Levels[i].GetComponent<HorizontalLayoutGroup>().childAlignment = (TextAnchor)Random.Range(0, 9);
 
             while (NodesToAdd > 0)
             {
@@ -68,10 +76,10 @@ public class DungeonGen : MonoBehaviour
                 for (int k = 0; k < Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().GetConnections; k++)
                 {
                     LineRenderer newLine = Instantiate(line, ConnectionHolder.transform);
-                    newLine.startColor = Color.green;
-                    newLine.endColor = Color.red;
-                    newLine.endWidth = .2f;
-                    newLine.startWidth = .2f;
+                    newLine.startColor = LineStartColor;
+                    newLine.endColor = LineEndColor;
+                    newLine.endWidth = LineEndWidth;
+                    newLine.startWidth = LineStartWidth;
 
                     int Connection = Random.Range(0, Levels[i + 1].transform.childCount);
                     while(connections.Contains(Connection))
