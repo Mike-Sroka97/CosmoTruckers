@@ -13,6 +13,7 @@ public class NetworkTestManager : NetworkBehaviour
     public List<GameObject> GetPlayers { get => Players; }
 
     [SerializeField] [SyncVar] int playerCount = 0;
+    public int GetPlayerCount { get => playerCount; }
     [SyncVar] int prevPlayerCount = 0;
 
     private void Awake()
@@ -43,13 +44,14 @@ public class NetworkTestManager : NetworkBehaviour
     {
         Players.Remove(obj);
         playerCount--;
-        prevPlayerCount--;
     }
 
     private void Update()
     {
+        //Only Host player may call this
         if (!isServer) return;
 
+        //When ever we loose or gain a player
         if(playerCount != prevPlayerCount)
         {
             OnClientChange?.Invoke();
