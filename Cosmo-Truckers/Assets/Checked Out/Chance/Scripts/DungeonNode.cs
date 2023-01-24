@@ -16,4 +16,14 @@ public class DungeonNode : MonoBehaviour
         //Set Everything here
         GetComponent<Image>().sprite = node.NodeImage;
     }
+
+
+
+    private void OnEnable()
+    {
+        GetComponent<Button>().onClick.AddListener(delegate
+        {
+            Debug.LogError("TODO: What ever the on click will be");
+        });
+    }
 }
