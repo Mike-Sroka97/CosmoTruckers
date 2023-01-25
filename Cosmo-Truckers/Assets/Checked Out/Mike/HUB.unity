@@ -637,9 +637,10 @@ GameObject:
   m_Component:
   - component: {fileID: 208990925}
   - component: {fileID: 208990924}
+  - component: {fileID: 208990926}
   m_Layer: 0
   m_Name: Player 4
-  m_TagString: Untagged
+  m_TagString: MovementBlocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -703,7 +704,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208990923}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3, y: -2, z: 0}
   m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 1
@@ -711,6 +712,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &208990926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208990923}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ebf112b97e4945a406929a0e9d5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinRate: 250
+  shrinkRate: 0.05
 --- !u!1 &210731584
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,9 +736,10 @@ GameObject:
   m_Component:
   - component: {fileID: 210731586}
   - component: {fileID: 210731585}
+  - component: {fileID: 210731587}
   m_Layer: 0
   m_Name: Player 2
-  m_TagString: Untagged
+  m_TagString: MovementBlocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -787,7 +803,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210731584}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1, y: -2, z: 0}
   m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 1
@@ -795,6 +811,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &210731587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210731584}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ebf112b97e4945a406929a0e9d5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinRate: 250
+  shrinkRate: 0.05
 --- !u!1 &235849647
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,9 +920,10 @@ GameObject:
   - component: {fileID: 252357042}
   - component: {fileID: 252357041}
   - component: {fileID: 252357043}
+  - component: {fileID: 252357044}
   m_Layer: 0
   m_Name: Player 1
-  m_TagString: Untagged
+  m_TagString: MovementBlocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -976,7 +1007,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e836707d23bb1b4888c230ccac994ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovementCD: 0.25
+  playerMovementCD: 0.15
+  xBounds: 4
+  yBounds: 3
+--- !u!114 &252357044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 252357040}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ebf112b97e4945a406929a0e9d5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinRate: 250
+  shrinkRate: 0.05
 --- !u!1 &309895167
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,7 +1288,7 @@ GameObject:
   - component: {fileID: 321470123}
   m_Layer: 0
   m_Name: Dimension (6)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1493,7 +1540,7 @@ GameObject:
   - component: {fileID: 382736551}
   m_Layer: 0
   m_Name: Final Dungeon
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1829,7 +1876,7 @@ GameObject:
   - component: {fileID: 486776850}
   m_Layer: 0
   m_Name: Dimension (5)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1913,7 +1960,7 @@ GameObject:
   - component: {fileID: 506191595}
   m_Layer: 0
   m_Name: Dimension (2)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2837,7 +2884,7 @@ GameObject:
   - component: {fileID: 761389220}
   m_Layer: 0
   m_Name: Dimension (4)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3257,7 +3304,7 @@ GameObject:
   - component: {fileID: 964740728}
   m_Layer: 0
   m_Name: Dimension (7)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4181,7 +4228,7 @@ GameObject:
   - component: {fileID: 1158541781}
   m_Layer: 0
   m_Name: Dimension (1)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4349,7 +4396,7 @@ GameObject:
   - component: {fileID: 1165547168}
   m_Layer: 0
   m_Name: Dimension (3)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4515,9 +4562,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1224049651}
   - component: {fileID: 1224049650}
+  - component: {fileID: 1224049652}
   m_Layer: 0
   m_Name: Player 3
-  m_TagString: Untagged
+  m_TagString: MovementBlocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4581,7 +4629,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224049649}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1, y: -2, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
@@ -4589,6 +4637,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224049652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224049649}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ebf112b97e4945a406929a0e9d5a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinRate: 250
+  shrinkRate: 0.05
 --- !u!1 &1232876479
 GameObject:
   m_ObjectHideFlags: 0
@@ -6281,7 +6343,7 @@ GameObject:
   - component: {fileID: 1835397816}
   m_Layer: 0
   m_Name: Roy
-  m_TagString: Untagged
+  m_TagString: MovementBlocker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6892,7 +6954,7 @@ GameObject:
   - component: {fileID: 2040306491}
   m_Layer: 0
   m_Name: Dimension (8)
-  m_TagString: Untagged
+  m_TagString: Dimension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
