@@ -54,7 +54,8 @@ public class NetworkTestManager : NetworkBehaviour
         //When ever we loose or gain a player
         if(playerCount != prevPlayerCount)
         {
-            OnClientChange?.Invoke();
+            if(playerCount > prevPlayerCount)
+                OnClientChange?.Invoke();
 
             prevPlayerCount = playerCount;
         }
