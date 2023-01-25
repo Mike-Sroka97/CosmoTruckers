@@ -9,10 +9,11 @@ public class PlayerManager : NetworkBehaviour
     {
         if (!hasAuthority)
         {
-            gameObject.name = $"Player{NetworkTestManager.Instance.GetPlayerCount + 1}";
+            gameObject.name = $"Co-OpPlayer";
             return;
         }
 
+        gameObject.name = $"Player{NetworkTestManager.Instance.GetPlayerCount + 1}";
         NetworkTestManager.Instance.AddPlayers(this.gameObject);
     }
     public override void OnStopClient()
@@ -22,4 +23,11 @@ public class PlayerManager : NetworkBehaviour
         NetworkTestManager.Instance.RemovePlayer(this.gameObject);
         base.OnStopClient();
     }
+
+    [Command]
+    public void CmdGivePlayerItem(NetworkIdentity item)
+    {
+        item.AssignClientAuthority(connectionToClient);
+    }
+
 }
