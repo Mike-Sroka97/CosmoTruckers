@@ -28,11 +28,13 @@ public class DungeonGen : MonoBehaviour
     [System.Serializable]
     public struct DungeonData
     {
-        public DungeonData(int level, List<Node.DungeonNode> nodes, TextAnchor anchor)
+        public DungeonData(int level, List<Node.DungeonNode> nodes, TextAnchor anchor, int seed)
         {
             Level = level;
             Nodes = nodes;
             AnchorPoint = anchor;
+
+            Seed = seed;
         }
         public void Add(Node.DungeonNode node)
         {
@@ -42,6 +44,8 @@ public class DungeonGen : MonoBehaviour
         public int Level;
         public List<Node.DungeonNode> Nodes;
         public TextAnchor AnchorPoint;
+
+        public int Seed;
     }
     #endregion
 
@@ -50,7 +54,11 @@ public class DungeonGen : MonoBehaviour
     /// </summary>
     public void GenerateMap()
     {
-        if (RandomSeed != 0) Random.InitState(RandomSeed);
+        int rand = (int)System.DateTime.Now.Ticks;
+
+        Random.InitState(RandomSeed != 0 ? RandomSeed : rand);
+        if (RandomSeed == 0)
+            Debug.LogWarning($"Dungeon Seed: {rand}");
 
         int NodesToAdd = StartingNodes;
         int NodesToAddNext = 0;
@@ -60,7 +68,12 @@ public class DungeonGen : MonoBehaviour
             List<int> weights = new List<int>();
             List<Node.DungeonNode> tempNodes = new List<Node.DungeonNode>(AllNodes);
 
-            CurrentLayout.Add(new DungeonData(i, new List<Node.DungeonNode>(), (TextAnchor)Random.Range(0, 9)));
+            CurrentLayout.Add(new DungeonData(
+                i,
+                new List<Node.DungeonNode>(),
+                (TextAnchor)Random.Range(0, 9),
+                RandomSeed != 0 ? RandomSeed : rand)
+                );
 
             while (NodesToAdd > 0)
             {
@@ -127,7 +140,7 @@ public class DungeonGen : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        if (RandomSeed != 0) Random.InitState(RandomSeed);
+        Random.InitState(RandomSeed != 0 ? RandomSeed : CurrentLayout[0].Seed);
 
         for (int i = 0; i < Levels.Length; i++)
             Levels[i].GetComponent<HorizontalLayoutGroup>().enabled = false;
