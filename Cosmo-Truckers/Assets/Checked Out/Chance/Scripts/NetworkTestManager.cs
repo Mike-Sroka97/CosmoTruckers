@@ -13,7 +13,7 @@ public class NetworkTestManager : NetworkBehaviour
     public List<GameObject> GetPlayers { get => Players; }
 
     [SerializeField] [SyncVar] int playerCount = 0;
-    public int GetPlayerCount { get => playerCount; }
+    public int GetPlayerCount { get => Players.Count; }
     [SyncVar] int prevPlayerCount = 0;
 
     private void Awake()
