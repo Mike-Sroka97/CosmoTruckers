@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
+using System;
 
 public class MainMenu : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class MainMenu : MonoBehaviour
     [Header("Pages")]
     [SerializeField] GameObject[] TileScreen;
     [SerializeField] GameObject[] MainMenuScreen;
+    [Space(10)]
+    [SerializeField] GameObject MainOptions;
+    [SerializeField] GameObject OptionOptions;
 
     [Header("Zooming")]
     [SerializeField] Transform TruckLocation;
@@ -18,12 +22,12 @@ public class MainMenu : MonoBehaviour
 
     public void HostGame()
     {
-        FindObjectOfType<NetworkManager>().StartHost();
+        StartCoroutine(HostFade());
     }
 
     public void JoinGame()
     {
-        FindObjectOfType<NetworkManager>().StartClient();
+        StartCoroutine(ClientFade());
     }
 
     public void QuitGame()
@@ -39,6 +43,37 @@ public class MainMenu : MonoBehaviour
             StartUp = false;
             StartCoroutine(TitleScreenChange());
         }
+    }
+
+    public void ShowOptionsMenu()
+    {
+        MainOptions.SetActive(false);
+        StartCoroutine(MenuChange(-20.86f));
+    }
+
+    public void ShowMainMenu()
+    {
+        OptionOptions.SetActive(false);
+        StartCoroutine(MenuChange(0.0f));
+    }
+
+    IEnumerator MenuChange(float direction)
+    {
+        Vector3 camPos = new Vector3(direction, 0, -10);
+
+        while ((int)Camera.main.transform.position.x != (int)direction)
+        {
+            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, camPos, Time.deltaTime);
+            yield return null;
+        }
+
+        Camera.main.transform.position = camPos;
+
+        if (direction == 0)
+            MainOptions.SetActive(true);
+        else
+            OptionOptions.SetActive(true);
+
     }
 
 
@@ -81,4 +116,35 @@ public class MainMenu : MonoBehaviour
 
     }
 
+    IEnumerator HostFade()
+    {
+        Fade.SetActive(true);
+
+        while (Camera.main.orthographicSize >= 3.5f)
+        {
+            Vector3 camPos = Vector3.Lerp(Camera.main.transform.position, TruckLocation.position, Time.deltaTime);
+            Camera.main.transform.position = new Vector3(camPos.x, camPos.y, -10);
+            Camera.main.orthographicSize -= ZoomSpeed * Time.deltaTime;
+
+            Fade.GetComponent<Image>().color = new Color(0, 0, 0, Fade.GetComponent<Image>().color.a + (ZoomSpeed * Time.deltaTime));
+            yield return null;
+        }
+        FindObjectOfType<NetworkManager>().StartHost();
+    }
+
+    IEnumerator ClientFade()
+    {
+        Fade.SetActive(true);
+
+        while (Camera.main.orthographicSize >= 3.5f)
+        {
+            Vector3 camPos = Vector3.Lerp(Camera.main.transform.position, TruckLocation.position, Time.deltaTime);
+            Camera.main.transform.position = new Vector3(camPos.x, camPos.y, -10);
+            Camera.main.orthographicSize -= ZoomSpeed * Time.deltaTime;
+
+            Fade.GetComponent<Image>().color = new Color(0, 0, 0, Fade.GetComponent<Image>().color.a + (ZoomSpeed * Time.deltaTime));
+            yield return null;
+        }
+        FindObjectOfType<NetworkManager>().StartClient();
+    }
 }

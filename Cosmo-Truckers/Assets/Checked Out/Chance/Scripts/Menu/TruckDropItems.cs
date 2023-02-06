@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class TruckDropItems : MonoBehaviour
 {
     [Header("Items")]
-    [SerializeField] Transform[] DropPoints;
+    [SerializeField] protected Transform[] DropPoints;
     [SerializeField] GameObject[] ItemsToDrop;
     [SerializeField] Vector3 ItemSpeed;
-    [SerializeField] float RotationSpeed;
+    [SerializeField] Vector2 RotationSpeed;
 
     [Header("Timing")]
-    [SerializeField] [Range(0.0f, 10.0f)] float MinTime;
-    [SerializeField] [Range(0.0f, 10.0f)] float MaxTime;
+    [SerializeField] Vector2 DropTiming;
 
     [SerializeField] float DestoryTime;
     float NextTime;
@@ -45,7 +45,7 @@ public class TruckDropItems : MonoBehaviour
         while(Time.time < time)
         {
             item.transform.position += ItemSpeed * Time.deltaTime;
-            item.transform.Rotate(Vector3.forward * Time.deltaTime * RotationSpeed);
+            item.transform.Rotate(Vector3.forward * Time.deltaTime * Random.Range(RotationSpeed.x, RotationSpeed.y));
             yield return null;
         }
 
@@ -53,7 +53,7 @@ public class TruckDropItems : MonoBehaviour
         Destroy(item);
     }
 
-    float GetNewTime() => NextTime = Time.time + Random.Range(MinTime, MaxTime);
+    float GetNewTime() => NextTime = Time.time + Random.Range(DropTiming.x, DropTiming.y);
     private void OnDisable()
     {
         foreach(var item in toRemove)
@@ -62,3 +62,4 @@ public class TruckDropItems : MonoBehaviour
         }
     }
 }
+
