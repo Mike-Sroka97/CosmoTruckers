@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using UnityEngine.UI;
 using System;
+using UnityEditor;
 
 public class MainMenu : MonoBehaviour
 {
@@ -18,7 +19,17 @@ public class MainMenu : MonoBehaviour
     [Header("Zooming")]
     [SerializeField] Transform TruckLocation;
     [SerializeField] float ZoomSpeed;
+    [SerializeField] float TranslateSpeed;
     [SerializeField] GameObject Fade;
+
+    [Header("Character pass by")]
+    [SerializeField] GameObject[] CharacterPrefabs;
+    [SerializeField] Transform StartPosition;
+    [SerializeField] Vector2 SpawnFrequency;
+    [SerializeField] float WalkTime;
+    [SerializeField] float WalkSpeed;
+    bool Spawned = false;
+    float SpawnTime;
 
     public void HostGame()
     {
@@ -40,8 +51,16 @@ public class MainMenu : MonoBehaviour
     {
         if(StartUp && Input.anyKeyDown)
         {
-            StartUp = false;
             StartCoroutine(TitleScreenChange());
+            SpawnTime = UnityEngine.Random.Range(SpawnFrequency.x, SpawnFrequency.y) + Time.time;
+        }
+        //In the menus
+        else if(!StartUp && !Spawned && SpawnTime <= Time.time)
+        {
+            Spawned = true;
+            SpawnTime = UnityEngine.Random.Range(SpawnFrequency.x, SpawnFrequency.y) + Time.time;
+
+            StartCoroutine(SpawnCharacter());
         }
     }
 
@@ -57,13 +76,23 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(MenuChange(0.0f));
     }
 
+    public void ToogleShown()
+    {
+        //Toggle the screen player can see
+        foreach (GameObject obj in TileScreen)
+            obj.SetActive(!obj.activeSelf);
+
+        foreach (GameObject obj in MainMenuScreen)
+            obj.SetActive(!obj.activeSelf);
+    }
+
     IEnumerator MenuChange(float direction)
     {
         Vector3 camPos = new Vector3(direction, 0, -10);
 
         while ((int)Camera.main.transform.position.x != (int)direction)
         {
-            Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, camPos, Time.deltaTime);
+            Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, camPos, Time.deltaTime * TranslateSpeed);
             yield return null;
         }
 
@@ -75,7 +104,6 @@ public class MainMenu : MonoBehaviour
             OptionOptions.SetActive(true);
 
     }
-
 
     IEnumerator TitleScreenChange()
     {
@@ -110,10 +138,11 @@ public class MainMenu : MonoBehaviour
             yield return null;
         }
 
-
+        MainOptions.SetActive(true);
         Camera.main.orthographicSize = 5;
         Fade.SetActive(false);
 
+        StartUp = false;
     }
 
     IEnumerator HostFade()
@@ -147,4 +176,37 @@ public class MainMenu : MonoBehaviour
         }
         FindObjectOfType<NetworkManager>().StartClient();
     }
+
+    IEnumerator SpawnCharacter()
+    {
+        GameObject character = Instantiate(CharacterPrefabs[UnityEngine.Random.Range(0, CharacterPrefabs.Length)]);
+        character.transform.position = StartPosition.position;
+        float endWalk = Time.time + WalkTime;
+
+        while(endWalk >= Time.time)
+        {
+            character.transform.Translate(Vector3.left * Time.deltaTime * WalkSpeed);
+            yield return null;
+        }
+
+        Destroy(character);
+        Spawned = false;
+    }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(MainMenu))]
+public class MainMenuEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+
+        MainMenu myScript = (MainMenu)target;
+        if (GUILayout.Button("Toggle Shown"))
+        {
+            myScript.ToogleShown();
+        }
+    }
+}
+#endif
