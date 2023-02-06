@@ -16,11 +16,14 @@ public class TruckDropItems : MonoBehaviour
 
     [SerializeField] float DestoryTime;
     float NextTime;
+    List<GameObject> toRemove;
 
     private void Start()
     {
         //Get first timing
         GetNewTime();
+
+        toRemove = new List<GameObject>();
     }
     private void Update()
     {
@@ -30,6 +33,7 @@ public class TruckDropItems : MonoBehaviour
 
             GameObject dropped = Instantiate(ItemsToDrop[Random.Range(0, ItemsToDrop.Length)]);
             dropped.transform.position = DropPoints[Random.Range(0, DropPoints.Length)].position;
+            toRemove.Add(dropped);
             StartCoroutine(RotateAndKill(dropped));
         }
     }
@@ -45,7 +49,16 @@ public class TruckDropItems : MonoBehaviour
             yield return null;
         }
 
+        toRemove.Remove(item);
         Destroy(item);
     }
-    float GetNewTime() => NextTime = Time.time + Random.Range(MinTime, MaxTime); 
+
+    float GetNewTime() => NextTime = Time.time + Random.Range(MinTime, MaxTime);
+    private void OnDisable()
+    {
+        foreach(var item in toRemove)
+        {
+            Destroy(item);
+        }
+    }
 }

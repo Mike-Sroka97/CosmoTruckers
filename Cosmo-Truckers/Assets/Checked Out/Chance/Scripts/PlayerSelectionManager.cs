@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerSelectionManager : NetworkBehaviour
 {
+    [SerializeField] string HUBSceneName;
+    [SerializeField] string TutorialSceneName;
     [SerializeField] GameObject[] PlayerSelections;
     [SerializeField] GameObject PlayerSelectionPreFab;
 
@@ -34,6 +36,20 @@ public class PlayerSelectionManager : NetworkBehaviour
         }
 
         CmdCheckIfReady();
+    }
+
+    public void AndGo()
+    {
+        CmdStartGame();
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdStartGame()
+    {
+        //if(SaveData.newGame)
+        //  NetworkManager.singleton.ServerChangeScene(TutorialSceneName);
+        //else
+        NetworkManager.singleton.ServerChangeScene(HUBSceneName);
     }
 
     [Command(requiresAuthority = false)]
