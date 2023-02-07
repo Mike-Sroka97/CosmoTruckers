@@ -5,6 +5,7 @@ using Mirror;
 using UnityEngine.UI;
 using System;
 using UnityEditor;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField] float WalkSpeed;
     bool Spawned = false;
     float SpawnTime;
+
+    [Header("Options Menu")]
+    [SerializeField] Slider SFXSlider;
+    [SerializeField] Slider MusicSlider;
+    [SerializeField] Toggle WindowedToggle;
+    [SerializeField] TMP_Dropdown ResolutionDropDown;
+
 
     public void HostGame()
     {
@@ -64,6 +72,20 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SFXSlider.value = PlayerPrefs.GetFloat("SFX", .5f);
+        MusicSlider.value = PlayerPrefs.GetFloat("Music", .5f);
+
+        int width = PlayerPrefs.GetInt("ResolutionWidth", 1920);
+
+        ResolutionDropDown.value = 
+            width == 1280 ? 0 : 
+            width == 1366 ? 1 :
+            width == 1920 ? 2 : 2;
+        SetResolution();
+    }
+
     public void ShowOptionsMenu()
     {
         MainOptions.SetActive(false);
@@ -84,6 +106,54 @@ public class MainMenu : MonoBehaviour
 
         foreach (GameObject obj in MainMenuScreen)
             obj.SetActive(!obj.activeSelf);
+    }
+
+    public void SetResolution()
+    {
+        bool fullScreen = PlayerPrefs.GetInt("WindowedMode", 0) == 0 ? true : false;
+        WindowedToggle.SetIsOnWithoutNotify(!fullScreen);
+
+        switch (ResolutionDropDown.value)
+        {
+            default:
+            case 0:
+                Screen.SetResolution(1280, 720, fullScreen);
+                PlayerPrefs.SetInt("ResolutionWidth", 1280);
+                PlayerPrefs.SetInt("ResolutionHeight", 720);
+                break;
+            case 1:
+                Screen.SetResolution(1366, 768, fullScreen);
+                PlayerPrefs.SetInt("ResolutionWidth", 1366);
+                PlayerPrefs.SetInt("ResolutionHeight", 768);
+                break;
+            case 2:
+                Screen.SetResolution(1920, 1080, fullScreen);
+                PlayerPrefs.SetInt("ResolutionWidth", 1920);
+                PlayerPrefs.SetInt("ResolutionHeight", 1080);
+                break;
+
+        }
+    }
+
+    public void SaveOptions()
+    {
+        PlayerPrefs.SetInt("WindowedMode", WindowedToggle.isOn ? 1 : 0);
+
+        SetResolution();
+
+        PlayerPrefs.SetFloat("Music", MusicSlider.value);
+        PlayerPrefs.SetFloat("SFX", SFXSlider.value);
+    }
+
+    public void DefaultOptions()
+    {
+        PlayerPrefs.DeleteAll();
+
+        WindowedToggle.SetIsOnWithoutNotify(false);
+        MusicSlider.value = .5f;
+        SFXSlider.value = .5f;
+        ResolutionDropDown.value = 2;
+        SetResolution();
     }
 
     IEnumerator MenuChange(float direction)
