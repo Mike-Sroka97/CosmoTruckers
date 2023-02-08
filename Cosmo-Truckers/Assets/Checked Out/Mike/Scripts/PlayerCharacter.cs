@@ -42,17 +42,17 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartTurn()
     {
-        foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
-        {
-            child.SetActive(true);
-        }
+        //foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
+        //{
+        //    child.SetActive(true);
+        //}
     }
     public void EndTurn()
     {
-        foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
-        {
-            child.SetActive(false);
-        }
+        //foreach (GameObject child in myButtons.GetComponentsInChildren<GameObject>())
+        //{
+        //    child.SetActive(false);
+        //}
     }
     public string GetName() { return characterName; }
 }
