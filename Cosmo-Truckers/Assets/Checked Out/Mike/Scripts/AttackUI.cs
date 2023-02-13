@@ -40,22 +40,30 @@ public class AttackUI : MonoBehaviour
         RectTransform[] children = GetComponentsInChildren<RectTransform>();
         float currentDegree = 0;
         bool negative = rotationValue < 0;
+        Quaternion currentRotation = transform.rotation;
 
         while(currentDegree < MathF.Abs(rotationValue))
         {
             if(negative)
             {
-                transform.parent.Rotate(0, 0, -Time.deltaTime * speed);
+                transform.Rotate(0, 0, -Time.deltaTime * speed);
             }
             else
             {
-                transform.parent.Rotate(0, 0, Time.deltaTime * speed);
+                transform.Rotate(0, 0, Time.deltaTime * speed);
             }
 
-            //foreach (RectTransform child in children)
-            //{
-            //    child.rotation = new Quaternion(child.rotation.x, child.rotation.y, 0, child.rotation.z);
-            //}
+            foreach (RectTransform child in children)
+            {
+                if (negative)
+                {
+                    child.Rotate(new Vector3(0, 0, Time.deltaTime * speed));
+                }
+                else
+                {
+                    child.Rotate(0, 0, -Time.deltaTime * speed);
+                }
+            }
 
             currentDegree += Time.deltaTime * speed;
             yield return new WaitForSeconds(Time.deltaTime);
