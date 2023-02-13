@@ -8,7 +8,6 @@ public class AttackUI : MonoBehaviour
     [SerializeField] float speed = 5f;
 
     bool spinning = false;
-
     private void Update()
     {
         GetInput();
@@ -20,27 +19,27 @@ public class AttackUI : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                RotateWheel(-18);
+                RotateWheel(-22.5f);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                RotateWheel(18);
+                RotateWheel(22.5f);
             }
         }
     }
 
-    private void RotateWheel(int rotationValue)
+    private void RotateWheel(float rotationValue)
     {
         StartCoroutine(SpinWheel(rotationValue));
     }
 
-    IEnumerator SpinWheel(int rotationValue)
+    IEnumerator SpinWheel(float rotationValue)
     {
         spinning = true;
         RectTransform[] children = GetComponentsInChildren<RectTransform>();
         float currentDegree = 0;
         bool negative = rotationValue < 0;
-        Quaternion currentRotation = transform.rotation;
+        Vector3 currentRotation = transform.eulerAngles;
 
         while(currentDegree < MathF.Abs(rotationValue))
         {
@@ -55,13 +54,9 @@ public class AttackUI : MonoBehaviour
 
             foreach (RectTransform child in children)
             {
-                if (negative)
+                if (!child.GetComponent<AttackUI>())
                 {
-                    child.Rotate(new Vector3(0, 0, Time.deltaTime * speed));
-                }
-                else
-                {
-                    child.Rotate(0, 0, -Time.deltaTime * speed);
+                    child.rotation = Quaternion.identity;
                 }
             }
 
@@ -69,6 +64,14 @@ public class AttackUI : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentRotation.z + rotationValue);
+        foreach (RectTransform child in children)
+        {
+            if(!child.GetComponent<AttackUI>())
+            {
+                child.rotation = Quaternion.identity;
+            }
+        }
         spinning = false;
     }
 }
