@@ -16,6 +16,8 @@ public class MainMenu : MonoBehaviour
     [Space(10)]
     [SerializeField] GameObject MainOptions;
     [SerializeField] GameObject OptionOptions;
+    [SerializeField] GameObject ComfirmPage;
+    int Confirm = -1;
 
     [Header("Zooming")]
     [SerializeField] Transform TruckLocation;
@@ -38,6 +40,9 @@ public class MainMenu : MonoBehaviour
     [SerializeField] Toggle WindowedToggle;
     [SerializeField] TMP_Dropdown ResolutionDropDown;
 
+    delegate void YesFunction();
+    delegate void NoFunction();
+
 
     public void HostGame()
     {
@@ -51,8 +56,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        Debug.LogError("Application Quiting");
-        Application.Quit();
+        StartCoroutine(QuitingGame());
     }
 
     private void Update()
@@ -72,15 +76,17 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Start() => StartUpSettings();
+
+    private void StartUpSettings()
     {
         SFXSlider.value = PlayerPrefs.GetFloat("SFX", .5f);
         MusicSlider.value = PlayerPrefs.GetFloat("Music", .5f);
 
         int width = PlayerPrefs.GetInt("ResolutionWidth", 1920);
 
-        ResolutionDropDown.value = 
-            width == 1280 ? 0 : 
+        ResolutionDropDown.value =
+            width == 1280 ? 0 :
             width == 1366 ? 1 :
             width == 1920 ? 2 : 2;
         SetResolution();
@@ -98,17 +104,7 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(MenuChange(0.0f));
     }
 
-    public void ToogleShown()
-    {
-        //Toggle the screen player can see
-        foreach (GameObject obj in TileScreen)
-            obj.SetActive(!obj.activeSelf);
-
-        foreach (GameObject obj in MainMenuScreen)
-            obj.SetActive(!obj.activeSelf);
-    }
-
-    public void SetResolution()
+    private void SetResolution()
     {
         bool fullScreen = PlayerPrefs.GetInt("WindowedMode", 0) == 0 ? true : false;
         WindowedToggle.SetIsOnWithoutNotify(!fullScreen);
@@ -160,6 +156,28 @@ public class MainMenu : MonoBehaviour
     {
         Vector3 camPos = new Vector3(direction, 0, -10);
 
+        if(direction == 0 && CheckForChanges())
+        {
+            yield return ConfirmWait("Are you sure you want to leave without saving?",
+                delegate 
+                {
+                    StartUpSettings();
+                    Confirm = 1;
+                },
+                delegate
+                {
+                    Confirm = 0;
+                });
+
+            if(Confirm == 0)
+            {
+                OptionOptions.SetActive(true);
+                Confirm = -1;
+                yield break;
+            }
+            Confirm = -1;
+        }
+
         while ((int)Camera.main.transform.position.x != (int)direction)
         {
             Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, camPos, Time.deltaTime * TranslateSpeed);
@@ -173,6 +191,21 @@ public class MainMenu : MonoBehaviour
         else
             OptionOptions.SetActive(true);
 
+    }
+
+    IEnumerator ConfirmWait(string text, YesFunction yes, NoFunction no)
+    {
+        ComfirmPage.SetActive(true);
+
+        ComfirmPage.GetComponent<ConfirmEvent>().ChangeDisplayText(text);
+        ComfirmPage.GetComponent<ConfirmEvent>().AddListner(true, delegate { yes(); } );
+        ComfirmPage.GetComponent<ConfirmEvent>().AddListner(false, delegate { no(); } );
+
+        while (Confirm == -1)
+            yield return null;
+
+        ComfirmPage.GetComponent<ConfirmEvent>().RemoveListners();
+        ComfirmPage.SetActive(false);
     }
 
     IEnumerator TitleScreenChange()
@@ -261,6 +294,55 @@ public class MainMenu : MonoBehaviour
 
         Destroy(character);
         Spawned = false;
+    }
+
+    IEnumerator QuitingGame()
+    {
+        yield return ConfirmWait("Exit to DeskTop?",
+            delegate
+            {
+                Debug.LogError("Application Quiting");
+                Debug.LogError("May break in editor");
+                Application.Quit();
+            },
+            delegate
+            {
+                Confirm = 0;
+            });
+
+        Confirm = -1;
+    }
+
+    //TODO 
+    //Will need to refactor this area, I hate the way it runs
+    private bool CheckForChanges()
+    {
+        bool value = false;
+
+
+        if (SFXSlider.value != PlayerPrefs.GetFloat("SFX", .5f))
+            value = true;
+        if(MusicSlider.value != PlayerPrefs.GetFloat("Music", .5f))
+            value = true;
+        if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
+            PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
+            value = true;
+        if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
+            value = true;
+
+
+
+        return value;
+    }
+
+    public void ToogleShown()
+    {
+        //Toggle the screen player can see
+        foreach (GameObject obj in TileScreen)
+            obj.SetActive(!obj.activeSelf);
+
+        foreach (GameObject obj in MainMenuScreen)
+            obj.SetActive(!obj.activeSelf);
     }
 }
 
