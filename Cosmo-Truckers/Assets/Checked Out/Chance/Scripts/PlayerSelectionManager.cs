@@ -46,32 +46,66 @@ public class PlayerSelectionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdStartGame()
     {
-        //if(SaveData.newGame)
-        //  NetworkManager.singleton.ServerChangeScene(TutorialSceneName);
-        //else
-        NetworkManager.singleton.ServerChangeScene(HUBSceneName);
+        NetworkManager.singleton.maxConnections = NetworkTestManager.Instance.GetPlayerCount;
+        if(ReadyCount() < 4)
+        {
+            for(int i = NetworkTestManager.Instance.GetPlayerCount -1; i < PlayerSelections.Length; i++)
+            {
+                GameObject obj = Instantiate(
+                    PlayerSelectionPreFab
+                );
+
+                ToShow.Add(obj);
+
+                NetworkServer.Spawn(
+                    obj,
+                    NetworkTestManager.Instance.GetPlayers
+                    [0].
+                    GetComponent<NetworkIdentity>().connectionToClient
+                    );
+
+                RpcShowAllActivePlayers(ToShow[i], i);
+            }
+
+            ReadyButton.GetComponent<Image>().color = Color.red;
+            GoButton.GetComponent<Button>().interactable = false;
+            GoButton.GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            //if(SaveData.newGame)
+            //  NetworkManager.singleton.ServerChangeScene(TutorialSceneName);
+            //else
+            NetworkManager.singleton.ServerChangeScene(HUBSceneName);
+        }
     }
 
-    [Command(requiresAuthority = false)]
-    void CmdCheckIfReady()
+    int ReadyCount()
     {
         int AllReady = 0;
 
         foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
         {
-            if (obj.GetComponent<NetworkIdentity>().hasAuthority)
-            {
-                obj.GetComponent<PlayerSelection>().CmdReadyUp();
-                ReadyButton.GetComponent<Image>().color = Color.green;
-            }
+            //if (obj.GetComponent<NetworkIdentity>().hasAuthority)
+            //{
+            //    obj.GetComponent<PlayerSelection>().CmdReadyUp();
+            //    ReadyButton.GetComponent<Image>().color = Color.green;
+            //}
 
             AllReady += obj.GetComponent<PlayerSelection>().GetReady ? 1 : 0;
 
             print(AllReady + " : " + NetworkTestManager.Instance.GetPlayerCount);
         }
 
+        return AllReady;
+    }
 
-        if (AllReady == NetworkTestManager.Instance.GetPlayerCount)
+    [Command(requiresAuthority = false)]
+    void CmdCheckIfReady()
+    {
+        int AllReady = ReadyCount();
+
+        if (AllReady >= NetworkTestManager.Instance.GetPlayerCount)
         {
             GoButton.GetComponent<Button>().interactable = true;
             GoButton.GetComponent<Image>().color = Color.green;
