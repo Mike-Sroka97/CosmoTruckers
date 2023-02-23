@@ -13,14 +13,16 @@ public class NetworkTestManager : NetworkBehaviour
     [SerializeField] [SyncVar] List<GameObject> Players = new List<GameObject>();
     public List<GameObject> GetPlayers { get => Players; }
 
-    [SerializeField] [SyncVar] int playerCount = 0;
-    public int GetPlayerCount { get => Players.Count; }
+    [SyncVar] int playerCount = 0;
+    public int GetPlayerCount { get => playerCount; }
     [SyncVar] int prevPlayerCount = 0;
 
     private void Awake()
     {
         if (Instance == null)
+        {
             Instance = this;
+        }
     }
 
     public void AddPlayers(GameObject obj)

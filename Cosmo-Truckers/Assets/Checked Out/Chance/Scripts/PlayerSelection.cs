@@ -18,11 +18,13 @@ public class PlayerSelection : NetworkBehaviour
     [SerializeField] Image CharacterImage;
     [SerializeField] TMP_Text CharacterName;
 
+    
     public bool GetReady { get => IsReady; }
 
     private void Start()
     {
-        if(!hasAuthority)
+
+        if (!hasAuthority)
         {
             NextPanel.gameObject.SetActive(false);
             PrevPanel.gameObject.SetActive(false);

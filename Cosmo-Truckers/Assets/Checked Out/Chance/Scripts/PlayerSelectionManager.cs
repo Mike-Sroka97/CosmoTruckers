@@ -46,10 +46,10 @@ public class PlayerSelectionManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     void CmdStartGame()
     {
-        NetworkManager.singleton.maxConnections = NetworkTestManager.Instance.GetPlayerCount;
+        NetworkManager.singleton.maxConnections = NetworkManager.singleton.numPlayers;
         if(ReadyCount() < 4)
         {
-            for(int i = NetworkTestManager.Instance.GetPlayerCount -1; i < PlayerSelections.Length; i++)
+            for(int i = NetworkTestManager.Instance.GetPlayerCount - 1; i < PlayerSelections.Length; i++)
             {
                 GameObject obj = Instantiate(
                     PlayerSelectionPreFab
