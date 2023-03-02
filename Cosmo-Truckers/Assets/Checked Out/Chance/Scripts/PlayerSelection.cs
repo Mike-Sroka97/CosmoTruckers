@@ -50,6 +50,14 @@ public class PlayerSelection : NetworkBehaviour
     {
         IsReady = true;
         CmdSelectCharacter(CharacterSelected);
+
+        foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
+        {
+            if (!obj.GetComponent<PlayerSelection>().GetReady)
+            {
+                obj.GetComponent<PlayerSelection>().CheckSelection();
+            }
+        }
     }
 
     [Command(requiresAuthority = false)]
@@ -92,7 +100,7 @@ public class PlayerSelection : NetworkBehaviour
         CmdSelectCharacter(CharacterSelected);
     }
 
-    void CheckSelection(bool Add = true)
+    public void CheckSelection(bool Add = true)
     {
         List<int> na = new List<int>();
 
@@ -113,6 +121,5 @@ public class PlayerSelection : NetworkBehaviour
             else
                 GoToPrevPanel();
         }
-
     }
 }
