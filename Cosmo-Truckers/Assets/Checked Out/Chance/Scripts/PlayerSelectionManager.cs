@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerSelectionManager : NetworkBehaviour
 {
@@ -49,27 +50,7 @@ public class PlayerSelectionManager : NetworkBehaviour
         NetworkManager.singleton.maxConnections = NetworkManager.singleton.numPlayers;
         if(ReadyCount() < 4)
         {
-            for(int i = NetworkTestManager.Instance.GetPlayerCount - 1; i < PlayerSelections.Length; i++)
-            {
-                GameObject obj = Instantiate(
-                    PlayerSelectionPreFab
-                );
-
-                ToShow.Add(obj);
-
-                NetworkServer.Spawn(
-                    obj,
-                    NetworkTestManager.Instance.GetPlayers
-                    [0].
-                    GetComponent<NetworkIdentity>().connectionToClient
-                    );
-
-                RpcShowAllActivePlayers(ToShow[i], i);
-            }
-
-            ReadyButton.GetComponent<Image>().color = Color.red;
-            GoButton.GetComponent<Button>().interactable = false;
-            GoButton.GetComponent<Image>().color = Color.red;
+            StartCoroutine(SlowSpawnAI());
         }
         else
         {
@@ -100,6 +81,37 @@ public class PlayerSelectionManager : NetworkBehaviour
         return AllReady;
     }
 
+    IEnumerator SlowSpawnAI()
+    {
+        for (int i = NetworkTestManager.Instance.GetPlayerCount; i < PlayerSelections.Length; i++)
+        {
+            GameObject obj = Instantiate(
+                PlayerSelectionPreFab
+            );
+
+            ToShow.Add(obj);
+
+            NetworkServer.Spawn(
+                obj,
+                NetworkTestManager.Instance.GetPlayers
+                [0].
+                GetComponent<NetworkIdentity>().connectionToClient
+                );
+
+            
+            RpcShowAllActivePlayers(ToShow[i], i);
+
+            yield return new WaitForEndOfFrame();
+
+            obj.GetComponent<PlayerSelection>().CmdReadyUp();
+        }
+
+        //ReadyButton.GetComponent<Image>().color = Color.red;
+        //GoButton.GetComponent<Button>().interactable = false;
+        //GoButton.GetComponent<Image>().color = Color.red;
+        GoButton.GetComponentInChildren<TMP_Text>().text = "Play";
+    }
+
     [Command(requiresAuthority = false)]
     void CmdCheckIfReady()
     {
@@ -108,6 +120,10 @@ public class PlayerSelectionManager : NetworkBehaviour
         if (AllReady >= NetworkTestManager.Instance.GetPlayerCount)
         {
             GoButton.GetComponent<Button>().interactable = true;
+
+            if (AllReady == NetworkManager.singleton.maxConnections)
+                GoButton.GetComponentInChildren<TMP_Text>().text = "Play";
+
             GoButton.GetComponent<Image>().color = Color.green;
         }
         else

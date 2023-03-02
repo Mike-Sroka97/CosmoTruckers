@@ -9,6 +9,7 @@ public class PlayerSelection : NetworkBehaviour
 {
     [SerializeField] List<CharacterSO> Characters;
     [SyncVar] [SerializeField] int CharacterSelected = 0;
+    public int GetCharacterSelected { get => CharacterSelected; }
     [SyncVar][SerializeField] bool IsReady = false;
 
     [Space(10)]
@@ -31,11 +32,15 @@ public class PlayerSelection : NetworkBehaviour
             return;
         }
 
+        CheckSelection();
+
+        NetworkTestManager.OnClientChange.AddListener(() => CmdSelectCharacter(CharacterSelected));
         NextPanel.onClick.AddListener(delegate { GoToNextPanel(); });
         PrevPanel.onClick.AddListener(delegate { GoToPrevPanel(); });
     }
     private void OnDisable()
     {
+        NetworkTestManager.OnClientChange.RemoveListener(() => CmdSelectCharacter(CharacterSelected));
         NextPanel.onClick.RemoveAllListeners();
         PrevPanel.onClick.RemoveAllListeners();
     }
@@ -43,8 +48,8 @@ public class PlayerSelection : NetworkBehaviour
     [Command]
     public void CmdReadyUp()
     {
-        CmdSelectCharacter(CharacterSelected);
         IsReady = true;
+        CmdSelectCharacter(CharacterSelected);
     }
 
     [Command(requiresAuthority = false)]
@@ -66,18 +71,48 @@ public class PlayerSelection : NetworkBehaviour
     {
         if (GetReady) return;
 
-        if(CharacterSelected < Characters.Count - 1)
-            CmdSelectCharacter(CharacterSelected + 1);
+        if (CharacterSelected < Characters.Count - 1)
+            CharacterSelected++;
         else
-            CmdSelectCharacter(0);
+            CharacterSelected = 0;
+
+        CheckSelection();
+        CmdSelectCharacter(CharacterSelected);
     }
     void GoToPrevPanel()
     {
         if (GetReady) return;
 
         if (CharacterSelected > 0)
-            CmdSelectCharacter(CharacterSelected - 1);
+            CharacterSelected--;
         else
-            CmdSelectCharacter(Characters.Count - 1);
+            CharacterSelected = Characters.Count - 1;
+
+        CheckSelection(false);
+        CmdSelectCharacter(CharacterSelected);
+    }
+
+    void CheckSelection(bool Add = true)
+    {
+        List<int> na = new List<int>();
+
+        foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
+        {
+            if (obj.GetComponent<PlayerSelection>().GetReady)
+            {
+                na.Add(obj.GetComponent<PlayerSelection>().CharacterSelected);
+            }
+        }
+
+        na.Sort();
+
+        if (na.Contains(CharacterSelected))
+        {
+            if (Add)
+                GoToNextPanel();
+            else
+                GoToPrevPanel();
+        }
+
     }
 }
