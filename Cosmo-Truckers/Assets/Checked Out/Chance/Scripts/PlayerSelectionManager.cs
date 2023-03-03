@@ -31,7 +31,7 @@ public class PlayerSelectionManager : NetworkBehaviour
         {
             if (obj.GetComponent<NetworkIdentity>().hasAuthority)
             {
-                obj.GetComponent<PlayerSelection>().CmdReadyUp();
+                obj.GetComponent<PlayerSelection>().ReadyUp();
                 ReadyButton.GetComponent<Image>().color = Color.green;
             }
         }
@@ -103,7 +103,7 @@ public class PlayerSelectionManager : NetworkBehaviour
 
             yield return new WaitForEndOfFrame();
 
-            obj.GetComponent<PlayerSelection>().CmdReadyUp();
+            obj.GetComponent<PlayerSelection>().CmdReadyUpAI();
         }
 
         //ReadyButton.GetComponent<Image>().color = Color.red;

@@ -45,7 +45,16 @@ public class PlayerSelection : NetworkBehaviour
         PrevPanel.onClick.RemoveAllListeners();
     }
 
-    [Command]
+    public void ReadyUp()
+    {
+        NetworkIdentity ni = NetworkClient.connection.identity;
+        PlayerManager pm = ni.GetComponent<PlayerManager>();
+        pm.CmdSetPlayerCharacter(Characters[CharacterSelected].PlayerID);
+
+        CmdReadyUp();
+    }
+
+    [Command(requiresAuthority = false)]
     public void CmdReadyUp()
     {
         IsReady = true;
@@ -58,6 +67,13 @@ public class PlayerSelection : NetworkBehaviour
                 obj.GetComponent<PlayerSelection>().CheckSelection();
             }
         }
+    }
+
+    [Command]
+    public void CmdReadyUpAI()
+    {
+        IsReady = true;
+        CmdSelectCharacter(CharacterSelected);
     }
 
     [Command(requiresAuthority = false)]

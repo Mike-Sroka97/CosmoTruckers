@@ -5,7 +5,25 @@ using Mirror;
 
 public class PlayerManager : NetworkBehaviour
 {
-    CharacterSO player;
+    [SerializeField] List<CharacterSO> AllCharacters;
+    [SyncVar] int playerNumber = 0;
+    [SerializeField] [SyncVar] int PlayerID;
+    CharacterSO Player;
+    public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
+
+    [Command]
+    public void CmdSetPlayerCharacter(int id)
+    {
+        PlayerID = id;
+        RpcSetPlayer(id);
+    }
+    [ClientRpc]
+    void RpcSetPlayer(int id)
+    {
+        foreach (var obj in AllCharacters)
+            if (obj.PlayerID == PlayerID)
+                Player = obj;
+    }
 
     public override void OnStartClient()
     {
@@ -13,10 +31,11 @@ public class PlayerManager : NetworkBehaviour
 
         if (!hasAuthority)
         {
-            gameObject.name = $"Co-OpPlayer";
+            StartCoroutine(SetPlayerName());
             return;
         }
 
+        CmdSetPlayerNumber();
         gameObject.name = $"Player {NetworkTestManager.Instance.GetPlayerCount + 1}";
         NetworkTestManager.Instance.AddPlayers(this.gameObject);
 
@@ -29,6 +48,19 @@ public class PlayerManager : NetworkBehaviour
 
         NetworkTestManager.Instance.RemovePlayer(this.gameObject);
         base.OnStopClient();
+    }
+
+    IEnumerator SetPlayerName()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        gameObject.name = $"Player {playerNumber}";
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdSetPlayerNumber()
+    {
+        playerNumber = NetworkTestManager.Instance.GetPlayerCount + 1;
     }
 
     [Command]

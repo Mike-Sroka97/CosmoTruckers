@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
+using UnityEngine.Events;
 
 public class HUBMovement : NetworkBehaviour
 {
@@ -22,18 +24,21 @@ public class HUBMovement : NetworkBehaviour
 
     private void Start()
     {
-        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (player.name == this.gameObject.name)
-            {
-                print($"Player name {player.name} : Object name {this.gameObject.name}");
-                controll = true;
-            }
-        }
-
         movementBlockers = GameObject.FindGameObjectsWithTag("MovementBlocker");
         dimensions = GameObject.FindGameObjectsWithTag("Dimension");
         changingRooms = GameObject.FindGameObjectsWithTag("Changing Room");
+    }
+
+    public override void OnStartClient()
+    {
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().hasAuthority)
+            {
+                controll = true;
+                player.GetComponent<PlayerManager>().CmdGivePlayerItem(netIdentity);
+            }
+        }
     }
 
     private void Update()
@@ -151,7 +156,7 @@ public class HUBMovement : NetworkBehaviour
             }
         }
     }
-    [Command(requiresAuthority = false)]
+    [Command]
     private void CmdDimensionVote()
     {
         GetComponent<FunnyWackyDimensionSpin>().enabled = true;
@@ -159,7 +164,7 @@ public class HUBMovement : NetworkBehaviour
         this.enabled = false;
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     void CmdMoveDown()
     {
         onCD = true;
@@ -167,7 +172,7 @@ public class HUBMovement : NetworkBehaviour
         CmdRotate();
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     void CmdMoveUp()
     {
         onCD = true;
@@ -175,7 +180,7 @@ public class HUBMovement : NetworkBehaviour
         CmdRotate();
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     void CmdMoveRight()
     {
         onCD = true;
@@ -183,7 +188,7 @@ public class HUBMovement : NetworkBehaviour
         CmdRotate();
     }
 
-    [Command(requiresAuthority = false)]
+    [Command]
     void CmdMoveLeft()
     {
         onCD = true;
