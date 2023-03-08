@@ -3,43 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Mirror;
 
-public class FunnyWackyDimensionSpin : MonoBehaviour
+public class FunnyWackyDimensionSpin : NetworkBehaviour
 {
     [SerializeField] float spinRate;
     [SerializeField] float shrinkRate;
     [SerializeField] GameObject voteTimerObject;
-    [SerializeField] float maxVoteTime = 60f;
-    [SerializeField] int[] voteTimeReductions;
 
     bool stop = false;
-    bool trackTime = false;
-    float currentTime;
-    int playersVoted = 0;
     const float triggerValue = .005f;
 
-    private void Start()
-    {
-        currentTime = maxVoteTime;
-    }
     void Update()
     {
         FunnyRotate();
-        TrackTime();
-    }
-
-    private void TrackTime()
-    {
-        if(trackTime)
-        {
-            currentTime -= Time.deltaTime;
-            voteTimerObject.GetComponent<TextMeshProUGUI>().text = ((int)currentTime).ToString();
-            if(currentTime <= 0)
-            {
-                trackTime = false;
-                voteTimerObject.GetComponent<TextMeshProUGUI>().text = "0";
-            }
-        }
     }
 
     private void FunnyRotate()
@@ -52,33 +29,24 @@ public class FunnyWackyDimensionSpin : MonoBehaviour
         if (transform.localScale.x <= triggerValue && !stop)
         {
             stop = true;
-            trackTime = true;
             GetComponent<SpriteRenderer>().enabled = false;
-            playersVoted++;
-            DecrementVoteTime();
+            CmdVoteCounter();
         }
     }
 
-    private void DecrementVoteTime()
+    [Command(requiresAuthority = false)]
+    void CmdVoteCounter()
     {
-        //displays vote timer
-        if(!voteTimerObject.activeInHierarchy)
-        {
-            voteTimerObject.SetActive(true);
-        }
-       
-        //adjusts vote timer remaining time as necessary
-        if(playersVoted == 2 && currentTime > voteTimeReductions[0])
-        {
-            currentTime = voteTimeReductions[0];
-        }
-        else if(playersVoted == 3 && currentTime > voteTimeReductions[1])
-        {
-            currentTime = voteTimeReductions[1];
-        }
-        else if(playersVoted == 4 && currentTime > voteTimeReductions[2])
-        {
-            currentTime = voteTimeReductions[2];
-        }
+        if (!voteTimerObject.activeInHierarchy)
+            RpcTurnOnCounter();
+
+        voteTimerObject.GetComponent<PlayerVoting>().CmdTrackTimeValue(true);
+        voteTimerObject.GetComponent<PlayerVoting>().CmdPlayerCount();
+    }
+
+    [ClientRpc]
+    void RpcTurnOnCounter()
+    {
+        voteTimerObject.SetActive(true);
     }
 }
