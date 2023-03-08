@@ -51,128 +51,79 @@ public class HUBMovement : NetworkBehaviour
     private void Move()
     {
         if (onCD || !controll) return;
+        int x = 0; int y = 0;
+        bool canMove = false;
 
-        if (Input.GetKeyDown(KeyCode.A))
+        switch (Input.inputString)
         {
-            //Checks if move is valid
-            foreach (GameObject movementBlocker in movementBlockers)
-            {
-                HUBMovement temp;
-                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
-                    continue;
+            case "w":
+                x = 0;
+                y = 1;
+                if (transform.position.y < yBounds)
+                    canMove = true;
+                break;
+            case "a":
+                x = -1;
+                y = 0;
+                if (transform.position.x > -xBounds)
+                    canMove = true;
+                break;
+            case "s":
+                x = 0;
+                y = -1;
+                if (transform.position.y > -yBounds)
+                    canMove = true;
+                break;
+            case "d":
+                x = 1;
+                y = 0;
+                if (transform.position.x < xBounds)
+                    canMove = true;
+                break;
 
-                if (movementBlocker.transform.position.x == transform.position.x - 1 && movementBlocker.transform.position.y == transform.position.y)
-                {
-                    return;
-                }
-            }
-            //Dimension check
-            foreach (GameObject dimension in dimensions)
-            {
-                if (dimension.transform.position.x == transform.position.x - 1 && dimension.transform.position.y == transform.position.y)
-                {
-                    CmdMoveLeft();
-                    CmdDimensionVote();
-                    return;
-                }
-            }
-            //Move left
-            if (transform.position.x > -xBounds)
-            {
-                CmdMoveLeft();
-            }
+            default:
+                x = 0;
+                y = 0;
+                canMove = false;
+                break;
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+
+        //Checks if move is valid
+        if (CheckLocation(movementBlockers, x, y))
+            return;
+
+        //Dimension check
+        if (CheckLocation(dimensions, x, y))
         {
-            //Checks if move is valid
-            foreach (GameObject movementBlocker in movementBlockers)
-            {
-                HUBMovement temp;
-                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
-                    continue;
-
-                if (movementBlocker.transform.position.x == transform.position.x + 1 && movementBlocker.transform.position.y == transform.position.y)
-                {
-                    return;
-                }
-            }
-            //Dimension check
-            foreach (GameObject dimension in dimensions)
-            {
-                if (dimension.transform.position.x == transform.position.x + 1 && dimension.transform.position.y == transform.position.y)
-                {
-                    CmdMoveRight();
-                    CmdDimensionVote();
-                    return;
-                }
-            }
-            //Moves right
-            if (transform.position.x < xBounds)
-            {
-                CmdMoveRight();
-            }
+            CmdMove(x, y);
+            CmdDimensionVote();
+            return;
         }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            //Checks if move is valid
-            foreach (GameObject movementBlocker in movementBlockers)
-            {
-                HUBMovement temp;
-                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
-                    continue;
 
-                if (movementBlocker.transform.position.y == transform.position.y + 1 && movementBlocker.transform.position.x == transform.position.x)
-                {
-                    return;
-                }
-            }
-            //Dimension check
-            foreach (GameObject dimension in dimensions)
-            {
-                if (dimension.transform.position.y == transform.position.y + 1 && dimension.transform.position.x == transform.position.x)
-                {
-                    CmdMoveUp();
-                    CmdDimensionVote();
-                    return;
-                }
-            }
-            //Moves up
-            if (transform.position.y < yBounds)
-            {
-                CmdMoveUp();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            //Checks if move is valid
-            foreach (GameObject movementBlocker in movementBlockers)
-            {
-                HUBMovement temp;
-                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
-                    continue;
-
-                if (movementBlocker.transform.position.y == transform.position.y - 1 && movementBlocker.transform.position.x == transform.position.x)
-                {
-                    return;
-                }
-            }
-            //Dimension check
-            foreach (GameObject dimension in dimensions)
-            {
-                if (dimension.transform.position.y == transform.position.y - 1 && dimension.transform.position.x == transform.position.x)
-                {
-                    CmdMoveUp();
-                    CmdDimensionVote();
-                    return;
-                }
-            }
-            //Moves down
-            if (transform.position.y > -yBounds)
-            {
-                CmdMoveDown();
-            }
-        }
+        //Move player
+        if (canMove)
+            CmdMove(x, y);
     }
+
+    bool CheckLocation(GameObject[] location, int x, int y)
+    {
+        foreach(GameObject obj in location)
+        {
+            //Ugly but need to check if player has already voted to enable no collision
+            HUBMovement temp;
+            if (obj.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                continue;
+
+            if (obj.transform.position.y == transform.position.y + y 
+                && obj.transform.position.x == transform.position.x + x)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     [Command]
     private void CmdDimensionVote()
     {
@@ -184,6 +135,17 @@ public class HUBMovement : NetworkBehaviour
     void RpcDisable()
     {
         this.enabled = false;
+    }
+
+    [Command]
+    void CmdMove(int x, int y)
+    {
+        onCD = true;
+        transform.position = new Vector3(
+            transform.position.x + (moveDistance * x),
+            transform.position.y + (moveDistance * y),
+            transform.position.z);
+        CmdRotate();
     }
 
     [Command]
