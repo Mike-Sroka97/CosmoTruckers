@@ -31,6 +31,7 @@ public class FunnyWackyDimensionSpin : NetworkBehaviour
             stop = true;
             GetComponent<SpriteRenderer>().enabled = false;
             CmdVoteCounter();
+            this.gameObject.SetActive(false);
         }
     }
 

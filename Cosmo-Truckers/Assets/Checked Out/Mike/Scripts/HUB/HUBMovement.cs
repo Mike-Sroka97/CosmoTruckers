@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 using UnityEngine.Events;
+using System.Linq;
 
 public class HUBMovement : NetworkBehaviour
 {
@@ -56,7 +57,11 @@ public class HUBMovement : NetworkBehaviour
             //Checks if move is valid
             foreach (GameObject movementBlocker in movementBlockers)
             {
-                if(movementBlocker.transform.position.x == transform.position.x - 1 && movementBlocker.transform.position.y == transform.position.y)
+                HUBMovement temp;
+                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                    continue;
+
+                if (movementBlocker.transform.position.x == transform.position.x - 1 && movementBlocker.transform.position.y == transform.position.y)
                 {
                     return;
                 }
@@ -82,6 +87,10 @@ public class HUBMovement : NetworkBehaviour
             //Checks if move is valid
             foreach (GameObject movementBlocker in movementBlockers)
             {
+                HUBMovement temp;
+                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                    continue;
+
                 if (movementBlocker.transform.position.x == transform.position.x + 1 && movementBlocker.transform.position.y == transform.position.y)
                 {
                     return;
@@ -108,6 +117,10 @@ public class HUBMovement : NetworkBehaviour
             //Checks if move is valid
             foreach (GameObject movementBlocker in movementBlockers)
             {
+                HUBMovement temp;
+                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                    continue;
+
                 if (movementBlocker.transform.position.y == transform.position.y + 1 && movementBlocker.transform.position.x == transform.position.x)
                 {
                     return;
@@ -134,6 +147,10 @@ public class HUBMovement : NetworkBehaviour
             //Checks if move is valid
             foreach (GameObject movementBlocker in movementBlockers)
             {
+                HUBMovement temp;
+                if (movementBlocker.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                    continue;
+
                 if (movementBlocker.transform.position.y == transform.position.y - 1 && movementBlocker.transform.position.x == transform.position.x)
                 {
                     return;
@@ -161,6 +178,11 @@ public class HUBMovement : NetworkBehaviour
     {
         GetComponent<FunnyWackyDimensionSpin>().enabled = true;
         //Player vote
+        RpcDisable();
+    }
+    [ClientRpc]
+    void RpcDisable()
+    {
         this.enabled = false;
     }
 
