@@ -1,8 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+using System;
+using UnityEngine.Events;
+using System.Linq;
 
-public class HUBMovement : MonoBehaviour
+public class HUBMovement : NetworkBehaviour
 {
     [SerializeField] float playerMovementCD = .25f;
     [SerializeField] int xBounds = 4;
@@ -13,16 +17,29 @@ public class HUBMovement : MonoBehaviour
     GameObject[] changingRooms;
 
     const int moveDistance = 1;
-    bool onCD = false;
+    [SerializeField] bool onCD = false;
     bool firstRotate = true;
     bool rotateLeft = true;
     float currentTime = 0;
+    bool controll = false;
 
     private void Start()
     {
         movementBlockers = GameObject.FindGameObjectsWithTag("MovementBlocker");
         dimensions = GameObject.FindGameObjectsWithTag("Dimension");
         changingRooms = GameObject.FindGameObjectsWithTag("Changing Room");
+    }
+
+    public override void OnStartClient()
+    {
+        foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().hasAuthority)
+            {
+                controll = true;
+                player.GetComponent<PlayerManager>().CmdGivePlayerItem(netIdentity);
+            }
+        }
     }
 
     private void Update()
@@ -33,151 +50,138 @@ public class HUBMovement : MonoBehaviour
 
     private void Move()
     {
-        if (!onCD)
+        if (onCD || !controll) return;
+        int x = 0; int y = 0;
+        bool canMove = false;
+
+        switch (Input.inputString)
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                //Checks if move is valid
-                foreach (GameObject movementBlocker in movementBlockers)
-                {
-                    if(movementBlocker.transform.position.x == transform.position.x - 1 && movementBlocker.transform.position.y == transform.position.y)
-                    {
-                        return;
-                    }
-                }
-                //Dimension check
-                foreach (GameObject dimension in dimensions)
-                {
-                    if (dimension.transform.position.x == transform.position.x - 1 && dimension.transform.position.y == transform.position.y)
-                    {
-                        MoveLeft();
-                        DimensionVote();
-                        return;
-                    }
-                }
-                //Move left
-                if (transform.position.x > -xBounds)
-                {
-                    MoveLeft();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                //Checks if move is valid
-                foreach (GameObject movementBlocker in movementBlockers)
-                {
-                    if (movementBlocker.transform.position.x == transform.position.x + 1 && movementBlocker.transform.position.y == transform.position.y)
-                    {
-                        return;
-                    }
-                }
-                //Dimension check
-                foreach (GameObject dimension in dimensions)
-                {
-                    if (dimension.transform.position.x == transform.position.x + 1 && dimension.transform.position.y == transform.position.y)
-                    {
-                        MoveRight();
-                        DimensionVote();
-                        return;
-                    }
-                }
-                //Moves right
-                if (transform.position.x < xBounds)
-                {
-                    MoveRight();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.W))
-            {
-                //Checks if move is valid
-                foreach (GameObject movementBlocker in movementBlockers)
-                {
-                    if (movementBlocker.transform.position.y == transform.position.y + 1 && movementBlocker.transform.position.x == transform.position.x)
-                    {
-                        return;
-                    }
-                }
-                //Dimension check
-                foreach (GameObject dimension in dimensions)
-                {
-                    if (dimension.transform.position.y == transform.position.y + 1 && dimension.transform.position.x == transform.position.x)
-                    {
-                        MoveUp();
-                        DimensionVote();
-                        return;
-                    }
-                }
-                //Moves up
+            case "w":
+                x = 0;
+                y = 1;
                 if (transform.position.y < yBounds)
-                {
-                    MoveUp();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                //Checks if move is valid
-                foreach (GameObject movementBlocker in movementBlockers)
-                {
-                    if (movementBlocker.transform.position.y == transform.position.y - 1 && movementBlocker.transform.position.x == transform.position.x)
-                    {
-                        return;
-                    }
-                }
-                //Dimension check
-                foreach (GameObject dimension in dimensions)
-                {
-                    if (dimension.transform.position.y == transform.position.y - 1 && dimension.transform.position.x == transform.position.x)
-                    {
-                        MoveUp();
-                        DimensionVote();
-                        return;
-                    }
-                }
-                //Moves down
+                    canMove = true;
+                break;
+            case "a":
+                x = -1;
+                y = 0;
+                if (transform.position.x > -xBounds)
+                    canMove = true;
+                break;
+            case "s":
+                x = 0;
+                y = -1;
                 if (transform.position.y > -yBounds)
-                {
-                    MoveDown();
-                }
-            }
+                    canMove = true;
+                break;
+            case "d":
+                x = 1;
+                y = 0;
+                if (transform.position.x < xBounds)
+                    canMove = true;
+                break;
+
+            default:
+                x = 0;
+                y = 0;
+                canMove = false;
+                break;
         }
+
+        //Checks if move is valid
+        if (CheckLocation(movementBlockers, x, y))
+            return;
+
+        //Dimension check
+        if (CheckLocation(dimensions, x, y))
+        {
+            CmdMove(x, y);
+            CmdDimensionVote();
+            return;
+        }
+
+        //Move player
+        if (canMove)
+            CmdMove(x, y);
     }
 
-    private void DimensionVote()
+    bool CheckLocation(GameObject[] location, int x, int y)
+    {
+        foreach(GameObject obj in location)
+        {
+            //Ugly but need to check if player has already voted to enable no collision
+            HUBMovement temp;
+            if (obj.TryGetComponent<HUBMovement>(out temp) && !temp.isActiveAndEnabled)
+                continue;
+
+            if (obj.transform.position.y == transform.position.y + y 
+                && obj.transform.position.x == transform.position.x + x)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    [Command]
+    private void CmdDimensionVote()
     {
         GetComponent<FunnyWackyDimensionSpin>().enabled = true;
         //Player vote
+        RpcDisable();
+    }
+    [ClientRpc]
+    void RpcDisable()
+    {
         this.enabled = false;
     }
 
-    private void MoveDown()
+    [Command]
+    void CmdMove(int x, int y)
+    {
+        onCD = true;
+        transform.position = new Vector3(
+            transform.position.x + (moveDistance * x),
+            transform.position.y + (moveDistance * y),
+            transform.position.z);
+        CmdRotate();
+    }
+
+    [Command]
+    void CmdMoveDown()
     {
         onCD = true;
         transform.position = new Vector3(transform.position.x, transform.position.y - moveDistance, transform.position.z);
-        RotatePlayer();
+        CmdRotate();
     }
 
-    private void MoveUp()
+    [Command]
+    void CmdMoveUp()
     {
         onCD = true;
         transform.position = new Vector3(transform.position.x, transform.position.y + moveDistance, transform.position.z);
-        RotatePlayer();
+        CmdRotate();
     }
 
-    private void MoveRight()
+    [Command]
+    void CmdMoveRight()
     {
         onCD = true;
         transform.position = new Vector3(transform.position.x + moveDistance, transform.position.y, transform.position.z);
-        RotatePlayer();
+        CmdRotate();
     }
 
-    private void MoveLeft()
+    [Command]
+    void CmdMoveLeft()
     {
         onCD = true;
         transform.position = new Vector3(transform.position.x - moveDistance, transform.position.y, transform.position.z);
-        RotatePlayer();
+        CmdRotate();
     }
 
-    private void RotatePlayer()
+    [Command(requiresAuthority = false)]
+    void CmdRotate()
     {
         if (firstRotate)
         {

@@ -63,6 +63,7 @@ public class MainMenu : MonoBehaviour
     {
         if(StartUp && Input.anyKeyDown)
         {
+            StartUp = false;
             StartCoroutine(TitleScreenChange());
             SpawnTime = UnityEngine.Random.Range(SpawnFrequency.x, SpawnFrequency.y) + Time.time;
         }
@@ -245,7 +246,7 @@ public class MainMenu : MonoBehaviour
         Camera.main.orthographicSize = 5;
         Fade.SetActive(false);
 
-        StartUp = false;
+        //StartUp = false;
     }
 
     IEnumerator HostFade()
