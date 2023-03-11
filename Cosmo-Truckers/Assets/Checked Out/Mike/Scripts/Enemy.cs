@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,18 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] string characterName;
     [SerializeField] int health;
+    [SerializeField] Loot[] droppableLoot;
 
+    EnemyManager enemyManager;
+    SpriteRenderer myRenderer;
     TurnOrder turnOrder;
     int currentHealth;
+    bool lootRolled = false;
 
     private void Start()
     {
+        enemyManager = FindObjectOfType<EnemyManager>();
+        myRenderer = GetComponent<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
         currentHealth = health;
     }
@@ -29,7 +36,41 @@ public class Enemy : MonoBehaviour
     {
         GetComponent<CharacterSpeed>().enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterSpeed>());
-        turnOrder.DetermineTurnOrder();
+        myRenderer.enabled = false;
+        
+        foreach(Enemy enemy in enemyManager.Enemies)
+        {
+            if (enemy.name == gameObject.name)
+            {
+                enemyManager.Enemies.Remove(enemy);
+                if(!lootRolled)
+                {
+                    lootRolled = true;
+                    RollLoot();
+                }
+                break;
+            }
+        }
+        if(enemyManager.Enemies.Count <= 0)
+        {
+            turnOrder.EndCombat();
+        }
+        else
+        {
+            turnOrder.DetermineTurnOrder();
+        }
+    }
+
+    private void RollLoot()
+    {
+        foreach(Loot loot in droppableLoot)
+        {
+            int randomResult = UnityEngine.Random.Range(1, 100);
+            if(loot.GetDropChance() >= randomResult)
+            {
+                FindObjectOfType<LootManager>().AddLoot(loot);
+            }
+        }
     }
 
     public void Resurect(int newHealth)
@@ -37,6 +78,7 @@ public class Enemy : MonoBehaviour
         currentHealth = newHealth;
         GetComponent<CharacterSpeed>().enabled = true;
         turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
+        myRenderer.enabled = true;
         turnOrder.DetermineTurnOrder();
     }
 

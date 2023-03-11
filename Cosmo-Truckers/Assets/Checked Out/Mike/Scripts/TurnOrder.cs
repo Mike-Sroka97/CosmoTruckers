@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TurnOrder : MonoBehaviour
 {
+    [SerializeField] GameObject lootPopUp;
+
     List<CharacterSpeed> speedList;
     CharacterSpeed[] livingCharacters;
     int currentCharactersTurn = 0;
@@ -142,5 +144,26 @@ public class TurnOrder : MonoBehaviour
         }
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
+    }
+
+    public void EndCombat()
+    {
+        lootPopUp.SetActive(true);
+        LootSlot[] slots = lootPopUp.GetComponentsInChildren<LootSlot>();
+        List<Loot> thisCombatsLoot = FindObjectOfType<LootManager>().GetLoot();
+        if(thisCombatsLoot.Count > 0)
+        {
+            for (int i = 0; i < slots.Length; i++)
+            {
+                slots[i].ToggleImage(true);
+                slots[i].SetImage(thisCombatsLoot[i].GetImage());
+                thisCombatsLoot[i].SetName(thisCombatsLoot[i].GetName() + thisCombatsLoot[i].GetLootCount());
+                slots[i].SetMyText(thisCombatsLoot[i].GetName());
+                if (i + 1 >= thisCombatsLoot.Count)
+                {
+                    break;
+                }
+            }
+        }
     }
 }
