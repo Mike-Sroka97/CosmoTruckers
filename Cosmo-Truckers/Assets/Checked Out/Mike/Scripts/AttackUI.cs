@@ -7,7 +7,30 @@ public class AttackUI : MonoBehaviour
 {
     [SerializeField] float speed = 5f;
 
+    //All these variables will need to pull from save data at some point to see how many attacks the player has
+    const float radius = 40f;
+    int numberOfAttacks = 16;
+    float rotationDistance;
+
     bool spinning = false;
+    RectTransform[] children;
+
+    private void Start()
+    {        
+        children = GetComponentsInChildren<RectTransform>();
+        float angle = 0f;
+        rotationDistance = 360f / numberOfAttacks;
+        float x;
+        float y;
+
+        for(int i = 0; i < numberOfAttacks; i++)
+        {
+            x = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
+            y = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+            children[i + 1].transform.localPosition = new Vector3(x, y, 0);
+            angle += rotationDistance;
+        }
+    }
     private void Update()
     {
         GetInput();
@@ -19,11 +42,11 @@ public class AttackUI : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                RotateWheel(-22.5f);
+                RotateWheel(-rotationDistance);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
-                RotateWheel(22.5f);
+                RotateWheel(rotationDistance);
             }
         }
     }
@@ -36,7 +59,7 @@ public class AttackUI : MonoBehaviour
     IEnumerator SpinWheel(float rotationValue)
     {
         spinning = true;
-        RectTransform[] children = GetComponentsInChildren<RectTransform>();
+        
         float currentDegree = 0;
         bool negative = rotationValue < 0;
         Vector3 currentRotation = transform.eulerAngles;
