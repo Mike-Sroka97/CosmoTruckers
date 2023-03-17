@@ -22,6 +22,8 @@ public class HUBMovement : NetworkBehaviour
     bool rotateLeft = true;
     float currentTime = 0;
     bool controll = false;
+    bool InChangingRoom = false;
+    public bool GetChangingStatus { get => InChangingRoom; }
 
     private void Start()
     {
@@ -95,14 +97,25 @@ public class HUBMovement : NetworkBehaviour
         //Dimension check
         if (CheckLocation(dimensions, x, y))
         {
+            ChangingRoom(false);
             CmdMove(x, y);
             CmdDimensionVote();
             return;
         }
 
+        if(CheckLocation(changingRooms, x, y) && !InChangingRoom)
+        {
+            ChangingRoom(true);
+            CmdMove(x, y);
+            return;
+        }
+
         //Move player
         if (canMove)
+        {
+            ChangingRoom(false);
             CmdMove(x, y);
+        }
     }
 
     bool CheckLocation(GameObject[] location, int x, int y)
@@ -122,6 +135,22 @@ public class HUBMovement : NetworkBehaviour
         }
 
         return false;
+    }
+
+    void ChangingRoom(bool value)
+    {
+        if (value == InChangingRoom) return;
+
+        InChangingRoom = value;
+        switch(value)
+        {
+            case true:
+                FindObjectOfType<ChangingRoom>().EnterChangingRoom?.Invoke();
+                break;
+            case false:
+                FindObjectOfType<ChangingRoom>().LeaveChangingRoom?.Invoke();
+                break;
+        }
     }
 
     [Command]
@@ -145,38 +174,6 @@ public class HUBMovement : NetworkBehaviour
             transform.position.x + (moveDistance * x),
             transform.position.y + (moveDistance * y),
             transform.position.z);
-        CmdRotate();
-    }
-
-    [Command]
-    void CmdMoveDown()
-    {
-        onCD = true;
-        transform.position = new Vector3(transform.position.x, transform.position.y - moveDistance, transform.position.z);
-        CmdRotate();
-    }
-
-    [Command]
-    void CmdMoveUp()
-    {
-        onCD = true;
-        transform.position = new Vector3(transform.position.x, transform.position.y + moveDistance, transform.position.z);
-        CmdRotate();
-    }
-
-    [Command]
-    void CmdMoveRight()
-    {
-        onCD = true;
-        transform.position = new Vector3(transform.position.x + moveDistance, transform.position.y, transform.position.z);
-        CmdRotate();
-    }
-
-    [Command]
-    void CmdMoveLeft()
-    {
-        onCD = true;
-        transform.position = new Vector3(transform.position.x - moveDistance, transform.position.y, transform.position.z);
         CmdRotate();
     }
 
