@@ -10,10 +10,10 @@ public static class SaveManager
     //Set name of save file here defaults to auto save if no name is set
     static string GameName = "SaveData";
 
-    public static void Save(SaveData data)
+    public static void Save(SaveData data, int character)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}");
+        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
         Directory.CreateDirectory(path);
         path = Path.Combine(path, GameName);
 
@@ -21,9 +21,9 @@ public static class SaveManager
             formatter.Serialize(stream, JsonUtility.ToJson(data));
     }
 
-    public static SaveData Load()
+    public static SaveData Load(int character)
     {
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}");
+        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
         path = Path.Combine(path, GameName);
 
         if (!File.Exists(path)) return null;
@@ -37,9 +37,9 @@ public static class SaveManager
         return JsonUtility.FromJson<SaveData>(data);
     }
 
-    public static bool DeleteSave()
+    public static bool DeleteSave(int character)
     {
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}");
+        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
         path = Path.Combine(path, GameName);
 
         if (!File.Exists(path)) return false;
@@ -53,5 +53,12 @@ public static class SaveManager
 [System.Serializable]
 public class SaveData
 {
-    public bool TutorialFinished = false;
+    public SaveData()
+    {
+        PlayersLoot = new List<Loot>();
+        TutorialFinished = false;
+    }
+
+    public List<Loot> PlayersLoot;
+    public bool TutorialFinished;
 }

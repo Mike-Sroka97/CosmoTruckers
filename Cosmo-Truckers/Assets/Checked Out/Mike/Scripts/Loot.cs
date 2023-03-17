@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Loot : MonoBehaviour
+[CreateAssetMenu(fileName = "Loot", menuName = "ScriptableObjects/Loot")]
+public class Loot : ScriptableObject
 {
     [SerializeField] int percentChanceToDrop;
     [SerializeField] string itemName;
@@ -18,4 +19,13 @@ public class Loot : MonoBehaviour
     public void IncrementLootCount() { lootCount++; }
     public int GetLootCount() { return lootCount; }
     //add saving to inventory
+    /// <summary>
+    /// Will save the new instance of loot to a list stored on the player manager that will be in every scene
+    /// </summary>
+    /// <param name="pm">The player manager that controlls the network logic for the current player obtaining the loot</param>
+    public void SaveLoot(PlayerManager pm)
+    {
+        pm.GetPlayerData.PlayersLoot.Add(this);
+        SaveManager.Save(pm.GetPlayerData, pm.GetPlayer.PlayerID);
+    }
 }

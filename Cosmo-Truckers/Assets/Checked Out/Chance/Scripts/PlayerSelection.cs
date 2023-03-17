@@ -49,7 +49,7 @@ public class PlayerSelection : NetworkBehaviour
     {
         NetworkIdentity ni = NetworkClient.connection.identity;
         PlayerManager pm = ni.GetComponent<PlayerManager>();
-        pm.CmdSetPlayerCharacter(Characters[CharacterSelected].PlayerID);
+        pm.SetPlayerCharacter(Characters[CharacterSelected].PlayerID);
 
         CmdReadyUp();
     }

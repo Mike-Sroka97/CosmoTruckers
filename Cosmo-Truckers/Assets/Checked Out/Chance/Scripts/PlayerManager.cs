@@ -9,10 +9,20 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] int playerNumber = 0;
     [SerializeField] [SyncVar] int PlayerID;
     CharacterSO Player;
+    [SerializeField] SaveData PlayerData;
+    public SaveData GetPlayerData { get => PlayerData; }
     public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
 
+    public void SetPlayerCharacter(int id)
+    {
+        PlayerData = SaveManager.Load(id);
+        if (PlayerData == null)
+            PlayerData = new SaveData();
+
+        CmdSetPlayerCharacter(id);
+    }
     [Command]
-    public void CmdSetPlayerCharacter(int id)
+    void CmdSetPlayerCharacter(int id)
     {
         PlayerID = id;
         RpcSetPlayer(id);
