@@ -10,10 +10,12 @@ public class FunnyWackyDimensionSpin : NetworkBehaviour
     [SerializeField] float spinRate;
     [SerializeField] float shrinkRate;
     [SerializeField] GameObject voteTimerObject;
+    [SyncVar][SerializeField] string Dimention;
+    [Command(requiresAuthority = false)]
+    public void CmdSetDimention(string value) { Dimention = value; }
 
     bool stop = false;
     const float triggerValue = .005f;
-
     void Update()
     {
         FunnyRotate();
@@ -42,7 +44,7 @@ public class FunnyWackyDimensionSpin : NetworkBehaviour
             RpcTurnOnCounter();
 
         voteTimerObject.GetComponent<PlayerVoting>().CmdTrackTimeValue(true);
-        voteTimerObject.GetComponent<PlayerVoting>().CmdPlayerCount();
+        voteTimerObject.GetComponent<PlayerVoting>().CmdPlayerCount(Dimention);
     }
 
     [ClientRpc]

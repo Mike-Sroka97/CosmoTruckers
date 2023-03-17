@@ -98,8 +98,8 @@ public class HUBMovement : NetworkBehaviour
         if (CheckLocation(dimensions, x, y))
         {
             ChangingRoom(false);
+            CmdDimensionVote(GetDimention(x, y));
             CmdMove(x, y);
-            CmdDimensionVote();
             return;
         }
 
@@ -137,6 +137,19 @@ public class HUBMovement : NetworkBehaviour
         return false;
     }
 
+    string GetDimention(int x, int y)
+    {
+        foreach (GameObject obj in dimensions)
+        {
+            if (obj.transform.position.y == transform.position.y + y && obj.transform.position.x == transform.position.x + x)
+            {
+                return obj.GetComponent<VoteLocation>().GetDimensionName;
+            }
+        }
+
+        return null;
+    }
+
     void ChangingRoom(bool value)
     {
         if (value == InChangingRoom) return;
@@ -154,9 +167,10 @@ public class HUBMovement : NetworkBehaviour
     }
 
     [Command]
-    private void CmdDimensionVote()
+    private void CmdDimensionVote(string dimention)
     {
         GetComponent<FunnyWackyDimensionSpin>().enabled = true;
+        GetComponent<FunnyWackyDimensionSpin>().CmdSetDimention(dimention);
         //Player vote
         RpcDisable();
     }

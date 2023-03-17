@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using TMPro;
+using System.Linq;
 
 public class PlayerVoting : NetworkBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerVoting : NetworkBehaviour
     [SyncVar] bool trackTime = false;
     [SyncVar] float currentTime;
     [SyncVar] int playersVoted = 0;
+    bool loading = false;
+
+    Dictionary<string, int> Location = new Dictionary<string, int>();
 
     private void Start()
     {
@@ -42,7 +46,7 @@ public class PlayerVoting : NetworkBehaviour
     private void Update()
     {
         //Only the host should call this to prevent time speed up 
-        if(isServer)
+        if(isServer && !loading)
             CmdTrackTime();
     }
 
@@ -51,15 +55,25 @@ public class PlayerVoting : NetworkBehaviour
     {
         if (trackTime)
         {
-            currentTime -= Time.deltaTime;
+            currentTime = playersVoted == NetworkManager.singleton.numPlayers  ? 0 : currentTime -= Time.deltaTime;
 
             RpcTrackTime(((int)currentTime).ToString());
             if (currentTime <= 0)
             {
+                loading = true;
                 trackTime = false;
                 RpcTrackTime("0");
+
+                NetworkManager.singleton.ServerChangeScene(Getlocation());
             }
         }
+    }
+
+    string Getlocation()
+    {
+        var sortedDict = Location.Aggregate((x, y) => x.Value > y.Value ? x : y).Key;
+
+        return sortedDict;
     }
     [ClientRpc]
     void RpcTrackTime(string time)
@@ -91,9 +105,15 @@ public class PlayerVoting : NetworkBehaviour
         trackTime = value;
     }
     [Command(requiresAuthority = false)]
-    public void CmdPlayerCount()
+    public void CmdPlayerCount(string dimention)
     {
         playersVoted++;
+
+        if (Location.ContainsKey(dimention))
+            Location[dimention]++;
+        else
+            Location.Add(dimention, 1);
+
         CmdDecrementVoteTime();
     }
 }
