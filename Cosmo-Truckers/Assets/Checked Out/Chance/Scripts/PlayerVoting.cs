@@ -8,6 +8,7 @@ using System.Linq;
 public class PlayerVoting : NetworkBehaviour
 {
     [SerializeField] float maxVoteTime = 60f;
+    [SerializeField] float smallTimer = 5.0f;
     [SerializeField] int[] voteTimeReductions;
 
     [SyncVar] bool trackTime = false;
@@ -55,7 +56,7 @@ public class PlayerVoting : NetworkBehaviour
     {
         if (trackTime)
         {
-            currentTime = playersVoted == NetworkManager.singleton.numPlayers  ? 0 : currentTime -= Time.deltaTime;
+            currentTime = (playersVoted == NetworkManager.singleton.numPlayers) && (currentTime > smallTimer)  ? smallTimer : currentTime -= Time.deltaTime;
 
             RpcTrackTime(((int)currentTime).ToString());
             if (currentTime <= 0)
