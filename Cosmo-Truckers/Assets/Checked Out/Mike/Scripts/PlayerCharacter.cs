@@ -8,6 +8,7 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] GameObject wheel;
     [SerializeField] BaseAttackSO[] attacks; //For testing
+    public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     TurnOrder turnOrder;
     int currentHealth;
@@ -42,8 +43,8 @@ public class PlayerCharacter : MonoBehaviour
 
     public void StartTurn()
     {
-        wheel.GetComponentInChildren<AttackUI>();
         wheel.SetActive(true);
+        wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }
     public void EndTurn()
     {

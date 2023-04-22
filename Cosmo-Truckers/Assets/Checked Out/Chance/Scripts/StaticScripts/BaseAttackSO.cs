@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BaseAttack", menuName = "ScriptableObjects/BaseAttack")]
 public class BaseAttackSO : ScriptableObject
 {
+    public string AttackName;
     [SerializeField] protected EnumManager.TargetingType targetingType;
     [SerializeField] protected bool canTargetFriendly;
     [SerializeField] protected bool canTargetEnemies;
