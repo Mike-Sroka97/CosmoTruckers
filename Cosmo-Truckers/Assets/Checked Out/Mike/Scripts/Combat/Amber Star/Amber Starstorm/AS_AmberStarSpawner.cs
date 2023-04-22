@@ -13,7 +13,6 @@ public class AS_AmberStarSpawner : MonoBehaviour
     int spawnPos = 10;
     float currentTime = 0;
     float spawnTime;
-    bool spawnStar = true;
     bool spawnTimeDecided = false;
 
     private void Update()

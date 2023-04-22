@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProtoINA : MonoBehaviour
+public class SixfaceINA : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
 
@@ -13,19 +13,14 @@ public class ProtoINA : MonoBehaviour
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
 
-    [SerializeField] float teleportDistance;
-    [SerializeField] float teleportCD;
-
-    [SerializeField] float positiveXBoundary;
-    [SerializeField] float positiveYBoundary;
-    [SerializeField] float negativeXBoundary;
-    [SerializeField] float negativeYBoundary;
+    [SerializeField] float hoverVelocityYMax;
+    [SerializeField] float hoverGravityModifier;
 
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
-    bool canTeleport = true;
+    bool canHover = true;
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
@@ -54,6 +49,7 @@ public class ProtoINA : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             canJump = true;
+            canHover = false;
             currentJumpHoldTime = 0;
             currentJumpStrength = jumpSpeed;
             myBody.velocity = new Vector2(myBody.velocity.x, 0);
@@ -68,11 +64,11 @@ public class ProtoINA : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {
-            StartCoroutine(ProtoAttack());
+            StartCoroutine(SixFaceAttack());
         }
     }
 
-    IEnumerator ProtoAttack()
+    IEnumerator SixFaceAttack()
     {
         canAttack = false;
         attackArea.SetActive(true);
@@ -104,6 +100,7 @@ public class ProtoINA : MonoBehaviour
         else if (isJumping)
         {
             isJumping = false;
+            canHover = true;
         }
     }
     #endregion
@@ -141,86 +138,18 @@ public class ProtoINA : MonoBehaviour
     /// </summary>
     public void SpecialMove()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canTeleport)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space)) && canHover)
         {
-            Teleport();
+            myBody.gravityScale = hoverGravityModifier;
+            if(myBody.velocity.y < hoverVelocityYMax)
+            {
+                myBody.velocity = new Vector2(myBody.velocity.x, hoverVelocityYMax);
+            }
+        }
+        else
+        {
+            myBody.gravityScale = 1;
         }
     }
-
-    private void Teleport()
-    {
-        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
-        {
-            if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
-            {
-                transform.position += new Vector3(-teleportDistance, teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
-        {
-            if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
-            {
-                transform.position += new Vector3(-teleportDistance, -teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
-        {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
-            {
-                transform.position += new Vector3(teleportDistance, -teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
-        {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
-            {
-                transform.position += new Vector3(teleportDistance, teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            if (!(transform.position.x - teleportDistance < negativeXBoundary))
-            {
-                transform.position += new Vector3(-teleportDistance, 0, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            if (!(transform.position.y + teleportDistance > positiveYBoundary))
-            {
-                transform.position += new Vector3(0, teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            if (!(transform.position.y - teleportDistance < negativeYBoundary))
-            {
-                transform.position += new Vector3(0, -teleportDistance, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary))
-            {
-                transform.position += new Vector3(teleportDistance, 0, 0);
-                StartCoroutine(TeleportCooldown());
-            }
-        }
-    }
-
-    IEnumerator TeleportCooldown()
-    {
-        canTeleport = false;
-        yield return new WaitForSeconds(teleportCD);
-        canTeleport = true;
-    }
-
     #endregion
 }
