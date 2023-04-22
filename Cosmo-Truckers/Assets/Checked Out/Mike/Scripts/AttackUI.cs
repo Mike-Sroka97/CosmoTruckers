@@ -5,15 +5,18 @@ using UnityEngine;
 
 public class AttackUI : MonoBehaviour
 {
+    int currentAttack = 0;
+    public int GetCurrentAttack { get => currentAttack; }
+
     [SerializeField] float speed = 5f;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
-    int numberOfAttacks = 16;
+    [SerializeField] int numberOfAttacks = 16;
     float rotationDistance;
 
     bool spinning = false;
-    RectTransform[] children;
+    [SerializeField] RectTransform[] children;
 
     private void Start()
     {        
@@ -96,5 +99,7 @@ public class AttackUI : MonoBehaviour
             }
         }
         spinning = false;
+
+        currentAttack = (int)(Mathf.Round(transform.eulerAngles.z) / (360 / numberOfAttacks));
     }
 }
