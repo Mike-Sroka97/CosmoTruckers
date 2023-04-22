@@ -21,7 +21,7 @@ public class HUBMovement : NetworkBehaviour
     bool firstRotate = true;
     bool rotateLeft = true;
     float currentTime = 0;
-    bool controll = false;
+    bool control = false;
     bool InChangingRoom = false;
     public bool GetChangingStatus { get => InChangingRoom; }
 
@@ -38,7 +38,7 @@ public class HUBMovement : NetworkBehaviour
         {
             if (player.name == gameObject.name && player.GetComponent<PlayerManager>().hasAuthority)
             {
-                controll = true;
+                control = true;
                 player.GetComponent<PlayerManager>().CmdGivePlayerItem(netIdentity);
             }
         }
@@ -52,7 +52,7 @@ public class HUBMovement : NetworkBehaviour
 
     private void Move()
     {
-        if (onCD || !controll) return;
+        if (onCD || !control) return;
         int x = 0; int y = 0;
         bool canMove = false;
 
