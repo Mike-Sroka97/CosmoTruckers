@@ -9,11 +9,13 @@ public class AttackUI : MonoBehaviour
     [SerializeField] int currentAttack = 0;
     public int GetCurrentAttack { get => currentAttack; }
 
-    [SerializeField] float speed = 5f;
+    float speed = 50f;
+    [SerializeField] float speedIncrease = 100f;
+    [SerializeField] float baseSpeed = 50;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
-    int numberOfAttacks = 16;
+    int numberOfAttacks = 10;
     float rotationDistance;
 
     bool spinning = false;
@@ -22,43 +24,34 @@ public class AttackUI : MonoBehaviour
 
     public void StartTurn(PlayerCharacter player)
     {
+        speed = baseSpeed;
         currentPlayer = player;
         numberOfAttacks = player.GetAllAttacks.Length;
 
         float angle = 0f;
-        rotationDistance = 360f / numberOfAttacks;
+        rotationDistance = 360f / 10;
         float x;
         float y;
 
-        for (int i = 0; i < numberOfAttacks; i++)
+        angle += rotationDistance;
+
+        for (int i = 0; i < 10; i++)
         {
             children[i].gameObject.SetActive(true);
-            children[i].gameObject.GetComponent<TMP_Text>().text = player.GetAllAttacks[i].AttackName;
+            if (i < numberOfAttacks)
+                children[i].gameObject.GetComponent<TMP_Text>().text = player.GetAllAttacks[i].AttackName;
+            else
+                children[i].gameObject.GetComponent<TMP_Text>().text = "";
 
             x = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
             y = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
             children[i].transform.localPosition = new Vector3(x, y, 0);
             angle -= rotationDistance;
         }
+
+        SetOpasity(0);
     }
 
-    //private void OnEnable()
-    //{        
-    //    float angle = 0f;
-    //    rotationDistance = 360f / numberOfAttacks;
-    //    float x;
-    //    float y;
-    //    for (int i = 0; i < numberOfAttacks; i++)
-    //        children[i].gameObject.SetActive(true);
-
-    //    for (int i = 0; i < numberOfAttacks; i++)
-    //    {
-    //        x = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
-    //        y = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-    //        children[i].transform.localPosition = new Vector3(x, y, 0);
-    //        angle += rotationDistance;
-    //    }
-    //}
     private void OnDisable()
     {
         for (int i = 0; i < children.Length; i++)
@@ -141,8 +134,44 @@ public class AttackUI : MonoBehaviour
                 child.rotation = Quaternion.identity;
             }
         }
-        spinning = false;
 
-        currentAttack = (int)(Mathf.Round(transform.eulerAngles.z) / (360 / numberOfAttacks));
+        currentAttack = (int)(Mathf.Round(transform.eulerAngles.z) / (360 / 10));
+
+        SetOpasity(currentAttack);
+
+        if (String.IsNullOrEmpty(children[currentAttack].gameObject.GetComponent<TMP_Text>().text))
+        {
+            speed = speedIncrease;
+            RotateWheel(rotationValue);
+        }
+        else
+        {
+            speed = baseSpeed;
+            spinning = false;
+        }
+    }
+
+    void SetOpasity(int attack)
+    {
+        for (int i = 0; i < 10; i++)
+            children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .25f);
+
+        children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
+
+        if(currentAttack == 0)
+        {
+            children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
+            children[numberOfAttacks].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
+        }
+        else if(currentAttack == numberOfAttacks)
+        {
+            children[0].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .70f);
+            children[numberOfAttacks - 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
+        }
+        else
+        {
+            children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
+            children[currentAttack - 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
+        }
     }
 }
