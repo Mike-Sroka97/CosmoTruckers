@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 851497695}
   - component: {fileID: 851497699}
   m_Layer: 0
-  m_Name: Proto combat
+  m_Name: SafeT combat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -319,18 +319,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000023841858, y: 0.022561908}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.4, y: 6.4}
+    oldSize: {x: 5, y: 5}
     newSize: {x: 3.6, y: 3.6}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.488025, y: 6.3526497}
+  m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
 --- !u!212 &851497697
 SpriteRenderer:
@@ -373,7 +373,7 @@ SpriteRenderer:
   m_SortingLayerID: 1233702457
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3adeaa0aece3b99469c465dca6ccce57, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1e0a5ba81cb4205498ce79049ac593df, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -393,7 +393,7 @@ Transform:
   m_GameObject: {fileID: 851497694}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.09, y: -1.38, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1181837174}
@@ -409,21 +409,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 851497694}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3db56bb9aae3a54d88f60c98d2f1ede, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ad2b243304bed54a8a4be1243cc923a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
   attackDuration: 0.2
   attackCD: 0.2
   attackArea: {fileID: 1181837172}
-  jumpSpeed: 9
+  jumpSpeedAccrual: 20
   jumpMaxHoldTime: 0.5
-  teleportDistance: 2
-  teleportCD: 2
-  positiveXBoundary: 5.6
-  positiveYBoundary: 3.6
-  negativeXBoundary: -5.6
-  negativeYBoundary: -3.6
+  hopForceModifier: 2
 --- !u!1 &925420034
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,8 +811,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181837172}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.18, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalPosition: {x: 5.76, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 851497698}
