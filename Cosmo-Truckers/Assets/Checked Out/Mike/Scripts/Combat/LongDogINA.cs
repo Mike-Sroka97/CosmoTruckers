@@ -10,6 +10,14 @@ public class LongDogINA : MonoBehaviour
     [SerializeField] float stretchRotateSpeed;
     [SerializeField] GameObject head;
     [SerializeField] GameObject body;
+    [SerializeField] GameObject linePrefab;
+    [SerializeField] Gradient lineColor;
+    [SerializeField] float linePointsMinDistance;
+    [SerializeField] float lineWidth;
+
+    LongDogNeck currentLine;
+
+    Camera cam;
 
     bool stretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
@@ -25,6 +33,7 @@ public class LongDogINA : MonoBehaviour
         myBody = head.GetComponent<Rigidbody2D>();
         mySpriteHead = head.GetComponent<SpriteRenderer>();
         mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
+        cam = Camera.main;
     }
 
     private void Update()
@@ -50,17 +59,53 @@ public class LongDogINA : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch)
         {
-           if(stretching)
+            BeginDraw();
+        }
+        else if(Input.GetKey(KeyCode.Mouse0) && stretching)
+        {
+            if(currentLine != null)
             {
-                canMove = false;
-                canStretch = false;
-                //AssToHead();
+                Draw();
+            }
+        }
+        else if(Input.GetKeyUp(KeyCode.Mouse0) && stretching)
+        {
+            EndDraw();
+        }
+    }
+
+    void BeginDraw()
+    {
+        stretching = true;
+        body.transform.SetParent(transform);
+        myBody.gravityScale = 0;
+
+        currentLine = Instantiate(linePrefab, this.transform).GetComponent<LongDogNeck>();
+
+        currentLine.SetLineColor(lineColor);
+        currentLine.SetPointsMinDistance(linePointsMinDistance);
+        currentLine.SetLineWidth(lineWidth);
+    }
+
+    void Draw()
+    {
+        currentLine.AddPoint(head.transform.localPosition);
+    }
+    void EndDraw()
+    {
+        canMove = true;
+        canStretch = true;
+        stretching = false;
+
+        if (currentLine != null)
+        {
+            if (currentLine.GetPointCount() < 2)
+            {
+                //Destroy(currentLine.gameObject);
             }
             else
             {
-                stretching = true;
-                body.transform.SetParent(transform);
-                myBody.gravityScale = 0;
+                currentLine = null;
             }
         }
     }
