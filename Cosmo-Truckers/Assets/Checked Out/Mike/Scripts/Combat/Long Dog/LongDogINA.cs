@@ -20,6 +20,7 @@ public class LongDogINA : MonoBehaviour
     Camera cam;
 
     bool stretching = false;
+    bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
 
@@ -93,6 +94,13 @@ public class LongDogINA : MonoBehaviour
     }
     void EndDraw()
     {
+        buttStretching = true;
+        body.GetComponent<LongDogButt>().StartButtToHeadMovement();
+    }
+
+    public void ATHDone()
+    {
+        buttStretching = false;
         canMove = true;
         canStretch = true;
         stretching = false;
@@ -101,7 +109,7 @@ public class LongDogINA : MonoBehaviour
         {
             if (currentLine.GetPointCount() < 2)
             {
-                //Destroy(currentLine.gameObject);
+                Destroy(currentLine.gameObject);
             }
             else
             {
@@ -129,7 +137,7 @@ public class LongDogINA : MonoBehaviour
     {
         if (!canMove) return;
 
-        if(stretching)
+        if(stretching && !buttStretching)
         {
             head.transform.Translate(Vector3.left * stretchSpeed * Time.deltaTime);
 
