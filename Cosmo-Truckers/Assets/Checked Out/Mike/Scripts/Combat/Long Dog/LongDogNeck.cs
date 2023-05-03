@@ -13,6 +13,17 @@ public class LongDogNeck : MonoBehaviour
     //float circleColliderRadius;
     float minDistanceBetweenPoints = .2f;
 
+    LongDogINA dog;
+
+    private void Start()
+    {
+        dog = transform.parent.GetComponent<LongDogINA>();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        dog.StretchingCollision();
+    }
     public void AddPoint(Vector2 point)
     {
         if(pointCount >= 1 && Vector2.Distance(point, GetLastPoint()) < minDistanceBetweenPoints)

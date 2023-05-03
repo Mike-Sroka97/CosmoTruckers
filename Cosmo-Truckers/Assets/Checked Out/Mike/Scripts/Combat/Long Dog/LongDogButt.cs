@@ -8,9 +8,15 @@ public class LongDogButt : MonoBehaviour
 
     int currentIndex;
     LongDogNeck neck;
+    LongDogINA dogINA;
     List<Vector2> points;
 
     bool isStretching = false;
+
+    private void Start()
+    {
+        dogINA = transform.parent.parent.GetComponent<LongDogINA>();
+    }
 
     private void Update()
     {
@@ -30,7 +36,7 @@ public class LongDogButt : MonoBehaviour
                 if(points.Count == 0)
                 {
                     currentIndex = 0;
-                    FindObjectOfType<LongDogINA>().ATHDone();
+                    dogINA.ATHDone();
                     isStretching = false;
                 }
             }
@@ -40,9 +46,13 @@ public class LongDogButt : MonoBehaviour
     public void StartButtToHeadMovement()
     {
         currentIndex = 0;
+        dogINA.SetCanMove(false);
         neck = FindObjectOfType<LongDogNeck>();
-        points = neck.GetPointList();
-        isStretching = true;
-        transform.localPosition = points[0];
+        if(neck)
+        {
+            points = neck.GetPointList();
+            isStretching = true;
+            transform.localPosition = points[0];
+        }
     }
 }

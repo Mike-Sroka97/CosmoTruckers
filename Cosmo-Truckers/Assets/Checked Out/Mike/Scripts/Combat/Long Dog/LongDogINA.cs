@@ -14,6 +14,9 @@ public class LongDogINA : MonoBehaviour
     [SerializeField] Gradient lineColor;
     [SerializeField] float linePointsMinDistance;
     [SerializeField] float lineWidth;
+    [SerializeField] float spinForceBoost;
+    [SerializeField] float spinSpeed;
+    [SerializeField] float postSpinCD;
 
     LongDogNeck currentLine;
 
@@ -24,6 +27,7 @@ public class LongDogINA : MonoBehaviour
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
 
+    Vector3 buttStartingLocation;
     PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySpriteHead;
@@ -34,6 +38,7 @@ public class LongDogINA : MonoBehaviour
         myBody = head.GetComponent<Rigidbody2D>();
         mySpriteHead = head.GetComponent<SpriteRenderer>();
         mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
+        buttStartingLocation = body.transform.localPosition;
         cam = Camera.main;
     }
 
@@ -44,13 +49,16 @@ public class LongDogINA : MonoBehaviour
         Jump();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void StretchingCollision()
     {
-        if (collision.gameObject.tag == "Ground")
+        if (stretching)
         {
-            
+            stretching = false;
+            EndDraw();
         }
     }
+
+    public void SetCanMove(bool toggle) { canMove = toggle; }
 
     #region Attack
     /// <summary>
@@ -100,22 +108,76 @@ public class LongDogINA : MonoBehaviour
 
     public void ATHDone()
     {
-        buttStretching = false;
-        canMove = true;
-        canStretch = true;
-        stretching = false;
+        body.transform.parent = head.transform;
+        head.transform.parent.transform.position = head.transform.position;
+        head.transform.localPosition = Vector3.zero;
+        body.transform.localPosition = buttStartingLocation;
+        myBody.gravityScale = 1; //consider changing this if we add gravity modifiers
+
 
         if (currentLine != null)
         {
-            if (currentLine.GetPointCount() < 2)
+            Destroy(currentLine.gameObject);
+        }
+
+        StartCoroutine(ATHSpin());
+    }
+
+    IEnumerator ATHSpin()
+    {
+        bool completedRotation = false;
+        float currentDegrees = 0;
+        bool leftBoost;
+
+        if (head.transform.parent.rotation.y == 0)
+        {
+            leftBoost = (head.transform.localRotation.eulerAngles.z < 90 || head.transform.localRotation.eulerAngles.z > 270);
+            if (!leftBoost)
             {
-                Destroy(currentLine.gameObject);
-            }
-            else
-            {
-                currentLine = null;
+                head.transform.parent.transform.eulerAngles = new Vector3(0, 180, 0);
             }
         }
+        else
+        {
+            leftBoost = (head.transform.localRotation.eulerAngles.z > 90 && head.transform.localRotation.eulerAngles.z < 270);
+            if(leftBoost)
+            {
+                head.transform.parent.transform.eulerAngles = Vector3.zero;
+            }
+        }
+
+        head.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        body.transform.localRotation = new Quaternion(0, 0, 0, 0);
+
+        if (leftBoost)
+        {
+            myBody.AddForce(new Vector2(-spinForceBoost, spinForceBoost), ForceMode2D.Impulse);
+        }
+        else
+        {
+            myBody.AddForce(new Vector2(spinForceBoost, spinForceBoost), ForceMode2D.Impulse);
+        }
+        while(!completedRotation)
+        {
+            head.transform.Rotate(new Vector3(0, 0, spinSpeed * Time.deltaTime));
+            yield return new WaitForSeconds(Time.deltaTime);
+            currentDegrees += spinSpeed * Time.deltaTime;
+            if(currentDegrees >= 360)
+            {
+                completedRotation = true;
+            }
+        }
+        yield return new WaitForSeconds(postSpinCD);
+
+        head.transform.parent.transform.position = head.transform.position;
+        head.transform.localPosition = Vector3.zero;
+        body.transform.localPosition = buttStartingLocation;
+        head.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        body.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        canMove = true;
+        canStretch = true;
+        buttStretching = false;
+        stretching = false;
     }
     #endregion
 
@@ -164,7 +226,7 @@ public class LongDogINA : MonoBehaviour
                 }
             }
         }
-        else
+        else if(!stretching && !buttStretching)
         {
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
