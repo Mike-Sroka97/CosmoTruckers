@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class StartAttack : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI countDownText;
     [SerializeField] float countDown = 1.5f;
     [SerializeField] string[] combatStartLines;
+
+    CombatMove moveToStart;
 
     private void Start()
     {
@@ -55,6 +57,6 @@ public class Attack : MonoBehaviour
 
     private void StartMiniGame()
     {
-        //FindObjectOfType<ClockOutKnockOut>().StartAttack();
+        moveToStart.StartMove();
     }
 }
