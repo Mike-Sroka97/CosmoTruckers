@@ -8,7 +8,7 @@ public class LongDogNose : MonoBehaviour
     {
         if ((collision.gameObject.name == "NeckLineRenderer(Clone)" || collision.gameObject.name == "Body") && collision.transform.tag == "Player")
         {
-            GetComponentInParent<LongDogINA>().StretchingCollision();
+            GetComponentInParent<LongDogINA>().StretchingCollision(collision.tag);
         }
     }
 }

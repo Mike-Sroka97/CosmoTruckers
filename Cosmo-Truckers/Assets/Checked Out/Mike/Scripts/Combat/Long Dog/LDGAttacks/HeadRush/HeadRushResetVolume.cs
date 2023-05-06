@@ -14,7 +14,7 @@ public class HeadRushResetVolume : MonoBehaviour
             gate.SetActive(true);
             bigSuccess.SetActive(true);
             transform.parent.gameObject.SetActive(false);
-            FindObjectOfType<LongDogINA>().StretchingCollision();
+            FindObjectOfType<LongDogINA>().StretchingCollision(collision.tag);
             //generate new layout from prefab list
         }
     }

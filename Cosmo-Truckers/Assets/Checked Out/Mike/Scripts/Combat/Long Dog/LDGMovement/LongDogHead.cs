@@ -13,6 +13,11 @@ public class LongDogHead : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        dog.StretchingCollision();
+        dog.StretchingCollision(collision.gameObject.tag);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        dog.StretchingCollision(collision.gameObject.tag);
     }
 }

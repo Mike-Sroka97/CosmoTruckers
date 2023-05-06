@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class HeadRush : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] GameObject currentLayout;
+    [SerializeField] GameObject[] layouts;
+
+    [HideInInspector] public int SuccessRate;
+    int random;
+    int lastRandom = 0;
+
+    private void Start()
     {
-        
+        DetermineLayout();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DetermineLayout()
     {
-        
+        if (currentLayout.transform.childCount > 0)
+        {
+            Destroy(currentLayout.transform.GetChild(0));
+        }
+
+        //while (lastRandom == random)
+        //{
+        //    random = Random.Range(0, layouts.Length);
+        //    currentLayout = layouts[random];
+        //}
+        random = Random.Range(0, layouts.Length);
+        Instantiate(layouts[random], currentLayout.transform);
+
+        lastRandom = random;
     }
 }

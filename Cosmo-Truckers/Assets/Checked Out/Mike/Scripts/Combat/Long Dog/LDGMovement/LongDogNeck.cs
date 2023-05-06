@@ -22,8 +22,14 @@ public class LongDogNeck : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        dog.StretchingCollision();
+        dog.StretchingCollision(collision.gameObject.tag);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        dog.StretchingCollision(collision.gameObject.tag);
+    }
+
     public void AddPoint(Vector2 point)
     {
         if(pointCount >= 1 && Vector2.Distance(point, GetLastPoint()) < minDistanceBetweenPoints)
@@ -85,6 +91,8 @@ public class LongDogNeck : MonoBehaviour
         //circleColliderRadius = width / 2f;
         myCollider.edgeRadius = width / 2f; 
     }
+
+    public Gradient GetLineColor() { return myLineRenderer.colorGradient; }
 
     public int GetPointCount() { return pointCount; }
     public List<Vector2> GetPointList() { return linePoints;}

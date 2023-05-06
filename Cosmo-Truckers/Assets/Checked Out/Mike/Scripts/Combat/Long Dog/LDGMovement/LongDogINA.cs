@@ -17,6 +17,9 @@ public class LongDogINA : MonoBehaviour
     [SerializeField] float spinForceBoost;
     [SerializeField] float spinSpeed;
     [SerializeField] float postSpinCD;
+    [SerializeField] float damageFlashSpeed;
+    [SerializeField] float damagedDuration;
+    [SerializeField] float Iframes;
 
     LongDogNeck currentLine;
 
@@ -26,12 +29,15 @@ public class LongDogINA : MonoBehaviour
     bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
+    bool damaged = false;
+    bool invincible = false;
 
     Vector3 buttStartingLocation;
     PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySpriteHead;
     SpriteRenderer mySpriteBody;
+    float startingGravityScale;
 
     private void Start()
     {
@@ -40,6 +46,7 @@ public class LongDogINA : MonoBehaviour
         mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
         buttStartingLocation = body.transform.localPosition;
         cam = Camera.main;
+        startingGravityScale = myBody.gravityScale;
     }
 
     private void Update()
@@ -49,13 +56,57 @@ public class LongDogINA : MonoBehaviour
         Jump();
     }
 
-    public void StretchingCollision()
+    public void StretchingCollision(string collision)
     {
-        if (stretching)
+        if(collision != "LDGNoInteraction")
         {
-            stretching = false;
-            EndDraw();
+            if (stretching)
+            {
+                stretching = false;
+                EndDraw();
+            }
+            if (collision == "EnemyDamaging" && !damaged)
+            {
+                damaged = true;
+            }
         }
+    }
+
+    IEnumerator Damaged()
+    {
+        float damagedTime = 0;
+        mySpriteBody = body.GetComponent<SpriteRenderer>();
+
+        while(damagedTime < damagedDuration)
+        {
+            if(FindObjectOfType<LongDogNeck>())
+            {
+                LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
+                tempNeck.GetComponent<LineRenderer>().enabled = false; 
+            }
+            mySpriteHead.enabled = false;
+            mySpriteBody.enabled = false;
+            yield return new WaitForSeconds(damageFlashSpeed);
+
+            if (FindObjectOfType<LongDogNeck>())
+            {
+                LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
+                tempNeck.GetComponent<LineRenderer>().enabled = true;
+            }
+            mySpriteHead.enabled = true;
+            mySpriteBody.enabled = true;
+            yield return new WaitForSeconds(damageFlashSpeed);
+
+            damagedTime += Time.deltaTime + (damageFlashSpeed * 2);
+            if(damagedTime >= Iframes && !invincible)
+            {
+                invincible = true;
+                LDGReset();
+            }
+        }
+
+        damaged = false;
+        invincible = false;
     }
 
     public void SetCanMove(bool toggle) { canMove = toggle; }
@@ -69,6 +120,7 @@ public class LongDogINA : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch)
         {
             canStretch = false;
+            myBody.velocity = new Vector2(myBody.velocity.x, 0);
             BeginDraw();
         }
         else if(Input.GetKey(KeyCode.Mouse0) && stretching)
@@ -111,7 +163,7 @@ public class LongDogINA : MonoBehaviour
     {
         body.transform.parent = head.transform;
         body.transform.localPosition = buttStartingLocation;
-        myBody.gravityScale = 1; //consider changing this if we add gravity modifiers
+        myBody.gravityScale = startingGravityScale;
 
         LongDogNeck[] longDogNecks = FindObjectsOfType<LongDogNeck>();
         foreach(LongDogNeck neck in longDogNecks)
@@ -133,13 +185,13 @@ public class LongDogINA : MonoBehaviour
             leftBoost = (head.transform.localRotation.eulerAngles.z < 90 || head.transform.localRotation.eulerAngles.z > 270);
             if (!leftBoost)
             {
-                //head.transform.eulerAngles = new Vector3(0, -180, 0);
+                head.transform.eulerAngles = new Vector3(0, -180, 0);
             }
         }
         else
         {
             leftBoost = (head.transform.localRotation.eulerAngles.z > 90 && head.transform.localRotation.eulerAngles.z < 270);
-            if(leftBoost)
+            if (leftBoost)
             {
                 head.transform.eulerAngles = Vector3.zero;
             }
@@ -156,12 +208,12 @@ public class LongDogINA : MonoBehaviour
         {
             myBody.AddForce(new Vector2(spinForceBoost, spinForceBoost), ForceMode2D.Impulse);
         }
-        while(!completedRotation)
+        while (!completedRotation)
         {
             head.transform.Rotate(new Vector3(0, 0, spinSpeed * Time.deltaTime));
             yield return new WaitForSeconds(Time.deltaTime);
             currentDegrees += spinSpeed * Time.deltaTime;
-            if(currentDegrees >= 360)
+            if (currentDegrees >= 360)
             {
                 completedRotation = true;
             }
@@ -171,6 +223,18 @@ public class LongDogINA : MonoBehaviour
         body.transform.localPosition = buttStartingLocation;
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        if (damaged)
+        {
+            StartCoroutine(Damaged());
+        }
+        else
+        {
+            LDGReset();
+        }
+    }
+
+    private void LDGReset()
+    {
         canMove = true;
         canStretch = true;
         buttStretching = false;
