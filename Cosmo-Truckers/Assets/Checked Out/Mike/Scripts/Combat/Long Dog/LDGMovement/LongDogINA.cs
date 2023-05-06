@@ -110,6 +110,7 @@ public class LongDogINA : MonoBehaviour
     }
 
     public void SetCanMove(bool toggle) { canMove = toggle; }
+    public bool GetStretching() { return stretching; }
 
     #region Attack
     /// <summary>

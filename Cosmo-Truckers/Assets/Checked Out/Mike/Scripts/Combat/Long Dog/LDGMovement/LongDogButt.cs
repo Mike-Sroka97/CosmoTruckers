@@ -71,5 +71,9 @@ public class LongDogButt : MonoBehaviour
                 transform.localPosition = points[0];
             }
         }
+        else if(dogINA.GetStretching())
+        {
+            dogINA.ATHDone();
+        }
     }
 }

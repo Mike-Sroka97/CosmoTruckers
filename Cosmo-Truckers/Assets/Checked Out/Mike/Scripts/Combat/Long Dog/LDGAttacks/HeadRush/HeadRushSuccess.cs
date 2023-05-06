@@ -35,7 +35,5 @@ public class HeadRushSuccess : MonoBehaviour
             myMinigame.SuccessRate += successToGive;
             Destroy(gameObject);
         }
-
-        Debug.Log(myMinigame.SuccessRate);
     }
 }
