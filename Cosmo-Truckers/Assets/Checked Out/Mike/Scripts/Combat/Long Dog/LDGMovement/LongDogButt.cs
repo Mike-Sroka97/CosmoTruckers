@@ -6,7 +6,6 @@ public class LongDogButt : MonoBehaviour
 {
     [SerializeField] float speed;
 
-    int currentIndex;
     LongDogNeck neck;
     LongDogINA dogINA;
     List<Vector2> points;
@@ -20,12 +19,12 @@ public class LongDogButt : MonoBehaviour
 
     private void Update()
     {
-        if(isStretching)
+        if(isStretching && points.Count > 0)
         {
-            if((Vector2)transform.localPosition != points[currentIndex])
+            if((Vector2)transform.localPosition != points[0])
             {
-                transform.localPosition = Vector2.MoveTowards(transform.localPosition, points[currentIndex], speed * Time.deltaTime);
-                Vector2 dir = points[currentIndex] - (Vector2)transform.position;
+                transform.localPosition = Vector2.MoveTowards(transform.localPosition, points[0], speed * Time.deltaTime);
+                Vector2 dir = points[0] - (Vector2)transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Euler(0, 0, angle - 180);
             }
@@ -33,26 +32,32 @@ public class LongDogButt : MonoBehaviour
             {
                 neck.RemovePoint();
                 
-                if(points.Count == 0)
+                if(points.Count <= 0)
                 {
-                    currentIndex = 0;
                     dogINA.ATHDone();
                     isStretching = false;
                 }
             }
         }
+        else if(isStretching)
+        {
+            dogINA.ATHDone();
+            isStretching = false;
+        }
     }
 
     public void StartButtToHeadMovement()
     {
-        currentIndex = 0;
-        dogINA.SetCanMove(false);
         neck = FindObjectOfType<LongDogNeck>();
         if(neck)
         {
             points = neck.GetPointList();
-            isStretching = true;
-            transform.localPosition = points[0];
+            if(points.Count > 0)
+            {
+                dogINA.SetCanMove(false);
+                isStretching = true;
+                transform.localPosition = points[0];
+            }
         }
     }
 }

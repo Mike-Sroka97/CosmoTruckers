@@ -68,6 +68,7 @@ public class LongDogINA : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch)
         {
+            canStretch = false;
             BeginDraw();
         }
         else if(Input.GetKey(KeyCode.Mouse0) && stretching)
@@ -109,15 +110,13 @@ public class LongDogINA : MonoBehaviour
     public void ATHDone()
     {
         body.transform.parent = head.transform;
-        head.transform.parent.transform.position = head.transform.position;
-        head.transform.localPosition = Vector3.zero;
         body.transform.localPosition = buttStartingLocation;
         myBody.gravityScale = 1; //consider changing this if we add gravity modifiers
 
-
-        if (currentLine != null)
+        LongDogNeck[] longDogNecks = FindObjectsOfType<LongDogNeck>();
+        foreach(LongDogNeck neck in longDogNecks)
         {
-            Destroy(currentLine.gameObject);
+            Destroy(neck.gameObject);
         }
 
         StartCoroutine(ATHSpin());
@@ -129,12 +128,12 @@ public class LongDogINA : MonoBehaviour
         float currentDegrees = 0;
         bool leftBoost;
 
-        if (head.transform.parent.rotation.y == 0)
+        if (head.transform.rotation.y == 0)
         {
             leftBoost = (head.transform.localRotation.eulerAngles.z < 90 || head.transform.localRotation.eulerAngles.z > 270);
             if (!leftBoost)
             {
-                head.transform.parent.transform.eulerAngles = new Vector3(0, 180, 0);
+                //head.transform.eulerAngles = new Vector3(0, -180, 0);
             }
         }
         else
@@ -142,11 +141,11 @@ public class LongDogINA : MonoBehaviour
             leftBoost = (head.transform.localRotation.eulerAngles.z > 90 && head.transform.localRotation.eulerAngles.z < 270);
             if(leftBoost)
             {
-                head.transform.parent.transform.eulerAngles = Vector3.zero;
+                head.transform.eulerAngles = Vector3.zero;
             }
         }
 
-        head.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
         if (leftBoost)
@@ -169,10 +168,8 @@ public class LongDogINA : MonoBehaviour
         }
         yield return new WaitForSeconds(postSpinCD);
 
-        head.transform.parent.transform.position = head.transform.position;
-        head.transform.localPosition = Vector3.zero;
         body.transform.localPosition = buttStartingLocation;
-        head.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
         canMove = true;
         canStretch = true;
@@ -203,7 +200,7 @@ public class LongDogINA : MonoBehaviour
         {
             head.transform.Translate(Vector3.left * stretchSpeed * Time.deltaTime);
 
-            if(transform.eulerAngles.y != 0)
+            if(head.transform.eulerAngles.y != 0)
             {
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
                 {
@@ -230,13 +227,13 @@ public class LongDogINA : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
-                transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                head.transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                head.transform.eulerAngles = new Vector3(0, 0, 0);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
-                transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
-                transform.eulerAngles = new Vector3(0, 180, 0);
+                head.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                head.transform.eulerAngles = new Vector3(0, 180, 0);
             }
         }
     }

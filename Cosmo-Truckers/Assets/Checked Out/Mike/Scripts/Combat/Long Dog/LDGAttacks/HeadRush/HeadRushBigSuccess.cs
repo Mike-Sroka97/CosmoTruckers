@@ -15,6 +15,7 @@ public class HeadRushBigSuccess : MonoBehaviour
             gameObject.SetActive(false);
             gateToDisable.SetActive(false);
             gateToEnable.SetActive(true);
+            FindObjectOfType<LongDogINA>().StretchingCollision();
             //score += 3;
         }
     }
