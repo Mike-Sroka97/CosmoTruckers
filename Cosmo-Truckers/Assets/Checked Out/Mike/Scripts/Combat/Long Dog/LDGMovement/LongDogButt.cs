@@ -61,7 +61,7 @@ public class LongDogButt : MonoBehaviour
     public void StartButtToHeadMovement()
     {
         neck = FindObjectOfType<LongDogNeck>();
-        if(neck)
+        if (neck)
         {
             points = neck.GetPointList();
             if(points.Count > 0)
@@ -70,10 +70,10 @@ public class LongDogButt : MonoBehaviour
                 isStretching = true;
                 transform.localPosition = points[0];
             }
-        }
-        else if(dogINA.GetStretching())
-        {
-            dogINA.ATHDone();
+            else if(!isStretching)
+            {
+                isStretching = true;
+            }
         }
     }
 }

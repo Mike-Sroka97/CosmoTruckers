@@ -234,7 +234,7 @@ public class LongDogINA : MonoBehaviour
         }
     }
 
-    private void LDGReset()
+    public void LDGReset()
     {
         canMove = true;
         canStretch = true;
