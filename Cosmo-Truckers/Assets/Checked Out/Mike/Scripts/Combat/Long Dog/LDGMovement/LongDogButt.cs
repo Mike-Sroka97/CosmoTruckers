@@ -47,12 +47,15 @@ public class LongDogButt : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        dogINA.StretchingCollision(collision.gameObject.tag);
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dogINA.StretchingCollision(collision.gameObject.tag);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "EnemyDamaging")
+        if (collision.transform.tag == "EnemyDamaging")
         {
             dogINA.StretchingCollision(collision.gameObject.tag);
         }

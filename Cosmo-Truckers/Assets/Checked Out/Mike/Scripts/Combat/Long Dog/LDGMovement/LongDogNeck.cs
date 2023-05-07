@@ -27,7 +27,17 @@ public class LongDogNeck : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        dog.StretchingCollision(collision.gameObject.tag);
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            if(collision.gameObject.GetComponent<StretchySpineProjectile>())
+            {
+                dog.StretchingCollision("LDGNoInteraction");
+            }
+            else
+            {
+                dog.StretchingCollision(collision.gameObject.tag);
+            }
+        }
     }
 
     public void AddPoint(Vector2 point)
