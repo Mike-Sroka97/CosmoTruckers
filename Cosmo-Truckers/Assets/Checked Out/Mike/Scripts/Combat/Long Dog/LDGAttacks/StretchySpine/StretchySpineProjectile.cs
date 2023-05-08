@@ -8,12 +8,17 @@ public class StretchySpineProjectile : MonoBehaviour
 
     [SerializeField] float moveSpeed;
     [SerializeField] float deadForceBoost;
+    [SerializeField] bool good;
 
     bool movingRight = true;
     Rigidbody2D myBody;
+    CircleCollider2D myCollider;
+    StretchySpine minigame;
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<CircleCollider2D>();
+        minigame = FindObjectOfType<StretchySpine>();
     }
 
     private void Update()
@@ -24,6 +29,11 @@ public class StretchySpineProjectile : MonoBehaviour
         }
     }
 
+    private void SpecialDestroy()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
@@ -32,6 +42,20 @@ public class StretchySpineProjectile : MonoBehaviour
             myBody.velocity = Vector2.zero;
             myBody.gravityScale = 1;
             myBody.AddForce(new Vector2(-deadForceBoost, deadForceBoost), ForceMode2D.Impulse);
+            myCollider.enabled = false;
+            Invoke("SpecialDestroy", 2.5f);
+        }
+        else if(collision.tag == "LDGNoInteraction" && collision.gameObject.name != "SoftPlatform")
+        {
+            if(good)
+            {
+                minigame.Score += 2;
+            }
+            else
+            {
+                minigame.Score -= 1;
+            }
+            Destroy(gameObject);
         }
     }
 }

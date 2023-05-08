@@ -13,7 +13,7 @@ public class StretchySpineSpawner : MonoBehaviour
     const int maxBadProjectiles = 10;
     int currentGoodProjectiles = 0;
     int currentBadProjectiles = 0;
-    int tempType = -1;
+    int tempType = 1;
     int random;
     float currentTime = 0;
     float tempAngle;
