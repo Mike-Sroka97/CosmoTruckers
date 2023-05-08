@@ -6,10 +6,10 @@ using UnityEngine;
 public class BaseAttackSO : ScriptableObject
 {
     public string AttackName;
-    [SerializeField] protected EnumManager.TargetingType targetingType;
-    [SerializeField] protected bool canTargetFriendly;
-    [SerializeField] protected bool canTargetEnemies;
-    [SerializeField] protected int numberOFTargets;
+    [SerializeField] public EnumManager.TargetingType targetingType;
+    [SerializeField] public bool canTargetFriendly;
+    [SerializeField] public bool canTargetEnemies;
+    [SerializeField] public int numberOFTargets;
 
     public virtual void StartCombat() { }
     public virtual void EndCombat() { }
