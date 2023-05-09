@@ -31,6 +31,8 @@ public class LongDogINA : MonoBehaviour
     bool canMove = true;
     bool damaged = false;
     bool invincible = false;
+    bool goingLeft = false;
+    bool goingRight = false;
 
     Vector3 buttStartingLocation;
     PlayerCharacterINA INA;
@@ -121,7 +123,7 @@ public class LongDogINA : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch)
         {
             canStretch = false;
-            myBody.velocity = new Vector2(myBody.velocity.x, 0);
+            myBody.velocity = Vector2.zero;
             BeginDraw();
         }
         else if(Input.GetKey(KeyCode.Mouse0) && stretching)
@@ -269,27 +271,58 @@ public class LongDogINA : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
                 {
+                    goingLeft = false;
+                    goingRight = true;
                     head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
                 }
                 else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
                 {
+                    goingLeft = true;
+                    goingRight = false;
                     head.transform.Rotate(new Vector3(0, 0, stretchRotateSpeed * Time.deltaTime));
+                }
+                else if(goingLeft)
+                {
+                    goingRight = false;
+                    head.transform.Rotate(new Vector3(0, 0, stretchRotateSpeed * Time.deltaTime));
+                }
+                else if(goingRight)
+                {
+                    goingLeft = false;
+                    head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
                 }
             }
             else
             {
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
                 {
+                    goingLeft = true;
+                    goingRight = false;
                     head.transform.Rotate(new Vector3(0, 0, stretchRotateSpeed * Time.deltaTime));
                 }
                 else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
                 {
+                    goingLeft = false;
+                    goingRight = true;
+                    head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
+                }
+                else if (goingLeft)
+                {
+                    goingRight = false;
+                    head.transform.Rotate(new Vector3(0, 0, stretchRotateSpeed * Time.deltaTime));
+                }
+                else if (goingRight)
+                {
+                    goingLeft = false;
                     head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
                 }
             }
         }
         else if(!stretching && !buttStretching)
         {
+            goingLeft = false;
+            goingRight = false;
+
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
                 head.transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
