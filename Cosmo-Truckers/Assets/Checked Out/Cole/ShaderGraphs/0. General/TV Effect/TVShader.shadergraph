@@ -32,6 +32,9 @@
         },
         {
             "m_Id": "2b0b5a2668694ad6bf23de03a87c1d93"
+        },
+        {
+            "m_Id": "1dbf290aca7740e2b68c5a9dafc2d46d"
         }
     ],
     "m_Keywords": [],
@@ -149,6 +152,9 @@
         },
         {
             "m_Id": "57dad4f04aad4c9d9da0b553857b7da0"
+        },
+        {
+            "m_Id": "7423227a21254b3cb648f8a99870c154"
         }
     ],
     "m_GroupDatas": [
@@ -344,6 +350,20 @@
                     "m_Id": "686473be0cfa44a0a8e438b1bbc5650c"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "7423227a21254b3cb648f8a99870c154"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "be263931a7a946e98ac14c116a0c6fbb"
+                },
+                "m_SlotId": 2
             }
         },
         {
@@ -903,9 +923,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 474.9999694824219,
-            "y": 673.9999389648438,
-            "width": 146.00003051757813,
+            "x": 475.0,
+            "y": 662.0,
+            "width": 146.0,
             "height": 34.0
         }
     },
@@ -1190,6 +1210,33 @@
 }
 
 {
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector2ShaderProperty",
+    "m_ObjectId": "1dbf290aca7740e2b68c5a9dafc2d46d",
+    "m_Guid": {
+        "m_GuidSerialized": "f1d0ac39-bfe3-40b2-ae84-1b459b16c761"
+    },
+    "m_Name": "RemapFlash",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "RemapFlash",
+    "m_DefaultReferenceName": "_RemapFlash",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": {
+        "x": 0.699999988079071,
+        "y": 1.0,
+        "z": 0.0,
+        "w": 0.0
+    }
+}
+
+{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "1e58fb2504e14caba162b95c58c6e0e5",
@@ -1452,6 +1499,9 @@
         },
         {
             "m_Id": "8491c7706a9348ef861feb981cf51b5f"
+        },
+        {
+            "m_Id": "1dbf290aca7740e2b68c5a9dafc2d46d"
         }
     ]
 }
@@ -1594,7 +1644,7 @@
     "m_ShaderOutputName": "OutMinMax",
     "m_StageCapability": 3,
     "m_Value": {
-        "x": 0.6000000238418579,
+        "x": 0.699999988079071,
         "y": 1.0
     },
     "m_DefaultValue": {
@@ -2481,6 +2531,41 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "7423227a21254b3cb648f8a99870c154",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -550.5568237304688,
+            "y": 39.54273986816406,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "aa639af1d3184f09820d30c6314a783b"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "1dbf290aca7740e2b68c5a9dafc2d46d"
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.TimeNode",
     "m_ObjectId": "75196df5788b49108cba207c18afa517",
     "m_Group": {
@@ -3242,6 +3327,27 @@
         "m_SerializableColors": []
     },
     "m_OutputChannel": 0
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
+    "m_ObjectId": "aa639af1d3184f09820d30c6314a783b",
+    "m_Id": 0,
+    "m_DisplayName": "RemapFlash",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0
+    },
+    "m_Labels": []
 }
 
 {
