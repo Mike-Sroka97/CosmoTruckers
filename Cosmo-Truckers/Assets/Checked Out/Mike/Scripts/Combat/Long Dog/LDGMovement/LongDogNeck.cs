@@ -29,7 +29,7 @@ public class LongDogNeck : MonoBehaviour
     {
         if (collision.transform.tag == "EnemyDamaging")
         {
-            if(collision.gameObject.GetComponent<StretchySpineProjectile>())
+            if(collision.gameObject.GetComponent<StretchySpineProjectile>() || collision.gameObject.GetComponent<LockedAndDoggedProjectile>())
             {
                 dog.StretchingCollision("LDGNoInteraction");
             }
