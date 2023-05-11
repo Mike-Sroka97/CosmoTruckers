@@ -20,6 +20,7 @@ public class LongDogINA : MonoBehaviour
     [SerializeField] float damageFlashSpeed;
     [SerializeField] float damagedDuration;
     [SerializeField] float Iframes;
+    [SerializeField] float stretchStartupTime;
 
     LongDogNeck currentLine;
 
@@ -33,6 +34,7 @@ public class LongDogINA : MonoBehaviour
     bool invincible = false;
     bool goingLeft = false;
     bool goingRight = false;
+    bool startupStretch = false;
 
     Vector3 buttStartingLocation;
     PlayerCharacterINA INA;
@@ -124,6 +126,7 @@ public class LongDogINA : MonoBehaviour
         {
             canStretch = false;
             myBody.velocity = Vector2.zero;
+            StartCoroutine(StartStretch());
             BeginDraw();
         }
         else if(Input.GetKey(KeyCode.Mouse0) && stretching)
@@ -137,6 +140,13 @@ public class LongDogINA : MonoBehaviour
         {
             EndDraw();
         }
+    }
+
+    IEnumerator StartStretch()
+    {
+        startupStretch = true;
+        yield return new WaitForSeconds(stretchStartupTime);
+        startupStretch = false;
     }
 
     void BeginDraw()
@@ -263,7 +273,7 @@ public class LongDogINA : MonoBehaviour
     {
         if (!canMove) return;
 
-        if(stretching && !buttStretching)
+        if(stretching && !buttStretching && !startupStretch)
         {
             head.transform.Translate(Vector3.left * stretchSpeed * Time.deltaTime);
 
@@ -317,6 +327,14 @@ public class LongDogINA : MonoBehaviour
                     head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
                 }
             }
+        }
+        else if(stretching && startupStretch)
+        {
+            head.transform.Translate(Vector3.left * stretchSpeed * Time.deltaTime);
+
+            goingLeft = false;
+            goingRight = true;
+            head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
         }
         else if(!stretching && !buttStretching)
         {
