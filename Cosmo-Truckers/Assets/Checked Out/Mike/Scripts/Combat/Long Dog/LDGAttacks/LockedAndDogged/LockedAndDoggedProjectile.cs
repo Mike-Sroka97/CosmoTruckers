@@ -5,18 +5,21 @@ using UnityEngine;
 public class LockedAndDoggedProjectile : MonoBehaviour
 {
     [SerializeField] float newGravityScale = 3f;
-    [SerializeField] bool goodProjectile;
     [SerializeField] int pointValue;
     [SerializeField] float fallSpeed;
+    [SerializeField] int scoreValue;
 
     Rigidbody2D myBody;
     CircleCollider2D myCollider;
     bool naturallyFalling = false;
+    LockedAndDogged minigame;
 
     private void Start()
     {
+        minigame = FindObjectOfType<LockedAndDogged>();
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<CircleCollider2D>();
+        transform.localPosition = Vector3.zero;
     }
 
     private void Update()
@@ -29,9 +32,13 @@ public class LockedAndDoggedProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "LDGNoInteraction")
+        if(collision.transform.tag == "LDGNoInteraction" || collision.transform.tag == "Ground")
         {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), myCollider);
+        }
+        else
+        {
+            myBody.gravityScale = newGravityScale;
         }
 
         if(collision.transform.tag == "Player")
@@ -41,14 +48,12 @@ public class LockedAndDoggedProjectile : MonoBehaviour
         }
         else if(collision.transform.tag == "PlayerNonHurtable")
         {
-            //score++ for good
-            //scoree-- for bad
+            minigame.Score += scoreValue;
+            Debug.Log("Your score is: " + minigame.Score);
             Destroy(gameObject);
         }
         else if(collision.transform.tag == "PlayerHurtable")
         {
-            //score-- for good
-            //scoree++ for bad
             Destroy(gameObject);
         }
     }
