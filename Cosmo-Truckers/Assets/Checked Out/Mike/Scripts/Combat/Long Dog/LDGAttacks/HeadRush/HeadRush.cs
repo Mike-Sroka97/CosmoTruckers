@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class HeadRush : MonoBehaviour
 {
-    [SerializeField] GameObject currentLayout;
+    GameObject currentLayout;
+    List<GameObject> usedLayouts = new List<GameObject>();
     [SerializeField] GameObject[] layouts;
+    [SerializeField] int maxLayouts = 3;
+    int numberOfLayouts = 0; 
 
-    [HideInInspector] public int SuccessRate;
+    [HideInInspector] public int Score;
     int random;
-    int lastRandom = 0;
+    int lastRandom = -1;
 
     private void Start()
     {
@@ -18,19 +21,35 @@ public class HeadRush : MonoBehaviour
 
     public void DetermineLayout()
     {
-        if (currentLayout.transform.childCount > 0)
+        if (currentLayout)
         {
-            Destroy(currentLayout.transform.GetChild(0));
+            Destroy(currentLayout);
         }
 
-        //while (lastRandom == random)
-        //{
-        //    random = Random.Range(0, layouts.Length);
-        //    currentLayout = layouts[random];
-        //}
-        random = Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], currentLayout.transform);
+        if (lastRandom == -1)
+        {
+            random = Random.Range(0, layouts.Length);
+            currentLayout = layouts[random];
+            numberOfLayouts++;
 
-        lastRandom = random;
+            currentLayout = Instantiate(layouts[random], currentLayout.transform.position, Quaternion.identity, gameObject.transform);
+            usedLayouts.Add(layouts[random]);
+            lastRandom = random;
+        }
+        else if (numberOfLayouts <= maxLayouts)
+        {
+            while (usedLayouts.Contains(layouts[random]))
+            {
+                random = Random.Range(0, layouts.Length);
+                currentLayout = layouts[random];
+                numberOfLayouts++;
+            }
+
+            currentLayout = Instantiate(layouts[random], currentLayout.transform.position, Quaternion.identity, gameObject.transform);
+            usedLayouts.Add(layouts[random]);
+            lastRandom = random;
+        }
+        
+
     }
 }

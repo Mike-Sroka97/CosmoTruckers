@@ -27,12 +27,11 @@ public class HeadRushSuccess : MonoBehaviour
             gateToDisable.SetActive(false);
             gateToEnable.SetActive(true);
             dog.StretchingCollision(collision.tag);
-            myMinigame.SuccessRate += successToGive;
-            //myMinigame.DetermineLayout();
+            myMinigame.Score += successToGive;
         }
         else if(collision.gameObject.tag == "Player")
         {
-            myMinigame.SuccessRate += successToGive;
+            myMinigame.Score += successToGive;
             Destroy(gameObject);
         }
     }

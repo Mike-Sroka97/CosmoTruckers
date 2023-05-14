@@ -6,7 +6,14 @@ public class HeadRushResetVolume : MonoBehaviour
 {
     [SerializeField] GameObject gate;
     [SerializeField] GameObject bigSuccess;
- 
+
+    HeadRush myMinigame;
+
+    private void Start()
+    {
+        myMinigame = transform.parent.GetComponentInParent<HeadRush>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player" && !collision.GetComponent<LongDogNeck>())
@@ -16,6 +23,8 @@ public class HeadRushResetVolume : MonoBehaviour
             transform.parent.gameObject.SetActive(false);
             FindObjectOfType<LongDogINA>().StretchingCollision(collision.tag);
             //generate new layout from prefab list
+
+            myMinigame.DetermineLayout();
         }
     }
 }

@@ -8,7 +8,7 @@ public class CatGunProjectile : MonoBehaviour
 
     private void Update()
     {
-        transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
