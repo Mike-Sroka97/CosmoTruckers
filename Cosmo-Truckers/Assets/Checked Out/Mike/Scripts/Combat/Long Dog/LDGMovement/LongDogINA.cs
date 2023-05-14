@@ -55,9 +55,22 @@ public class LongDogINA : MonoBehaviour
 
     private void Update()
     {
+        if(!stretching && canMove && damaged)
+        {
+            canMove = false;
+            canStretch = false;
+            StartCoroutine(Damaged());
+        }
         Attack();
         Movement();
         Jump();
+    }
+
+    public void SetDamaged(bool toggle)
+    {
+        stretching = false;
+        EndDraw();
+        damaged = toggle;
     }
 
     public void StretchingCollision(string collision)
