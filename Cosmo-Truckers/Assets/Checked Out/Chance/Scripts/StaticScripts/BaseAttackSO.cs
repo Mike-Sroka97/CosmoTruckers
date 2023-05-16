@@ -10,6 +10,8 @@ public class BaseAttackSO : ScriptableObject
     [SerializeField] public bool canTargetFriendly;
     [SerializeField] public bool canTargetEnemies;
     [SerializeField] public int numberOFTargets;
+    [Space(10)]
+    public GameObject CombatPrefab;
 
     public virtual void StartCombat() { }
     public virtual void EndCombat() { }
