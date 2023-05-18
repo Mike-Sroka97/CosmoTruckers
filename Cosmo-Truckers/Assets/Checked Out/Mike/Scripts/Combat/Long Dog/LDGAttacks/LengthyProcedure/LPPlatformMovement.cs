@@ -11,9 +11,11 @@ public class LPPlatformMovement : MonoBehaviour
     bool onPointOne = true;
     Vector3 startingPos;
     Vector3 secondPos;
+    LengthyProcedure minigame;
 
     private void Start()
     {
+        minigame = FindObjectOfType<LengthyProcedure>();
         startingPos = pointOne.position;
         secondPos = pointTwo.position;
     }
@@ -46,6 +48,13 @@ public class LPPlatformMovement : MonoBehaviour
             }
             transform.position = pointOne.position;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Player")
+        {
+            minigame.EndMinigame();
+        }
     }
 }

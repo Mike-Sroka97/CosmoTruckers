@@ -6,17 +6,19 @@ public class LengthyProcedure : MonoBehaviour
 {
     //layouts[]
 
-    [SerializeField] GameObject tempLayout; //delete dis
+    [SerializeField] GameObject[] layouts;
     [HideInInspector] public int Score = 0;
 
     LPSuccess[] successNodes;
     List<GameObject> activatedNodes = new List<GameObject>();
-
+    bool minigameEnded = false;
     int random;
-    List<GameObject> extraNodes = new List<GameObject>();
 
     private void Start()
     {
+        random = UnityEngine.Random.Range(0, layouts.Length);
+        Instantiate(layouts[random], transform.Find("Layout"));
+
         successNodes = FindObjectsOfType<LPSuccess>();
         foreach(LPSuccess success in successNodes)
         {
@@ -25,11 +27,6 @@ public class LengthyProcedure : MonoBehaviour
         random = UnityEngine.Random.Range(0, successNodes.Length);
         successNodes[random].gameObject.SetActive(true);
         activatedNodes.Add(successNodes[random].gameObject);
-    }
-
-    private void Update()
-    {
-
     }
 
     public void NextNode()
@@ -42,6 +39,16 @@ public class LengthyProcedure : MonoBehaviour
             }
             successNodes[random].gameObject.SetActive(true);
             activatedNodes.Add(successNodes[random].gameObject);
+        }
+    }
+
+    public void EndMinigame()
+    {
+        if(!minigameEnded)
+        {
+            minigameEnded = true;
+            //TODO: add insta end to minigame
+            Debug.Log("minigame over");
         }
     }
 }

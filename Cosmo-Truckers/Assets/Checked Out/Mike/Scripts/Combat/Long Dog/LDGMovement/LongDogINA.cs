@@ -358,11 +358,19 @@ public class LongDogINA : MonoBehaviour
             {
                 head.transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
                 head.transform.eulerAngles = new Vector3(0, 0, 0);
+                if (myBody.velocity.x != 0)
+                {
+                    myBody.velocity = new Vector2(0, myBody.velocity.y);
+                }
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
                 head.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
                 head.transform.eulerAngles = new Vector3(0, 180, 0);
+                if (myBody.velocity.x != 0)
+                {
+                    myBody.velocity = new Vector2(0, myBody.velocity.y);
+                }
             }
         }
     }
