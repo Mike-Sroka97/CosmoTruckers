@@ -13,9 +13,9 @@ public class FunGun : MonoBehaviour
 
     private void Start()
     {
+        Instantiate(layouts[UnityEngine.Random.Range(0, layouts.Length)], layout);
         guns = FindObjectsOfType<FGGun>();
         currentActiveGun = UnityEngine.Random.Range(0, guns.Length);
-        Instantiate(layouts[UnityEngine.Random.Range(0, layouts.Length)], layout);
         guns[currentActiveGun].TrackingTime = true;
     }
 
