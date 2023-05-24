@@ -16,6 +16,7 @@ public class FollowerNoise : MonoBehaviour
     SpriteRenderer myRenderer;
     Collider2D myCollider;
     float currentSpeed;
+    WhiteNoise minigame;
 
     private void Start()
     {
@@ -24,6 +25,7 @@ public class FollowerNoise : MonoBehaviour
         startingColor = myRenderer.color;
         myCollider = GetComponent<Collider2D>();
         currentSpeed = moveTowardsSpeed;
+        minigame = GetComponentInParent<WhiteNoise>();
     }
 
     private void Update()
@@ -40,7 +42,6 @@ public class FollowerNoise : MonoBehaviour
     {
         if(currentTime >= shockCD && !isShocking)
         {
-
             StartCoroutine(Shock());
         }
         else if(!isShocking)
@@ -63,5 +64,15 @@ public class FollowerNoise : MonoBehaviour
         myRenderer.color = startingColor;
         myCollider.enabled = false;
         isShocking = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            minigame.Score++;
+            myCollider.enabled = false;
+            Debug.Log(minigame.Score);
+        }
     }
 }
