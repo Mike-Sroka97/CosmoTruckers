@@ -8,7 +8,9 @@ public class SixfaceINA : MonoBehaviour
 
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
-    [SerializeField] GameObject attackArea;
+    [SerializeField] GameObject horizontalAttackArea;
+    [SerializeField] GameObject downAttackArea;
+    [SerializeField] GameObject upAttackArea;
 
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
@@ -28,12 +30,15 @@ public class SixfaceINA : MonoBehaviour
     PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySprite;
+    Collider2D myCollider;
+    int layermask = 1 << 9;
 
     private void Start()
     {
         currentJumpStrength = jumpSpeed;
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -42,11 +47,12 @@ public class SixfaceINA : MonoBehaviour
         Movement();
         Jump();
         SpecialMove();
+        Debug.DrawRay(myCollider.bounds.center, Vector2.down * (myCollider.bounds.extents.y + .01f), Color.green);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Ground")
+        if (IsGrounded())
         {
             canJump = true;
             canHover = false;
@@ -56,24 +62,46 @@ public class SixfaceINA : MonoBehaviour
         }
     }
 
+    private bool IsGrounded()
+    {
+        RaycastHit2D hit;
+        if(Physics2D.Raycast(myCollider.bounds.center, Vector2.down, myCollider.bounds.extents.y + .01f, layermask))
+        {
+            hit = Physics2D.Raycast(myCollider.bounds.center, Vector2.down, myCollider.bounds.extents.y + .01f);
+            if(hit.collider.tag == "Ground")
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     #region Attack
     /// <summary>
     /// Aeglar's attack will be a dash where he is an active hitbox during the process
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack)
         {
-            StartCoroutine(SixFaceAttack());
+            StartCoroutine(SixFaceAttack(upAttackArea));
+        }
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && !canJump)
+        {
+            StartCoroutine(SixFaceAttack(downAttackArea));
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        {
+            StartCoroutine(SixFaceAttack(horizontalAttackArea));
         }
     }
 
-    IEnumerator SixFaceAttack()
+    IEnumerator SixFaceAttack(GameObject attack)
     {
         canAttack = false;
-        attackArea.SetActive(true);
+        attack.SetActive(true);
         yield return new WaitForSeconds(attackDuration);
-        attackArea.SetActive(false);
+        attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
     }
@@ -113,7 +141,7 @@ public class SixfaceINA : MonoBehaviour
     {
         if (!canMove) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !attackArea.activeInHierarchy)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
             transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
             if (transform.rotation.eulerAngles.y == 0)
@@ -121,7 +149,7 @@ public class SixfaceINA : MonoBehaviour
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !attackArea.activeInHierarchy)
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
             transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
             if (transform.rotation.eulerAngles.y != 0)
