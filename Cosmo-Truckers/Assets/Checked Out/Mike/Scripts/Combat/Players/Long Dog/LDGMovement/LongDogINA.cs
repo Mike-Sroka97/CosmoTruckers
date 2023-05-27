@@ -82,7 +82,6 @@ public class LongDogINA : MonoBehaviour
     {
         if(collision != "LDGNoInteraction")
         {
-            myBody.velocity = Vector2.zero;
             if (stretching)
             {
                 stretching = false;
