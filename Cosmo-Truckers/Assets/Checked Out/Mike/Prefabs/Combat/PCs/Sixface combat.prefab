@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 4403269385089056135}
   m_Layer: 0
   m_Name: Sixface combat
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,7 +300,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2c423233216833a48860cfda3595d850, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -317,16 +317,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5430957727915846b442424720f84c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 4.2
   attackDuration: 0.2
   attackCD: 0.2
   horizontalAttackArea: {fileID: 4403269386356672535}
   downAttackArea: {fileID: 101829569}
   upAttackArea: {fileID: 1229333876}
-  jumpSpeed: 12
-  jumpMaxHoldTime: 0.3
+  jumpSpeed: 48
+  jumpMaxHoldTime: 0.08
   hoverVelocityYMax: -1
-  hoverGravityModifier: 0.4
+  hoverGravityModifier: 0.35
 --- !u!1 &4403269386356672535
 GameObject:
   m_ObjectHideFlags: 0

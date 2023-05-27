@@ -8,6 +8,7 @@ public class SixfaceINA : MonoBehaviour
 
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
+    [SerializeField] float maxYvelocity = 4;
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject downAttackArea;
     [SerializeField] GameObject upAttackArea;
@@ -18,13 +19,13 @@ public class SixfaceINA : MonoBehaviour
     [SerializeField] float hoverVelocityYMax;
     [SerializeField] float hoverGravityModifier;
 
+    [HideInInspector] public bool IsHovering = false;
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
     bool canHover = true;
 
-    float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
     PlayerCharacterINA INA;
@@ -35,7 +36,6 @@ public class SixfaceINA : MonoBehaviour
 
     private void Start()
     {
-        currentJumpStrength = jumpSpeed;
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
@@ -50,30 +50,14 @@ public class SixfaceINA : MonoBehaviour
         Debug.DrawRay(myCollider.bounds.center, Vector2.down * (myCollider.bounds.extents.y + .01f), Color.green);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void IsGrounded()
     {
-        if (IsGrounded())
+        if(Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
         {
             canJump = true;
             canHover = false;
             currentJumpHoldTime = 0;
-            currentJumpStrength = jumpSpeed;
-            myBody.velocity = new Vector2(myBody.velocity.x, 0);
         }
-    }
-
-    private bool IsGrounded()
-    {
-        RaycastHit2D hit;
-        if(Physics2D.Raycast(myCollider.bounds.center, Vector2.down, myCollider.bounds.extents.y + .01f, layermask))
-        {
-            hit = Physics2D.Raycast(myCollider.bounds.center, Vector2.down, myCollider.bounds.extents.y + .01f);
-            if(hit.collider.tag == "Ground")
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     #region Attack
@@ -113,17 +97,23 @@ public class SixfaceINA : MonoBehaviour
     /// </summary>
     public void Jump()
     {
+        IsGrounded();
+
+        if(myBody.velocity.y > maxYvelocity)
+        {
+            myBody.velocity = new Vector2(myBody.velocity.x, maxYvelocity);
+        }
+
         if (Input.GetKeyDown("space") && canJump && !isJumping)
         {
             canJump = false;
             isJumping = true;
-            myBody.AddForce(new Vector2(0, jumpSpeed));
+            myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y + (jumpSpeed * Time.deltaTime));
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
-            currentJumpStrength = jumpSpeed * ((jumpMaxHoldTime - currentJumpHoldTime) / jumpMaxHoldTime);
-            myBody.AddForce(new Vector2(0, currentJumpStrength));
+            myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y + (jumpSpeed * Time.deltaTime));
         }
         else if (isJumping)
         {
@@ -143,7 +133,7 @@ public class SixfaceINA : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
-            transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
@@ -151,11 +141,15 @@ public class SixfaceINA : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
+        }
+        else
+        {
+            myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
     }
     #endregion
@@ -168,6 +162,7 @@ public class SixfaceINA : MonoBehaviour
     {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space)) && canHover)
         {
+            IsHovering = true;
             myBody.gravityScale = hoverGravityModifier;
             if(myBody.velocity.y < hoverVelocityYMax)
             {
@@ -176,6 +171,7 @@ public class SixfaceINA : MonoBehaviour
         }
         else
         {
+            IsHovering = false;
             myBody.gravityScale = 1;
         }
     }

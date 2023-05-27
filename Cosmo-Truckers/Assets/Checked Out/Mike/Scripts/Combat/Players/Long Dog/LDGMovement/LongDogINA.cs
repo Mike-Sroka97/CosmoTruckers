@@ -42,12 +42,15 @@ public class LongDogINA : MonoBehaviour
     SpriteRenderer mySpriteHead;
     SpriteRenderer mySpriteBody;
     float startingGravityScale;
+    int layermask = 1 << 9;
+    Collider2D myCollider;
 
     private void Start()
     {
         myBody = head.GetComponent<Rigidbody2D>();
         mySpriteHead = head.GetComponent<SpriteRenderer>();
         mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
+        myCollider = head.GetComponent<Collider2D>();
         buttStartingLocation = body.transform.localPosition;
         cam = Camera.main;
         startingGravityScale = myBody.gravityScale;
@@ -356,23 +359,28 @@ public class LongDogINA : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
-                head.transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 0, 0);
-                if (myBody.velocity.x != 0)
-                {
-                    myBody.velocity = new Vector2(0, myBody.velocity.y);
-                }
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
-                head.transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 180, 0);
-                if (myBody.velocity.x != 0)
-                {
-                    myBody.velocity = new Vector2(0, myBody.velocity.y);
-                }
+            }
+            else if(IsGrounded())
+            {
+                myBody.velocity = new Vector2(0, myBody.velocity.y);
             }
         }
+    }
+
+    private bool IsGrounded()
+    {
+        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
+        {
+            return true;
+        }
+        return false;
     }
     #endregion
 
