@@ -9,6 +9,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] GameObject TempPage;
     [SerializeField] GameObject MiniGameScreen;
     GameObject miniGame;
+    GameObject character;
     [SerializeField] TMP_Text Timer;
  
     [SerializeField] List<GameObject> EnemySelected;
@@ -113,10 +114,12 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator StartMiniGame(BaseAttackSO attack)
     {
-        float miniGameTime = 60.0f; //TODO add in time for each mini Game
+        float miniGameTime = attack.MiniGameTime;
+        print(attack.MiniGameTime);
         Timer.text = miniGameTime.ToString();
 
         miniGame = Instantiate(attack.CombatPrefab, MiniGameScreen.transform, false);
+
         miniGame.transform.localScale = MiniGameScreen.transform.localScale;
 
         while(miniGameTime >= 0)
@@ -133,7 +136,9 @@ public class CombatManager : MonoBehaviour
     {
         StopAllCoroutines();
         TempPage.SetActive(false);
+
         Destroy(miniGame);
+        Destroy(character);
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {

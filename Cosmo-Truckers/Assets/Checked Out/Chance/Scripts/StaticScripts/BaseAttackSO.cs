@@ -12,6 +12,8 @@ public class BaseAttackSO : ScriptableObject
     [SerializeField] public int numberOFTargets;
     [Space(10)]
     public GameObject CombatPrefab;
+    public GameObject PlayerPrefab; //TEMP
+    public float MiniGameTime;
 
     public virtual void StartCombat() { }
     public virtual void EndCombat() { }
