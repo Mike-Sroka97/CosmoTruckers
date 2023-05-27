@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class SixfaceINA : MonoBehaviour
 {
+    //Movement variables
     [SerializeField] float moveSpeed;
 
+    //Attack variables
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
     [SerializeField] float maxYvelocity = 4;
@@ -13,11 +15,19 @@ public class SixfaceINA : MonoBehaviour
     [SerializeField] GameObject downAttackArea;
     [SerializeField] GameObject upAttackArea;
 
+    //Jump variables
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
+    [SerializeField] float pogoStrength;
 
+    //Hover variables
     [SerializeField] float hoverVelocityYMax;
     [SerializeField] float hoverGravityModifier;
+
+    //Damaged variables
+    [SerializeField] float damageFlashSpeed;
+    [SerializeField] float damagedDuration;
+    [SerializeField] float iFrameDuration;
 
     [HideInInspector] public bool IsHovering = false;
     bool canMove = true;
@@ -25,6 +35,8 @@ public class SixfaceINA : MonoBehaviour
     bool isJumping = false;
     bool canAttack = true;
     bool canHover = true;
+    bool damaged = false;
+    [HideInInspector] public bool iFrames = false;
 
     float currentJumpHoldTime = 0;
 
@@ -38,16 +50,18 @@ public class SixfaceINA : MonoBehaviour
     {
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
-        myCollider = GetComponent<Collider2D>();
+        myCollider = GetComponentsInChildren<Collider2D>()[1]; //ignores parent
     }
 
     private void Update()
     {
-        Attack();
-        Movement();
-        Jump();
-        SpecialMove();
-        Debug.DrawRay(myCollider.bounds.center, Vector2.down * (myCollider.bounds.extents.y + .01f), Color.green);
+        if(!damaged)
+        {
+            Attack();
+            Movement();
+            Jump();
+            SpecialMove();
+        }
     }
 
     private void IsGrounded()
@@ -58,6 +72,33 @@ public class SixfaceINA : MonoBehaviour
             canHover = false;
             currentJumpHoldTime = 0;
         }
+    }
+    
+    public void TakeDamage()
+    {
+        myBody.velocity = Vector2.zero;
+        damaged = true;
+        iFrames = true;
+        StartCoroutine(Damaged());
+    }
+
+    IEnumerator Damaged()
+    {
+        float damagedTime = 0;
+
+        while(damagedTime < iFrameDuration)
+        {
+            mySprite.enabled = !mySprite.enabled;
+            damagedTime += Time.deltaTime + damageFlashSpeed;
+            if(damagedTime > damagedDuration)
+            {
+                damaged = false;
+            }
+            yield return new WaitForSeconds(damageFlashSpeed);
+        }
+
+        iFrames = false;
+        mySprite.enabled = true;
     }
 
     #region Attack
@@ -70,7 +111,7 @@ public class SixfaceINA : MonoBehaviour
         {
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && !canJump)
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && currentJumpHoldTime != 0)
         {
             StartCoroutine(SixFaceAttack(downAttackArea));
         }
@@ -151,6 +192,12 @@ public class SixfaceINA : MonoBehaviour
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
+    }
+
+    public void Pogo()
+    {
+        myBody.velocity = new Vector2(myBody.velocity.x, 0);
+        myBody.AddForce(new Vector2(0, pogoStrength));
     }
     #endregion
 

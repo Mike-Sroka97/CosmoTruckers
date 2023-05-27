@@ -20,12 +20,38 @@ public class LongDogNeck : MonoBehaviour
         dog = transform.parent.GetComponent<LongDogINA>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        dog.StretchingCollision(collision.gameObject.tag);
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            if (collision.gameObject.GetComponent<StretchySpineProjectile>() || collision.gameObject.GetComponent<LockedAndDoggedProjectile>())
+            {
+                dog.StretchingCollision("LDGNoInteraction");
+            }
+            else
+            {
+                dog.StretchingCollision(collision.gameObject.tag);
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.transform.tag == "EnemyDamaging")
         {

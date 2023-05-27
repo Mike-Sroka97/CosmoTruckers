@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongDogNose : MonoBehaviour
+public class PTPlayerHurtable : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag != "PlayerHurtable")
+        if (collision.tag == "PlayerAttack")
         {
-            GetComponentInParent<LongDogINA>().StretchingCollision(collision.tag);
+            GetComponentInParent<PettyTheftEnemy>().Hurt();
         }
     }
 }

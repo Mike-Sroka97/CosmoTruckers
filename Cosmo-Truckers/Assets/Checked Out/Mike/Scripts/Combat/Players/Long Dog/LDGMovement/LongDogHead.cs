@@ -11,13 +11,35 @@ public class LongDogHead : MonoBehaviour
     {
         dog = GetComponentInParent<LongDogINA>();
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        dog.StretchingCollision(collision.gameObject.tag);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        dog.StretchingCollision(collision.gameObject.tag);
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging")
+        {
+            dog.StretchingCollision(collision.gameObject.tag);
+        }
     }
 }

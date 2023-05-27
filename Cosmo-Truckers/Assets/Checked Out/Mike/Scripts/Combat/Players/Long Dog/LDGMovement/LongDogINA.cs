@@ -21,6 +21,7 @@ public class LongDogINA : MonoBehaviour
     [SerializeField] float damagedDuration;
     [SerializeField] float Iframes;
     [SerializeField] float stretchStartupTime;
+    [SerializeField] Collider2D myNose;
 
     LongDogNeck currentLine;
 
@@ -72,6 +73,7 @@ public class LongDogINA : MonoBehaviour
     public void SetDamaged(bool toggle)
     {
         stretching = false;
+        myNose.enabled = false;
         EndDraw();
         damaged = toggle;
     }
@@ -80,9 +82,11 @@ public class LongDogINA : MonoBehaviour
     {
         if(collision != "LDGNoInteraction")
         {
+            myBody.velocity = Vector2.zero;
             if (stretching)
             {
                 stretching = false;
+                myNose.enabled = false;
                 EndDraw();
             }
             if (collision == "EnemyDamaging" && !damaged)
@@ -121,11 +125,10 @@ public class LongDogINA : MonoBehaviour
             if(damagedTime >= Iframes && !invincible)
             {
                 invincible = true;
+                damaged = false;
                 LDGReset();
             }
         }
-
-        damaged = false;
         invincible = false;
     }
 
@@ -168,6 +171,7 @@ public class LongDogINA : MonoBehaviour
     void BeginDraw()
     {
         stretching = true;
+        myNose.enabled = true;
         body.transform.SetParent(transform);
         myBody.gravityScale = 0;
 
@@ -268,6 +272,7 @@ public class LongDogINA : MonoBehaviour
         canStretch = true;
         buttStretching = false;
         stretching = false;
+        myNose.enabled = false;
     }
     #endregion
 
