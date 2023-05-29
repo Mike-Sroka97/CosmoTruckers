@@ -72,6 +72,16 @@ public class SixfaceINA : MonoBehaviour
             canHover = false;
             currentJumpHoldTime = 0;
         }
+        else
+        {
+            canJump = false;
+            canHover = true;
+        }
+    }
+
+    public bool Grounded()
+    {
+        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask);
     }
     
     public void TakeDamage()
