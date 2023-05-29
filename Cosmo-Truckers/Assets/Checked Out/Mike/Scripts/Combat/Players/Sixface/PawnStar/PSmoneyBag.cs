@@ -6,11 +6,17 @@ public class PSmoneyBag : MonoBehaviour
 {
     [SerializeField] Color hurtColor;
     [SerializeField] float deactiveTime;
+    [SerializeField] float amplitude;
+    [SerializeField] float frequency;
+    [SerializeField] float xBounds;
+    [SerializeField] float movementSpeed;
 
     SpriteRenderer myRenderer;
     Color startingColor;
     PawnStar minigame;
     Collider2D myCollider;
+    Vector3 startingPosition;
+    bool movingRight;
 
     private void Start()
     {
@@ -18,6 +24,47 @@ public class PSmoneyBag : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
         startingColor = myRenderer.color;
+        startingPosition = transform.position;
+
+        int random = UnityEngine.Random.Range(0, 2); //coin flip huzzah
+        if (random == 0)
+            movingRight = false;
+        else
+            movingRight = true;
+    }
+
+    private void Update()
+    {
+        HorizontalMovement();
+        Oscillate();
+    }
+
+    private void HorizontalMovement()
+    {
+        if(movingRight)
+        {
+            transform.position += new Vector3(movementSpeed * Time.deltaTime, 0, 0);
+            if(Mathf.Abs(transform.localPosition.x) > xBounds)
+            {
+                movingRight = !movingRight;
+                transform.localPosition = new Vector3(xBounds, transform.localPosition.y, transform.localPosition.z);
+            }
+        }
+        else
+        {
+            transform.position -= new Vector3(movementSpeed * Time.deltaTime, 0, 0);
+            if (Mathf.Abs(transform.localPosition.x) > xBounds)
+            {
+                movingRight = !movingRight;
+                transform.localPosition = new Vector3(-xBounds, transform.localPosition.y, transform.localPosition.z);
+            }
+        }
+    }
+
+    private void Oscillate()
+    {
+        float newY = startingPosition.y + Mathf.Sin(Time.time * frequency) * amplitude;
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
