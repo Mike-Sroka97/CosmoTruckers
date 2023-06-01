@@ -104,7 +104,7 @@ public class Bribery : MonoBehaviour
             //}
             for(int i = 0; i < ActivatedRows.Length; i++)
             {
-                if(ActivatedRows[i] == false)
+                if(ActivatedRows[i] == false && DisabledRows[i] == false)
                 {
                     int random2 = UnityEngine.Random.Range(0, 3); //three per row
 
