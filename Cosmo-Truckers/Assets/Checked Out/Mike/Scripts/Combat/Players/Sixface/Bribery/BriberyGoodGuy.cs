@@ -20,7 +20,7 @@ public class BriberyGoodGuy : MonoBehaviour
             if(myCollider.enabled)
             {
                 myCollider.enabled = false;
-                collision.GetComponent<BriberyEnemy>().DoneMoving = true;
+                collision.GetComponent<BriberyEnemy>().DoneMoving();
                 minigame.Score--;
                 Debug.Log(minigame.Score);
                 Destroy(gameObject);

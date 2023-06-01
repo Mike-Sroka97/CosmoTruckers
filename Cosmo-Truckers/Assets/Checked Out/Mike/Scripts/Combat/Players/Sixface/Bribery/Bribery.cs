@@ -7,9 +7,11 @@ public class Bribery : MonoBehaviour
 {
     [SerializeField] float[] startDelays;
     [SerializeField] float moneySpawnDelay;
+    [SerializeField] float delayIncrement;
     [SerializeField] GameObject[] rows;
     [HideInInspector] public int Score;
     [HideInInspector] public bool[] ActivatedRows;
+    [HideInInspector] public bool[] DisabledRows;
 
     BriberyEnemy[] enemies;
     BriberyCollectable[] collectables;
@@ -57,6 +59,7 @@ public class Bribery : MonoBehaviour
     {
         collectables = GetComponentsInChildren<BriberyCollectable>();
         ActivatedRows = new bool[rows.Length];
+        DisabledRows = new bool[rows.Length];
     }
 
     private void Update()
@@ -76,10 +79,14 @@ public class Bribery : MonoBehaviour
 
     private void SpawnMoney()
     {
-        foreach(bool row in ActivatedRows)
+        for(int i = 0; i < ActivatedRows.Length; i++)
         {
             allFull = true;
-            if (row == false)
+            if (DisabledRows[i] == true)
+            {
+                continue;
+            }
+            else if (ActivatedRows[i] == false)
             {
                 allFull = false;
                 break;
@@ -88,15 +95,28 @@ public class Bribery : MonoBehaviour
 
         if(!allFull)
         {
-            int random = UnityEngine.Random.Range(0, ActivatedRows.Length);
-            while (ActivatedRows[random] == true)
+
+            //Keeping around in case we want to use again
+            //int random = UnityEngine.Random.Range(0, ActivatedRows.Length);
+            //while (ActivatedRows[random] == true || DisabledRows[random] == true)
+            //{
+            //    random = UnityEngine.Random.Range(0, ActivatedRows.Length);
+            //}
+            for(int i = 0; i < ActivatedRows.Length; i++)
             {
-                random = UnityEngine.Random.Range(0, ActivatedRows.Length);
+                if(ActivatedRows[i] == false)
+                {
+                    int random2 = UnityEngine.Random.Range(0, 3); //three per row
+
+                    rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
+                }
             }
 
-            int random2 = UnityEngine.Random.Range(0, 3); //three per row
-
-            rows[random].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
         }
+    }
+
+    public void IncreaseSpawnTimer()
+    {
+        moneySpawnDelay += delayIncrement;
     }
 }

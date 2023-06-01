@@ -18,6 +18,14 @@ public class BriberyCollectable : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
     }
 
+    private void Update()
+    {
+        if(minigame.DisabledRows[row])
+        {
+            DeactiveMe();
+        }
+    }
+
     public void Activate()
     {
         myRenderer.enabled = true;
