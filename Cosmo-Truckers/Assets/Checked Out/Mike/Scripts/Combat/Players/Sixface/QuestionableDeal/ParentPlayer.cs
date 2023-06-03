@@ -4,11 +4,29 @@ using UnityEngine;
 
 public class ParentPlayer : MonoBehaviour
 {
+    bool playerAttached = false;
+    Rigidbody2D minigame;
+    Rigidbody2D playerBody;
+
+    private void Start()
+    {
+        playerBody = FindObjectOfType<SixfaceINA>().GetComponent<Rigidbody2D>();
+        minigame = FindObjectOfType<Rigidbody2D>();
+    }
+
+    private void Update()
+    {
+        if(playerAttached)
+        {
+            playerBody.velocity = new Vector2(playerBody.velocity.x + minigame.velocity.x, playerBody.velocity.y);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            collision.transform.parent = transform.parent.parent.parent.parent; //lol
+            playerAttached = true;
         }
     }
 
@@ -16,7 +34,7 @@ public class ParentPlayer : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            collision.transform.parent = null;
+            playerAttached = false;
         }
     }
 }

@@ -12,9 +12,11 @@ public class QuestionableDeal : MonoBehaviour
     [SerializeField] GameObject[] layouts;
 
     float currentTime = 0;
+    Rigidbody2D myBody;
 
     private void Start()
     {
+        myBody = GetComponent<Rigidbody2D>();
         int random = UnityEngine.Random.Range(0, layouts.Length);
         Instantiate(layouts[random], transform);
     }
@@ -44,7 +46,7 @@ public class QuestionableDeal : MonoBehaviour
     {
         if(Moving)
         {
-            transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+            myBody.velocity = new Vector2(-moveSpeed, 0);
         }
     }
 
