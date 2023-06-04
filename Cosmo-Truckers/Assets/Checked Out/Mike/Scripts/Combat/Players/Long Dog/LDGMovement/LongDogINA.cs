@@ -99,6 +99,7 @@ public class LongDogINA : MonoBehaviour
     {
         float damagedTime = 0;
         mySpriteBody = body.GetComponent<SpriteRenderer>();
+        myBody.velocity = Vector2.zero;
 
         while(damagedTime < damagedDuration)
         {
@@ -208,6 +209,7 @@ public class LongDogINA : MonoBehaviour
 
     IEnumerator ATHSpin()
     {
+        invincible = true;
         bool completedRotation = false;
         float currentDegrees = 0;
         bool leftBoost;
@@ -255,6 +257,7 @@ public class LongDogINA : MonoBehaviour
         body.transform.localPosition = buttStartingLocation;
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
+        invincible = false;
         if (damaged)
         {
             StartCoroutine(Damaged());
