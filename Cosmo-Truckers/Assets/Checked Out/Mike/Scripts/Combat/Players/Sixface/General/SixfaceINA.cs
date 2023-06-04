@@ -135,7 +135,9 @@ public class SixfaceINA : MonoBehaviour
     {
         canAttack = false;
         attack.SetActive(true);
+        attack.GetComponent<Collider2D>().enabled = true;
         yield return new WaitForSeconds(attackDuration);
+        attack.GetComponent<Collider2D>().enabled = false;
         attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
