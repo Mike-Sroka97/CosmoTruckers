@@ -13,15 +13,20 @@ public class SafeTINA : MonoBehaviour
 
     [SerializeField] float jumpSpeedAccrual;
     [SerializeField] float jumpMaxHoldTime;
-    [SerializeField] float jumpDelay;
 
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
+
+    [SerializeField] float iFrameDuration;
+    [SerializeField] float damageFlashSpeed;
+    [SerializeField] float damagedDuration;
 
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
+    bool damaged = false;
+    [HideInInspector] public bool iFrames = false;
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
@@ -37,7 +42,7 @@ public class SafeTINA : MonoBehaviour
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
-        myCollider = GetComponent<Collider2D>();
+        myCollider = transform.Find("Body").GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -45,7 +50,43 @@ public class SafeTINA : MonoBehaviour
         Attack();
         Movement();
         Jump();
-        ShortHop();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.tag == "Ground" && IsGrounded(.02f))
+        {
+            ShortHop();
+        }
+    }
+
+    public void TakeDamage()
+    {
+        myBody.velocity = Vector2.zero;
+        damaged = true;
+        iFrames = true;
+        StartCoroutine(Damaged());
+    }
+
+    IEnumerator Damaged()
+    {
+        float damagedTime = 0;
+
+        while (damagedTime < iFrameDuration)
+        {
+            mySprite.enabled = !mySprite.enabled;
+            damagedTime += Time.deltaTime + damageFlashSpeed;
+            if (damagedTime > damagedDuration)
+            {
+                damaged = false;
+                ShortHop();
+            }
+            yield return new WaitForSeconds(damageFlashSpeed);
+        }
+
+        iFrames = false;
+        mySprite.enabled = true;
+
     }
 
     #region Attack
@@ -95,26 +136,20 @@ public class SafeTINA : MonoBehaviour
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
         {
-            StartCoroutine(JumpDelay());
+            myBody.velocity = new Vector2(myBody.velocity.x, 0);
+            myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
+            currentJumpHoldTime = 0;
+            currentJumpStrength = 0;
+            canMove = true;
+            isJumping = false;
         }
-    }
-
-    IEnumerator JumpDelay()
-    {
-        myBody.velocity = new Vector2(myBody.velocity.x, 0);
-        myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
-        currentJumpHoldTime = 0;
-        currentJumpStrength = 0;
-        canMove = true;
-        yield return new WaitForSeconds(jumpDelay);
-        isJumping = false;
     }
 
     private void ShortHop()
     {
         if(IsGrounded(raycastHopHelper))
         {
-            if (!isJumping && IsGrounded(0.02f))
+            if (!isJumping)
             {
                 myBody.velocity = new Vector2(myBody.velocity.x, 0);
                 myBody.AddForce(new Vector2(0, hopForceModifier), ForceMode2D.Impulse);
@@ -139,7 +174,7 @@ public class SafeTINA : MonoBehaviour
     /// </summary>
     public void Movement()
     {
-        if (!canMove) return;
+        if (!canMove || damaged) return;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
