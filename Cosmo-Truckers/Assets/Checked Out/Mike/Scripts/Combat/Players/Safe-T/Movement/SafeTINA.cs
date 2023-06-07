@@ -31,7 +31,7 @@ public class SafeTINA : MonoBehaviour
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
-    int layermask = 1 << 9;
+    int layermask = 1 << 9; //ground
 
     Rigidbody2D myBody;
     SpriteRenderer mySprite;
@@ -54,7 +54,7 @@ public class SafeTINA : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Ground" && IsGrounded(.02f))
+        if(collision.gameObject.layer == 9 && IsGrounded(.02f))
         {
             ShortHop();
         }
@@ -86,7 +86,6 @@ public class SafeTINA : MonoBehaviour
 
         iFrames = false;
         mySprite.enabled = true;
-
     }
 
     #region Attack
