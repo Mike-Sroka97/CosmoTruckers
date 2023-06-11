@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OutlineMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 9df3ee160eb104f489f4c2de8a1bb37d, type: 3}
+  m_Name: OutlineMat
+  m_Shader: {fileID: -6465566751694194690, guid: cca10bdc703ddc8478ffcca6546e83c0, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1e0a5ba81cb4205498ce79049ac593df, type: 3}
+        m_Texture: {fileID: 2800000, guid: 450acc0d74bc4784a9747c5b12cc58e9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -38,11 +38,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Edge: 0.1
-    - _NegativeY: 10
-    - _OutlineAlpha: 1
+    - _MainValue: 0
+    - _OutlineOffset: 1
+    - _OutlineOffsetNeg: -0.5
+    - _OutlineOffsetPos: 0.5
+    - _OutlineThickness: 13.78
     m_Colors:
-    - _OffsetNegative: {r: -10, g: -10, b: 0, a: 0}
-    - _OffsetPositive: {r: 10, g: 10, b: 0, a: 0}
-    - _OutlineColor: {r: 0.8969493, g: 0, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 1, b: 0.8881693, a: 0}
+    - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
