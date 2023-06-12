@@ -118,9 +118,8 @@ public class CombatManager : MonoBehaviour
         print(attack.MiniGameTime);
         Timer.text = miniGameTime.ToString();
 
-        miniGame = Instantiate(attack.CombatPrefab, MiniGameScreen.transform, false);
-
-        miniGame.transform.localScale = MiniGameScreen.transform.localScale;
+        miniGame = Instantiate(attack.CombatPrefab);
+        miniGame.transform.SetParent(MiniGameScreen.transform);
 
         while(miniGameTime >= 0)
         {
