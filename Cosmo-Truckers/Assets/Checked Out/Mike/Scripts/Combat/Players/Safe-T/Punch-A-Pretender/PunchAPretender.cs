@@ -19,8 +19,8 @@ public class PunchAPretender : MonoBehaviour
 
     private void Start()
     {
-        //int random = UnityEngine.Random.Range(0, layouts.Length);
-        //Instantiate(layouts[random], transform);
+        int random = UnityEngine.Random.Range(0, layouts.Length);
+        Instantiate(layouts[random], transform);
     }
 
     private void Update()

@@ -6,27 +6,36 @@ public class PapMovePlayer : MonoBehaviour
 {
     [SerializeField] PaPConveyor myConveyor;
 
-    Transform playerInitialParent;
+    Rigidbody2D playerBody;
     SafeTINA player;
 
     private void Start()
     {
         player = FindObjectOfType<SafeTINA>();
-        playerInitialParent = player.transform.parent;
+        playerBody = player.GetComponent<Rigidbody2D>();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player")
         {
-            player.transform.parent = transform;
+            player.PlatformMoveMe = true;
+            if (Input.GetKey(KeyCode.D) && !player.GetIsJumping())
+            {
+                playerBody.velocity = new Vector2(player.GetMoveSpeed() * 1.5f, playerBody.velocity.y);
+            }
+            else if(Input.GetKey(KeyCode.A) && !player.GetIsJumping())
+            {
+                playerBody.velocity = new Vector2(-player.GetMoveSpeed() / 2, playerBody.velocity.y);
+            }
+            else 
+            {
+                playerBody.velocity = new Vector2(myConveyor.GetMoveSpeed(), playerBody.velocity.y);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
-        {
-            player.transform.parent = playerInitialParent;
-        }
+        player.PlatformMoveMe = false;
     }
 }

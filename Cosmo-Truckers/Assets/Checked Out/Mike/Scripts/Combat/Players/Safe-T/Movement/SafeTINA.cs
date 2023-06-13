@@ -21,6 +21,8 @@ public class SafeTINA : MonoBehaviour
     [SerializeField] float damageFlashSpeed;
     [SerializeField] float damagedDuration;
 
+    [HideInInspector] public bool PlatformMoveMe;
+
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
@@ -59,6 +61,9 @@ public class SafeTINA : MonoBehaviour
             ShortHop();
         }
     }
+
+    public float GetMoveSpeed() { return moveSpeed; }
+    public bool GetIsJumping() { return isJumping; }
 
     public void TakeDamage()
     {
@@ -147,7 +152,7 @@ public class SafeTINA : MonoBehaviour
 
     private void ShortHop()
     {
-        if(IsGrounded(raycastHopHelper))
+        if (IsGrounded(raycastHopHelper))
         {
             if (!isJumping)
             {
@@ -178,7 +183,11 @@ public class SafeTINA : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            if(!PlatformMoveMe)
+            {
+                myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            }
+
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
@@ -186,13 +195,17 @@ public class SafeTINA : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            if (!PlatformMoveMe)
+            {
+                myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            }
+
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
         }
-        else
+        else if(!PlatformMoveMe)
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
