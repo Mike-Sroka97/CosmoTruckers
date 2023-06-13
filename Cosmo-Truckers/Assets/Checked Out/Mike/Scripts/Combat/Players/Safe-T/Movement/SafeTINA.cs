@@ -132,6 +132,7 @@ public class SafeTINA : MonoBehaviour
             currentJumpHoldTime += Time.deltaTime;
             if(currentJumpHoldTime > jumpMaxHoldTime) { currentJumpHoldTime = jumpMaxHoldTime; }
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
+            myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
         {
