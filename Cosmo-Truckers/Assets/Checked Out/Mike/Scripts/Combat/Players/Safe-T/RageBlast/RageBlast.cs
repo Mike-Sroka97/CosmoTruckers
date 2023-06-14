@@ -9,10 +9,19 @@ public class RageBlast : MonoBehaviour
 
     [SerializeField] RageBlastPlatform[] platforms;
     [SerializeField] float timeToDisablePlatform;
+    [SerializeField] GameObject[] layouts;
 
     bool trackTime = true;
     float currentTime = 0;
     int lastNumber = -1;
+    int nonDuplicateRandom;
+
+    private void Start()
+    {
+        nonDuplicateRandom = lastNumber;
+        int random = UnityEngine.Random.Range(0, layouts.Length);
+        Instantiate(layouts[random], transform);
+    }
 
     private void Update()
     {
@@ -35,12 +44,12 @@ public class RageBlast : MonoBehaviour
 
     public void NextPlatform()
     {
-        int random = lastNumber;
-        while(lastNumber == random)
+        while(lastNumber == nonDuplicateRandom)
         {
-            random = UnityEngine.Random.Range(0, platforms.Length);
+            lastNumber = UnityEngine.Random.Range(0, platforms.Length);
         }
 
-        platforms[random].DisableMe();
+        nonDuplicateRandom = lastNumber;
+        platforms[nonDuplicateRandom].DisableMe();
     }
 }
