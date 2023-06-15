@@ -40,6 +40,7 @@ public class CombatManager : MonoBehaviour
             case EnumManager.TargetingType.Single_Target:
                 foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
+                    obj.StartTarget();
                     Button button = obj.gameObject.GetComponentInChildren<Button>();
                     button.interactable = true;
                     button.onClick.AddListener(delegate
@@ -64,6 +65,7 @@ public class CombatManager : MonoBehaviour
             case EnumManager.TargetingType.Multi_Target_Choice:
                 foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
+                    obj.StartTarget();
                     Button button = obj.gameObject.GetComponentInChildren<Button>();
                     button.interactable = true;
                     button.onClick.AddListener(delegate
@@ -154,6 +156,7 @@ public class CombatManager : MonoBehaviour
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {
+            obj.EndTarget();
             Button button = obj.gameObject.GetComponentInChildren<Button>();
             button.interactable = false;
             button.onClick.RemoveAllListeners();

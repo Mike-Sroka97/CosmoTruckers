@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] Loot[] droppableLoot;
 
+    Animator enemyAnimation;
     EnemyManager enemyManager;
     SpriteRenderer myRenderer;
     TurnOrder turnOrder;
@@ -20,7 +22,21 @@ public class Enemy : MonoBehaviour
         enemyManager = FindObjectOfType<EnemyManager>();
         myRenderer = GetComponent<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
+        enemyAnimation = FindObjectOfType<Animator>();
         currentHealth = health;
+    }
+
+    //TODO this is being stupid and I have no idea why
+    public void StartTarget()
+    {
+        enemyAnimation.enabled = true;
+        print(gameObject.name + "ON");
+    }
+
+    public void EndTarget()
+    {
+        enemyAnimation.enabled = false;
+        print(gameObject.name + "Off");
     }
 
     public void TakeDamage(int damage)
