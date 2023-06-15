@@ -13,22 +13,26 @@ public class CombatManager : MonoBehaviour
     [SerializeField] TMP_Text Timer;
  
     [SerializeField] List<GameObject> EnemySelected;
+    bool StartTimer = false;
 
     public void StartCombat(BaseAttackSO attack)
     {
         EnemySelected.Clear();
+        StartTimer = false;
 
         switch (attack.targetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
                 TempPage.SetActive(true);
+                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
                 break;
             #endregion
             #region Self Target
             case EnumManager.TargetingType.Self_Target:
                 TempPage.SetActive(true);
+                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
                 break;
             #endregion
@@ -43,6 +47,7 @@ public class CombatManager : MonoBehaviour
                         print(obj.gameObject.name);
                         EnemySelected.Add(obj.gameObject);
                         TempPage.SetActive(true);
+                        StartTimer = true;
                         Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {EnemySelected[0].name}. . .");
                     });
                 }
@@ -51,6 +56,7 @@ public class CombatManager : MonoBehaviour
             #region Multi Target Cone
             case EnumManager.TargetingType.Multi_Target_Cone:
                 TempPage.SetActive(true);
+                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                 break;
             #endregion
@@ -68,6 +74,7 @@ public class CombatManager : MonoBehaviour
                         if (EnemySelected.Count == attack.numberOFTargets || EnemySelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
                             TempPage.SetActive(true);
+                            StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for(int i = 0; i < EnemySelected.Count; i++)
                                 text += $" { EnemySelected[i].name } & ";
@@ -83,6 +90,7 @@ public class CombatManager : MonoBehaviour
             #region AOE
             case EnumManager.TargetingType.AOE:
                 TempPage.SetActive(true);
+                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
                 break;
             #endregion
@@ -94,6 +102,7 @@ public class CombatManager : MonoBehaviour
                     if (EnemySelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                     {
                         TempPage.SetActive(true);
+                        StartTimer = true;
                         string text = $"Doing Combat Stuff for {attack.AttackName} against";
                         for (int i = 0; i < EnemySelected.Count; i++)
                             text += $" { EnemySelected[i].name } & ";
@@ -106,7 +115,7 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.targetingType} not set up."); break;
+            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); return;
         }
 
         StartCoroutine(StartMiniGame(attack));
@@ -123,8 +132,12 @@ public class CombatManager : MonoBehaviour
 
         while(miniGameTime >= 0)
         {
-            miniGameTime -= Time.deltaTime;
-            Timer.text = ((int)miniGameTime).ToString();
+            if (StartTimer)
+            {
+                miniGameTime -= Time.deltaTime;
+                Timer.text = ((int)miniGameTime).ToString();
+            }
+
             yield return null;
         }
 
