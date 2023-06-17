@@ -32,7 +32,7 @@ public class SixfaceINA : MonoBehaviour
     [HideInInspector] public bool IsHovering = false;
     bool canMove = true;
     bool canJump = true;
-    bool isJumping = false;
+    bool isJumping = true;
     bool canAttack = true;
     bool canHover = true;
     bool damaged = false;
@@ -121,7 +121,7 @@ public class SixfaceINA : MonoBehaviour
         {
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && currentJumpHoldTime != 0)
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover))
         {
             StartCoroutine(SixFaceAttack(downAttackArea));
         }
