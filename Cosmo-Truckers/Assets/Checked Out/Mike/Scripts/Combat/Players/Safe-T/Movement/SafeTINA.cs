@@ -39,8 +39,11 @@ public class SafeTINA : MonoBehaviour
     SpriteRenderer mySprite;
     Collider2D myCollider;
 
+    float originalMoveSpeed;
+
     private void Start()
     {
+        originalMoveSpeed = moveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
@@ -62,6 +65,8 @@ public class SafeTINA : MonoBehaviour
         }
     }
 
+    public void ResetMoveSpeed() { moveSpeed = originalMoveSpeed; }
+    public void SetMoveSpeed(float newSpeed) { moveSpeed = newSpeed; }
     public float GetMoveSpeed() { return moveSpeed; }
     public bool GetIsJumping() { return isJumping; }
 
