@@ -62,6 +62,23 @@ public class SafeTINA : MonoBehaviour
         if(collision.gameObject.layer == 9 && IsGrounded(.02f))
         {
             ShortHop();
+            transform.parent = collision.transform;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 9 && IsGrounded(.02f))
+        {
+            ShortHop();
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == 9)
+        {
+            transform.parent = null;
         }
     }
 
@@ -210,7 +227,7 @@ public class SafeTINA : MonoBehaviour
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
         }
-        else if(!PlatformMoveMe)
+        else if(!PlatformMoveMe && !isJumping)
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }

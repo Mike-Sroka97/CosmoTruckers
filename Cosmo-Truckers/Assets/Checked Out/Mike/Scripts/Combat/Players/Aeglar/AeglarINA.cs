@@ -11,6 +11,11 @@ public class AeglarINA : MonoBehaviour
     [SerializeField] float dashCD;
     [SerializeField] float dashDuration;
     [SerializeField] float dashSlow;
+    [SerializeField] float CDbetweenDashes = .25f;
+
+    [SerializeField] GameObject horizontalAttackArea;
+    [SerializeField] GameObject verticalAttackArea;
+    [SerializeField] int numberOfAttacks = 2;
 
     [SerializeField] float jumpSpeed;
 
@@ -18,12 +23,17 @@ public class AeglarINA : MonoBehaviour
     bool canMove = true;
     bool canJump = true;
     bool dashing = false;
+    bool damaged = false;
     PlayerCharacterINA INA;
     Rigidbody2D myBody;
+    Collider2D myCollider;
+    int layermask = 1 << 9; //ground
+    int currentNumberOfAttacks = 0;
 
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     private void Update()
@@ -33,12 +43,9 @@ public class AeglarINA : MonoBehaviour
         Jump();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private bool IsGrounded(float distance)
     {
-        if(collision.gameObject.tag == "Ground")
-        {
-            canJump = true;
-        }
+        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
     }
 
     #region Attack
@@ -47,47 +54,18 @@ public class AeglarINA : MonoBehaviour
     /// </summary>
     public void Attack()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x < 0)
+        if(currentNumberOfAttacks < numberOfAttacks)
         {
-            StartCoroutine(Dash(true));
-        }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x > 0)
-        {
-            StartCoroutine(Dash(false));
-        }
-
-        IEnumerator Dash(bool left)
-        {
-            dashing = true;
-            canDash = false;
-            canMove = false;
-
-            myBody.velocity = Vector2.zero;
-
-            if (left)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x < 0)
             {
-                myBody.AddForce(new Vector2(-dashSpeed, 0));
+                StartCoroutine(Dash(true));
             }
-            else
+            else if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x > 0)
             {
-                myBody.AddForce(new Vector2(dashSpeed, 0));
+                StartCoroutine(Dash(false));
             }
-
-            float currentDashTime = 0;
-            while(currentDashTime < dashDuration)
-            {
-                myBody.velocity = new Vector2(myBody.velocity.x, 0);
-                currentDashTime += Time.deltaTime;
-                yield return new WaitForSeconds(Time.deltaTime);
-            }
-
-            myBody.velocity = new Vector2(myBody.velocity.x / dashSlow, myBody.velocity.y);
-
-            yield return new WaitForSeconds(dashCD - currentDashTime);
-
-            canMove = true;
-            canDash = true;
         }
+
     }
     #endregion
 
@@ -97,11 +75,17 @@ public class AeglarINA : MonoBehaviour
     /// </summary>
     public void Jump()
     {
+        if(IsGrounded(0.02f))
+        {
+            canJump = true;
+            currentNumberOfAttacks = 0;
+        }
+
         if(Input.GetKeyDown("space") && canJump)
         {
             canJump = false;
-            myBody.AddForce(new Vector2(0, jumpSpeed));
-        }
+            StartCoroutine(Dash(true, true));
+;       }
     }
     #endregion
 
@@ -111,41 +95,30 @@ public class AeglarINA : MonoBehaviour
     /// </summary>
     public void Movement()
     {
-        if (!canMove) return;
+        if (!canMove || damaged) return;
 
-        switch (Input.inputString)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            case "a":
-                StartCoroutine(Move(true));
-                break;
-            case "d":
-                StartCoroutine(Move(false));
-                break;
-            default:
-                break;
+            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+
+            if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
+            }
         }
-    }
-
-    IEnumerator Move(bool left)
-    {
-        canMove = false;
-
-        if (left)
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            myBody.AddForce(new Vector2(-moveSpeed, 0));
+            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+
+            if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
+            }
         }
         else
         {
-            myBody.AddForce(new Vector2(moveSpeed, 0));
-        }
-
-        yield return new WaitForSeconds(moveCD);
-
-        if(!dashing)
-        {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
-        canMove = true;
     }
     #endregion
 
@@ -153,9 +126,79 @@ public class AeglarINA : MonoBehaviour
     /// <summary>
     /// Aeglar's attack will also make him dash. That will bundle the Special move and attack for him
     /// </summary>
+
+    IEnumerator Dash(bool left, bool up = false)
+    {
+        if (up)
+        {
+            verticalAttackArea.SetActive(true);
+        }
+        else
+        {
+            currentNumberOfAttacks++;
+            horizontalAttackArea.SetActive(true);
+        }
+
+        dashing = true;
+        canDash = false;
+        canMove = false;
+
+        myBody.velocity = Vector2.zero;
+
+        if (up)
+        {
+            myBody.AddForce(new Vector2(0, dashSpeed * 1.5f));
+        }
+        else if (left)
+        {
+            myBody.AddForce(new Vector2(-dashSpeed, 0));
+        }
+        else
+        {
+            myBody.AddForce(new Vector2(dashSpeed, 0));
+        }
+
+        float currentDashTime = 0;
+        while (currentDashTime < dashDuration)
+        {
+            if (up)
+            {
+                canJump = false;
+                myBody.velocity = new Vector2(0, myBody.velocity.y);
+            }
+            else
+            {
+                myBody.velocity = new Vector2(myBody.velocity.x, 0);
+            }
+
+            currentDashTime += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        myBody.velocity = Vector2.zero;
+
+        canMove = true;
+        if (up)
+        {
+            verticalAttackArea.SetActive(false);
+        }
+        else
+        {
+            horizontalAttackArea.SetActive(false);
+        }
+
+        currentDashTime = 0;
+        while(currentDashTime < CDbetweenDashes)
+        {
+            currentDashTime += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        canDash = true;
+    }
     public void SpecialMove()
     {
-        //not implementing this functionality from the interface
+
     }
     #endregion
 }
