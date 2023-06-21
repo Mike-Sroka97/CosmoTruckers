@@ -12,12 +12,19 @@ public class AeglarINA : MonoBehaviour
     [SerializeField] float dashDuration;
     [SerializeField] float dashSlow;
     [SerializeField] float CDbetweenDashes = .25f;
+    [SerializeField] float dashUpForce;
 
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject verticalAttackArea;
     [SerializeField] int numberOfAttacks = 2;
 
     [SerializeField] float jumpSpeed;
+    [SerializeField] float coyoteTime;
+
+    [SerializeField] float iFrameDuration;
+    [SerializeField] float damageFlashSpeed;
+    [SerializeField] float damagedDuration;
+    [HideInInspector] public bool iFrames = false;
 
     bool canDash = true;
     bool canMove = true;
@@ -27,13 +34,16 @@ public class AeglarINA : MonoBehaviour
     PlayerCharacterINA INA;
     Rigidbody2D myBody;
     Collider2D myCollider;
+    SpriteRenderer myRenderer;
     int layermask = 1 << 9; //ground
     int currentNumberOfAttacks = 0;
+    float currentCoyoteTime = 0;
 
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
+        myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
+        myRenderer = transform.Find("AeglarBody").GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -46,6 +56,33 @@ public class AeglarINA : MonoBehaviour
     private bool IsGrounded(float distance)
     {
         return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
+    }
+
+    public void TakeDamage()
+    {
+        myBody.velocity = Vector2.zero;
+        damaged = true;
+        iFrames = true;
+        StartCoroutine(Damaged());
+    }
+
+    IEnumerator Damaged()
+    {
+        float damagedTime = 0;
+
+        while (damagedTime < iFrameDuration)
+        {
+            myRenderer.enabled = !myRenderer.enabled;
+            damagedTime += Time.deltaTime + damageFlashSpeed;
+            if (damagedTime > damagedDuration)
+            {
+                damaged = false;
+            }
+            yield return new WaitForSeconds(damageFlashSpeed);
+        }
+
+        iFrames = false;
+        myRenderer.enabled = true;
     }
 
     #region Attack
@@ -79,6 +116,15 @@ public class AeglarINA : MonoBehaviour
         {
             canJump = true;
             currentNumberOfAttacks = 0;
+            currentCoyoteTime = 0;
+        }
+        else
+        {
+            currentCoyoteTime += Time.deltaTime;
+            if(currentCoyoteTime > coyoteTime)
+            {
+                canJump = false;
+            }
         }
 
         if(Input.GetKeyDown("space") && canJump)
@@ -151,11 +197,11 @@ public class AeglarINA : MonoBehaviour
         }
         else if (left)
         {
-            myBody.AddForce(new Vector2(-dashSpeed, 0));
+            myBody.AddForce(new Vector2(-dashSpeed, dashUpForce));
         }
         else
         {
-            myBody.AddForce(new Vector2(dashSpeed, 0));
+            myBody.AddForce(new Vector2(dashSpeed, dashUpForce));
         }
 
         float currentDashTime = 0;
