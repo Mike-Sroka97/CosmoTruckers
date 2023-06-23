@@ -17,4 +17,12 @@ public class AeglarBody : MonoBehaviour
             aeglar.TakeDamage();
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "EnemyDamaging" && !aeglar.iFrames)
+        {
+            aeglar.TakeDamage();
+        }
+    }
 }

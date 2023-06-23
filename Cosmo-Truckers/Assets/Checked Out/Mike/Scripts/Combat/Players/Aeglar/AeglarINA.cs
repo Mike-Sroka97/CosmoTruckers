@@ -17,9 +17,9 @@ public class AeglarINA : MonoBehaviour
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject verticalAttackArea;
     [SerializeField] int numberOfAttacks = 2;
+    [SerializeField] int numberOfJumps = 2;
 
     [SerializeField] float jumpSpeed;
-    [SerializeField] float coyoteTime;
 
     [SerializeField] float iFrameDuration;
     [SerializeField] float damageFlashSpeed;
@@ -28,7 +28,7 @@ public class AeglarINA : MonoBehaviour
 
     bool canDash = true;
     bool canMove = true;
-    bool canJump = true;
+
     bool dashing = false;
     bool damaged = false;
     PlayerCharacterINA INA;
@@ -37,7 +37,7 @@ public class AeglarINA : MonoBehaviour
     SpriteRenderer myRenderer;
     int layermask = 1 << 9; //ground
     int currentNumberOfAttacks = 0;
-    float currentCoyoteTime = 0;
+    int currentNumberOfJumps = 0;
 
     private void Start()
     {
@@ -114,22 +114,13 @@ public class AeglarINA : MonoBehaviour
     {
         if(IsGrounded(0.02f))
         {
-            canJump = true;
             currentNumberOfAttacks = 0;
-            currentCoyoteTime = 0;
-        }
-        else
-        {
-            currentCoyoteTime += Time.deltaTime;
-            if(currentCoyoteTime > coyoteTime)
-            {
-                canJump = false;
-            }
+            currentNumberOfJumps = 0;
         }
 
-        if(Input.GetKeyDown("space") && canJump)
+        if(Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
         {
-            canJump = false;
+            currentNumberOfJumps++;
             StartCoroutine(Dash(true, true));
 ;       }
     }
@@ -193,7 +184,7 @@ public class AeglarINA : MonoBehaviour
 
         if (up)
         {
-            myBody.AddForce(new Vector2(0, dashSpeed * 1.5f));
+            myBody.AddForce(new Vector2(0, jumpSpeed));
         }
         else if (left)
         {
@@ -209,7 +200,6 @@ public class AeglarINA : MonoBehaviour
         {
             if (up)
             {
-                canJump = false;
                 myBody.velocity = new Vector2(0, myBody.velocity.y);
             }
             else
