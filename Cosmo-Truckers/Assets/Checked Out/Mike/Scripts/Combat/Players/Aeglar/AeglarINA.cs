@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class AeglarINA : Player
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] float moveCD;
-
     [SerializeField] float dashSpeed;
     [SerializeField] float dashCD;
     [SerializeField] float dashDuration;
@@ -21,17 +18,9 @@ public class AeglarINA : Player
 
     [SerializeField] float jumpSpeed;
 
-    [SerializeField] float iFrameDuration;
-    [SerializeField] float damageFlashSpeed;
-    [SerializeField] float damagedDuration;
-    [HideInInspector] public bool iFrames = false;
-
     bool canDash = true;
     bool canMove = true;
 
-    bool dashing = false;
-    bool damaged = false;
-    Rigidbody2D myBody;
     Collider2D myCollider;
     SpriteRenderer myRenderer;
     int layermask = 1 << 9; //ground
@@ -40,6 +29,8 @@ public class AeglarINA : Player
 
     private void Start()
     {
+        PlayerInitialize();
+
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
         myRenderer = transform.Find("AeglarBody").GetComponent<SpriteRenderer>();
@@ -57,15 +48,7 @@ public class AeglarINA : Player
         return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
     }
 
-    public void TakeDamage()
-    {
-        myBody.velocity = Vector2.zero;
-        damaged = true;
-        iFrames = true;
-        StartCoroutine(Damaged());
-    }
-
-    IEnumerator Damaged()
+    public override IEnumerator Damaged()
     {
         float damagedTime = 0;
 
@@ -175,7 +158,6 @@ public class AeglarINA : Player
             horizontalAttackArea.SetActive(true);
         }
 
-        dashing = true;
         canDash = false;
         canMove = false;
 

@@ -4,5 +4,30 @@ using UnityEngine;
 
 public abstract class Player : MonoBehaviour
 {
-    
+    //Movement variables
+    [SerializeField] protected float moveSpeed;
+
+    //Damaged variables
+    [SerializeField] protected float damageFlashSpeed;
+    [SerializeField] protected float damagedDuration;
+    [SerializeField] protected float iFrameDuration;
+    [HideInInspector] public bool iFrames = false;
+
+    protected bool damaged = false;
+    protected Rigidbody2D myBody;
+
+    public void PlayerInitialize()
+    {
+        myBody = GetComponent<Rigidbody2D>();
+    }
+
+    public void TakeDamage()
+    {
+        myBody.velocity = Vector2.zero;
+        damaged = true;
+        iFrames = true;
+        StartCoroutine(Damaged());
+    }
+
+    public abstract IEnumerator Damaged();
 }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1624891975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624891976}
+  m_Layer: 0
+  m_Name: Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1624891976
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624891975}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.75, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6726099048825096839}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6573245157525068438
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +257,7 @@ GameObject:
   - component: {fileID: 6726099048825096839}
   - component: {fileID: 6726099048825096840}
   m_Layer: 0
-  m_Name: LDG1HeadRush
+  m_Name: HeadRush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -249,6 +280,7 @@ Transform:
   - {fileID: 6726099049439944001}
   - {fileID: 6726099049162939608}
   - {fileID: 8996762519549275550}
+  - {fileID: 1624891976}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -264,9 +296,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bd721a9309dd94db57c23096c95fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentLayout: {fileID: 0}
-  layouts: []
-  SuccessRate: 0
+  TypeOfAttack: 0
+  spawnPoints:
+  - {fileID: 1624891976}
+  layouts:
+  - {fileID: 1402448879887129711, guid: b3c9784f8a530004685c4c4273ae5770, type: 3}
+  - {fileID: 2974927252674136695, guid: 8c2578023ec342045af6e1a11795e510, type: 3}
+  - {fileID: 7425797833059822736, guid: 1375461903db0154387f4390f13244f9, type: 3}
+  - {fileID: 6206140238936505532, guid: fbf647bb89a9e84478d1f11c41647be9, type: 3}
+  Score: 0
+  PlayerDead: 0
+  maxLayouts: 3
 --- !u!1 &6726099049400212003
 GameObject:
   m_ObjectHideFlags: 0

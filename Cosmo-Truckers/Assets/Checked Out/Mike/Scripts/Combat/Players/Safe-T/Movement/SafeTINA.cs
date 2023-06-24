@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SafeTINA : Player
 {
-    [SerializeField] float moveSpeed;
-
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
     [SerializeField] GameObject horizontalAttackArea;
@@ -17,25 +15,18 @@ public class SafeTINA : Player
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
 
-    [SerializeField] float iFrameDuration;
-    [SerializeField] float damageFlashSpeed;
-    [SerializeField] float damagedDuration;
-
     [HideInInspector] public bool PlatformMoveMe;
 
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
-    bool damaged = false;
-    [HideInInspector] public bool iFrames = false;
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
     int layermask = 1 << 9; //ground
 
-    Rigidbody2D myBody;
     SpriteRenderer mySprite;
     Collider2D myCollider;
 
@@ -43,6 +34,8 @@ public class SafeTINA : Player
 
     private void Start()
     {
+        PlayerInitialize();
+
         originalMoveSpeed = moveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
@@ -87,15 +80,7 @@ public class SafeTINA : Player
     public float GetMoveSpeed() { return moveSpeed; }
     public bool GetIsJumping() { return isJumping; }
 
-    public void TakeDamage()
-    {
-        myBody.velocity = Vector2.zero;
-        damaged = true;
-        iFrames = true;
-        StartCoroutine(Damaged());
-    }
-
-    IEnumerator Damaged()
+    public override IEnumerator Damaged()
     {
         float damagedTime = 0;
 

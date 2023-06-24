@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ProtoINA : Player
 {
-    [SerializeField] float moveSpeed;
-
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
     [SerializeField] GameObject attackArea;
@@ -219,6 +217,11 @@ public class ProtoINA : Player
         canTeleport = false;
         yield return new WaitForSeconds(teleportCD);
         canTeleport = true;
+    }
+
+    public override IEnumerator Damaged()
+    {
+        throw new System.NotImplementedException();
     }
 
     #endregion

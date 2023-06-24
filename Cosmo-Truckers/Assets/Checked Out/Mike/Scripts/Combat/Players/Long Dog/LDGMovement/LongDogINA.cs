@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class LongDogINA : Player
 {
-    [SerializeField] float moveSpeed;
     [SerializeField] float stretchSpeed;
     [SerializeField] float stretchReturnSpeed;
     [SerializeField] float stretchRotateSpeed;
@@ -17,9 +16,6 @@ public class LongDogINA : Player
     [SerializeField] float spinForceBoost;
     [SerializeField] float spinSpeed;
     [SerializeField] float postSpinCD;
-    [SerializeField] float damageFlashSpeed;
-    [SerializeField] float damagedDuration;
-    [SerializeField] float Iframes;
     [SerializeField] float stretchStartupTime;
     [SerializeField] Collider2D myNose;
 
@@ -31,14 +27,12 @@ public class LongDogINA : Player
     bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
-    bool damaged = false;
     bool invincible = false;
     bool goingLeft = false;
     bool goingRight = false;
     bool startupStretch = false;
 
     Vector3 buttStartingLocation;
-    Rigidbody2D myBody;
     SpriteRenderer mySpriteHead;
     SpriteRenderer mySpriteBody;
     float startingGravityScale;
@@ -47,6 +41,8 @@ public class LongDogINA : Player
 
     private void Start()
     {
+        PlayerInitialize();
+
         myBody = head.GetComponent<Rigidbody2D>();
         mySpriteHead = head.GetComponent<SpriteRenderer>();
         mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
@@ -58,7 +54,7 @@ public class LongDogINA : Player
 
     private void Update()
     {
-        if(!stretching && canMove && damaged)
+        if(!stretching && canMove && damaged && !invincible)
         {
             canMove = false;
             canStretch = false;
@@ -94,13 +90,13 @@ public class LongDogINA : Player
         }
     }
 
-    IEnumerator Damaged()
+    public override IEnumerator Damaged()
     {
         float damagedTime = 0;
         mySpriteBody = body.GetComponent<SpriteRenderer>();
         myBody.velocity = Vector2.zero;
 
-        while(damagedTime < damagedDuration)
+        while(damagedTime < iFrameDuration)
         {
             if(FindObjectOfType<LongDogNeck>())
             {
@@ -121,7 +117,7 @@ public class LongDogINA : Player
             yield return new WaitForSeconds(damageFlashSpeed);
 
             damagedTime += Time.deltaTime + (damageFlashSpeed * 2);
-            if(damagedTime >= Iframes && !invincible)
+            if(damagedTime >= damagedDuration && !invincible)
             {
                 invincible = true;
                 damaged = false;
@@ -257,7 +253,7 @@ public class LongDogINA : Player
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
         invincible = false;
-        if (damaged)
+        if (damaged && !invincible)
         {
             StartCoroutine(Damaged());
         }

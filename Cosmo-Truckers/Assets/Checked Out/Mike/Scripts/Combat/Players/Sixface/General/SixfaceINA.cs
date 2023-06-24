@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class SixfaceINA : Player
 {
-    //Movement variables
-    [SerializeField] float moveSpeed;
-
     //Attack variables
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
@@ -24,29 +21,23 @@ public class SixfaceINA : Player
     [SerializeField] float hoverVelocityYMax;
     [SerializeField] float hoverGravityModifier;
 
-    //Damaged variables
-    [SerializeField] float damageFlashSpeed;
-    [SerializeField] float damagedDuration;
-    [SerializeField] float iFrameDuration;
-
     [HideInInspector] public bool IsHovering = false;
     bool canMove = true;
     bool canJump = true;
     bool isJumping = true;
     bool canAttack = true;
     bool canHover = true;
-    bool damaged = false;
-    [HideInInspector] public bool iFrames = false;
 
     float currentJumpHoldTime = 0;
 
-    Rigidbody2D myBody;
     SpriteRenderer mySprite;
     Collider2D myCollider;
     int layermask = 1 << 9;
 
     private void Start()
     {
+        PlayerInitialize();
+
         myBody = GetComponent<Rigidbody2D>();
         mySprite = GetComponent<SpriteRenderer>();
         myCollider = GetComponentsInChildren<Collider2D>()[1]; //ignores parent
@@ -82,16 +73,8 @@ public class SixfaceINA : Player
     {
         return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask);
     }
-    
-    public void TakeDamage()
-    {
-        myBody.velocity = Vector2.zero;
-        damaged = true;
-        iFrames = true;
-        StartCoroutine(Damaged());
-    }
 
-    IEnumerator Damaged()
+    public override IEnumerator Damaged()
     {
         float damagedTime = 0;
 
