@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CounterBop : MonoBehaviour
+public class CounterBop : CombatMove
 {
-    [HideInInspector] public int Score = 0;
-    [SerializeField] GameObject[] layouts;
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
+    }
 
     private void Start()
     {
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        StartMove();
+        GenerateLayout();
     }
 }

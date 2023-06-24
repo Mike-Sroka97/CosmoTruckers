@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AeglarINA : MonoBehaviour
+public class AeglarINA : Player
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float moveCD;
@@ -31,7 +31,6 @@ public class AeglarINA : MonoBehaviour
 
     bool dashing = false;
     bool damaged = false;
-    PlayerCharacterINA INA;
     Rigidbody2D myBody;
     Collider2D myCollider;
     SpriteRenderer myRenderer;

@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongevityOfDog : MonoBehaviour
+public class LongevityOfDog : CombatMove
 {
     [SerializeField] GameObject[] touchableShapes;
     [SerializeField] int maxLayouts;
-    [HideInInspector] public int Score = 0;
 
     List<int> generatedLayouts = new List<int>();
     LoDShapeGenerator shapeGenerator;
@@ -15,6 +14,7 @@ public class LongevityOfDog : MonoBehaviour
 
     private void Start()
     {
+        StartMove();
         shapeGenerator = GetComponentInChildren<LoDShapeGenerator>();
         ResetShapes();
     }
@@ -44,5 +44,10 @@ public class LongevityOfDog : MonoBehaviour
             generatedLayouts.Add(currentLayout);
         }
         numberOfLayouts++;
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -6,6 +6,7 @@ public class FullCourse : CombatMove
 {
     private void Start()
     {
+        StartMove();
         GenerateLayout();
     }
 

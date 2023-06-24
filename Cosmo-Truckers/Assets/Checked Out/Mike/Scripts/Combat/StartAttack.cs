@@ -57,6 +57,6 @@ public class StartAttack : MonoBehaviour
 
     private void StartMiniGame()
     {
-        moveToStart.StartMove();
+        moveToStart.enabled = true;
     }
 }

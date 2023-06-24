@@ -27,12 +27,12 @@ public class PapConveyorPartNode : MonoBehaviour
         {
             minigame.PlayerDead = true;
         }
-        else if(!badZone && collision.tag == "PlayerAttack" && !minigame.PlayerFinished)
+        else if(!badZone && collision.tag == "PlayerAttack")
         {
             minigame.Score++;
             if(minigame.Score >= minigame.MaxScore)
             {
-                minigame.PlayerFinished = true;
+                minigame.EndMove();
             }
             Debug.Log(minigame.Score);
             gameObject.SetActive(false);

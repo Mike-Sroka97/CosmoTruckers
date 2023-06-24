@@ -6,11 +6,11 @@ public class aLaCarteCollectible : MonoBehaviour
 {
     [SerializeField] bool damaging = true;
 
-    aLaCarte minigame;
+    ALaCarte minigame;
 
     private void Start()
     {
-        minigame = FindObjectOfType<aLaCarte>();
+        minigame = FindObjectOfType<ALaCarte>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,7 +25,7 @@ public class aLaCarteCollectible : MonoBehaviour
             else
             {
                 minigame.Score++;
-                minigame.GenerateLayout();
+                minigame.GenerateCurrentLayout();
                 Debug.Log(minigame.Score);
             }
         }

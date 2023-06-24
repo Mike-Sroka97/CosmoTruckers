@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StretchySpine : MonoBehaviour
+public class StretchySpine : CombatMove
 {
-    [HideInInspector] public int Score = 10;
+    [SerializeField] int startingScore = 10;
     [SerializeField] Transform[] ground;
     [SerializeField] float[] groundHeights;
 
-
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
+    }
 
     private void Start()
     {
+        StartMove();
+        Score = startingScore;
+
         List<float> alreadyRolledValues = new List<float>();
         int groundHeight = -1;
 

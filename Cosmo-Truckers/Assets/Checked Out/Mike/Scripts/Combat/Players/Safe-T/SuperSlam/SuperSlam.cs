@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuperSlam : MonoBehaviour
+public class SuperSlam : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
-    [SerializeField] GameObject[] layouts;
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
+    }
 
     private void Start()
     {
         FindObjectOfType<SafeTINA>().SetMoveSpeed(0);
-
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        StartMove();
+        GenerateLayout();
     }
 }

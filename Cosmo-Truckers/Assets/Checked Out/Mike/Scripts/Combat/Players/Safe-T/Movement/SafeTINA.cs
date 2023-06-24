@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SafeTINA : MonoBehaviour
+public class SafeTINA : Player
 {
     [SerializeField] float moveSpeed;
 

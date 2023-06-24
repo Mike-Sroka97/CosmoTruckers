@@ -5,11 +5,16 @@ using UnityEngine;
 public abstract class CombatMove : MonoBehaviour
 {
     [SerializeField] TargetType TypeOfAttack;
-    [SerializeField] Transform spawnPoint;
-    [SerializeField] GameObject[] layouts;
+    [SerializeField] Transform[] spawnPoints;
+    [SerializeField] protected GameObject[] layouts;
 
     [HideInInspector] public int Score;
     [HideInInspector] public bool PlayerDead;
+
+    private void Start()
+    {
+        StartMove();
+    }
 
     public enum TargetType
     {
@@ -23,12 +28,21 @@ public abstract class CombatMove : MonoBehaviour
         AllTarget
     }
 
-    public void StartMove()
+    protected void StartMove()
     {
+        Player[] players = FindObjectsOfType<Player>();
 
+        if(players.Length <= 1)
+        {
+            players[0].transform.position = spawnPoints[0].position;
+        }
+        else
+        {
+            //set each alive player to a different spawn
+        }
     }
     public abstract void EndMove();
-    public void ApplyAugments()
+    private void ApplyAugments()
     {
 
     }

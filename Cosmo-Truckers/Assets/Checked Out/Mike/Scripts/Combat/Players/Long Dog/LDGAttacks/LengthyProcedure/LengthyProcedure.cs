@@ -2,20 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LengthyProcedure : MonoBehaviour
+public class LengthyProcedure : CombatMove
 {
-    //layouts[]
-
-    [SerializeField] GameObject[] layouts;
-    [HideInInspector] public int Score = 0;
-
     LPSuccess[] successNodes;
     List<GameObject> activatedNodes = new List<GameObject>();
-    bool minigameEnded = false;
     int random;
 
     private void Start()
     {
+        StartMove();
+
         random = UnityEngine.Random.Range(0, layouts.Length);
         Instantiate(layouts[random], transform.Find("Layout"));
 
@@ -42,13 +38,8 @@ public class LengthyProcedure : MonoBehaviour
         }
     }
 
-    public void EndMinigame()
+    public override void EndMove()
     {
-        if(!minigameEnded)
-        {
-            minigameEnded = true;
-            //TODO: add insta end to minigame
-            Debug.Log("minigame over");
-        }
+        throw new System.NotImplementedException();
     }
 }

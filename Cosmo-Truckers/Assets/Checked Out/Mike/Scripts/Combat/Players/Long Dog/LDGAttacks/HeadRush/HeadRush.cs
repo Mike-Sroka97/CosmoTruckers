@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadRush : MonoBehaviour
+public class HeadRush : CombatMove
 {
     GameObject currentLayout;
     List<GameObject> usedLayouts = new List<GameObject>();
-    [SerializeField] GameObject[] layouts;
     [SerializeField] int maxLayouts = 3;
     int numberOfLayouts = 0; 
-
-    [HideInInspector] public int Score;
     int random;
     int lastRandom = -1;
 
     private void Start()
     {
+        StartMove();
         DetermineLayout();
     }
 
@@ -51,5 +49,10 @@ public class HeadRush : MonoBehaviour
         }
         
 
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

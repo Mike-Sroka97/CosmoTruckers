@@ -2,7 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LockedAndDogged : MonoBehaviour
+public class LockedAndDogged : CombatMove
 {
-    public int Score = 0;
+    private void Start()
+    {
+        StartMove();
+    }
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
+    }
 }

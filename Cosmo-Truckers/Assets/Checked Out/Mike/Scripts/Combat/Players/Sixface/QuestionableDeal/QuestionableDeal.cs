@@ -2,23 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestionableDeal : MonoBehaviour
+public class QuestionableDeal : CombatMove
 {
-    [HideInInspector] public int Score = 0;
-    [HideInInspector] public bool PlayerDead = false;
     [HideInInspector] public bool Moving = true;
     [SerializeField] int[] successThresholds;
     [SerializeField] float moveSpeed;
-    [SerializeField] GameObject[] layouts;
 
     float currentTime = 0;
     Rigidbody2D myBody;
 
     private void Start()
     {
+        StartMove();
+        GenerateLayout();
         myBody = GetComponent<Rigidbody2D>();
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
     }
 
     private void Update()
@@ -63,6 +60,11 @@ public class QuestionableDeal : MonoBehaviour
         }
 
         Debug.Log(Score);
-        //TODO send info to minigame manager and end minigame
+        EndMove();
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

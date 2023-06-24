@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RageBlast : MonoBehaviour
+public class RageBlast : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
-
     [SerializeField] RageBlastPlatform[] platforms;
     [SerializeField] float timeToDisablePlatform;
-    [SerializeField] GameObject[] layouts;
 
     bool trackTime = true;
     float currentTime = 0;
@@ -18,9 +14,9 @@ public class RageBlast : MonoBehaviour
 
     private void Start()
     {
+        StartMove();
         nonDuplicateRandom = lastNumber;
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        GenerateLayout();
     }
 
     private void Update()
@@ -51,5 +47,10 @@ public class RageBlast : MonoBehaviour
 
         nonDuplicateRandom = lastNumber;
         platforms[nonDuplicateRandom].DisableMe();
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

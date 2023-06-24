@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FunGun : MonoBehaviour
+public class FunGun : CombatMove
 {
-    [HideInInspector] public int Score;
-    [SerializeField] GameObject[] layouts;
     [SerializeField] Transform layout;
 
     FGGun[] guns;
@@ -13,7 +11,8 @@ public class FunGun : MonoBehaviour
 
     private void Start()
     {
-        Instantiate(layouts[UnityEngine.Random.Range(0, layouts.Length)], layout);
+        StartMove();
+        GenerateLayout();
         guns = FindObjectsOfType<FGGun>();
         currentActiveGun = UnityEngine.Random.Range(0, guns.Length);
         guns[currentActiveGun].TrackingTime = true;
@@ -31,5 +30,10 @@ public class FunGun : MonoBehaviour
         }
 
         guns[currentActiveGun].TrackingTime = true;
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

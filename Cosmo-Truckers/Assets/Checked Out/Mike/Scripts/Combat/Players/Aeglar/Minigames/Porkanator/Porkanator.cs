@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Porkanator : MonoBehaviour
+public class Porkanator : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
-    [SerializeField] GameObject[] layouts;
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
+    }
 
     private void Start()
     {
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        StartMove();
+        GenerateLayout();
     }
 }

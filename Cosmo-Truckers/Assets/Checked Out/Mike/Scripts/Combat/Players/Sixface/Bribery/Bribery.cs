@@ -3,18 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bribery : MonoBehaviour
+public class Bribery : CombatMove
 {
     [SerializeField] float[] startDelays;
     [SerializeField] float moneySpawnDelay;
     [SerializeField] float delayIncrement;
     [SerializeField] GameObject[] rows;
-    [HideInInspector] public int Score;
     [HideInInspector] public bool[] ActivatedRows;
     [HideInInspector] public bool[] DisabledRows;
 
     BriberyEnemy[] enemies;
-    BriberyCollectable[] collectables;
     float currentTime = 0;
     bool allFull = false;
 
@@ -57,7 +55,7 @@ public class Bribery : MonoBehaviour
 
     private void Start()
     {
-        collectables = GetComponentsInChildren<BriberyCollectable>();
+        StartMove();
         ActivatedRows = new bool[rows.Length];
         DisabledRows = new bool[rows.Length];
     }
@@ -118,5 +116,10 @@ public class Bribery : MonoBehaviour
     public void IncreaseSpawnTimer()
     {
         moneySpawnDelay += delayIncrement;
+    }
+
+    public override void EndMove()
+    {
+        throw new NotImplementedException();
     }
 }

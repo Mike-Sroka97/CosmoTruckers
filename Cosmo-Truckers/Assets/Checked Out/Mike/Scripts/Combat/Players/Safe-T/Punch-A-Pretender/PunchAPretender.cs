@@ -2,14 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PunchAPretender : MonoBehaviour
+public class PunchAPretender : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
-    [HideInInspector] public bool PlayerFinished;
     public int MaxScore;
 
-    [SerializeField] GameObject[] layouts;
     [SerializeField] PaPConveyorPart[] papNodes;
     [SerializeField] float timeBetweenBadNodes;
     [SerializeField] float timeBetweenHittableNodes;
@@ -19,8 +15,8 @@ public class PunchAPretender : MonoBehaviour
 
     private void Start()
     {
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        StartMove();
+        GenerateLayout();
     }
 
     private void Update()
@@ -63,5 +59,10 @@ public class PunchAPretender : MonoBehaviour
             }
             papNodes[random].StartFlash(false);
         }
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

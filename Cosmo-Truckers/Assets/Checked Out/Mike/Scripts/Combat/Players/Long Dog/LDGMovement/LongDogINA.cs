@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongDogINA : MonoBehaviour
+public class LongDogINA : Player
 {
     [SerializeField] float moveSpeed;
     [SerializeField] float stretchSpeed;
@@ -38,7 +38,6 @@ public class LongDogINA : MonoBehaviour
     bool startupStretch = false;
 
     Vector3 buttStartingLocation;
-    PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySpriteHead;
     SpriteRenderer mySpriteBody;

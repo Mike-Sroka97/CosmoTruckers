@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class aLaCarte : MonoBehaviour
+public class ALaCarte : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
     [SerializeField] Transform[] collectibleSpawns;
     [SerializeField] aLaCarteCollectible[] collectibles;
 
@@ -15,11 +13,12 @@ public class aLaCarte : MonoBehaviour
 
     private void Start()
     {
+        StartMove();
         spotsTaken = new bool[collectibleSpawns.Length];
-        GenerateLayout();
+        GenerateCurrentLayout();
     }
 
-    public void GenerateLayout()
+    public void GenerateCurrentLayout()
     {
         int tempSpawnIndex = 0;
 
@@ -46,5 +45,10 @@ public class aLaCarte : MonoBehaviour
 
         currentNumberOfCollectiblesSpawned = 0;
         noSpawnIndex = tempSpawnIndex;
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

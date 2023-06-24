@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProtoINA : MonoBehaviour
+public class ProtoINA : Player
 {
     [SerializeField] float moveSpeed;
 
@@ -30,7 +30,6 @@ public class ProtoINA : MonoBehaviour
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
-    PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySprite;
 

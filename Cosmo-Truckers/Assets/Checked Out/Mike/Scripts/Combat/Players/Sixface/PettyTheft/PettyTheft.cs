@@ -2,17 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PettyTheft : MonoBehaviour
+public class PettyTheft : CombatMove
 {
-    [SerializeField] GameObject[] layouts;
-    [HideInInspector] public int Score = 0;
-
     PTMoney[] moneys;
 
     private void Start()
     {
-        int random = UnityEngine.Random.Range(0, layouts.Length);
-        Instantiate(layouts[random], transform);
+        StartMove();
+        GenerateLayout();
         moneys = FindObjectsOfType<PTMoney>();
     }
 
@@ -22,5 +19,10 @@ public class PettyTheft : MonoBehaviour
         {
             money.Activate();
         }
+    }
+
+    public override void EndMove()
+    {
+        throw new System.NotImplementedException();
     }
 }

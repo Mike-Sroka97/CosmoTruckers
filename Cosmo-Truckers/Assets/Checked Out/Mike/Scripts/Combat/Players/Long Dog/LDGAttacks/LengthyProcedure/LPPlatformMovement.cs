@@ -54,7 +54,7 @@ public class LPPlatformMovement : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            minigame.EndMinigame();
+            minigame.EndMove();
         }
     }
 }

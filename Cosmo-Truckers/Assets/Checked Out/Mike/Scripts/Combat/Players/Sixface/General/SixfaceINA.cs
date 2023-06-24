@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SixfaceINA : MonoBehaviour
+public class SixfaceINA : Player
 {
     //Movement variables
     [SerializeField] float moveSpeed;
@@ -40,7 +40,6 @@ public class SixfaceINA : MonoBehaviour
 
     float currentJumpHoldTime = 0;
 
-    PlayerCharacterINA INA;
     Rigidbody2D myBody;
     SpriteRenderer mySprite;
     Collider2D myCollider;
