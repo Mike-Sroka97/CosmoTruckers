@@ -8,9 +8,11 @@ public class SPPsendBack : MonoBehaviour
 
     Transform player;
     SugarPillPlacebo minigame;
+    SPPlayoutGenerator layoutGenerator;
 
     private void Start()
     {
+        layoutGenerator = transform.parent.parent.GetComponent<SPPlayoutGenerator>();
         player = FindObjectOfType<SixfaceINA>().transform;
         minigame = FindObjectOfType<SugarPillPlacebo>();
     }
@@ -25,6 +27,10 @@ public class SPPsendBack : MonoBehaviour
 
     private void MovePlayer()
     {
+        if(layoutGenerator)
+        {
+            layoutGenerator.DestroyMe();
+        }
         player.position = minigame.CurrentCheckPointLocation;
     }
 }

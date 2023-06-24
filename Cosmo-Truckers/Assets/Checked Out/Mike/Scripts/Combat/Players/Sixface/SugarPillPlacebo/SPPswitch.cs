@@ -8,10 +8,12 @@ public class SPPswitch : MonoBehaviour
     [SerializeField] SPPlayoutGenerator mySpawnZone;
 
     Collider2D myCollider;
+    SpriteRenderer myRenderer;
 
     private void Start()
     {
         myCollider = GetComponent<Collider2D>();
+        myRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -20,6 +22,7 @@ public class SPPswitch : MonoBehaviour
         {
             myDefaultDeadZone.SetActive(false);
             myCollider.enabled = false;
+            myRenderer.enabled = false;
             mySpawnZone.GenerateLayout();
         }
     }
@@ -28,5 +31,6 @@ public class SPPswitch : MonoBehaviour
     {
         myDefaultDeadZone.SetActive(true);
         myCollider.enabled = true;
+        myRenderer.enabled = true;
     }
 }

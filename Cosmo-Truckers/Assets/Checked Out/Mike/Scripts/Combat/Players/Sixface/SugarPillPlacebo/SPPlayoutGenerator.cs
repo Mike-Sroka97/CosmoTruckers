@@ -21,26 +21,28 @@ public class SPPlayoutGenerator : MonoBehaviour
             currentTime += Time.deltaTime;
             if(currentTime > layoutDuration)
             {
-                currentTime = 0;
-                activeLayout = false;
-                mySwitch.ResetMe();
-                Destroy(currentActiveLayout);
+                DestroyMe();
             }
         }
+    }
+
+    public void DestroyMe()
+    {
+        currentTime = 0;
+        activeLayout = false;
+        mySwitch.ResetMe();
+        Destroy(currentActiveLayout);
     }
 
     public void GenerateLayout()
     {
         activeLayout = true;
 
+        while(random == lastRandom)
+        {
+            random = UnityEngine.Random.Range(0, layouts.Length);
+        }
 
-        //TODO Cole unlock this method from its chains once you have 2+ layouts
-        //while(random == lastRandom)
-        //{
-        //    random = UnityEngine.Random.Range(0, layouts.Length);
-        //}
-
-        random = UnityEngine.Random.Range(0, layouts.Length);
         lastRandom = random;
         currentActiveLayout = Instantiate(layouts[random], transform);
     }
