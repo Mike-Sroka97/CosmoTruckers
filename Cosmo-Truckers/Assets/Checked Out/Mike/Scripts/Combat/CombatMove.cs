@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-interface CombatMove
+public abstract class CombatMove : MonoBehaviour
 {
+    [SerializeField] TargetType TypeOfAttack;
+    [SerializeField] Transform spawnPoint;
+    [SerializeField] GameObject[] layouts;
+
+    [HideInInspector] public int Score;
+    [HideInInspector] public bool PlayerDead;
+
     public enum TargetType
     {
         NoTarget,
@@ -16,7 +23,22 @@ interface CombatMove
         AllTarget
     }
 
-    void StartMove();
-    void EndMove();
-    void ApplyAugments();
+    public void StartMove()
+    {
+
+    }
+    public abstract void EndMove();
+    public void ApplyAugments()
+    {
+
+    }
+
+    protected void GenerateLayout()
+    {
+        if(layouts.Length > 0)
+        {
+            int random = UnityEngine.Random.Range(0, layouts.Length);
+            Instantiate(layouts[random], transform);
+        }
+    }
 }

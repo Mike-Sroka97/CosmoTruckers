@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FullCourse : MonoBehaviour
+public class FullCourse : CombatMove
 {
-    [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
+    private void Start()
+    {
+        GenerateLayout();
+    }
+
+    public override void EndMove()
+    {
+        //mess with this when we start adding functionality to the moves
+    }
 }
