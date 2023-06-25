@@ -30,16 +30,18 @@ public class SixfaceINA : Player
 
     float currentJumpHoldTime = 0;
 
-    SpriteRenderer mySprite;
+    SpriteRenderer myRenderer;
     Collider2D myCollider;
     int layermask = 1 << 9;
+    float startingGravity;
 
     private void Start()
     {
         PlayerInitialize();
 
         myBody = GetComponent<Rigidbody2D>();
-        mySprite = GetComponent<SpriteRenderer>();
+        startingGravity = myBody.gravityScale;
+        myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponentsInChildren<Collider2D>()[1]; //ignores parent
     }
 
@@ -80,7 +82,7 @@ public class SixfaceINA : Player
 
         while(damagedTime < iFrameDuration)
         {
-            mySprite.enabled = !mySprite.enabled;
+            myRenderer.enabled = !myRenderer.enabled;
             damagedTime += Time.deltaTime + damageFlashSpeed;
             if(damagedTime > damagedDuration)
             {
@@ -90,7 +92,7 @@ public class SixfaceINA : Player
         }
 
         iFrames = false;
-        mySprite.enabled = true;
+        myRenderer.enabled = true;
     }
 
     #region Attack
@@ -143,12 +145,12 @@ public class SixfaceINA : Player
         {
             canJump = false;
             isJumping = true;
-            myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y + (jumpSpeed * Time.deltaTime));
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
-            myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y + (jumpSpeed * Time.deltaTime));
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
         else if (isJumping)
         {
@@ -213,7 +215,7 @@ public class SixfaceINA : Player
         else
         {
             IsHovering = false;
-            myBody.gravityScale = 1;
+            myBody.gravityScale = startingGravity;
         }
     }
     #endregion
