@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &619412801159302523
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7505014451420625301}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7505014451420625301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619412801159302523}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7149758571408048812}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7149758570810539560
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +320,7 @@ Transform:
   m_Children:
   - {fileID: 7149758570959422683}
   - {fileID: 3088347998787040629}
+  - {fileID: 7505014451420625301}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -304,6 +336,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f89e1ea5b76f80843a1d961b2378a933, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TypeOfAttack: 0
+  spawnPoints:
+  - {fileID: 7505014451420625301}
+  layouts: []
+  Score: 0
+  PlayerDead: 0
   touchableShapes:
   - {fileID: 5537347242445109374, guid: 4d04993427c795940ada677307ed7f7f, type: 3}
   - {fileID: 7689840302237356327, guid: 370903fb3c3fc6848ac45fa1a21e6756, type: 3}
@@ -326,7 +364,6 @@ MonoBehaviour:
   - {fileID: 8150942958496571082, guid: 873f92318ebc19d45b497de265f0b5cc, type: 3}
   - {fileID: 3981761864490260637, guid: 1ea00fad12773624ca07e0858466a87d, type: 3}
   maxLayouts: 3
-  Score: 0
 --- !u!1 &7149758571818400413
 GameObject:
   m_ObjectHideFlags: 0
