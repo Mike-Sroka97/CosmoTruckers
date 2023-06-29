@@ -9,6 +9,7 @@ public class SeedSprout : CombatMove
 
     private void Start()
     {
+        GenerateLayout();
         flowers = GetComponentsInChildren<SeedSproutFlower>();
         NextFlower();
     }
