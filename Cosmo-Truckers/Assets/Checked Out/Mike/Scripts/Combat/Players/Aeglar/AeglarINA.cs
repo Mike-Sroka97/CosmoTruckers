@@ -48,6 +48,8 @@ public class AeglarINA : Player
         return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
     }
 
+    public bool GetDashState() { return canDash; }
+
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
@@ -94,7 +96,7 @@ public class AeglarINA : Player
     /// </summary>
     public void Jump()
     {
-        if(IsGrounded(0.02f))
+        if(IsGrounded(0.02f) && canDash)
         {
             currentNumberOfAttacks = 0;
             currentNumberOfJumps = 0;
@@ -102,7 +104,6 @@ public class AeglarINA : Player
 
         if(Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
         {
-            currentNumberOfJumps++;
             StartCoroutine(Dash(true, true));
 ;       }
     }
@@ -150,6 +151,7 @@ public class AeglarINA : Player
     {
         if (up)
         {
+            currentNumberOfJumps++;
             verticalAttackArea.SetActive(true);
         }
         else

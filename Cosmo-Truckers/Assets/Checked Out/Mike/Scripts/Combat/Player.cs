@@ -30,4 +30,6 @@ public abstract class Player : MonoBehaviour
     }
 
     public abstract IEnumerator Damaged();
+
+    public bool GetDamaged() { return damaged; }
 }
