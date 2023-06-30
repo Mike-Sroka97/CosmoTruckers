@@ -30,6 +30,8 @@ public abstract class CombatMove : MonoBehaviour
 
     protected void StartMove()
     {
+        if (spawnPoints.Length == 0) return; //TEMP
+
         Player[] players = FindObjectsOfType<Player>();
 
         if(players.Length <= 1)
