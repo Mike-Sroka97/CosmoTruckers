@@ -11,16 +11,16 @@ public class PotentPattyHand : MonoBehaviour
     [SerializeField] float xVelocity;
     [SerializeField] int numberofFlashes;
 
+    public bool Activated { get; private set; }
+
     Rigidbody2D myBody;
     Vector3 startingPosition;
 
     private void Start()
     {
+        Activated = false;
         myBody = GetComponent<Rigidbody2D>();
         startingPosition = transform.position;
-
-        //remove
-        StartCoroutine(Activate());
     }
 
     private void Update()
@@ -32,11 +32,13 @@ public class PotentPattyHand : MonoBehaviour
     {
         if(transform.position.x < startingPosition.x && xVelocity > 0)
         {
+            Activated = false;
             myBody.velocity = Vector2.zero;
             transform.position = startingPosition;
         }
         else if(transform.position.x > startingPosition.x && xVelocity < 0)
         {
+            Activated = false;
             myBody.velocity = Vector2.zero;
             transform.position = startingPosition;
         }
@@ -44,6 +46,7 @@ public class PotentPattyHand : MonoBehaviour
 
     public IEnumerator Activate()
     {
+        Activated = true;
         int currentNumberOfFlashes = 0;
         float currentTime = 0;
 

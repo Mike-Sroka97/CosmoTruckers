@@ -67,7 +67,7 @@ public class PotentPattyMech : MonoBehaviour
 
     private void Jump()
     {
-        if(aeglar.DashingUp && !isJumping)
+        if(aeglar.DashingUp && !isJumping && transform.position.y < 0)
         {
             StartCoroutine(DashUp());
         }
