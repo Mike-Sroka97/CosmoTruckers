@@ -11,6 +11,11 @@ public class AeglarINA : Player
     [SerializeField] float CDbetweenDashes = .25f;
     [SerializeField] float dashUpForce;
 
+    //mech helpers
+    public bool DashingLeft { get; private set; }
+    public bool DashingRight { get; private set; }
+    public bool DashingUp { get; private set; }
+
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject verticalAttackArea;
     [SerializeField] int numberOfAttacks = 2;
@@ -75,7 +80,7 @@ public class AeglarINA : Player
     /// </summary>
     public void Attack()
     {
-        if(currentNumberOfAttacks < numberOfAttacks)
+        if (currentNumberOfAttacks < numberOfAttacks)
         {
             if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x < 0)
             {
@@ -96,16 +101,17 @@ public class AeglarINA : Player
     /// </summary>
     public void Jump()
     {
-        if(IsGrounded(0.02f) && canDash)
+        if (IsGrounded(0.02f) && canDash)
         {
             currentNumberOfAttacks = 0;
             currentNumberOfJumps = 0;
         }
 
-        if(Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
+        if (Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
         {
             StartCoroutine(Dash(true, true));
-;       }
+            ;
+        }
     }
     #endregion
 
@@ -167,14 +173,17 @@ public class AeglarINA : Player
 
         if (up)
         {
+            DashingUp = true;
             myBody.AddForce(new Vector2(0, jumpSpeed));
         }
         else if (left)
         {
+            DashingLeft = true;
             myBody.AddForce(new Vector2(-dashSpeed, dashUpForce));
         }
         else
         {
+            DashingRight = true;
             myBody.AddForce(new Vector2(dashSpeed, dashUpForce));
         }
 
@@ -207,12 +216,15 @@ public class AeglarINA : Player
         }
 
         currentDashTime = 0;
-        while(currentDashTime < CDbetweenDashes)
+        while (currentDashTime < CDbetweenDashes)
         {
             currentDashTime += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
+        DashingUp = false;
+        DashingLeft = false;
+        DashingRight = false;
         canDash = true;
     }
     public void SpecialMove()
