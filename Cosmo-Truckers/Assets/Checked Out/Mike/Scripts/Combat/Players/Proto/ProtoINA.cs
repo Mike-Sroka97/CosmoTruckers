@@ -6,7 +6,8 @@ public class ProtoINA : Player
 {
     [SerializeField] float attackDuration;
     [SerializeField] float attackCD;
-    [SerializeField] GameObject attackArea;
+    [SerializeField] GameObject horizontalAttackArea;
+    [SerializeField] GameObject verticalAttackArea;
 
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
@@ -28,14 +29,16 @@ public class ProtoINA : Player
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
-    Rigidbody2D myBody;
-    SpriteRenderer mySprite;
+    Collider2D myCollider;
+    int layermask = 1 << 9;
+    SpriteRenderer myRenderer;
 
     private void Start()
     {
         currentJumpStrength = jumpSpeed;
         myBody = GetComponent<Rigidbody2D>();
-        mySprite = GetComponent<SpriteRenderer>();
+        myCollider = GetComponentsInChildren<Collider2D>()[0];
+        myRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void Update()
@@ -56,6 +59,37 @@ public class ProtoINA : Player
             myBody.velocity = new Vector2(myBody.velocity.x, 0);
         }
     }
+    public override IEnumerator Damaged()
+    {
+        float damagedTime = 0;
+
+        while (damagedTime < iFrameDuration)
+        {
+            myRenderer.enabled = !myRenderer.enabled;
+            damagedTime += Time.deltaTime + damageFlashSpeed;
+            if (damagedTime > damagedDuration)
+            {
+                damaged = false;
+            }
+            yield return new WaitForSeconds(damageFlashSpeed);
+        }
+
+        iFrames = false;
+        myRenderer.enabled = true;
+    }
+
+    private void IsGrounded()
+    {
+        if (Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
+        {
+            canJump = true;
+            currentJumpHoldTime = 0;
+        }
+        else
+        {
+            canJump = false;
+        }
+    }
 
     #region Attack
     /// <summary>
@@ -63,40 +97,57 @@ public class ProtoINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        if(Input.GetKeyDown(KeyCode.Mouse0) && canAttack && Input.GetKey(KeyCode.W))
         {
-            StartCoroutine(ProtoAttack());
+            StartCoroutine(ProtoAttack(false));
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        {
+            StartCoroutine(ProtoAttack(true));
         }
     }
 
-    IEnumerator ProtoAttack()
+    IEnumerator ProtoAttack(bool horizontal)
     {
         canAttack = false;
-        attackArea.SetActive(true);
-        yield return new WaitForSeconds(attackDuration);
-        attackArea.SetActive(false);
-        yield return new WaitForSeconds(attackCD);
+
+        if(horizontal)
+        {
+            horizontalAttackArea.SetActive(true);
+            yield return new WaitForSeconds(attackDuration);
+            horizontalAttackArea.SetActive(false);
+            yield return new WaitForSeconds(attackCD);
+        }
+        else
+        {
+            verticalAttackArea.SetActive(true);
+            yield return new WaitForSeconds(attackDuration);
+            verticalAttackArea.SetActive(false);
+            yield return new WaitForSeconds(attackCD);
+        }
+
         canAttack = true;
     }
     #endregion
 
     #region Jump
     /// <summary>
-    /// Aeglar will not be able to move while jumping. He can still dash
+    /// Proto has normal player jumping
     /// </summary>
     public void Jump()
     {
+        IsGrounded();
+
         if (Input.GetKeyDown("space") && canJump && !isJumping)
         {
             canJump = false;
             isJumping = true;
-            myBody.AddForce(new Vector2(0, jumpSpeed));
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
-            currentJumpStrength = jumpSpeed * ((jumpMaxHoldTime - currentJumpHoldTime) / jumpMaxHoldTime);
-            myBody.AddForce(new Vector2(0, currentJumpStrength));
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
         else if (isJumping)
         {
@@ -107,27 +158,31 @@ public class ProtoINA : Player
 
     #region Movement
     /// <summary>
-    /// Aeglar's movement will cause short spurts of movements. There is an associated cooldown to this
+    /// Proto has base player movement characteristics
     /// </summary>
     public void Movement()
     {
         if (!canMove) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !attackArea.activeInHierarchy)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
-            transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !attackArea.activeInHierarchy)
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
+        }
+        else
+        {
+            myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
     }
     #endregion
@@ -217,11 +272,6 @@ public class ProtoINA : Player
         canTeleport = false;
         yield return new WaitForSeconds(teleportCD);
         canTeleport = true;
-    }
-
-    public override IEnumerator Damaged()
-    {
-        throw new System.NotImplementedException();
     }
 
     #endregion
