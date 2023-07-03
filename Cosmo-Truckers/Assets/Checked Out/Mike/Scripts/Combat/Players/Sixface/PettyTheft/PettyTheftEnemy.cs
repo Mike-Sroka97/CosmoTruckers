@@ -21,7 +21,7 @@ public class PettyTheftEnemy : MonoBehaviour
     [SerializeField] GameObject Money;
     [HideInInspector] public bool onlyBob = false;
     [SerializeField] Collider2D[] collidersToDisable;
-    [SerializeField] SpriteRenderer[] spritesToDisable;
+    [SerializeField] GameObject[] objectsToDisable;
 
     [SerializeField] bool movingUp = true;
     [SerializeField] bool movingRight = true;
@@ -137,9 +137,9 @@ public class PettyTheftEnemy : MonoBehaviour
         {
             collider.enabled = false;
         }
-        foreach(SpriteRenderer sprite in spritesToDisable)
+        foreach(GameObject _object in objectsToDisable)
         {
-            sprite.enabled = false;
+            _object.SetActive(false);
         }
 
         minigame.Score++;

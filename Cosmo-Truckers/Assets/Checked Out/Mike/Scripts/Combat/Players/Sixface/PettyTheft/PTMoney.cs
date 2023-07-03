@@ -11,12 +11,18 @@ public class PTMoney : MonoBehaviour
     {
         minigame = FindObjectOfType<PettyTheft>();
         myRenderer = GetComponent<SpriteRenderer>();
+
+        //Set outline for money to off 
+        myRenderer.material.SetInt("_MainValue", 0); 
     }
 
     public void Activate()
     {
         GetComponent<Collider2D>().enabled = true;
         myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 1);
+
+        //Set outline for money to on 
+        myRenderer.material.SetInt("_MainValue", 1);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
