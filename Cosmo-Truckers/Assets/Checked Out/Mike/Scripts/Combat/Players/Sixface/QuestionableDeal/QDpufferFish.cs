@@ -42,6 +42,8 @@ public class QDpufferFish : MonoBehaviour
         {
             myRenderer.enabled = false;
             myCollider.enabled = false;
+            //Cole added this to disable the Snoot upon hitting it. Before it stayed after player attack. 
+            transform.GetChild(0).gameObject.SetActive(false); 
             gust.SetActive(true);
             gust.transform.eulerAngles = Vector3.zero;
             enabled = false;
