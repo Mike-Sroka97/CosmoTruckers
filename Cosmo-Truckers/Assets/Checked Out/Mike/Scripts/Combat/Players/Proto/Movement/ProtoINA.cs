@@ -83,7 +83,10 @@ public class ProtoINA : Player
         if (Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
         {
             canJump = true;
-            currentJumpHoldTime = 0;
+            if(!isJumping)
+            {
+                currentJumpHoldTime = 0;
+            }
         }
         else
         {
