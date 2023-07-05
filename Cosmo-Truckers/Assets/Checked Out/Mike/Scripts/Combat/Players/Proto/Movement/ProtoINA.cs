@@ -14,6 +14,10 @@ public class ProtoINA : Player
 
     [SerializeField] float teleportDistance;
     [SerializeField] float teleportCD;
+    [SerializeField] float teleportHoldTime;
+    [SerializeField] SpriteRenderer[] teleportSprites;
+    [SerializeField] Color teleportSpriteStartingColor;
+    [SerializeField] Color invalidteleportColor;
 
     [SerializeField] float positiveXBoundary;
     [SerializeField] float positiveYBoundary;
@@ -38,7 +42,8 @@ public class ProtoINA : Player
         currentJumpStrength = jumpSpeed;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponentsInChildren<SpriteRenderer>()[0];
+        DebuffInit();
     }
 
     private void Update()
@@ -61,6 +66,10 @@ public class ProtoINA : Player
     }
     public override IEnumerator Damaged()
     {
+        myBody.velocity = Vector2.zero;
+        canAttack = false;
+        canMove = false;
+        canTeleport = false;
         float damagedTime = 0;
 
         while (damagedTime < iFrameDuration)
@@ -76,6 +85,9 @@ public class ProtoINA : Player
 
         iFrames = false;
         myRenderer.enabled = true;
+        canAttack = true;
+        canMove = true;
+        canTeleport = true;
     }
 
     private void IsGrounded()
@@ -92,6 +104,14 @@ public class ProtoINA : Player
         {
             canJump = false;
         }
+    }
+
+    public void SetTelportBoundaries(float newPosX, float newPosY, float newNegX, float newNegY)
+    {
+        positiveXBoundary = newPosX;
+        positiveYBoundary = newPosY;
+        negativeXBoundary = newNegX;
+        negativeYBoundary = newNegY;
     }
 
     #region Attack
@@ -196,9 +216,158 @@ public class ProtoINA : Player
     /// </summary>
     public void SpecialMove()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && canTeleport)
+        if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
+        {
+            TeleportSprites();
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport)
         {
             Teleport();
+        }
+    }
+
+    private void TeleportSprites()
+    {
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        {
+            if (teleportSprites[0].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[0].enabled = true;
+            }
+            if ((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary))
+            {
+                teleportSprites[0].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[0].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        {
+            if (teleportSprites[1].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[1].enabled = true;
+            }
+            if ((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary))
+            {
+                teleportSprites[1].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[1].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        {
+            if (teleportSprites[2].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[2].enabled = true;
+            }
+            if ((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary))
+            {
+                teleportSprites[2].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[2].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        {
+            if (teleportSprites[3].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[3].enabled = true;
+            }
+            if ((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary))
+            {
+                teleportSprites[3].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[3].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            if (teleportSprites[4].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[4].enabled = true;
+            }
+            if ((transform.position.x - teleportDistance < negativeXBoundary))
+            {
+                teleportSprites[4].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[4].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            if (teleportSprites[5].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[5].enabled = true;
+            }
+            if ((transform.position.y + teleportDistance > positiveYBoundary))
+            {
+                teleportSprites[5].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[5].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            if (teleportSprites[6].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[6].enabled = true; 
+            }
+            if ((transform.position.y - teleportDistance < negativeYBoundary))
+            {
+                teleportSprites[6].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[6].color = teleportSpriteStartingColor;
+            }
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            if (teleportSprites[7].enabled == false)
+            {
+                ResetTeleportSprites();
+                teleportSprites[7].enabled = true;
+            }
+            if ((transform.position.x + teleportDistance > positiveXBoundary))
+            {
+                teleportSprites[7].color = invalidteleportColor;
+            }
+            else
+            {
+                teleportSprites[7].color = teleportSpriteStartingColor;
+            }
+        }
+        else
+        {
+            ResetTeleportSprites();
+        }
+    }
+
+    private void ResetTeleportSprites()
+    {
+        foreach(SpriteRenderer sprite in teleportSprites)
+        {
+            sprite.color = teleportSpriteStartingColor;
+            sprite.enabled = false;
         }
     }
 
@@ -272,8 +441,18 @@ public class ProtoINA : Player
 
     IEnumerator TeleportCooldown()
     {
+        ResetTeleportSprites();
+        myBody.velocity = Vector2.zero;
+        currentJumpHoldTime = jumpMaxHoldTime;
         canTeleport = false;
-        yield return new WaitForSeconds(teleportCD);
+        myBody.gravityScale = 0;
+
+        yield return new WaitForSeconds(teleportHoldTime);
+
+        myBody.gravityScale = initialGravityModifier;
+
+        yield return new WaitForSeconds(teleportCD - teleportHoldTime);
+
         canTeleport = true;
     }
 

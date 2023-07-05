@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class SparkShield : CombatMove
 {
+    [SerializeField] float xTeleportLimit;
+    [SerializeField] float yTeleportLimit;
+
     [HideInInspector] public bool PlayerBuff = false;
 
     private void Start()
     {
+        FindObjectOfType<ProtoINA>().SetTelportBoundaries(xTeleportLimit, yTeleportLimit, -xTeleportLimit, -yTeleportLimit);
         GenerateLayout();
         StartMove();
     }

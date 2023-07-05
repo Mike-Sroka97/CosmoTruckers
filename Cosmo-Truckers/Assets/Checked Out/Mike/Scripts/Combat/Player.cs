@@ -16,6 +16,14 @@ public abstract class Player : MonoBehaviour
     protected bool damaged = false;
     protected Rigidbody2D myBody;
 
+    //Things that can be affected by buffs / debuffs
+    protected float initialGravityModifier;
+
+    protected void DebuffInit()
+    {
+        initialGravityModifier = myBody.gravityScale; // * grav modifier debuff
+    }
+
     public void PlayerInitialize()
     {
         myBody = GetComponent<Rigidbody2D>();
