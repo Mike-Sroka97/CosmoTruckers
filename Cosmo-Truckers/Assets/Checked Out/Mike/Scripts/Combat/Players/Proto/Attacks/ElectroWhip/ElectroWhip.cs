@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ElectroWhip : CombatMove
 {
-    [SerializeField] ElectroWhipEnemy[] enemies;
+    ElectroWhipEnemy[] enemies;
 
     private void Start()
     {
-        Score = enemies.Length;
         StartMove();
         GenerateLayout();
+        enemies = FindObjectsOfType<ElectroWhipEnemy>();
+        Score = enemies.Length;
     }
 
     public override void EndMove()
