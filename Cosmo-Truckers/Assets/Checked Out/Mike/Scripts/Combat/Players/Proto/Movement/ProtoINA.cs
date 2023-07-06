@@ -446,9 +446,11 @@ public class ProtoINA : Player
         currentJumpHoldTime = jumpMaxHoldTime;
         canTeleport = false;
         myBody.gravityScale = 0;
+        canMove = false;
 
         yield return new WaitForSeconds(teleportHoldTime);
 
+        canMove = true;
         myBody.gravityScale = initialGravityModifier;
 
         yield return new WaitForSeconds(teleportCD - teleportHoldTime);
