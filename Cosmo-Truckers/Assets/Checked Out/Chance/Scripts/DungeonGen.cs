@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class DungeonGen : MonoBehaviour
 {
     [SerializeField] GameObject[] Levels;
-    [SerializeField] List<Node.DungeonNode> AllNodes;
+    [SerializeField] Node.DungeonNode RestNode;
+    [SerializeField] List<Node.DungeonNode> CombatNodes;
+    [SerializeField] List<Node.DungeonNode> MiddleNodes;
+    [SerializeField] List<Node.DungeonNode> BossNode;
 
     [Header("Line Options")]
     [SerializeField] Color LineStartColor;
@@ -22,7 +25,6 @@ public class DungeonGen : MonoBehaviour
 
     [Header("Storage")]
     [SerializeField][Tooltip("Set to 0 for unseeded")] int RandomSeed = 0;
-    [SerializeField] int StartingNodes = 1;
     [SerializeField] List<DungeonData> CurrentLayout = new List<DungeonData>();
     #region Struct
     [System.Serializable]
@@ -60,14 +62,13 @@ public class DungeonGen : MonoBehaviour
         if (RandomSeed == 0)
             Debug.LogWarning($"Dungeon Seed: {rand}");
 
-        int NodesToAdd = StartingNodes;
+        int NodesToAdd = 1;
         int NodesToAddNext = 0;
+
+        List<Node.DungeonNode> tempNodes = new List<Node.DungeonNode>(MiddleNodes);
 
         for (int i = 0; i < Levels.Length; i++)
         {
-            List<int> weights = new List<int>();
-            List<Node.DungeonNode> tempNodes = new List<Node.DungeonNode>(AllNodes);
-
             CurrentLayout.Add(new DungeonData(
                 i,
                 new List<Node.DungeonNode>(),
@@ -75,31 +76,76 @@ public class DungeonGen : MonoBehaviour
                 RandomSeed != 0 ? RandomSeed : rand)
                 );
 
-            while (NodesToAdd > 0)
+            #region Based on weights (Obsolete)
+            //List<int> weights = new List<int>();
+            //while (NodesToAdd > 0)
+            //{
+            //    //Add node weights to new list
+            //    for (int j = 0; j < tempNodes.Count; j++)
+            //        weights.Add(tempNodes[j].Weight);
+
+
+            //    int choice = MathCC.GetRandomWeightedIndex(weights);
+            //    CurrentLayout[i].Add(tempNodes[choice]);
+
+            //    if (tempNodes[choice].Connections > NodesToAddNext)
+            //        NodesToAddNext = tempNodes[choice].Connections;
+
+            //    tempNodes.RemoveAt(choice);
+            //    weights.Clear();
+
+            //    NodesToAdd--;
+            //}
+            #endregion
+            #region Pure chaos mode
+            //The Rest Node
+            if (i == Levels.Length - 2)
             {
-                //Add node weights to new list
-                for (int j = 0; j < tempNodes.Count; j++)
-                    weights.Add(tempNodes[j].Weight);
-
-
-                int choice = MathCC.GetRandomWeightedIndex(weights);
-                CurrentLayout[i].Add(tempNodes[choice]);
-
-                if (tempNodes[choice].Connections > NodesToAddNext)
-                    NodesToAddNext = tempNodes[choice].Connections;
-
-                tempNodes.RemoveAt(choice);
-                weights.Clear();
-
-                NodesToAdd--;
+                CurrentLayout[i].Add(RestNode);
+                NodesToAddNext = 1;
             }
+            //The Boss Node
+            else if(i == Levels.Length - 1)
+            {
+                CurrentLayout[i].Add(BossNode[Random.Range(0, BossNode.Count)]);
+                NodesToAddNext = 0;
+            }
+            //Combat Nodes
+            else if(i % 3 == 0)
+            {
+                int choice = Random.Range(0, CombatNodes.Count);
+                CurrentLayout[i].Add(CombatNodes[choice]);
+                NodesToAddNext = CombatNodes[choice].Connections;
+            }
+            //Random Middle Nodes
+            else
+            {
+                while (NodesToAdd > 0)
+                {
+                    //Temparary while there are not a ton of test nodes to keep from cycling tho them all
+                    //TODO 
+                    //Remove
+                    if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNode>(MiddleNodes);
+
+                    int choice = Random.Range(0, tempNodes.Count);
+
+                    CurrentLayout[i].Add(tempNodes[choice]);
+
+                    if (tempNodes[choice].Connections > NodesToAddNext)
+                        NodesToAddNext = tempNodes[choice].Connections;
+
+                    tempNodes.RemoveAt(choice);
+
+                    NodesToAdd--;
+                }
+            }
+            #endregion
 
             NodesToAdd = NodesToAddNext;
             NodesToAddNext = 0;
-
-
-            tempNodes.Clear();
         }
+
+        tempNodes.Clear();
 
         Random.InitState((int)System.DateTime.Now.Ticks);
     }
@@ -125,8 +171,8 @@ public class DungeonGen : MonoBehaviour
     {
         for (int i = 0; i < Levels.Length; i++)
         {
-            Levels[i].GetComponent<HorizontalLayoutGroup>().enabled = true;
-            Levels[i].GetComponent<HorizontalLayoutGroup>().childAlignment = CurrentLayout[i].AnchorPoint;
+            Levels[i].GetComponent<VerticalLayoutGroup>().enabled = true;
+            Levels[i].GetComponent<VerticalLayoutGroup>().childAlignment = CurrentLayout[i].AnchorPoint;
 
             for(int j = 0; j < CurrentLayout[i].Nodes.Count; j++)
             {
@@ -142,8 +188,8 @@ public class DungeonGen : MonoBehaviour
 
         Random.InitState(RandomSeed != 0 ? RandomSeed : CurrentLayout[0].Seed);
 
-        for (int i = 0; i < Levels.Length; i++)
-            Levels[i].GetComponent<HorizontalLayoutGroup>().enabled = false;
+        //for (int i = 0; i < Levels.Length; i++)
+            //Levels[i].GetComponent<VerticalLayoutGroup>().enabled = false;
 
         for (int i = 0; i < Levels.Length - 1; i++)
         {
@@ -161,8 +207,10 @@ public class DungeonGen : MonoBehaviour
                     newLine.startWidth = LineStartWidth;
 
                     int Connection = Random.Range(0, Levels[i + 1].transform.childCount);
-                    while(connections.Contains(Connection))
-                        Connection = Random.Range(0, Levels[i + 1].transform.childCount);
+
+                    if(Levels[i + 1].transform.childCount > 1)
+                        while(connections.Contains(Connection))
+                            Connection = Random.Range(0, Levels[i + 1].transform.childCount);
 
                     connections.Add(Connection);
 
