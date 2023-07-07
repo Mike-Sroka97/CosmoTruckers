@@ -24,6 +24,7 @@ public class ProtoINA : Player
     [SerializeField] float negativeXBoundary;
     [SerializeField] float negativeYBoundary;
 
+    [HideInInspector] public bool IsTeleporting { get; private set; }
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
@@ -53,7 +54,6 @@ public class ProtoINA : Player
         Jump();
         SpecialMove();
     }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -67,6 +67,7 @@ public class ProtoINA : Player
     public override IEnumerator Damaged()
     {
         myBody.velocity = Vector2.zero;
+        canJump = false;
         canAttack = false;
         canMove = false;
         canTeleport = false;
@@ -447,9 +448,11 @@ public class ProtoINA : Player
         canTeleport = false;
         myBody.gravityScale = 0;
         canMove = false;
+        IsTeleporting = true;
 
         yield return new WaitForSeconds(teleportHoldTime);
 
+        IsTeleporting = false;
         canMove = true;
         myBody.gravityScale = initialGravityModifier;
 
