@@ -53,6 +53,8 @@ public class ProtoINA : Player
         SpecialMove();
     }
 
+    public void SetCanTeleport(bool toggle) { canTeleport = toggle; }
+
     public override IEnumerator Damaged()
     {
         foreach(SpriteRenderer sprite in teleportSprites)
@@ -74,15 +76,15 @@ public class ProtoINA : Player
             if (damagedTime > damagedDuration)
             {
                 damaged = false;
+                canAttack = true;
+                canMove = true;
+                canTeleport = true;
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
         iFrames = false;
         myRenderer.enabled = true;
-        canAttack = true;
-        canMove = true;
-        canTeleport = true;
     }
 
     private void IsGrounded()
@@ -451,7 +453,10 @@ public class ProtoINA : Player
         yield return new WaitForSeconds(teleportHoldTime);
 
         IsTeleporting = false;
-        canMove = true;
+        if(!damaged)
+        {
+            canMove = true;
+        }
         myBody.gravityScale = initialGravityModifier;
 
         yield return new WaitForSeconds(teleportCD - teleportHoldTime);
