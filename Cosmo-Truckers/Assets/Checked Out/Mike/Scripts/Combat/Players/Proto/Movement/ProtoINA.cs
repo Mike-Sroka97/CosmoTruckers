@@ -31,7 +31,6 @@ public class ProtoINA : Player
     bool canAttack = true;
     bool canTeleport = true;
 
-    float currentJumpStrength;
     float currentJumpHoldTime = 0;
 
     Collider2D myCollider;
@@ -40,7 +39,6 @@ public class ProtoINA : Player
 
     private void Start()
     {
-        currentJumpStrength = jumpSpeed;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
         myRenderer = GetComponentsInChildren<SpriteRenderer>()[0];
@@ -54,18 +52,14 @@ public class ProtoINA : Player
         Jump();
         SpecialMove();
     }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Ground")
-        {
-            canJump = true;
-            currentJumpHoldTime = 0;
-            currentJumpStrength = jumpSpeed;
-            myBody.velocity = new Vector2(myBody.velocity.x, 0);
-        }
-    }
+
     public override IEnumerator Damaged()
     {
+        foreach(SpriteRenderer sprite in teleportSprites)
+        {
+            sprite.enabled = false;
+        }
+
         myBody.velocity = Vector2.zero;
         canJump = false;
         canAttack = false;
@@ -223,6 +217,10 @@ public class ProtoINA : Player
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport)
         {
+            foreach (SpriteRenderer sprite in teleportSprites)
+            {
+                sprite.enabled = false;
+            }
             Teleport();
         }
     }

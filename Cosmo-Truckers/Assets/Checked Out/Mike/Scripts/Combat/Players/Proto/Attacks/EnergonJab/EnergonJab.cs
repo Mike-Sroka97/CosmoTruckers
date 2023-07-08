@@ -15,6 +15,7 @@ public class EnergonJab : CombatMove
     {
         GenerateLayout();
         shockAreas = FindObjectsOfType<EnergonJabShockArea>();
+        StartMove();
     }
 
     private void Update()
