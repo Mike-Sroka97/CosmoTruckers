@@ -7,6 +7,11 @@ public class QDpufferFish : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] float movementSpeed;
 
+    //Cole added this to instantiate feather PS
+    [SerializeField] GameObject featherParticleSystem; 
+
+    //End of Cole additions
+
     Transform target;
     GameObject gust;
     SpriteRenderer myRenderer;
@@ -40,12 +45,13 @@ public class QDpufferFish : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
+            //Instantiate feather particle system on hit (will delete itself)
+            Instantiate(featherParticleSystem, transform.position, Quaternion.identity);
+
             myRenderer.enabled = false;
             myCollider.enabled = false;
-            //Cole added this to disable the Snoot upon hitting it. Before it stayed after player attack. 
-            transform.GetChild(0).gameObject.SetActive(false); 
+            transform.eulerAngles = Vector3.zero;
             gust.SetActive(true);
-            gust.transform.eulerAngles = Vector3.zero;
             enabled = false;
 
         }
