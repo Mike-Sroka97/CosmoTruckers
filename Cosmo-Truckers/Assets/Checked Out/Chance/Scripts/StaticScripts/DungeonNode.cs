@@ -9,6 +9,7 @@ namespace Node
     public class DungeonNode : ScriptableObject
     {
         //How often this node is selected
+        [System.Obsolete("If node weight help with keeping dungeons 'fair' can be re added back in")]
         public int Weight;
         //How many connections from this node
         public int Connections;
