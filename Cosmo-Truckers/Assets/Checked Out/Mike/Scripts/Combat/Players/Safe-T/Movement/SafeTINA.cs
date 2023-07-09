@@ -13,6 +13,7 @@ public class SafeTINA : Player
     [SerializeField] float jumpMaxHoldTime;
     [SerializeField] float coyoteTime;
     [SerializeField] float jumpGroundedDelay;
+    [SerializeField] LineRenderer myLineRenderer;
 
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
@@ -25,6 +26,7 @@ public class SafeTINA : Player
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
     float currentCoyoteTime;
+    const float startingHeight = 2.5f;
 
     int layermask = 1 << 9; //ground
     Vector2 bottomLeft;
@@ -64,7 +66,6 @@ public class SafeTINA : Player
         if(collision.gameObject.layer == 9 && IsGrounded(.02f))
         {
             ShortHop();
-            transform.parent = collision.transform;
         }
     }
 
@@ -76,14 +77,6 @@ public class SafeTINA : Player
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 9)
-        {
-            transform.parent = null;
-        }
-    }
-
     public void ResetMoveSpeed() { moveSpeed = originalMoveSpeed; }
     public void SetMoveSpeed(float newSpeed) { moveSpeed = newSpeed; }
     public float GetMoveSpeed() { return moveSpeed; }
@@ -91,6 +84,10 @@ public class SafeTINA : Player
 
     public override IEnumerator Damaged()
     {
+        HandleLineRenderer(startingHeight);
+        canAttack = false;
+        canMove = false;
+        canJump = false;
         float damagedTime = 0;
 
         while (damagedTime < iFrameDuration)
@@ -152,11 +149,20 @@ public class SafeTINA : Player
         {
             currentJumpHoldTime += Time.deltaTime;
             if(currentJumpHoldTime > jumpMaxHoldTime) { currentJumpHoldTime = jumpMaxHoldTime; }
+            if(IsGrounded(raycastHopHelper))
+            {
+                HandleLineRenderer(currentJumpHoldTime);
+            }
+            else
+            {
+                HandleLineRenderer(startingHeight);
+            }
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper) || currentCoyoteTime < coyoteTime))
         {
+            HandleLineRenderer(startingHeight);
             myBody.velocity = new Vector2(myBody.velocity.x, 0);
             myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;
@@ -166,10 +172,24 @@ public class SafeTINA : Player
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
         {
+            HandleLineRenderer(startingHeight);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
             StartCoroutine(JustJumped());
+        }
+    }
+
+    private void HandleLineRenderer(float pointTwoPosition)
+    {
+        if(pointTwoPosition == startingHeight)
+        {
+            myLineRenderer.SetPosition(1, new Vector3(0, startingHeight, 0));
+        }
+        else
+        {
+            //Don't ask
+            myLineRenderer.SetPosition(1, new Vector3(0, (Mathf.Pow(pointTwoPosition * (1 + jumpSpeedAccrual), jumpMaxHoldTime * 1.5f)), 0));
         }
     }
 
@@ -253,6 +273,8 @@ public class SafeTINA : Player
     {
         if(isJumping && Input.GetKeyDown(KeyCode.Mouse1))
         {
+            HandleLineRenderer(startingHeight);
+            isJumping = false;
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
