@@ -11,6 +11,7 @@ public class ProtoINA : Player
 
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
+    [SerializeField] float coyoteTime;
 
     [SerializeField] float teleportDistance;
     [SerializeField] float teleportCD;
@@ -32,10 +33,14 @@ public class ProtoINA : Player
     bool canTeleport = true;
 
     float currentJumpHoldTime = 0;
+    float currentCoyoteTime = 0;
 
     Collider2D myCollider;
     int layermask = 1 << 9;
+    const float distance = 0.05f;
     SpriteRenderer myRenderer;
+    Vector2 bottomLeft;
+    Vector2 bottomRight;
 
     private void Start()
     {
@@ -54,6 +59,11 @@ public class ProtoINA : Player
     }
 
     public void SetCanTeleport(bool toggle) { canTeleport = toggle; }
+
+    public void ResetTeleportBoundaries()
+    {
+        SetTelportBoundaries(positiveXBoundary, positiveYBoundary, negativeXBoundary, negativeYBoundary);
+    }
 
     public override IEnumerator Damaged()
     {
@@ -89,17 +99,27 @@ public class ProtoINA : Player
 
     private void IsGrounded()
     {
-        if (Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
+        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
+        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
+
+        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
         {
             canJump = true;
             if(!isJumping)
             {
                 currentJumpHoldTime = 0;
+                currentCoyoteTime = 0;
             }
+        }
+        else if(currentCoyoteTime > coyoteTime)
+        {
+            canJump = false;
         }
         else
         {
-            canJump = false;
+            currentCoyoteTime += Time.deltaTime;
         }
     }
 

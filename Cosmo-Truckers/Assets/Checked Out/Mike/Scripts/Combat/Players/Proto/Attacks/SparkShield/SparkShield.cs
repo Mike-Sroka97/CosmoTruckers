@@ -9,15 +9,18 @@ public class SparkShield : CombatMove
 
     [HideInInspector] public bool PlayerBuff = false;
 
+    ProtoINA proto;
+
     private void Start()
     {
-        FindObjectOfType<ProtoINA>().SetTelportBoundaries(xTeleportLimit, yTeleportLimit, -xTeleportLimit, -yTeleportLimit);
+        proto = FindObjectOfType<ProtoINA>();
+        proto.SetTelportBoundaries(xTeleportLimit, yTeleportLimit, -xTeleportLimit, -yTeleportLimit);
         GenerateLayout();
         StartMove();
     }
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        proto.ResetTeleportBoundaries();
     }
 }

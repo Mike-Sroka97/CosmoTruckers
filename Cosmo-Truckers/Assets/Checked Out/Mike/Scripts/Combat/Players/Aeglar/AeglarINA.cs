@@ -29,8 +29,11 @@ public class AeglarINA : Player
     Collider2D myCollider;
     SpriteRenderer myRenderer;
     int layermask = 1 << 9; //ground
+    const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
     int currentNumberOfJumps = 0;
+    Vector2 bottomLeft;
+    Vector2 bottomRight;
 
     private void Start()
     {
@@ -50,7 +53,15 @@ public class AeglarINA : Player
 
     private bool IsGrounded(float distance)
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
+        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
+        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
+
+        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
+            return true;
+
+        else return false;
     }
 
     public bool GetDashState() { return canDash; }

@@ -11,11 +11,11 @@ public class SafeTINA : Player
 
     [SerializeField] float jumpSpeedAccrual;
     [SerializeField] float jumpMaxHoldTime;
+    [SerializeField] float coyoteTime;
+    [SerializeField] float jumpGroundedDelay;
 
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
-
-    [HideInInspector] public bool PlatformMoveMe;
 
     bool canMove = true;
     bool canJump = true;
@@ -24,8 +24,11 @@ public class SafeTINA : Player
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
+    float currentCoyoteTime;
 
     int layermask = 1 << 9; //ground
+    Vector2 bottomLeft;
+    Vector2 bottomRight;
 
     SpriteRenderer mySprite;
     Collider2D myCollider;
@@ -48,6 +51,12 @@ public class SafeTINA : Player
         Attack();
         Movement();
         Jump();
+        SpecialMove();
+
+        if(!IsGrounded(raycastHopHelper))
+        {
+            currentCoyoteTime += Time.deltaTime;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -106,11 +115,11 @@ public class SafeTINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack && !isJumping)
         {
             StartCoroutine(SafeTAttack(upAttackArea));
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && !isJumping)
         {
             StartCoroutine(SafeTAttack(horizontalAttackArea));
         }
@@ -138,7 +147,7 @@ public class SafeTINA : Player
             canMove = false;
             canJump = false;
             isJumping = true;
-        }
+         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
@@ -146,15 +155,29 @@ public class SafeTINA : Player
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
+        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper) || currentCoyoteTime < coyoteTime))
         {
             myBody.velocity = new Vector2(myBody.velocity.x, 0);
             myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
-            isJumping = false;
+            StartCoroutine(JustJumped());
         }
+        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
+        {
+            currentJumpHoldTime = 0;
+            currentJumpStrength = 0;
+            canMove = true;
+            StartCoroutine(JustJumped());
+        }
+    }
+
+    IEnumerator JustJumped()
+    {
+        yield return new WaitForSeconds(jumpGroundedDelay);
+
+        isJumping = false;
     }
 
     private void ShortHop()
@@ -167,6 +190,7 @@ public class SafeTINA : Player
                 myBody.AddForce(new Vector2(0, hopForceModifier), ForceMode2D.Impulse);
             }
             canJump = true;
+            currentCoyoteTime = 0;
         }
         else
         {
@@ -176,13 +200,21 @@ public class SafeTINA : Player
 
     private bool IsGrounded(float distance)
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
+        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
+        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
+
+        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
+            return true;
+
+        return false;
     }
     #endregion
 
     #region Movement
     /// <summary>
-    /// Aeglar's movement will cause short spurts of movements. There is an associated cooldown to this
+    /// Regular player movement with funny haha hops
     /// </summary>
     public void Movement()
     {
@@ -190,10 +222,7 @@ public class SafeTINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            if(!PlatformMoveMe)
-            {
-                myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
-            }
+            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -202,17 +231,14 @@ public class SafeTINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            if (!PlatformMoveMe)
-            {
-                myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
-            }
+            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
         }
-        else if(!PlatformMoveMe && !isJumping)
+        else if(!isJumping)
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
@@ -221,11 +247,17 @@ public class SafeTINA : Player
 
     #region SpecialMove
     /// <summary>
-    /// Oops SafeT does not have a special move womp womp
+    /// Jump cancel
     /// </summary>
     public void SpecialMove()
     {
-
+        if(isJumping && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            currentJumpHoldTime = 0;
+            currentJumpStrength = 0;
+            canMove = true;
+            StartCoroutine(JustJumped());
+        }
     }
     #endregion
 }

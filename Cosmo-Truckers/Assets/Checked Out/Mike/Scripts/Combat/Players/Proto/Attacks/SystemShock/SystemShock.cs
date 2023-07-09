@@ -109,6 +109,6 @@ public class SystemShock : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        proto.ResetTeleportBoundaries();
     }
 }

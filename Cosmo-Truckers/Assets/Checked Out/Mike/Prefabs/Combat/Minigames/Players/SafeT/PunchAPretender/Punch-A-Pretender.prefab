@@ -165,12 +165,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e7577e66556c0a44950baca45f2c86d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Score: 0
-  PlayerDead: 0
-  PlayerFinished: 0
-  MaxScore: 10
+  TypeOfAttack: 0
+  spawnPoints: []
   layouts:
   - {fileID: 7392703581850771122, guid: c007c19a93facb245a1ed8a1a6b07174, type: 3}
+  Score: 0
+  PlayerDead: 0
+  MaxScore: 10
   papNodes:
   - {fileID: 267604339548771351}
   - {fileID: 5156601302335487060}
@@ -296,7 +297,6 @@ GameObject:
   m_Component:
   - component: {fileID: 267604341030203448}
   - component: {fileID: 267604341030203450}
-  - component: {fileID: 267604341030203449}
   m_Layer: 9
   m_Name: MovePlayer
   m_TagString: Ground
@@ -345,19 +345,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 11.900903, y: 0.168648}
   m_EdgeRadius: 0
---- !u!114 &267604341030203449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 267604341030203455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76fc399a010bae340a37b380e41388df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myConveyor: {fileID: 267604340851279930}
 --- !u!1001 &267604340425928853
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -767,17 +754,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8572190356446417942, guid: 411e124f0e21a314ba3104bf932bb9c9, type: 3}
   m_PrefabInstance: {fileID: 8448806832244235311}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &267604340851279930 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8572190356446417941, guid: 411e124f0e21a314ba3104bf932bb9c9, type: 3}
-  m_PrefabInstance: {fileID: 8448806832244235311}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 901e561899d6f2241b922fdc9feeaa8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5156601301142984574 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3661387588293249873, guid: 411e124f0e21a314ba3104bf932bb9c9, type: 3}

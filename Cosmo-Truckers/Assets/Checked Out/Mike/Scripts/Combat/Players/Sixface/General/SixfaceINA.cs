@@ -16,6 +16,7 @@ public class SixfaceINA : Player
     [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
     [SerializeField] float pogoStrength;
+    [SerializeField] float coyoteTime;
 
     //Hover variables
     [SerializeField] float hoverVelocityYMax;
@@ -29,11 +30,16 @@ public class SixfaceINA : Player
     bool canHover = true;
 
     float currentJumpHoldTime = 0;
+    float currentCoyoteTime = 0;
 
     SpriteRenderer myRenderer;
     Collider2D myCollider;
     int layermask = 1 << 9;
     float startingGravity;
+
+    const float distance = 0.05f;
+    Vector2 bottomLeft;
+    Vector2 bottomRight;
 
     private void Start()
     {
@@ -58,16 +64,26 @@ public class SixfaceINA : Player
 
     private void IsGrounded()
     {
-        if(Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
+        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
+        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
+
+        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
+            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
         {
             canJump = true;
             canHover = false;
             currentJumpHoldTime = 0;
+            currentCoyoteTime = 0;
         }
-        else
+        else if (currentCoyoteTime > coyoteTime)
         {
             canJump = false;
             canHover = true;
+        }
+        else
+        {
+            currentCoyoteTime += Time.deltaTime;
         }
     }
 
@@ -79,6 +95,7 @@ public class SixfaceINA : Player
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
+        myBody.velocity = Vector2.zero;
 
         while(damagedTime < iFrameDuration)
         {

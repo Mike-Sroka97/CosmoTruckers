@@ -18,7 +18,6 @@ public class PapMovePlayer : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            player.PlatformMoveMe = true;
             if (Input.GetKey(KeyCode.D) && !player.GetIsJumping())
             {
                 playerBody.velocity = new Vector2(player.GetMoveSpeed() * 1.5f, playerBody.velocity.y);
@@ -32,10 +31,5 @@ public class PapMovePlayer : MonoBehaviour
                 playerBody.velocity = new Vector2(myConveyor.GetMoveSpeed(), playerBody.velocity.y);
             }
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        player.PlatformMoveMe = false;
     }
 }

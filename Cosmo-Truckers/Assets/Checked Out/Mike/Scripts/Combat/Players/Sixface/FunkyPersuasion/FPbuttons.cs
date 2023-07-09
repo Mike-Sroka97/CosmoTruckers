@@ -18,7 +18,7 @@ public class FPbuttons : MonoBehaviour
         offColor = myDDRbuttonRenderer.color;
 
         //We have to do this to prevent the colliders from not working when the player does not move
-        FindObjectOfType<SixFaceBody>().transform.position -= new Vector3(-.01f, 0, 0);
+        FindObjectOfType<PlayerBody>().transform.position -= new Vector3(-.01f, 0, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
