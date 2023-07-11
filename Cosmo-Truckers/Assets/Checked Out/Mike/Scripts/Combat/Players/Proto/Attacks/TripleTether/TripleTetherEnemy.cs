@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,20 +23,32 @@ public class TripleTetherEnemy : MonoBehaviour
     [SerializeField] float attackDuration;
     [SerializeField] float attackEndDelay;
 
+    //jump stuff
+    [SerializeField] float jumpDelay;
+    [SerializeField] float jumpForce;
+    [SerializeField] GameObject shockwave;
+    [SerializeField] Transform shockSpawn;
+
     [HideInInspector] public bool Aggro;
 
 
     TripleTether minigame;
     ProtoINA proto;
     Rigidbody2D myBody;
+    Collider2D myCollider;
     float currentTime = 0;
+    float currentJumpTime = 0;
+    const float distance = 0.05f;
+    int layermask = 1 << 9;
 
     bool isAttacking;
     bool movingLeft;
+    bool startDelay = true;
 
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<BoxCollider2D>();
         minigame = FindObjectOfType<TripleTether>();
         proto = FindObjectOfType<ProtoINA>();
     }
@@ -45,7 +58,35 @@ public class TripleTetherEnemy : MonoBehaviour
         TrackRotation();
         Attack();
         MoveTowardsPlayer();
+        TrackJump();
         currentTime += Time.deltaTime;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.tag == "Player")
+        {
+            minigame.PlayerDead = true;
+        }
+        else if(Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask) && !startDelay)
+        {
+            GameObject shock = Instantiate(shockwave, shockSpawn);
+            shock.transform.parent = null;
+        }
+    }
+
+    private void TrackJump()
+    {
+        if(Aggro && !isAttacking)
+        {
+            currentJumpTime += Time.deltaTime;
+            if(currentJumpTime >= jumpDelay)
+            {
+                startDelay = false;
+                currentJumpTime = 0;
+                myBody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            }
+        }
     }
 
     private void TrackRotation()
@@ -70,8 +111,6 @@ public class TripleTetherEnemy : MonoBehaviour
         if (!Aggro)
             return;
 
-
-
         if(Vector2.Distance(proto.transform.position, transform.position) < attackDistance && !isAttacking && currentTime >= attackCD)
         {
             StartCoroutine(AttackCo());
@@ -82,22 +121,22 @@ public class TripleTetherEnemy : MonoBehaviour
     {
         isAttacking = true;
         face.sprite = attackingSprite;
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(0, myBody.velocity.y);
 
         yield return new WaitForSeconds(attackDelay);
 
         if(movingLeft)
         {
-            myBody.velocity = new Vector2(-dashSpeed, 0);
+            myBody.velocity = new Vector2(-dashSpeed, myBody.velocity.y);
         }
         else
         {
-            myBody.velocity = new Vector2(dashSpeed, 0);
+            myBody.velocity = new Vector2(dashSpeed, myBody.velocity.y);
         }
 
         yield return new WaitForSeconds(attackDuration);
 
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(0, myBody.velocity.y); 
 
         yield return new WaitForSeconds(attackEndDelay);
 
@@ -112,16 +151,16 @@ public class TripleTetherEnemy : MonoBehaviour
         {
             if (movingLeft)
             {
-                myBody.velocity = new Vector2(-followSpeed, 0);
+                myBody.velocity = new Vector2(-followSpeed, myBody.velocity.y);
             }
             else
             {
-                myBody.velocity = new Vector2(followSpeed, 0);
+                myBody.velocity = new Vector2(followSpeed, myBody.velocity.y);
             }
         }
         else if(!Aggro)
         {
-            myBody.velocity = Vector2.zero; 
+            myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
     }
 
