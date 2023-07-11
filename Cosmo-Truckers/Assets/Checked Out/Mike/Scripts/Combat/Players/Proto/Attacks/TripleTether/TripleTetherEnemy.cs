@@ -45,10 +45,14 @@ public class TripleTetherEnemy : MonoBehaviour
     bool movingLeft;
     bool startDelay = true;
 
+    private void Awake()
+    {
+        myCollider = GetComponent<BoxCollider2D>();
+    }
+
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<BoxCollider2D>();
         minigame = FindObjectOfType<TripleTether>();
         proto = FindObjectOfType<ProtoINA>();
     }
