@@ -19,4 +19,13 @@ public class TrackPlayerDeath : MonoBehaviour
             Debug.Log(minigame.PlayerDead);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            minigame.PlayerDead = true;
+            Debug.Log(minigame.PlayerDead);
+        }
+    }
 }

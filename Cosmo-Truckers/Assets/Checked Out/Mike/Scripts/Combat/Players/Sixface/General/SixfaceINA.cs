@@ -171,6 +171,7 @@ public class SixfaceINA : Player
         }
         else if (isJumping)
         {
+            myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y * hoverGravityModifier);
             isJumping = false;
             canHover = true;
         }
