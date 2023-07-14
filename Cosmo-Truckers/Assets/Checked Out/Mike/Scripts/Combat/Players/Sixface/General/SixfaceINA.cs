@@ -48,7 +48,7 @@ public class SixfaceINA : Player
         myBody = GetComponent<Rigidbody2D>();
         startingGravity = myBody.gravityScale;
         myRenderer = GetComponent<SpriteRenderer>();
-        myCollider = GetComponentsInChildren<Collider2D>()[1]; //ignores parent
+        myCollider = GetComponentInChildren<Collider2D>(); //ignores parent
     }
 
     private void Update()
