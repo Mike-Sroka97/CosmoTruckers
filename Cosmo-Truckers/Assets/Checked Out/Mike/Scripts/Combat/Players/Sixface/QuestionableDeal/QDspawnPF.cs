@@ -6,6 +6,11 @@ public class QDspawnPF : MonoBehaviour
 {
     [SerializeField] GameObject myEnemy;
 
+    private void Start()
+    {
+        myEnemy.SetActive(false); 
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
