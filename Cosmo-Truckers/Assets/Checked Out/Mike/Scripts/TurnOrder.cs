@@ -62,6 +62,10 @@ public class TurnOrder : MonoBehaviour
         {
             livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();
         }
+        else
+        {
+            livingCharacters[currentCharactersTurn].GetComponent<Enemy>().EndTurn();
+        }
 
         currentCharactersTurn++;
         if(currentCharactersTurn >= livingCharacters.Length)

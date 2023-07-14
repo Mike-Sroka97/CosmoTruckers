@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] string characterName;
     [SerializeField] int health;
     [SerializeField] Loot[] droppableLoot;
+    [SerializeField] BaseAttackSO[] attacks;
+    public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     Animator enemyAnimation;
     EnemyManager enemyManager;
@@ -103,10 +105,16 @@ public class Enemy : MonoBehaviour
         StartCoroutine(ProcessTurn());
     }
 
+    public void EndTurn()
+    {
+        
+    }
+
     IEnumerator ProcessTurn()
     {
         yield return new WaitForSeconds(2f);
-        turnOrder.EndTurn();
+
+        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length - 1)]);
     }
     public string GetName() { return characterName; }
 }
