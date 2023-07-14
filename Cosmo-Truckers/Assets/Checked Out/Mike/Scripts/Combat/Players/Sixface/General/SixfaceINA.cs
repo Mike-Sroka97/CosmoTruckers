@@ -202,7 +202,7 @@ public class SixfaceINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
         }
-        else
+        else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
