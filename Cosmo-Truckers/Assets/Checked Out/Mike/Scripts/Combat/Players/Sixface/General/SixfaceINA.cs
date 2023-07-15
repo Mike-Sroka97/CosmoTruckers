@@ -22,6 +22,21 @@ public class SixfaceINA : Player
     [SerializeField] float hoverVelocityYMax;
     [SerializeField] float hoverGravityModifier;
 
+    //Animation Stuff
+    [Space(20)]
+    [Header("0 - Smug, 1 - Question, 2 - Dizzy, 3 - Money, 4 - Sad, 5 - Hype")]
+    [SerializeField] AnimationClip[] sixFaceFaces;
+    [SerializeField] AnimationClip downAttack;
+    [SerializeField] AnimationClip upAttack;
+    [SerializeField] AnimationClip horizontalAttack;
+    [SerializeField] Sprite changeFace;
+    [SerializeField] AnimationClip hover;
+    [SerializeField] Sprite hurt;
+    [SerializeField] AnimationClip idle;
+    [SerializeField] AnimationClip jump;
+    [SerializeField] AnimationClip move;
+    [SerializeField] float switchFaceDuration;
+
     [HideInInspector] public bool IsHovering = false;
     bool canMove = true;
     bool canJump = true;
@@ -32,7 +47,9 @@ public class SixfaceINA : Player
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
 
-    SpriteRenderer myRenderer;
+    Animator faceAnimator;
+    Animator bodyAnimator;
+    PlayerAnimator playerAnimator;
     Collider2D myCollider;
     int layermask = 1 << 9;
     float startingGravity;
@@ -45,10 +62,12 @@ public class SixfaceINA : Player
     {
         PlayerInitialize();
 
+        faceAnimator = transform.Find("SixFaceFace").GetComponent<Animator>();
+        bodyAnimator = transform.Find("SixFaceBody").GetComponent<Animator>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         myBody = GetComponent<Rigidbody2D>();
         startingGravity = myBody.gravityScale;
-        myRenderer = GetComponent<SpriteRenderer>();
-        myCollider = GetComponentsInChildren<Collider2D>()[1]; //ignores parent
+        myCollider = GetComponentInChildren<Collider2D>(); //ignores parent
     }
 
     private void Update()
@@ -89,27 +108,39 @@ public class SixfaceINA : Player
 
     public bool Grounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask);
+        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
     }
 
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
         myBody.velocity = Vector2.zero;
+        SetSixFacesFace(sixFaceFaces[2]);
 
         while(damagedTime < iFrameDuration)
         {
-            myRenderer.enabled = !myRenderer.enabled;
             damagedTime += Time.deltaTime + damageFlashSpeed;
             if(damagedTime > damagedDuration)
             {
                 damaged = false;
+                SetSixFacesFace(sixFaceFaces[0]);
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
         iFrames = false;
-        myRenderer.enabled = true;
+    }
+
+    private void SetSixFacesFace(AnimationClip clip)
+    {
+        StartCoroutine(SwitchFace(clip));
+    }
+
+    IEnumerator SwitchFace(AnimationClip clip)
+    {
+        playerAnimator.SetSprite(faceAnimator.transform.GetComponent<SpriteRenderer>(), faceAnimator, changeFace);
+        yield return new WaitForSeconds(switchFaceDuration);
+        playerAnimator.ChangeAnimation(faceAnimator, clip);
     }
 
     #region Attack
@@ -120,14 +151,17 @@ public class SixfaceINA : Player
     {
         if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack)
         {
+            playerAnimator.ChangeAnimation(bodyAnimator, upAttack);
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
         else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover))
         {
+            playerAnimator.ChangeAnimation(bodyAnimator, downAttack);
             StartCoroutine(SixFaceAttack(downAttackArea));
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {
+            playerAnimator.ChangeAnimation(bodyAnimator, horizontalAttack);
             StartCoroutine(SixFaceAttack(horizontalAttackArea));
         }
     }
@@ -135,6 +169,9 @@ public class SixfaceINA : Player
     IEnumerator SixFaceAttack(GameObject attack)
     {
         canAttack = false;
+        canMove = false;
+        SetSixFacesFace(sixFaceFaces[1]);
+        myBody.velocity = new Vector2(0, myBody.velocity.y);
         attack.SetActive(true);
         attack.GetComponent<Collider2D>().enabled = true;
         yield return new WaitForSeconds(attackDuration);
@@ -142,6 +179,8 @@ public class SixfaceINA : Player
         attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
+        canMove = true;
+        playerAnimator.ChangeAnimation(bodyAnimator, idle);
     }
     #endregion
 
@@ -163,6 +202,11 @@ public class SixfaceINA : Player
             canJump = false;
             isJumping = true;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
+            if (canAttack)
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, jump);
+                SetSixFacesFace(sixFaceFaces[5]);
+            }
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
@@ -193,6 +237,12 @@ public class SixfaceINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
+
+            if (!IsHovering && canAttack && !isJumping)
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, move);
+                SetSixFacesFace(sixFaceFaces[3]);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
@@ -201,10 +251,24 @@ public class SixfaceINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
+
+            if(!IsHovering && canAttack && !isJumping)
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, move);
+                SetSixFacesFace(sixFaceFaces[3]);
+            }
         }
         else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
+        }
+        else
+        {
+            if (!IsHovering && canAttack && !isJumping)
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, idle);
+                SetSixFacesFace(sixFaceFaces[0]);
+            }
         }
     }
 
@@ -228,6 +292,12 @@ public class SixfaceINA : Player
             if(myBody.velocity.y < hoverVelocityYMax)
             {
                 myBody.velocity = new Vector2(myBody.velocity.x, hoverVelocityYMax);
+            }
+
+            if(canAttack)
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, hover);
+                SetSixFacesFace(sixFaceFaces[4]);
             }
         }
         else

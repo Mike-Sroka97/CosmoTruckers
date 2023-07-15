@@ -8,10 +8,14 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] GameObject wheel;
     [SerializeField] BaseAttackSO[] attacks; //For testing
+    [Space(10)]
+    [SerializeField] GameObject MiniGameControllerPrefab;
+    public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     TurnOrder turnOrder;
     int currentHealth;
+    public bool Dead { get; private set; }
 
     private void Start()
     {
@@ -29,6 +33,7 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Die()
     {
+        Dead = true;
         GetComponent<CharacterSpeed>().enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterSpeed>());
         turnOrder.DetermineTurnOrder();

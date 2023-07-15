@@ -10,6 +10,7 @@ public abstract class CombatMove : MonoBehaviour
 
     [HideInInspector] public int Score;
     [HideInInspector] public bool PlayerDead;
+    [HideInInspector] public bool MoveEnded;
 
     private void Start()
     {
