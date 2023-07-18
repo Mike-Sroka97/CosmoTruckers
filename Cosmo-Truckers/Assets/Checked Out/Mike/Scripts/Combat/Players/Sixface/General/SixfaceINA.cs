@@ -177,7 +177,7 @@ public class SixfaceINA : Player
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {
             playerAnimator.ChangeAnimation(bodyAnimator, horizontalAttack);
-            SetSixFacesFace(sixFaceFaces[1]);
+            SetSixFacesFace(sixFaceFaces[3]);
             StartCoroutine(SixFaceAttack(horizontalAttackArea));
         }
     }
@@ -228,6 +228,7 @@ public class SixfaceINA : Player
             myBody.velocity = new Vector2(myBody.velocity.x, myBody.velocity.y * hoverGravityModifier);
             isJumping = false;
             canHover = true;
+            SetSixFacesFace(sixFaceFaces[4]);
         }
     }
     #endregion
@@ -251,7 +252,7 @@ public class SixfaceINA : Player
             if (!IsHovering && canAttack && !isJumping)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, move);
-                SetSixFacesFace(sixFaceFaces[3]);
+                SetSixFacesFace(sixFaceFaces[0]);
             }
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
@@ -265,7 +266,7 @@ public class SixfaceINA : Player
             if(!IsHovering && canAttack && !isJumping)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, move);
-                SetSixFacesFace(sixFaceFaces[3]);
+                SetSixFacesFace(sixFaceFaces[0]);
             }
         }
         else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
@@ -277,7 +278,6 @@ public class SixfaceINA : Player
             if (!IsHovering && canAttack && !isJumping && !iFrames)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, idle);
-                //SetSixFacesFace(sixFaceFaces[0]);
             }
         }
     }
@@ -307,7 +307,6 @@ public class SixfaceINA : Player
             if(canAttack && !downAttackArea.activeInHierarchy)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, hover);
-                SetSixFacesFace(sixFaceFaces[4]);
             }
         }
         else
