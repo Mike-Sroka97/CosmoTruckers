@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Noise
-  m_Shader: {fileID: -6465566751694194690, guid: 0ca51d970562ac644ad5f123245ff49c, type: 3}
+  m_Name: M_HurtFlash
+  m_Shader: {fileID: -6465566751694194690, guid: cca10bdc703ddc8478ffcca6546e83c0, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: ee7148b17abb22d47aa4e5bf0cd1fa7d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -38,9 +38,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.5
-    - _MainValue: 1
-    - _Scale: 500
+    - _LerpColors: 1
+    - _LerpSpeed: 10
+    - _MainValue: -2.45
+    - _OutlineOffset: 1
+    - _OutlineOffsetNeg: -0.5
+    - _OutlineOffsetPos: 0.5
+    - _OutlineThickness: 3.3
     m_Colors:
-    - _RotateCenter: {r: 10, g: 10, b: 0, a: 0}
+    - _AlternateColor: {r: 1.4980392, g: 1.4980392, b: 1.4980392, a: 1}
+    - _OutlineColor: {r: 1.4980392, g: 0, b: 0, a: 1}
+    - _Vector2: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
