@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoveForward : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
+    public float MoveSpeed;
 
     const int xClamp = 10;
     const int yClamp = 8;
@@ -24,7 +24,7 @@ public class MoveForward : MonoBehaviour
 
     private void MoveMe()
     {
-        transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * MoveSpeed * Time.deltaTime);
 
         if(transform.position.y > yClamp 
             || transform.position.y < -yClamp 

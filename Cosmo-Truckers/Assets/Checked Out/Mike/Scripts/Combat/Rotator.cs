@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    [SerializeField] float rotateSpeed;
+    public float RotateSpeed;
 
     private void Update()
     {
@@ -13,6 +13,6 @@ public class Rotator : MonoBehaviour
 
     private void RotateMe()
     {
-        transform.Rotate(new Vector3(0, 0, rotateSpeed * Time.deltaTime));
+        transform.Rotate(new Vector3(0, 0, RotateSpeed * Time.deltaTime));
     }
 }
