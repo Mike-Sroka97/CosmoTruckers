@@ -48,6 +48,7 @@ public class StarStormStar : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            minigame.Hits++;
             minigame.PlayerDead = true;
             Destroy(gameObject);
         }

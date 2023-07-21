@@ -7,10 +7,14 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] TargetType TypeOfAttack;
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] protected GameObject[] layouts;
+    //For games that can deal player damage
+    [SerializeField] protected int Damage;
+    [SerializeField] protected DebuffStackSO DebuffToAdd;
 
     [HideInInspector] public int Score;
     [HideInInspector] public bool PlayerDead;
     [HideInInspector] public bool MoveEnded;
+    [HideInInspector] public int Hits = 0;
 
     private void Start()
     {
@@ -44,7 +48,18 @@ public abstract class CombatMove : MonoBehaviour
             //set each alive player to a different spawn
         }
     }
-    public abstract void EndMove();
+    public virtual void EndMove()
+    {
+        if (CombatManager.Instance != null) //In the combat screen
+        {
+
+        }
+        else //Running tests
+        {
+            Debug.Log($"{Damage * Hits} done to player");
+            if (DebuffToAdd != null) Debug.Log($"{Hits} stacks of {DebuffToAdd.DebuffName} added");
+        }
+    }
     private void ApplyAugments()
     {
 

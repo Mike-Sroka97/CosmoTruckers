@@ -52,6 +52,6 @@ public class StarStorm : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        base.EndMove(); //for now
     }
 }

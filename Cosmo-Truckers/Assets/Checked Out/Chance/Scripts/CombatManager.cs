@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
+    public static CombatManager Instance;
+
     [SerializeField] GameObject TempPage;
     [SerializeField] GameObject MiniGameScreen;
     GameObject miniGame;
@@ -17,6 +19,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField] List<GameObject> EnemySelected;
     [SerializeField] List<GameObject> PlayerSelected;
     bool StartTimer = false;
+
+    private void Awake() => Instance = this;
 
     public void StartCombat(BaseAttackSO attack)
     {
@@ -272,4 +276,6 @@ public class CombatManager : MonoBehaviour
 
         FindObjectOfType<TurnOrder>().EndTurn();
     }
+
+    private void OnDisable() => Instance = null;
 }
