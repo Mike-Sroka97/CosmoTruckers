@@ -18,6 +18,16 @@ public class SafeTINA : Player
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
 
+    [Space(20)]
+    [Header("Animations")]
+    [SerializeField] AnimationClip idle;
+    [SerializeField] AnimationClip move;
+    [SerializeField] AnimationClip punchRight;
+    [SerializeField] AnimationClip punchUp;
+    [SerializeField] AnimationClip coil;
+    [SerializeField] AnimationClip jump;
+    [SerializeField] AnimationClip hurt;
+
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
@@ -34,6 +44,8 @@ public class SafeTINA : Player
 
     SpriteRenderer mySprite;
     Collider2D myCollider;
+    Animator myAnimator;
+    PlayerAnimator playerAnimator;
 
     float originalMoveSpeed;
 
@@ -41,6 +53,8 @@ public class SafeTINA : Player
     {
         PlayerInitialize();
 
+        myAnimator = GetComponentInChildren<Animator>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         originalMoveSpeed = moveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
@@ -84,6 +98,7 @@ public class SafeTINA : Player
 
     public override IEnumerator Damaged()
     {
+        playerAnimator.ChangeAnimation(myAnimator, hurt);
         HandleLineRenderer(startingHeight);
         canAttack = false;
         canMove = false;
@@ -92,18 +107,19 @@ public class SafeTINA : Player
 
         while (damagedTime < iFrameDuration)
         {
-            mySprite.enabled = !mySprite.enabled;
             damagedTime += Time.deltaTime + damageFlashSpeed;
-            if (damagedTime > damagedDuration)
+            if (damagedTime > damagedDuration && damaged)
             {
                 damaged = false;
+                playerAnimator.ChangeAnimation(myAnimator, idle);
+                canAttack = true;
+                canMove = true;
                 ShortHop();
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
         iFrames = false;
-        mySprite.enabled = true;
     }
 
     #region Attack
@@ -114,21 +130,26 @@ public class SafeTINA : Player
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack && !isJumping)
         {
+            playerAnimator.ChangeAnimation(myAnimator, punchUp);
             StartCoroutine(SafeTAttack(upAttackArea));
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && !isJumping)
         {
+            playerAnimator.ChangeAnimation(myAnimator, punchRight);
             StartCoroutine(SafeTAttack(horizontalAttackArea));
         }
     }
 
     IEnumerator SafeTAttack(GameObject attack)
     {
+        canMove = false;
         canAttack = false;
+        myBody.velocity = new Vector2(0, myBody.velocity.y);
         attack.SetActive(true);
         yield return new WaitForSeconds(attackDuration);
         attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
+        canMove = true;
         canAttack = true;
     }
     #endregion
@@ -144,6 +165,7 @@ public class SafeTINA : Player
             canMove = false;
             canJump = false;
             isJumping = true;
+            playerAnimator.ChangeAnimation(myAnimator, coil);
          }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
@@ -162,6 +184,7 @@ public class SafeTINA : Player
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper) || currentCoyoteTime < coyoteTime))
         {
+            playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
             myBody.velocity = new Vector2(myBody.velocity.x, 0);
             myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
@@ -248,6 +271,10 @@ public class SafeTINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
+            if (myBody.velocity.y <= 0)
+            {
+                playerAnimator.ChangeAnimation(myAnimator, move);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
@@ -257,9 +284,17 @@ public class SafeTINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
+            if (myBody.velocity.y <= 0)
+            {
+                playerAnimator.ChangeAnimation(myAnimator, move);
+            }
         }
         else if(!isJumping)
         {
+            if(canAttack && canJump && canMove && myBody.velocity.y <= 0)
+            {
+                playerAnimator.ChangeAnimation(myAnimator, idle);
+            }
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
     }
