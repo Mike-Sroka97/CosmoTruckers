@@ -143,6 +143,10 @@ MonoBehaviour:
   damagedDuration: 1
   iFrameDuration: 2
   iFrames: 0
+  myRenderers:
+  - {fileID: 805849437263682061}
+  - {fileID: 805849436701896823}
+  iFrameMaterial: {fileID: 2100000, guid: 6ce2845b53937504c8e449e680ce1522, type: 2}
   stretchSpeed: 3.4
   stretchReturnSpeed: 5
   stretchRotateSpeed: 225
@@ -185,6 +189,8 @@ MonoBehaviour:
   postSpinCD: 0.25
   stretchStartupTime: 0.1
   myNose: {fileID: 1977417571}
+  barkCooldown: 0.5
+  barkDuration: 0.5
 --- !u!1 &805849436701896821
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +246,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f22b3e93394f319488925998d6cd972e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -422,7 +428,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f22b3e93394f319488925998d6cd972e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

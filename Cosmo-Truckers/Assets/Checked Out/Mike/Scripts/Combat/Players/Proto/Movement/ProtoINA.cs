@@ -38,20 +38,20 @@ public class ProtoINA : Player
     Collider2D myCollider;
     int layermask = 1 << 9;
     const float distance = 0.05f;
-    SpriteRenderer myRenderer;
     Vector2 bottomLeft;
     Vector2 bottomRight;
 
     private void Start()
     {
+        PlayerInitialize();
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
-        myRenderer = GetComponentsInChildren<SpriteRenderer>()[0];
         DebuffInit();
     }
 
     private void Update()
     {
+        UpdateOutline();
         Attack();
         Movement();
         Jump();
@@ -81,7 +81,6 @@ public class ProtoINA : Player
 
         while (damagedTime < iFrameDuration)
         {
-            myRenderer.enabled = !myRenderer.enabled;
             damagedTime += Time.deltaTime + damageFlashSpeed;
             if (damagedTime > damagedDuration)
             {
@@ -94,7 +93,6 @@ public class ProtoINA : Player
         }
 
         iFrames = false;
-        myRenderer.enabled = true;
     }
 
     private void IsGrounded()

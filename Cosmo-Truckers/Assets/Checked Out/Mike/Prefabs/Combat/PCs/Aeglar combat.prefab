@@ -250,7 +250,7 @@ Transform:
   m_GameObject: {fileID: 2016607097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5979393201563331659}
@@ -276,7 +276,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ecb6ecc7b3197714785a60352556e2d2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -297,7 +297,7 @@ SpriteRenderer:
   m_SortingLayerID: -1946958227
   m_SortingLayer: 5
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 450acc0d74bc4784a9747c5b12cc58e9, type: 3}
+  m_Sprite: {fileID: 1623417161, guid: 5ad80037b5b200344be8652e6bc2817d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -321,18 +321,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.000000059604645}
+  m_Offset: {x: 0.019625816, y: 0.0033128262}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 3.6, y: 3.6}
+    oldSize: {x: 1.44, y: 1.44}
     newSize: {x: 3.6, y: 3.6}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.6, y: 2.6286368}
+  m_Size: {x: 0.2611279, y: 0.5017731}
   m_EdgeRadius: 0
 --- !u!114 &419124519
 MonoBehaviour:
@@ -420,6 +420,9 @@ MonoBehaviour:
   damagedDuration: 1
   iFrameDuration: 2
   iFrames: 0
+  myRenderers:
+  - {fileID: 2016607099}
+  iFrameMaterial: {fileID: 2100000, guid: 6ce2845b53937504c8e449e680ce1522, type: 2}
   dashSpeed: 400
   dashCD: 1
   dashDuration: 0.1

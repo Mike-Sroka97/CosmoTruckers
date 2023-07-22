@@ -739,7 +739,7 @@ Transform:
   m_GameObject: {fileID: 1014482914514298248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5393617090317811300}
@@ -758,18 +758,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0072312355, y: 0.03945589}
+  m_Offset: {x: -0.02504623, y: -0.050921082}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.4, y: 6.4}
+    oldSize: {x: 1.44, y: 1.44}
     newSize: {x: 6.4, y: 6.4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 6.4212656, y: 6.4449835}
+  m_Size: {x: 0.34019732, y: 0.40264773}
   m_EdgeRadius: 0
 --- !u!114 &247667466
 MonoBehaviour:
@@ -803,7 +803,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: c0fcd15553b73ae4591e7c19074f59d8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -824,7 +824,7 @@ SpriteRenderer:
   m_SortingLayerID: -1946958227
   m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3adeaa0aece3b99469c465dca6ccce57, type: 3}
+  m_Sprite: {fileID: 97313529, guid: d1f5c85ab60fd8646bdc3fa8184d812a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1132,6 +1132,9 @@ MonoBehaviour:
   damagedDuration: 1
   iFrameDuration: 2
   iFrames: 0
+  myRenderers:
+  - {fileID: 1631306705}
+  iFrameMaterial: {fileID: 2100000, guid: 6ce2845b53937504c8e449e680ce1522, type: 2}
   attackDuration: 0.2
   attackCD: 0.2
   horizontalAttackArea: {fileID: 5393617090109230066}

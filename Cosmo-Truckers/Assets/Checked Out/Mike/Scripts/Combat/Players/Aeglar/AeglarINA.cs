@@ -27,7 +27,6 @@ public class AeglarINA : Player
     bool canMove = true;
 
     Collider2D myCollider;
-    SpriteRenderer myRenderer;
     int layermask = 1 << 9; //ground
     const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
@@ -41,11 +40,11 @@ public class AeglarINA : Player
 
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
-        myRenderer = transform.Find("AeglarBody").GetComponent<SpriteRenderer>();
     }
 
     private void Update()
     {
+        UpdateOutline();
         Attack();
         Movement();
         Jump();
@@ -72,7 +71,6 @@ public class AeglarINA : Player
 
         while (damagedTime < iFrameDuration)
         {
-            myRenderer.enabled = !myRenderer.enabled;
             damagedTime += Time.deltaTime + damageFlashSpeed;
             if (damagedTime > damagedDuration)
             {
@@ -82,7 +80,6 @@ public class AeglarINA : Player
         }
 
         iFrames = false;
-        myRenderer.enabled = true;
     }
 
     #region Attack

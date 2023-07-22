@@ -72,6 +72,7 @@ public class SixfaceINA : Player
 
     private void Update()
     {
+        UpdateOutline();
         if(!damaged)
         {
             Attack();

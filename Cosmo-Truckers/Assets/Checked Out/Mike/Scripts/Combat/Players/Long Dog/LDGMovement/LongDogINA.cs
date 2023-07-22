@@ -18,6 +18,8 @@ public class LongDogINA : Player
     [SerializeField] float postSpinCD;
     [SerializeField] float stretchStartupTime;
     [SerializeField] Collider2D myNose;
+    [SerializeField] float barkCooldown;
+    [SerializeField] float barkDuration;
 
     LongDogNeck currentLine;
 
@@ -31,10 +33,9 @@ public class LongDogINA : Player
     bool goingLeft = false;
     bool goingRight = false;
     bool startupStretch = false;
+    bool canBark = true;
 
     Vector3 buttStartingLocation;
-    SpriteRenderer mySpriteHead;
-    SpriteRenderer mySpriteBody;
     float startingGravityScale;
     int layermask = 1 << 9;
     Collider2D myCollider;
@@ -44,8 +45,6 @@ public class LongDogINA : Player
         PlayerInitialize();
 
         myBody = head.GetComponent<Rigidbody2D>();
-        mySpriteHead = head.GetComponent<SpriteRenderer>();
-        mySpriteBody = head.GetComponentInChildren<SpriteRenderer>();
         myCollider = head.GetComponent<Collider2D>();
         buttStartingLocation = body.transform.localPosition;
         cam = Camera.main;
@@ -54,6 +53,7 @@ public class LongDogINA : Player
 
     private void Update()
     {
+        UpdateOutline();
         if(!stretching && canMove && damaged && !invincible)
         {
             canMove = false;
@@ -63,6 +63,7 @@ public class LongDogINA : Player
         Attack();
         Movement();
         Jump();
+        SpecialMove();
     }
 
     public void SetDamaged(bool toggle)
@@ -93,8 +94,8 @@ public class LongDogINA : Player
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
-        mySpriteBody = body.GetComponent<SpriteRenderer>();
         myBody.velocity = Vector2.zero;
+        iFrames = true;
 
         while(damagedTime < iFrameDuration)
         {
@@ -103,8 +104,6 @@ public class LongDogINA : Player
                 LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
                 tempNeck.GetComponent<LineRenderer>().enabled = false; 
             }
-            mySpriteHead.enabled = false;
-            mySpriteBody.enabled = false;
             yield return new WaitForSeconds(damageFlashSpeed);
 
             if (FindObjectOfType<LongDogNeck>())
@@ -112,8 +111,6 @@ public class LongDogINA : Player
                 LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
                 tempNeck.GetComponent<LineRenderer>().enabled = true;
             }
-            mySpriteHead.enabled = true;
-            mySpriteBody.enabled = true;
             yield return new WaitForSeconds(damageFlashSpeed);
 
             damagedTime += Time.deltaTime + (damageFlashSpeed * 2);
@@ -124,6 +121,8 @@ public class LongDogINA : Player
                 LDGReset();
             }
         }
+
+        iFrames = false;
         invincible = false;
     }
 
@@ -253,6 +252,8 @@ public class LongDogINA : Player
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
         invincible = false;
+        iFrames = false;
+
         if (damaged && !invincible)
         {
             StartCoroutine(Damaged());
@@ -265,6 +266,7 @@ public class LongDogINA : Player
 
     public void LDGReset()
     {
+        canBark = true;
         canMove = true;
         canStretch = true;
         buttStretching = false;
@@ -388,11 +390,33 @@ public class LongDogINA : Player
 
     #region SpecialMove
     /// <summary>
-    /// Aeglar's attack will also make him dash. That will bundle the Special move and attack for him
+    /// Bark for invincibility
     /// </summary>
     public void SpecialMove()
     {
+        if(canBark && !stretching && !damaged && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            StartCoroutine(Bark());
+        }
+    }
 
+    IEnumerator Bark()
+    {
+        canBark = false;
+        canMove = false;
+        canStretch = false;
+        iFrames = true;
+        myBody.velocity = new Vector2(0, myBody.velocity.y);
+
+        yield return new WaitForSeconds(barkDuration);
+
+        canMove = true;
+        canStretch = true;
+        iFrames = false;
+
+        yield return new WaitForSeconds(barkCooldown);
+
+        canBark = true;
     }
     #endregion
 }

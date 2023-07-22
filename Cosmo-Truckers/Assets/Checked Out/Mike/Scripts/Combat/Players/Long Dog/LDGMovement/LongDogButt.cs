@@ -80,6 +80,7 @@ public class LongDogButt : MonoBehaviour
 
     public void StartButtToHeadMovement()
     {
+        dogINA.iFrames = true;
         neck = FindObjectOfType<LongDogNeck>();
         if (neck)
         {
