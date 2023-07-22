@@ -34,6 +34,7 @@ public class ProtoINA : Player
 
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
+    int lastTeleportHeld = 0;
 
     Collider2D myCollider;
     int layermask = 1 << 9;
@@ -263,6 +264,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[0].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 1;
         }
         else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
         {
@@ -279,6 +281,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[1].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 2;
         }
         else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
         {
@@ -295,6 +298,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[2].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 3;
         }
         else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
         {
@@ -311,6 +315,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[3].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 4;
         }
         else if (Input.GetKey(KeyCode.A))
         {
@@ -327,6 +332,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[4].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 5;
         }
         else if (Input.GetKey(KeyCode.W))
         {
@@ -343,6 +349,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[5].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 6;
         }
         else if (Input.GetKey(KeyCode.S))
         {
@@ -359,6 +366,7 @@ public class ProtoINA : Player
             {
                 teleportSprites[6].color = teleportSpriteStartingColor;
             }
+            lastTeleportHeld = 7;
         }
         else if (Input.GetKey(KeyCode.D))
         {
@@ -375,17 +383,14 @@ public class ProtoINA : Player
             {
                 teleportSprites[7].color = teleportSpriteStartingColor;
             }
-        }
-        else
-        {
-            ResetTeleportSprites();
+            lastTeleportHeld = 8;
         }
     }
-
     private void ResetTeleportSprites()
     {
-        foreach(SpriteRenderer sprite in teleportSprites)
+        foreach (SpriteRenderer sprite in teleportSprites)
         {
+            lastTeleportHeld = 0;
             sprite.color = teleportSpriteStartingColor;
             sprite.enabled = false;
         }
@@ -393,7 +398,7 @@ public class ProtoINA : Player
 
     private void Teleport()
     {
-        if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 1)
         {
             if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
             {
@@ -401,7 +406,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if(Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        else if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 2)
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
             {
@@ -409,7 +414,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 3)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
             {
@@ -417,7 +422,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 4)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
             {
@@ -425,7 +430,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A) || lastTeleportHeld == 5)
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary))
             {
@@ -433,7 +438,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.W))
+        else if (Input.GetKey(KeyCode.W) || lastTeleportHeld == 6)
         {
             if (!(transform.position.y + teleportDistance > positiveYBoundary))
             {
@@ -441,7 +446,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) || lastTeleportHeld == 7)
         {
             if (!(transform.position.y - teleportDistance < negativeYBoundary))
             {
@@ -449,7 +454,7 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D) || lastTeleportHeld == 8)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary))
             {
@@ -457,6 +462,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
+
+        lastTeleportHeld = 0;
     }
 
     IEnumerator TeleportCooldown()
