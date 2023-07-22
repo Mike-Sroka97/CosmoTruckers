@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SafeTINA : Player
@@ -41,7 +40,6 @@ public class SafeTINA : Player
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
-    float currentCoyoteTime;
     const float startingHeight = 2.5f;
 
     int layermask = 1 << 9; //ground
@@ -73,11 +71,6 @@ public class SafeTINA : Player
         Movement();
         Jump();
         SpecialMove();
-
-        if(!IsGrounded(raycastHopHelper))
-        {
-            currentCoyoteTime += Time.deltaTime;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -195,7 +188,7 @@ public class SafeTINA : Player
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper) || currentCoyoteTime < coyoteTime))
+        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)))
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
@@ -256,7 +249,6 @@ public class SafeTINA : Player
                 myBody.AddForce(new Vector2(0, hopForceModifier), ForceMode2D.Impulse);
             }
             canJump = true;
-            currentCoyoteTime = 0;
         }
         else
         {

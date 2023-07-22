@@ -184,6 +184,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
+            currentCoyoteTime = coyoteTime;
             currentJumpHoldTime += Time.deltaTime;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
