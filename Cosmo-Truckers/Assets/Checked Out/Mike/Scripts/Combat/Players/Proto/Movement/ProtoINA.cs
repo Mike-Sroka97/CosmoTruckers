@@ -19,6 +19,7 @@ public class ProtoINA : Player
     [SerializeField] SpriteRenderer[] teleportSprites;
     [SerializeField] Color teleportSpriteStartingColor;
     [SerializeField] Color invalidteleportColor;
+    [SerializeField] float teleportHelperTime;
 
     [SerializeField] float positiveXBoundary;
     [SerializeField] float positiveYBoundary;
@@ -34,6 +35,7 @@ public class ProtoINA : Player
 
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
+    float currentTPhelperTime = 0;
     int lastTeleportHeld = 0;
 
     Collider2D myCollider;
@@ -265,6 +267,7 @@ public class ProtoINA : Player
                 teleportSprites[0].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 1;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
         {
@@ -282,6 +285,7 @@ public class ProtoINA : Player
                 teleportSprites[1].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 2;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
         {
@@ -299,6 +303,7 @@ public class ProtoINA : Player
                 teleportSprites[2].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 3;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
         {
@@ -316,6 +321,7 @@ public class ProtoINA : Player
                 teleportSprites[3].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 4;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.A))
         {
@@ -333,6 +339,7 @@ public class ProtoINA : Player
                 teleportSprites[4].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 5;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.W))
         {
@@ -350,6 +357,7 @@ public class ProtoINA : Player
                 teleportSprites[5].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 6;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.S))
         {
@@ -367,6 +375,7 @@ public class ProtoINA : Player
                 teleportSprites[6].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 7;
+            currentTPhelperTime = 0;
         }
         else if (Input.GetKey(KeyCode.D))
         {
@@ -384,6 +393,17 @@ public class ProtoINA : Player
                 teleportSprites[7].color = teleportSpriteStartingColor;
             }
             lastTeleportHeld = 8;
+            
+            currentTPhelperTime = 0;
+        }
+        else
+        {
+            currentTPhelperTime += Time.deltaTime;
+
+            if(currentTPhelperTime >= teleportHelperTime)
+            {
+                ResetTeleportSprites();
+            }
         }
     }
     private void ResetTeleportSprites()
@@ -464,6 +484,7 @@ public class ProtoINA : Player
         }
 
         lastTeleportHeld = 0;
+        currentTPhelperTime = 0;
     }
 
     IEnumerator TeleportCooldown()
