@@ -37,6 +37,12 @@ public abstract class Player : MonoBehaviour
         StartCoroutine(Damaged());
     }
 
+    protected void UpdateOutline()
+    {
+        //if(iFrames(){}
+        //else normal color outline
+    }
+
     public abstract IEnumerator Damaged();
 
     public bool GetDamaged() { return damaged; }

@@ -64,6 +64,7 @@ public class SafeTINA : Player
 
     private void Update()
     {
+        UpdateOutline();
         Attack();
         Movement();
         Jump();
@@ -170,7 +171,12 @@ public class SafeTINA : Player
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
-            if(currentJumpHoldTime > jumpMaxHoldTime) { currentJumpHoldTime = jumpMaxHoldTime; }
+            iFrames = true;
+            if(currentJumpHoldTime > jumpMaxHoldTime) 
+            {
+                iFrames = false;
+                currentJumpHoldTime = jumpMaxHoldTime; 
+            }
             if(IsGrounded(raycastHopHelper))
             {
                 HandleLineRenderer(currentJumpHoldTime);
@@ -314,6 +320,10 @@ public class SafeTINA : Player
             currentJumpStrength = 0;
             canMove = true;
             StartCoroutine(JustJumped());
+        }
+        else if(!isJumping && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+
         }
     }
     #endregion
