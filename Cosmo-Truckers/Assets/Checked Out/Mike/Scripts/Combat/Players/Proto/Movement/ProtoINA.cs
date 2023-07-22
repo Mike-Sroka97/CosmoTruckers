@@ -107,7 +107,11 @@ public class ProtoINA : Player
             || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
             || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
         {
-            canJump = true;
+
+            if(!damaged && Input.GetKey("space"))
+            {
+                canJump = true;
+            }
             if(!isJumping)
             {
                 currentJumpHoldTime = 0;

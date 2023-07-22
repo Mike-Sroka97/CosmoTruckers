@@ -91,7 +91,7 @@ public class SixfaceINA : Player
             || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
             || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
         {
-            if(!damaged)
+            if(!damaged && !Input.GetKey("space"))
             {
                 canJump = true;
                 canHover = false;
