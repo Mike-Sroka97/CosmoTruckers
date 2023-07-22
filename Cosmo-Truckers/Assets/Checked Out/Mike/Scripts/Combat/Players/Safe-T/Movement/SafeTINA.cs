@@ -32,6 +32,7 @@ public class SafeTINA : Player
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
+    bool damagedCoroutineRunning = false;  
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
@@ -97,6 +98,8 @@ public class SafeTINA : Player
 
     public override IEnumerator Damaged()
     {
+        damagedCoroutineRunning = true; 
+
         playerAnimator.ChangeAnimation(myAnimator, hurt);
         HandleLineRenderer(startingHeight);
         canAttack = false;
@@ -119,6 +122,7 @@ public class SafeTINA : Player
         }
 
         iFrames = false;
+        damagedCoroutineRunning = false; 
     }
 
     #region Attack
@@ -196,6 +200,11 @@ public class SafeTINA : Player
             currentJumpStrength = 0;
             canMove = true;
             StartCoroutine(JustJumped());
+
+            if (!damagedCoroutineRunning)
+            {
+                iFrames = false;
+            }
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
         {
@@ -204,6 +213,11 @@ public class SafeTINA : Player
             currentJumpStrength = 0;
             canMove = true;
             StartCoroutine(JustJumped());
+
+            if (!damagedCoroutineRunning)
+            {
+                iFrames = false;
+            }
         }
     }
 
@@ -318,6 +332,11 @@ public class SafeTINA : Player
             currentJumpStrength = 0;
             canMove = true;
             StartCoroutine(JustJumped());
+
+            if (!damagedCoroutineRunning)
+            {
+                iFrames = false;
+            }
         }
         else if(!isJumping && Input.GetKeyDown(KeyCode.Mouse1))
         {
