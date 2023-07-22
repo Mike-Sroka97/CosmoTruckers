@@ -14,6 +14,9 @@ public class SafeTINA : Player
     [SerializeField] float coyoteTime;
     [SerializeField] float jumpGroundedDelay;
     [SerializeField] LineRenderer myLineRenderer;
+    [SerializeField] float rollCD;
+    [SerializeField] float rollDuration;
+    [SerializeField] float rollSpeed;
 
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
@@ -27,11 +30,13 @@ public class SafeTINA : Player
     [SerializeField] AnimationClip coil;
     [SerializeField] AnimationClip jump;
     [SerializeField] AnimationClip hurt;
+    [SerializeField] AnimationClip roll;
 
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
     bool canAttack = true;
+    bool canRoll = true;
     bool damagedCoroutineRunning = false;  
 
     float currentJumpStrength;
@@ -338,10 +343,42 @@ public class SafeTINA : Player
                 iFrames = false;
             }
         }
-        else if(!isJumping && Input.GetKeyDown(KeyCode.Mouse1))
+        else if(!isJumping && Input.GetKeyDown(KeyCode.Mouse1) && canRoll && (myBody.velocity.x > 0 || myBody.velocity.x < 0))
         {
-
+            StartCoroutine(Roll());
+            canMove = false;
         }
+    }
+
+    IEnumerator Roll()
+    {
+        if(myBody.velocity.x > 0)
+        {
+            myBody.velocity = new Vector2(rollSpeed, myBody.velocity.y);
+        }
+        else
+        {
+            myBody.velocity = new Vector2(-rollSpeed, myBody.velocity.y);
+        }
+
+        playerAnimator.ChangeAnimation(myAnimator, roll);
+
+        canRoll = false;
+        canMove = false;
+        iFrames = true;
+
+        yield return new WaitForSeconds(rollDuration);
+
+        canMove = true;
+        if (!damagedCoroutineRunning)
+        {
+            iFrames = false;
+        }
+        playerAnimator.ChangeAnimation(myAnimator, idle);
+
+        yield return new WaitForSeconds(rollCD);
+
+        canRoll = true;
     }
     #endregion
 }
