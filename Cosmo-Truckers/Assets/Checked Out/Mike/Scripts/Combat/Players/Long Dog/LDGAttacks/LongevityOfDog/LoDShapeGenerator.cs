@@ -11,11 +11,17 @@ public class LoDShapeGenerator : MonoBehaviour
 
     int[] shapeIndices = new int[4];
     int currentRandom = -1;
+    GameObject currentShapeToMake;
 
-    public void GenerateLayout(GameObject shapes)
+    public void GenerateLayout(GameObject shapes, GameObject shapeToMake)
     {
         CorrectShapes = 0;
         Instantiate(shapes, transform);
+        if(currentShapeToMake != null)
+        {
+            Destroy(currentShapeToMake);
+        }
+        currentShapeToMake = Instantiate(shapeToMake, transform);
         Transform[] currentShapes = shapes.GetComponentsInChildren<Transform>();
         RandomIndices();
         for(int i = 0; i < shapeSpawns.Length; i++)

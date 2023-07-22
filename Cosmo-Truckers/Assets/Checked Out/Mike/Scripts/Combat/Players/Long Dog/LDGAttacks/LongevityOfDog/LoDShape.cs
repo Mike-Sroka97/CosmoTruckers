@@ -32,23 +32,26 @@ public class LoDShape : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(goodShape)
+        if(collision.name == "Attack Zone")
         {
-            myCollider.enabled = false;
-            myRenderer.color = new Color(0, 0, 1);
-            shapeGenerator.CorrectShapes++;
-            if(shapeGenerator.CorrectShapes >= 3)
+            if (goodShape)
             {
-                FindObjectOfType<LongDogINA>().SetDamaged(false);
+                myCollider.enabled = false;
+                myRenderer.color = new Color(0, 0, 1);
+                shapeGenerator.CorrectShapes++;
+                if (shapeGenerator.CorrectShapes >= 3)
+                {
+                    FindObjectOfType<LongDogINA>().SetDamaged(false);
+                    StartCoroutine(ResetWait());
+                }
+            }
+            else
+            {
+                FindObjectOfType<LongDogINA>().SetDamaged(true);
+                myCollider.enabled = false;
+                myRenderer.color = new Color(1, 0, 0);
                 StartCoroutine(ResetWait());
             }
-        }
-        else
-        {
-            FindObjectOfType<LongDogINA>().SetDamaged(true);
-            myCollider.enabled = false;
-            myRenderer.color = new Color(1, 0, 0);
-            StartCoroutine(ResetWait());
         }
     }
 

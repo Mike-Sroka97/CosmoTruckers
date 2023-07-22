@@ -6,6 +6,7 @@ public class LongevityOfDog : CombatMove
 {
     [SerializeField] GameObject[] touchableShapes;
     [SerializeField] int maxLayouts;
+    [SerializeField] GameObject[] shapesToMake;
 
     List<int> generatedLayouts = new List<int>();
     LoDShapeGenerator shapeGenerator;
@@ -24,7 +25,7 @@ public class LongevityOfDog : CombatMove
         if(numberOfLayouts < maxLayouts)
         {
             RandomLayout();
-            shapeGenerator.GenerateLayout(touchableShapes[currentLayout]);
+            shapeGenerator.GenerateLayout(touchableShapes[currentLayout], shapesToMake[currentLayout]);
         }
     }
 
