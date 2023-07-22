@@ -42,7 +42,6 @@ public class SafeTINA : Player
     Vector2 bottomLeft;
     Vector2 bottomRight;
 
-    SpriteRenderer mySprite;
     Collider2D myCollider;
     Animator myAnimator;
     PlayerAnimator playerAnimator;
@@ -58,7 +57,6 @@ public class SafeTINA : Player
         originalMoveSpeed = moveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
-        mySprite = GetComponent<SpriteRenderer>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
     }
 
