@@ -95,7 +95,6 @@ public class LongDogINA : Player
     {
         float damagedTime = 0;
         myBody.velocity = Vector2.zero;
-        iFrames = true;
 
         while(damagedTime < iFrameDuration)
         {

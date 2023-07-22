@@ -120,7 +120,7 @@ public class SixfaceINA : Player
         canMove = false;
         canAttack = false;
         canJump = false;
-        iFrames = true;
+
         float damagedTime = 0;
         myBody.velocity = Vector2.zero;
         SetSixFacesFace(sixFaceFaces[2]);

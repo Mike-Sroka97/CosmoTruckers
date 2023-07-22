@@ -68,12 +68,16 @@ public class AeglarINA : Player
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
+        canDash = false;
+        canMove = false;
 
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime + damageFlashSpeed;
             if (damagedTime > damagedDuration)
             {
+                canDash = true;
+                canMove = true;
                 damaged = false;
             }
             yield return new WaitForSeconds(damageFlashSpeed);

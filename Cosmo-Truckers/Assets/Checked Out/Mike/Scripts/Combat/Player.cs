@@ -13,13 +13,13 @@ public abstract class Player : MonoBehaviour
     [SerializeField] protected float damagedDuration;
     [SerializeField] protected float iFrameDuration;
     [HideInInspector] public bool iFrames = false;
+    [HideInInspector] public bool damaged = false;
 
     [Space(20)]
     [Header("Art")]
     [SerializeField] SpriteRenderer[] myRenderers;
     [SerializeField] Material iFrameMaterial; 
 
-    protected bool damaged = false;
     protected Rigidbody2D myBody;
     private Material startingMaterial; 
 
@@ -39,10 +39,13 @@ public abstract class Player : MonoBehaviour
 
     public void TakeDamage()
     {
-        myBody.velocity = Vector2.zero;
-        damaged = true;
-        iFrames = true;
-        StartCoroutine(Damaged());
+        if(!iFrames)
+        {
+            myBody.velocity = Vector2.zero;
+            damaged = true;
+            iFrames = true;
+            StartCoroutine(Damaged());
+        }
     }
 
     protected void UpdateOutline()

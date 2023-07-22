@@ -40,7 +40,7 @@ public class SafeTINA : Player
 
     float currentJumpStrength;
     float currentJumpHoldTime = 0;
-    const float startingHeight = 2.5f;
+    const float startingHeight = .1f;
 
     int layermask = 1 << 9; //ground
     Vector2 bottomLeft;
@@ -71,22 +71,6 @@ public class SafeTINA : Player
         Movement();
         Jump();
         SpecialMove();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject.layer == 9 && IsGrounded(.02f))
-        {
-            ShortHop();
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 9 && IsGrounded(.02f))
-        {
-            ShortHop();
-        }
     }
 
     public void ResetMoveSpeed() { moveSpeed = originalMoveSpeed; }
@@ -125,7 +109,7 @@ public class SafeTINA : Player
 
     #region Attack
     /// <summary>
-    /// Aeglar's attack will be a dash where he is an active hitbox during the process
+    /// Regular horizontal and vertical attacks
     /// </summary>
     public void Attack()
     {
@@ -161,13 +145,16 @@ public class SafeTINA : Player
     /// </summary>
     public void Jump()
     {
+        if (IsGrounded(raycastHopHelper) && !damaged)
+            canJump = true;
+
         if (Input.GetKeyDown("space") && canJump && !isJumping)
         {
             canMove = false;
             canJump = false;
             isJumping = true;
             playerAnimator.ChangeAnimation(myAnimator, coil);
-         }
+        }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentJumpHoldTime += Time.deltaTime;
@@ -197,7 +184,7 @@ public class SafeTINA : Player
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
-            StartCoroutine(JustJumped());
+            isJumping = false;
 
             if (!damagedCoroutineRunning)
             {
@@ -210,7 +197,7 @@ public class SafeTINA : Player
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
-            StartCoroutine(JustJumped());
+            isJumping = false;
 
             if (!damagedCoroutineRunning)
             {
@@ -228,15 +215,8 @@ public class SafeTINA : Player
         else
         {
             //Don't ask
-            myLineRenderer.SetPosition(1, new Vector3(0, (Mathf.Pow(pointTwoPosition * (1 + jumpSpeedAccrual), jumpMaxHoldTime * 1.5f)), 0));
+            myLineRenderer.SetPosition(1, new Vector3(0, pointTwoPosition * currentJumpHoldTime * 2, 0));
         }
-    }
-
-    IEnumerator JustJumped()
-    {
-        yield return new WaitForSeconds(jumpGroundedDelay);
-
-        isJumping = false;
     }
 
     private void ShortHop()
@@ -328,7 +308,6 @@ public class SafeTINA : Player
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
-            StartCoroutine(JustJumped());
 
             if (!damagedCoroutineRunning)
             {

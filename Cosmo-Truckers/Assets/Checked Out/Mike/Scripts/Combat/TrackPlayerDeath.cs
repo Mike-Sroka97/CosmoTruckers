@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TrackPlayerDeath : MonoBehaviour
 {
+    [SerializeField] bool trackDeath = true;
+
     CombatMove minigame;
 
     private void Start()
@@ -11,21 +13,64 @@ public class TrackPlayerDeath : MonoBehaviour
         minigame = FindObjectOfType<CombatMove>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Death()
     {
-        if (collision.tag == "Player")
+        if (trackDeath)
         {
             minigame.PlayerDead = true;
             Debug.Log(minigame.PlayerDead);
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
+        {
+            Player player = collision.GetComponentInParent<Player>();
+            if (!player.iFrames)
+            {
+                player.TakeDamage();
+                Death();
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
+        {
+            Player player = collision.GetComponentInParent<Player>();
+            if (!player.iFrames)
+            {
+                player.TakeDamage();
+                Death();
+            }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
         {
-            minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
+            Player player = collision.transform.GetComponentInParent<Player>();
+            if (!player.iFrames)
+            {
+                player.TakeDamage();
+                Death();
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
+        {
+            Player player = collision.transform.GetComponentInParent<Player>();
+            if (!player.iFrames)
+            {
+                player.TakeDamage();
+                Death();
+            }
         }
     }
 }

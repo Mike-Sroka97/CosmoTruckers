@@ -461,6 +461,7 @@ MonoBehaviour:
   damagedDuration: 1
   iFrameDuration: 2
   iFrames: 0
+  damaged: 0
   myRenderers:
   - {fileID: 8927067783373437440}
   iFrameMaterial: {fileID: 2100000, guid: 6ce2845b53937504c8e449e680ce1522, type: 2}
@@ -473,6 +474,9 @@ MonoBehaviour:
   coyoteTime: 0.25
   jumpGroundedDelay: 0.25
   myLineRenderer: {fileID: 1648716334}
+  rollCD: 0.5
+  rollDuration: 0.5
+  rollSpeed: 4.2
   hopForceModifier: 1.8
   raycastHopHelper: 0.2
   idle: {fileID: 7400000, guid: 2a3e0459d0db8474e8e80b546e5e3f7a, type: 2}
@@ -482,6 +486,7 @@ MonoBehaviour:
   coil: {fileID: 7400000, guid: ba7206da8bc6e504f9060eba6b28683b, type: 2}
   jump: {fileID: 7400000, guid: e4945940c29a6b24da9691a23b3f7c46, type: 2}
   hurt: {fileID: 7400000, guid: cd9f04235023f8149a6873602cc13baf, type: 2}
+  roll: {fileID: 7400000, guid: cc9e4ffa7b0ae8e4f988e59bbf433fd6, type: 2}
 --- !u!114 &1826794475
 MonoBehaviour:
   m_ObjectHideFlags: 0
