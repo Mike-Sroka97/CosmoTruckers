@@ -67,7 +67,7 @@ public class SixfaceINA : Player
         playerAnimator = GetComponent<PlayerAnimator>();
         myBody = GetComponent<Rigidbody2D>();
         startingGravity = myBody.gravityScale;
-        myCollider = GetComponentInChildren<Collider2D>(); //ignores parent
+        myCollider = transform.Find("HoverCollider").GetComponent<Collider2D>(); //ignores parent
     }
 
     private void Update()
@@ -84,12 +84,7 @@ public class SixfaceINA : Player
 
     private void IsGrounded()
     {
-        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
-        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
-
-        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
+        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
             if(!damaged && !Input.GetKey("space"))
             {
@@ -108,11 +103,6 @@ public class SixfaceINA : Player
         {
             currentCoyoteTime += Time.deltaTime;
         }
-    }
-
-    public bool Grounded()
-    {
-        return Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask);
     }
 
     public override IEnumerator Damaged()

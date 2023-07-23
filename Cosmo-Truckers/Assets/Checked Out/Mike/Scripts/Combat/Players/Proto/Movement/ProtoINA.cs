@@ -103,9 +103,7 @@ public class ProtoINA : Player
         bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
         bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
 
-        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
+        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
 
             if(!damaged && Input.GetKey("space"))
@@ -138,7 +136,7 @@ public class ProtoINA : Player
 
     #region Attack
     /// <summary>
-    /// Aeglar's attack will be a dash where he is an active hitbox during the process
+    /// Whacko funny punch go haha
     /// </summary>
     public void Attack()
     {

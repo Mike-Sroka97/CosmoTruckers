@@ -98,7 +98,6 @@ public class SafeTINA : Player
                 playerAnimator.ChangeAnimation(myAnimator, idle);
                 canAttack = true;
                 canMove = true;
-                ShortHop();
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
@@ -219,31 +218,12 @@ public class SafeTINA : Player
         }
     }
 
-    private void ShortHop()
-    {
-        if (IsGrounded(raycastHopHelper))
-        {
-            if (!isJumping)
-            {
-                myBody.velocity = new Vector2(myBody.velocity.x, 0);
-                myBody.AddForce(new Vector2(0, hopForceModifier), ForceMode2D.Impulse);
-            }
-            canJump = true;
-        }
-        else
-        {
-            canJump = false;
-        }
-    }
-
     private bool IsGrounded(float distance)
     {
         bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
         bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
 
-        if (Physics2D.Raycast(bottomLeft, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(bottomRight, Vector2.down, myCollider.bounds.extents.y + distance, layermask)
-            || Physics2D.Raycast(transform.position, Vector2.down, myCollider.bounds.extents.y + distance, layermask))
+        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
             return true;
 
         return false;
