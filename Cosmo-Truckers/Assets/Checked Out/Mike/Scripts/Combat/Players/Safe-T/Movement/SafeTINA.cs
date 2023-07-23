@@ -43,8 +43,6 @@ public class SafeTINA : Player
     const float startingHeight = .1f;
 
     int layermask = 1 << 9; //ground
-    Vector2 bottomLeft;
-    Vector2 bottomRight;
 
     Collider2D myCollider;
     Animator myAnimator;
@@ -128,7 +126,7 @@ public class SafeTINA : Player
     {
         canMove = false;
         canAttack = false;
-        myBody.velocity = new Vector2(0, myBody.velocity.y);
+        myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         attack.SetActive(true);
         yield return new WaitForSeconds(attackDuration);
         attack.SetActive(false);
@@ -172,13 +170,13 @@ public class SafeTINA : Player
                 HandleLineRenderer(startingHeight);
             }
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
-            myBody.velocity = new Vector2(0, myBody.velocity.y);
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)))
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
-            myBody.velocity = new Vector2(myBody.velocity.x, 0);
+            myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
             myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
@@ -220,9 +218,6 @@ public class SafeTINA : Player
 
     private bool IsGrounded(float distance)
     {
-        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
-        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
-
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
             return true;
 
@@ -240,7 +235,7 @@ public class SafeTINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -253,7 +248,7 @@ public class SafeTINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -270,7 +265,7 @@ public class SafeTINA : Player
             {
                 playerAnimator.ChangeAnimation(myAnimator, idle);
             }
-            myBody.velocity = new Vector2(0, myBody.velocity.y);
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
     }
     #endregion

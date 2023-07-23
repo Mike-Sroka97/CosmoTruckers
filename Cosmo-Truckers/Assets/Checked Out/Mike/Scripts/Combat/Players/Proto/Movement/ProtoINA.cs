@@ -41,8 +41,6 @@ public class ProtoINA : Player
     Collider2D myCollider;
     int layermask = 1 << 9;
     const float distance = 0.05f;
-    Vector2 bottomLeft;
-    Vector2 bottomRight;
 
     private void Start()
     {
@@ -75,7 +73,7 @@ public class ProtoINA : Player
             sprite.enabled = false;
         }
 
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
         canJump = false;
         canAttack = false;
         canMove = false;
@@ -100,9 +98,6 @@ public class ProtoINA : Player
 
     private void IsGrounded()
     {
-        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
-        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
-
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
 
@@ -185,13 +180,13 @@ public class ProtoINA : Player
         {
             canJump = false;
             isJumping = true;
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentCoyoteTime = coyoteTime;
             currentJumpHoldTime += Time.deltaTime;
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
         }
         else if (isJumping)
         {
@@ -210,7 +205,7 @@ public class ProtoINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
@@ -218,7 +213,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
@@ -226,7 +221,7 @@ public class ProtoINA : Player
         }
         else
         {
-            myBody.velocity = new Vector2(0, myBody.velocity.y);
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
     }
     #endregion

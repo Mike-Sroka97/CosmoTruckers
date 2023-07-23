@@ -55,8 +55,6 @@ public class SixfaceINA : Player
     float startingGravity;
 
     const float distance = 0.05f;
-    Vector2 bottomLeft;
-    Vector2 bottomRight;
 
     private void Start()
     {
@@ -249,7 +247,7 @@ public class SixfaceINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
+            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
@@ -261,12 +259,9 @@ public class SixfaceINA : Player
                 SetSixFacesFace(sixFaceFaces[0]);
             }
         }
-        else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
-        {
-            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
-        }
         else
         {
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             if (!IsHovering && canAttack && !isJumping && !iFrames)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, idle);

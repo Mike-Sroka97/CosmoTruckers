@@ -94,7 +94,7 @@ public class LongDogINA : Player
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
 
         while(damagedTime < iFrameDuration)
         {
@@ -362,17 +362,17 @@ public class LongDogINA : Player
 
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
-                myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+                myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 0, 0);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
-                myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+                myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 180, 0);
             }
             else if(IsGrounded())
             {
-                myBody.velocity = new Vector2(0, myBody.velocity.y);
+                myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             }
         }
     }
@@ -405,7 +405,7 @@ public class LongDogINA : Player
         canMove = false;
         canStretch = false;
         iFrames = true;
-        myBody.velocity = new Vector2(0, myBody.velocity.y);
+        myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
 
         yield return new WaitForSeconds(barkDuration);
 

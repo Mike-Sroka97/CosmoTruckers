@@ -31,8 +31,6 @@ public class AeglarINA : Player
     const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
     int currentNumberOfJumps = 0;
-    Vector2 bottomLeft;
-    Vector2 bottomRight;
 
     private void Start()
     {
@@ -52,9 +50,6 @@ public class AeglarINA : Player
 
     private bool IsGrounded(float distance)
     {
-        bottomLeft = new Vector2(myCollider.bounds.min.x, myCollider.bounds.min.y);
-        bottomRight = new Vector2(myCollider.bounds.max.x, myCollider.bounds.min.y);
-
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
             return true;
 
@@ -135,7 +130,7 @@ public class AeglarINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -144,7 +139,7 @@ public class AeglarINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -153,7 +148,7 @@ public class AeglarINA : Player
         }
         else
         {
-            myBody.velocity = new Vector2(0, myBody.velocity.y);
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
     }
     #endregion
@@ -179,7 +174,7 @@ public class AeglarINA : Player
         canDash = false;
         canMove = false;
 
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
 
         if (up)
         {
@@ -202,18 +197,18 @@ public class AeglarINA : Player
         {
             if (up)
             {
-                myBody.velocity = new Vector2(0, myBody.velocity.y);
+                myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             }
             else
             {
-                myBody.velocity = new Vector2(myBody.velocity.x, 0);
+                myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
             }
 
             currentDashTime += Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
 
         canMove = true;
         if (up)
