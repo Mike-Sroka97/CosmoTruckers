@@ -6,6 +6,8 @@ public abstract class Player : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] protected float moveSpeed;
+    [HideInInspector] public float xVelocityAdjuster;
+    [HideInInspector] public float yVelocityAdjuster;
 
     [Space(20)]
     [Header("Damage Variables")]

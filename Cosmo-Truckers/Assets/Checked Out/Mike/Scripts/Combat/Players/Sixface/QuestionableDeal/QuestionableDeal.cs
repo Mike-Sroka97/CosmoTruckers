@@ -35,7 +35,6 @@ public class QuestionableDeal : CombatMove
             Moving = false;
             PlayerDead = true;
             Score = successThresholds.Length;
-            //handle minigame ending
         }
     }
 
@@ -65,6 +64,6 @@ public class QuestionableDeal : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+
     }
 }

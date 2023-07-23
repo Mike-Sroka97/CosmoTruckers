@@ -112,7 +112,7 @@ public class SixfaceINA : Player
         canJump = false;
 
         float damagedTime = 0;
-        myBody.velocity = Vector2.zero;
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
         SetSixFacesFace(sixFaceFaces[2]);
         playerAnimator.ChangeAnimation(bodyAnimator, hurt);
 
@@ -177,7 +177,7 @@ public class SixfaceINA : Player
     {
         canAttack = false;
         canMove = false;
-        myBody.velocity = new Vector2(0, myBody.velocity.y);
+        myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         attack.SetActive(true);
         attack.GetComponent<Collider2D>().enabled = true;
         yield return new WaitForSeconds(attackDuration);
@@ -235,7 +235,7 @@ public class SixfaceINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
@@ -249,7 +249,7 @@ public class SixfaceINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
+            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
@@ -263,7 +263,7 @@ public class SixfaceINA : Player
         }
         else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A))
         {
-            myBody.velocity = new Vector2(0, myBody.velocity.y);
+            myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
         }
         else
         {
@@ -276,7 +276,7 @@ public class SixfaceINA : Player
 
     public void Pogo()
     {
-        myBody.velocity = new Vector2(myBody.velocity.x, 0);
+        myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
         myBody.AddForce(new Vector2(0, pogoStrength));
     }
     #endregion
