@@ -12,8 +12,8 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected DebuffStackSO DebuffToAdd;
 
     [HideInInspector] public int Score;
-    [HideInInspector] public bool PlayerDead;
-    [HideInInspector] public bool MoveEnded;
+    [HideInInspector] public bool PlayerDead = false;
+    [HideInInspector] public bool MoveEnded = false;
     [HideInInspector] public int Hits = 0;
 
     private void Start()
@@ -52,7 +52,28 @@ public abstract class CombatMove : MonoBehaviour
     {
         if (CombatManager.Instance != null) //In the combat screen
         {
+            if(CombatManager.Instance.GetPlayerSelected.Count > 0)
+            {
+                foreach(var player in CombatManager.Instance.GetPlayerSelected)
+                {
+                    player.GetComponent<PlayerCharacter>().TakeDamage(Damage * Hits);
 
+                    if (DebuffToAdd != null)
+                        for (int i = 0; i < Hits; i++)
+                            player.GetComponent<PlayerCharacter>().AddDebuffStack(DebuffToAdd);
+                }
+            }
+            else if(CombatManager.Instance.GetEnemySelected.Count > 0)
+            {
+                foreach (var enemy in CombatManager.Instance.GetEnemySelected)
+                {
+                    enemy.GetComponent<Enemy>().TakeDamage(Damage * Hits);
+
+                    if(DebuffToAdd != null)
+                        for (int i = 0; i < Hits; i++)
+                            enemy.GetComponent<Enemy>().AddDebuffStack(DebuffToAdd);
+                }
+            }
         }
         else //Running tests
         {

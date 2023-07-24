@@ -6,15 +6,17 @@ public class PlayerCharacter : MonoBehaviour
 {
     [SerializeField] string characterName;
     [SerializeField] int health;
+    [SerializeField] int currentHealth;
     [SerializeField] GameObject wheel;
     [SerializeField] BaseAttackSO[] attacks; //For testing
+    //How Ever we stored Debuffs that makes since
+
     [Space(10)]
     [SerializeField] GameObject MiniGameControllerPrefab;
     public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     TurnOrder turnOrder;
-    int currentHealth;
     public bool Dead { get; private set; }
 
     private void Start()
@@ -29,6 +31,11 @@ public class PlayerCharacter : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void AddDebuffStack(DebuffStackSO stack)
+    {
+
     }
 
     private void Die()

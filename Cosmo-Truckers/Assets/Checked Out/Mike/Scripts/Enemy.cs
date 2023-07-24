@@ -50,6 +50,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void AddDebuffStack(DebuffStackSO stack)
+    {
+
+    }
+
     private void Die()
     {
         GetComponent<CharacterSpeed>().enabled = false;

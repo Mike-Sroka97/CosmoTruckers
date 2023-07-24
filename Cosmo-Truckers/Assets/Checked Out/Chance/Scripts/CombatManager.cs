@@ -18,6 +18,10 @@ public class CombatManager : MonoBehaviour
  
     [SerializeField] List<GameObject> EnemySelected;
     [SerializeField] List<GameObject> PlayerSelected;
+
+    public List<GameObject> GetPlayerSelected { get => PlayerSelected; }
+    public List<GameObject> GetEnemySelected { get => EnemySelected; }
+
     bool StartTimer = false;
 
     private void Awake() => Instance = this;
@@ -244,7 +248,8 @@ public class CombatManager : MonoBehaviour
         miniGame = Instantiate(attack.CombatPrefab);
         miniGame.transform.SetParent(MiniGameScreen.transform);
 
-        while(miniGameTime >= 0)
+
+        while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
         {
             if (StartTimer)
             {
@@ -263,6 +268,10 @@ public class CombatManager : MonoBehaviour
         StopAllCoroutines();
         TempPage.SetActive(false);
 
+        miniGame.GetComponentInChildren<CombatMove>().EndMove();
+
+        PlayerSelected.Clear();
+        EnemySelected.Clear();
         Destroy(miniGame);
         Destroy(character);
 
