@@ -10,11 +10,14 @@ public abstract class CombatMove : MonoBehaviour
     //For games that can deal player damage
     [SerializeField] protected int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
+    public float MinigameDuration;
 
     [HideInInspector] public int Score;
     [HideInInspector] public bool PlayerDead = false;
     [HideInInspector] public bool MoveEnded = false;
     [HideInInspector] public int Hits = 0;
+
+    protected float currentTime = 0;
 
     private void Start()
     {
@@ -50,6 +53,8 @@ public abstract class CombatMove : MonoBehaviour
     }
     public virtual void EndMove()
     {
+        MoveEnded = true;
+
         if (CombatManager.Instance != null) //In the combat screen
         {
             if(CombatManager.Instance.GetPlayerSelected.Count > 0)
@@ -92,6 +97,19 @@ public abstract class CombatMove : MonoBehaviour
         {
             int random = UnityEngine.Random.Range(0, layouts.Length);
             Instantiate(layouts[random], transform);
+        }
+    }
+
+    protected virtual void TrackTime()
+    {
+        if (MoveEnded)
+            return;
+
+        currentTime += Time.deltaTime;
+
+        if (currentTime >= MinigameDuration || PlayerDead)
+        {
+            EndMove();
         }
     }
 }
