@@ -7,6 +7,7 @@ public class LongDogNeck : MonoBehaviour
     
     [SerializeField] LineRenderer myLineRenderer;
     [SerializeField] EdgeCollider2D myCollider;
+    [SerializeField] float myEdgeRadius; 
 
     List<Vector2> linePoints = new List<Vector2>();
     int pointCount = 0;
@@ -125,7 +126,7 @@ public class LongDogNeck : MonoBehaviour
         myLineRenderer.endWidth = width;
 
         //circleColliderRadius = width / 2f;
-        myCollider.edgeRadius = width / 2f; 
+        myCollider.edgeRadius = myEdgeRadius;  
     }
 
     public Gradient GetLineColor() { return myLineRenderer.colorGradient; }

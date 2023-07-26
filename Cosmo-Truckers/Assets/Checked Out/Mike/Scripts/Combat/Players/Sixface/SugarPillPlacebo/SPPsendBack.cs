@@ -15,11 +15,13 @@ public class SPPsendBack : MonoBehaviour
         layoutGenerator = transform.parent.parent.GetComponent<SPPlayoutGenerator>();
         player = FindObjectOfType<SixfaceINA>().transform;
         minigame = FindObjectOfType<SugarPillPlacebo>();
+
+        Debug.Log(player.name); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform == player.transform)
+        if (collision.transform.parent.transform == player.transform)
         {
             Invoke("MovePlayer", moveDelay);
         }
@@ -31,6 +33,7 @@ public class SPPsendBack : MonoBehaviour
         {
             layoutGenerator.DestroyMe();
         }
+
         player.position = minigame.CurrentCheckPointLocation;
     }
 }
