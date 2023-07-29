@@ -9,16 +9,12 @@ public class CosmicCasterCollectable : MonoBehaviour
     CosmicCaster minigame;
     Collider2D myCollider;
     SpriteRenderer myRenderer;
-
-    private void Start()
+    public void ActivateMe()
     {
         minigame = FindObjectOfType<CosmicCaster>();
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
-    }
 
-    public void ActivateMe()
-    {
         Activated = true;
         myCollider.enabled = true;
         myRenderer.enabled = true;
@@ -31,7 +27,6 @@ public class CosmicCasterCollectable : MonoBehaviour
             myCollider.enabled = false;
             myRenderer.enabled = false;
             minigame.Score++;
-            Debug.Log(minigame.Score);
             minigame.NextCollectable();
         }
     }
