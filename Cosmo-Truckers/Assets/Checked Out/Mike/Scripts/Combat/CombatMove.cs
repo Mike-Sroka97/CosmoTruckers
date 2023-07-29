@@ -107,7 +107,7 @@ public abstract class CombatMove : MonoBehaviour
 
         currentTime += Time.deltaTime;
 
-        if (currentTime >= MinigameDuration || PlayerDead)
+        if ((currentTime >= MinigameDuration || PlayerDead) && !MoveEnded)
         {
             EndMove();
         }
