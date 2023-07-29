@@ -234,6 +234,8 @@ GameObject:
   - component: {fileID: 2016607099}
   - component: {fileID: 740924837}
   - component: {fileID: 419124519}
+  - component: {fileID: 4263668690554160519}
+  - component: {fileID: 5255325792038594751}
   m_Layer: 6
   m_Name: AeglarBody
   m_TagString: Player
@@ -346,6 +348,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5787efb0cdb2f40a5dd1854439a553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4263668690554160519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016607097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e342e3e05001b7344bb8bd23fbb54503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &5255325792038594751
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016607097}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ea9049d7925d4ac41835a18fe9ad019e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5979393201563331703
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,6 +391,7 @@ GameObject:
   - component: {fileID: 5979393201563331659}
   - component: {fileID: 5979393201563331702}
   - component: {fileID: 5979393201563331658}
+  - component: {fileID: 3028570961130340282}
   m_Layer: 0
   m_Name: Aeglar combat
   m_TagString: Player
@@ -437,3 +472,20 @@ MonoBehaviour:
   numberOfAttacks: 2
   numberOfJumps: 2
   jumpSpeed: 375
+  idle: {fileID: 7400000, guid: 788d9f4b2ae1e30428a99c229c337321, type: 2}
+  move: {fileID: 7400000, guid: 28eeb40af7ded874395edb815adc376c, type: 2}
+  dashRight: {fileID: 7400000, guid: 096d2457c13378f4f8a65b387254b263, type: 2}
+  dashUp: {fileID: 7400000, guid: 6e7eec93bb4c47044bbac54aada4f3d7, type: 2}
+  hurt: {fileID: 7400000, guid: 1211fd5521222bf4386ef32c4b6b1323, type: 2}
+--- !u!114 &3028570961130340282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5979393201563331703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bfa33a348a7af041b96c28198258a19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

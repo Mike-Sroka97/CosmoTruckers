@@ -23,10 +23,20 @@ public class AeglarINA : Player
 
     [SerializeField] float jumpSpeed;
 
+    [Space(20)]
+    [Header("Animations")]
+    [SerializeField] AnimationClip idle;
+    [SerializeField] AnimationClip move;
+    [SerializeField] AnimationClip dashRight;
+    [SerializeField] AnimationClip dashUp;
+    [SerializeField] AnimationClip hurt;
+
     bool canDash = true;
     bool canMove = true;
 
     Collider2D myCollider;
+    Animator myAnimator;
+    PlayerAnimator playerAnimator;
     int layermask = 1 << 9; //ground
     const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
@@ -37,6 +47,8 @@ public class AeglarINA : Player
         PlayerInitialize();
 
         myBody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponentInChildren<Animator>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
     }
 
@@ -63,6 +75,7 @@ public class AeglarINA : Player
         float damagedTime = 0;
         canDash = false;
         canMove = false;
+        playerAnimator.ChangeAnimation(myAnimator, hurt);
 
         while (damagedTime < iFrameDuration)
         {
@@ -72,6 +85,7 @@ public class AeglarINA : Player
                 canDash = true;
                 canMove = true;
                 damaged = false;
+                playerAnimator.ChangeAnimation(myAnimator, idle);
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
@@ -115,7 +129,6 @@ public class AeglarINA : Player
         if (Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
         {
             StartCoroutine(Dash(true, true));
-            ;
         }
     }
     #endregion
@@ -131,6 +144,7 @@ public class AeglarINA : Player
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
             myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+            playerAnimator.ChangeAnimation(myAnimator, move);
 
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -140,6 +154,7 @@ public class AeglarINA : Player
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
             myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+            playerAnimator.ChangeAnimation(myAnimator, move);
 
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -149,6 +164,7 @@ public class AeglarINA : Player
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
+            playerAnimator.ChangeAnimation(myAnimator, idle);
         }
     }
     #endregion
@@ -164,11 +180,13 @@ public class AeglarINA : Player
         {
             currentNumberOfJumps++;
             verticalAttackArea.SetActive(true);
+            playerAnimator.ChangeAnimation(myAnimator, dashUp);
         }
         else
         {
             currentNumberOfAttacks++;
             horizontalAttackArea.SetActive(true);
+            playerAnimator.ChangeAnimation(myAnimator, dashRight);
         }
 
         canDash = false;
