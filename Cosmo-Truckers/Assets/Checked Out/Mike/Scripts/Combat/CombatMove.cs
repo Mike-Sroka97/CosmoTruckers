@@ -53,6 +53,7 @@ public abstract class CombatMove : MonoBehaviour
     }
     public virtual void EndMove()
     {
+        Debug.Log(Score);
         MoveEnded = true;
 
         if (CombatManager.Instance != null) //In the combat screen
