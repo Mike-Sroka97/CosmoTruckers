@@ -33,7 +33,7 @@ public class CosmicCaster : CombatMove
 
     public void NextCollectable()
     {
-        if(Score < maxScore)
+        if(Score < maxScore && !MoveEnded)
         {
             int random = UnityEngine.Random.Range(0, collectables.Length);
 
