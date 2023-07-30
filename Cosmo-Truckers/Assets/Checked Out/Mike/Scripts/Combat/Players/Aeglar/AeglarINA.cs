@@ -79,7 +79,7 @@ public class AeglarINA : Player
 
         while (damagedTime < iFrameDuration)
         {
-            damagedTime += Time.deltaTime + damageFlashSpeed;
+            damagedTime += Time.deltaTime;
             if (damagedTime > damagedDuration)
             {
                 canDash = true;
@@ -87,7 +87,7 @@ public class AeglarINA : Player
                 damaged = false;
                 playerAnimator.ChangeAnimation(myAnimator, idle);
             }
-            yield return new WaitForSeconds(damageFlashSpeed);
+            yield return null;
         }
 
         iFrames = false;

@@ -20,10 +20,22 @@ public class LongDogINA : Player
     [SerializeField] Collider2D myNose;
     [SerializeField] float barkCooldown;
     [SerializeField] float barkDuration;
+    [SerializeField] GameObject attackArea;
+
+    [Space(20)]
+    [Header("Animation")]
+    [SerializeField] Animator headAnimator;
+    [SerializeField] Animator bodyAnimator;
+    [SerializeField] AnimationClip idleHead;
+    [SerializeField] AnimationClip hurtHead;
+    [SerializeField] AnimationClip stretchingHead;
+    [SerializeField] AnimationClip barkHead;
+    [SerializeField] AnimationClip idleBody;
+    [SerializeField] AnimationClip hurtBody;
+    [SerializeField] AnimationClip moveBody;
+    [SerializeField] AnimationClip stretchBody;
 
     LongDogNeck currentLine;
-
-    Camera cam;
 
     bool stretching = false;
     bool buttStretching = false;
@@ -39,6 +51,7 @@ public class LongDogINA : Player
     float startingGravityScale;
     int layermask = 1 << 9;
     Collider2D myCollider;
+    PlayerAnimator playerAnimator;
 
     private void Start()
     {
@@ -46,15 +59,15 @@ public class LongDogINA : Player
 
         myBody = head.GetComponent<Rigidbody2D>();
         myCollider = head.GetComponent<Collider2D>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         buttStartingLocation = body.transform.localPosition;
-        cam = Camera.main;
         startingGravityScale = myBody.gravityScale;
     }
 
     private void Update()
     {
         UpdateOutline();
-        if(!stretching && canMove && damaged && !invincible)
+        if(!stretching && canMove && damaged && !iFrames)
         {
             canMove = false;
             canStretch = false;
@@ -93,36 +106,33 @@ public class LongDogINA : Player
 
     public override IEnumerator Damaged()
     {
+        iFrames = true;
         float damagedTime = 0;
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
+        playerAnimator.ChangeAnimation(headAnimator, hurtHead);
+        playerAnimator.ChangeAnimation(bodyAnimator, hurtBody);
 
-        while(damagedTime < iFrameDuration)
+        while (damagedTime < damagedDuration)
         {
-            if(FindObjectOfType<LongDogNeck>())
-            {
-                LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
-                tempNeck.GetComponent<LineRenderer>().enabled = false; 
-            }
-            yield return new WaitForSeconds(damageFlashSpeed);
+            yield return null;
 
-            if (FindObjectOfType<LongDogNeck>())
+            damagedTime += Time.deltaTime;
+            if(damagedTime >= damagedDuration)
             {
-                LongDogNeck tempNeck = FindObjectOfType<LongDogNeck>();
-                tempNeck.GetComponent<LineRenderer>().enabled = true;
-            }
-            yield return new WaitForSeconds(damageFlashSpeed);
-
-            damagedTime += Time.deltaTime + (damageFlashSpeed * 2);
-            if(damagedTime >= damagedDuration && !invincible)
-            {
-                invincible = true;
+                playerAnimator.ChangeAnimation(headAnimator, idleHead);
+                playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
                 damaged = false;
                 LDGReset();
             }
         }
+        while(damagedTime < iFrameDuration)
+        {
+            yield return null;
+
+            damagedTime += Time.deltaTime;
+        }
 
         iFrames = false;
-        invincible = false;
     }
 
     public void SetCanMove(bool toggle) { canMove = toggle; }
@@ -138,6 +148,8 @@ public class LongDogINA : Player
         {
             canStretch = false;
             myBody.velocity = Vector2.zero;
+            playerAnimator.ChangeAnimation(headAnimator, stretchingHead);
+            playerAnimator.ChangeAnimation(bodyAnimator, stretchBody);
             StartCoroutine(StartStretch());
             BeginDraw();
         }
@@ -163,16 +175,13 @@ public class LongDogINA : Player
 
     void BeginDraw()
     {
+        attackArea.SetActive(true);
         stretching = true;
         myNose.enabled = true;
         body.transform.SetParent(transform);
         myBody.gravityScale = 0;
 
-        currentLine = Instantiate(linePrefab, this.transform).GetComponent<LongDogNeck>();
-
-        currentLine.SetLineColor(lineColor);
-        currentLine.SetPointsMinDistance(linePointsMinDistance);
-        currentLine.SetLineWidth(lineWidth);
+        currentLine = Instantiate(linePrefab, transform).GetComponent<LongDogNeck>();
     }
 
     void Draw()
@@ -181,6 +190,7 @@ public class LongDogINA : Player
     }
     void EndDraw()
     {
+        attackArea.SetActive(false);
         buttStretching = true;
         body.GetComponent<LongDogButt>().StartButtToHeadMovement();
     }
@@ -198,6 +208,13 @@ public class LongDogINA : Player
         }
 
         StartCoroutine(ATHSpin());
+    }
+
+    public void SetupLineRenderer(LongDogNeck mCurrentLine)
+    {
+        mCurrentLine.SetLineColor(lineColor);
+        mCurrentLine.SetPointsMinDistance(linePointsMinDistance);
+        mCurrentLine.SetLineWidth(lineWidth);
     }
 
     IEnumerator ATHSpin()
@@ -357,6 +374,7 @@ public class LongDogINA : Player
         }
         else if(!stretching && !buttStretching)
         {
+            playerAnimator.ChangeAnimation(headAnimator, idleHead);
             goingLeft = false;
             goingRight = false;
 
@@ -364,22 +382,25 @@ public class LongDogINA : Player
             {
                 myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 0, 0);
+                playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
                 myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 180, 0);
+                playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }
             else if(IsGrounded())
             {
                 myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
+                playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
             }
         }
     }
 
     private bool IsGrounded()
     {
-        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .05f, layermask))
+        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .15f, layermask))
         {
             return true;
         }
@@ -401,6 +422,8 @@ public class LongDogINA : Player
 
     IEnumerator Bark()
     {
+        playerAnimator.ChangeAnimation(headAnimator, barkHead);
+        playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
         canBark = false;
         canMove = false;
         canStretch = false;
@@ -412,6 +435,7 @@ public class LongDogINA : Player
         canMove = true;
         canStretch = true;
         iFrames = false;
+        playerAnimator.ChangeAnimation(headAnimator, idleHead);
 
         yield return new WaitForSeconds(barkCooldown);
 

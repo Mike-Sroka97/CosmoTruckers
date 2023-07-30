@@ -11,7 +11,6 @@ public class LongDogNeck : MonoBehaviour
 
     List<Vector2> linePoints = new List<Vector2>();
     int pointCount = 0;
-    //float circleColliderRadius;
     float minDistanceBetweenPoints = .2f;
 
     LongDogINA dog;
@@ -74,13 +73,11 @@ public class LongDogNeck : MonoBehaviour
             return;
         }
 
+        if(linePoints.Count == 0)
+            dog.SetupLineRenderer(this);
+
         linePoints.Add(point);
         pointCount++;
-
-        //CircleCollider2D circleCollider = this.gameObject.AddComponent<CircleCollider2D>();
-        //circleCollider.offset = point;
-        //circleCollider.radius = circleColliderRadius;
-
 
         myLineRenderer.positionCount = pointCount;
         myLineRenderer.SetPosition(pointCount - 1, point);
@@ -97,7 +94,7 @@ public class LongDogNeck : MonoBehaviour
         pointCount--;
         myLineRenderer.positionCount = pointCount;
         List<Vector3> newVertices = new List<Vector3>();
-        foreach(Vector2 p in linePoints)
+        foreach (Vector2 p in linePoints)
         {
             newVertices.Add(p);
         }
@@ -125,7 +122,6 @@ public class LongDogNeck : MonoBehaviour
         myLineRenderer.startWidth = width;
         myLineRenderer.endWidth = width;
 
-        //circleColliderRadius = width / 2f;
         myCollider.edgeRadius = myEdgeRadius;  
     }
 
