@@ -21,6 +21,8 @@ public class LongDogINA : Player
     [SerializeField] float barkCooldown;
     [SerializeField] float barkDuration;
     [SerializeField] GameObject attackArea;
+    [SerializeField] BoxCollider2D headBody;
+    [SerializeField] BoxCollider2D bodyBody;
 
     [Space(20)]
     [Header("Animation")]
@@ -41,7 +43,6 @@ public class LongDogINA : Player
     bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
-    bool invincible = false;
     bool goingLeft = false;
     bool goingRight = false;
     bool startupStretch = false;
@@ -67,12 +68,6 @@ public class LongDogINA : Player
     private void Update()
     {
         UpdateOutline();
-        if(!stretching && canMove && damaged && !iFrames)
-        {
-            canMove = false;
-            canStretch = false;
-            StartCoroutine(Damaged());
-        }
         Attack();
         Movement();
         Jump();
@@ -97,20 +92,24 @@ public class LongDogINA : Player
                 myNose.enabled = false;
                 EndDraw();
             }
-            if (collision == "EnemyDamaging" && !damaged)
-            {
-                damaged = true;
-            }
         }
     }
 
     public override IEnumerator Damaged()
     {
+        canMove = false;
+        canStretch = false;
         iFrames = true;
         float damagedTime = 0;
-        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
         playerAnimator.ChangeAnimation(headAnimator, hurtHead);
         playerAnimator.ChangeAnimation(bodyAnimator, hurtBody);
+
+        while(buttStretching)
+        {
+            yield return null;
+        }
+
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
 
         while (damagedTime < damagedDuration)
         {
@@ -150,6 +149,8 @@ public class LongDogINA : Player
             myBody.velocity = Vector2.zero;
             playerAnimator.ChangeAnimation(headAnimator, stretchingHead);
             playerAnimator.ChangeAnimation(bodyAnimator, stretchBody);
+            headBody.enabled = false;
+            bodyBody.enabled = true;
             StartCoroutine(StartStretch());
             BeginDraw();
         }
@@ -191,6 +192,8 @@ public class LongDogINA : Player
     void EndDraw()
     {
         attackArea.SetActive(false);
+        headBody.enabled = true;
+        bodyBody.enabled = false;
         buttStretching = true;
         body.GetComponent<LongDogButt>().StartButtToHeadMovement();
     }
@@ -219,7 +222,7 @@ public class LongDogINA : Player
 
     IEnumerator ATHSpin()
     {
-        invincible = true;
+        iFrames = true;
         bool completedRotation = false;
         float currentDegrees = 0;
         bool leftBoost;
@@ -267,17 +270,9 @@ public class LongDogINA : Player
         body.transform.localPosition = buttStartingLocation;
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
-        invincible = false;
         iFrames = false;
 
-        if (damaged && !invincible)
-        {
-            StartCoroutine(Damaged());
-        }
-        else
-        {
-            LDGReset();
-        }
+        LDGReset();
     }
 
     public void LDGReset()

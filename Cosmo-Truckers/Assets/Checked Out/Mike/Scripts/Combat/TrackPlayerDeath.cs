@@ -26,7 +26,7 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
-            Player player = collision.GetComponentInParent<Player>();
+            Player player = collision.transform.GetComponent<PlayerBody>().Body;
             if (!player.iFrames)
             {
                 player.TakeDamage();
@@ -39,7 +39,7 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
-            Player player = collision.GetComponentInParent<Player>();
+            Player player = collision.transform.GetComponent<PlayerBody>().Body;
             if (!player.iFrames)
             {
                 player.TakeDamage();
@@ -52,7 +52,7 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
         {
-            Player player = collision.transform.GetComponentInParent<Player>();
+            Player player = collision.transform.GetComponent<PlayerBody>().Body;
             if (!player.iFrames)
             {
                 player.TakeDamage();
@@ -65,7 +65,7 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
         {
-            Player player = collision.transform.GetComponentInParent<Player>();
+            Player player = collision.transform.GetComponent<PlayerBody>().Body;
             if (!player.iFrames)
             {
                 player.TakeDamage();

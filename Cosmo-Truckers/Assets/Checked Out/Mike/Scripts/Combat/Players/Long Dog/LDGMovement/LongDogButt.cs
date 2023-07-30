@@ -24,9 +24,8 @@ public class LongDogButt : MonoBehaviour
             if((Vector2)transform.localPosition != points[0])
             {
                 transform.localPosition = Vector2.MoveTowards(transform.localPosition, points[0], speed * Time.deltaTime);
-                Vector2 dir = points[0] - (Vector2)transform.position;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0, 0, angle - 180);
+                if(points.Count > 1)
+                    transform.right = -(new Vector3(points[1].x, points[1].y, 0) - transform.position);
             }
             else
             {
@@ -34,6 +33,7 @@ public class LongDogButt : MonoBehaviour
                 
                 if(points.Count <= 0)
                 {
+                    transform.right = Vector3.right;
                     dogINA.ATHDone();
                     isStretching = false;
                 }
@@ -80,7 +80,6 @@ public class LongDogButt : MonoBehaviour
 
     public void StartButtToHeadMovement()
     {
-        dogINA.iFrames = true;
         neck = FindObjectOfType<LongDogNeck>();
         if (neck)
         {

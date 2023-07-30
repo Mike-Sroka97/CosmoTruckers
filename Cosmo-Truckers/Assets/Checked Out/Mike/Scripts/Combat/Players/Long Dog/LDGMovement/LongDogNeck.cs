@@ -14,10 +14,14 @@ public class LongDogNeck : MonoBehaviour
     float minDistanceBetweenPoints = .2f;
 
     LongDogINA dog;
+    PlayerBody myBody;
 
     private void Start()
     {
         dog = transform.parent.GetComponent<LongDogINA>();
+        myBody = GetComponent<PlayerBody>();
+
+        myBody.Body = dog;
     }
 
     private void OnCollisionStay2D(Collision2D collision)
