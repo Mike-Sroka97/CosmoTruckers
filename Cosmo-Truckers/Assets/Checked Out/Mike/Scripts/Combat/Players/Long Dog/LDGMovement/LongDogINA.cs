@@ -395,7 +395,7 @@ public class LongDogINA : Player
 
     private bool IsGrounded()
     {
-        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .15f, layermask))
+        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .25f, layermask))
         {
             return true;
         }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MoveForward : MonoBehaviour
 {
+    [SerializeField] bool destroyParent = true;
+    [SerializeField] bool destroyOnContact = true;
+
     public float MoveSpeed;
 
     const int xClamp = 10;
@@ -11,9 +14,16 @@ public class MoveForward : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "Player" && destroyOnContact)
         {
-            Destroy(transform.parent.gameObject);
+            if(destroyParent)
+            {
+                Destroy(transform.parent.gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -31,7 +41,9 @@ public class MoveForward : MonoBehaviour
             || transform.position.x > xClamp 
             || transform.position.x < -xClamp)
         {
-            Destroy(transform.parent.gameObject);
+            if(destroyParent)
+                Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 }
