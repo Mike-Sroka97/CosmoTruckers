@@ -13,7 +13,22 @@ public class DebuffStackSO : ScriptableObject
     [Header("Stacks")]
     public bool Stackable = false;
     public int MaxStacks = 10;
+    public int CurrentStacks = 0;
     public Vector2 StackValue;
 
-    public virtual void DebuffEffect() { Debug.Log($"{DebuffName} activated"); }
+    [Header("Spawner")]
+    public GameObject AUG;
+    GameObject temp;
+
+    public virtual void DebuffEffect() 
+    {
+        temp = Instantiate(AUG);
+        temp.GetComponent<Augment>().Activate(this);
+    }
+
+    public virtual void StopEffect() 
+    {
+        temp.GetComponent<Augment>().StopEffect();
+        Destroy(temp);
+    }
 }
