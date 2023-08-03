@@ -677,8 +677,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Six Face
   health: 0
-  myButtons: {fileID: 1478345297}
+  currentHealth: 0
+  wheel: {fileID: 0}
   attacks: []
+  MiniGameControllerPrefab: {fileID: 0}
 --- !u!1 &141175041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,6 +1003,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 08534a4fac67db54eb3d5a905544e4cd, type: 2}
   - {fileID: 11400000, guid: 9d1e49eb6875c8d47b1648704bf15d48, type: 2}
   - {fileID: 11400000, guid: 5eb10bd9398851b43aeb279cff8c548c, type: 2}
+  attacks: []
 --- !u!212 &148148189
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1655,7 +1658,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0350532f29401841962715cf5569fe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  currentAttack: 0
+  speedIncrease: 100
+  baseSpeed: 50
+  children: []
 --- !u!1 &396363503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,8 +3520,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Electricutioner
   health: 0
-  myButtons: {fileID: 1509251610}
+  currentHealth: 0
+  wheel: {fileID: 0}
   attacks: []
+  MiniGameControllerPrefab: {fileID: 0}
 --- !u!1 &870001752
 GameObject:
   m_ObjectHideFlags: 0
@@ -5935,12 +5943,12 @@ SpriteRenderer:
   m_SortingLayerID: 1233702457
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bb801020e72414146bf0e3f8081a1ba9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4df6a21f310e6544bfe71afe282e79f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.75, y: 3.6}
+  m_Size: {x: 4.8, y: 4.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -5954,7 +5962,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336971004}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.65, y: -2.75, z: 0}
+  m_LocalPosition: {x: 4.65, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5991,6 +5999,7 @@ MonoBehaviour:
   droppableLoot:
   - {fileID: 11400000, guid: 9d1e49eb6875c8d47b1648704bf15d48, type: 2}
   - {fileID: 11400000, guid: 5eb10bd9398851b43aeb279cff8c548c, type: 2}
+  attacks: []
 --- !u!1 &1346396726
 GameObject:
   m_ObjectHideFlags: 0
@@ -7662,8 +7671,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Safe-T
   health: 0
-  myButtons: {fileID: 1852736619}
+  currentHealth: 0
+  wheel: {fileID: 0}
   attacks: []
+  MiniGameControllerPrefab: {fileID: 0}
 --- !u!1 &1740999456
 GameObject:
   m_ObjectHideFlags: 0
@@ -8880,8 +8891,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: CapCap
   health: 0
-  myButtons: {fileID: 983661065}
+  currentHealth: 0
+  wheel: {fileID: 0}
   attacks: []
+  MiniGameControllerPrefab: {fileID: 0}
 --- !u!1 &1995277212
 GameObject:
   m_ObjectHideFlags: 0

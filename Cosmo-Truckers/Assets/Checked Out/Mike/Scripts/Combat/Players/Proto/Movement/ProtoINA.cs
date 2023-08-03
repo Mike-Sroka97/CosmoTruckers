@@ -26,6 +26,15 @@ public class ProtoINA : Player
     [SerializeField] float negativeXBoundary;
     [SerializeField] float negativeYBoundary;
 
+    [Space(20)]
+    [Header("Animations")]
+    [SerializeField] AnimationClip idle;
+    [SerializeField] AnimationClip move;
+    [SerializeField] AnimationClip jump;
+    [SerializeField] AnimationClip attackRight;
+    [SerializeField] AnimationClip attackUp;
+    [SerializeField] AnimationClip hurt;
+
     [HideInInspector] public bool IsTeleporting { get; private set; }
     bool canMove = true;
     bool canJump = true;
@@ -38,6 +47,8 @@ public class ProtoINA : Player
     float currentTPhelperTime = 0;
     int lastTeleportHeld = 0;
 
+    Animator myAnimator;
+    PlayerAnimator playerAnimator;
     Collider2D myCollider;
     int layermask = 1 << 9;
     const float distance = 0.05f;
@@ -46,6 +57,8 @@ public class ProtoINA : Player
     {
         PlayerInitialize();
         myBody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponentInChildren<Animator>();
+        playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
         DebuffInit();
     }
@@ -79,6 +92,7 @@ public class ProtoINA : Player
         canMove = false;
         canTeleport = false;
         float damagedTime = 0;
+        playerAnimator.ChangeAnimation(myAnimator, hurt);
 
         while (damagedTime < iFrameDuration)
         {
@@ -89,6 +103,7 @@ public class ProtoINA : Player
                 canAttack = true;
                 canMove = true;
                 canTeleport = true;
+                playerAnimator.ChangeAnimation(myAnimator, idle);
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
@@ -101,7 +116,7 @@ public class ProtoINA : Player
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
 
-            if(!damaged && Input.GetKey("space"))
+            if(!damaged && Input.GetKey("space") && canMove)
             {
                 canJump = true;
             }
@@ -148,23 +163,29 @@ public class ProtoINA : Player
     IEnumerator ProtoAttack(bool horizontal)
     {
         canAttack = false;
+        canMove = false;
+        myBody.velocity = Vector2.zero;
 
         if(horizontal)
         {
+            playerAnimator.ChangeAnimation(myAnimator, attackRight);
             horizontalAttackArea.SetActive(true);
             yield return new WaitForSeconds(attackDuration);
             horizontalAttackArea.SetActive(false);
-            yield return new WaitForSeconds(attackCD);
         }
         else
         {
+            playerAnimator.ChangeAnimation(myAnimator, attackUp);
             verticalAttackArea.SetActive(true);
             yield return new WaitForSeconds(attackDuration);
             verticalAttackArea.SetActive(false);
-            yield return new WaitForSeconds(attackCD);
+
         }
 
+        playerAnimator.ChangeAnimation(myAnimator, idle);
+        yield return new WaitForSeconds(attackCD);
         canAttack = true;
+        canMove = true;
     }
     #endregion
 
@@ -181,6 +202,7 @@ public class ProtoINA : Player
             canJump = false;
             isJumping = true;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
+            playerAnimator.ChangeAnimation(myAnimator, jump);
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
@@ -210,6 +232,8 @@ public class ProtoINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
+            if(myBody.velocity.y == 0)
+                playerAnimator.ChangeAnimation(myAnimator, move);
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
@@ -218,10 +242,14 @@ public class ProtoINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
+            if(myBody.velocity.y == 0)
+                playerAnimator.ChangeAnimation(myAnimator, move);
         }
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
+            if(myBody.velocity == Vector2.zero)
+                playerAnimator.ChangeAnimation(myAnimator, idle);
         }
     }
     #endregion
