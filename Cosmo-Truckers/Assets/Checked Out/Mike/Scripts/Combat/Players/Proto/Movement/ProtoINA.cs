@@ -34,6 +34,8 @@ public class ProtoINA : Player
     [SerializeField] AnimationClip attackRight;
     [SerializeField] AnimationClip attackUp;
     [SerializeField] AnimationClip hurt;
+    [SerializeField] AnimationClip teleport;
+    [SerializeField] GameObject dyingProto;
 
     [HideInInspector] public bool IsTeleporting { get; private set; }
     bool canMove = true;
@@ -248,7 +250,7 @@ public class ProtoINA : Player
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-            if(myBody.velocity == Vector2.zero)
+            if(myBody.velocity == Vector2.zero && !IsTeleporting)
                 playerAnimator.ChangeAnimation(myAnimator, idle);
         }
     }
@@ -447,6 +449,7 @@ public class ProtoINA : Player
         {
             if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -455,6 +458,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, -teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -463,6 +467,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, -teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -471,6 +476,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -479,6 +485,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, 0, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -487,6 +494,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.y + teleportDistance > positiveYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(0, teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -495,6 +503,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.y - teleportDistance < negativeYBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(0, -teleportDistance, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -503,6 +512,7 @@ public class ProtoINA : Player
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary))
             {
+                CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, 0, 0);
                 StartCoroutine(TeleportCooldown());
             }
@@ -510,6 +520,12 @@ public class ProtoINA : Player
 
         lastTeleportHeld = 0;
         currentTPhelperTime = 0;
+    }
+
+    private void CreateDyingProto()
+    {
+        GameObject remnant = Instantiate(dyingProto, transform);
+        remnant.transform.parent = null;
     }
 
     IEnumerator TeleportCooldown()
@@ -521,6 +537,7 @@ public class ProtoINA : Player
         myBody.gravityScale = 0;
         canMove = false;
         IsTeleporting = true;
+        playerAnimator.ChangeAnimation(myAnimator, teleport);
 
         yield return new WaitForSeconds(teleportHoldTime);
 
