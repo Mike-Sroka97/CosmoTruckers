@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
+    [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     Animator enemyAnimation;
@@ -52,7 +53,18 @@ public class Enemy : MonoBehaviour
 
     public void AddDebuffStack(DebuffStackSO stack)
     {
+        foreach (var aug in AUGS)
+        {
+            if (String.Equals(aug.DebuffName, stack.DebuffName))
+            {
+                if (aug.CurrentStacks < aug.MaxStacks)
+                    aug.CurrentStacks++;
 
+                return;
+            }
+        }
+
+        AUGS.Add(stack);
     }
 
     private void Die()

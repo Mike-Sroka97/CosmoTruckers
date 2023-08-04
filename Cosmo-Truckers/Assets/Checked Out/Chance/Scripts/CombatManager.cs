@@ -24,12 +24,17 @@ public class CombatManager : MonoBehaviour
 
     bool StartTimer = false;
 
+    PlayerCharacter CurrentPlayer;
+
     private void Awake() => Instance = this;
 
-    public void StartCombat(BaseAttackSO attack)
+    public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
+        PlayerSelected.Clear();
         EnemySelected.Clear();
         StartTimer = false;
+
+        CurrentPlayer = currentPlayer;
 
         switch (attack.targetingType)
         {
@@ -138,6 +143,8 @@ public class CombatManager : MonoBehaviour
     {
         PlayerCharacter[] attackable = FindObjectsOfType<PlayerCharacter>();
         PlayerSelected.Clear();
+        EnemySelected.Clear();
+        CurrentPlayer = null;
         StartTimer = false;
 
         switch (attack.targetingType)
@@ -242,12 +249,25 @@ public class CombatManager : MonoBehaviour
     IEnumerator StartMiniGame(BaseAttackSO attack)
     {
         float miniGameTime = attack.MiniGameTime;
-        print(attack.MiniGameTime);
         Timer.text = miniGameTime.ToString();
 
         miniGame = Instantiate(attack.CombatPrefab);
         miniGame.transform.SetParent(MiniGameScreen.transform);
+        while(!StartTimer) yield return null;
 
+        if (CurrentPlayer)
+        {
+            foreach (var aug in CurrentPlayer.GetAUGS)
+                aug.DebuffEffect();
+        }
+        if(PlayerSelected.Count > 0)
+        {
+            foreach(var player in PlayerSelected)
+            {
+                foreach(var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
+                    aug.DebuffEffect();
+            }
+        }
 
         while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
         {

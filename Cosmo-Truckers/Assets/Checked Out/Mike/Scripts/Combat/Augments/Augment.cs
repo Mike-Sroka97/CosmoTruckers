@@ -9,8 +9,17 @@ public class Augment : MonoBehaviour
     [HideInInspector] public int Stacks;
     [HideInInspector] public float StatusEffect;
 
-    private void Start()
+    //LifeSpan
+
+    public virtual void Activate(DebuffStackSO stack = null) //Just in case we test without the SO
     {
+        if(stack)
+        {
+            baseStatusEffect = stack.StackValue.x;
+            additionalStatusEffect = stack.StackValue.y;
+            Stacks = stack.CurrentStacks;
+        }
+
         if(Stacks == 1)
         {
             StatusEffect = baseStatusEffect;
@@ -33,4 +42,6 @@ public class Augment : MonoBehaviour
             StatusEffect = 1;
         }
     }
+
+    public virtual void StopEffect() { }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,9 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] int currentHealth;
     [SerializeField] GameObject wheel;
     [SerializeField] BaseAttackSO[] attacks; //For testing
-    //How Ever we stored Debuffs that makes since
+    [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+
+    public List<DebuffStackSO> GetAUGS { get => AUGS; }
 
     [Space(10)]
     [SerializeField] GameObject MiniGameControllerPrefab;
@@ -35,7 +38,18 @@ public class PlayerCharacter : MonoBehaviour
 
     public void AddDebuffStack(DebuffStackSO stack)
     {
+        foreach(var aug in AUGS)
+        {
+            if(String.Equals(aug.DebuffName, stack.DebuffName))
+            {
+                if (aug.CurrentStacks < aug.MaxStacks)
+                    aug.CurrentStacks++;
 
+                return;
+            }
+        }
+
+        AUGS.Add(stack);
     }
 
     private void Die()

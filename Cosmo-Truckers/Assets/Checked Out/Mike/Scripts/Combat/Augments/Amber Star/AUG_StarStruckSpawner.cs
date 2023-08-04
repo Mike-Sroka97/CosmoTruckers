@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AUG_StarStruckSpawner : MonoBehaviour
+public class AUG_StarStruckSpawner : Augment
 {
-    [SerializeField] float StatusEffect; //TODO delete this
     [SerializeField] GameObject star;
 
     const float xClamp = 5.9f;
@@ -12,16 +11,22 @@ public class AUG_StarStruckSpawner : MonoBehaviour
     const float maxSpawn = 0.9f;
     float spawnSpeed;
 
-    private void Start()
+    public override void Activate(DebuffStackSO stack = null)
     {
-        spawnSpeed =  - (StatusEffect * minSpawn);
+        base.Activate(stack);
+        spawnSpeed = -(StatusEffect * minSpawn);
         StartCoroutine(SpawnStar());
+    }
+
+    public override void StopEffect()
+    {
+        StopAllCoroutines();
     }
 
     IEnumerator SpawnStar()
     {
         yield return new WaitForSeconds(spawnSpeed);
-        float randomX = UnityEngine.Random.Range(-xClamp, xClamp);
+        float randomX = Random.Range(-xClamp, xClamp);
 
         if (randomX >= 0)
         {
