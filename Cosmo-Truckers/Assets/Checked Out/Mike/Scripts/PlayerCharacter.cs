@@ -49,7 +49,7 @@ public class PlayerCharacter : MonoBehaviour
             }
         }
 
-        AUGS.Add(stack);
+        AUGS.Add(Instantiate(stack));
     }
 
     private void Die()

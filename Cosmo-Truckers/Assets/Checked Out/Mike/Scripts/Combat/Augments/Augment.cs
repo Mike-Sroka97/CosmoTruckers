@@ -6,8 +6,8 @@ public class Augment : MonoBehaviour
 {
     [SerializeField] float baseStatusEffect;
     [SerializeField] float additionalStatusEffect;
-    [HideInInspector] public int Stacks;
-    [HideInInspector] public float StatusEffect;
+    protected int Stacks;
+    protected float StatusEffect;
 
     //LifeSpan
 
@@ -35,11 +35,6 @@ public class Augment : MonoBehaviour
         else
         {
             StatusEffect = 0;
-        }
-
-        if(StatusEffect > 1)
-        {
-            StatusEffect = 1;
         }
     }
 

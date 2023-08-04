@@ -7,14 +7,13 @@ public class AUG_StarStruckSpawner : Augment
     [SerializeField] GameObject star;
 
     const float xClamp = 5.9f;
-    const float minSpawn = 0.6f;
-    const float maxSpawn = 0.9f;
+    const float minSpawn = 5.0f;
     float spawnSpeed;
 
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        spawnSpeed = -(StatusEffect * minSpawn);
+        spawnSpeed = minSpawn - StatusEffect;
         StartCoroutine(SpawnStar());
     }
 
