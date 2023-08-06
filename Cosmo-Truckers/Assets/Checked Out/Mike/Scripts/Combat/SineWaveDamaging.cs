@@ -8,6 +8,7 @@ public class SineWaveDamaging : MonoBehaviour
     [SerializeField] float amplitude;
     [SerializeField] float frequency;
     [SerializeField] float moveSpeed;
+    [SerializeField] bool startAtTau = false;
 
     LineRenderer myRenderer;
     EdgeCollider2D myCollider;
@@ -29,8 +30,20 @@ public class SineWaveDamaging : MonoBehaviour
     {
         currentTime += Time.deltaTime;
 
-        float xStart = 0;
-        float xFinish = tau;
+        float xStart;
+        float xFinish;
+
+        if (!startAtTau)
+        {
+            xStart = 0;
+            xFinish = tau;
+        }
+        else
+        {
+            xStart = tau;
+            xFinish = 0;
+        }
+
         List<Vector2> edges = new List<Vector2>();
 
         myRenderer.positionCount = maxPoints;
