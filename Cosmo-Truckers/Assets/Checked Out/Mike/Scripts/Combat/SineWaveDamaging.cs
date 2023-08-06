@@ -33,16 +33,8 @@ public class SineWaveDamaging : MonoBehaviour
         float xStart;
         float xFinish;
 
-        if (!startAtTau)
-        {
-            xStart = 0;
-            xFinish = tau;
-        }
-        else
-        {
-            xStart = tau;
-            xFinish = 0;
-        }
+        xStart = 0;
+        xFinish = tau;
 
         List<Vector2> edges = new List<Vector2>();
 
@@ -50,8 +42,20 @@ public class SineWaveDamaging : MonoBehaviour
         for(int i = 0; i < maxPoints; i++)
         {
             float progress = (float)i / (maxPoints - 1);
-            float x = Mathf.Lerp(xStart, xFinish, progress);
-            float y = amplitude *Mathf.Sin((tau * frequency * x) + currentTime * moveSpeed);
+            float x;
+
+            x = Mathf.Lerp(xStart, xFinish, progress);
+
+
+            float y;
+            if(!startAtTau)
+            {
+                y = amplitude * Mathf.Sin((tau * frequency * x) + currentTime * moveSpeed);
+            }
+            else
+            {
+                y = amplitude * Mathf.Sin((-tau * frequency * x) + currentTime * moveSpeed);
+            }
             myRenderer.SetPosition(i, new Vector3(x, y, 0));
             edges.Add(new Vector2(x, y));
         }

@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShockingShockNebularCloud : MonoBehaviour
+public class PlayerBasedParabolaMovement : MonoBehaviour
 {
+    [HideInInspector] public bool Active;
     [SerializeField] Transform[] spawns;
     [SerializeField] float waitTime;
     [SerializeField] float yToCheck = 3.25f;
@@ -26,15 +27,22 @@ public class ShockingShockNebularCloud : MonoBehaviour
 
     private void Start()
     {
-        player = FindObjectOfType<Player>();
         myBody = GetComponent<Rigidbody2D>();
         startTime = Time.time;
     }
 
     private void Update()
     {
+        if (!Active || player == null)
+            return;
+
         TrackTime();
         MoveMe();
+    }
+
+    public void SetPlayer(Player mPlayer)
+    {
+        player = mPlayer;
     }
 
     private void TrackTime()
@@ -46,7 +54,6 @@ public class ShockingShockNebularCloud : MonoBehaviour
 
         if(currentTime >= waitTime)
         {
-            //trackTime = false;
             currentTime = 0;
             ActivateMe();
         }
@@ -78,7 +85,12 @@ public class ShockingShockNebularCloud : MonoBehaviour
         Vector3 newPosition = new Vector3(horizontalPosition, verticalPosition, transform.position.z);
         myBody.MovePosition(newPosition);
 
-        if(trackY && transform.localPosition.y >= yToCheck)
+        if(trackY && transform.localPosition.y >= yToCheck && yToCheck > 0)
+        {
+            moving = false;
+            trackTime = true;
+        }
+        else if(trackY && transform.localPosition.y <= yToCheck)
         {
             moving = false;
             trackTime = true;
@@ -102,12 +114,28 @@ public class ShockingShockNebularCloud : MonoBehaviour
 
         if(player.transform.position.x > transform.position.x)
         {
-            currentSpeed = -speed;
+            if(yToCheck < 0)
+            {
+                currentSpeed = speed;
+            }
+            else
+            {
+                currentSpeed = -speed;
+            }
+
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
         else
         {
-            currentSpeed = speed;
+            if (yToCheck < 0)
+            {
+                currentSpeed = -speed;
+            }
+            else
+            {
+                currentSpeed = speed;
+            }
+
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
