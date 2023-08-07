@@ -6,6 +6,7 @@ public class MoveForward : MonoBehaviour
 {
     [SerializeField] bool destroyParent = true;
     [SerializeField] bool destroyOnContact = true;
+    [SerializeField] bool checkClamps = true;
 
     public float MoveSpeed;
 
@@ -35,6 +36,9 @@ public class MoveForward : MonoBehaviour
     private void MoveMe()
     {
         transform.Translate(Vector3.right * MoveSpeed * Time.deltaTime);
+
+        if (!checkClamps)
+            return;
 
         if(transform.position.y > yClamp 
             || transform.position.y < -yClamp 
