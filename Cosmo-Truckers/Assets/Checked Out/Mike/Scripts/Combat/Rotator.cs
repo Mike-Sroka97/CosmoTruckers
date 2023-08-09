@@ -11,7 +11,7 @@ public class Rotator : MonoBehaviour
         RotateMe();
     }
 
-    private void RotateMe()
+    protected void RotateMe()
     {
         transform.Rotate(new Vector3(0, 0, RotateSpeed * Time.deltaTime));
     }

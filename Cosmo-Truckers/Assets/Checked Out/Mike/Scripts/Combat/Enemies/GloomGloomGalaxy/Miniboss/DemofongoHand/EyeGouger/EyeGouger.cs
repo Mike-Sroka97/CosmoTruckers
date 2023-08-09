@@ -10,11 +10,12 @@ public class EyeGouger : CombatMove
     [SerializeField] int numberOfCycles;
     [SerializeField] float initialDelay;
 
-    const int numberOfHandsPerCycle = 5;
+    const int numberOfHandsPerCycle = 4;
     int currentNumberOfCycles = 0;
     int lastGemSpawn = -1;
     bool cycling = false;
     bool delay = true;
+    bool firstGem = true;
 
     private void Start()
     {
@@ -72,10 +73,12 @@ public class EyeGouger : CombatMove
 
         int random = UnityEngine.Random.Range(0, gemspawns.Length);
 
-        while(random == lastGemSpawn)
+        while(random == lastGemSpawn || (firstGem && random == gemspawns.Length - 1))
         {
             random = UnityEngine.Random.Range(0, gemspawns.Length);
         }
+
+        firstGem = false;
 
         GameObject newGem = Instantiate(gem, gemspawns[random]);
         newGem.transform.parent = null;
