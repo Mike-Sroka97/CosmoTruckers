@@ -8,10 +8,10 @@ public class SafeTSpring : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<SafeTINA>())
+        if(collision.GetComponentInParent<SafeTINA>())
         {
             //play animation
-            collision.GetComponent<Rigidbody2D>().velocity = new Vector2(collision.GetComponent<Rigidbody2D>().velocity.x, springForce);
+            collision.GetComponentInParent<Rigidbody2D>().velocity = new Vector2(collision.GetComponentInParent<Rigidbody2D>().velocity.x, springForce);
         }
     }
 }

@@ -21,7 +21,7 @@ public class ShockingShockLightning : MonoBehaviour
     private void Start()
     {
         minigame = FindObjectOfType<ShockingShock>();
-        myRendererer = GetComponent<SpriteRenderer>();
+        myRendererer = gameObject.GetComponentInChildren<SpriteRenderer>();
         activeColor = myRendererer.color;
         semiActiveColor = new Color(activeColor.r, activeColor.g, activeColor.b, activeColor.a / 8);
         inactiveColor = new Color(myRendererer.color.r, myRendererer.color.g, myRendererer.color.b, 0);
