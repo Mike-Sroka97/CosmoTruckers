@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SwitchMaster : CombatMove
-{ 
+{
+    [SerializeField] SwitchMasterItem masterItem;
 
+    public int MaxNumberOfCycles;
+    [HideInInspector] public int CurrentNumberOfCycles;
+
+    private void Start()
+    {
+        StartMove();
+        masterItem.ActivateMe();
+    }
 }
