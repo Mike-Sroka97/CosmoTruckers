@@ -9,6 +9,7 @@ public class Shockwave : MonoBehaviour
     [SerializeField] float shrinkSpeed;
     [SerializeField] float disableColliderScale = 0.2f;
     [SerializeField] float destroyScale = 0.05f;
+    [SerializeField] float destroyClamp;
 
     CombatMove minigame;
     Collider2D myCollider;
@@ -24,6 +25,7 @@ public class Shockwave : MonoBehaviour
     {
         MoveMe();
         ShrinkMe();
+        ClampCheck();
     }
 
     private void MoveMe()
@@ -48,6 +50,14 @@ public class Shockwave : MonoBehaviour
         }
 
         if (transform.localScale.x < destroyScale)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void ClampCheck()
+    {
+        if(transform.position.x > destroyClamp || transform.position.x < -destroyClamp)
         {
             Destroy(gameObject);
         }
