@@ -17,7 +17,7 @@ public class TrackPlayerDeath : MonoBehaviour
 
     private void Death()
     {
-        if (trackDeath)
+        if (trackDeath && minigame)
         {
             minigame.PlayerDead = true;
             Debug.Log(minigame.PlayerDead);

@@ -280,6 +280,21 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
+
+        if (CurrentPlayer)
+        {
+            foreach (var aug in CurrentPlayer.GetAUGS)
+                aug.StopEffect();
+        }
+        if (PlayerSelected.Count > 0)
+        {
+            foreach (var player in PlayerSelected)
+            {
+                foreach (var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
+                    aug.StopEffect();
+            }
+        }
+
         EndCombat();
     }
 

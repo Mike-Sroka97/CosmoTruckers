@@ -6,7 +6,6 @@ public class CraggyCoating : CombatMove
 {
     [SerializeField] float maxTimeSuccess;
 
-    float currentTime = 0;
     bool trackTime = true;
 
     private void Start()
@@ -29,7 +28,7 @@ public class CraggyCoating : CombatMove
         }
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         if (!trackTime)
             return;

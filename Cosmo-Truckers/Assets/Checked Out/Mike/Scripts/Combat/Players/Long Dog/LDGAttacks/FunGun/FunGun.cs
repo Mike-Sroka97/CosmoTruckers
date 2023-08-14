@@ -34,6 +34,6 @@ public class FunGun : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

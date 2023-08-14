@@ -131,7 +131,7 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
 
-        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length - 1)]);
+        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
     public string GetName() { return characterName; }
 }

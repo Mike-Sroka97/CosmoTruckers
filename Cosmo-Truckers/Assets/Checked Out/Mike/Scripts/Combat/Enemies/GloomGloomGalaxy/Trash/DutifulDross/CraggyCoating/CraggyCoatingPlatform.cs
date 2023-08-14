@@ -20,7 +20,7 @@ public class CraggyCoatingPlatform : MonoBehaviour
 
     private void Start()
     {
-        goodSideRenderer = goodSide.GetComponent<SpriteRenderer>();
+        goodSideRenderer = goodSide.GetComponentInChildren<SpriteRenderer>();
         startingGoodColor = goodSideRenderer.color;
 
         if(startOnGoodSide)
