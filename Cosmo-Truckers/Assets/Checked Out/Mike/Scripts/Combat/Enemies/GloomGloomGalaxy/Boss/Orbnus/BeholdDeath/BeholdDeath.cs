@@ -20,6 +20,11 @@ public class BeholdDeath : CombatMove
         StartCoroutine(SpawnMeteorites());
     }
 
+    private void Update()
+    {
+        TrackTime();
+    }
+
     IEnumerator SpawnMeteorites()
     {
         yield return new WaitForSeconds(meteoriteDelay);
