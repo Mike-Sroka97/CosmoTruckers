@@ -10,6 +10,7 @@ public class Shockwave : MonoBehaviour
     [SerializeField] float disableColliderScale = 0.2f;
     [SerializeField] float destroyScale = 0.05f;
     [SerializeField] float destroyClamp;
+    [SerializeField] bool startingOneScale = true;
 
     CombatMove minigame;
     Collider2D myCollider;
@@ -18,7 +19,9 @@ public class Shockwave : MonoBehaviour
     {
         myCollider = GetComponentInChildren<Collider2D>();
         minigame = FindObjectOfType<CombatMove>();
-        transform.localScale = Vector3.one;
+
+        if(startingOneScale)
+            transform.localScale = Vector3.one;
     }
 
     private void Update()
@@ -42,6 +45,9 @@ public class Shockwave : MonoBehaviour
 
     private void ShrinkMe()
     {
+        if (shrinkSpeed == 0)
+            return;
+
         transform.localScale -= new Vector3(shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime);
 
         if (transform.localScale.x < disableColliderScale)
