@@ -31,6 +31,19 @@ public class Enemy : MonoBehaviour
         currentHealth = health;
     }
 
+    private void Start()
+    {
+        if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnStartBattle)
+            StartCoroutine(StartWait());
+    }
+
+    IEnumerator StartWait()
+    {
+        yield return new WaitForEndOfFrame();
+
+        passiveMove.Activate();
+    }
+
     public void StartTarget()
     {
         enemyAnimation.enabled = true;
