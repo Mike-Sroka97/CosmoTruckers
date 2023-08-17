@@ -8,7 +8,6 @@ public class ShockingShock : CombatMove
     [SerializeField] float maxMinigameTime = 15f;
 
     ShockingShockLightning[] lightning;
-    float currentTime = 0;
     float scoreTime = 0;
     int numberOfLightningToAssign;
     [HideInInspector] public int CurrentActivatedLightning = 0;
@@ -54,7 +53,7 @@ public class ShockingShock : CombatMove
         }
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         if (!trackTime)
             return;
@@ -79,7 +78,7 @@ public class ShockingShock : CombatMove
             }
         }
 
-            while(CurrentActivatedLightning < numberOfLightningToAssign)
+        while(CurrentActivatedLightning < numberOfLightningToAssign)
         {
             int random = UnityEngine.Random.Range(0, lightning.Length);
             if(!lightning[random].IsShocking)
