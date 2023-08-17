@@ -39,6 +39,7 @@ public class SSGozorMovement : MonoBehaviour
         {
             minigameStarted = true;
             moveSpeed = originalMoveSpeed;
+            Debug.Log("MoveSpeed: " + moveSpeed + " OG: " + originalMoveSpeed);
         }
     }
 
