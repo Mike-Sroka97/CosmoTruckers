@@ -235,14 +235,13 @@ GameObject:
   - component: {fileID: 4183707677648636211}
   - component: {fileID: 4183707677648636212}
   - component: {fileID: 4183707677648636172}
-  - component: {fileID: 8474982694670425205}
   m_Layer: 5
   m_Name: Walking Noise
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4183707677648636173
 RectTransform:
   m_ObjectHideFlags: 0
@@ -250,7 +249,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4183707677648636213}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -337,7 +336,7 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400000, guid: 22914ee7dc4ec934ca81431deb582165, type: 2}
   AUGS: []
-  passiveMove: {fileID: 8474982694670425205}
+  passiveMove: {fileID: 0}
 --- !u!114 &4183707677648636212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,16 +370,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8474982694670425205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4183707677648636213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88822def2e71c4a48a6f45db8240e1c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0

@@ -6,7 +6,7 @@ public class AmberStarPassive : EnemyPassiveBase
 {
     [SerializeField] DebuffStackSO debuffToAdd;
 
-    public override void Activate()
+    public override void Activate(Enemy enemy)
     {
         List<PlayerCharacter> players = FindObjectOfType<EnemyManager>().Players;
 
@@ -14,6 +14,8 @@ public class AmberStarPassive : EnemyPassiveBase
         {
             if (!players[i].GetAUGS.Contains(debuffToAdd))
             {
+                debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().enemyToCheck = enemy;
+                debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().playerToCheck = players[i];
                 players[i].AddDebuffStack(debuffToAdd);
                 print($"{players[i].GetName()} has been debuffed");
                 return;

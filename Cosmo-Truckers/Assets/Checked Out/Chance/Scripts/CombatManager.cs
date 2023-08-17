@@ -265,14 +265,16 @@ public class CombatManager : MonoBehaviour
         if (CurrentPlayer)
         {
             foreach (var aug in CurrentPlayer.GetAUGS)
-                aug.DebuffEffect();
+                if(aug.Type == DebuffStackSO.ActivateType.InCombat)
+                    aug.DebuffEffect();
         }
         if(PlayerSelected.Count > 0)
         {
             foreach(var player in PlayerSelected)
             {
                 foreach(var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
-                    aug.DebuffEffect();
+                    if (aug.Type == DebuffStackSO.ActivateType.InCombat)
+                        aug.DebuffEffect();
             }
         }
 

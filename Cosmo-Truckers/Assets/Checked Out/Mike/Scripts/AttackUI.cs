@@ -26,7 +26,7 @@ public class AttackUI : MonoBehaviour
     {
         speed = baseSpeed;
         currentPlayer = player;
-        numberOfAttacks = player.GetAllAttacks.Length;
+        numberOfAttacks = player.GetAllAttacks.Count;
 
         float angle = 0f;
         rotationDistance = 360f / 10;
@@ -79,7 +79,8 @@ public class AttackUI : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                StartAttack();
+                if(currentPlayer.GetAllAttacks[currentAttack].CanUse)
+                    StartAttack();
             }
         }
     }
@@ -158,9 +159,12 @@ public class AttackUI : MonoBehaviour
         for (int i = 0; i < 10; i++)
             children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .25f);
 
-        children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
+        if (currentPlayer.GetAllAttacks.Count > currentAttack && currentPlayer.GetAllAttacks[currentAttack].CanUse)
+            children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
+        else
+            children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, 1);
 
-        if(currentAttack == 0)
+        if (currentAttack == 0)
         {
             children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
             children[numberOfAttacks].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);

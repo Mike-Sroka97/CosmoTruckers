@@ -9,7 +9,8 @@ public class PlayerCharacter : MonoBehaviour
     [SerializeField] int health;
     [SerializeField] int currentHealth;
     [SerializeField] GameObject wheel;
-    [SerializeField] BaseAttackSO[] attacks; //For testing
+    [SerializeField] List<BaseAttackSO> attacks;
+    List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
     [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
 
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
@@ -17,13 +18,16 @@ public class PlayerCharacter : MonoBehaviour
     [Space(10)]
     [SerializeField] GameObject MiniGameControllerPrefab;
     public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
-    public BaseAttackSO[] GetAllAttacks { get => attacks; }
+    public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
 
     TurnOrder turnOrder;
     public bool Dead { get; private set; }
 
     private void Start()
     {
+        foreach (var atk in attacks)
+            attackClones.Add(Instantiate(atk));
+
         turnOrder = FindObjectOfType<TurnOrder>();
         currentHealth = health;
     }
@@ -50,6 +54,9 @@ public class PlayerCharacter : MonoBehaviour
         }
 
         AUGS.Add(Instantiate(stack));
+
+        if (stack.Type == DebuffStackSO.ActivateType.StartUp)
+            stack.DebuffEffect();
     }
 
     private void Die()

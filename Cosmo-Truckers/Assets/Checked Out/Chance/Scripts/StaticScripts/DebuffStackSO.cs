@@ -6,8 +6,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Debuff", menuName = "ScriptableObjects/Debuff/EmptyBase")]
 public class DebuffStackSO : ScriptableObject
 {
+    public enum ActivateType
+    {
+        InCombat,
+        StartUp,
+        TurnStart,
+        TurnEnd
+    }
+
     [Header("Base Variables")]
     public string DebuffName;
+    public ActivateType Type = ActivateType.InCombat;
     [TextArea(5, 10)]public string DebuffDescription;
 
     [Header("Stacks")]
@@ -17,18 +26,18 @@ public class DebuffStackSO : ScriptableObject
     public Vector2 StackValue;
 
     [Header("Spawner")]
-    public GameObject AUG;
+    public GameObject AugSpawner;
     GameObject temp;
 
     public virtual void DebuffEffect() 
     {
-        temp = Instantiate(AUG);
-        temp.GetComponent<Augment>().Activate(this);
+            temp = Instantiate(AugSpawner);
+            temp.GetComponent<Augment>().Activate(this);
     }
 
     public virtual void StopEffect() 
     {
-        temp.GetComponent<Augment>().StopEffect();
-        Destroy(temp);
+            temp.GetComponent<Augment>().StopEffect();
+            Destroy(temp);
     }
 }

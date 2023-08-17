@@ -17,4 +17,5 @@ public class EnemyPassiveBase: MonoBehaviour
 
     public virtual void Activate() { }
     public virtual void Activate(int val) { }
+    public virtual void Activate(Enemy enemy) { }
 }

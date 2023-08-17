@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     TurnOrder turnOrder;
     int currentHealth;
     bool lootRolled = false;
-    public int SetHealth { set => health = value; }
+    public int Health { get => currentHealth;  set => health = value; }
 
     private void Awake()
     {
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        passiveMove.Activate();
+        passiveMove.Activate(this);
     }
 
     public void StartTarget()
