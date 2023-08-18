@@ -9,11 +9,14 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
     [SerializeField] float phaseOneDelay;
     [SerializeField] float phaseTwoDelay;
     [SerializeField] float phaseTwoChunkCount;
+    [SerializeField] GameObject noseChunk;
+    [SerializeField] float noseWaitTime;
 
     [HideInInspector] public bool PhaseOne = true;
     int random;
     int lastRandom = -1;
     int currentChunk = 0;
+    bool finalNodeSpawned = false;
 
     private void Start()
     {
@@ -44,6 +47,12 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
         if(currentChunk < phaseTwoChunkCount)
         {
             StartCoroutine(SpawnChunk());
+        }
+        else if(!finalNodeSpawned)
+        {
+            finalNodeSpawned = true;
+            yield return new WaitForSeconds(noseWaitTime);
+            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation);
         }
     }
 }
