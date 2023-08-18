@@ -14,6 +14,9 @@ public class TitanTerrorSpitFire : MonoBehaviour
     {
         myBody = GetComponent<Rigidbody2D>();
         myBody.velocity = new Vector2(startingXvelocity, startingYvelocity);
+
+        if (startingXvelocity < 0)
+            GetComponent<Rotator>().RotateSpeed = -GetComponent<Rotator>().RotateSpeed;
     }
 
     private void Update()
