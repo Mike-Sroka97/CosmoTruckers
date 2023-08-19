@@ -96,6 +96,7 @@ public class CascadingGoliathHand : MonoBehaviour
         while(hand.position != startPosition)
         {
             hand.position = Vector2.MoveTowards(hand.position, startPosition, retractSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime);
             yield return null;
         }
 

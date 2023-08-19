@@ -1,0 +1,34 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class QmuavBlackHole : MonoBehaviour
+{
+    [SerializeField] float rotateSpeed;
+    [SerializeField] float shrinkSpeed;
+    [SerializeField] float minScale;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Player" && collision.GetComponentInParent<Player>())
+        {
+            collision.GetComponentInParent<Graviton>().IsAttractee = false;
+            StartCoroutine(ShrinkAndKill(collision.GetComponentInParent<Player>()));
+            //TODO LONG DOG SPECIAL CASE FML
+        }
+    }
+
+    IEnumerator ShrinkAndKill(Player player)
+    {
+        while (player.transform.localScale.x > minScale)
+        {
+            player.transform.Rotate(new Vector3(0, 0, rotateSpeed * Time.deltaTime));
+            player.transform.localScale -= new Vector3(shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime, shrinkSpeed * Time.deltaTime);
+            player.transform.position = transform.position;
+            yield return null;
+        }
+
+        player.transform.localScale = new Vector3(minScale, minScale, minScale);
+        //TODO KILL PLAYER IN REAL LIFE
+    }
+}
