@@ -2,17 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CascadingGoliath : MonoBehaviour
+public class CascadingGoliath : CombatMove
 {
-    // Start is called before the first frame update
-    void Start()
+    CascadingGoliathNodes[] allNodes;
+    CascadingGoliathChunkSpawner mySpawner;
+
+    private void Start()
     {
-        
+        StartMove();
+        GenerateLayout();
+
+        mySpawner = GetComponent<CascadingGoliathChunkSpawner>();
+        allNodes = FindObjectsOfType<CascadingGoliathNodes>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckPhase()
     {
-        
+        bool phaseTwo = true;
+
+        foreach(CascadingGoliathNodes node in allNodes)
+        {
+            if(!node.Hit)
+            {
+                phaseTwo = false;
+            }
+        }
+
+        if(phaseTwo)
+        {
+            mySpawner.PhaseOne = false;
+            CascadingGoliathHand[] hands = FindObjectsOfType<CascadingGoliathHand>();
+
+            foreach(CascadingGoliathHand hand in hands)
+            {
+                hand.enabled = false;
+            }
+        }
     }
 }

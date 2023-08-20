@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AmberStarPassive : EnemyPassiveBase
+{
+    [SerializeField] DebuffStackSO debuffToAdd;
+
+    public override void Activate(Enemy enemy)
+    {
+        List<PlayerCharacter> players = FindObjectOfType<EnemyManager>().Players;
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (!players[i].GetAUGS.Contains(debuffToAdd))
+            {
+                debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().enemyToCheck = enemy;
+                debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().playerToCheck = players[i];
+                players[i].AddDebuffStack(debuffToAdd);
+                print($"{players[i].GetName()} has been debuffed");
+                return;
+            }
+        }
+    }
+}

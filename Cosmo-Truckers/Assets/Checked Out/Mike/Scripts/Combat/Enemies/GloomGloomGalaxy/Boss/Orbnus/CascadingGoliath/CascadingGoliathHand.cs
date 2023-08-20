@@ -9,6 +9,7 @@ public class CascadingGoliathHand : MonoBehaviour
     [SerializeField] float stretchSpeed;
     [SerializeField] float retractDelay;
     [SerializeField] float retractSpeed;
+    [SerializeField] float rotateSpeed;
     [SerializeField] Transform hand;
     [SerializeField] CascadingGoliathHand otherHand;
 
@@ -20,23 +21,27 @@ public class CascadingGoliathHand : MonoBehaviour
     bool active;
     bool trackTime;
     float currentTime = 0;
+    Quaternion startingRotation;
 
     private void Start()
     {
         startPosition = hand.position;
+        startingRotation = transform.rotation;
         players = FindObjectsOfType<Player>();
 
         if(startHand)
-            CalculatePlayerDistances();
+        {
+            trackTime = true;
+            active = true;
+        }
     }
 
     private void Update()
     {
         if (!active)
             return;
-
-        TrackTime();
         LookAtPlayer();
+        TrackTime();
         Stretch();
     }
 
@@ -61,7 +66,11 @@ public class CascadingGoliathHand : MonoBehaviour
         if (stretching)
             return;
 
-        transform.right = currentTarget.transform.position - transform.position;
+        CalculatePlayerDistances();
+
+        float angle = Mathf.Atan2(currentTarget.transform.position.y - transform.position.y, currentTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
     }
 
     private void Stretch()
@@ -87,16 +96,19 @@ public class CascadingGoliathHand : MonoBehaviour
         while(hand.position != startPosition)
         {
             hand.position = Vector2.MoveTowards(hand.position, startPosition, retractSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime);
             yield return null;
         }
 
+        transform.rotation = startingRotation;
+        hand.position = startPosition;
+        otherHand.active = true;
+        otherHand.trackTime = true;
         otherHand.CalculatePlayerDistances();
     }
 
     public void CalculatePlayerDistances()
     {
-        active = true;
-        trackTime = true;
         float closestDistance = 100;
 
         foreach(Player player in players)

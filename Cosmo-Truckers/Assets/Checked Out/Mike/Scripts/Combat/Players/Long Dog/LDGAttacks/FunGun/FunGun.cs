@@ -31,9 +31,4 @@ public class FunGun : CombatMove
 
         guns[currentActiveGun].TrackingTime = true;
     }
-
-    public override void EndMove()
-    {
-        
-    }
 }

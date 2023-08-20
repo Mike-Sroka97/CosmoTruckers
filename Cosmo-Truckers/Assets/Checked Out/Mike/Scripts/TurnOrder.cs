@@ -12,9 +12,17 @@ public class TurnOrder : MonoBehaviour
     int currentCharactersTurn = 0;
     private void Start()
     {
+        StartCoroutine(StartWait());
+    }
+
+    IEnumerator StartWait()
+    {
+        //Small wait before combat starts
+        yield return new WaitForSeconds(1.5f);
+
         speedList = new List<CharacterSpeed>();
         livingCharacters = FindObjectsOfType<CharacterSpeed>();
-        foreach(CharacterSpeed speed in livingCharacters)
+        foreach (CharacterSpeed speed in livingCharacters)
         {
             speedList.Add(speed);
         }

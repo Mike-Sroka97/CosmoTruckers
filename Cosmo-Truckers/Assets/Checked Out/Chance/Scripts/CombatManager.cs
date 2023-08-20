@@ -141,11 +141,18 @@ public class CombatManager : MonoBehaviour
 
     public void StartTurnEnemy(BaseAttackSO attack)
     {
+        StartCoroutine(EnemyDelay(attack));
+    }
+
+    IEnumerator EnemyDelay(BaseAttackSO attack)
+    {
         PlayerCharacter[] attackable = FindObjectsOfType<PlayerCharacter>();
         PlayerSelected.Clear();
         EnemySelected.Clear();
         CurrentPlayer = null;
         StartTimer = false;
+
+        yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
         switch (attack.targetingType)
         {
@@ -169,7 +176,7 @@ public class CombatManager : MonoBehaviour
                 attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
                 foreach (var obj in attackable)
                 {
-                    if(!obj.Dead)
+                    if (!obj.Dead)
                     {
                         PlayerSelected.Add(obj.gameObject);
                         TempPage.SetActive(true);
@@ -200,7 +207,7 @@ public class CombatManager : MonoBehaviour
                         PlayerSelected.Add(obj.gameObject);
                         character = Instantiate(obj.GetCharacterController);
                     }
-                    if(PlayerSelected.Count == attack.numberOFTargets)
+                    if (PlayerSelected.Count == attack.numberOFTargets)
                     {
                         TempPage.SetActive(true);
                         StartTimer = true;
@@ -240,7 +247,7 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); return;
+            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); yield break;
         }
 
         StartCoroutine(StartMiniGame(attack));
@@ -258,14 +265,16 @@ public class CombatManager : MonoBehaviour
         if (CurrentPlayer)
         {
             foreach (var aug in CurrentPlayer.GetAUGS)
-                aug.DebuffEffect();
+                if(aug.Type == DebuffStackSO.ActivateType.InCombat)
+                    aug.DebuffEffect();
         }
         if(PlayerSelected.Count > 0)
         {
             foreach(var player in PlayerSelected)
             {
                 foreach(var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
-                    aug.DebuffEffect();
+                    if (aug.Type == DebuffStackSO.ActivateType.InCombat)
+                        aug.DebuffEffect();
             }
         }
 

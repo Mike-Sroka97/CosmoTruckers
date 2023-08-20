@@ -11,7 +11,7 @@ public class ShockingShockLightning : MonoBehaviour
     [SerializeField] GameObject puddle;
     [HideInInspector] public bool IsShocking;
 
-    SpriteRenderer myRendererer;
+    [SerializeField] SpriteRenderer myRendererer;
     Collider2D myColliders;
     Color inactiveColor;
     Color activeColor;
@@ -21,13 +21,14 @@ public class ShockingShockLightning : MonoBehaviour
     private void Start()
     {
         minigame = FindObjectOfType<ShockingShock>();
-        myRendererer = gameObject.GetComponentInChildren<SpriteRenderer>();
+        //myRendererer = gameObject.GetComponentInChildren<SpriteRenderer>();
         activeColor = myRendererer.color;
         semiActiveColor = new Color(activeColor.r, activeColor.g, activeColor.b, activeColor.a / 8);
         inactiveColor = new Color(myRendererer.color.r, myRendererer.color.g, myRendererer.color.b, 0);
         myRendererer.color = inactiveColor;
 
         myColliders = GetComponent<Collider2D>();
+        myColliders.enabled = false;
     }
 
     public void ActivateMe()

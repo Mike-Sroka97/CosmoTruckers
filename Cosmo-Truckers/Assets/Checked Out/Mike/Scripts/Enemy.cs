@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
     [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+    [SerializeField] EnemyPassiveBase passiveMove;
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     Animator enemyAnimation;
@@ -19,32 +20,46 @@ public class Enemy : MonoBehaviour
     TurnOrder turnOrder;
     int currentHealth;
     bool lootRolled = false;
+    public int Health { get => currentHealth;  set => health = value; }
 
-    private void Start()
+    private void Awake()
     {
         enemyManager = FindObjectOfType<EnemyManager>();
         myRenderer = GetComponent<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
-        enemyAnimation = FindObjectOfType<Animator>();
+        enemyAnimation = GetComponent<Animator>();
         currentHealth = health;
     }
 
-    //TODO this is being stupid and I have no idea why
+    private void Start()
+    {
+        if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnStartBattle)
+            StartCoroutine(StartWait());
+    }
+
+    IEnumerator StartWait()
+    {
+        yield return new WaitForEndOfFrame();
+
+        passiveMove.Activate(this);
+    }
+
     public void StartTarget()
     {
         enemyAnimation.enabled = true;
-        print(gameObject.name + "ON");
     }
 
     public void EndTarget()
     {
         enemyAnimation.enabled = false;
-        print(gameObject.name + "Off");
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
+            passiveMove.Activate(currentHealth);
+
         if(currentHealth <= 0)
         {
             Die();
@@ -133,5 +148,6 @@ public class Enemy : MonoBehaviour
 
         FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
+
     public string GetName() { return characterName; }
 }

@@ -61,7 +61,7 @@ public class TrackPlayerDeath : MonoBehaviour
         if (!TrackingDamage)
             return;
 
-        if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
+           if (collision.transform.tag == "Player" && collision.transform.GetComponent<PlayerBody>())
         {
             Player player = collision.transform.GetComponent<PlayerBody>().Body;
             if (!player.iFrames)
