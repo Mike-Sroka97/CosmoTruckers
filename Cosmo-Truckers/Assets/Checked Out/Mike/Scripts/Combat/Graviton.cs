@@ -78,4 +78,6 @@ public class Graviton : MonoBehaviour
     {
         rigidBody.AddForce(initialVelocity, ForceMode2D.Impulse);
     }
+
+    public Vector3 GetInitialVelocity() { return initialVelocity; }
 }
