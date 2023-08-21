@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class QmuavProjectile : MonoBehaviour
 {
+    [SerializeField] float maxVelocity = 8;
+
     Graviton myGraviton;
     Rigidbody2D myBody;
     Vector3 startPosition;
@@ -21,6 +23,7 @@ public class QmuavProjectile : MonoBehaviour
     private void Update()
     {
         CheckClamps();
+        LimitVelocity();
     }
 
     private void CheckClamps()
@@ -30,9 +33,26 @@ public class QmuavProjectile : MonoBehaviour
             || transform.position.y > yClamp
             || transform.position.y < -yClamp)
         {
-            transform.position = startPosition;
-            myBody.velocity = Vector2.zero;
-            myBody.AddForce(myGraviton.GetInitialVelocity(), ForceMode2D.Impulse);
+            ResetPosition();
         }
+    }
+
+    private void LimitVelocity()
+    {
+        if (myBody.velocity.x > maxVelocity)
+            myBody.velocity = new Vector2(maxVelocity, myBody.velocity.y);
+        if (myBody.velocity.y > maxVelocity)
+            myBody.velocity = new Vector2(myBody.velocity.x, maxVelocity);
+        if (myBody.velocity.x < -maxVelocity)
+            myBody.velocity = new Vector2(-maxVelocity, myBody.velocity.y);
+        if (myBody.velocity.y < -maxVelocity)
+            myBody.velocity = new Vector2(myBody.velocity.x, -maxVelocity);
+    }
+
+    public void ResetPosition()
+    {
+        transform.position = startPosition;
+        myBody.velocity = Vector2.zero;
+        myBody.AddForce(myGraviton.GetInitialVelocity(), ForceMode2D.Impulse);
     }
 }

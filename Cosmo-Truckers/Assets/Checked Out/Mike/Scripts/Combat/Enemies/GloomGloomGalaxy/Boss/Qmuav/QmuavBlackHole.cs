@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,10 @@ public class QmuavBlackHole : MonoBehaviour
             collision.GetComponentInParent<Graviton>().IsAttractee = false;
             StartCoroutine(ShrinkAndKill(collision.GetComponentInParent<Player>()));
             //TODO LONG DOG SPECIAL CASE FML
+        }
+        if(collision.GetComponent<QmuavProjectile>())
+        {
+            collision.GetComponent<QmuavProjectile>().ResetPosition();
         }
     }
 
