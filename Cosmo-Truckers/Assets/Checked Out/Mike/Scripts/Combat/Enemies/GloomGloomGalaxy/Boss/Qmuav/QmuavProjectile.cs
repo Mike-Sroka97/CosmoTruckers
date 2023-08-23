@@ -5,6 +5,7 @@ using UnityEngine;
 public class QmuavProjectile : MonoBehaviour
 {
     [SerializeField] float maxVelocity = 8;
+    [SerializeField] bool repeat = true;
 
     Graviton myGraviton;
     Rigidbody2D myBody;
@@ -51,6 +52,9 @@ public class QmuavProjectile : MonoBehaviour
 
     public void ResetPosition()
     {
+        if (!repeat)
+            Destroy(gameObject);
+
         transform.position = startPosition;
         myBody.velocity = Vector2.zero;
         myBody.AddForce(myGraviton.GetInitialVelocity(), ForceMode2D.Impulse);
