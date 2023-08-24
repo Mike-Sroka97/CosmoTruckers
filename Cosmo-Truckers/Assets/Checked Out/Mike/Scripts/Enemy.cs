@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] string characterName;
     [SerializeField] int health;
+    [SerializeField] int spaceTaken = 1;
+
     [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
     [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
     int currentHealth;
     bool lootRolled = false;
     public int Health { get => currentHealth;  set => health = value; }
+    public int GetSpaceTaken { get => spaceTaken; }
 
     private void Awake()
     {
