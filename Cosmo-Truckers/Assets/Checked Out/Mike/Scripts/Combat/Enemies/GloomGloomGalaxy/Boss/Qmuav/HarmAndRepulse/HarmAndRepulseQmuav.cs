@@ -12,8 +12,11 @@ public class HarmAndRepulseQmuav : MonoBehaviour
     [SerializeField] bool gs = false;
 
     bool left = false;
+    GalaxyBusterSpawner galaxyBusterSpawner;
     private void Start()
     {
+        galaxyBusterSpawner = GetComponentInChildren<GalaxyBusterSpawner>();
+
         if(randomStart)
         {
             int coinFlip = Random.Range(0, 2);
@@ -35,6 +38,9 @@ public class HarmAndRepulseQmuav : MonoBehaviour
                 yield return null;
             }
             transform.position = new Vector3(spawns[0].position.x + distanceToTravel, transform.position.y, transform.position.z);
+
+            if (galaxyBusterSpawner)
+                galaxyBusterSpawner.ShootProjectile(true);
         }
         else
         {
@@ -45,6 +51,9 @@ public class HarmAndRepulseQmuav : MonoBehaviour
                 yield return null;
             }
             transform.position = new Vector3(spawns[1].position.x - distanceToTravel, transform.position.y, transform.position.z);
+
+            if (galaxyBusterSpawner)
+                galaxyBusterSpawner.ShootProjectile(false);
         }
 
         yield return new WaitForSeconds(sideChangeDelay);
