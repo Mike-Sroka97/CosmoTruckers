@@ -6,6 +6,7 @@ public class QmuavProjectile : MonoBehaviour
 {
     [SerializeField] float maxVelocity = 8;
     [SerializeField] bool repeat = true;
+    [SerializeField] bool checkClamps = true;
 
     Graviton myGraviton;
     Rigidbody2D myBody;
@@ -29,6 +30,9 @@ public class QmuavProjectile : MonoBehaviour
 
     private void CheckClamps()
     {
+        if (!checkClamps)
+            return;
+
         if (transform.position.x > xClamp
             || transform.position.x < -xClamp
             || transform.position.y > yClamp

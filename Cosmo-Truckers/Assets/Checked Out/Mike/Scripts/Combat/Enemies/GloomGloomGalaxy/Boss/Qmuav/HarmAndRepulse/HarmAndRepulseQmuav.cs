@@ -8,13 +8,17 @@ public class HarmAndRepulseQmuav : MonoBehaviour
     [SerializeField] float distanceToTravel;
     [SerializeField] float travelSpeed;
     [SerializeField] float sideChangeDelay;
+    [SerializeField] bool randomStart = true;
 
     bool left = false;
     private void Start()
     {
-        int coinFlip = Random.Range(0, 2);
-        if (coinFlip == 1)
-            left = true;
+        if(randomStart)
+        {
+            int coinFlip = Random.Range(0, 2);
+            if (coinFlip == 1)
+                left = true;
+        }
 
         StartCoroutine(MoveMe());
     }
