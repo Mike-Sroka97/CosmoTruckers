@@ -9,6 +9,7 @@ public class HarmAndRepulseQmuav : MonoBehaviour
     [SerializeField] float travelSpeed;
     [SerializeField] float sideChangeDelay;
     [SerializeField] bool randomStart = true;
+    [SerializeField] bool gs = false;
 
     bool left = false;
     private void Start()
@@ -56,6 +57,11 @@ public class HarmAndRepulseQmuav : MonoBehaviour
                 yield return null;
             }
             transform.position = spawns[0].position;
+
+            if(gs)
+            {
+                StartCoroutine(FindObjectOfType<GraviticSiphonProjectilePool>().ChangeVelocity());
+            }
         }
         else
         {
@@ -65,6 +71,11 @@ public class HarmAndRepulseQmuav : MonoBehaviour
                 yield return null;
             }
             transform.position = spawns[1].position;
+
+            if (gs)
+            {
+                StartCoroutine(FindObjectOfType<GraviticSiphonProjectilePool>().ChangeVelocity());
+            }
         }
 
         left = !left;
