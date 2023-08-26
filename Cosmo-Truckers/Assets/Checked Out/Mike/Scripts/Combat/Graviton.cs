@@ -80,4 +80,5 @@ public class Graviton : MonoBehaviour
     }
 
     public Vector3 GetInitialVelocity() { return initialVelocity; }
+    public void SetInitialVelocity(Vector3 newVelocity) { initialVelocity = newVelocity; }
 }
