@@ -10,10 +10,14 @@ public class HorsingAroundHorse : MonoBehaviour
     [SerializeField] float secondFlipDelay;
     [SerializeField] float time;
     [SerializeField] GameObject[] feet;
-    [SerializeField] GameObject shockZone;
     [SerializeField] float shockYValue = -1.4f;
     [SerializeField] Vector3 endPosition;
     [SerializeField] float xClamps;
+    [SerializeField] GameObject fire;
+    [SerializeField] Transform[] fireSpawns;
+    [SerializeField] Transform[] shockwaveSpawns;
+    [SerializeField] GameObject leftShock;
+    [SerializeField] GameObject rightShock;
 
     Vector3 goalPosition;
 
@@ -66,7 +70,6 @@ public class HorsingAroundHorse : MonoBehaviour
 
             if(currentTimeFlipTwo >= secondFlipDelay)
             {
-                shockZone.SetActive(false);
                 foreach (GameObject foot in feet)
                 {
                     foot.SetActive(false);
@@ -137,7 +140,13 @@ public class HorsingAroundHorse : MonoBehaviour
                 yield return null;
             }
 
-            shockZone.SetActive(true);
+            foreach(Transform spawn in fireSpawns)
+            {
+                Instantiate(fire, spawn.position, Quaternion.identity);
+            }
+
+            Instantiate(leftShock, shockwaveSpawns[0].position, Quaternion.identity);
+            Instantiate(rightShock, shockwaveSpawns[1].position, Quaternion.identity);
         }
         else
         {
