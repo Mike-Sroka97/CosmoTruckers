@@ -6,6 +6,7 @@ public class GraviticSiphonProjectilePool : MonoBehaviour
 {
     [SerializeField] float switchDelay;
     [SerializeField] float moveVelocity;
+    [SerializeField] float transitionSpeed;
 
     Rigidbody2D myBody;
     bool goingRight = true;
@@ -17,17 +18,28 @@ public class GraviticSiphonProjectilePool : MonoBehaviour
         StartCoroutine(ChangeVelocity());
     }
 
-    IEnumerator ChangeVelocity()
+    public IEnumerator ChangeVelocity()
     {
-        yield return new WaitForSeconds(switchDelay);
+        if (goingRight)
+        {
+            while(myBody.velocity.x < moveVelocity)
+            {
+                myBody.velocity += new Vector2(transitionSpeed * Time.deltaTime, 0);
+                yield return null;
+            }
+            myBody.velocity = new Vector2(moveVelocity, 0);
+        }
+
+        else
+        {
+            while (myBody.velocity.x > -moveVelocity)
+            {
+                myBody.velocity -= new Vector2(transitionSpeed * Time.deltaTime, 0);
+                yield return null;
+            }
+            myBody.velocity = new Vector2(-moveVelocity, 0);
+        }
 
         goingRight = !goingRight;
-
-        if (goingRight)
-            myBody.velocity = new Vector2(moveVelocity, 0);
-        else
-            myBody.velocity = new Vector2(-moveVelocity, 0);
-
-        StartCoroutine(ChangeVelocity());
     }
 }

@@ -27,12 +27,17 @@ public abstract class Switch : MonoBehaviour
         }
     }
 
-    private bool canBeToggled = true;
+    [SerializeField] private bool canBeToggled = true;
     protected SpriteRenderer myRenderer;
 
     private void Start()
     {
         myRenderer = GetComponent<SpriteRenderer>();
+
+        if (canBeToggled)
+            myRenderer.material = activeMaterial;
+        else
+            myRenderer.material = toggledMaterial;
     }
 
     protected abstract void ToggleMe();
