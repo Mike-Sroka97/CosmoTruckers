@@ -23,12 +23,7 @@ public class AUG_StarStruckStar : MonoBehaviour
             star.transform.parent = null;
             GetComponentInChildren<SpriteRenderer>().enabled = false;
             GetComponent<MoveForward>().enabled = false;
-            Invoke("DestroyMe", 1f);
+            Destroy(transform.parent.gameObject, 1f);
         }
-    }
-
-    private void DestroyMe()
-    {
-        Destroy(transform.parent.gameObject);
     }
 }
