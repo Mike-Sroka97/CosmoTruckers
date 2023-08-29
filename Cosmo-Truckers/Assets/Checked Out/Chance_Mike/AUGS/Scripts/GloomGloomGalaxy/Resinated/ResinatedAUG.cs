@@ -22,7 +22,6 @@ public class ResinatedAUG : Augment
     {
         if (enemyToCheck.Health <= 0)
             StopEffect();
-
     }
 
     public override void StopEffect()

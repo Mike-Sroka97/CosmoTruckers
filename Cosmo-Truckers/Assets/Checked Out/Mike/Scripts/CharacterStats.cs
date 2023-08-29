@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterSpeed : MonoBehaviour
+public class CharacterStats : MonoBehaviour
 {
-    [SerializeField] public int speed;
+    public int Speed;
 
     TurnOrder turnOrder;
 
@@ -17,9 +17,9 @@ public class CharacterSpeed : MonoBehaviour
     public void SpeedChange(int speedMod)
     {
         bool turnOrderAdjusted;
-        int tempSpeed = speed;
-        speed += speedMod;
-        if(tempSpeed > speed)
+        int tempSpeed = Speed;
+        Speed += speedMod;
+        if(tempSpeed > Speed)
         {
             turnOrderAdjusted = turnOrder.AdjustSpeed(this, false);
         }
@@ -33,10 +33,7 @@ public class CharacterSpeed : MonoBehaviour
         }
         else
         {
-            speed = tempSpeed;
+            Speed = tempSpeed;
         }
     }
-
-    public void SetSpeed(int newSpeed) { speed = newSpeed; }
-    public int GetSpeed() { return speed; }
 }

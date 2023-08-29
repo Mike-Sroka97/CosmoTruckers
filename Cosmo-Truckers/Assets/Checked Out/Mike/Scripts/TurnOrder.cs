@@ -7,8 +7,8 @@ public class TurnOrder : MonoBehaviour
 {
     [SerializeField] GameObject lootPopUp;
 
-    List<CharacterSpeed> speedList;
-    CharacterSpeed[] livingCharacters;
+    List<CharacterStats> speedList;
+    CharacterStats[] livingCharacters;
     int currentCharactersTurn = 0;
     private void Start()
     {
@@ -20,9 +20,9 @@ public class TurnOrder : MonoBehaviour
         //Small wait before combat starts
         yield return new WaitForSeconds(1.5f);
 
-        speedList = new List<CharacterSpeed>();
-        livingCharacters = FindObjectsOfType<CharacterSpeed>();
-        foreach (CharacterSpeed speed in livingCharacters)
+        speedList = new List<CharacterStats>();
+        livingCharacters = FindObjectsOfType<CharacterStats>();
+        foreach (CharacterStats speed in livingCharacters)
         {
             speedList.Add(speed);
         }
@@ -35,7 +35,7 @@ public class TurnOrder : MonoBehaviour
     {        
         Array.Sort(livingCharacters, new SpeedComparer());
 
-        foreach (CharacterSpeed speed in livingCharacters)
+        foreach (CharacterStats speed in livingCharacters)
         {
             if (speed.GetComponent<PlayerCharacter>())
             {
@@ -83,7 +83,7 @@ public class TurnOrder : MonoBehaviour
         StartTurn();
     }
 
-    public bool AdjustSpeed(CharacterSpeed characterSpeed, bool increase)
+    public bool AdjustSpeed(CharacterStats characterSpeed, bool increase)
     {
         //prevents the skipping of a characters turn
         if(increase)
@@ -121,20 +121,20 @@ public class TurnOrder : MonoBehaviour
             }
         }
 
-        foreach (CharacterSpeed speed in speedList)
+        foreach (CharacterStats speed in speedList)
         {
             if(speed.gameObject.name == characterSpeed.name)
             {
                 Debug.Log("here");
-                speed.speed = characterSpeed.speed;
+                speed.Speed = characterSpeed.Speed;
             }
         }
         return true;
     }
 
-    public void RemoveFromSpeedList(CharacterSpeed characterSpeed)
+    public void RemoveFromSpeedList(CharacterStats characterSpeed)
     {
-        foreach(CharacterSpeed speed in speedList)
+        foreach(CharacterStats speed in speedList)
         {
             if(speed.gameObject.name == characterSpeed.name)
             {
@@ -145,9 +145,9 @@ public class TurnOrder : MonoBehaviour
         livingCharacters = speedList.ToArray();
     }
 
-    public void AddToSpeedList(CharacterSpeed characterSpeed)
+    public void AddToSpeedList(CharacterStats characterSpeed)
     {
-        foreach (CharacterSpeed speed in speedList)
+        foreach (CharacterStats speed in speedList)
         {
             if (speed.gameObject.name == characterSpeed.name)
             {

@@ -11,7 +11,8 @@ public class DebuffStackSO : ScriptableObject
         InCombat,
         StartUp,
         TurnStart,
-        TurnEnd
+        TurnEnd,
+        StatChange
     }
 
     [Header("Base Variables")]
