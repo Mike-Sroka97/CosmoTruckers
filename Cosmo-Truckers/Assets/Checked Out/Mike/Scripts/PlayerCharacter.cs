@@ -62,15 +62,15 @@ public class PlayerCharacter : MonoBehaviour
     private void Die()
     {
         Dead = true;
-        GetComponent<CharacterSpeed>().enabled = false;
-        turnOrder.RemoveFromSpeedList(GetComponent<CharacterSpeed>());
+        GetComponent<CharacterStats>().enabled = false;
+        turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
     public void Resurect(int newHealth)
     {
         currentHealth = newHealth;
-        GetComponent<CharacterSpeed>().enabled = true;
-        turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
+        GetComponent<CharacterStats>().enabled = true;
+        turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
 

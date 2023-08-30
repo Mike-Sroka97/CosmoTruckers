@@ -87,8 +87,8 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        GetComponent<CharacterSpeed>().enabled = false;
-        turnOrder.RemoveFromSpeedList(GetComponent<CharacterSpeed>());
+        GetComponent<CharacterStats>().enabled = false;
+        turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         myRenderer.enabled = false;
         
         foreach(Enemy enemy in enemyManager.Enemies)
@@ -129,8 +129,8 @@ public class Enemy : MonoBehaviour
     public void Resurect(int newHealth)
     {
         currentHealth = newHealth;
-        GetComponent<CharacterSpeed>().enabled = true;
-        turnOrder.AddToSpeedList(GetComponent<CharacterSpeed>());
+        GetComponent<CharacterStats>().enabled = true;
+        turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         myRenderer.enabled = true;
         turnOrder.DetermineTurnOrder();
     }
