@@ -15,12 +15,10 @@ public class CombatManager : MonoBehaviour
     GameObject character;   //Currently only one 
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
- 
-    [SerializeField] List<GameObject> EnemySelected;
-    [SerializeField] List<GameObject> PlayerSelected;
 
-    public List<GameObject> GetPlayerSelected { get => PlayerSelected; }
-    public List<GameObject> GetEnemySelected { get => EnemySelected; }
+    [SerializeField] List<Character> CharactersSelected;
+
+    public List<Character> GetCharactersSelected { get => CharactersSelected; }
 
     bool StartTimer = false;
 
@@ -30,8 +28,7 @@ public class CombatManager : MonoBehaviour
 
     public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
-        PlayerSelected.Clear();
-        EnemySelected.Clear();
+        CharactersSelected.Clear();
         StartTimer = false;
 
         CurrentPlayer = currentPlayer;
@@ -147,8 +144,7 @@ public class CombatManager : MonoBehaviour
     IEnumerator EnemyDelay(BaseAttackSO attack)
     {
         PlayerCharacter[] attackable = FindObjectsOfType<PlayerCharacter>();
-        PlayerSelected.Clear();
-        EnemySelected.Clear();
+        CharactersSelected.Clear();
         CurrentPlayer = null;
         StartTimer = false;
 
@@ -178,12 +174,12 @@ public class CombatManager : MonoBehaviour
                 {
                     if (!obj.Dead)
                     {
-                        PlayerSelected.Add(obj.gameObject);
+                        CharactersSelected.Add(obj);
                         TempPage.SetActive(true);
                         StartTimer = true;
 
                         character = Instantiate(obj.GetCharacterController);
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {PlayerSelected[0].name}. . .");
+                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
                         break;
                     }
                 }
@@ -204,16 +200,16 @@ public class CombatManager : MonoBehaviour
                 {
                     if (!obj.Dead)
                     {
-                        PlayerSelected.Add(obj.gameObject);
+                        CharactersSelected.Add(obj);
                         character = Instantiate(obj.GetCharacterController);
                     }
-                    if (PlayerSelected.Count == attack.numberOFTargets)
+                    if (CharactersSelected.Count == attack.numberOFTargets)
                     {
                         TempPage.SetActive(true);
                         StartTimer = true;
                         string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                        for (int i = 0; i < PlayerSelected.Count; i++)
-                            text += $" { PlayerSelected[i].name } & ";
+                        for (int i = 0; i < CharactersSelected.Count; i++)
+                            text += $" { CharactersSelected[i].name } & ";
 
                         text.Remove(text.Length - 2, 2);
                         text += ". . .";
@@ -237,7 +233,7 @@ public class CombatManager : MonoBehaviour
                     if (!obj.Dead)
                     {
                         character = Instantiate(obj.GetCharacterController);
-                        PlayerSelected.Add(obj.gameObject);
+                        CharactersSelected.Add(obj);
                         TempPage.SetActive(true);
                         StartTimer = true;
                     }
@@ -262,17 +258,18 @@ public class CombatManager : MonoBehaviour
         miniGame.transform.SetParent(MiniGameScreen.transform);
         while(!StartTimer) yield return null;
 
-        if (CurrentPlayer)
+        if (CharactersSelected.Count > 0)
         {
-            foreach (var aug in CurrentPlayer.GetAUGS)
-                if(aug.Type == DebuffStackSO.ActivateType.InCombat)
-                    aug.DebuffEffect();
-        }
-        if(PlayerSelected.Count > 0)
-        {
-            foreach(var player in PlayerSelected)
+            foreach(PlayerCharacter character in CharactersSelected)
             {
-                foreach(var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
+                foreach (var aug in character.GetAUGS)
+                    if (aug.Type == DebuffStackSO.ActivateType.InCombat)
+                        aug.DebuffEffect();
+            }
+
+            if (CurrentPlayer)
+            {
+                foreach (var aug in CurrentPlayer.GetAUGS)
                     if (aug.Type == DebuffStackSO.ActivateType.InCombat)
                         aug.DebuffEffect();
             }
@@ -290,16 +287,11 @@ public class CombatManager : MonoBehaviour
         }
 
 
-        if (CurrentPlayer)
+        if (CharactersSelected.Count > 0)
         {
-            foreach (var aug in CurrentPlayer.GetAUGS)
-                aug.StopEffect();
-        }
-        if (PlayerSelected.Count > 0)
-        {
-            foreach (var player in PlayerSelected)
+            foreach (PlayerCharacter player in CharactersSelected)
             {
-                foreach (var aug in player.GetComponent<PlayerCharacter>().GetAUGS)
+                foreach (var aug in player.GetAUGS)
                     aug.StopEffect();
             }
         }
@@ -314,8 +306,7 @@ public class CombatManager : MonoBehaviour
 
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
 
-        PlayerSelected.Clear();
-        EnemySelected.Clear();
+        CharactersSelected.Clear();
         Destroy(miniGame);
         Destroy(character);
 

@@ -11,8 +11,7 @@ public class Enemy : Character
 
     [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
-    [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
-    [SerializeField] EnemyPassiveBase passiveMove;
+
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
 
     Animator enemyAnimation;
@@ -63,22 +62,6 @@ public class Enemy : Character
         {
             Die();
         }
-    }
-
-    public void AddDebuffStack(DebuffStackSO stack)
-    {
-        foreach (var aug in AUGS)
-        {
-            if (String.Equals(aug.DebuffName, stack.DebuffName))
-            {
-                if (aug.CurrentStacks < aug.MaxStacks)
-                    aug.CurrentStacks++;
-
-                return;
-            }
-        }
-
-        AUGS.Add(stack);
     }
 
     public override void Die()

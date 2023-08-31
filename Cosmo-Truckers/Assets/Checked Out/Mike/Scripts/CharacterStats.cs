@@ -6,7 +6,7 @@ using UnityEngine;
 public class CharacterStats : MonoBehaviour
 {
     public int Reflex;
-    public int Defense;
+    public int Defense = 0;
     public int Vigor;
     public int Speed;
 

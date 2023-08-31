@@ -58,27 +58,14 @@ public abstract class CombatMove : MonoBehaviour
 
         if (CombatManager.Instance != null) //In the combat screen
         {
-            if(CombatManager.Instance.GetPlayerSelected.Count > 0)
+            foreach (Character character in CombatManager.Instance.GetCharactersSelected)
             {
-                foreach(var player in CombatManager.Instance.GetPlayerSelected)
-                {
-                    player.GetComponent<PlayerCharacter>().TakeDamage(Damage * Hits);
+                //TODO split damage and AUG calls?
+                character.GetComponent<Character>().TakeDamage(Damage * Hits);
 
-                    if (DebuffToAdd != null)
-                        for (int i = 0; i < Hits; i++)
-                            player.GetComponent<PlayerCharacter>().AddDebuffStack(DebuffToAdd);
-                }
-            }
-            else if(CombatManager.Instance.GetEnemySelected.Count > 0)
-            {
-                foreach (var enemy in CombatManager.Instance.GetEnemySelected)
-                {
-                    enemy.GetComponent<Enemy>().TakeDamage(Damage * Hits);
-
-                    if(DebuffToAdd != null)
-                        for (int i = 0; i < Hits; i++)
-                            enemy.GetComponent<Enemy>().AddDebuffStack(DebuffToAdd);
-                }
+                if (DebuffToAdd != null)
+                    for (int i = 0; i < Hits; i++)
+                        character.GetComponent<Character>().AddDebuffStack(DebuffToAdd);
             }
         }
         else //Running tests

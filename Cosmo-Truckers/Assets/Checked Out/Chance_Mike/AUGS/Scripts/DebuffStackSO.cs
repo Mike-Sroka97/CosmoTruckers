@@ -19,6 +19,7 @@ public class DebuffStackSO : ScriptableObject
     public string DebuffName;
     public ActivateType Type = ActivateType.InCombat;
     [TextArea(5, 10)]public string DebuffDescription;
+    [HideInInspector] public Character MyCharacter;
 
     [Header("Stacks")]
     public bool Stackable = false;

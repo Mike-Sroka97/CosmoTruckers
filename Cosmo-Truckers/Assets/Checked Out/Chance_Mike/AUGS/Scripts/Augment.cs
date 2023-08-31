@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Augment : MonoBehaviour
+public abstract class Augment : MonoBehaviour
 {
     [SerializeField] float baseStatusEffect;
     [SerializeField] float additionalStatusEffect;
+    public DebuffStackSO DebuffSO { get; private set; }
     protected int Stacks;
     protected float StatusEffect;
 
@@ -15,6 +16,7 @@ public class Augment : MonoBehaviour
     {
         if(stack)
         {
+            stack= DebuffSO;
             baseStatusEffect = stack.StackValue.x;
             additionalStatusEffect = stack.StackValue.y;
             Stacks = stack.CurrentStacks;
@@ -38,5 +40,10 @@ public class Augment : MonoBehaviour
         }
     }
 
-    public virtual void StopEffect() { }
+    public virtual void AdjustStatusEffect(int adjuster)
+    {
+        Stacks += adjuster;
+    }
+
+    public abstract void StopEffect();
 }

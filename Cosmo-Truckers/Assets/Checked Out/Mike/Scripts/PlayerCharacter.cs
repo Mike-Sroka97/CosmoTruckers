@@ -5,13 +5,10 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
-    [SerializeField] string characterName;
+    public string CharacterName { get; private set; }
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
     List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
-    [SerializeField] List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
-
-    public List<DebuffStackSO> GetAUGS { get => AUGS; }
 
     [Space(10)]
     [SerializeField] GameObject MiniGameControllerPrefab;
@@ -27,25 +24,6 @@ public class PlayerCharacter : Character
         CurrentHealth = Health;
     }
 
-    public void AddDebuffStack(DebuffStackSO stack)
-    {
-        foreach(var aug in AUGS)
-        {
-            if(String.Equals(aug.DebuffName, stack.DebuffName))
-            {
-                if (aug.CurrentStacks < aug.MaxStacks)
-                    aug.CurrentStacks++;
-
-                return;
-            }
-        }
-
-        AUGS.Add(Instantiate(stack));
-
-        if (stack.Type == DebuffStackSO.ActivateType.StartUp)
-            stack.DebuffEffect();
-    }
-
     public override void StartTurn()
     {
         wheel.SetActive(true);
@@ -55,5 +33,4 @@ public class PlayerCharacter : Character
     {
         wheel.SetActive(false);
     }
-    public string GetName() { return characterName; }
 }

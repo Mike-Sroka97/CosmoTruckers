@@ -17,7 +17,7 @@ public class AmberStarPassive : EnemyPassiveBase
                 debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().enemyToCheck = enemy;
                 debuffToAdd.AugSpawner.GetComponent<ResinatedAUG>().playerToCheck = players[i];
                 players[i].AddDebuffStack(debuffToAdd);
-                print($"{players[i].GetName()} has been debuffed");
+                print($"{players[i].CharacterName} has been debuffed");
                 return;
             }
         }
