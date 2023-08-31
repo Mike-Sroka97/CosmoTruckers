@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
+    public int Reflex;
+    public int Defense;
+    public int Vigor;
     public int Speed;
 
     TurnOrder turnOrder;
@@ -17,9 +20,9 @@ public class CharacterStats : MonoBehaviour
     public void SpeedChange(int speedMod)
     {
         bool turnOrderAdjusted;
-        int tempSpeed = Speed;
-        Speed += speedMod;
-        if(tempSpeed > Speed)
+        int tempSpeed = Reflex;
+        Reflex += speedMod;
+        if(tempSpeed > Reflex)
         {
             turnOrderAdjusted = turnOrder.AdjustSpeed(this, false);
         }
@@ -33,7 +36,7 @@ public class CharacterStats : MonoBehaviour
         }
         else
         {
-            Speed = tempSpeed;
+            Reflex = tempSpeed;
         }
     }
 }

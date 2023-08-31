@@ -126,7 +126,7 @@ public class TurnOrder : MonoBehaviour
             if(speed.gameObject.name == characterSpeed.name)
             {
                 Debug.Log("here");
-                speed.Speed = characterSpeed.Speed;
+                speed.Reflex = characterSpeed.Reflex;
             }
         }
         return true;

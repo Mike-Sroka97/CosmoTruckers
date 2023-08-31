@@ -6,6 +6,6 @@ public class SpeedComparer : IComparer
 {
     public int Compare(object x, object y)
     {
-        return (new CaseInsensitiveComparer()).Compare(-((CharacterStats)x).Speed, -((CharacterStats)y).Speed);
+        return (new CaseInsensitiveComparer()).Compare(-((CharacterStats)x).Reflex, -((CharacterStats)y).Reflex);
     }
 }

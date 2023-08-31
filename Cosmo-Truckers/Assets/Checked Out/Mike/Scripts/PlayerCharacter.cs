@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCharacter : MonoBehaviour
+public class PlayerCharacter : Character
 {
     [SerializeField] string characterName;
-    [SerializeField] int health;
-    [SerializeField] int currentHealth;
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
     List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
@@ -20,24 +18,13 @@ public class PlayerCharacter : MonoBehaviour
     public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
     public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
 
-    TurnOrder turnOrder;
-    public bool Dead { get; private set; }
-
     private void Start()
     {
         foreach (var atk in attacks)
             attackClones.Add(Instantiate(atk));
 
         turnOrder = FindObjectOfType<TurnOrder>();
-        currentHealth = health;
-    }
-    public void TakeDamage(int damage)
-    {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        CurrentHealth = Health;
     }
 
     public void AddDebuffStack(DebuffStackSO stack)
@@ -59,27 +46,12 @@ public class PlayerCharacter : MonoBehaviour
             stack.DebuffEffect();
     }
 
-    private void Die()
-    {
-        Dead = true;
-        GetComponent<CharacterStats>().enabled = false;
-        turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
-        turnOrder.DetermineTurnOrder();
-    }
-    public void Resurect(int newHealth)
-    {
-        currentHealth = newHealth;
-        GetComponent<CharacterStats>().enabled = true;
-        turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
-        turnOrder.DetermineTurnOrder();
-    }
-
-    public void StartTurn()
+    public override void StartTurn()
     {
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }
-    public void EndTurn()
+    public override void EndTurn()
     {
         wheel.SetActive(false);
     }

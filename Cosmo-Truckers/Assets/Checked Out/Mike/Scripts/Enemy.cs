@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    [SerializeField] string characterName;
-    [SerializeField] int health;
+    public string CharacterName { get; private set; }
     [SerializeField] int spaceTaken = 1;
 
     [SerializeField] Loot[] droppableLoot;
@@ -19,10 +18,7 @@ public class Enemy : MonoBehaviour
     Animator enemyAnimation;
     EnemyManager enemyManager;
     SpriteRenderer myRenderer;
-    TurnOrder turnOrder;
-    int currentHealth;
     bool lootRolled = false;
-    public int Health { get => currentHealth;  set => health = value; }
     public int GetSpaceTaken { get => spaceTaken; }
 
     private void Awake()
@@ -31,7 +27,7 @@ public class Enemy : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
         enemyAnimation = GetComponent<Animator>();
-        currentHealth = health;
+        CurrentHealth = Health;
     }
 
     private void Start()
@@ -57,13 +53,13 @@ public class Enemy : MonoBehaviour
         enemyAnimation.enabled = false;
     }
 
-    public void TakeDamage(int damage)
+    public override void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        CurrentHealth -= damage;
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
-            passiveMove.Activate(currentHealth);
+            passiveMove.Activate(CurrentHealth);
 
-        if(currentHealth <= 0)
+        if(CurrentHealth <= 0)
         {
             Die();
         }
@@ -85,25 +81,24 @@ public class Enemy : MonoBehaviour
         AUGS.Add(stack);
     }
 
-    private void Die()
+    public override void Die()
     {
-        GetComponent<CharacterStats>().enabled = false;
-        turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
-        myRenderer.enabled = false;
+        base.Die();
         
-        foreach(Enemy enemy in enemyManager.Enemies)
-        {
-            if (enemy.name == gameObject.name)
-            {
-                enemyManager.Enemies.Remove(enemy);
-                if(!lootRolled)
-                {
-                    lootRolled = true;
-                    RollLoot();
-                }
-                break;
-            }
-        }
+        //Think about our lives
+        //foreach(Enemy enemy in enemyManager.Enemies)
+        //{
+        //    if (enemy.name == gameObject.name)
+        //    {
+        //        enemyManager.Enemies.Remove(enemy);
+        //        if(!lootRolled)
+        //        {
+        //            lootRolled = true;
+        //            RollLoot();
+        //        }
+        //        break;
+        //    }
+        //}
         if(enemyManager.Enemies.Count <= 0)
         {
             turnOrder.EndCombat();
@@ -126,23 +121,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void Resurect(int newHealth)
+    public override void Resurrect(int newHealth)
     {
-        currentHealth = newHealth;
-        GetComponent<CharacterStats>().enabled = true;
-        turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
+        base.Resurrect(newHealth);
         myRenderer.enabled = true;
-        turnOrder.DetermineTurnOrder();
+        //if an enemy is in this spot do not
     }
 
-    public void StartTurn()
+    public override void StartTurn()
     {
         StartCoroutine(ProcessTurn());
     }
 
-    public void EndTurn()
+    public override void EndTurn()
     {
-        
+        //not needed yet but added for abstract
     }
 
     IEnumerator ProcessTurn()
@@ -152,5 +145,5 @@ public class Enemy : MonoBehaviour
         FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
 
-    public string GetName() { return characterName; }
+    public string GetName() { return CharacterName; }
 }
