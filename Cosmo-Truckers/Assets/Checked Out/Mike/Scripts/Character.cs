@@ -8,7 +8,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
-
+    public CharacterStats Stats;
     public int Health;
     public int CurrentHealth;
     public bool Dead;
@@ -17,11 +17,32 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
+        damage = AdjustDamage(damage);
+
         CurrentHealth -= damage;
         if (CurrentHealth <= 0)
         {
             Die();
         }
+    }
+
+    private int AdjustDamage(int damage)
+    {
+        int newDamage = damage;
+        
+        //No adjustment if defense is zero
+        if(Stats.Defense > 0)
+        {
+            float floatDamage = damage - (damage * Stats.Defense / 100);
+            newDamage = (int)Math.Floor(floatDamage);
+        }
+        else if(Stats.Defense < 0)
+        {
+            float floatDamage = damage + (damage * Mathf.Abs(Stats.Defense) / 100);
+            newDamage = (int)Math.Ceiling(floatDamage);
+        }
+
+        return newDamage;
     }
 
     public virtual void Die()
@@ -59,6 +80,16 @@ public abstract class Character : MonoBehaviour
 
         if (stack.Type == DebuffStackSO.ActivateType.StartUp)
             stack.DebuffEffect();
+    }
+
+    public void AdjustDefense(int defense)
+    {
+        Stats.Defense += defense;
+
+        if (Stats.Defense > 100)
+            Stats.Defense = 100;
+        else if (Stats.Defense < -100)
+            Stats.Defense = -100;
     }
 
     public abstract void StartTurn();

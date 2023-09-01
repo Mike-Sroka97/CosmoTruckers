@@ -8,10 +8,7 @@ public class CrustAUG : Augment
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        stack.MyCharacter.GetComponent<CharacterStats>().Defense += (int)StatusEffect;
-
-        if (stack.MyCharacter.GetComponent<CharacterStats>().Defense > 100)
-            stack.MyCharacter.GetComponent<CharacterStats>().Defense = 100;
+        DebuffSO.MyCharacter.AdjustDefense((int)StatusEffect);
     }
 
     public override void AdjustStatusEffect(int adjuster)
@@ -23,9 +20,6 @@ public class CrustAUG : Augment
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.GetComponent<CharacterStats>().Defense -= (int)StatusEffect;
-
-        if (DebuffSO.MyCharacter.GetComponent<CharacterStats>().Defense < -100)
-            DebuffSO.MyCharacter.GetComponent<CharacterStats>().Defense = -100;
+        DebuffSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
     }
 }
