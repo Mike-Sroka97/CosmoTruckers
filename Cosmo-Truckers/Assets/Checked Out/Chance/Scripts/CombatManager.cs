@@ -51,7 +51,7 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Single Target
             case EnumManager.TargetingType.Single_Target:
-                foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
+                foreach (Enemy obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
                     obj.StartTarget();
                     Button button = obj.gameObject.GetComponentInChildren<Button>();
@@ -59,10 +59,10 @@ public class CombatManager : MonoBehaviour
                     button.onClick.AddListener(delegate
                     {
                         print(obj.gameObject.name);
-                        EnemySelected.Add(obj.gameObject);
+                        CharactersSelected.Add(obj);
                         TempPage.SetActive(true);
                         StartTimer = true;
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {EnemySelected[0].name}. . .");
+                        Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
                     });
                 }
                 break;
@@ -85,14 +85,14 @@ public class CombatManager : MonoBehaviour
                     {
                         print(obj.gameObject.name);
                         button.interactable = false;
-                        EnemySelected.Add(obj.gameObject);
-                        if (EnemySelected.Count == attack.numberOFTargets || EnemySelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
+                        CharactersSelected.Add(obj);
+                        if (CharactersSelected.Count == attack.numberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
                             TempPage.SetActive(true);
                             StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                            for(int i = 0; i < EnemySelected.Count; i++)
-                                text += $" { EnemySelected[i].name } & ";
+                            for(int i = 0; i < CharactersSelected.Count; i++)
+                                text += $" { CharactersSelected[i].name } & ";
 
                             text.Remove(text.Length - 2, 2);
                             text += ". . .";
@@ -113,14 +113,14 @@ public class CombatManager : MonoBehaviour
             case EnumManager.TargetingType.All_Target:
                 foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
-                    EnemySelected.Add(obj.gameObject);
-                    if (EnemySelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
+                    CharactersSelected.Add(obj);
+                    if (CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                     {
                         TempPage.SetActive(true);
                         StartTimer = true;
                         string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                        for (int i = 0; i < EnemySelected.Count; i++)
-                            text += $" { EnemySelected[i].name } & ";
+                        for (int i = 0; i < CharactersSelected.Count; i++)
+                            text += $" { CharactersSelected[i].name } & ";
 
                         text.Remove(text.Length - 2, 2);
                         text += ". . .";
