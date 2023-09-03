@@ -56,7 +56,7 @@ public class SafeTINA : Player
 
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
-        originalMoveSpeed = moveSpeed;
+        originalMoveSpeed = MoveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
@@ -71,9 +71,9 @@ public class SafeTINA : Player
         SpecialMove();
     }
 
-    public void ResetMoveSpeed() { moveSpeed = originalMoveSpeed; }
-    public void SetMoveSpeed(float newSpeed) { moveSpeed = newSpeed; }
-    public float GetMoveSpeed() { return moveSpeed; }
+    public void ResetMoveSpeed() { MoveSpeed = originalMoveSpeed; }
+    public void SetMoveSpeed(float newSpeed) { MoveSpeed = newSpeed; }
+    public float GetMoveSpeed() { return MoveSpeed; }
     public bool GetIsJumping() { return isJumping; }
 
     public override IEnumerator Damaged()
@@ -235,7 +235,7 @@ public class SafeTINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
-            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+            myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y == 0 && !horizontalAttackArea.activeInHierarchy)
             {
@@ -248,7 +248,7 @@ public class SafeTINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
-            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+            myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
             if (transform.rotation.eulerAngles.y != 0 && !horizontalAttackArea.activeInHierarchy)
             {

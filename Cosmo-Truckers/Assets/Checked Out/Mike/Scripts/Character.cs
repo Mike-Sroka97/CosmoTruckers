@@ -82,14 +82,16 @@ public abstract class Character : MonoBehaviour
             stack.DebuffEffect();
     }
 
-    public void AdjustDefense(int defense)
-    {
-        Stats.Defense += defense;
+    public abstract void AdjustDefense(int defense);
 
-        if (Stats.Defense > 100)
-            Stats.Defense = 100;
-        else if (Stats.Defense < -100)
-            Stats.Defense = -100;
+    public void AdjustSpeed(int speed)
+    {
+        Stats.Speed += speed;
+
+        if (Stats.Speed > 200)
+            Stats.Speed = 200;
+        else if (Stats.Speed < 40)
+            Stats.Speed = 40;
     }
 
     public abstract void StartTurn();

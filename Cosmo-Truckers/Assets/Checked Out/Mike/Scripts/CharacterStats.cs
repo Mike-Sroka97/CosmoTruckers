@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class CharacterStats : MonoBehaviour
 {
-    public int Reflex;
+    public int Reflex = 1;
     public int Defense = 0;
-    public int Vigor;
-    public int Speed;
+    public int Vigor = 100;
+    public int Speed = 100;
 
     TurnOrder turnOrder;
 
@@ -17,7 +17,7 @@ public class CharacterStats : MonoBehaviour
         turnOrder = FindObjectOfType<TurnOrder>();
     }
 
-    public void SpeedChange(int speedMod)
+    public void ReflexChange(int speedMod)
     {
         bool turnOrderAdjusted;
         int tempSpeed = Reflex;

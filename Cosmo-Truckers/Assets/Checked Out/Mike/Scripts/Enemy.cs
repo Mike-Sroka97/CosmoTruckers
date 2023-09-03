@@ -127,6 +127,13 @@ public class Enemy : Character
 
         FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
+    public override void AdjustDefense(int defense)
+    {
+        Stats.Defense += defense;
 
-    public string GetName() { return CharacterName; }
+        if (Stats.Defense > 100)
+            Stats.Defense = 100;
+        else if (Stats.Defense < -200)
+            Stats.Defense = -200;
+    }
 }

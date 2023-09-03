@@ -33,4 +33,14 @@ public class PlayerCharacter : Character
     {
         wheel.SetActive(false);
     }
+
+    public override void AdjustDefense(int defense)
+    {
+        Stats.Defense += defense;
+
+        if (Stats.Defense > 50)
+            Stats.Defense = 50;
+        else if (Stats.Defense < -100)
+            Stats.Defense = -100;
+    }
 }

@@ -375,13 +375,13 @@ public class LongDogINA : Player
 
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
-                myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+                myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 0, 0);
                 playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
-                myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+                myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 head.transform.eulerAngles = new Vector3(0, 180, 0);
                 playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }

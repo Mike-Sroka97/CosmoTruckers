@@ -233,7 +233,7 @@ public class SixfaceINA : Player
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(-moveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
+            myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
@@ -247,7 +247,7 @@ public class SixfaceINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
         {
-            myBody.velocity = new Vector2(moveSpeed + xVelocityAdjuster, myBody.velocity.y);
+            myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
