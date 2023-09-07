@@ -327,8 +327,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6398b03d8efcc244bb698c492774a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Dutiful Dross
-  health: 30
+  passiveMove: {fileID: 0}
+  AUGS: []
+  Stats: {fileID: 3447976821459247247}
+  Health: 0
+  CurrentHealth: 0
+  Shield: 0
+  Dead: 0
+  spaceTaken: 1
   droppableLoot:
   - {fileID: 11400000, guid: 08534a4fac67db54eb3d5a905544e4cd, type: 2}
   - {fileID: 11400000, guid: 9d1e49eb6875c8d47b1648704bf15d48, type: 2}
@@ -336,8 +342,6 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400000, guid: b36b88ca3185f27458b58b04db4a786c, type: 2}
   - {fileID: 11400000, guid: 6b775d0faf92ab348bc47b3bcd307694, type: 2}
-  AUGS: []
-  passiveMove: {fileID: 0}
 --- !u!114 &3447976821459247247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,7 +354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  Reflex: 1
+  Defense: 0
+  Vigor: 100
+  Speed: 100
 --- !u!95 &3447976821459247287
 Animator:
   serializedVersion: 4

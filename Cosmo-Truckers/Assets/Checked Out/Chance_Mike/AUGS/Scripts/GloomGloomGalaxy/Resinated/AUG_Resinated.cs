@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResinatedAUG : Augment
+public class AUG_Resinated : Augment
 {
     public Enemy enemyToCheck;
     public PlayerCharacter playerToCheck;

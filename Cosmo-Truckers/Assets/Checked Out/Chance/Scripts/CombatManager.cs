@@ -23,6 +23,7 @@ public class CombatManager : MonoBehaviour
     bool StartTimer = false;
 
     PlayerCharacter CurrentPlayer;
+    public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
 
     private void Awake() => Instance = this;
 
@@ -263,7 +264,7 @@ public class CombatManager : MonoBehaviour
 
         if (CharactersSelected.Count > 0)
         {
-            foreach(PlayerCharacter character in CharactersSelected)
+            foreach(Character character in CharactersSelected) //PlayerCharacter invalid cast
             {
                 foreach (var aug in character.GetAUGS)
                     if (aug.Type == DebuffStackSO.ActivateType.InCombat)
@@ -292,10 +293,13 @@ public class CombatManager : MonoBehaviour
 
         if (CharactersSelected.Count > 0)
         {
-            foreach (PlayerCharacter player in CharactersSelected)
+            foreach (Character player in CharactersSelected)  //PlayerCharacter invalid cast
             {
                 foreach (DebuffStackSO aug in player.GetAUGS)
-                    aug.StopEffect();
+                {
+                    if(aug.Type != DebuffStackSO.ActivateType.OnDamage)
+                        aug.StopEffect();
+                }
             }
         }
 
@@ -305,10 +309,10 @@ public class CombatManager : MonoBehaviour
     public void EndCombat()
     {
         StopAllCoroutines();
-        TempPage.SetActive(false);
 
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
 
+        TempPage.SetActive(false);
         CharactersSelected.Clear();
         Destroy(miniGame);
         Destroy(character);

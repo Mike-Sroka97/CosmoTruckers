@@ -12,7 +12,8 @@ public class DebuffStackSO : ScriptableObject
         StartUp,
         TurnStart,
         TurnEnd,
-        StatChange
+        StatChange,
+        OnDamage
     }
 
     [Header("Base Variables")]
@@ -41,5 +42,10 @@ public class DebuffStackSO : ScriptableObject
     {
             temp.GetComponent<Augment>().StopEffect();
             Destroy(temp);
+    }
+
+    public Augment GetAugment()
+    {
+        return temp.GetComponent<Augment>();
     }
 }

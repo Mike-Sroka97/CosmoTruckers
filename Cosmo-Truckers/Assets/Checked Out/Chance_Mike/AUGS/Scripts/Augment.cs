@@ -13,11 +13,16 @@ public abstract class Augment : MonoBehaviour
 
     //LifeSpan
 
+    /// <summary>
+    /// Called when the debuff is started
+    /// </summary>
+    /// <param name="stack"></param>
     public virtual void Activate(DebuffStackSO stack = null) //Just in case we test without the SO
     {
         if(stack)
         {
-            stack= DebuffSO;
+            DebuffSO = stack;
+            DebuffSO.MyCharacter = stack.MyCharacter;
             baseStatusEffect = stack.StackValue.x;
             additionalStatusEffect = stack.StackValue.y;
             Stacks = stack.CurrentStacks;
@@ -45,10 +50,18 @@ public abstract class Augment : MonoBehaviour
             StatusEffect = MaxStatusEffect;
     }
 
+    /// <summary>
+    /// Called if the aug has abilitys that can be triggered after instansiation
+    /// </summary>
+    public virtual void Trigger() { }
+
     public virtual void AdjustStatusEffect(int adjuster)
     {
         Stacks += adjuster;
     }
 
+    /// <summary>
+    /// Stops the effect of the aug
+    /// </summary>
     public abstract void StopEffect();
 }

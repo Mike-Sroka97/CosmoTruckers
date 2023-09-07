@@ -6,7 +6,8 @@ using UnityEngine;
 public class PlayerCharacter : Character
 {
     [HideInInspector] public Player MyPlayer;
-    public string CharacterName { get; private set; }
+    [SerializeField] string Name;
+    public string CharacterName { get => Name; private set => Name = value; }
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
     List<BaseAttackSO> attackClones = new List<BaseAttackSO>();

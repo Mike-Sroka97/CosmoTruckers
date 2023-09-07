@@ -52,18 +52,6 @@ public class Enemy : Character
         enemyAnimation.enabled = false;
     }
 
-    public override void TakeDamage(int damage)
-    {
-        CurrentHealth -= damage;
-        if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
-            passiveMove.Activate(CurrentHealth);
-
-        if(CurrentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
     public override void Die()
     {
         base.Die();
@@ -127,6 +115,7 @@ public class Enemy : Character
 
         FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
+
     public override void AdjustDefense(int defense)
     {
         Stats.Defense += defense;

@@ -7,7 +7,7 @@ public class TurnOrder : MonoBehaviour
 {
     [SerializeField] GameObject lootPopUp;
 
-    List<CharacterStats> speedList;
+    [SerializeField] List<CharacterStats> speedList;
     CharacterStats[] livingCharacters;
     int currentCharactersTurn = 0;
     private void Start()

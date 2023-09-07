@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NoiseAUG : Augment
+public class AUG_Noise : Augment
 {
     [SerializeField] GameObject augment;
 

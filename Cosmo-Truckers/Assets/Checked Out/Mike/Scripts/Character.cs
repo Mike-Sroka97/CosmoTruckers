@@ -11,6 +11,8 @@ public abstract class Character : MonoBehaviour
     public CharacterStats Stats;
     public int Health;
     [HideInInspector] public int CurrentHealth;
+    public int Shield;
+
     public bool Dead;
 
     protected TurnOrder turnOrder;
@@ -19,10 +21,26 @@ public abstract class Character : MonoBehaviour
     {
         damage = AdjustDamage(damage);
 
-        CurrentHealth -= damage;
+        if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
+            passiveMove.Activate(CurrentHealth);
+
+        if (Shield > 0) Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+        else CurrentHealth -= damage;
+
         if (CurrentHealth <= 0)
         {
             Die();
+        }
+        //See if any AUGS trigger on Damage (Spike shield)
+        else
+        {
+            foreach(DebuffStackSO aug in AUGS)
+            {
+                if(aug.Type == DebuffStackSO.ActivateType.OnDamage)
+                {
+                    aug.GetAugment().Trigger();
+                }
+            }
         }
     }
 
@@ -60,7 +78,7 @@ public abstract class Character : MonoBehaviour
         turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
-    public void AddDebuffStack(DebuffStackSO stack)
+    public void AddDebuffStack(DebuffStackSO stack, bool test = false)
     {
         foreach (DebuffStackSO aug in AUGS)
         {
@@ -78,8 +96,8 @@ public abstract class Character : MonoBehaviour
 
         AUGS.Add(tempAUG);
 
-        if (stack.Type == DebuffStackSO.ActivateType.StartUp)
-            stack.DebuffEffect();
+        if (stack.Type == DebuffStackSO.ActivateType.StartUp || test)
+            tempAUG.DebuffEffect();
     }
 
     public abstract void AdjustDefense(int defense);
@@ -96,4 +114,13 @@ public abstract class Character : MonoBehaviour
 
     public abstract void StartTurn();
     public abstract void EndTurn();
+
+
+    [SerializeField] DebuffStackSO test;
+
+    [ContextMenu("Test AUG")]
+    public void TestAUG()
+    {
+        AddDebuffStack(test, true);
+    }
 }

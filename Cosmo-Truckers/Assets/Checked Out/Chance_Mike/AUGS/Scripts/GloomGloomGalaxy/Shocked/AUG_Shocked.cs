@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CrustAUG : Augment
+public class AUG_Shocked : Augment
 {
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        DebuffSO.MyCharacter.AdjustDefense((int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
     }
 
     public override void AdjustStatusEffect(int adjuster)
@@ -19,6 +19,6 @@ public class CrustAUG : Augment
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustSpeed((int)StatusEffect);
     }
 }
