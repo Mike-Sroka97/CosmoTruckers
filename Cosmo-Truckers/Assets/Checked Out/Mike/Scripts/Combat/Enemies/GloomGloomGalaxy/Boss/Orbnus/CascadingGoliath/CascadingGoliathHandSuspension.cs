@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class CascadingGoliathHandSuspension : MonoBehaviour
 {
+    [SerializeField] private Sprite[] FistSprites; 
+    private bool isGrabbing;
+    [SerializeField] private float fistCloseTime = 2f; 
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Player playerCollision = collision.GetComponentInParent<Player>();
+
+        if (playerCollision)
+        {
+            GetComponent<SpriteRenderer>().sprite = FistSprites[1];
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         Player playerCollision = collision.GetComponentInParent<Player>();
@@ -17,5 +31,17 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
                 body.velocity = Vector2.zero;
             }
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Player playerCollision = collision.GetComponentInParent<Player>();
+
+        if (playerCollision)
+        {
+            GetComponent<SpriteRenderer>().sprite = FistSprites[0];
+        }
+
+
     }
 }

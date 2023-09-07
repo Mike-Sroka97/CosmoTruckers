@@ -6,6 +6,9 @@ public class CascadingGoliathNodes : MonoBehaviour
 {
     [HideInInspector] public bool Hit = false;
     [SerializeField] float iFrameDuration = .5f;
+    public Sprite disabledCrackSprite;
+    [SerializeField] private Material disabledMaterial;
+    [SerializeField] private GameObject spriteLight; 
 
     CascadingGoliath minigame;
     int hitpoints;
@@ -30,7 +33,9 @@ public class CascadingGoliathNodes : MonoBehaviour
         if(collision.tag == "PlayerAttack" && currentHit >= hitpoints)
         {
             Hit = true;
-            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<SpriteRenderer>().sprite = disabledCrackSprite;
+            GetComponent<SpriteRenderer>().material = disabledMaterial;
+            spriteLight.SetActive(false); 
             GetComponent<Collider2D>().enabled = false;
             minigame.CheckPhase();
         }

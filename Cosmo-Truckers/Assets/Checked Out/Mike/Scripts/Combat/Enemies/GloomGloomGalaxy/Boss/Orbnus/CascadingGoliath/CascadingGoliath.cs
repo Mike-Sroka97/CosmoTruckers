@@ -36,6 +36,8 @@ public class CascadingGoliath : CombatMove
             foreach(CascadingGoliathHand hand in hands)
             {
                 hand.enabled = false;
+                hand.StopAllCoroutines(); 
+                hand.StartCoroutine(hand.MoveOffScreen());
             }
         }
     }
