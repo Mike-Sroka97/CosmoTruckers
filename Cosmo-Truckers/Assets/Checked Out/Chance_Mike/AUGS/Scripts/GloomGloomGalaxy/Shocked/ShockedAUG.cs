@@ -7,7 +7,7 @@ public class ShockedAUG : Augment
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        DebuffSO.MyCharacter.AdjustSpeed((int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
     }
 
     public override void AdjustStatusEffect(int adjuster)
@@ -19,6 +19,6 @@ public class ShockedAUG : Augment
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustSpeed((int)StatusEffect);
     }
 }

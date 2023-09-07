@@ -170,7 +170,7 @@ public class CombatManager : MonoBehaviour
             case EnumManager.TargetingType.Single_Target:
                 System.Random singleRand = new System.Random();
                 attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
-                foreach (var obj in attackable)
+                foreach (PlayerCharacter obj in attackable)
                 {
                     if (!obj.Dead)
                     {
@@ -179,6 +179,7 @@ public class CombatManager : MonoBehaviour
                         StartTimer = true;
 
                         character = Instantiate(obj.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                         Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
                         break;
                     }
@@ -202,6 +203,7 @@ public class CombatManager : MonoBehaviour
                     {
                         CharactersSelected.Add(obj);
                         character = Instantiate(obj.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
                     if (CharactersSelected.Count == attack.numberOFTargets)
                     {
@@ -233,6 +235,7 @@ public class CombatManager : MonoBehaviour
                     if (!obj.Dead)
                     {
                         character = Instantiate(obj.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                         CharactersSelected.Add(obj);
                         TempPage.SetActive(true);
                         StartTimer = true;
@@ -291,7 +294,7 @@ public class CombatManager : MonoBehaviour
         {
             foreach (PlayerCharacter player in CharactersSelected)
             {
-                foreach (var aug in player.GetAUGS)
+                foreach (DebuffStackSO aug in player.GetAUGS)
                     aug.StopEffect();
             }
         }

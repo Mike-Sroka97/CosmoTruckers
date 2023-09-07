@@ -10,7 +10,7 @@ public abstract class Character : MonoBehaviour
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
-    public int CurrentHealth;
+    [HideInInspector] public int CurrentHealth;
     public bool Dead;
 
     protected TurnOrder turnOrder;
@@ -90,8 +90,8 @@ public abstract class Character : MonoBehaviour
 
         if (Stats.Speed > 200)
             Stats.Speed = 200;
-        else if (Stats.Speed < 40)
-            Stats.Speed = 40;
+        else if (Stats.Speed < -40)
+            Stats.Speed = -40;
     }
 
     public abstract void StartTurn();

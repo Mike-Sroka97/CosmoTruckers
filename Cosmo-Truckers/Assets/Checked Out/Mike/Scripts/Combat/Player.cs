@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Player : MonoBehaviour
 {
     [Header("Movement")]
-    public float MoveSpeed;
+    public float MoveSpeed = 2.4f;
     [HideInInspector] public float xVelocityAdjuster;
     [HideInInspector] public float yVelocityAdjuster;
 

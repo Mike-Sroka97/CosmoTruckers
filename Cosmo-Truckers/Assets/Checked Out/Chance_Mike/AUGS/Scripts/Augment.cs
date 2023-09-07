@@ -6,9 +6,10 @@ public abstract class Augment : MonoBehaviour
 {
     [SerializeField] float baseStatusEffect;
     [SerializeField] float additionalStatusEffect;
-    public DebuffStackSO DebuffSO { get; private set; }
+    public DebuffStackSO DebuffSO;
     protected int Stacks;
     protected float StatusEffect;
+    protected float MaxStatusEffect;
 
     //LifeSpan
 
@@ -20,6 +21,7 @@ public abstract class Augment : MonoBehaviour
             baseStatusEffect = stack.StackValue.x;
             additionalStatusEffect = stack.StackValue.y;
             Stacks = stack.CurrentStacks;
+            MaxStatusEffect = stack.StackValue.x + stack.StackValue.y * (stack.MaxStacks - 1);
         }
 
         if(Stacks == 1)
@@ -38,6 +40,9 @@ public abstract class Augment : MonoBehaviour
         {
             StatusEffect = 0;
         }
+
+        if (StatusEffect > MaxStatusEffect)
+            StatusEffect = MaxStatusEffect;
     }
 
     public virtual void AdjustStatusEffect(int adjuster)

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerCharacter : Character
 {
+    [HideInInspector] public Player MyPlayer;
     public string CharacterName { get; private set; }
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
@@ -17,6 +18,13 @@ public class PlayerCharacter : Character
 
     private void Start()
     {
+        foreach (DebuffStackSO augment in GetAUGS)
+        {
+            augment.MyCharacter = this;
+            augment.DebuffEffect();
+        }
+
+
         foreach (var atk in attacks)
             attackClones.Add(Instantiate(atk));
 
