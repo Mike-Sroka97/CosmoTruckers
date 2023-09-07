@@ -12,6 +12,7 @@ public class CascadingGoliathHand : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] Transform hand;
     [SerializeField] CascadingGoliathHand otherHand;
+    [SerializeField] Vector3 offScreenPosition; 
 
     Vector3 startPosition;
     Vector3 goalPosition;
@@ -119,5 +120,22 @@ public class CascadingGoliathHand : MonoBehaviour
                 closestDistance = Vector2.Distance(transform.position, player.transform.position);
             }
         }
+    }
+
+
+    //Cole added 9/8/2023
+    public IEnumerator MoveOffScreen()
+    {
+        startPosition = offScreenPosition; 
+
+        while (hand.position != offScreenPosition)
+        {
+            hand.position = Vector2.MoveTowards(hand.position, offScreenPosition, retractSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime); 
+            yield return null; 
+        }
+
+        transform.rotation = startingRotation; 
+        hand.position = offScreenPosition; 
     }
 }
