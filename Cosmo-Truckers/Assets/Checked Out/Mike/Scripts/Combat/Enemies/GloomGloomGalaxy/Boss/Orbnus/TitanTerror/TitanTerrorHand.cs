@@ -7,7 +7,9 @@ public class TitanTerrorHand : MonoBehaviour
     [SerializeField] TitanTerrorHand otherHand;
     [SerializeField] float triggerY;
     [SerializeField] Transform shockWaveSpawn;
+    [SerializeField] Transform rockParticleSpawn; 
     [SerializeField] GameObject shockWave;
+    [SerializeField] GameObject rockParticle;
     [SerializeField] GameObject[] SpitfireLayouts;
 
     public bool canTrigger;
@@ -31,6 +33,7 @@ public class TitanTerrorHand : MonoBehaviour
             otherHand.canTrigger = true;
             StartCoroutine(otherHandCrusher.Crush());
             Instantiate(shockWave, shockWaveSpawn.position, shockWaveSpawn.rotation);
+            Instantiate(rockParticle, rockParticleSpawn.position, Quaternion.identity); 
             int random = Random.Range(0, SpitfireLayouts.Length);
             Instantiate(SpitfireLayouts[random], shockWaveSpawn.position, shockWaveSpawn.rotation);
         }
