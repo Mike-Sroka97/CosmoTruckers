@@ -10,14 +10,13 @@ public class AUG_Noise : Augment
 
     private void Start()
     {
-        Stacks = 2;
+        tempAugment = Instantiate(augment);
         Activate();
     }
 
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        tempAugment = Instantiate(augment);
         tempAugment.GetComponent<SpriteRenderer>().material.SetFloat("_MainValue", StatusEffect);
     }
 

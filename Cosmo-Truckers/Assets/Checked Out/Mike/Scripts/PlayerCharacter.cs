@@ -19,13 +19,6 @@ public class PlayerCharacter : Character
 
     private void Start()
     {
-        foreach (DebuffStackSO augment in GetAUGS)
-        {
-            augment.MyCharacter = this;
-            augment.DebuffEffect();
-        }
-
-
         foreach (var atk in attacks)
             attackClones.Add(Instantiate(atk));
 

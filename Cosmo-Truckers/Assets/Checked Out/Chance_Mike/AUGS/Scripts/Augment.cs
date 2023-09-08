@@ -19,7 +19,7 @@ public abstract class Augment : MonoBehaviour
     /// <param name="stack"></param>
     public virtual void Activate(DebuffStackSO stack = null) //Just in case we test without the SO
     {
-        if(stack)
+        if (stack)
         {
             DebuffSO = stack;
             DebuffSO.MyCharacter = stack.MyCharacter;
@@ -29,14 +29,14 @@ public abstract class Augment : MonoBehaviour
             MaxStatusEffect = stack.StackValue.x + stack.StackValue.y * (stack.MaxStacks - 1);
         }
 
-        if(Stacks == 1)
+        if (Stacks == 1)
         {
             StatusEffect = baseStatusEffect;
         }
-        else if(Stacks > 1)
+        else if (Stacks > 1)
         {
             StatusEffect = baseStatusEffect;
-            for(int i = 0; i < Stacks - 1; i++)
+            for (int i = 0; i < Stacks - 1; i++)
             {
                 StatusEffect += additionalStatusEffect;
             }
@@ -46,6 +46,11 @@ public abstract class Augment : MonoBehaviour
             StatusEffect = 0;
         }
 
+        AdjustMaxStatusEffect();
+    }
+
+    protected void AdjustMaxStatusEffect()
+    {
         if (StatusEffect > MaxStatusEffect)
             StatusEffect = MaxStatusEffect;
     }
