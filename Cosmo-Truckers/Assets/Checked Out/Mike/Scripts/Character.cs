@@ -44,7 +44,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    private int AdjustDamage(int damage)
+    private int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
         
@@ -120,8 +120,19 @@ public abstract class Character : MonoBehaviour
         //max double vigor and min 0% healing
         if (Stats.Vigor > 200)
             Stats.Vigor = 200;
-        else
+        else if(Stats.Vigor < 0)
             Stats.Vigor = 0;
+    }
+
+    public void AdjustDamage(int damage)
+    {
+        Stats.Damage = damage;
+
+        //max x3 damage min 60% damage
+        if (Stats.Damage > 300)
+            Stats.Damage = 300;
+        else if (Stats.Damage < 60)
+            Stats.Damage = 60;
     }
 
     public abstract void StartTurn();
