@@ -106,10 +106,22 @@ public abstract class Character : MonoBehaviour
     {
         Stats.Speed += speed;
 
+        //max double speed and min 40% reduction
         if (Stats.Speed > 200)
             Stats.Speed = 200;
         else if (Stats.Speed < -40)
             Stats.Speed = -40;
+    }
+
+    public void AdjustVigor(int vigor)
+    {
+        Stats.Vigor += vigor;
+
+        //max double vigor and min 0% healing
+        if (Stats.Vigor > 200)
+            Stats.Vigor = 200;
+        else
+            Stats.Vigor = 0;
     }
 
     public abstract void StartTurn();

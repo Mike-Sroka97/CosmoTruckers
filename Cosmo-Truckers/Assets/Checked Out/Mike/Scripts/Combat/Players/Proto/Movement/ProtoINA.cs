@@ -99,7 +99,7 @@ public class ProtoINA : Player
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime + damageFlashSpeed;
-            if (damagedTime > damagedDuration)
+            if (damagedTime > damagedDuration && damaged)
             {
                 damaged = false;
                 canAttack = true;

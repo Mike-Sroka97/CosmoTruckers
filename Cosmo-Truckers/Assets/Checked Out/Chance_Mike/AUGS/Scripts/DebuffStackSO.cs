@@ -26,6 +26,7 @@ public class DebuffStackSO : ScriptableObject
     public bool Stackable = false;
     public int MaxStacks = 10;
     public int CurrentStacks = 0;
+    [Header("X = Initial Stack Value, Y = Subsequent Stack Values")]
     public Vector2 StackValue;
 
     [Header("Spawner")]
