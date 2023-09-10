@@ -120,6 +120,9 @@ public class AeglarINA : Player
     /// </summary>
     public void Jump()
     {
+        if (damaged)
+            return;
+
         if (IsGrounded(0.02f) && canDash)
         {
             currentNumberOfAttacks = 0;

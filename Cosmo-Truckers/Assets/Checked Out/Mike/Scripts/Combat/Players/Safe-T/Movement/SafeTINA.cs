@@ -71,7 +71,6 @@ public class SafeTINA : Player
         SpecialMove();
     }
 
-    public void ResetMoveSpeed() { MoveSpeed = originalMoveSpeed; }
     public void SetMoveSpeed(float newSpeed) { MoveSpeed = newSpeed; }
     public float GetMoveSpeed() { return MoveSpeed; }
     public bool GetIsJumping() { return isJumping; }
@@ -309,6 +308,7 @@ public class SafeTINA : Player
 
         playerAnimator.ChangeAnimation(myAnimator, roll);
 
+        canJump = false;
         canRoll = false;
         canMove = false;
         iFrames = true;

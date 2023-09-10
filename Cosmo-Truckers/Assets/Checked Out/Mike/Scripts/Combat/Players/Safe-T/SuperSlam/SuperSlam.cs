@@ -11,7 +11,7 @@ public class SuperSlam : CombatMove
 
     private void Start()
     {
-        FindObjectOfType<SafeTINA>().SetMoveSpeed(0);
+        FindObjectOfType<SafeTINA>().enabled = false;
         StartMove();
         GenerateLayout();
     }

@@ -12,7 +12,7 @@ public class SSGozorMovement : MonoBehaviour
     [SerializeField] float flashDuration;
     [SerializeField] int numberOfFlashes;
     [SerializeField] SSGun[] guns;
-    [SerializeField] Collider2D[] collidersToDisable;
+    public List<Collider2D> collidersToDisable;
 
     Transform point0;
     Transform point1;

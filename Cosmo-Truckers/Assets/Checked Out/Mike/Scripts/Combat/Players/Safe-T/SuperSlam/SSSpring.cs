@@ -8,7 +8,7 @@ public class SSSpring : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<SafeTINA>())
+        if (collision.tag == "Player")
         {
             enableMe.SetActive(true);
             transform.parent.gameObject.SetActive(false);

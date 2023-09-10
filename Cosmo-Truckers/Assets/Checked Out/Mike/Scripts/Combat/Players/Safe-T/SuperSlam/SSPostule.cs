@@ -35,14 +35,15 @@ public class SSPostule : MonoBehaviour
                     collided = true;
                     superSlam.Score++;
 
-                    playerBody.GetComponent<SafeTINA>().ResetMoveSpeed();
+                    playerBody.GetComponent<SafeTINA>().enabled = true;
                     playerBody.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
 
                     gozor.StartMinigame();
                     gozor.mySprites.Remove(myRenderer);
+                    gozor.collidersToDisable.Remove(myCollider);
                     StartCoroutine(gozor.FlashMe());
                     myRenderer.enabled = false;
-                    myCollider.enabled = false;
+                    Destroy(myCollider);
                     break;
                 }
             }
