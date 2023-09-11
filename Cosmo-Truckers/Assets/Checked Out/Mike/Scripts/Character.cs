@@ -19,7 +19,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
-        damage = AdjustDamage(damage);
+        //damage = AdjustDamage(damage);
 
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
             passiveMove.Activate(CurrentHealth);
