@@ -32,6 +32,9 @@ public class HarmAndRepulseQmuav : MonoBehaviour
         if(left)
         {
             transform.position = spawns[0].position;
+
+            transform.eulerAngles = new Vector3(transform.rotation.x, 0f, transform.rotation.z); 
+
             while(transform.position.x <= spawns[0].position.x + distanceToTravel)
             {
                 transform.position += new Vector3(travelSpeed * Time.deltaTime, 0, 0);
@@ -45,6 +48,9 @@ public class HarmAndRepulseQmuav : MonoBehaviour
         else
         {
             transform.position = spawns[1].position;
+
+            transform.eulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
+
             while (transform.position.x >= spawns[1].position.x - distanceToTravel)
             {
                 transform.position -= new Vector3(travelSpeed * Time.deltaTime, 0, 0);

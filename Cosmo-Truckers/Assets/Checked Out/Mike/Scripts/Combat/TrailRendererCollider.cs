@@ -6,6 +6,7 @@ public class TrailRendererCollider : MonoBehaviour
 {
     TrailRenderer myTrail;
     [SerializeField] EdgeCollider2D myCollider;
+    [SerializeField] int colliderBuffer; 
 
     private void Awake()
     {
@@ -25,6 +26,9 @@ public class TrailRendererCollider : MonoBehaviour
         {
             points.Add(trail.GetPosition(i));
         }
+
+        for (int i = 0; i < colliderBuffer; i++)
+            points.RemoveAt(0); 
 
         collider.SetPoints(points);
     }
