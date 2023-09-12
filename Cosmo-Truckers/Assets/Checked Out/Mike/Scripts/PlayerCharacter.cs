@@ -31,6 +31,8 @@ public class PlayerCharacter : Character
 
     public override void StartTurn()
     {
+        FadeAugments();
+
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }

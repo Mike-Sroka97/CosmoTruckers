@@ -28,6 +28,8 @@ public class DebuffStackSO : ScriptableObject
     public int CurrentStacks = 0;
     [Header("X = Initial Stack Value, Y = Subsequent Stack Values")]
     public Vector2 StackValue;
+    public bool FadingAugment { get; protected set; }
+    [SerializeField] int fadePerTurn = 0;
 
     [Header("Spawner")]
     public GameObject AugSpawner;
@@ -48,5 +50,10 @@ public class DebuffStackSO : ScriptableObject
     public Augment GetAugment()
     {
         return temp.GetComponent<Augment>();
+    }
+
+    public void Fade()
+    {
+        temp.GetComponent<Augment>().AdjustStatusEffect(fadePerTurn);
     }
 }

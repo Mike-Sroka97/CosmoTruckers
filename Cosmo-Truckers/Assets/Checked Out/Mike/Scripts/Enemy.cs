@@ -111,6 +111,8 @@ public class Enemy : Character
 
     IEnumerator ProcessTurn()
     {
+        FadeAugments();
+
         yield return new WaitForSeconds(2f);
 
         FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);

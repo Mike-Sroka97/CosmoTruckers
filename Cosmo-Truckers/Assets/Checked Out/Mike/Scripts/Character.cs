@@ -19,7 +19,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
-        damage = AdjustDamage(damage);
+        damage = AdjustAttackDamage(damage);
 
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
             passiveMove.Activate(CurrentHealth);
@@ -145,5 +145,12 @@ public abstract class Character : MonoBehaviour
     public void TestAUG()
     {
         AddDebuffStack(test, true);
+    }
+
+    protected void FadeAugments()
+    {
+        foreach (DebuffStackSO augment in AUGS)
+            if (augment.FadingAugment)
+                augment.Fade();
     }
 }
