@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class Augment : MonoBehaviour
 {
-    [SerializeField] float baseStatusEffect;
-    [SerializeField] float additionalStatusEffect;
+    [SerializeField] protected float baseStatusEffect;
+    [SerializeField] protected float additionalStatusEffect;
     public DebuffStackSO DebuffSO;
     protected int Stacks;
     protected float StatusEffect;
