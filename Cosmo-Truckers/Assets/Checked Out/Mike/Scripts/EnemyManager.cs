@@ -5,28 +5,28 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     [Header("For testing placement")]
-    [SerializeField] List<GameObject> EnemiesToSpawn;
-    [SerializeField] List<Transform> EnemyLocations;
+    public List<GameObject> EnemiesToSpawn;
+    public List<GameObject> EnemySummonsToSpawn;
+    public List<GameObject> PlayersToSpawn;
+    public List<GameObject> PlayerSummonsToSpawn;
+    public Transform[] EnemyLocations;
+    public Transform[] EnemySummonLocations;
+    public Transform[] PlayerLocations;
+    public Transform[] PlayerSummonLocations;
     [SerializeField] Transform EnemyPrefabLocation;
+    [SerializeField] Transform EnemySummonPrefabLocation;
+    [SerializeField] Transform PlayerPrefabLocation;
+    [SerializeField] Transform PlayerSummonPrefabLocation;
 
     [Space(10)]
-    public List<Enemy> Enemies;
-    public List<PlayerCharacter> Players;
+    [HideInInspector] public List<Enemy> Enemies;
+    [HideInInspector] public List<PlayerCharacter> Players;
+    //TODO ENEMY SUMMONS
+    //TODO PLAYER SUMMONS
 
     private void Awake()
     {
-        int count = 0;
-
-        foreach(var enemy in EnemiesToSpawn)
-        {
-            if(count < EnemyLocations.Count)
-            {
-                GameObject prefab = Instantiate(enemy, EnemyPrefabLocation);
-                prefab.transform.position = EnemyLocations[count].position;
-                prefab.GetComponent<SpriteRenderer>().sortingOrder = -count;
-                count += prefab.GetComponent<Enemy>().GetSpaceTaken;
-            }
-        }
+        SetSpawns();
     }
 
     void Start()
@@ -38,5 +38,57 @@ public class EnemyManager : MonoBehaviour
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             Players.Add(player);
+    }
+
+    private void SetSpawns()
+    {
+        int enemyCount = 0;
+        int enemySummonCount = 0;
+        int playerCount = 0;
+        int playerSummonCount = 0;
+
+        foreach (GameObject enemy in EnemiesToSpawn)
+        {
+            if (enemyCount < EnemyLocations.Length)
+            {
+                GameObject prefab = Instantiate(enemy, EnemyPrefabLocation);
+                prefab.transform.position = EnemyLocations[enemyCount].position;
+                prefab.GetComponent<SpriteRenderer>().sortingOrder = enemyCount;
+                enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
+            }
+        }
+
+        foreach (GameObject enemySummon in EnemySummonsToSpawn)
+        {
+            if (enemySummonCount < EnemySummonLocations.Length)
+            {
+                GameObject prefab = Instantiate(enemySummon, EnemySummonPrefabLocation);
+                prefab.transform.position = EnemySummonLocations[enemySummonCount].position;
+                prefab.GetComponent<SpriteRenderer>().sortingOrder = enemySummonCount;
+                enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
+            }
+        }
+
+        foreach (GameObject player in PlayersToSpawn)
+        {
+            if (playerCount < EnemyLocations.Length)
+            {
+                GameObject prefab = Instantiate(player, PlayerPrefabLocation);
+                prefab.transform.position = PlayerLocations[playerCount].position;
+                prefab.GetComponent<SpriteRenderer>().sortingOrder = playerCount;
+                playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
+            }
+        }
+
+        foreach (GameObject playerSummon in PlayerSummonsToSpawn)
+        {
+            if (playerSummonCount < EnemyLocations.Length)
+            {
+                GameObject prefab = Instantiate(playerSummon, PlayerSummonPrefabLocation);
+                prefab.transform.position = PlayerSummonLocations[playerSummonCount].position;
+                prefab.GetComponent<SpriteRenderer>().sortingOrder = playerSummonCount;
+                playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
+            }
+        }
     }
 }

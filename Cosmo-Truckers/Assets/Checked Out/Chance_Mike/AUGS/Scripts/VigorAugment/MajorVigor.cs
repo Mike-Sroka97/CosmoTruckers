@@ -21,6 +21,6 @@ public class MajorVigor : Augment
     }
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustVigor(-(int)StatusEffect);
     }
 }

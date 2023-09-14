@@ -7,18 +7,17 @@ using UnityEngine.UI;
 public class Enemy : Character
 {
     public string CharacterName { get; private set; }
-    [SerializeField] int spaceTaken = 1;
 
     [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
+    [HideInInspector] public PlayerCharacter TauntedBy;
 
     Animator enemyAnimation;
     EnemyManager enemyManager;
     SpriteRenderer myRenderer;
     bool lootRolled = false;
-    public int GetSpaceTaken { get => spaceTaken; }
 
     private void Awake()
     {

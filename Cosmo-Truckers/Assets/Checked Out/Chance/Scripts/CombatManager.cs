@@ -142,10 +142,10 @@ public class CombatManager : MonoBehaviour
     public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
     {
         CurrentEnemy = enemy;
-        StartCoroutine(EnemyDelay(attack));
+        StartCoroutine(EnemyDelay(attack, enemy));
     }
 
-    IEnumerator EnemyDelay(BaseAttackSO attack)
+    IEnumerator EnemyDelay(BaseAttackSO attack, Enemy enemy)
     {
         PlayerCharacter[] attackable = FindObjectsOfType<PlayerCharacter>();
         CharactersSelected.Clear();
@@ -172,20 +172,36 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Single Target
             case EnumManager.TargetingType.Single_Target:
-                System.Random singleRand = new System.Random();
-                attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
-                foreach (PlayerCharacter obj in attackable)
+                //enemy is taunted
+                if(enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
                 {
-                    if (!obj.Dead)
-                    {
-                        CharactersSelected.Add(obj);
-                        TempPage.SetActive(true);
-                        StartTimer = true;
+                    CharactersSelected.Add(enemy.TauntedBy);
+                    TempPage.SetActive(true);
+                    StartTimer = true;
 
-                        character = Instantiate(obj.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-                        break;
+                    character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                    character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                    break;
+                }
+                //enemy is not taunted
+                else
+                {
+                    System.Random singleRand = new System.Random();
+                    attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
+                    foreach (PlayerCharacter obj in attackable)
+                    {
+                        if (!obj.Dead)
+                        {
+                            CharactersSelected.Add(obj);
+                            TempPage.SetActive(true);
+                            StartTimer = true;
+
+                            character = Instantiate(obj.GetCharacterController);
+                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                            break;
+                        }
                     }
                 }
                 break;

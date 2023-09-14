@@ -17,6 +17,9 @@ public class VisualAugment : Augment
 
     public override void Activate(DebuffStackSO stack = null)
     {
+        if (maxVisualStacks == 0)
+            maxVisualStacks = stack.MaxStacks;
+
         base.Activate(stack);
 
         //handles augments that have a visual limit but a tertiary effect that goes beyond that stack limit

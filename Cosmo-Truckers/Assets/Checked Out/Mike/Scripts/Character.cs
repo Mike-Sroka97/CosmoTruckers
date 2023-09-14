@@ -17,6 +17,9 @@ public abstract class Character : MonoBehaviour
 
     protected TurnOrder turnOrder;
 
+    [SerializeField] int spaceTaken = 1;
+    public int GetSpaceTaken { get => spaceTaken; }
+
     public virtual void TakeDamage(int damage)
     {
         damage = AdjustAttackDamage(damage);
