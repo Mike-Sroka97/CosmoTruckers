@@ -115,7 +115,7 @@ public class Enemy : Character
 
         yield return new WaitForSeconds(2f);
 
-        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
+        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)], this);
     }
 
     public override void AdjustDefense(int defense)
