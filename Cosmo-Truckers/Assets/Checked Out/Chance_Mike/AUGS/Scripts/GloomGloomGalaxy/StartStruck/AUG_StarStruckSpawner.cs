@@ -26,16 +26,19 @@ public class AUG_StarStruckSpawner : Augment
     {
         yield return new WaitForSeconds(spawnSpeed);
         float randomX = Random.Range(-xClamp, xClamp);
+        GameObject tempStar;
 
         if (randomX >= 0)
         {
-            GameObject tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
+            tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
             tempStar.transform.eulerAngles = new Vector3(0, 0, 225);
         }
         else
         {
-            Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
+            tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
         }
+
+        tempStar.transform.parent = this.gameObject.transform;
 
         StartCoroutine(SpawnStar());
     }
