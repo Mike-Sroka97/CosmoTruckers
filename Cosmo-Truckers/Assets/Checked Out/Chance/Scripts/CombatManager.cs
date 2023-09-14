@@ -23,9 +23,7 @@ public class CombatManager : MonoBehaviour
     bool StartTimer = false;
 
     PlayerCharacter CurrentPlayer;
-    Enemy CurrentEnemy;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
-    public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     private void Awake() => Instance = this;
 
@@ -36,7 +34,7 @@ public class CombatManager : MonoBehaviour
 
         CurrentPlayer = currentPlayer;
 
-        switch (attack.TargetingType)
+        switch (attack.targetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
@@ -89,7 +87,7 @@ public class CombatManager : MonoBehaviour
                         print(obj.gameObject.name);
                         button.interactable = false;
                         CharactersSelected.Add(obj);
-                        if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
+                        if (CharactersSelected.Count == attack.numberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
                             TempPage.SetActive(true);
                             StartTimer = true;
@@ -133,15 +131,14 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); return;
+            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); return;
         }
 
         StartCoroutine(StartMiniGame(attack));
     }
 
-    public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
+    public void StartTurnEnemy(BaseAttackSO attack)
     {
-        CurrentEnemy = enemy;
         StartCoroutine(EnemyDelay(attack));
     }
 
@@ -154,7 +151,7 @@ public class CombatManager : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
-        switch (attack.TargetingType)
+        switch (attack.targetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
@@ -209,7 +206,7 @@ public class CombatManager : MonoBehaviour
                         character = Instantiate(obj.GetCharacterController);
                         character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
-                    if (CharactersSelected.Count == attack.NumberOFTargets)
+                    if (CharactersSelected.Count == attack.numberOFTargets)
                     {
                         TempPage.SetActive(true);
                         StartTimer = true;
@@ -250,7 +247,7 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); yield break;
+            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); yield break;
         }
 
         StartCoroutine(StartMiniGame(attack));
@@ -263,11 +260,7 @@ public class CombatManager : MonoBehaviour
 
         miniGame = Instantiate(attack.CombatPrefab);
         miniGame.transform.SetParent(MiniGameScreen.transform);
-
-        //Attack SO Start
-        attack.StartCombat();
-
-        while (!StartTimer) yield return null;
+        while(!StartTimer) yield return null;
 
         if (CharactersSelected.Count > 0)
         {

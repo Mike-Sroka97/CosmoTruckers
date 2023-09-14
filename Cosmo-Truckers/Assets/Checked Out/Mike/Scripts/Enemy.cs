@@ -33,13 +33,6 @@ public class Enemy : Character
     {
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnStartBattle)
             StartCoroutine(StartWait());
-
-        SetAttackCharacters();
-    }
-    private void SetAttackCharacters()
-    {
-        foreach (BaseAttackSO attack in attacks)
-            attack.MyCharacter = this;
     }
 
     IEnumerator StartWait()
@@ -122,7 +115,7 @@ public class Enemy : Character
 
         yield return new WaitForSeconds(2f);
 
-        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)], this);
+        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)]);
     }
 
     public override void AdjustDefense(int defense)

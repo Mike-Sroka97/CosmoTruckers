@@ -9,11 +9,10 @@ public class BaseAttackSO : ScriptableObject
     [Space(10)]
 
     public string AttackName;
-    [SerializeField] public EnumManager.TargetingType TargetingType;
-    [SerializeField] public bool CanTargetFriendly;
-    [SerializeField] public bool CanTargetEnemies;
-    [SerializeField] public int NumberOFTargets;
-    public Character MyCharacter;
+    [SerializeField] public EnumManager.TargetingType targetingType;
+    [SerializeField] public bool canTargetFriendly;
+    [SerializeField] public bool canTargetEnemies;
+    [SerializeField] public int numberOFTargets;
     [Space(10)]
     public GameObject CombatPrefab;
     public GameObject PlayerPrefab; //TEMP
