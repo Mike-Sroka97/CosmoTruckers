@@ -10,6 +10,7 @@ public abstract class CombatMove : MonoBehaviour
     //For games that can deal player damage
     [SerializeField] protected int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
+    [SerializeField] private bool playerEnemyTargetDifference = false;
     public float MinigameDuration;
 
     [HideInInspector] public int Score;
@@ -42,7 +43,7 @@ public abstract class CombatMove : MonoBehaviour
 
         Player[] players = FindObjectsOfType<Player>();
 
-        if(players.Length <= 1)
+        if(players.Length == 1)
         {
             players[0].transform.position = spawnPoints[0].position;
         }
@@ -60,12 +61,20 @@ public abstract class CombatMove : MonoBehaviour
         {
             foreach (Character character in CombatManager.Instance.GetCharactersSelected)
             {
-                //TODO split damage and AUG calls?
-                character.GetComponent<Character>().TakeDamage(Damage * Hits);
+                //handles if the outcome effects enemys and players differently
+                if(playerEnemyTargetDifference)
+                {
+                    PlayerEnemyDifference(character);
+                }
+                else
+                {
+                    //TODO split damage and AUG calls?
+                    character.GetComponent<Character>().TakeDamage(Damage * Hits);
 
-                if (DebuffToAdd != null)
-                    for (int i = 0; i < Hits; i++)
-                        character.GetComponent<Character>().AddDebuffStack(DebuffToAdd);
+                    if (DebuffToAdd != null)
+                        for (int i = 0; i < Hits; i++)
+                            character.GetComponent<Character>().AddDebuffStack(DebuffToAdd);
+                }
             }
         }
         else //Running tests
@@ -98,6 +107,18 @@ public abstract class CombatMove : MonoBehaviour
         if ((currentTime >= MinigameDuration || PlayerDead) && !MoveEnded)
         {
             EndMove();
+        }
+    }
+
+    protected virtual void PlayerEnemyDifference(Character character)
+    {
+        if (character.GetComponent<Enemy>())
+        {
+
+        }
+        else if (character.GetComponent<PlayerCharacter>())
+        {
+
         }
     }
 }

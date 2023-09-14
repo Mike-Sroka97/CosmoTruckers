@@ -44,7 +44,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    private int AdjustAttackDamage(int damage)
+    protected int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
         

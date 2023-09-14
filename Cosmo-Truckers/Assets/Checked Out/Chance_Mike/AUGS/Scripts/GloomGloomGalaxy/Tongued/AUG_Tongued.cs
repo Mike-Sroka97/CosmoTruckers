@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AUG_Tongued : MonoBehaviour
+public class AUG_Tongued : Augment
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void StopEffect()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        throw new System.NotImplementedException();
     }
 }
