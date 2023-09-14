@@ -23,7 +23,9 @@ public class CombatManager : MonoBehaviour
     bool StartTimer = false;
 
     PlayerCharacter CurrentPlayer;
+    Enemy CurrentEnemy;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
+    public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     private void Awake() => Instance = this;
 
@@ -34,7 +36,7 @@ public class CombatManager : MonoBehaviour
 
         CurrentPlayer = currentPlayer;
 
-        switch (attack.targetingType)
+        switch (attack.TargetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
@@ -87,12 +89,12 @@ public class CombatManager : MonoBehaviour
                         print(obj.gameObject.name);
                         button.interactable = false;
                         CharactersSelected.Add(obj);
-                        if (CharactersSelected.Count == attack.numberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
+                        if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
                             TempPage.SetActive(true);
                             StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                            for(int i = 0; i < CharactersSelected.Count; i++)
+                            for (int i = 0; i < CharactersSelected.Count; i++)
                                 text += $" { CharactersSelected[i].name } & ";
 
                             text.Remove(text.Length - 2, 2);
@@ -131,14 +133,15 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); return;
+            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); return;
         }
 
         StartCoroutine(StartMiniGame(attack));
     }
 
-    public void StartTurnEnemy(BaseAttackSO attack)
+    public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
     {
+        CurrentEnemy = enemy;
         StartCoroutine(EnemyDelay(attack));
     }
 
@@ -151,7 +154,7 @@ public class CombatManager : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
-        switch (attack.targetingType)
+        switch (attack.TargetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
@@ -206,7 +209,7 @@ public class CombatManager : MonoBehaviour
                         character = Instantiate(obj.GetCharacterController);
                         character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
-                    if (CharactersSelected.Count == attack.numberOFTargets)
+                    if (CharactersSelected.Count == attack.NumberOFTargets)
                     {
                         TempPage.SetActive(true);
                         StartTimer = true;
@@ -247,7 +250,7 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.targetingType} not set up."); EndCombat(); yield break;
+            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); yield break;
         }
 
         StartCoroutine(StartMiniGame(attack));
@@ -260,11 +263,15 @@ public class CombatManager : MonoBehaviour
 
         miniGame = Instantiate(attack.CombatPrefab);
         miniGame.transform.SetParent(MiniGameScreen.transform);
-        while(!StartTimer) yield return null;
+
+        //Attack SO Start
+        attack.StartCombat();
+
+        while (!StartTimer) yield return null;
 
         if (CharactersSelected.Count > 0)
         {
-            foreach(Character character in CharactersSelected) //PlayerCharacter invalid cast
+            foreach (Character character in CharactersSelected) //PlayerCharacter invalid cast
             {
                 foreach (var aug in character.GetAUGS)
                     if (aug.Type == DebuffStackSO.ActivateType.InCombat)
@@ -297,7 +304,7 @@ public class CombatManager : MonoBehaviour
             {
                 foreach (DebuffStackSO aug in player.GetAUGS)
                 {
-                    if(aug.Type != DebuffStackSO.ActivateType.OnDamage)
+                    if (aug.Type != DebuffStackSO.ActivateType.OnDamage)
                         aug.StopEffect();
                 }
             }
