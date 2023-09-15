@@ -8,7 +8,6 @@ public class Enemy : Character
 {
     public string CharacterName { get; private set; }
 
-    [SerializeField] Loot[] droppableLoot;
     [SerializeField] BaseAttackSO[] attacks;
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
@@ -17,7 +16,6 @@ public class Enemy : Character
     Animator enemyAnimation;
     EnemyManager enemyManager;
     SpriteRenderer myRenderer;
-    bool lootRolled = false;
 
     private void Awake()
     {
@@ -76,18 +74,6 @@ public class Enemy : Character
         else
         {
             turnOrder.DetermineTurnOrder();
-        }
-    }
-
-    private void RollLoot()
-    {
-        foreach(Loot loot in droppableLoot)
-        {
-            int randomResult = UnityEngine.Random.Range(1, 100);
-            if(loot.GetDropChance() >= randomResult)
-            {
-                FindObjectOfType<LootManager>().AddLoot(loot);
-            }
         }
     }
 

@@ -217,9 +217,18 @@ public class CombatManager : MonoBehaviour
             case EnumManager.TargetingType.Multi_Target_Choice:
                 System.Random multiRand = new System.Random();
                 attackable = attackable.OrderBy(x => multiRand.Next()).ToArray();
+
+                //taunted
+                if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
+                {
+                    CharactersSelected.Add(enemy.TauntedBy);
+                    character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                    character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                }
+
                 foreach (var obj in attackable)
                 {
-                    if (!obj.Dead)
+                    if (!obj.Dead && !CharactersSelected.Contains(obj))
                     {
                         CharactersSelected.Add(obj);
                         character = Instantiate(obj.GetCharacterController);
@@ -243,8 +252,17 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region AOE
             case EnumManager.TargetingType.AOE:
-                TempPage.SetActive(true);
-                StartTimer = true;
+                foreach (var obj in attackable)
+                {
+                    if (!obj.Dead)
+                    {
+                        character = Instantiate(obj.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        CharactersSelected.Add(obj);
+                        TempPage.SetActive(true);
+                        StartTimer = true;
+                    }
+                }
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
                 break;
             #endregion

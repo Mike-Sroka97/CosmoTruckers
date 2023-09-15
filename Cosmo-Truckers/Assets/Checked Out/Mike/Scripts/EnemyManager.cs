@@ -55,6 +55,10 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = EnemyLocations[enemyCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = enemyCount;
                 enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
+
+                //TODO Figure out enemy spacing
+                for (int i = enemyCount; i < prefab.GetComponent<Character>().GetSpaceTaken + enemyCount; i++)
+                    prefab.GetComponent<Character>().CombatSpot.Add(i);
             }
         }
 
@@ -66,28 +70,31 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = EnemySummonLocations[enemySummonCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = enemySummonCount;
                 enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
+                prefab.GetComponent<Character>().CombatSpot.Add(enemySummonCount);
             }
         }
 
         foreach (GameObject player in PlayersToSpawn)
         {
-            if (playerCount < EnemyLocations.Length)
+            if (playerCount < PlayerLocations.Length)
             {
                 GameObject prefab = Instantiate(player, PlayerPrefabLocation);
                 prefab.transform.position = PlayerLocations[playerCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = playerCount;
                 playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
+                prefab.GetComponent<Character>().CombatSpot.Add(playerCount);
             }
         }
 
         foreach (GameObject playerSummon in PlayerSummonsToSpawn)
         {
-            if (playerSummonCount < EnemyLocations.Length)
+            if (playerSummonCount < PlayerSummonLocations.Length)
             {
                 GameObject prefab = Instantiate(playerSummon, PlayerSummonPrefabLocation);
                 prefab.transform.position = PlayerSummonLocations[playerSummonCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = playerSummonCount;
                 playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
+                prefab.GetComponent<Character>().CombatSpot.Add(playerSummonCount);
             }
         }
     }

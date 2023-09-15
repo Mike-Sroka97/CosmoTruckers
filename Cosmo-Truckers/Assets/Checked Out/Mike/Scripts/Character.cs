@@ -11,6 +11,7 @@ public abstract class Character : MonoBehaviour
     public CharacterStats Stats;
     public int Health;
     [HideInInspector] public int CurrentHealth;
+    [HideInInspector] public List<int> CombatSpot;
     public int Shield;
 
     public bool Dead;
