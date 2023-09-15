@@ -101,8 +101,8 @@ GameObject:
   - component: {fileID: 2656155633272772648}
   - component: {fileID: 7259166778353556809}
   - component: {fileID: 3219731815240214842}
-  - component: {fileID: 8065429925161325360}
   - component: {fileID: 7051449283588410191}
+  - component: {fileID: 5034078374392703257}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -123,6 +123,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3823231882914615400}
+  - {fileID: 7650398093449375541}
   m_Father: {fileID: 7567944896906223338}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
@@ -133,7 +134,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5997256236945732831}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -204,22 +205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!58 &8065429925161325360
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5997256236945732831}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.1, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.25
 --- !u!114 &7051449283588410191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,10 +217,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d94948aa4499a34db529f65388b8a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fistSpriteRenderer: {fileID: 7668957042987875161}
   FistSprites:
   - {fileID: 21300000, guid: 03ac127254fe31c418f32fc63a7b4fb9, type: 3}
   - {fileID: 21300000, guid: 51bd2e4dcc91499468756d0df1f99e2d, type: 3}
+  fistPositions:
+  - {x: -0.5, y: 0.76, z: 0}
+  - {x: 0, y: 0, z: 0}
   fistCloseTime: 1.25
+--- !u!60 &5034078374392703257
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5997256236945732831}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.5, y: 0.76}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3, y: 3}
+    newSize: {x: 1.0833334, y: 1.0833334}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.7916667, y: -0.4375}
+      - {x: 1.25, y: -0.5833334}
+      - {x: 1.3541667, y: -0.3541667}
+      - {x: 1.5, y: -0.083333336}
+      - {x: 1.5, y: 0.22916667}
+      - {x: 1.3125, y: 0.5833334}
+      - {x: 1.1041667, y: 1}
+      - {x: 0.9166667, y: 1.1875}
+      - {x: 0.75, y: 1.25}
+      - {x: 0.0625, y: 1.25}
+      - {x: -0.27083334, y: 1.0625}
+      - {x: -0.875, y: 0.5416667}
+      - {x: -1.1875, y: 0.22916667}
+      - {x: -1.4375, y: -0.3541667}
+      - {x: -1.5, y: -0.7083334}
+      - {x: -1.5, y: -0.8958334}
+      - {x: -1.4375, y: -1.0416667}
+      - {x: -1.2291667, y: -1.2291667}
+      - {x: -1.0625, y: -1.3125}
+      - {x: -0.2916667, y: -1.3125}
+      - {x: 0.083333336, y: -0.8541667}
+      - {x: 0.3541667, y: -0.6458334}
+      - {x: 0.6666667, y: -0.39583334}
 --- !u!1 &6174884057393429145
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,6 +327,90 @@ MonoBehaviour:
   hand: {fileID: 5261113060310576784}
   otherHand: {fileID: 0}
   offScreenPosition: {x: -26, y: 0.95, z: 0}
+--- !u!1 &7226056533569386014
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7650398093449375541}
+  - component: {fileID: 7668957042987875161}
+  m_Layer: 0
+  m_Name: HandSprite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7650398093449375541
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7226056533569386014}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0.76, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5261113060310576784}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &7668957042987875161
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7226056533569386014}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 73707659
+  m_SortingLayer: 4
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: 03ac127254fe31c418f32fc63a7b4fb9, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 3, y: 3}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &213049512229938484
 PrefabInstance:
   m_ObjectHideFlags: 0

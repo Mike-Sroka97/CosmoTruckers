@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class CascadingGoliathHandSuspension : MonoBehaviour
 {
-    [SerializeField] private Sprite[] FistSprites; 
+    [SerializeField] private SpriteRenderer fistSpriteRenderer; 
+    [SerializeField] private Sprite[] FistSprites;
+    [SerializeField] private Vector3[] fistPositions;
+    [SerializeField] private float fistCloseTime = 2f;
     private bool isGrabbing;
-    [SerializeField] private float fistCloseTime = 2f; 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,7 +16,8 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
 
         if (playerCollision)
         {
-            GetComponent<SpriteRenderer>().sprite = FistSprites[1];
+            fistSpriteRenderer.sprite = FistSprites[1];
+            fistSpriteRenderer.gameObject.transform.localPosition = fistPositions[1]; 
         }
     }
 
@@ -39,7 +42,8 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
 
         if (playerCollision)
         {
-            GetComponent<SpriteRenderer>().sprite = FistSprites[0];
+            fistSpriteRenderer.sprite = FistSprites[0];
+            fistSpriteRenderer.gameObject.transform.localPosition = fistPositions[0];
         }
 
 
