@@ -6,11 +6,6 @@ public class FGProjectile : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
 
-    private void Start()
-    {
-        transform.parent = null;
-    }
-
     private void Update()
     {
         transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
