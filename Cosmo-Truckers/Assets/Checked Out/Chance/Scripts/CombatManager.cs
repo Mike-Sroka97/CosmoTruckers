@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
-    public static CombatManager Instance;
+    [HideInInspector] public static CombatManager Instance;
 
     [SerializeField] GameObject TempPage;
     [SerializeField] GameObject MiniGameScreen;
@@ -175,14 +175,21 @@ public class CombatManager : MonoBehaviour
                 //enemy is taunted
                 if(enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
                 {
-                    CharactersSelected.Add(enemy.TauntedBy);
-                    TempPage.SetActive(true);
-                    StartTimer = true;
+                    if (CheckPlayerSummonLayer(enemy.TauntedBy.CombatSpot[0]))
+                    {
+                        CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[enemy.TauntedBy.CombatSpot[0]]);
+                    }
+                    else
+                    {
+                        CharactersSelected.Add(enemy.TauntedBy);
+                        TempPage.SetActive(true);
+                        StartTimer = true;
 
-                    character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                    character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-                    break;
+                        character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                        break;
+                    }
                 }
                 //enemy is not taunted
                 else
@@ -193,14 +200,21 @@ public class CombatManager : MonoBehaviour
                     {
                         if (!obj.Dead)
                         {
-                            CharactersSelected.Add(obj);
-                            TempPage.SetActive(true);
-                            StartTimer = true;
+                            if(CheckPlayerSummonLayer(obj.CombatSpot[0]))
+                            {
+                                CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[obj.CombatSpot[0]]);
+                            }
+                            else
+                            {
+                                CharactersSelected.Add(obj);
+                                TempPage.SetActive(true);
+                                StartTimer = true;
 
-                            character = Instantiate(obj.GetCharacterController);
-                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                            Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-                            break;
+                                character = Instantiate(obj.GetCharacterController);
+                                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                                break;
+                            }
                         }
                     }
                 }
@@ -370,4 +384,11 @@ public class CombatManager : MonoBehaviour
     }
 
     private void OnDisable() => Instance = null;
+
+    private bool CheckPlayerSummonLayer(int playerSpot)
+    {
+        if(EnemyManager.Instance.PlayerSummons[playerSpot] != null && !EnemyManager.Instance.PlayerSummons[playerSpot].Dead)
+            return true;
+        return false;
+    }
 }

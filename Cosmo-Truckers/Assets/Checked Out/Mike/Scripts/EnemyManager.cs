@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    [HideInInspector] public static EnemyManager Instance;
+
     [Header("For testing placement")]
     public List<GameObject> EnemiesToSpawn;
     public List<GameObject> EnemySummonsToSpawn;
@@ -21,10 +23,12 @@ public class EnemyManager : MonoBehaviour
     [Space(10)]
     [HideInInspector] public List<Enemy> Enemies;
     [HideInInspector] public List<PlayerCharacter> Players;
-    //TODO ENEMY SUMMONS
-    //TODO PLAYER SUMMONS
+    [HideInInspector] public List<PlayerCharacterSummon> PlayerSummons;
+    [HideInInspector] public List<EnemySummon> EnemySummons;
 
-    private void Awake()
+    private void Awake() => Instance = this;
+
+    private void OnEnable()
     {
         SetSpawns();
     }
