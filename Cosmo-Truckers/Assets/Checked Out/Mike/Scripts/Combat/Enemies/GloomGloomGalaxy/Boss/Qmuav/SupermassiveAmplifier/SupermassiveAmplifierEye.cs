@@ -14,15 +14,19 @@ public class SupermassiveAmplifierEye : MonoBehaviour
     [SerializeField] int numberOfShots;
     [SerializeField] float maxStartingVelocity;
 
+    [SerializeField] AnimationClip idle, ampEyeAnimation;
+
     Player currentTarget;
     Player[] players;
     bool trackTime = true;
     bool firing = false;
     float currentTime = 0;
+    Animator myAnimator; 
 
     private void Start()
     {
         players = FindObjectsOfType<Player>();
+        myAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -75,6 +79,8 @@ public class SupermassiveAmplifierEye : MonoBehaviour
 
     IEnumerator Fire()
     {
+        myAnimator.Play(ampEyeAnimation.name); 
+
         for(int i = 0; i < numberOfShots; i++)
         {
             float startingXvelocity = DetermineVelocity(true);
@@ -90,6 +96,7 @@ public class SupermassiveAmplifierEye : MonoBehaviour
         trackTime = true;
         currentTime = 0;
         firing = false;
+        myAnimator.Play(idle.name);
     }
 
     private float DetermineVelocity(bool x)

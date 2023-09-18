@@ -10,12 +10,20 @@ public class HarmAndRepulseQmuav : MonoBehaviour
     [SerializeField] float sideChangeDelay;
     [SerializeField] bool randomStart = true;
     [SerializeField] bool gs = false;
+    [SerializeField] ParticleSystem suckParticles;
+    [SerializeField] float startEmission = 10f;
+    [SerializeField] AnimationClip idle, suck;
 
+    Animator myAnimator; 
+    ParticleSystem.EmissionModule emissionModule;
     bool left = false;
     GalaxyBusterSpawner galaxyBusterSpawner;
+
     private void Start()
     {
         galaxyBusterSpawner = GetComponentInChildren<GalaxyBusterSpawner>();
+        emissionModule = suckParticles.emission;
+        myAnimator = GetComponent<Animator>();
 
         if(randomStart)
         {
@@ -29,7 +37,11 @@ public class HarmAndRepulseQmuav : MonoBehaviour
 
     IEnumerator MoveMe()
     {
-        if(left)
+        //Play Idle 
+        emissionModule.rateOverTime = 0f;
+        myAnimator.Play(idle.name); 
+
+        if (left)
         {
             transform.position = spawns[0].position;
 
@@ -62,7 +74,15 @@ public class HarmAndRepulseQmuav : MonoBehaviour
                 galaxyBusterSpawner.ShootProjectile(false);
         }
 
+        //Play sucking 
+        emissionModule.rateOverTime = startEmission;
+        myAnimator.Play(suck.name);
+
         yield return new WaitForSeconds(sideChangeDelay);
+
+        //Play Idle 
+        emissionModule.rateOverTime = 0f;
+        myAnimator.Play(idle.name);
 
         if (left)
         {
