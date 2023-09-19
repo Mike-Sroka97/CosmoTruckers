@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8838760502823876786}
   - component: {fileID: 8838760502823876749}
-  - component: {fileID: 8838760502823876748}
+  - component: {fileID: 7348054469949622080}
   - component: {fileID: 8838760502823876747}
   - component: {fileID: 8838760502823876787}
   m_Layer: 5
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8838760502823876748
+--- !u!114 &7348054469949622080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,25 +324,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8838760502823876746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6398b03d8efcc244bb698c492774a06, type: 3}
+  m_Script: {fileID: 11500000, guid: d96788a20d1f904409ed9854e6ebc3e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
   Stats: {fileID: 8838760502823876747}
-  Health: 0
+  Health: 50
   CurrentHealth: 0
+  CombatSpot: 
   Shield: 0
   Dead: 0
-  test: {fileID: 0}
   spaceTaken: 1
-  droppableLoot:
-  - {fileID: 11400000, guid: 08534a4fac67db54eb3d5a905544e4cd, type: 2}
-  - {fileID: 11400000, guid: 9d1e49eb6875c8d47b1648704bf15d48, type: 2}
-  - {fileID: 11400000, guid: 5eb10bd9398851b43aeb279cff8c548c, type: 2}
+  test: {fileID: 0}
   attacks:
   - {fileID: 11400000, guid: 2845c3691c3d7a74c9be3b0d5033a717, type: 2}
   - {fileID: 11400000, guid: 5459007e5149e83448bcb20897f6e90b, type: 2}
+  TauntedBy: {fileID: 0}
 --- !u!114 &8838760502823876747
 MonoBehaviour:
   m_ObjectHideFlags: 0

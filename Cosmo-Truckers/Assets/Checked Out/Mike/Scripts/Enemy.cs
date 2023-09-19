@@ -8,10 +8,11 @@ public class Enemy : Character
 {
     public string CharacterName { get; private set; }
 
-    [SerializeField] BaseAttackSO[] attacks;
+    [SerializeField] protected BaseAttackSO[] attacks;
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
     [HideInInspector] public PlayerCharacter TauntedBy;
+    protected BaseAttackSO ChosenAttack;
 
     Animator enemyAnimation;
     EnemyManager enemyManager;
@@ -100,7 +101,11 @@ public class Enemy : Character
 
         yield return new WaitForSeconds(2f);
 
-        FindObjectOfType<CombatManager>().StartTurnEnemy(attacks[UnityEngine.Random.Range(0, attacks.Length)], this);
+        //AI is dumb and does not have target cons
+        if (ChosenAttack == null)
+            ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
+
+        FindObjectOfType<CombatManager>().StartTurnEnemy(ChosenAttack, this);
     }
 
     public override void AdjustDefense(int defense)
