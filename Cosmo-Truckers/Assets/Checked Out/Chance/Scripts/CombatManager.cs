@@ -16,7 +16,7 @@ public class CombatManager : MonoBehaviour
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
 
-    [SerializeField] List<Character> CharactersSelected;
+    [SerializeField] public List<Character> CharactersSelected;
 
     public List<Character> GetCharactersSelected { get => CharactersSelected; }
 
@@ -154,151 +154,168 @@ public class CombatManager : MonoBehaviour
 
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
-        switch (attack.TargetingType)
+        if(enemy.SpecialTargetConditions)
         {
-            #region No Target
-            case EnumManager.TargetingType.No_Target:
-                TempPage.SetActive(true);
-                StartTimer = true;
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
-                break;
-            #endregion
-            #region Self Target
-            case EnumManager.TargetingType.Self_Target:
-                TempPage.SetActive(true);
-                StartTimer = true;
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
-                break;
-            #endregion
-            #region Single Target
-            case EnumManager.TargetingType.Single_Target:
-                //enemy is taunted
-                if(enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
-                {
-                    if (CheckPlayerSummonLayer(enemy.TauntedBy.CombatSpot[0]))
+            enemy.TargetConditions(attack);
+            TempPage.SetActive(true);
+            StartTimer = true;
+
+            foreach(PlayerCharacter playerCharacter in CharactersSelected)
+            {
+                character = Instantiate(playerCharacter.GetCharacterController);
+                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * playerCharacter.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+            }
+        }
+        else
+        {
+            switch (attack.TargetingType)
+            {
+                #region No Target
+                case EnumManager.TargetingType.No_Target:
+                    TempPage.SetActive(true);
+                    StartTimer = true;
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
+                    break;
+                #endregion
+                #region Self Target
+                case EnumManager.TargetingType.Self_Target:
+                    TempPage.SetActive(true);
+                    StartTimer = true;
+                    CharactersSelected.Add(enemy);
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
+                    break;
+                #endregion
+                #region Single Target
+                case EnumManager.TargetingType.Single_Target:
+                    //enemy is taunted
+                    if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
                     {
-                        CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[enemy.TauntedBy.CombatSpot[0]]);
+                        if (CheckPlayerSummonLayer(enemy.TauntedBy.CombatSpot[0]))
+                        {
+                            CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[enemy.TauntedBy.CombatSpot[0]]);
+                        }
+                        else
+                        {
+                            CharactersSelected.Add(enemy.TauntedBy);
+                            TempPage.SetActive(true);
+                            StartTimer = true;
+
+                            character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                            break;
+                        }
                     }
+                    //enemy is not taunted
                     else
                     {
-                        CharactersSelected.Add(enemy.TauntedBy);
-                        TempPage.SetActive(true);
-                        StartTimer = true;
-
-                        character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-                        break;
-                    }
-                }
-                //enemy is not taunted
-                else
-                {
-                    System.Random singleRand = new System.Random();
-                    attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
-                    foreach (PlayerCharacter obj in attackable)
-                    {
-                        if (!obj.Dead)
+                        System.Random singleRand = new System.Random();
+                        attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
+                        foreach (PlayerCharacter obj in attackable)
                         {
-                            if(CheckPlayerSummonLayer(obj.CombatSpot[0]))
+                            if (!obj.Dead)
                             {
-                                CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[obj.CombatSpot[0]]);
-                            }
-                            else
-                            {
-                                CharactersSelected.Add(obj);
-                                TempPage.SetActive(true);
-                                StartTimer = true;
+                                if (CheckPlayerSummonLayer(obj.CombatSpot[0]))
+                                {
+                                    CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[obj.CombatSpot[0]]);
+                                }
+                                else
+                                {
+                                    CharactersSelected.Add(obj);
+                                    TempPage.SetActive(true);
+                                    StartTimer = true;
 
-                                character = Instantiate(obj.GetCharacterController);
-                                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-                                break;
+                                    character = Instantiate(obj.GetCharacterController);
+                                    character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                                    break;
+                                }
                             }
                         }
                     }
-                }
-                break;
-            #endregion
-            #region Multi Target Cone
-            case EnumManager.TargetingType.Multi_Target_Cone:
-                TempPage.SetActive(true);
-                StartTimer = true;
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
-                break;
-            #endregion
-            #region Multi Target Choice
-            case EnumManager.TargetingType.Multi_Target_Choice:
-                System.Random multiRand = new System.Random();
-                attackable = attackable.OrderBy(x => multiRand.Next()).ToArray();
+                    break;
+                #endregion
+                #region Multi Target Cone
+                case EnumManager.TargetingType.Multi_Target_Cone:
+                    TempPage.SetActive(true);
+                    StartTimer = true;
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
+                    break;
+                #endregion
+                #region Multi Target Choice
+                case EnumManager.TargetingType.Multi_Target_Choice:
+                    System.Random multiRand = new System.Random();
+                    attackable = attackable.OrderBy(x => multiRand.Next()).ToArray();
 
-                //taunted
-                if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
-                {
-                    CharactersSelected.Add(enemy.TauntedBy);
-                    character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                    character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                }
-
-                foreach (var obj in attackable)
-                {
-                    if (!obj.Dead && !CharactersSelected.Contains(obj))
+                    //taunted
+                    if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
                     {
-                        CharactersSelected.Add(obj);
-                        character = Instantiate(obj.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        CharactersSelected.Add(enemy.TauntedBy);
+                        character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
-                    if (CharactersSelected.Count == attack.NumberOFTargets)
-                    {
-                        TempPage.SetActive(true);
-                        StartTimer = true;
-                        string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                        for (int i = 0; i < CharactersSelected.Count; i++)
-                            text += $" { CharactersSelected[i].name } & ";
 
-                        text.Remove(text.Length - 2, 2);
-                        text += ". . .";
-                        Debug.Log(text);
-                        break;
-                    }
-                }
-                break;
-            #endregion
-            #region AOE
-            case EnumManager.TargetingType.AOE:
-                foreach (var obj in attackable)
-                {
-                    if (!obj.Dead)
+                    foreach (var obj in attackable)
                     {
-                        character = Instantiate(obj.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        CharactersSelected.Add(obj);
-                        TempPage.SetActive(true);
-                        StartTimer = true;
+                        if (!obj.Dead && !CharactersSelected.Contains(obj))
+                        {
+                            CharactersSelected.Add(obj);
+                            character = Instantiate(obj.GetCharacterController);
+                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        }
+                        if (CharactersSelected.Count == attack.NumberOFTargets)
+                        {
+                            TempPage.SetActive(true);
+                            StartTimer = true;
+                            string text = $"Doing Combat Stuff for {attack.AttackName} against";
+                            for (int i = 0; i < CharactersSelected.Count; i++)
+                                text += $" { CharactersSelected[i].name } & ";
+
+                            text.Remove(text.Length - 2, 2);
+                            text += ". . .";
+                            Debug.Log(text);
+                            break;
+                        }
                     }
-                }
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
-                break;
-            #endregion
-            #region All Target
-            case EnumManager.TargetingType.All_Target:
-                foreach (var obj in attackable)
-                {
-                    if (!obj.Dead)
+                    break;
+                #endregion
+                #region AOE
+                case EnumManager.TargetingType.AOE:
+                    foreach (var obj in attackable)
                     {
-                        character = Instantiate(obj.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        CharactersSelected.Add(obj);
-                        TempPage.SetActive(true);
-                        StartTimer = true;
+                        if (!obj.Dead)
+                        {
+                            character = Instantiate(obj.GetCharacterController);
+                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            CharactersSelected.Add(obj);
+                            TempPage.SetActive(true);
+                            StartTimer = true;
+                        }
                     }
-                }
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
+                    break;
+                #endregion
+                #region All Target
+                case EnumManager.TargetingType.All_Target:
+                    foreach (var obj in attackable)
+                    {
+                        if (!obj.Dead)
+                        {
+                            character = Instantiate(obj.GetCharacterController);
+                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            CharactersSelected.Add(obj);
+                            TempPage.SetActive(true);
+                            StartTimer = true;
+                        }
+                    }
 
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
-                break;
-            #endregion
+                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
+                    break;
+                #endregion
 
-            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); yield break;
+                default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); yield break;
+            }
         }
 
         StartCoroutine(StartMiniGame(attack));
@@ -387,7 +404,7 @@ public class CombatManager : MonoBehaviour
 
     private bool CheckPlayerSummonLayer(int playerSpot)
     {
-        if(EnemyManager.Instance.PlayerSummons[playerSpot] != null && !EnemyManager.Instance.PlayerSummons[playerSpot].Dead)
+        if(EnemyManager.Instance.PlayerSummons.Count != 0 && EnemyManager.Instance.PlayerSummons[playerSpot] != null && !EnemyManager.Instance.PlayerSummons[playerSpot].Dead)
             return true;
         return false;
     }

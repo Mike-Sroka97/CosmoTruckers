@@ -12,6 +12,7 @@ public class Enemy : Character
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
     [HideInInspector] public PlayerCharacter TauntedBy;
+    public bool SpecialTargetConditions = false;
     protected BaseAttackSO ChosenAttack;
 
     Animator enemyAnimation;
@@ -117,4 +118,19 @@ public class Enemy : Character
         else if (Stats.Defense < -200)
             Stats.Defense = -200;
     }
+
+    //Method to override for adding target cons to a move
+    public void TargetConditions(BaseAttackSO currentAttack)
+    {
+        for(int i = 0; i < attacks.Length; i++)
+        {
+            if(attacks[i] == currentAttack)
+            {
+                SpecialTarget(i);
+                return;
+            }
+        }
+    }
+
+    protected virtual void SpecialTarget(int attackIndex) { }
 }
