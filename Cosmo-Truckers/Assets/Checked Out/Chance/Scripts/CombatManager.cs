@@ -160,7 +160,13 @@ public class CombatManager : MonoBehaviour
             TempPage.SetActive(true);
             StartTimer = true;
 
-            foreach(PlayerCharacter playerCharacter in CharactersSelected)
+            List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
+
+            foreach (Character character in CharactersSelected)
+                if (character.GetComponent<PlayerCharacter>())
+                    charactersToSpawn.Add(character.GetComponent<PlayerCharacter>());
+
+            foreach(PlayerCharacter playerCharacter in charactersToSpawn)
             {
                 character = Instantiate(playerCharacter.GetCharacterController);
                 character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * playerCharacter.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed

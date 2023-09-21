@@ -20,6 +20,9 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] Transform PlayerPrefabLocation;
     [SerializeField] Transform PlayerSummonPrefabLocation;
 
+    //TEST
+    [SerializeField] GameObject testMockup;
+
     [Space(10)]
     [HideInInspector] public List<Enemy> Enemies;
     [HideInInspector] public List<PlayerCharacter> Players;
@@ -35,6 +38,8 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
+        Instantiate(testMockup);
+
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
         foreach(Enemy enemy in foundEnemies)
             Enemies.Add(enemy);

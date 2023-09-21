@@ -118,6 +118,10 @@ public class NebularCloudAI : Enemy
             else
             {
                 int random = Random.Range(0, players.Count);
+                while (players[random].Dead)
+                {
+                    random = Random.Range(0, players.Count);
+                }
                 CombatManager.Instance.CharactersSelected.Add(players[random]);
             }
 

@@ -232,9 +232,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3447976821459247286}
   - component: {fileID: 3447976821459247241}
-  - component: {fileID: 3447976821459247240}
+  - component: {fileID: 1275257051887996395}
   - component: {fileID: 3447976821459247247}
   - component: {fileID: 3447976821459247287}
+  - component: {fileID: 4599570867087774016}
   m_Layer: 5
   m_Name: Dutiful Dross
   m_TagString: Untagged
@@ -315,7 +316,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3447976821459247240
+--- !u!114 &1275257051887996395
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,24 +325,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 3447976821459247246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6398b03d8efcc244bb698c492774a06, type: 3}
+  m_Script: {fileID: 11500000, guid: 4433c34cc076a24409fd50abd0a0d79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passiveMove: {fileID: 0}
+  passiveMove: {fileID: 4599570867087774016}
   AUGS: []
   Stats: {fileID: 3447976821459247247}
-  Health: 0
+  Health: 15
   CurrentHealth: 0
+  CombatSpot: 
   Shield: 0
   Dead: 0
   spaceTaken: 1
-  droppableLoot:
-  - {fileID: 11400000, guid: 08534a4fac67db54eb3d5a905544e4cd, type: 2}
-  - {fileID: 11400000, guid: 9d1e49eb6875c8d47b1648704bf15d48, type: 2}
-  - {fileID: 11400000, guid: 5eb10bd9398851b43aeb279cff8c548c, type: 2}
+  test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: b36b88ca3185f27458b58b04db4a786c, type: 2}
   - {fileID: 11400000, guid: 6b775d0faf92ab348bc47b3bcd307694, type: 2}
+  - {fileID: 11400000, guid: b36b88ca3185f27458b58b04db4a786c, type: 2}
+  TauntedBy: {fileID: 0}
+  SpecialTargetConditions: 1
 --- !u!114 &3447976821459247247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,9 +356,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reflex: 1
-  Defense: 0
+  Defense: 50
   Vigor: 100
   Speed: 100
+  Damage: 100
 --- !u!95 &3447976821459247287
 Animator:
   serializedVersion: 4
@@ -378,3 +380,16 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4599570867087774016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3447976821459247246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef98d6e3a6762954f8eb3be7227d8ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 2

@@ -7,6 +7,10 @@ public class PlayerCharacter : Character
 {
     [HideInInspector] public Player MyPlayer;
     [SerializeField] string Name;
+    public bool IsDPS;
+    public bool IsTank;
+    public bool IsSupport;
+    public bool IsUtility;
     public string CharacterName { get => Name; private set => Name = value; }
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
