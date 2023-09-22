@@ -8,9 +8,9 @@ public class AUG_BullsEye : Augment
     {
         foreach(Enemy enemy in FindObjectsOfType<Enemy>())
         {
-            if(stack.MyCharacter.GetType() == typeof(PlayerCharacter))
+            if(stack.MyCharacter.GetComponent<PlayerCharacter>())
             {
-                enemy.TauntedBy = stack.MyCharacter as PlayerCharacter;
+                enemy.TauntedBy = stack.MyCharacter.GetComponent<PlayerCharacter>();
             }
         }
     }
