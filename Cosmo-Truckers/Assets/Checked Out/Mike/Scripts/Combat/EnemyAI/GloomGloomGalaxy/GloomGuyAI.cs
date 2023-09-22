@@ -8,18 +8,18 @@ public class GloomGuyAI : Enemy
 
     public override void StartTurn()
     {
-        //if(!FindObjectOfType<AUG_Bullseye>())
-        //{
-
-        //}
-        //else if(FindObjectOfType<AUG_Bullseye>() && FindObjectOfType<AUG_Bullseye>().attachedPlayer != TauntedBy)
-        //{
-
-        //}
-        //else
-        //{
-        //    ChosenAttack = 
-        //}
+        if (!FindObjectOfType<AUG_BullsEye>())
+        {
+            ChosenAttack = attacks[0];
+        }
+        else if (FindObjectOfType<AUG_BullsEye>() && FindObjectOfType<AUG_BullsEye>().DebuffSO.MyCharacter != TauntedBy)
+        {
+            ChosenAttack = attacks[1];
+        }
+        else
+        {
+            ChosenAttack = attacks[2];
+        }
 
         base.StartTurn();
     }
@@ -29,30 +29,69 @@ public class GloomGuyAI : Enemy
         //Get Players
         PlayerCharacter[] players = FindObjectsOfType<PlayerCharacter>();
 
+        //Large Iron
         if (attackIndex == 0)
         {
-            CombatManager.Instance.CharactersSelected.Add(ProtectedEnemy);
-
-            //Find Supports
-            List<PlayerCharacter> supports = new List<PlayerCharacter>();
-
-            foreach (PlayerCharacter player in players)
-                if (player.IsSupport)
-                    supports.Add(player);
-
-            int random = Random.Range(0, supports.Count);
-            CombatManager.Instance.CharactersSelected.Add(supports[random]);
-        }
-
-        //Cometkaze always targets randomly
-        else
-        {
-            int random = Random.Range(0, players.Length);
-            while (players[random].Dead)
+            if(TauntedBy)
             {
-                random = Random.Range(0, players.Length);
+                if (CombatManager.Instance.CheckPlayerSummonLayer(TauntedBy.CombatSpot[0]))
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[TauntedBy.CombatSpot[0]]);
+                else
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]]);
+
+                return;
             }
-            CombatManager.Instance.CharactersSelected.Add(players[random]);
+
+            List<PlayerCharacter> nonTanks = new List<PlayerCharacter>();
+            List<PlayerCharacter> tanks = new List<PlayerCharacter>();
+
+            foreach(PlayerCharacter player in players)
+            {
+                if (player.IsTank)
+                    tanks.Add(player);
+                else
+                    nonTanks.Add(player);
+            }
+
+            //Target Con 1 non-tank
+            bool allDead = true;
+
+            foreach (PlayerCharacter nonTank in nonTanks)
+            {
+                if (!nonTank.Dead)
+                {
+                    allDead = false;
+                }
+                else
+                {
+                    nonTanks.Remove(nonTank);
+                }
+            }
+
+            if(!allDead)
+            {
+                int random = Random.Range(0, nonTanks.Count);
+                CombatManager.Instance.CharactersSelected.Add(nonTanks[random]);
+            }
+
+            //Target Con 2 tank
+
+            if(allDead)
+            {
+                foreach(PlayerCharacter tank in tanks)
+                {
+                    if(tank.Dead)
+                    {
+                        tanks.Remove(tank);
+                    }
+                }
+
+                int random = Random.Range(0, tanks.Count);
+                CombatManager.Instance.CharactersSelected.Add(tanks[random]);
+            }
         }
+
+        //FanTheHammer && HorsingAround (hits taunted character
+        CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
     }
 }
