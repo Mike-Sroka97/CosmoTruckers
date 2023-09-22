@@ -56,6 +56,13 @@ public class DebuffStackSO : ScriptableObject
 
     public void Fade()
     {
+        //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
+        if(temp.GetComponent<Augment>().GetStacks <= 0)
+        {
+            StopEffect();
+            return;
+        }
+
         temp.GetComponent<Augment>().AdjustStatusEffect(fadePerTurn);
     }
 }

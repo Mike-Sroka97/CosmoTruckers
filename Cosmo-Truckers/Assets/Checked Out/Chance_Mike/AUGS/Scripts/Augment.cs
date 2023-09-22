@@ -10,6 +10,7 @@ public abstract class Augment : MonoBehaviour
     protected int Stacks;
     protected float StatusEffect;
     protected float MaxStatusEffect;
+    public int GetStacks { get => Stacks; }
 
     //LifeSpan
 
