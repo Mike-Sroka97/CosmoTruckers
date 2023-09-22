@@ -6,11 +6,20 @@ public class AUG_BullsEye : Augment
 {
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
+        foreach(Enemy enemy in FindObjectsOfType<Enemy>())
+        {
+            if(stack.MyCharacter.GetType() == typeof(PlayerCharacter))
+            {
+                enemy.TauntedBy = stack.MyCharacter as PlayerCharacter;
+            }
+        }
     }
 
     public override void StopEffect()
     {
-
+        foreach (Enemy enemy in FindObjectsOfType<Enemy>())
+        {
+            enemy.TauntedBy = null;
+        }
     }
 }

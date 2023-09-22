@@ -13,13 +13,17 @@ MonoBehaviour:
   m_Name: Bullseye
   m_EditorClassIdentifier: 
   DebuffName: Bullseye
-  Type: 5
-  DebuffDescription: A hardened exterior is increasing this characters defense a
-    minor amount.
+  Type: 1
+  DebuffDescription: "Only one target can have Bullseye at a time in combat. \r\n\u2022
+    Giving a target Bullseye causes the target to be targeted by every enemy unless
+    their attention has been otherwise re-directed. \r\n\u2022 The Bullseye will
+    only disappear on GG's death. \r\n\u2022 Disappears when Gloom Guy dies"
   MyCharacter: {fileID: 0}
-  Stackable: 1
+  IsBuff: 0
+  IsDebuff: 1
+  Stackable: 0
   MaxStacks: 1
   CurrentStacks: 0
-  StackValue: {x: 10, y: 3}
-  fadePerTurn: 0
-  AugSpawner: {fileID: 7011420796971601259, guid: 457fcd7190ea00e4ca01fdb3dcfc5642, type: 3}
+  StackValue: {x: 1, y: 0}
+  fadePerTurn: -1
+  AugSpawner: {fileID: 3893088860519081283, guid: 55ed53425e95a2746a0779b17ca22337, type: 3}
