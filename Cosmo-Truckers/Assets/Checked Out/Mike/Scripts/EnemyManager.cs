@@ -31,11 +31,6 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    private void OnEnable()
-    {
-        SetSpawns();
-    }
-
     void Start()
     {
         Instantiate(testMockup);
@@ -47,6 +42,8 @@ public class EnemyManager : MonoBehaviour
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             Players.Add(player);
+
+        SetSpawns();
     }
 
     private void SetSpawns()

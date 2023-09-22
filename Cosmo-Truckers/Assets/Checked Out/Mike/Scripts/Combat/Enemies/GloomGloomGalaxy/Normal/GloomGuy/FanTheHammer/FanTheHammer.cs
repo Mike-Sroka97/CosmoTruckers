@@ -7,8 +7,6 @@ public class FanTheHammer : CombatMove
     [SerializeField] int startingScore;
     [SerializeField] float maxTime;
 
-    float currentTime = 0;
-
     private void Start()
     {
         StartMove();
@@ -21,7 +19,7 @@ public class FanTheHammer : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         currentTime += Time.deltaTime;
 

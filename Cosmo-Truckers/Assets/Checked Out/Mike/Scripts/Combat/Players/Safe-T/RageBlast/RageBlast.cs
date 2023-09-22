@@ -8,7 +8,6 @@ public class RageBlast : CombatMove
     [SerializeField] float timeToDisablePlatform;
 
     bool trackTime = true;
-    float currentTime = 0;
     int lastNumber = -1;
     int nonDuplicateRandom;
 
@@ -24,7 +23,7 @@ public class RageBlast : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         if(trackTime)
         {
