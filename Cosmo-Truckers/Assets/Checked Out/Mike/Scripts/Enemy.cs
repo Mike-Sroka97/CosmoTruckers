@@ -93,7 +93,7 @@ public class Enemy : Character
 
     public override void EndTurn()
     {
-        //not needed yet but added for abstract
+        TauntedBy = null;
     }
 
     IEnumerator ProcessTurn()

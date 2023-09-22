@@ -6,8 +6,6 @@ public class Cometkaze : CombatMove
 {
     [SerializeField] float maxSuccessTime;
 
-    float currentTime = 0;
-
     private void Start()
     {
         StartMove();
@@ -27,7 +25,7 @@ public class Cometkaze : CombatMove
         }
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         currentTime += Time.deltaTime;
         if(currentTime >= maxSuccessTime)

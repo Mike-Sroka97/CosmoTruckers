@@ -6,8 +6,6 @@ public class MelancholyPrecipitation : CombatMove
 {
     [SerializeField] float maxScoreTime;
 
-    float currentTime = 0;
-
     private void Start()
     {
         StartMove();
@@ -19,7 +17,7 @@ public class MelancholyPrecipitation : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         currentTime += Time.deltaTime;
 
