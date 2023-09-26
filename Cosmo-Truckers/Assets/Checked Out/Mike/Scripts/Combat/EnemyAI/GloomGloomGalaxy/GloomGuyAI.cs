@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GloomGuyAI : Enemy
 {
-    [HideInInspector] public Enemy ProtectedEnemy;
-
     public override void StartTurn()
     {
         if (!FindObjectOfType<AUG_BullsEye>())
@@ -35,11 +33,15 @@ public class GloomGuyAI : Enemy
             if(TauntedBy)
             {
                 if (CombatManager.Instance.CheckPlayerSummonLayer(TauntedBy.CombatSpot[0]))
+                {
                     CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[TauntedBy.CombatSpot[0]]);
-                else
+                    return;
+                }
+                else if (!EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]].Dead)
+                {
                     CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]]);
-
-                return;
+                    return;
+                }
             }
 
             List<PlayerCharacter> nonTanks = new List<PlayerCharacter>();

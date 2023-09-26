@@ -232,11 +232,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4183707677648636173}
   - component: {fileID: 4183707677648636210}
-  - component: {fileID: 4183707677648636211}
+  - component: {fileID: -8749110135192547747}
   - component: {fileID: 4183707677648636212}
   - component: {fileID: 4183707677648636172}
   m_Layer: 5
-  m_Name: Walking Noise
+  m_Name: WyingDreem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4183707677648636211
+--- !u!114 &-8749110135192547747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,13 +324,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4183707677648636213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6398b03d8efcc244bb698c492774a06, type: 3}
+  m_Script: {fileID: 11500000, guid: f0bd859bd4dfec84fbf7f3f61d311ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
   Stats: {fileID: 4183707677648636212}
-  Health: 25
+  Health: 90
   CurrentHealth: 0
   CombatSpot: 
   Shield: 0
@@ -338,9 +338,16 @@ MonoBehaviour:
   spaceTaken: 1
   test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: 22914ee7dc4ec934ca81431deb582165, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   TauntedBy: {fileID: 0}
-  SpecialTargetConditions: 0
+  SpecialTargetConditions: 1
+  nitemareStacksToKill: 5
+  moveOneWeight: 3
+  moveTwoWeight: 1
+  moveFourWeight: 2
 --- !u!114 &4183707677648636212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,7 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 0
+  Reflex: 12
   Defense: 0
   Vigor: 100
   Speed: 100
