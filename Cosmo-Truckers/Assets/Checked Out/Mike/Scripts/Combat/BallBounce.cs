@@ -5,6 +5,7 @@ using UnityEngine;
 public class BallBounce : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] float groundLayer = 9; 
 
     Rigidbody2D myBody;
 
@@ -48,38 +49,42 @@ public class BallBounce : MonoBehaviour
             myBody.velocity = new Vector2(-moveSpeed, moveSpeed);
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        Vector3 collisionPoint = collision.contacts[0].point;
-        Vector3 center = transform.position;
-        Vector3 direction = collisionPoint - center;
-        direction.Normalize();
-
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        if (angle < 0) angle += 360;
-        angle += 45;
-        if (angle > 360) angle -= 360;
-
-        int quadrant = (int)(angle / 90) + 1;
-
-        switch (quadrant)
+        if (collision.gameObject.layer == groundLayer)
         {
-            case 1:
-                goingRight = false;
-                break;
-            case 2:
-                goingUp = false;
-                break;
-            case 3:
-                goingRight = true;
-                break;
-            case 4:
-                goingUp = true;
-                break;
-            default:
-                break;
-        }
+            Vector3 collisionPoint = collision.bounds.ClosestPoint(transform.position);
+            Vector3 center = transform.position;
+            Vector3 direction = collisionPoint - center;
+            direction.Normalize();
 
-        SetVelocity();
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360;
+            angle += 45;
+            if (angle > 360) angle -= 360;
+
+            int quadrant = (int)(angle / 90) + 1;
+
+            switch (quadrant)
+            {
+                case 1:
+                    goingRight = false;
+                    break;
+                case 2:
+                    goingUp = false;
+                    break;
+                case 3:
+                    goingRight = true;
+                    break;
+                case 4:
+                    goingUp = true;
+                    break;
+                default:
+                    break;
+            }
+
+            SetVelocity();
+        }
     }
 }

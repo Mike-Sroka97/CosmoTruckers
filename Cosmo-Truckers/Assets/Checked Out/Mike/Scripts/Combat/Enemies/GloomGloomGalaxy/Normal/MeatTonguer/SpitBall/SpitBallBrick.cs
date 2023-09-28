@@ -5,13 +5,15 @@ using UnityEngine;
 public class SpitBallBrick : MonoBehaviour
 {
     [SerializeField] GameObject lingeringSpit;
+    [SerializeField] GameObject burstParticle;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.GetComponent<BallBounce>())
+        if (collision.transform.GetComponent<BallBounce>())
         {
-            Vector3 collisionPoint = new Vector3(collision.GetContact(0).point.x, collision.GetContact(0).point.y, 0);
+            Vector3 collisionPoint = collision.ClosestPoint(transform.position);
             Instantiate(lingeringSpit, collisionPoint, Quaternion.identity);
+            Instantiate(burstParticle, collisionPoint, Quaternion.identity);
             Destroy(gameObject);
         }
     }
