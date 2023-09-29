@@ -7,6 +7,7 @@ public class DeathKillHeart : MonoBehaviour
 {
     [SerializeField] Transform[] nodes;
     [SerializeField] float moveSpeed;
+    [SerializeField] Material successHitMaterial, iFrameMaterial; 
 
     int currentIndex;
     Collider2D myCollider;
@@ -37,6 +38,7 @@ public class DeathKillHeart : MonoBehaviour
         {
             isMoving = false;
             myCollider.enabled = true;
+            gameObject.GetComponent<SpriteRenderer>().material = successHitMaterial;
         }
     }
 
@@ -48,8 +50,9 @@ public class DeathKillHeart : MonoBehaviour
             Debug.Log(minigame.Score);
 
             myCollider.enabled = false;
+            gameObject.GetComponent<SpriteRenderer>().material = iFrameMaterial;
 
-            if(currentIndex + 1 == nodes.Length)
+            if (currentIndex + 1 == nodes.Length)
             {
                 currentIndex = 0;
             }
