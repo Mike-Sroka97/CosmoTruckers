@@ -9,6 +9,7 @@ public class SplitMiserySkeleton : MonoBehaviour
     [SerializeField] float moveVelocity;
     [SerializeField] bool movingLeft;
     [SerializeField] float deadTime;
+    [SerializeField] Material defaultMaterial, deadMaterial; 
 
     Rigidbody2D myBody;
     SpriteRenderer myRenderer;
@@ -69,7 +70,9 @@ public class SplitMiserySkeleton : MonoBehaviour
     {
         myBody.velocity = Vector2.zero;
         dead = true;
-        if(!minigame.MoveEnded)
+        myRenderer.material = deadMaterial;
+
+        if (!minigame.MoveEnded)
             minigame.Score++;
         Debug.Log("I'm Dead " + minigame.Score);
         myCollider.enabled = false;
@@ -81,6 +84,7 @@ public class SplitMiserySkeleton : MonoBehaviour
             minigame.Score--;
         Debug.Log("I'm Alive " + minigame.Score);
         myCollider.enabled = true;
+        myRenderer.material = defaultMaterial; 
 
         if (transform.position.x < maxX)
         {
