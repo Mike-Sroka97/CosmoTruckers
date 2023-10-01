@@ -11,6 +11,8 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
     [SerializeField] float shootDelay;
     [SerializeField] GameObject bullet;
     [SerializeField] Transform barrel;
+    [SerializeField] Animator tongueAnimator;
+    [SerializeField] AnimationClip tongueShoot; 
 
     Player player;
     Collider2D aggroRadius;
@@ -39,6 +41,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
         if(currentShootTime >= shootDelay)
         {
             currentShootTime = 0;
+            tongueAnimator.Play(tongueShoot.name);
             GameObject tempBullet = Instantiate(bullet, barrel);
             tempBullet.transform.parent = null;
             tempBullet.transform.localScale = new Vector3(1, 1, 1);

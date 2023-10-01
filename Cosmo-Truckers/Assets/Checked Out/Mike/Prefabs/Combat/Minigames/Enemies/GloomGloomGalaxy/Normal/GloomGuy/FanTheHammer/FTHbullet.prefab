@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4852489097163942721}
   - component: {fileID: 7918126707717121238}
   - component: {fileID: 6754262584416729879}
-  - component: {fileID: 9205611220680906106}
   - component: {fileID: 2068668713731297930}
+  - component: {fileID: 3494637451154012655}
+  - component: {fileID: 56697327649896245}
   m_Layer: 0
   m_Name: collider
   m_TagString: EnemyDamaging
@@ -29,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 550077646169378503}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3530801904270290696}
@@ -76,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
-  m_Color: {r: 0.9921569, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 2db66200252597f4fa7fa197a9db3057, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,23 +100,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1f954977555fc40b263137853f6c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2.4
---- !u!58 &9205611220680906106
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550077646169378503}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
+  destroyParent: 1
+  destroyOnContact: 1
+  checkClamps: 1
+  MoveSpeed: 5
 --- !u!114 &2068668713731297930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +116,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ce0fe1556a7a34ead6734edbd00862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &3494637451154012655
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550077646169378503}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.020632986, y: 0.00892049}
+  m_Size: {x: 0.67663676, y: 0.44105482}
+  m_Direction: 1
+--- !u!114 &56697327649896245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550077646169378503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 0
+  TrackingDamage: 1
 --- !u!1 &3530801904270290702
 GameObject:
   m_ObjectHideFlags: 0

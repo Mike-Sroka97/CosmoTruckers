@@ -9,12 +9,14 @@ public class SplitMiserySkeleton : MonoBehaviour
     [SerializeField] float moveVelocity;
     [SerializeField] bool movingLeft;
     [SerializeField] float deadTime;
-    [SerializeField] Material defaultMaterial, deadMaterial; 
+    [SerializeField] Material defaultMaterial, deadMaterial;
+    [SerializeField] AnimationClip skeletonWalk, skeletonDeath, skeletonRevive; 
 
     Rigidbody2D myBody;
     SpriteRenderer myRenderer;
     Collider2D myCollider;
     SplitMisery minigame;
+    Animator myAnimator; 
 
     bool dead;
 
@@ -24,6 +26,7 @@ public class SplitMiserySkeleton : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<SplitMisery>();
+        myAnimator = GetComponent<Animator>();
 
         if(movingLeft)
         {
@@ -71,6 +74,7 @@ public class SplitMiserySkeleton : MonoBehaviour
         myBody.velocity = Vector2.zero;
         dead = true;
         myRenderer.material = deadMaterial;
+        myAnimator.Play(skeletonDeath.name); 
 
         if (!minigame.MoveEnded)
             minigame.Score++;
@@ -83,8 +87,10 @@ public class SplitMiserySkeleton : MonoBehaviour
         if (!minigame.MoveEnded)
             minigame.Score--;
         Debug.Log("I'm Alive " + minigame.Score);
+
         myCollider.enabled = true;
-        myRenderer.material = defaultMaterial; 
+        myRenderer.material = defaultMaterial;
+        myAnimator.Play(skeletonRevive.name);
 
         if (transform.position.x < maxX)
         {
