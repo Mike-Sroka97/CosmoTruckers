@@ -260,19 +260,7 @@ public class CombatManager : MonoBehaviour
                 #endregion
                 #region All Target
                 case EnumManager.TargetingType.All_Target:
-                    foreach (var obj in attackable)
-                    {
-                        if (!obj.Dead)
-                        {
-                            character = Instantiate(obj.GetCharacterController);
-                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                            CharactersSelected.Add(obj);
-                            TempPage.SetActive(true);
-                            StartTimer = true;
-                        }
-                    }
-
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
+                    AllTargetEnemy(attack);
                     break;
                 #endregion
 
@@ -330,6 +318,23 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void AllTargetEnemy(BaseAttackSO attack)
+    {
+        foreach (var obj in attackable)
+        {
+            if (!obj.Dead)
+            {
+                character = Instantiate(obj.GetCharacterController);
+                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                CharactersSelected.Add(obj);
+                TempPage.SetActive(true);
+                StartTimer = true;
+            }
+        }
+
+        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
     }
 
     IEnumerator StartMiniGame(BaseAttackSO attack)

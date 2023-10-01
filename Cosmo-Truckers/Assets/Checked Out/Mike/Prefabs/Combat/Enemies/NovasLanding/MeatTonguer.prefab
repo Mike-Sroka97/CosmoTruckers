@@ -232,11 +232,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4183707677648636173}
   - component: {fileID: 4183707677648636210}
-  - component: {fileID: -8749110135192547747}
+  - component: {fileID: -1113872288959386544}
   - component: {fileID: 4183707677648636212}
   - component: {fileID: 4183707677648636172}
   m_Layer: 5
-  m_Name: WyingDreem
+  m_Name: MeatTonguer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8749110135192547747
+--- !u!114 &-1113872288959386544
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,13 +324,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4183707677648636213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0bd859bd4dfec84fbf7f3f61d311ec9, type: 3}
+  m_Script: {fileID: 11500000, guid: e4fdccc88548b1d469961cf027d14b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
-  Stats: {fileID: 4183707677648636212}
-  Health: 90
+  Stats: {fileID: 0}
+  Health: 0
   CurrentHealth: 0
   CombatSpot: 
   Shield: 0
@@ -338,17 +338,15 @@ MonoBehaviour:
   spaceTaken: 1
   test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: e4320e467bf88284eb2ba77474947c06, type: 2}
-  - {fileID: 11400000, guid: b9d8f31e1f62932448dca07c9c8e225b, type: 2}
-  - {fileID: 11400000, guid: 045dc7166fa5c674e882c47e8a957ba0, type: 2}
-  - {fileID: 11400000, guid: 2349d2b0027c6b94ba668674145c5a47, type: 2}
+  - {fileID: 11400000, guid: a6734439af4c83942a59b5defd440e8f, type: 2}
+  - {fileID: 11400000, guid: 38488803c6157bb48b2039fb70103183, type: 2}
+  - {fileID: 11400000, guid: f5c1334b1db067c419d6f9a2c9a8459b, type: 2}
+  - {fileID: 11400000, guid: 93a22c871c3d7154ebd2b632ab90ea31, type: 2}
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 1
-  nitemareStacksToKill: 5
-  moveOneStackCon: 4
-  moveTwoStackCon: 2
   moveOneWeight: 3
-  moveTwoWeight: 1
+  moveTwoWeight: 2
+  moveThreeWeight: 2
   moveFourWeight: 2
 --- !u!114 &4183707677648636212
 MonoBehaviour:
@@ -363,7 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reflex: 12
-  Defense: 0
+  Defense: 25
   Vigor: 100
   Speed: 100
   Damage: 100
