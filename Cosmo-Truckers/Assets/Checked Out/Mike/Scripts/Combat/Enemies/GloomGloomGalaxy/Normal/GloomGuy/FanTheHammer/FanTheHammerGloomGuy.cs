@@ -13,12 +13,17 @@ public class FanTheHammerGloomGuy : MonoBehaviour
     [Header("Gun Stuff")]
     [SerializeField] GameObject bullet;
     [SerializeField] Transform barrel;
+    [SerializeField] Transform smokePoint; 
     [SerializeField] bool fan;
     [SerializeField] float fireDelay;
     [SerializeField] int numberOfTimesToFire = 1;
     [SerializeField] float timeBetweenShots;
     [SerializeField] float fanDegreeIncrements;
+    [SerializeField] Animator animatorGun; 
+    [SerializeField] AnimationClip ggIdle, ggWalk, gunIdle, gunShoot;
+    [SerializeField] GameObject smokeParticle; 
 
+    Animator animatorGloomGuy;
     Rigidbody2D myBody;
     Transform gun;
     Player player;
@@ -34,6 +39,9 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         gun = transform.Find("Gun");
         player = FindObjectOfType<Player>();
+
+        animatorGloomGuy = GetComponent<Animator>();
+
         float random = UnityEngine.Random.Range(-xClamp, xClamp);
         transform.position = new Vector3(random, transform.position.y, transform.position.z);
 
@@ -74,11 +82,17 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         aiming = false;
         currentTime = 0;
 
+        animatorGloomGuy.Play(ggIdle.name); 
+
         int currentBulletsFired = 0;
 
         while(currentBulletsFired < numberOfTimesToFire)
         {
-            if(fan)
+            animatorGun.Play(gunShoot.name, -1, 0f);
+            GameObject tempSmoke = Instantiate(smokeParticle, smokePoint.position, gun.rotation);
+            tempSmoke.transform.parent = null; 
+
+            if (fan)
             {
                 Fan();
             }
@@ -97,6 +111,8 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         moving = true;
         trackTime = true;
         aiming = true;
+
+        animatorGloomGuy.Play(ggWalk.name);
     }
 
     private void Fan()

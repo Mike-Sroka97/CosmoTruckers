@@ -7,6 +7,8 @@ public class MoveForward : MonoBehaviour
     [SerializeField] bool destroyParent = true;
     [SerializeField] bool destroyOnContact = true;
     [SerializeField] bool checkClamps = true;
+    [SerializeField] ParticleSystem particleTrail; 
+    private ParticleSystem.MainModule mainModule;
 
     public float MoveSpeed;
 
@@ -17,6 +19,18 @@ public class MoveForward : MonoBehaviour
     {
         if(collision.tag == "Player" && destroyOnContact)
         {
+            if (particleTrail != null)
+            {
+                particleTrail.transform.parent = null;
+
+                mainModule = particleTrail.main; 
+
+                //Stop it from looping and set it to destroy itself when it's done
+                mainModule.loop = false;
+                mainModule.stopAction = ParticleSystemStopAction.Destroy; 
+            }
+
+
             if(destroyParent)
             {
                 Destroy(transform.parent.gameObject);
