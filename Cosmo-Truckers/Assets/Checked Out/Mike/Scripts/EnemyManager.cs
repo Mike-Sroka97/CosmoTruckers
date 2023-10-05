@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        Instantiate(testMockup);
+        //Instantiate(testMockup);
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
         foreach(Enemy enemy in foundEnemies)

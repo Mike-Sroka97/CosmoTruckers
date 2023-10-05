@@ -245,10 +245,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1190336181685528049}
   - component: {fileID: 1190336181685528052}
-  - component: {fileID: 1190336181685528055}
+  - component: {fileID: 1028859032670246365}
   - component: {fileID: 1190336181685528054}
   m_Layer: 0
-  m_Name: longDog
+  m_Name: testSummon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,7 +263,7 @@ Transform:
   m_GameObject: {fileID: 1190336181685528048}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5333, y: 0.5139, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1190336180464610945}
@@ -311,8 +311,8 @@ SpriteRenderer:
   m_SortingLayerID: -793516377
   m_SortingLayer: 2
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: 188c82267aa67bd46b1bf8821d11ea8c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9add680e5c031b64d85998f7cb2f6c69, type: 3}
+  m_Color: {r: 0.16827083, g: 1, b: 0, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
@@ -322,7 +322,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190336181685528055
+--- !u!114 &1028859032670246365
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -331,14 +331,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190336181685528048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 777a4675d532bba49940692859754365, type: 3}
+  m_Script: {fileID: 11500000, guid: f4d7d541b457dd943a4575c16d074aa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
-  AUGS:
-  - {fileID: 11400000, guid: aaf6c7f4dda86cc429341ede43a2eace, type: 2}
-  Stats: {fileID: 0}
-  Health: 0
+  AUGS: []
+  Stats: {fileID: 1190336181685528054}
+  Health: 10
   CurrentHealth: 0
   CombatSpot: 
   Shield: 0
@@ -346,21 +345,14 @@ MonoBehaviour:
   spaceTaken: 1
   test: {fileID: 0}
   MyPlayer: {fileID: 0}
-  Name: 
+  Name: gregnant man
   IsDPS: 0
   IsTank: 0
-  IsSupport: 1
+  IsSupport: 0
   IsUtility: 0
   wheel: {fileID: 0}
-  attacks:
-  - {fileID: 11400000, guid: 9adbfa1de5763564391fa5bd66d0aa60, type: 2}
-  - {fileID: 11400000, guid: c849fca3739c113469f3cdadb4b6bc62, type: 2}
-  - {fileID: 11400000, guid: aaf0a30eef9cc734397ad19aaf8908a3, type: 2}
-  - {fileID: 11400000, guid: 96d71d533f1a4824a9a338efda90d76b, type: 2}
-  - {fileID: 11400000, guid: fea4254295339a04c8445d9432db9386, type: 2}
-  - {fileID: 11400000, guid: dcaf3cac603f89e49a223e6c6e48d908, type: 2}
-  - {fileID: 11400000, guid: a99d4c23fc607fb49bb1451002f0d2de, type: 2}
-  MiniGameControllerPrefab: {fileID: 805849436612175554, guid: 512e8cfb982f6bc42b833ac6b341944a, type: 3}
+  attacks: []
+  MiniGameControllerPrefab: {fileID: 0}
 --- !u!114 &1190336181685528054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 0
+  Reflex: -1
   Defense: 0
   Vigor: 100
   Speed: 0

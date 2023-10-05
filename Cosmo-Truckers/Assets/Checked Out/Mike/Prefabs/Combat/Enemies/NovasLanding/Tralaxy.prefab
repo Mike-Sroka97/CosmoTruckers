@@ -232,11 +232,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4183707677648636173}
   - component: {fileID: 4183707677648636210}
-  - component: {fileID: -8749110135192547747}
+  - component: {fileID: 6530659889558907963}
   - component: {fileID: 4183707677648636212}
   - component: {fileID: 4183707677648636172}
   m_Layer: 5
-  m_Name: WyingDreem
+  m_Name: Tralaxy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -305,7 +305,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6e13862925cd54345b67696146f8b8ed, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.28193736, a: 1}
+  m_Color: {r: 1, g: 0, b: 0.4667282, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -315,7 +315,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-8749110135192547747
+--- !u!114 &6530659889558907963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -324,13 +324,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4183707677648636213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0bd859bd4dfec84fbf7f3f61d311ec9, type: 3}
+  m_Script: {fileID: 11500000, guid: 659fba00621fbd94280e727f482d3192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
-  Stats: {fileID: 4183707677648636212}
-  Health: 90
+  Stats: {fileID: 0}
+  Health: 240
   CurrentHealth: 0
   CombatSpot: 
   Shield: 0
@@ -338,18 +338,18 @@ MonoBehaviour:
   spaceTaken: 1
   test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: e4320e467bf88284eb2ba77474947c06, type: 2}
-  - {fileID: 11400000, guid: b9d8f31e1f62932448dca07c9c8e225b, type: 2}
-  - {fileID: 11400000, guid: 045dc7166fa5c674e882c47e8a957ba0, type: 2}
-  - {fileID: 11400000, guid: 2349d2b0027c6b94ba668674145c5a47, type: 2}
+  - {fileID: 11400000, guid: bb111ef0497a2584ca786b7f6353f50d, type: 2}
+  - {fileID: 11400000, guid: 93b1811149632f2459275ca03c35dc79, type: 2}
+  - {fileID: 11400000, guid: eaeb7ffff870e5947a8188bc29695e96, type: 2}
+  - {fileID: 11400000, guid: 8d0f0d22578228d4f99afc443fc070f9, type: 2}
+  - {fileID: 11400000, guid: 3bac5ce570d192f45b686724d1da8f50, type: 2}
+  - {fileID: 11400000, guid: 61f9727059ed2a0409553e9bf83a7c66, type: 2}
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 1
-  nitemareStacksToKill: 5
-  moveOneStackCon: 4
-  moveTwoStackCon: 2
-  moveOneWeight: 3
-  moveTwoWeight: 1
-  moveFourWeight: 2
+  phaseTwoHealth: 0
+  phaseThreeHealth: 0
+  tallyYourSinWeight: 1
+  absolutionWeight: 3
 --- !u!114 &4183707677648636212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 12
+  Reflex: 9
   Defense: 0
   Vigor: 100
   Speed: 100
