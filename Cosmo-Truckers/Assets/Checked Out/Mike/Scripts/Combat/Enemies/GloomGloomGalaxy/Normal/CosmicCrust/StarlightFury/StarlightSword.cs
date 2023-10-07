@@ -11,6 +11,8 @@ public class StarlightSword : MonoBehaviour
     [SerializeField] float chargeSpeed;
     [HideInInspector] public bool Activated;
 
+    [SerializeField] GameObject[] particleEffects; 
+
     float xClamp = 7.5f;
     float yClamp = 5.5f;
 
@@ -22,6 +24,9 @@ public class StarlightSword : MonoBehaviour
     {
         target = FindObjectOfType<Player>().gameObject;
         minigame = FindObjectOfType<StarlightFury>();
+
+        if (particleEffects != null)
+            SetParticleStates(false); 
     }
 
     private void Update()
@@ -68,6 +73,9 @@ public class StarlightSword : MonoBehaviour
         }
 
         moving = true;
+
+        if (particleEffects != null)
+            SetParticleStates(true);
     }
 
     private bool ClampCheck()
@@ -80,5 +88,13 @@ public class StarlightSword : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void SetParticleStates(bool state)
+    {
+        foreach (GameObject _object in particleEffects)
+        {
+            _object.SetActive(state);
+        }
     }
 }

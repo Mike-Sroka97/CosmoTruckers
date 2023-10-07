@@ -503,7 +503,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.96, y: 0.96}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -521,6 +521,7 @@ GameObject:
   - component: {fileID: 1547366907872462461}
   - component: {fileID: 3261795995087681422}
   - component: {fileID: 6883977166330209376}
+  - component: {fileID: 7608003409961217529}
   m_Layer: 0
   m_Name: BigTongue
   m_TagString: EnemyDamaging
@@ -584,12 +585,12 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: -2
-  m_Sprite: {fileID: 21300000, guid: 780380b836547e34585e0dcd192acf4e, type: 3}
+  m_Sprite: {fileID: -1958688898, guid: 780380b836547e34585e0dcd192acf4e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 7}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -613,7 +614,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 7}
-    newSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 7}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -635,6 +636,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackDeath: 1
   TrackingDamage: 1
+--- !u!114 &7608003409961217529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8769379288228381935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -1958688898, guid: 780380b836547e34585e0dcd192acf4e, type: 3}
+  - {fileID: 1911305452, guid: 780380b836547e34585e0dcd192acf4e, type: 3}
+  timeBetweenEachSprite: 0.5
 --- !u!1001 &530809625
 PrefabInstance:
   m_ObjectHideFlags: 0
