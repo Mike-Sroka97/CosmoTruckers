@@ -14,10 +14,15 @@ public class HorsingAroundHorse : MonoBehaviour
     [SerializeField] Vector3 endPosition;
     [SerializeField] float xClamps;
     [SerializeField] GameObject fire;
+    [SerializeField] Transform spawnedFiresParent; 
     [SerializeField] Transform[] fireSpawns;
     [SerializeField] Transform[] shockwaveSpawns;
     [SerializeField] GameObject leftShock;
     [SerializeField] GameObject rightShock;
+    [SerializeField] ParticleSystem[] footSparks;
+    [SerializeField] SpriteRenderer horseRenderer;
+    [SerializeField] Sprite[] horseSprites;
+    [SerializeField] Material[] outlineMaterials; 
 
     Vector3 goalPosition;
 
@@ -29,6 +34,7 @@ public class HorsingAroundHorse : MonoBehaviour
     int currentFlips = 0;
     HorsingAround minigame;
     Collider2D[] myColliders;
+    int orderInLayer = 2; 
 
     bool isFlipping = false;
     bool horsing = false;
@@ -70,6 +76,9 @@ public class HorsingAroundHorse : MonoBehaviour
 
             if(currentTimeFlipTwo >= secondFlipDelay)
             {
+                horseRenderer.sprite = horseSprites[0];
+                horseRenderer.material = outlineMaterials[1]; 
+
                 foreach (GameObject foot in feet)
                 {
                     foot.SetActive(false);
@@ -107,6 +116,7 @@ public class HorsingAroundHorse : MonoBehaviour
         }
         else
         {
+            horseRenderer.material = outlineMaterials[0];
             float randomX = UnityEngine.Random.Range(-xClamps, xClamps);
             goalPosition = new Vector3(randomX, 0, 0);
         }
@@ -140,9 +150,20 @@ public class HorsingAroundHorse : MonoBehaviour
                 yield return null;
             }
 
+            //Horse has hit the ground
+            horseRenderer.sprite = horseSprites[1]; 
+
             foreach(Transform spawn in fireSpawns)
             {
-                Instantiate(fire, spawn.position, Quaternion.identity);
+                GameObject fireObject = Instantiate(fire, spawn.position, Quaternion.identity);
+                fireObject.transform.parent = spawnedFiresParent; 
+                fireObject.GetComponent<SpriteRenderer>().sortingOrder = orderInLayer;
+                orderInLayer++; 
+            }
+
+            foreach (ParticleSystem sparks in footSparks)
+            {
+                sparks.Play(); 
             }
 
             Instantiate(leftShock, shockwaveSpawns[0].position, Quaternion.identity);
