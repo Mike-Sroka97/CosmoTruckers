@@ -8,15 +8,17 @@ using UnityEngine.UI;
 public class CombatManager : MonoBehaviour
 {
     [HideInInspector] public static CombatManager Instance;
+    [SerializeField] private Sprite blankBG;
+    public Sprite currentBG;
 
-    [SerializeField] GameObject TempPage;
     [SerializeField] GameObject MiniGameScreen;
     GameObject miniGame;
-    GameObject character;   //Currently only one 
+    List<GameObject> characters;   //Currently only one 
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
 
     [SerializeField] public List<Character> CharactersSelected;
+    private List<PlayerCharacter> ActivePlayers;
 
     public List<Character> GetCharactersSelected { get => CharactersSelected; }
 
@@ -28,27 +30,30 @@ public class CombatManager : MonoBehaviour
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
+    public bool INAmoving = false;
+
     private void Awake() => Instance = this;
 
     public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
         CharactersSelected.Clear();
+        ActivePlayers = new List<PlayerCharacter>();
+        characters = new List<GameObject>();
         StartTimer = false;
 
         CurrentPlayer = currentPlayer;
+        ActivePlayers.Add(currentPlayer);
 
         switch (attack.TargetingType)
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
-                TempPage.SetActive(true);
                 StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
                 break;
             #endregion
             #region Self Target
             case EnumManager.TargetingType.Self_Target:
-                TempPage.SetActive(true);
                 StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
                 break;
@@ -64,7 +69,6 @@ public class CombatManager : MonoBehaviour
                     {
                         print(obj.gameObject.name);
                         CharactersSelected.Add(obj);
-                        TempPage.SetActive(true);
                         StartTimer = true;
                         Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
                     });
@@ -73,7 +77,6 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Multi Target Cone
             case EnumManager.TargetingType.Multi_Target_Cone:
-                TempPage.SetActive(true);
                 StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                 break;
@@ -92,7 +95,6 @@ public class CombatManager : MonoBehaviour
                         CharactersSelected.Add(obj);
                         if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
-                            TempPage.SetActive(true);
                             StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for (int i = 0; i < CharactersSelected.Count; i++)
@@ -108,7 +110,6 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region AOE
             case EnumManager.TargetingType.AOE:
-                TempPage.SetActive(true);
                 StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
                 break;
@@ -120,7 +121,6 @@ public class CombatManager : MonoBehaviour
                     CharactersSelected.Add(obj);
                     if (CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                     {
-                        TempPage.SetActive(true);
                         StartTimer = true;
                         string text = $"Doing Combat Stuff for {attack.AttackName} against";
                         for (int i = 0; i < CharactersSelected.Count; i++)
@@ -137,7 +137,7 @@ public class CombatManager : MonoBehaviour
             default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); return;
         }
 
-        StartCoroutine(StartMiniGame(attack));
+        StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
 
     public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
@@ -150,6 +150,8 @@ public class CombatManager : MonoBehaviour
     {
         attackable = FindObjectsOfType<PlayerCharacter>();
         CharactersSelected.Clear();
+        ActivePlayers = new List<PlayerCharacter>();
+        characters = new List<GameObject>();
         CurrentPlayer = null;
         StartTimer = false;
 
@@ -158,21 +160,21 @@ public class CombatManager : MonoBehaviour
         if(enemy.SpecialTargetConditions)
         {
             enemy.TargetConditions(attack);
-            TempPage.SetActive(true);
             StartTimer = true;
 
             List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
 
             foreach (Character character in CharactersSelected)
                 if (character.GetComponent<PlayerCharacter>())
-                    charactersToSpawn.Add(character.GetComponent<PlayerCharacter>());
+                    ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
 
-            foreach(PlayerCharacter playerCharacter in charactersToSpawn)
-            {
-                character = Instantiate(playerCharacter.GetCharacterController);
-                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * playerCharacter.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-            }
+            //foreach(PlayerCharacter playerCharacter in charactersToSpawn)
+            //{
+            //    ActivePlayers.Add(playerCharacter);
+            //    //character = Instantiate(playerCharacter.GetCharacterController);
+            //    //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * playerCharacter.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+            //    //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+            //}
         }
         else
         {
@@ -180,14 +182,12 @@ public class CombatManager : MonoBehaviour
             {
                 #region No Target
                 case EnumManager.TargetingType.No_Target:
-                    TempPage.SetActive(true);
                     StartTimer = true;
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
                     break;
                 #endregion
                 #region Self Target
                 case EnumManager.TargetingType.Self_Target:
-                    TempPage.SetActive(true);
                     StartTimer = true;
                     CharactersSelected.Add(enemy);
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
@@ -200,7 +200,6 @@ public class CombatManager : MonoBehaviour
                 #endregion
                 #region Multi Target Cone
                 case EnumManager.TargetingType.Multi_Target_Cone:
-                    TempPage.SetActive(true);
                     StartTimer = true;
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                     break;
@@ -214,8 +213,9 @@ public class CombatManager : MonoBehaviour
                     if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
                     {
                         CharactersSelected.Add(enemy.TauntedBy);
-                        character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        ActivePlayers.Add(enemy.TauntedBy);
+                        //character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                        //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
 
                     foreach (var obj in attackable)
@@ -223,12 +223,12 @@ public class CombatManager : MonoBehaviour
                         if (!obj.Dead && !CharactersSelected.Contains(obj))
                         {
                             CharactersSelected.Add(obj);
-                            character = Instantiate(obj.GetCharacterController);
-                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            ActivePlayers.Add(obj);
+                            //character = Instantiate(obj.GetCharacterController);
+                            //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                         }
                         if (CharactersSelected.Count == attack.NumberOFTargets)
                         {
-                            TempPage.SetActive(true);
                             StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for (int i = 0; i < CharactersSelected.Count; i++)
@@ -248,10 +248,10 @@ public class CombatManager : MonoBehaviour
                     {
                         if (!obj.Dead)
                         {
-                            character = Instantiate(obj.GetCharacterController);
-                            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                            //character = Instantiate(obj.GetCharacterController);
+                            //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                             CharactersSelected.Add(obj);
-                            TempPage.SetActive(true);
+                            ActivePlayers.Add(obj);
                             StartTimer = true;
                         }
                     }
@@ -268,7 +268,7 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(StartMiniGame(attack));
+        StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
 
     public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy)
@@ -283,12 +283,12 @@ public class CombatManager : MonoBehaviour
             else
             {
                 CharactersSelected.Add(enemy.TauntedBy);
-                TempPage.SetActive(true);
                 StartTimer = true;
 
-                character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                ActivePlayers.Add(enemy.TauntedBy);
+                //character = Instantiate(enemy.TauntedBy.GetCharacterController);
+                //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
             }
         }
         //enemy is not taunted
@@ -307,12 +307,12 @@ public class CombatManager : MonoBehaviour
                     else
                     {
                         CharactersSelected.Add(obj);
-                        TempPage.SetActive(true);
+                        ActivePlayers.Add(obj);
                         StartTimer = true;
 
-                        character = Instantiate(obj.GetCharacterController);
-                        character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
+                        //character = Instantiate(obj.GetCharacterController);
+                        //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                        //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
                         break;
                     }
                 }
@@ -322,14 +322,14 @@ public class CombatManager : MonoBehaviour
 
     public void AllTargetEnemy(BaseAttackSO attack)
     {
-        foreach (var obj in attackable)
+        foreach (PlayerCharacter obj in attackable)
         {
             if (!obj.Dead)
             {
-                character = Instantiate(obj.GetCharacterController);
-                character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+                //character = Instantiate(obj.GetCharacterController);
+                //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                 CharactersSelected.Add(obj);
-                TempPage.SetActive(true);
+                ActivePlayers.Add(obj);
                 StartTimer = true;
             }
         }
@@ -337,31 +337,36 @@ public class CombatManager : MonoBehaviour
         Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
     }
 
-    IEnumerator StartMiniGame(BaseAttackSO attack)
+    IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
     {
+        INAcombat INA = MiniGameScreen.GetComponentInParent<INAcombat>();
         float miniGameTime = attack.MiniGameTime;
         Timer.text = miniGameTime.ToString();
 
-        miniGame = Instantiate(attack.CombatPrefab);
-        miniGame.transform.SetParent(MiniGameScreen.transform);
+        INAmoving = true;
+        miniGame = Instantiate(attack.CombatPrefab, INA.transform);
+        StartCoroutine(INA.MoveINA(true));
+
+        while (INAmoving)
+            yield return null;
+
+        MiniGameScreen.GetComponent<SpriteRenderer>().sprite = currentBG;
 
         //Attack SO Start
+        foreach (Player player in FindObjectsOfType<Player>())
+        {
+            player.enabled = true;
+        }
+
         attack.StartCombat();
 
         while (!StartTimer) yield return null;
 
-        if (CharactersSelected.Count > 0)
+        if (ActivePlayers.Count > 0)
         {
-            foreach (Character character in CharactersSelected) //PlayerCharacter invalid cast
+            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
             {
                 foreach (var aug in character.GetAUGS)
-                    if (aug.Type == DebuffStackSO.ActivateType.InCombat)
-                        aug.DebuffEffect();
-            }
-
-            if (CurrentPlayer)
-            {
-                foreach (var aug in CurrentPlayer.GetAUGS)
                     if (aug.Type == DebuffStackSO.ActivateType.InCombat)
                         aug.DebuffEffect();
             }
@@ -390,20 +395,38 @@ public class CombatManager : MonoBehaviour
                 }
             }
         }
+        StopAllCoroutines();
 
-        EndCombat();
+        INAmoving = true;
+        Augment[] augments = FindObjectsOfType<Augment>();
+        foreach (Augment augment in augments)
+        {
+            Destroy(augment.gameObject);
+        }
+        StartCoroutine(INA.MoveINA(false));
+    }
+
+    public void SpawnPlayers()
+    {
+        foreach (PlayerCharacter player in ActivePlayers)
+        {
+            GameObject character = Instantiate(player.GetCharacterController);
+            characters.Add(character);
+            character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * player.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
+            character.GetComponent<Player>().enabled = false;
+        }
     }
 
     public void EndCombat()
     {
-        StopAllCoroutines();
-
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
 
-        TempPage.SetActive(false);
         CharactersSelected.Clear();
         Destroy(miniGame);
-        Destroy(character);
+        foreach(GameObject character in characters)
+        {
+            Destroy(character);
+        }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {

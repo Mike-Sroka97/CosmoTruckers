@@ -46,9 +46,4 @@ public class ALaCarte : CombatMove
         currentNumberOfCollectiblesSpawned = 0;
         noSpawnIndex = tempSpawnIndex;
     }
-
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
-    }
 }

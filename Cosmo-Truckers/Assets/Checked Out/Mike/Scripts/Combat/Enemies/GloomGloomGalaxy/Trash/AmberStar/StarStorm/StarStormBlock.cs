@@ -7,7 +7,8 @@ public class StarStormBlock : MonoBehaviour
     [HideInInspector] bool IsBreakable = false;
 
     //TODO make this a sprite later
-    [SerializeField] Color breakableColor = new Color(1, 0, 1, 1);
+    [SerializeField] Sprite breakableSprite;
+    [SerializeField] Material breakableMaterial;
 
     SpriteRenderer myRenderer;
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,6 +23,7 @@ public class StarStormBlock : MonoBehaviour
     {
         IsBreakable = true;
         myRenderer = GetComponent<SpriteRenderer>();
-        myRenderer.color = breakableColor;
+        myRenderer.sprite = breakableSprite;
+        myRenderer.material = breakableMaterial;
     }
 }

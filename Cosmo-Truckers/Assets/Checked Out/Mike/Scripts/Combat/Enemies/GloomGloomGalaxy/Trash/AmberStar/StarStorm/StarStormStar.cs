@@ -48,6 +48,7 @@ public class StarStormStar : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            minigame.Score--;
             minigame.Hits++;
             //minigame.PlayerDead = true;
             Destroy(gameObject);
@@ -56,11 +57,6 @@ public class StarStormStar : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    private void RotateMe()
-    {
-
     }
 
     private void MoveMe()

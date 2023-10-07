@@ -14,10 +14,17 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] private bool playerEnemyTargetDifference = false;
     public float MinigameDuration;
 
-    [HideInInspector] public int Score;
+    public int Score;
     [HideInInspector] public bool PlayerDead = false;
     [HideInInspector] public bool MoveEnded = false;
-    [HideInInspector] public int Hits = 0;
+    public int Hits = 0;
+    [Space(20)]
+    [Header("Minigame Variables")]
+    [SerializeField] int maxScore;
+    [SerializeField] int augmentStacksPerHit;
+    [SerializeField] int maxAugmentStacks;
+    [SerializeField] int baseDamage;
+    [SerializeField] int baseAugmentStacks;
 
     protected float currentTime = 0;
 
@@ -40,11 +47,16 @@ public abstract class CombatMove : MonoBehaviour
 
     protected void StartMove()
     {
+
+    }
+
+    public void SetSpawns()
+    {
         if (spawnPoints.Length == 0) return; //TEMP
 
         Player[] players = FindObjectsOfType<Player>();
 
-        if(players.Length <= 1)
+        if (players.Length <= 1)
         {
             players[0].transform.position = spawnPoints[0].position;
         }
@@ -53,6 +65,7 @@ public abstract class CombatMove : MonoBehaviour
             //set each alive player to a different spawn
         }
     }
+
     public virtual void EndMove()
     {
         Debug.Log(Score);
@@ -65,16 +78,26 @@ public abstract class CombatMove : MonoBehaviour
                 //handles if the outcome effects enemies and players differently
                 if(playerEnemyTargetDifference)
                 {
-                    PlayerEnemyDiffereence(character);
+                    PlayerEnemyDifference(character);
                 }
                 else
                 {
-                    //TODO split damage and AUG calls?
-                    character.GetComponent<Character>().TakeDamage(Damage * Hits);
+                    //Calculate Damage
+                    if (Score < 0)
+                        Score = 0;
+                    int currentDamage = maxScore * Damage - Score * Damage;
+                    currentDamage += baseDamage;
 
-                    if (DebuffToAdd != null)
-                        for (int i = 0; i < Hits; i++)
-                            character.GetComponent<Character>().AddDebuffStack(DebuffToAdd);
+                    //Calculate Augment Stacks
+                    int augmentStacks = Hits * augmentStacksPerHit;
+                    augmentStacks += baseAugmentStacks;
+                    if (augmentStacks > maxAugmentStacks)
+                        augmentStacks = maxAugmentStacks;
+
+                    character.GetComponent<Character>().TakeDamage(currentDamage);
+
+                    //Apply augment
+                    character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
                 }
             }
         }
@@ -85,7 +108,7 @@ public abstract class CombatMove : MonoBehaviour
         }
     }
 
-    private void PlayerEnemyDiffereence(Character character)
+    private void PlayerEnemyDifference(Character character)
     {
         if(character.GetComponent<Enemy>())
         {
@@ -95,11 +118,6 @@ public abstract class CombatMove : MonoBehaviour
         {
 
         }
-    }
-
-    private void ApplyAugments()
-    {
-
     }
 
     protected void GenerateLayout()

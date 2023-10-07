@@ -49,9 +49,4 @@ public class StarStorm : CombatMove
             }
         }
     }
-
-    public override void EndMove()
-    {
-        base.EndMove(); //for now
-    }
 }

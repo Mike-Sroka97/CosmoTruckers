@@ -27,7 +27,22 @@ public class DebuffStackSO : ScriptableObject
     [Header("Stacks")]
     public bool Stackable = false;
     public int MaxStacks = 10;
-    public int CurrentStacks = 0;
+    public int CurrentStacks
+    {
+        get
+        {
+            return currentStacks;
+        }
+        set
+        {
+            currentStacks = value;
+            if (currentStacks > MaxStacks)
+                currentStacks = MaxStacks;
+        }
+    }
+
+    private int currentStacks;
+
     [Header("X = Initial Stack Value, Y = Subsequent Stack Values")]
     public Vector2 StackValue;
     public bool FadingAugment { get; protected set; }

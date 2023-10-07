@@ -82,20 +82,21 @@ public abstract class Character : MonoBehaviour
         turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
-    public void AddDebuffStack(DebuffStackSO stack, bool test = false)
+    public void AddDebuffStack(DebuffStackSO stack, int stacksToAdd = 0, bool test = false)
     {
         foreach (DebuffStackSO aug in AUGS)
         {
             if (String.Equals(aug.DebuffName, stack.DebuffName))
             {
                 if (aug.CurrentStacks < aug.MaxStacks)
-                    aug.CurrentStacks++;
+                    aug.CurrentStacks += stacksToAdd;
 
                 return;
             }
         }
 
         DebuffStackSO tempAUG = Instantiate(stack);
+        tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
         AUGS.Add(tempAUG);
@@ -148,7 +149,7 @@ public abstract class Character : MonoBehaviour
     [ContextMenu("Test AUG")]
     public void TestAUG()
     {
-        AddDebuffStack(test, true);
+        //AddDebuffStack(test, true);
     }
 
     protected void FadeAugments()
