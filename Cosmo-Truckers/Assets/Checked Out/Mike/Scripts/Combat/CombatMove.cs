@@ -26,11 +26,19 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] int baseDamage;
     [SerializeField] int baseAugmentStacks;
 
+    [Space(20)]
+    [Header("Testing Variables")]
+    [SerializeField] bool spawnTest = false; 
+
     protected float currentTime = 0;
 
-    private void Start()
+    private void Awake()
     {
-        StartMove();
+        if (spawnTest)
+        {
+            Debug.LogError("Spawn Test is active"); 
+            SetSpawns(); 
+        }
     }
 
     public enum TargetType

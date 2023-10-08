@@ -6,7 +6,6 @@ public class Absolution : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
