@@ -24,7 +24,9 @@ public class BubbleBabiesNeedle : MonoBehaviour
     private void Fire()
     {
         canSwitchPositions = false;
+        isMoving = true; 
         myMoveForward.MoveSpeed = moveForwardSpeed;
+        StopAllCoroutines(); 
     }
 
     public void MoveMe(bool left = false)

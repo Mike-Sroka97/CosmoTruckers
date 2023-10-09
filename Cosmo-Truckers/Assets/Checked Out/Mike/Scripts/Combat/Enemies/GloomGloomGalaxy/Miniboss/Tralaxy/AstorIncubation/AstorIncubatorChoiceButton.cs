@@ -5,19 +5,20 @@ using UnityEngine;
 public class AstorIncubatorChoiceButton : MonoBehaviour
 {
     [SerializeField] int scoreValue;
+    [SerializeField] int ballNumber; 
 
     AstorIncubation minigame;
 
     private void Start()
     {
-        minigame = transform.parent.parent.GetComponent<AstorIncubation>();
+        minigame = transform.parent.parent.parent.GetComponent<AstorIncubation>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "PlayerAttack")
         {
-            minigame.Score = scoreValue;
+            minigame.ButtonInteraction(scoreValue, ballNumber, GetComponent<SpriteRenderer>());
         }
     }
 }
