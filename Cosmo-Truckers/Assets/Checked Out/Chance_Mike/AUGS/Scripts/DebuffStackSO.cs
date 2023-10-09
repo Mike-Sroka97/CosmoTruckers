@@ -6,19 +6,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Debuff", menuName = "ScriptableObjects/Debuff/EmptyBase")]
 public class DebuffStackSO : ScriptableObject
 {
-    public enum ActivateType
-    {
-        InCombat,
-        StartUp,
-        TurnStart,
-        TurnEnd,
-        StatChange,
-        OnDamage
-    }
+    [Header("Types")]
+    public bool InCombat;
+    public bool StartUp;
+    public bool TurnStart;
+    public bool TurnEnd;
+    public bool StatChange;
+    public bool OnDamage;
+    public bool EveryTurnEnd;
+    public bool EveryTurnStart;
 
     [Header("Base Variables")]
     public string DebuffName;
-    public ActivateType Type = ActivateType.InCombat;
     [TextArea(5, 10)]public string DebuffDescription;
     [HideInInspector] public Character MyCharacter;
     public bool IsBuff;
@@ -60,8 +59,11 @@ public class DebuffStackSO : ScriptableObject
 
     public virtual void StopEffect() 
     {
+        if(temp != null)
+        {
             temp.GetComponent<Augment>().StopEffect();
             Destroy(temp);
+        }
     }
 
     public Augment GetAugment()

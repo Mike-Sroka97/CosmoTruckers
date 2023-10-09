@@ -17,12 +17,11 @@ public class Enemy : Character
 
     Animator enemyAnimation;
     EnemyManager enemyManager;
-    SpriteRenderer myRenderer;
 
     private void Awake()
     {
         enemyManager = FindObjectOfType<EnemyManager>();
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponentInChildren<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
         enemyAnimation = GetComponent<Animator>();
         CurrentHealth = Health;
@@ -49,34 +48,6 @@ public class Enemy : Character
     public void EndTarget()
     {
         enemyAnimation.enabled = false;
-    }
-
-    public override void Die()
-    {
-        base.Die();
-        
-        //Think about our lives
-        //foreach(Enemy enemy in enemyManager.Enemies)
-        //{
-        //    if (enemy.name == gameObject.name)
-        //    {
-        //        enemyManager.Enemies.Remove(enemy);
-        //        if(!lootRolled)
-        //        {
-        //            lootRolled = true;
-        //            RollLoot();
-        //        }
-        //        break;
-        //    }
-        //}
-        if(enemyManager.Enemies.Count <= 0)
-        {
-            turnOrder.EndCombat();
-        }
-        else
-        {
-            turnOrder.DetermineTurnOrder();
-        }
     }
 
     public override void Resurrect(int newHealth)

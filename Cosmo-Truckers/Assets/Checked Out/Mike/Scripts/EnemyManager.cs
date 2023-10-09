@@ -33,17 +33,17 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        //Instantiate(testMockup);
+        //Instantiate(testMockup)'
+
+        SetSpawns();
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
-        foreach(Enemy enemy in foundEnemies)
+        foreach (Enemy enemy in foundEnemies)
             Enemies.Add(enemy);
 
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             Players.Add(player);
-
-        SetSpawns();
     }
 
     private void SetSpawns()
@@ -59,7 +59,7 @@ public class EnemyManager : MonoBehaviour
             {
                 GameObject prefab = Instantiate(enemy, EnemyPrefabLocation);
                 prefab.transform.position = EnemyLocations[enemyCount].position;
-                prefab.GetComponent<SpriteRenderer>().sortingOrder = enemyCount;
+                prefab.GetComponentInChildren<SpriteRenderer>().sortingOrder = enemyCount;
                 enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
 
                 //TODO Figure out enemy spacing

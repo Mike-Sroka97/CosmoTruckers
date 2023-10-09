@@ -1,15 +1,21 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TurnOrder : MonoBehaviour
 {
-    [SerializeField] GameObject lootPopUp;
+    [HideInInspector] public static TurnOrder Instance;
+
+    [SerializeField] TextMeshProUGUI endCombatText;
+    [SerializeField] string victoryText = "Trucker Victory";
+    [SerializeField] string lossText = "Trucker Loss";
 
     [SerializeField] List<CharacterStats> speedList;
     CharacterStats[] livingCharacters;
     int currentCharactersTurn = 0;
+    bool combatOver = false;
     private void Start()
     {
         StartCoroutine(StartWait());
@@ -17,6 +23,7 @@ public class TurnOrder : MonoBehaviour
 
     IEnumerator StartWait()
     {
+        combatOver = false;
         //Small wait before combat starts
         yield return new WaitForSeconds(1.5f);
 
@@ -50,18 +57,24 @@ public class TurnOrder : MonoBehaviour
 
     private void StartTurn()
     {
-        //give player control if player
-        //give ai control if AI
-        if(livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
-        {
-            livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().StartTurn();
-        }
-        else
-        {
-            livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
-        }
+        //Determine if the combat is won/lost
+        DetermineCombatEnd();
 
-        Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
+        if(!combatOver)
+        {
+            //give player control if player
+            //give ai control if AI
+            if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
+            {
+                livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().StartTurn();
+            }
+            else
+            {
+                livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
+            }
+
+            Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
+        }
     }
 
     public void EndTurn()
@@ -160,22 +173,47 @@ public class TurnOrder : MonoBehaviour
 
     public void EndCombat()
     {
-        lootPopUp.SetActive(true);
-        LootSlot[] slots = lootPopUp.GetComponentsInChildren<LootSlot>();
-        List<Loot> thisCombatsLoot = FindObjectOfType<LootManager>().GetLoot();
-        if(thisCombatsLoot.Count > 0)
+
+    }
+
+    private void DetermineCombatEnd()
+    {
+        bool allEnemiesDead = true;
+        bool allPlayersDead = true;
+
+        foreach (Enemy enemy in EnemyManager.Instance.Enemies)
         {
-            for (int i = 0; i < slots.Length; i++)
+            if (!enemy.Dead)
             {
-                slots[i].ToggleImage(true);
-                slots[i].SetImage(thisCombatsLoot[i].GetImage());
-                thisCombatsLoot[i].SetName(thisCombatsLoot[i].GetName() + thisCombatsLoot[i].GetLootCount());
-                slots[i].SetMyText(thisCombatsLoot[i].GetName());
-                if (i + 1 >= thisCombatsLoot.Count)
-                {
-                    break;
-                }
+                allEnemiesDead = false;
+                break;
             }
+
+        }
+
+        if (allEnemiesDead)
+        {
+            //kill all enemy summons?
+            endCombatText.text = victoryText;
+            combatOver = true;
+            return;
+        }   
+
+        foreach(PlayerCharacter character in EnemyManager.Instance.Players)
+        {
+            if (!character.Dead)
+            {
+                allPlayersDead = false;
+                break;
+            }
+        }
+
+        if(allPlayersDead)
+        {
+            //kill all player summons?
+            endCombatText.text = lossText;
+            combatOver = true;
+            return;
         }
     }
 }

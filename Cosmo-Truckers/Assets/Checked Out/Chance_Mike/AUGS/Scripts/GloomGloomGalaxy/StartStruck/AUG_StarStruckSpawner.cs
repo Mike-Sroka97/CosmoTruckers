@@ -6,6 +6,7 @@ public class AUG_StarStruckSpawner : Augment
 {
     [SerializeField] GameObject star;
 
+    public List<(Enemy, int)> AliveEnemies = new List<(Enemy, int)>();
     const float xClamp = 5.9f;
     const float minSpawn = 5.0f;
     float spawnSpeed;
@@ -14,11 +15,28 @@ public class AUG_StarStruckSpawner : Augment
     {
         base.Activate(stack);
         spawnSpeed = minSpawn - StatusEffect;
+
+        //find aliveEnemies
+         foreach(Enemy enemy in EnemyManager.Instance.Enemies)
+            if (!enemy.Dead)
+                AliveEnemies.Add((enemy, 0));
+
         StartCoroutine(SpawnStar());
     }
 
     public override void StopEffect()
     {
+        //COLE TODO Heals enemies (put on a delay????)
+        foreach((Enemy, int) enemy in AliveEnemies)
+        {
+            if(!enemy.Item1.Dead)
+            {
+                Enemy tempEnemy = enemy.Item1;
+                tempEnemy.CurrentHealth += enemy.Item2;
+                Debug.Log("Healing " + tempEnemy.name + " for " + enemy.Item2 + " health.");
+            }
+        }
+        AliveEnemies.Clear();
         StopAllCoroutines();
     }
 

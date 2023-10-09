@@ -10,13 +10,28 @@ public abstract class Character : MonoBehaviour
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
-    [HideInInspector] public int CurrentHealth;
+    [HideInInspector] public int CurrentHealth
+    {
+        get
+        {
+            return currentHealth;
+        }
+        set
+        {
+            if (currentHealth + value > Health)
+                currentHealth = Health;
+            else
+                currentHealth += value;
+        }
+    }
+    private int currentHealth;
     [HideInInspector] public List<int> CombatSpot;
     public int Shield;
 
     public bool Dead;
 
     protected TurnOrder turnOrder;
+    protected SpriteRenderer myRenderer;
 
     [SerializeField] int spaceTaken = 1;
     public int GetSpaceTaken { get => spaceTaken; }
@@ -40,7 +55,7 @@ public abstract class Character : MonoBehaviour
         {
             foreach(DebuffStackSO aug in AUGS)
             {
-                if(aug.Type == DebuffStackSO.ActivateType.OnDamage)
+                if(aug.OnDamage)
                 {
                     aug.GetAugment().Trigger();
                 }
@@ -71,6 +86,7 @@ public abstract class Character : MonoBehaviour
     {
         Dead = true;
         GetComponent<CharacterStats>().enabled = false;
+        myRenderer.enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
@@ -101,7 +117,7 @@ public abstract class Character : MonoBehaviour
 
         AUGS.Add(tempAUG);
 
-        if (stack.Type == DebuffStackSO.ActivateType.StartUp || test)
+        if (stack.StartUp || test)
             tempAUG.DebuffEffect();
     }
 

@@ -30,6 +30,7 @@ public class PlayerCharacter : Character
             attackClones.Add(Instantiate(atk));
 
         turnOrder = FindObjectOfType<TurnOrder>();
+        myRenderer = GetComponentInChildren<SpriteRenderer>();
         CurrentHealth = Health;
     }
 

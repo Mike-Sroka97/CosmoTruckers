@@ -15,7 +15,7 @@ public class TrackPlayerDeath : MonoBehaviour
         minigame = FindObjectOfType<CombatMove>();
     }
 
-    private void Death()
+    protected void Death()
     {
         if (trackDeath && minigame)
         {

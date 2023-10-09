@@ -367,7 +367,7 @@ public class CombatManager : MonoBehaviour
             foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
             {
                 foreach (var aug in character.GetAUGS)
-                    if (aug.Type == DebuffStackSO.ActivateType.InCombat)
+                    if (aug.InCombat)
                         aug.DebuffEffect();
             }
         }
@@ -390,7 +390,7 @@ public class CombatManager : MonoBehaviour
             {
                 foreach (DebuffStackSO aug in player.GetAUGS)
                 {
-                    if (aug.Type != DebuffStackSO.ActivateType.OnDamage)
+                    if (aug.OnDamage == false)
                         aug.StopEffect();
                 }
             }
@@ -398,11 +398,23 @@ public class CombatManager : MonoBehaviour
         StopAllCoroutines();
 
         INAmoving = true;
+
+        //Handle EoT augments (store this data and display visuals in EndCombat()?
+        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+
+        foreach (DebuffStackSO augment in allAugments)
+        {
+            if (augment.EveryTurnEnd)
+                augment.StopEffect();
+        }
+
         Augment[] augments = FindObjectsOfType<Augment>();
+
         foreach (Augment augment in augments)
         {
             Destroy(augment.gameObject);
         }
+
         StartCoroutine(INA.MoveINA(false));
     }
 
@@ -421,6 +433,11 @@ public class CombatManager : MonoBehaviour
     {
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
 
+        //delay
+
+
+
+        //Clean up INA
         CharactersSelected.Clear();
         Destroy(miniGame);
         foreach(GameObject character in characters)
@@ -435,6 +452,8 @@ public class CombatManager : MonoBehaviour
             button.interactable = false;
             button.onClick.RemoveAllListeners();
         }
+
+
 
         FindObjectOfType<TurnOrder>().EndTurn();
     }
