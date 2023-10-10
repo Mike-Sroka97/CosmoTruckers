@@ -9,6 +9,9 @@ public class PlayerPickup : MonoBehaviour
     [SerializeField] float moveDistance;
     [SerializeField] bool endsMinigame;
 
+    [Header("PS on Collect (can be empty)")]
+    [SerializeField] ParticleSystem collectParticle; 
+
     CombatMove minigame;
     bool movingUp = true;
     float startingY;
@@ -55,6 +58,13 @@ public class PlayerPickup : MonoBehaviour
             {
                 minigame.EndMove();
             }
+
+            if (collectParticle != null)
+            {
+                ParticleSystem particle = Instantiate(collectParticle, gameObject.transform);
+                particle.gameObject.transform.parent = null; 
+            }
+
             Destroy(gameObject);
         }
     }

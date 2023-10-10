@@ -12,10 +12,12 @@ public class AstorIncubation : CombatMove
 
     int currentSelection = -1;
     SpriteRenderer currentButtonRenderer = null;
-    bool platformsDisabled = false; 
+    public bool platformsDisabled { get; private set; }
 
     private void Start()
     {
+        platformsDisabled = false; 
+
         StartMove();
         GenerateLayout();
         Invoke("DisablePlatforms", ballDelayTime);
@@ -58,6 +60,11 @@ public class AstorIncubation : CombatMove
                 currentButtonRenderer = buttonRenderer;
             }
         }
+    }
+
+    public Material GetDefaultMaterial()
+    {
+        return defaultMaterial; 
     }
 
     protected override void TrackTime()
