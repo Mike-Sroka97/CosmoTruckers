@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BubbleBabiesBubble : MonoBehaviour
 {
+    [SerializeField] GameObject bubblePopParticle;
+
     BubbleBabies minigame;
 
     private void Start()
@@ -14,6 +16,9 @@ public class BubbleBabiesBubble : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         minigame.Score++;
+
+        GameObject particle = Instantiate(bubblePopParticle, transform.position, Quaternion.identity, null); 
+
         Destroy(gameObject);
     }
 }
