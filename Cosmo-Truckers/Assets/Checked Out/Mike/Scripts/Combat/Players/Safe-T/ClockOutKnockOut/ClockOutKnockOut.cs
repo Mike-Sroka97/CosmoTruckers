@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class ClockOutKnockOut : CombatMove
 {
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        COKOhand[] hands = FindObjectsOfType<COKOhand>();
+
+        foreach(COKOhand hand in hands)
+        {
+            hand.SetVelocity();
+        }
     }
 }

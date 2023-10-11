@@ -53,11 +53,7 @@ public abstract class CombatMove : MonoBehaviour
         AllTarget
     }
 
-    protected void StartMove()
-    {
-
-    }
-
+    public virtual void StartMove() { }
     public void SetSpawns()
     {
         if (spawnPoints.Length == 0) return; //TEMP

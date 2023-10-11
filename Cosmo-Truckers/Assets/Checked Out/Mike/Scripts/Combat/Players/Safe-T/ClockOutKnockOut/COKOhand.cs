@@ -17,10 +17,10 @@ public class COKOhand : MonoBehaviour
     Rigidbody2D myBody;
     bool playerDamaged = false;
 
-    private void Start()
+    public void SetVelocity()
     {
         myBody = GetComponent<Rigidbody2D>();
-        if(horizontalMatters)
+        if (horizontalMatters)
         {
             myBody.velocity = new Vector2(velocity, 0);
         }

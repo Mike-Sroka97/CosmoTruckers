@@ -89,8 +89,9 @@ public class INAcombat : MonoBehaviour
             //Shake
             countDownTimer.text = goText;
             currentTime = shakeDuration;
+            FindObjectOfType<CombatMove>().StartMove();
 
-            while(currentTime > 0)
+            while (currentTime > 0)
             {
                 countDownTimer.transform.position = new Vector3(Mathf.Sin(Time.time * shakeSpeedX) * shakeOffsetX, INAoffset + (Mathf.Sin(Time.time * shakeSpeedY) * shakeOffsetY), 0);
                 currentTime -= Time.deltaTime;
@@ -101,11 +102,20 @@ public class INAcombat : MonoBehaviour
             }
 
             timer.enabled = true;
-            countDownTimer.enabled = true;
         }
         else
         {
+            //Turn off lines
+            LineRenderer[] lineRenderers = FindObjectsOfType<LineRenderer>();
+            TrailRenderer[] trailRenderers = FindObjectsOfType<TrailRenderer>();
+
+            foreach (LineRenderer lineRenderer in lineRenderers)
+                lineRenderer.enabled = false;
+            foreach (TrailRenderer trailRenderer in trailRenderers)
+                trailRenderer.enabled = false;
+
             //CloseScreen
+
             while (topMask.localPosition.y > topMaskStartingY)
             {
                 topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);

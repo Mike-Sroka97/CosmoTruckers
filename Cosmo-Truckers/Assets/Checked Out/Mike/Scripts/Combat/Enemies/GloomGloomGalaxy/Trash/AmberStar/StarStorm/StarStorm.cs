@@ -8,16 +8,26 @@ public class StarStorm : CombatMove
     [SerializeField] StarStormStar[] stars;
     StarStormLayout layoutToGenerate;
 
+    int random;
+
     private void Start()
     {
         BuildLayout();
-        StartMove();
+    }
+
+    public override void StartMove()
+    {
+        for (int i = 0; i < stars.Length; i++)
+        {
+            if (layoutToGenerate.ActiveStars[i] == true)
+            {
+                stars[i].gameObject.SetActive(true);
+            }
+        }
     }
 
     protected void BuildLayout()
     {
-        int random;
-
         if (layouts.Length > 0)
         {
             random = UnityEngine.Random.Range(0, layouts.Length);
@@ -37,14 +47,6 @@ public class StarStorm : CombatMove
                 {
                     blocks[i].gameObject.SetActive(true);
                     blocks[i].ActivateMe();
-                }
-            }
-
-            for(int i = 0; i < stars.Length; i++)
-            {
-                if(layoutToGenerate.ActiveStars[i] == true)
-                {
-                    stars[i].gameObject.SetActive(true);
                 }
             }
         }

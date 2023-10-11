@@ -22,8 +22,6 @@ public class CombatManager : MonoBehaviour
 
     public List<Character> GetCharactersSelected { get => CharactersSelected; }
 
-    bool StartTimer = false;
-
     PlayerCharacter CurrentPlayer;
     PlayerCharacter[] attackable;
     Enemy CurrentEnemy;
@@ -39,7 +37,6 @@ public class CombatManager : MonoBehaviour
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
-        StartTimer = false;
 
         CurrentPlayer = currentPlayer;
         ActivePlayers.Add(currentPlayer);
@@ -48,13 +45,11 @@ public class CombatManager : MonoBehaviour
         {
             #region No Target
             case EnumManager.TargetingType.No_Target:
-                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
                 break;
             #endregion
             #region Self Target
             case EnumManager.TargetingType.Self_Target:
-                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
                 break;
             #endregion
@@ -69,7 +64,6 @@ public class CombatManager : MonoBehaviour
                     {
                         print(obj.gameObject.name);
                         CharactersSelected.Add(obj);
-                        StartTimer = true;
                         Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
                     });
                 }
@@ -77,7 +71,6 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Multi Target Cone
             case EnumManager.TargetingType.Multi_Target_Cone:
-                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                 break;
             #endregion
@@ -95,7 +88,6 @@ public class CombatManager : MonoBehaviour
                         CharactersSelected.Add(obj);
                         if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                         {
-                            StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for (int i = 0; i < CharactersSelected.Count; i++)
                                 text += $" { CharactersSelected[i].name } & ";
@@ -110,7 +102,6 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region AOE
             case EnumManager.TargetingType.AOE:
-                StartTimer = true;
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
                 break;
             #endregion
@@ -121,7 +112,6 @@ public class CombatManager : MonoBehaviour
                     CharactersSelected.Add(obj);
                     if (CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
                     {
-                        StartTimer = true;
                         string text = $"Doing Combat Stuff for {attack.AttackName} against";
                         for (int i = 0; i < CharactersSelected.Count; i++)
                             text += $" { CharactersSelected[i].name } & ";
@@ -153,14 +143,12 @@ public class CombatManager : MonoBehaviour
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
         CurrentPlayer = null;
-        StartTimer = false;
 
         yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
         if(enemy.SpecialTargetConditions)
         {
             enemy.TargetConditions(attack);
-            StartTimer = true;
 
             List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
 
@@ -182,13 +170,11 @@ public class CombatManager : MonoBehaviour
             {
                 #region No Target
                 case EnumManager.TargetingType.No_Target:
-                    StartTimer = true;
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
                     break;
                 #endregion
                 #region Self Target
                 case EnumManager.TargetingType.Self_Target:
-                    StartTimer = true;
                     CharactersSelected.Add(enemy);
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
                     break;
@@ -200,7 +186,6 @@ public class CombatManager : MonoBehaviour
                 #endregion
                 #region Multi Target Cone
                 case EnumManager.TargetingType.Multi_Target_Cone:
-                    StartTimer = true;
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                     break;
                 #endregion
@@ -229,7 +214,6 @@ public class CombatManager : MonoBehaviour
                         }
                         if (CharactersSelected.Count == attack.NumberOFTargets)
                         {
-                            StartTimer = true;
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for (int i = 0; i < CharactersSelected.Count; i++)
                                 text += $" { CharactersSelected[i].name } & ";
@@ -252,7 +236,6 @@ public class CombatManager : MonoBehaviour
                             //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                             CharactersSelected.Add(obj);
                             ActivePlayers.Add(obj);
-                            StartTimer = true;
                         }
                     }
                     Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
@@ -283,7 +266,6 @@ public class CombatManager : MonoBehaviour
             else
             {
                 CharactersSelected.Add(enemy.TauntedBy);
-                StartTimer = true;
 
                 ActivePlayers.Add(enemy.TauntedBy);
                 //character = Instantiate(enemy.TauntedBy.GetCharacterController);
@@ -308,7 +290,6 @@ public class CombatManager : MonoBehaviour
                     {
                         CharactersSelected.Add(obj);
                         ActivePlayers.Add(obj);
-                        StartTimer = true;
 
                         //character = Instantiate(obj.GetCharacterController);
                         //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
@@ -330,7 +311,6 @@ public class CombatManager : MonoBehaviour
                 //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                 CharactersSelected.Add(obj);
                 ActivePlayers.Add(obj);
-                StartTimer = true;
             }
         }
 
@@ -360,8 +340,6 @@ public class CombatManager : MonoBehaviour
 
         attack.StartCombat();
 
-        while (!StartTimer) yield return null;
-
         if (ActivePlayers.Count > 0)
         {
             foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
@@ -374,11 +352,8 @@ public class CombatManager : MonoBehaviour
 
         while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
         {
-            if (StartTimer)
-            {
-                miniGameTime -= Time.deltaTime;
-                Timer.text = ((int)miniGameTime).ToString();
-            }
+            miniGameTime -= Time.deltaTime;
+            Timer.text = ((int)miniGameTime).ToString();
 
             yield return null;
         }
