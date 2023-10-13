@@ -20,6 +20,8 @@ public class SSGozorMovement : MonoBehaviour
     bool movingTowardPoint1 = true;
     bool minigameStarted = false;
 
+    [HideInInspector] public bool trackTime = false;
+
     private void Start()
     {
         originalMoveSpeed = moveSpeed;
@@ -30,6 +32,9 @@ public class SSGozorMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         MoveMe();
     }
 
@@ -39,7 +44,6 @@ public class SSGozorMovement : MonoBehaviour
         {
             minigameStarted = true;
             moveSpeed = originalMoveSpeed;
-            Debug.Log("MoveSpeed: " + moveSpeed + " OG: " + originalMoveSpeed);
         }
     }
 

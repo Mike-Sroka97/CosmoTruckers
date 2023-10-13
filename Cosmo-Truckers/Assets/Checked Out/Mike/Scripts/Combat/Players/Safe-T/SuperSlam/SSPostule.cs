@@ -19,12 +19,14 @@ public class SSPostule : MonoBehaviour
         gozor = transform.parent.parent.GetComponent<SSGozorMovement>();
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
-        playerBody = FindObjectOfType<SafeTINA>().GetComponent<Rigidbody2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Player" && !collided)
+        if(!playerBody)
+            playerBody = FindObjectOfType<SafeTINA>().GetComponent<Rigidbody2D>();
+
+        if (collision.transform.tag == "Player" && !collided)
         {
             foreach (ContactPoint2D contact in collision.contacts)
             {
@@ -35,7 +37,6 @@ public class SSPostule : MonoBehaviour
                     collided = true;
                     superSlam.Score++;
 
-                    playerBody.GetComponent<SafeTINA>().enabled = true;
                     playerBody.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
 
                     gozor.StartMinigame();

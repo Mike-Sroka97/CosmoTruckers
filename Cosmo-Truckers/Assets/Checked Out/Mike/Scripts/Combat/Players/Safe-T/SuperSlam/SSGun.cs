@@ -20,9 +20,13 @@ public class SSGun : MonoBehaviour
     bool isFiring = false;    
     float currentTime = 0;
     int bulletsFired = 0;
+    [HideInInspector] public bool trackTime;
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         RotateMe();
         TrackTime();
     }

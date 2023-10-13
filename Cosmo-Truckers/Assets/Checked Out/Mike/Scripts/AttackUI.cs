@@ -12,6 +12,7 @@ public class AttackUI : MonoBehaviour
     float speed = 50f;
     [SerializeField] float speedIncrease = 100f;
     [SerializeField] float baseSpeed = 50;
+    [SerializeField] PlayerCharacter myCharacter;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
@@ -35,7 +36,7 @@ public class AttackUI : MonoBehaviour
 
         angle += rotationDistance;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < myCharacter.GetAllAttacks.Count; i++)
         {
             children[i].gameObject.SetActive(true);
             if (i < numberOfAttacks)

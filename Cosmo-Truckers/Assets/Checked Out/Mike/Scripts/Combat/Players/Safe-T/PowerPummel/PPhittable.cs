@@ -19,7 +19,6 @@ public class PPhittable : MonoBehaviour
         minigame = FindObjectOfType<PowerPummel>();
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        DetermineStartingMovement();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -105,7 +104,7 @@ public class PPhittable : MonoBehaviour
         return Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.y + distance, layermask);
     }
 
-    private void DetermineStartingMovement()
+    public void DetermineStartingMovement()
     {
         int rightRandom = UnityEngine.Random.Range(0, 2); //coin flip bb
         int upRandom = UnityEngine.Random.Range(0, 2); //coin flip bb

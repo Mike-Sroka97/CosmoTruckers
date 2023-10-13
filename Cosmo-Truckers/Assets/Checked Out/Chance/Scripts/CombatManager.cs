@@ -58,14 +58,14 @@ public class CombatManager : MonoBehaviour
                 foreach (Enemy obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
                     obj.StartTarget();
-                    Button button = obj.gameObject.GetComponentInChildren<Button>();
-                    button.interactable = true;
-                    button.onClick.AddListener(delegate
-                    {
-                        print(obj.gameObject.name);
-                        CharactersSelected.Add(obj);
-                        Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
-                    });
+                    //Button button = obj.gameObject.GetComponentInChildren<Button>();
+                    //button.interactable = true;
+                    //button.onClick.AddListener(delegate
+                    //{
+                    //    print(obj.gameObject.name);
+                    //    CharactersSelected.Add(obj);
+                    //    Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
+                    //});
                 }
                 break;
             #endregion
@@ -79,24 +79,24 @@ public class CombatManager : MonoBehaviour
                 foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
                 {
                     obj.StartTarget();
-                    Button button = obj.gameObject.GetComponentInChildren<Button>();
-                    button.interactable = true;
-                    button.onClick.AddListener(delegate
-                    {
-                        print(obj.gameObject.name);
-                        button.interactable = false;
-                        CharactersSelected.Add(obj);
-                        if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
-                        {
-                            string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                            for (int i = 0; i < CharactersSelected.Count; i++)
-                                text += $" { CharactersSelected[i].name } & ";
+                    //Button button = obj.gameObject.GetComponentInChildren<Button>();
+                    //button.interactable = true;
+                    //button.onClick.AddListener(delegate
+                    //{
+                    //    print(obj.gameObject.name);
+                    //    button.interactable = false;
+                    //    CharactersSelected.Add(obj);
+                    //    if (CharactersSelected.Count == attack.NumberOFTargets || CharactersSelected.Count == FindObjectOfType<EnemyManager>().Enemies.Count)
+                    //    {
+                    //        string text = $"Doing Combat Stuff for {attack.AttackName} against";
+                    //        for (int i = 0; i < CharactersSelected.Count; i++)
+                    //            text += $" { CharactersSelected[i].name } & ";
 
-                            text.Remove(text.Length - 2, 2);
-                            text += ". . .";
-                            Debug.Log(text);
-                        }
-                    });
+                    //        text.Remove(text.Length - 2, 2);
+                    //        text += ". . .";
+                    //        Debug.Log(text);
+                    //    }
+                    //});
                 }
                 break;
             #endregion
@@ -423,9 +423,9 @@ public class CombatManager : MonoBehaviour
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {
             obj.EndTarget();
-            Button button = obj.gameObject.GetComponentInChildren<Button>();
-            button.interactable = false;
-            button.onClick.RemoveAllListeners();
+            //Button button = obj.gameObject.GetComponentInChildren<Button>();
+            //button.interactable = false;
+            //button.onClick.RemoveAllListeners();
         }
 
 

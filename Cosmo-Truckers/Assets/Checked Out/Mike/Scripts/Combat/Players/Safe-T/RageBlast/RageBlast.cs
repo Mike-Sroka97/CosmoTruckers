@@ -7,15 +7,19 @@ public class RageBlast : CombatMove
     [SerializeField] RageBlastPlatform[] platforms;
     [SerializeField] float timeToDisablePlatform;
 
-    bool trackTime = true;
+    bool trackTime = false;
     int lastNumber = -1;
     int nonDuplicateRandom;
 
     private void Start()
     {
-        StartMove();
         nonDuplicateRandom = lastNumber;
+    }
+
+    public override void StartMove()
+    {
         GenerateLayout();
+        trackTime = true;
     }
 
     private void Update()
@@ -46,10 +50,5 @@ public class RageBlast : CombatMove
 
         nonDuplicateRandom = lastNumber;
         platforms[nonDuplicateRandom].DisableMe();
-    }
-
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
     }
 }

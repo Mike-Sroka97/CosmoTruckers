@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class PowerPummel : CombatMove
 {
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        FindObjectOfType<PPhittable>().DetermineStartingMovement();
+        PPspikeBall[] spikeBalls = FindObjectsOfType<PPspikeBall>();
+
+        foreach (PPspikeBall spikeball in spikeBalls)
+            spikeball.DetermineStartingMovement();
     }
 }

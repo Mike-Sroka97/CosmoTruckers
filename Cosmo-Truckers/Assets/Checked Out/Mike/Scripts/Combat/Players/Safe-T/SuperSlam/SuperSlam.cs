@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class SuperSlam : CombatMove
 {
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
-    }
-
     private void Start()
     {
-        FindObjectOfType<SafeTINA>().enabled = false;
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        FindObjectOfType<SSGozorMovement>().trackTime = true;
+
+        SSGun[] ssGuns = FindObjectsOfType<SSGun>();
+        foreach (SSGun ssGun in ssGuns)
+            ssGun.trackTime = true;
     }
 }

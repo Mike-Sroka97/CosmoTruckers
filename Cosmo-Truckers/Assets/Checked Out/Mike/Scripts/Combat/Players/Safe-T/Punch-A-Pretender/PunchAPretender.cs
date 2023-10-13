@@ -12,19 +12,26 @@ public class PunchAPretender : CombatMove
 
     float currentTimeBadNodes = 0;
     float currentTimeHittableNodes = 0;
+    bool trackTime = false;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        trackTime = true;
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         currentTimeBadNodes += Time.deltaTime;
         currentTimeHittableNodes += Time.deltaTime;
@@ -59,10 +66,5 @@ public class PunchAPretender : CombatMove
             }
             papNodes[random].StartFlash(false);
         }
-    }
-
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
     }
 }
