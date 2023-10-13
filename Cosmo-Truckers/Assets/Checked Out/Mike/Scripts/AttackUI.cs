@@ -28,6 +28,7 @@ public class AttackUI : MonoBehaviour
         speed = baseSpeed;
         currentPlayer = player;
         numberOfAttacks = player.GetAllAttacks.Count;
+        player.GetComponent<Mana>().CheckCastableSpells();
 
         float angle = 0f;
         rotationDistance = 360f / 10;
@@ -50,7 +51,7 @@ public class AttackUI : MonoBehaviour
             angle -= rotationDistance;
         }
 
-        SetOpasity(0);
+        SetOpacity(0);
     }
 
     private void OnDisable()
@@ -141,7 +142,7 @@ public class AttackUI : MonoBehaviour
 
         currentAttack = (int)(Mathf.Round(transform.eulerAngles.z) / (360 / 10));
 
-        SetOpasity(currentAttack);
+        SetOpacity(currentAttack);
 
         if (String.IsNullOrEmpty(children[currentAttack].gameObject.GetComponent<TMP_Text>().text))
         {
@@ -155,7 +156,7 @@ public class AttackUI : MonoBehaviour
         }
     }
 
-    void SetOpasity(int attack)
+    void SetOpacity(int attack)
     {
         for (int i = 0; i < 10; i++)
             children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .25f);
