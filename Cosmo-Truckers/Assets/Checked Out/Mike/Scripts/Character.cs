@@ -45,7 +45,7 @@ public abstract class Character : MonoBehaviour
             passiveMove.Activate(CurrentHealth);
 
         if (Shield > 0) Shield = Shield - damage <= 0 ? 0 : Shield - damage;
-        else CurrentHealth -= damage;
+        else currentHealth -= damage;
 
         if (CurrentHealth <= 0)
         {
@@ -64,7 +64,7 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    private int AdjustAttackDamage(int damage)
+    protected int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
         

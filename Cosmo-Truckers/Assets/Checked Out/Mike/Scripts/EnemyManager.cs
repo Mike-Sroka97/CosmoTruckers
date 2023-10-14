@@ -33,7 +33,7 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        //Instantiate(testMockup)'
+        //Instantiate(testMockup)
 
         SetSpawns();
 
@@ -44,6 +44,8 @@ public class EnemyManager : MonoBehaviour
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             Players.Add(player);
+
+        PlayerVesselManager.Instance.Initialize();
     }
 
     private void SetSpawns()

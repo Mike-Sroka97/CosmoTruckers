@@ -2,11 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCharacter : Character
 {
     [HideInInspector] public Player MyPlayer;
     [SerializeField] string Name;
+    public Sprite VesselImage;
     public bool IsDPS;
     public bool IsTank;
     public bool IsSupport;
@@ -22,6 +24,12 @@ public class PlayerCharacter : Character
     public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
 
     protected Mana manaBase;
+    [HideInInspector] public PlayerVessel MyVessel;
+
+    private void Awake()
+    {
+        CurrentHealth = Health;
+    }
 
     private void Start()
     {
@@ -34,7 +42,6 @@ public class PlayerCharacter : Character
         manaBase = GetComponent<Mana>();
         turnOrder = FindObjectOfType<TurnOrder>();
         myRenderer = GetComponentInChildren<SpriteRenderer>();
-        CurrentHealth = Health;
     }
 
     public override void StartTurn()
@@ -57,5 +64,15 @@ public class PlayerCharacter : Character
             Stats.Defense = 50;
         else if (Stats.Defense < -100)
             Stats.Defense = -100;
+    }
+
+    public override void TakeDamage(int damage, bool defensePiercing = false)
+    {
+        base.TakeDamage(damage, defensePiercing);
+
+        if (!defensePiercing)
+            damage = AdjustAttackDamage(damage);
+
+        MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, damage);
     }
 }
