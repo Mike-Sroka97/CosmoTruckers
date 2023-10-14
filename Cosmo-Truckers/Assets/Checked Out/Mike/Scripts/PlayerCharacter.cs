@@ -14,12 +14,14 @@ public class PlayerCharacter : Character
     public string CharacterName { get => Name; private set => Name = value; }
     [SerializeField] GameObject wheel;
     [SerializeField] List<BaseAttackSO> attacks;
-    List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
+    protected List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
 
     [Space(10)]
     [SerializeField] GameObject MiniGameControllerPrefab;
     public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
     public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
+
+    protected Mana manaBase;
 
     private void Start()
     {
@@ -29,6 +31,7 @@ public class PlayerCharacter : Character
         foreach (var atk in attacks)
             attackClones.Add(Instantiate(atk));
 
+        manaBase = GetComponent<Mana>();
         turnOrder = FindObjectOfType<TurnOrder>();
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         CurrentHealth = Health;

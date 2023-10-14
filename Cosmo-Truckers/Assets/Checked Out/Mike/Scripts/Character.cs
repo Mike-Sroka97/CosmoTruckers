@@ -36,9 +36,10 @@ public abstract class Character : MonoBehaviour
     [SerializeField] int spaceTaken = 1;
     public int GetSpaceTaken { get => spaceTaken; }
 
-    public virtual void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
-        damage = AdjustAttackDamage(damage);
+        if(!defensePiercing)
+            damage = AdjustAttackDamage(damage);
 
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
             passiveMove.Activate(CurrentHealth);

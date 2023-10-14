@@ -6,25 +6,28 @@ using UnityEngine;
 
 public class AttackUI : MonoBehaviour
 {
-    [SerializeField] int currentAttack = 0;
+    [SerializeField] protected int currentAttack = 0;
     public int GetCurrentAttack { get => currentAttack; }
 
-    float speed = 50f;
+    float speed = 500f;
     [SerializeField] float speedIncrease = 100f;
     [SerializeField] float baseSpeed = 50;
-    [SerializeField] PlayerCharacter myCharacter;
+    [SerializeField] protected PlayerCharacter myCharacter;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
     int numberOfAttacks = 10;
-    float rotationDistance;
+    protected float rotationDistance;
 
-    bool spinning = false;
-    [SerializeField] RectTransform[] children;
-    PlayerCharacter currentPlayer;
+    protected bool spinning = false;
+    [SerializeField] List<RectTransform> children;
+    protected PlayerCharacter currentPlayer;
 
     public void StartTurn(PlayerCharacter player)
     {
+        currentAttack = 0;
+        transform.eulerAngles = Vector3.zero;
+
         speed = baseSpeed;
         currentPlayer = player;
         numberOfAttacks = player.GetAllAttacks.Count;
@@ -56,7 +59,7 @@ public class AttackUI : MonoBehaviour
 
     private void OnDisable()
     {
-        for (int i = 0; i < children.Length; i++)
+        for (int i = 0; i < children.Count; i++)
             children[i].gameObject.SetActive(false);
 
 
@@ -87,7 +90,7 @@ public class AttackUI : MonoBehaviour
         }
     }
 
-    void StartAttack()
+    protected virtual void StartAttack()
     {
         int hold = currentAttack;
 
@@ -96,7 +99,7 @@ public class AttackUI : MonoBehaviour
         FindObjectOfType<CombatManager>().StartCombat(currentPlayer.GetAllAttacks[hold], currentPlayer);
     }
 
-    private void RotateWheel(float rotationValue)
+    protected void RotateWheel(float rotationValue)
     {
         StartCoroutine(SpinWheel(rotationValue));
     }
@@ -158,7 +161,7 @@ public class AttackUI : MonoBehaviour
 
     void SetOpacity(int attack)
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < children.Count; i++)
             children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .25f);
 
         if (currentPlayer.GetAllAttacks.Count > currentAttack && currentPlayer.GetAllAttacks[currentAttack].CanUse)
