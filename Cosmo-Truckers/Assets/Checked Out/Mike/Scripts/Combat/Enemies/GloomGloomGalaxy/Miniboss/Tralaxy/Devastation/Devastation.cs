@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Devastation : CombatMove
 {
-    PlayerBasedParabolaMovement[] balls;
+    [SerializeField] PlayerBasedParabolaMovement[] balls;
 
     private void Start()
     {
         Player[] players = FindObjectsOfType<Player>();
         int numberOfPlayers = players.Length - 1;
-        balls = FindObjectsOfType<PlayerBasedParabolaMovement>();
 
         for(int i = 0; i < balls.Length; i++)
         {

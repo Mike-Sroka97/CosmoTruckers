@@ -7,9 +7,9 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] orbnusChunk;
     [SerializeField] Transform[] chunkSpawns;
+    [SerializeField] ORBFaceChunk[] faceChunks; 
     [SerializeField] float phaseOneDelay;
     [SerializeField] float phaseTwoDelay;
-    [SerializeField] float phaseTwoChunkCount;
     [SerializeField] GameObject noseChunk;
     [SerializeField] float noseWaitTime;
     [SerializeField] float minChunkRotation;
@@ -29,10 +29,40 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
     IEnumerator SpawnChunk()
     {
         if (PhaseOne)
+        {
             yield return new WaitForSeconds(phaseOneDelay);
-        else
-            yield return new WaitForSeconds(phaseTwoDelay);
 
+            SpawnRegularChunks(); 
+
+        }
+        else
+        {
+            yield return new WaitForSeconds(phaseTwoDelay / 2f);
+
+            SpawnRegularChunks();
+
+            yield return new WaitForSeconds(phaseTwoDelay / 2f);
+
+            if (currentChunk < faceChunks.Length)
+            {
+                ActivateFaceChunk(); 
+            }
+        }
+
+        if (currentChunk < faceChunks.Length)
+        {
+            StartCoroutine(SpawnChunk());
+        }
+        else if (!finalNodeSpawned)
+        {
+            finalNodeSpawned = true;
+            yield return new WaitForSeconds(noseWaitTime);
+            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation);
+        }
+    }
+
+    private void SpawnRegularChunks()
+    {
         random = Random.Range(0, chunkSpawns.Length);
 
         while (random == lastRandom)
@@ -43,20 +73,6 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
         lastRandom = random;
 
         RotateChunks();
-
-        if (!PhaseOne)
-            currentChunk++;
-
-        if (currentChunk < phaseTwoChunkCount)
-        {
-            StartCoroutine(SpawnChunk());
-        }
-        else if (!finalNodeSpawned)
-        {
-            finalNodeSpawned = true;
-            yield return new WaitForSeconds(noseWaitTime);
-            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation);
-        }
     }
 
     private void RotateChunks()
@@ -77,5 +93,11 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
                 rotator.RotateSpeed = 100;
             }
         }
+    }
+
+    private void ActivateFaceChunk()
+    {
+        faceChunks[currentChunk].StartToFall();
+        currentChunk++;
     }
 }
