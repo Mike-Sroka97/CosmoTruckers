@@ -13,13 +13,14 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
     bool isGrabbing;
     float timer;
 
-    private void Start()
+
+    void Start()
     {
         handCollider.enabled = true;
         fistCollider.enabled = false; 
     }
 
-    private void Update()
+    void Update()
     {
         GrabbingPlayerCheck();
     }
@@ -44,16 +45,23 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
         {
             isGrabbing = true;
             timer = 0;
-            handCollider.enabled = false;
-            fistCollider.enabled = true; 
+            //Change the sprites
             fistSpriteRenderer.sprite = FistSprites[1];
             fistSpriteRenderer.gameObject.transform.localPosition = fistPositions[1];
+            //Change the active collider
+            handCollider.enabled = false;
+            fistCollider.enabled = true;
+
         }
 
         if (!grabState)
         {
+            //Change the sprites
             fistSpriteRenderer.sprite = FistSprites[0];
             fistSpriteRenderer.gameObject.transform.localPosition = fistPositions[0];
+            //Change the active collider
+            handCollider.enabled = true;
+            fistCollider.enabled = false;
         }
     }
 
