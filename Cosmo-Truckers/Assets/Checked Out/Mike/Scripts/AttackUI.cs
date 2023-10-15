@@ -62,7 +62,6 @@ public class AttackUI : MonoBehaviour
         for (int i = 0; i < children.Count; i++)
             children[i].gameObject.SetActive(false);
 
-
         currentAttack = 0;
     }
     private void Update()
@@ -161,28 +160,31 @@ public class AttackUI : MonoBehaviour
 
     void SetOpacity(int attack)
     {
-        for (int i = 0; i < children.Count; i++)
-            children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .25f);
+        SetColor();
 
-        if (currentPlayer.GetAllAttacks.Count > currentAttack && currentPlayer.GetAllAttacks[currentAttack].CanUse)
-            children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
-        else
-            children[currentAttack].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, 1);
+        //if (currentAttack == 0)
+        //{
+        //    children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
+        //    children[numberOfAttacks].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
+        //}
+        //else if (currentAttack == numberOfAttacks)
+        //{
+        //    children[0].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .70f);
+        //    children[numberOfAttacks - 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
+        //}
+        //else
+        //{
+        //    children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
+        //    children[currentAttack - 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
+        //}
+    }
 
-        if (currentAttack == 0)
-        {
-            children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
-            children[numberOfAttacks].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
-        }
-        else if(currentAttack == numberOfAttacks)
-        {
-            children[0].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .70f);
-            children[numberOfAttacks - 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
-        }
-        else
-        {
-            children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
-            children[currentAttack - 1].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, .50f);
-        }
+    private void SetColor()
+    {
+        for (int i = 0; i < numberOfAttacks; i++)
+            if (currentPlayer.GetAllAttacks[i].CanUse)
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
+            else
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, 1);
     }
 }
