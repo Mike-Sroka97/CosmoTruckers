@@ -8,7 +8,7 @@ public class PlayerCharacter : Character
 {
     [HideInInspector] public Player MyPlayer;
     [SerializeField] string Name;
-    public Sprite VesselImage;
+    public Sprite VesselImage; //will be able to remove
     public bool IsDPS;
     public bool IsTank;
     public bool IsSupport;
@@ -25,6 +25,7 @@ public class PlayerCharacter : Character
 
     protected Mana manaBase;
     [HideInInspector] public PlayerVessel MyVessel;
+    public GameObject PlayerVessel;
 
     private void Awake()
     {

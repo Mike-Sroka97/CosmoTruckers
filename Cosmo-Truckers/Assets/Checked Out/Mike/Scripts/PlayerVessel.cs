@@ -22,6 +22,7 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] float moveSpeed;
 
     PlayerCharacter myCharacter;
+    [HideInInspector] public Mana MyMana;
 
     public void Initialize(PlayerCharacter player)
     {
@@ -39,6 +40,10 @@ public class PlayerVessel : MonoBehaviour
         //set health
         maxHealth.text = myCharacter.Health.ToString();
         currentHealth.text = myCharacter.CurrentHealth.ToString();
+
+        //assign vessel to mana
+        MyMana = myCharacter.GetComponent<Mana>();
+        MyMana.SetVessel(this);
     }
 
     public void AdjustCurrentHealthDisplay(int newHealth, int damageHealingAmount, bool damage = true)
@@ -70,4 +75,6 @@ public class PlayerVessel : MonoBehaviour
 
         damageHealingText.transform.localPosition = Vector3.zero;
     }
+
+    public virtual void ManaTracking() { }
 }

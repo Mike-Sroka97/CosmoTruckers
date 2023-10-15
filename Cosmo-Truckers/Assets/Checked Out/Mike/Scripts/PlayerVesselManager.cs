@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerVesselManager : MonoBehaviour
 {
+    [SerializeField] RectTransform[] vesselSpawns;
+
     [HideInInspector] public static PlayerVesselManager Instance;
     PlayerVessel[] playerVessels;
 
@@ -11,14 +13,14 @@ public class PlayerVesselManager : MonoBehaviour
 
     public void Initialize()
     {
-        playerVessels = GetComponentsInChildren<PlayerVessel>();
-        foreach(PlayerVessel vessel in playerVessels)
-            vessel.gameObject.SetActive(false);
+        //playerVessels = GetComponentsInChildren<PlayerVessel>();
+        //foreach(PlayerVessel vessel in playerVessels)
+        //    vessel.gameObject.SetActive(false);
 
         for (int i = 0; i < EnemyManager.Instance.Players.Count; i++)
         {
-            playerVessels[i].gameObject.SetActive(true);
-            playerVessels[i].Initialize(EnemyManager.Instance.Players[i]);
+            PlayerVessel currentVessel = Instantiate(EnemyManager.Instance.Players[i].PlayerVessel, vesselSpawns[i]).GetComponent<PlayerVessel>();
+            currentVessel.Initialize(EnemyManager.Instance.Players[i]);
         }
     }
 }

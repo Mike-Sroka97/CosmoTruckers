@@ -6,6 +6,8 @@ public class SafeTMana : Mana
 {
     [SerializeField] int maxAnger;
 
+    SafeTVessel safeTVessel;
+
     const int threeRage = 9;
     const int twoRage = 6;
     const int oneRage = 3;
@@ -52,5 +54,16 @@ public class SafeTMana : Mana
             currentRage = 1;
         else
             currentRage = 0;
+
+        MyVessel.ManaTracking();
     }
+
+    public override void SetVessel(PlayerVessel newVessel)
+    {
+        base.SetVessel(newVessel);
+        safeTVessel = MyVessel.GetComponent<SafeTVessel>();
+    }
+
+    public int GetCurrentAnger() { return currentAnger; }
+    public int GetCurrentRage() { return currentRage; }
 }
