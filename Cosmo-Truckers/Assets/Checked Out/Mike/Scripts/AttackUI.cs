@@ -43,10 +43,9 @@ public class AttackUI : MonoBehaviour
         for (int i = 0; i < myCharacter.GetAllAttacks.Count; i++)
         {
             children[i].gameObject.SetActive(true);
+            children[i].rotation = Quaternion.identity;
             if (i < numberOfAttacks)
                 children[i].gameObject.GetComponent<TMP_Text>().text = player.GetAllAttacks[i].AttackName;
-            else
-                children[i].gameObject.GetComponent<TMP_Text>().text = "";
 
             x = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
             y = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
@@ -83,7 +82,7 @@ public class AttackUI : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                if(currentPlayer.GetAllAttacks[currentAttack].CanUse)
+                if(children[currentAttack].gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
                     StartAttack();
             }
         }
@@ -146,7 +145,7 @@ public class AttackUI : MonoBehaviour
 
         SetOpacity(currentAttack);
 
-        if (String.IsNullOrEmpty(children[currentAttack].gameObject.GetComponent<TMP_Text>().text))
+        if (!children[currentAttack].gameObject.activeSelf || !currentPlayer.GetAllAttacks[currentAttack].CanUse)
         {
             speed = speedIncrease;
             RotateWheel(rotationValue);
@@ -160,31 +159,35 @@ public class AttackUI : MonoBehaviour
 
     void SetOpacity(int attack)
     {
-        SetColor();
+        for(int i = 0; i < children.Count; i++)
+        {
+            if(i == attack)
+            {
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 1);
+            }
+            else if((attack == 0 && i == children.Count - 1) || (attack == children.Count - 1 && i == 0))
+            {
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
+            }
+            else if(i == attack - 1 || i == attack + 1)
+            {
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
+            }
+            else
+            {
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .25f);
+            }
+        }
 
-        //if (currentAttack == 0)
-        //{
-        //    children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
-        //    children[numberOfAttacks].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
-        //}
-        //else if (currentAttack == numberOfAttacks)
-        //{
-        //    children[0].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .70f);
-        //    children[numberOfAttacks - 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
-        //}
-        //else
-        //{
-        //    children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
-        //    children[currentAttack - 1].gameObject.GetComponent<TMP_Text>().color = new Color(children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.r, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.g, children[currentAttack + 1].gameObject.GetComponent<TMP_Text>().color.b, .50f);
-        //}
+        SetColor();
     }
 
     private void SetColor()
     {
         for (int i = 0; i < numberOfAttacks; i++)
             if (currentPlayer.GetAllAttacks[i].CanUse)
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, 1);
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, children[i].gameObject.GetComponent<TMP_Text>().color.a);
             else
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, 1);
+                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, children[i].gameObject.GetComponent<TMP_Text>().color.a);
     }
 }
