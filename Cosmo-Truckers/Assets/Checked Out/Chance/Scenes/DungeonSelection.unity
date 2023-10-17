@@ -482,31 +482,23 @@ MonoBehaviour:
   - {fileID: 156618566}
   - {fileID: 1208150810}
   - {fileID: 1506177325}
-  RestNode: {fileID: 11400000, guid: e2c734d5f77c323488fdebe74204bd5d, type: 2}
+  RestNode: {fileID: 8338868470121127358, guid: e714c43566cc0e54499eb938d6c27ea9, type: 3}
   CombatNodes:
-  - {fileID: 11400000, guid: bc58a5d5d5fc5b54eb4d1c01939707e4, type: 2}
-  - {fileID: 11400000, guid: 31dbc4244101dbe42986f3726e0f19d9, type: 2}
-  - {fileID: 11400000, guid: cdd99f77d6ad8c149a081a8ce5eb195d, type: 2}
-  - {fileID: 11400000, guid: 2bb4cc023d1d7f04cbd6f8933de06681, type: 2}
-  - {fileID: 11400000, guid: b22e53837eeef0048a689b67864c742c, type: 2}
-  - {fileID: 11400000, guid: ad30bda2a93d6154ea74392212b66c13, type: 2}
-  - {fileID: 11400000, guid: 3f459f8ef789b884ea2cfd24b2b2fc25, type: 2}
-  - {fileID: 11400000, guid: f88ebc4cd066def43abad6cbed2bf658, type: 2}
+  - {fileID: 8338868470121127358, guid: 22f37726439c8c242ae5cffbde028cec, type: 3}
+  - {fileID: 8338868470121127358, guid: 2132bb480795da5429a2d6d3a2ba0c3c, type: 3}
+  - {fileID: 8338868470121127358, guid: 0098c6ee75a3b714aac5d322a1b93573, type: 3}
+  - {fileID: 8338868470121127358, guid: 825513e9dba873a4bbf66b452e0feb58, type: 3}
+  - {fileID: 8338868470121127358, guid: a1f84092f2e96be4887d78ad702b259f, type: 3}
   MiddleNodes:
-  - {fileID: 11400000, guid: 3589313cf07db5246a9294a0467f2516, type: 2}
-  - {fileID: 11400000, guid: d6252d30265ed0b4bb496039b6fedc88, type: 2}
-  - {fileID: 11400000, guid: 2b09a5421edd04c4cad0ebc73703ac7e, type: 2}
-  - {fileID: 11400000, guid: 0863580e10171434aae72b60a99a7603, type: 2}
-  - {fileID: 11400000, guid: e73d306030ad5174f9de52b5421af5fd, type: 2}
-  - {fileID: 11400000, guid: 2dabf13afe803884b839b14432cd37cc, type: 2}
-  - {fileID: 11400000, guid: 8b173d4ad9ff58345b68fcc3850aad88, type: 2}
-  - {fileID: 11400000, guid: dfef6856d05304246b9bf667349c3079, type: 2}
-  - {fileID: 11400000, guid: d87fa203454c4fe46b204540cb61dda7, type: 2}
-  - {fileID: 11400000, guid: aec46ac6facaea1479ba559671f8a99a, type: 2}
+  - {fileID: 8338868470121127358, guid: 715bcdac27ac25b4eb4fc5537d0ac8e6, type: 3}
+  - {fileID: 8338868470121127358, guid: aaaa8af42bc720846b0a34b2d3e7f7c8, type: 3}
+  - {fileID: 8338868470121127358, guid: c02d2076b6da4354890132c4c17fe75a, type: 3}
+  - {fileID: 8338868470121127358, guid: f148e3467b77da2448830e6750e8c8a2, type: 3}
+  - {fileID: 8338868470121127358, guid: 1a480ca28588f484caf10013bb517663, type: 3}
   BossNode:
-  - {fileID: 11400000, guid: 7c40ee3d80cae4c4ba5849c217fa3a9c, type: 2}
-  - {fileID: 11400000, guid: a28d2b9c35aa7d44098aa0d097ed86dd, type: 2}
-  - {fileID: 11400000, guid: 650d1d84c83d3564888a0c8fbc39ea53, type: 2}
+  - {fileID: 8338868470121127358, guid: 9bfcfa0361578c7489cd73e9b7cf4ba2, type: 3}
+  - {fileID: 8338868470121127358, guid: 279c073a57076074b9cde52a30560066, type: 3}
+  - {fileID: 8338868470121127358, guid: a934659dfb071a641a93fd21aad5fb22, type: 3}
   LineStartColor: {r: 0, g: 0, b: 0, a: 0.39215687}
   LineEndColor: {r: 0, g: 0, b: 0, a: 0.78431374}
   LineStartWidth: 0.03
@@ -611,6 +603,7 @@ GameObject:
   - component: {fileID: 990473058}
   - component: {fileID: 990473057}
   - component: {fileID: 990473056}
+  - component: {fileID: 990473059}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -684,6 +677,39 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &990473059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990473055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
 --- !u!1 &1012031896
 GameObject:
   m_ObjectHideFlags: 0

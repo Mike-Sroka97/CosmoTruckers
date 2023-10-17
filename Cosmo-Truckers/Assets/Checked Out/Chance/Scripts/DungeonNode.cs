@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class DungeonNode : MonoBehaviour
 {
-    Node.DungeonNode Node;
+    Node.DungeonNodeBase Node;
 
     public int GetConnections { get => Node.Connections; }
 
-    public void SetNode(Node.DungeonNode node)
+    public void SetNode(Node.DungeonNodeBase node)
     {
         Node = node;
 

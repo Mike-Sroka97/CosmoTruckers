@@ -7,10 +7,10 @@ using UnityEngine.UI;
 public class DungeonGen : MonoBehaviour
 {
     [SerializeField] GameObject[] Levels;
-    [SerializeField] Node.DungeonNode RestNode;
-    [SerializeField] List<Node.DungeonNode> CombatNodes;
-    [SerializeField] List<Node.DungeonNode> MiddleNodes;
-    [SerializeField] List<Node.DungeonNode> BossNode;
+    [SerializeField] Node.DungeonNodeBase RestNode;
+    [SerializeField] List<Node.DungeonNodeBase> CombatNodes;
+    [SerializeField] List<Node.DungeonNodeBase> MiddleNodes;
+    [SerializeField] List<Node.DungeonNodeBase> BossNode;
 
     [Header("Line Options")]
     [SerializeField] Color LineStartColor;
@@ -30,7 +30,7 @@ public class DungeonGen : MonoBehaviour
     [System.Serializable]
     public struct DungeonData
     {
-        public DungeonData(int level, List<Node.DungeonNode> nodes, TextAnchor anchor, int seed)
+        public DungeonData(int level, List<Node.DungeonNodeBase> nodes, TextAnchor anchor, int seed)
         {
             Level = level;
             Nodes = nodes;
@@ -38,13 +38,13 @@ public class DungeonGen : MonoBehaviour
 
             Seed = seed;
         }
-        public void Add(Node.DungeonNode node)
+        public void Add(Node.DungeonNodeBase node)
         {
             Nodes.Add(node);
         }
 
         public int Level;
-        public List<Node.DungeonNode> Nodes;
+        public List<Node.DungeonNodeBase> Nodes;
         public TextAnchor AnchorPoint;
 
         public int Seed;
@@ -65,13 +65,13 @@ public class DungeonGen : MonoBehaviour
         int NodesToAdd = 1;
         int NodesToAddNext = 0;
 
-        List<Node.DungeonNode> tempNodes = new List<Node.DungeonNode>(MiddleNodes);
+        List<Node.DungeonNodeBase> tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
 
         for (int i = 0; i < Levels.Length; i++)
         {
             CurrentLayout.Add(new DungeonData(
                 i,
-                new List<Node.DungeonNode>(),
+                new List<Node.DungeonNodeBase>(),
                 (TextAnchor)Random.Range(0, 9),
                 RandomSeed != 0 ? RandomSeed : rand)
                 );
@@ -125,7 +125,7 @@ public class DungeonGen : MonoBehaviour
                     //Temparary while there are not a ton of test nodes to keep from cycling tho them all
                     //TODO 
                     //Remove
-                    if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNode>(MiddleNodes);
+                    if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
 
                     int choice = Random.Range(0, tempNodes.Count);
 
