@@ -19,6 +19,8 @@ public class Crusher : MonoBehaviour
     [SerializeField] bool recursive = true;
     [SerializeField] bool startCrush = true;
 
+    protected bool retracting;
+    protected bool engaging; 
     float startingY;
 
     private void Start()
@@ -29,15 +31,17 @@ public class Crusher : MonoBehaviour
             StartCoroutine(Crush());
     }
 
-    public IEnumerator Crush()
+    public virtual IEnumerator Crush()
     {
         float currentTime = 0;
+        retracting = false; 
 
         //Engage code
         yield return new WaitForSeconds(engageDelay);
 
         while(currentTime < engageDuration)
         {
+            engaging = true; 
             transform.position -= new Vector3(0, engageSpeed * Time.deltaTime, 0);
             currentTime += Time.deltaTime;
             yield return null;
@@ -46,7 +50,9 @@ public class Crusher : MonoBehaviour
         //Crush code
         yield return new WaitForSeconds(crushDelay);
 
-        while(transform.position.y > minCrushY)
+        engaging = false;
+
+        while (transform.position.y > minCrushY)
         {
             transform.position -= new Vector3(0, crushSpeed * Time.deltaTime, 0);
             yield return null;
@@ -59,6 +65,7 @@ public class Crusher : MonoBehaviour
 
         while(transform.position.y < startingY)
         {
+            retracting = true; 
             transform.position += new Vector3(0, retractSpeed * Time.deltaTime, 0);
             yield return null;
         }
