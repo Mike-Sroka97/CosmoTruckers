@@ -16,11 +16,9 @@ public class Enemy : Character
     protected BaseAttackSO ChosenAttack;
 
     Animator enemyAnimation;
-    EnemyManager enemyManager;
 
     private void Awake()
     {
-        enemyManager = FindObjectOfType<EnemyManager>();
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         turnOrder = FindObjectOfType<TurnOrder>();
         enemyAnimation = GetComponent<Animator>();

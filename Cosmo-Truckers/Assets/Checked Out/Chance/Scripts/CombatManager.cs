@@ -259,9 +259,9 @@ public class CombatManager : MonoBehaviour
         //enemy is taunted
         if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
         {
-            if (CheckPlayerSummonLayer(enemy.TauntedBy.CombatSpot[0]))
+            if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
             {
-                CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[enemy.TauntedBy.CombatSpot[0]]);
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
             }
             else
             {
@@ -282,9 +282,9 @@ public class CombatManager : MonoBehaviour
             {
                 if (!obj.Dead)
                 {
-                    if (CheckPlayerSummonLayer(obj.CombatSpot[0]))
+                    if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
                     {
-                        CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[obj.CombatSpot[0]]);
+                        CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                     }
                     else
                     {
@@ -435,9 +435,9 @@ public class CombatManager : MonoBehaviour
 
     private void OnDisable() => Instance = null;
 
-    public bool CheckPlayerSummonLayer(int playerSpot)
+    public bool CheckPlayerSummonLayer(Character summon)
     {
-        if(EnemyManager.Instance.PlayerSummons.Count != 0 && EnemyManager.Instance.PlayerSummons[playerSpot] != null && !EnemyManager.Instance.PlayerSummons[playerSpot].Dead)
+        if(summon != null && !summon.Dead)
             return true;
         return false;
     }

@@ -10,6 +10,8 @@ public abstract class Character : MonoBehaviour
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
+    public SpriteRenderer[] TargetingSprites;
+    public int CombatSpot;
     [HideInInspector] public int CurrentHealth
     {
         get
@@ -25,7 +27,6 @@ public abstract class Character : MonoBehaviour
         }
     }
     private int currentHealth;
-    [HideInInspector] public List<int> CombatSpot;
     public int Shield;
 
     public bool Dead;

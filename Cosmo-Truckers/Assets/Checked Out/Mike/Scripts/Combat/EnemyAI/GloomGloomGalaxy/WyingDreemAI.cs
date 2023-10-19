@@ -80,14 +80,14 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(TauntedBy.CombatSpot[0]))
+                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                     return;
                 }
-                else if(!EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]].Dead)
+                else if(!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
                     return;
                 }
             }
@@ -113,14 +113,14 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(TauntedBy.CombatSpot[0]))
+                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                     return;
                 }
-                else if (!EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]].Dead)
+                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
                     return;
                 }
             }
@@ -146,14 +146,14 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(TauntedBy.CombatSpot[0]))
+                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerSummons[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                     return;
                 }
-                else if (!EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]].Dead)
+                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
                 {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[TauntedBy.CombatSpot[0]]);
+                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
                     return;
                 }
             }
