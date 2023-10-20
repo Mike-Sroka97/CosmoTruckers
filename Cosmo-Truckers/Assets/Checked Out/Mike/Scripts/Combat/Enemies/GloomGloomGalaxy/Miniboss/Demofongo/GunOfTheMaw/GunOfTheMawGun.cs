@@ -11,11 +11,14 @@ public class GunOfTheMawGun : MonoBehaviour
     [SerializeField] float rotatorSpeed;
     [SerializeField] float spinDelay;
     [SerializeField] float fireDelay;
+    [SerializeField] float animationDelay, startSpinDelay; 
     [SerializeField] Transform barrel;
     [SerializeField] GameObject bullet;
+    [SerializeField] AnimationClip shoot; 
 
-    [HideInInspector] public int CurrentBlackListedSpawn = 8; 
+    [HideInInspector] public int CurrentBlackListedSpawn = 8;
 
+    Animator myAnimator; 
     Rotator myRotator;
     SpriteRenderer myRenderer;
     int lastRandom = -1;
@@ -24,6 +27,7 @@ public class GunOfTheMawGun : MonoBehaviour
     {
         myRotator = GetComponent<Rotator>();
         myRenderer = GetComponent<SpriteRenderer>();
+        myAnimator = GetComponent<Animator>();
 
         DeterminePosition();
     }
@@ -62,8 +66,14 @@ public class GunOfTheMawGun : MonoBehaviour
 
         yield return new WaitForSeconds(fireDelay);
 
+        myAnimator.Play(shoot.name);
+
+        yield return new WaitForSeconds(animationDelay);
+
         GameObject newBullet = Instantiate(bullet, barrel);
         newBullet.transform.parent = null;
+
+        yield return new WaitForSeconds(startSpinDelay);
 
         myRotator.RotateSpeed = -rotatorSpeed;
 

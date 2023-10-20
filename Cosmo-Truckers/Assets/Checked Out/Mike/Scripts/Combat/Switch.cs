@@ -12,17 +12,15 @@ public abstract class Switch : MonoBehaviour
         {
             return canBeToggled;
         }
-        set
+        protected set
         {
             if(value == true)
             {
-                myRenderer.material = activeMaterial;
-                canBeToggled = true;
+                SetToggle(activeMaterial, true); 
             }
             else
             {
-                myRenderer.material = toggledMaterial;
-                canBeToggled = false;
+                SetToggle(toggledMaterial, false);
             }
         }
     }
@@ -31,6 +29,11 @@ public abstract class Switch : MonoBehaviour
     protected SpriteRenderer myRenderer;
 
     private void Start()
+    {
+        Initialize(); 
+    }
+
+    protected void Initialize()
     {
         myRenderer = GetComponent<SpriteRenderer>();
 
@@ -41,6 +44,12 @@ public abstract class Switch : MonoBehaviour
     }
 
     protected abstract void ToggleMe();
+
+    private void SetToggle(Material material, bool toggled)
+    {
+        myRenderer.material = material;
+        canBeToggled = toggled;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

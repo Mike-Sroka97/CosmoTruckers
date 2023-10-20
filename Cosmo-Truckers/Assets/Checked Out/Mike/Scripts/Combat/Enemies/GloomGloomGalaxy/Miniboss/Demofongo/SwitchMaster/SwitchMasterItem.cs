@@ -10,11 +10,15 @@ public class SwitchMasterItem : MonoBehaviour
     [SerializeField] float flickerDuration;
     [SerializeField] float totalFlickerDuration;
     [SerializeField] float itemDecisionDuration;
+    [SerializeField] SpriteRenderer[] myItemRenderers;
+    [SerializeField] SpriteRenderer[] myDiscRenderers;
+    [SerializeField] Color neutralColor, negativeColor, positiveColor;
 
     [HideInInspector] public int CurrentValue;
 
     SpriteRenderer myRenderer;
     SwitchMasterHand hand;
+    int currentRenderer = 0;
     int lastRandom = -1;
     int random;
 
@@ -33,7 +37,7 @@ public class SwitchMasterItem : MonoBehaviour
 
     public void ActivateMe()
     {
-        foreach(SwitchMasterItem item in items)
+        foreach (SwitchMasterItem item in items)
         {
             item.GetComponent<SpriteRenderer>().enabled = true;
             StartCoroutine(item.Flicker());
@@ -81,6 +85,7 @@ public class SwitchMasterItem : MonoBehaviour
                 {
                     item.GetComponent<SpriteRenderer>().sprite = differentItems[0];
                     item.CurrentValue = 0;
+                    break; 
                 }
             }
         }
@@ -94,6 +99,7 @@ public class SwitchMasterItem : MonoBehaviour
                 {
                     item.GetComponent<SpriteRenderer>().sprite = differentItems[1];
                     item.CurrentValue = 1;
+                    break; 
                 }
             }
         }
@@ -107,6 +113,7 @@ public class SwitchMasterItem : MonoBehaviour
                 {
                     item.GetComponent<SpriteRenderer>().sprite = differentItems[2];
                     item.CurrentValue = 2;
+                    break; 
                 }
             }
         }
@@ -120,6 +127,7 @@ public class SwitchMasterItem : MonoBehaviour
                 {
                     item.GetComponent<SpriteRenderer>().sprite = differentItems[3];
                     item.CurrentValue = 3;
+                    break; 
                 }
             }
         }
@@ -152,6 +160,12 @@ public class SwitchMasterItem : MonoBehaviour
 
     private IEnumerator Flicker()
     {
+        if (masterItem)
+        {
+            myItemRenderers[currentRenderer].color = neutralColor;
+            myDiscRenderers[currentRenderer].color = neutralColor;
+        }
+
         float currentTime = 0;
 
         while(currentTime < totalFlickerDuration)
@@ -163,7 +177,15 @@ public class SwitchMasterItem : MonoBehaviour
 
             //flicker
             lastRandom = random;
-            myRenderer.sprite = differentItems[random];
+
+            if (masterItem)
+            {
+                myItemRenderers[currentRenderer].sprite = differentItems[random];
+            }
+            else
+            {
+                myRenderer.sprite = differentItems[random];
+            }
 
             yield return new WaitForSeconds(flickerDuration);
 
@@ -181,5 +203,21 @@ public class SwitchMasterItem : MonoBehaviour
 
         if(masterItem)
             StartCoroutine(hand.Grab());
+    }
+
+    public void IncrementToNextRenderer(bool correctChoice)
+    {
+        if (correctChoice)
+        {
+            myItemRenderers[currentRenderer].color = positiveColor;
+            myDiscRenderers[currentRenderer].color = positiveColor;
+        }
+        else
+        {
+            myItemRenderers[currentRenderer].color = negativeColor;
+            myDiscRenderers[currentRenderer].color = negativeColor;
+        }
+
+        currentRenderer++; 
     }
 }

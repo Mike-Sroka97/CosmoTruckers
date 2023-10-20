@@ -48,10 +48,12 @@ public class SwitchMasterHand : MonoBehaviour
         {
             minigame.Score++;
             demofongo.color = new Color(0, 1, 0, 1);
+            masterItem.IncrementToNextRenderer(true); 
         }
         else
         {
             demofongo.color = new Color(1, 0, 0, 1);
+            masterItem.IncrementToNextRenderer(false);
         }
 
         if(minigame.CurrentNumberOfCycles < minigame.MaxNumberOfCycles)

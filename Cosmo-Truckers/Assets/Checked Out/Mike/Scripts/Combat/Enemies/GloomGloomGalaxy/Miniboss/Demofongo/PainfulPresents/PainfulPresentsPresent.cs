@@ -12,9 +12,7 @@ public class PainfulPresentsPresent : MonoBehaviour
     [Header("Collectable Variables")]
     [SerializeField] Material badMaterial;
     [SerializeField] Material goodMaterial;
-    //[SerializeField] Sprite healSprite;
-    //Use Color instead of sprite until we have art
-    [SerializeField] Color healColor;
+    [SerializeField] Sprite goodSprite, badSprite, healSprite; 
 
     SpriteRenderer myRenderer;
     bool isHeal = false;
@@ -54,22 +52,29 @@ public class PainfulPresentsPresent : MonoBehaviour
 
     public void SetPresent(int typeOfPresent)
     {
+        if (myRenderer == null)
+        {
+            myRenderer = GetComponent<SpriteRenderer>();
+        }
+
         switch (typeOfPresent)
         {
             //bad case
             case 0:
                 myRenderer.material = badMaterial;
+                myRenderer.sprite = badSprite;
                 Destroy(GetComponent<PlayerPickup>());
                 break;
             //good case
             case 1:
                 myRenderer.material = goodMaterial;
+                myRenderer.sprite = goodSprite;
                 Destroy(GetComponent<TrackPlayerDeath>());
                 break;
             //heal  case
             case 2:
                 myRenderer.material = goodMaterial;
-                myRenderer.color = healColor;
+                myRenderer.sprite = healSprite; 
                 isHeal = true;
                 Destroy(GetComponent<TrackPlayerDeath>());
                 break;
