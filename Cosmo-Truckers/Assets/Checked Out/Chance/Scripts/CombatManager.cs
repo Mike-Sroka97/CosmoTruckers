@@ -16,6 +16,7 @@ public class CombatManager : MonoBehaviour
     List<GameObject> characters;   //Currently only one 
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
+    [SerializeField] Targeting myTargeting;
 
     [SerializeField] public List<Character> CharactersSelected;
     private List<PlayerCharacter> ActivePlayers;
@@ -31,6 +32,7 @@ public class CombatManager : MonoBehaviour
     public bool INAmoving = false;
 
     private void Awake() => Instance = this;
+    [HideInInspector] public bool TargetsSelected = true;
 
     public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
@@ -40,6 +42,8 @@ public class CombatManager : MonoBehaviour
 
         CurrentPlayer = currentPlayer;
         ActivePlayers.Add(currentPlayer);
+        TargetsSelected = false;
+        myTargeting.StartTargeting(attack);
 
         switch (attack.TargetingType)
         {
@@ -55,18 +59,6 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Single Target
             case EnumManager.TargetingType.Single_Target:
-                foreach (Enemy obj in FindObjectOfType<EnemyManager>().Enemies)
-                {
-                    obj.StartTarget();
-                    //Button button = obj.gameObject.GetComponentInChildren<Button>();
-                    //button.interactable = true;
-                    //button.onClick.AddListener(delegate
-                    //{
-                    //    print(obj.gameObject.name);
-                    //    CharactersSelected.Add(obj);
-                    //    Debug.Log($"Doing Combat Stuff for {attack.AttackName} against {CharactersSelected[0].name}. . .");
-                    //});
-                }
                 break;
             #endregion
             #region Multi Target Cone
@@ -319,6 +311,9 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
     {
+        while (!TargetsSelected)
+            yield return null;
+
         INAcombat INA = MiniGameScreen.GetComponentInParent<INAcombat>();
         float miniGameTime = attack.MiniGameTime;
         Timer.text = miniGameTime.ToString();
