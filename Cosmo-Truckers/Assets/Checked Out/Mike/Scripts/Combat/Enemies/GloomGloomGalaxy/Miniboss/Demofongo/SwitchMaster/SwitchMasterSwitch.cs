@@ -38,21 +38,25 @@ public class SwitchMasterSwitch : Switch
     {
         ToggleMe();
 
-        Quaternion initialRotation = myHand.transform.parent.rotation;
-        Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0f, degreesToRotate);
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < rotationDuration)
+        if (!myHand.CurrentlyGrabbing)
         {
-            float t = elapsedTime / rotationDuration;
-            myHand.transform.parent.rotation = Quaternion.Slerp(initialRotation, targetRotation, t);
+            Quaternion initialRotation = myHand.transform.parent.rotation;
+            Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0f, degreesToRotate);
 
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < rotationDuration)
+            {
+                float t = elapsedTime / rotationDuration;
+                myHand.transform.parent.rotation = Quaternion.Slerp(initialRotation, targetRotation, t);
+
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            myHand.transform.parent.rotation = targetRotation;
         }
 
-        myHand.transform.parent.rotation = targetRotation;
         ToggleMe(); 
 
     }

@@ -12,10 +12,15 @@ public class SwitchMasterHand : MonoBehaviour
     [SerializeField] Sprite closedHand;
     [SerializeField] SwitchMasterItem masterItem;
     [SerializeField] SpriteRenderer demofongo;
+    [SerializeField] Sprite demDefaultSprite;
+    [SerializeField] Sprite demSuccessSprite;
+    [SerializeField] Sprite demFailureSprite;
+    [SerializeField] float defaultReturnTime = 0.5f; 
 
     SpriteRenderer myRenderer;
     SwitchMaster minigame;
     int currentValue;
+    public bool CurrentlyGrabbing { get; private set;}  
 
     private void Start()
     {
@@ -25,6 +30,8 @@ public class SwitchMasterHand : MonoBehaviour
 
     public IEnumerator Grab()
     {
+        CurrentlyGrabbing = true; 
+
         currentValue = -1;
 
         while(transform.position != endPoint.position)
@@ -43,16 +50,19 @@ public class SwitchMasterHand : MonoBehaviour
 
         myRenderer.sprite = openHand;
         minigame.CurrentNumberOfCycles++;
+        CurrentlyGrabbing = false; 
 
         if(currentValue == masterItem.CurrentValue)
         {
+            //Success
             minigame.Score++;
-            demofongo.color = new Color(0, 1, 0, 1);
+            StartCoroutine(ChangeDemofongoSprite(true)); 
             masterItem.IncrementToNextRenderer(true); 
         }
         else
         {
-            demofongo.color = new Color(1, 0, 0, 1);
+            //failure
+            StartCoroutine(ChangeDemofongoSprite(false));
             masterItem.IncrementToNextRenderer(false);
         }
 
@@ -64,6 +74,25 @@ public class SwitchMasterHand : MonoBehaviour
         {
             minigame.EndMove();
         }
+    }
+
+    private IEnumerator ChangeDemofongoSprite(bool succeeded)
+    {
+        if (succeeded)
+        {
+            demofongo.sprite = demSuccessSprite;
+            demofongo.color = new Color(0, 1, 0, 1);
+        }
+        else
+        {
+            demofongo.sprite = demFailureSprite;
+            demofongo.color = new Color(1, 0, 0, 1);
+        }
+
+        yield return new WaitForSeconds(defaultReturnTime);
+
+        demofongo.sprite = demDefaultSprite;
+        demofongo.color = new Color(1, 1, 1, 1);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
