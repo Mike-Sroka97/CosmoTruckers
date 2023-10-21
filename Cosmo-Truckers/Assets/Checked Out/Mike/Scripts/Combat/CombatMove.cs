@@ -11,8 +11,8 @@ public abstract class CombatMove : MonoBehaviour
     //For games that can deal player damage
     [SerializeField] protected int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
-    [SerializeField] private bool playerEnemyTargetDifference = false;
-    [SerializeField] private bool defending;
+    [SerializeField] protected bool playerEnemyTargetDifference = false;
+    [SerializeField] protected bool defending;
     public float MinigameDuration;
 
     public int Score;
@@ -21,11 +21,11 @@ public abstract class CombatMove : MonoBehaviour
     public int Hits = 0;
     [Space(20)]
     [Header("Minigame Variables")]
-    [SerializeField] int maxScore;
-    [SerializeField] int augmentStacksPerHit;
-    [SerializeField] int maxAugmentStacks;
-    [SerializeField] int baseDamage;
-    [SerializeField] int baseAugmentStacks;
+    [SerializeField] protected int maxScore;
+    [SerializeField] protected int augmentStacksPerHit;
+    [SerializeField] protected int maxAugmentStacks;
+    [SerializeField] protected int baseDamage;
+    [SerializeField] protected int baseAugmentStacks;
 
     [Space(20)]
     [Header("Testing Variables")]

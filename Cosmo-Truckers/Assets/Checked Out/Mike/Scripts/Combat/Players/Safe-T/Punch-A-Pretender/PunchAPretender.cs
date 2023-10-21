@@ -10,6 +10,10 @@ public class PunchAPretender : CombatMove
     [SerializeField] float timeBetweenBadNodes;
     [SerializeField] float timeBetweenHittableNodes;
 
+    const int twoScoreValue = 4;
+    const int oneScoreValue = 2;
+    const int baseNumberOfAttacks = 2;
+
     float currentTimeBadNodes = 0;
     float currentTimeHittableNodes = 0;
     bool trackTime = false;
@@ -65,6 +69,37 @@ public class PunchAPretender : CombatMove
                 random = UnityEngine.Random.Range(0, papNodes.Length);
             }
             papNodes[random].StartFlash(false);
+        }
+    }
+
+    public override void EndMove()
+    {
+        MoveEnded = true;
+
+        if (CombatManager.Instance != null) //In the combat screen
+        {
+            SafeTCharacter character = CombatManager.Instance.GetCurrentPlayer.GetComponent<SafeTCharacter>();
+            int numberOfHits;
+
+            //Calculate Damage 
+            if (Score >= twoScoreValue)
+            {
+                Score = 2;
+                numberOfHits = twoScoreValue + baseNumberOfAttacks;
+            }
+            else if (Score >= oneScoreValue)
+            {
+                Score = 1;
+                numberOfHits = oneScoreValue + baseNumberOfAttacks;
+            }
+            else
+            {
+                Score = 0;
+                numberOfHits = 2;
+            }
+
+            //adjust number of hits and damage so that damage is static no matter the number of hits
+            character.GetComponent<Character>().TakeMultiHitDamage(baseDamage / numberOfHits, numberOfHits);
         }
     }
 }

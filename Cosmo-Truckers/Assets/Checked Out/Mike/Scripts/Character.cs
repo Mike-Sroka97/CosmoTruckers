@@ -66,6 +66,37 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
+    {
+        for(int i = 0; i < numberOfHits; i++)
+        {
+            if (!defensePiercing)
+                damage = AdjustAttackDamage(damage);
+
+            if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
+                passiveMove.Activate(CurrentHealth);
+
+            if (Shield > 0) Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+            else currentHealth -= damage;
+
+            if (CurrentHealth <= 0)
+            {
+                Die();
+            }
+            //See if any AUGS trigger on Damage (Spike shield)
+            else
+            {
+                foreach (DebuffStackSO aug in AUGS)
+                {
+                    if (aug.OnDamage)
+                    {
+                        aug.GetAugment().Trigger();
+                    }
+                }
+            }
+        }
+    }
+
     public virtual void TakeHealing(int healing)
     {
         healing = AdjustAttackHealing(healing);

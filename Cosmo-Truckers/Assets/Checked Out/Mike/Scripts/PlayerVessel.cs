@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerVessel : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI currentHealth;
+    [SerializeField] protected TextMeshProUGUI currentHealth;
     [SerializeField] TextMeshProUGUI maxHealth;
     [SerializeField] GameObject shieldGO;
     [SerializeField] Image characterImage;
@@ -15,13 +15,13 @@ public class PlayerVessel : MonoBehaviour
 
     [Space(20)]
     [Header("Special Effects")]
-    [SerializeField] TextMeshProUGUI damageHealingText;
-    [SerializeField] Color damageColor;
-    [SerializeField] Color healingColor;
-    [SerializeField] float fadeSpeed;
-    [SerializeField] float moveSpeed;
+    [SerializeField] protected TextMeshProUGUI damageHealingText;
+    [SerializeField] protected Color damageColor;
+    [SerializeField] protected Color healingColor;
+    [SerializeField] protected float fadeSpeed;
+    [SerializeField] protected float moveSpeed;
 
-    PlayerCharacter myCharacter;
+    protected PlayerCharacter myCharacter;
     [HideInInspector] public Mana MyMana;
 
     public void Initialize(PlayerCharacter player)
@@ -56,24 +56,44 @@ public class PlayerVessel : MonoBehaviour
         float healthRatio = currentHealthValue / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
-        StartCoroutine(DamageHealingEffect(damage));
+        StartCoroutine(DamageHealingEffect(damage, damageHealingAmount));
     }
 
-    IEnumerator DamageHealingEffect(bool damage)
+    public void AdjustMultiHitHealthDisplay(int newHealth, int damageHealingAmount, int numberOfHits, bool damage = true)
     {
-        if (damage)
-            damageHealingText.color = damageColor;
-        else
-            damageHealingText.color = healingColor;
+        damageHealingText.text = damageHealingAmount.ToString();
+        currentHealth.text = newHealth.ToString();
 
-        while(damageHealingText.color.a > 0)
+        float currentHealthValue = myCharacter.CurrentHealth;
+        float maxHealth = myCharacter.Health;
+        float healthRatio = currentHealthValue / maxHealth;
+        currentHealthBar.fillAmount = healthRatio;
+
+        StartCoroutine(DamageHealingEffect(damage, damageHealingAmount, numberOfHits));
+    }
+
+    protected virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
+    {
+        int currentCharacterHealth = myCharacter.CurrentHealth;
+
+        for (int i = 0; i < numberOfHits; i++)
         {
-            damageHealingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-            damageHealingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-            yield return null;
-        }
+            currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
 
-        damageHealingText.transform.localPosition = Vector3.zero;
+            if (damage)
+                damageHealingText.color = damageColor;
+            else
+                damageHealingText.color = healingColor;
+
+            while (damageHealingText.color.a > 0)
+            {
+                damageHealingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+                damageHealingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            damageHealingText.transform.localPosition = Vector3.zero;
+        }
     }
 
     public virtual void ManaTracking() { }

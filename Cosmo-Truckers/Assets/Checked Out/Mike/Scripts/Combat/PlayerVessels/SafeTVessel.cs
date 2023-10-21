@@ -10,6 +10,8 @@ public class SafeTVessel : PlayerVessel
     [SerializeField] Color angerColor;
     [SerializeField] Color rageColor;
 
+    SafeTMana safeTMana;
+
     const int ragePip = 3;
 
     public override void ManaTracking()
@@ -19,7 +21,7 @@ public class SafeTVessel : PlayerVessel
             node.color = offColor;
 
         //set current mana
-        SafeTMana safeTMana = MyMana.GetComponent<SafeTMana>();
+        safeTMana = MyMana.GetComponent<SafeTMana>();
         int totalAnger = safeTMana.GetCurrentAnger();
         int totalRage = safeTMana.GetCurrentRage();
 
@@ -48,6 +50,32 @@ public class SafeTVessel : PlayerVessel
                 default:
                     break;
             }
+        }
+    }
+
+    protected override IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
+    {
+        int currentCharacterHealth = myCharacter.CurrentHealth;
+
+        for (int i = 0; i < numberOfHits; i++)
+        {
+            safeTMana.SetCurrentAnger(1);
+
+            currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+
+            if (damage)
+                damageHealingText.color = damageColor;
+            else
+                damageHealingText.color = healingColor;
+
+            while (damageHealingText.color.a > 0)
+            {
+                damageHealingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+                damageHealingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            damageHealingText.transform.localPosition = Vector3.zero;
         }
     }
 }

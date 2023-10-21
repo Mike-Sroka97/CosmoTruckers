@@ -115,6 +115,16 @@ public class Enemy : Character
         StartCoroutine(DamageHealingEffect(true, damage.ToString()));
     }
 
+    public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
+    {
+        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+
+        if (!defensePiercing)
+            damage = AdjustAttackDamage(damage);
+
+        StartCoroutine(DamageHealingEffect(true, damage.ToString(), numberOfHits));
+    }
+
     public override void TakeHealing(int healing)
     {
         base.TakeHealing(healing);
@@ -123,56 +133,60 @@ public class Enemy : Character
             StartCoroutine(DamageHealingEffect(false, healing.ToString()));
     }
 
-    IEnumerator DamageHealingEffect(bool damage, string text = null)
+    IEnumerator DamageHealingEffect(bool damage, string text = null, int numberOfHits = 1)
     {
-        damageTextStartPosition = damageText.transform.localPosition;
-        healingTextStartPosition = healingText.transform.localPosition;
-
-        //COLE TODO replace color with SFX
-        if (damage)
+        for(int i = 0; i < numberOfHits; i++)
         {
-            damageText.text = text;
+            damageTextStartPosition = damageText.transform.localPosition;
+            healingTextStartPosition = healingText.transform.localPosition;
 
-            foreach (SpriteRenderer renderer in TargetingSprites)
-                renderer.color = damageColor;
-
-            damageText.color = damageColor;
-            while (damageText.color.a > 0)
+            //COLE TODO replace color with SFX
+            if (damage)
             {
-                damageText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-                damageText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                damageText.text = text;
 
                 foreach (SpriteRenderer renderer in TargetingSprites)
-                    renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
+                    renderer.color = damageColor;
 
-                yield return null;
+                damageText.color = damageColor;
+                while (damageText.color.a > 0)
+                {
+                    damageText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+                    damageText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+
+                    foreach (SpriteRenderer renderer in TargetingSprites)
+                        renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
+
+                    yield return null;
+                }
             }
-        }
 
-        //COLE TODO replace color with SFX
-        else if(!damage)
-        {
-            healingText.text = text;
-
-            foreach (SpriteRenderer renderer in TargetingSprites)
-                renderer.color = healingColor;
-
-            healingText.color = healingColor;
-            while (healingText.color.a > 0)
+            //COLE TODO replace color with SFX
+            else if (!damage)
             {
-                healingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-                healingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                healingText.text = text;
 
                 foreach (SpriteRenderer renderer in TargetingSprites)
-                    renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
+                    renderer.color = healingColor;
 
-                yield return null;
+                healingText.color = healingColor;
+                while (healingText.color.a > 0)
+                {
+                    healingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+                    healingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+
+                    foreach (SpriteRenderer renderer in TargetingSprites)
+                        renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
+
+                    yield return null;
+                }
             }
-        }
 
-        damageText.transform.localPosition = damageTextStartPosition;
-        healingText.transform.localPosition = healingTextStartPosition;
+            damageText.transform.localPosition = damageTextStartPosition;
+            healingText.transform.localPosition = healingTextStartPosition;
+        }
     }
+
 
     protected virtual void SpecialTarget(int attackIndex) { }
 }

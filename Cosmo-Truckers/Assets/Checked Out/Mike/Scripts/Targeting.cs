@@ -167,7 +167,19 @@ public class Targeting : MonoBehaviour
 
     private void TrackSelfTargetInput()
     {
+        //set initial target (start enemy side)
+        if (!initialSetup)
+        {
+            initialSetup = true;
+            currentlySelectedTargets.Add(CombatManager.Instance.GetCurrentPlayer);
+            Target(CombatManager.Instance.GetCurrentPlayer);
+        }
 
+        //track choice
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReactivateCombatManager();
+        }
     }
 
     private void TrackSingleTargetInput()
