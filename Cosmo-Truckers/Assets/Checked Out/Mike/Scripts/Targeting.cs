@@ -15,6 +15,8 @@ public class Targeting : MonoBehaviour
     bool initialSetup = false;
     bool targetingEnemies = true;
     List<Character> currentlySelectedTargets;
+    int column = 0;
+    int row = 0;
 
     private void Start()
     {
@@ -76,6 +78,7 @@ public class Targeting : MonoBehaviour
 
         CombatManager.Instance.TargetsSelected = true;
         isTargeting = false;
+        ClearTargets();
         currentlySelectedTargets.Clear();
     }
 
@@ -119,11 +122,6 @@ public class Targeting : MonoBehaviour
         }
 
         currentlySelectedTargets.Clear();
-    }
-
-    private int FindNextSpot(bool horizontal, bool positiveDirection, bool enemy, int column)
-    {
-        return 0;
     }
 
     private void TrackNoTargetInput()
@@ -196,63 +194,14 @@ public class Targeting : MonoBehaviour
             {
                 if (targetingEnemies)
                 {
-                    int column;
-
-                    if (currentlySelectedTargets[0].CombatSpot == 0)
-                    {
-                        column = 0;
-                        for(int i = 3; i > 0; i--)
-                        {
-                            if(EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
-                            {
-                                ClearTargets();
-                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
-                                Target(currentlySelectedTargets[0]);
-                                break;
-                            }
-                        }
-                    }
-                    else if (currentlySelectedTargets[0].CombatSpot == 4)
-                    {
-                        column = 1;
-                        FindNextSpot(false, false, true, column);
-                    }
-                    else if(currentlySelectedTargets[0].CombatSpot == 8)
-                    {
-                        column = 2;
-                        FindNextSpot(false, false, true, column);
-                    }
-                    else
-                    {
-                        column = 0;
-                        if (currentlySelectedTargets[0].CombatSpot <= 3)
-                            column = 0;
-                        else if (currentlySelectedTargets[0].CombatSpot <= 7)
-                            column = 1;
-                        else
-                            column = 2;
-
-                        ClearTargets();
-                        int currentSpot = FindNextSpot(false, false, true, column);
-                        currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[currentSpot]);
-                    }
+                    TrackEnemyUpTargeting();
                 }
                 else
                 {
-                    if (currentlySelectedTargets[0].CombatSpot == 0)
-                    {
-
-                    }
-                    else if (currentlySelectedTargets[0].CombatSpot == 4)
-                    {
-
-                    }
-                    else
-                    {
-
-                    }
+                    TrackPlayerUpTargeting();
                 }
             }
+            //TODO
             else if(Input.GetKeyDown(KeyCode.S))
             {
                 if (targetingEnemies)
@@ -286,6 +235,7 @@ public class Targeting : MonoBehaviour
                     }
                 }
             }
+            //TODO
             else if(Input.GetKeyDown(KeyCode.A))
             {
                 if (targetingEnemies)
@@ -297,6 +247,7 @@ public class Targeting : MonoBehaviour
 
                 }
             }
+            //TODO
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 if (targetingEnemies)
@@ -309,7 +260,7 @@ public class Targeting : MonoBehaviour
                 }
             }
         }
-        if (currentAttack.canTargetEnemies)
+        else if (currentAttack.canTargetEnemies)
         {
             //set initial target (only enemy side)
             if (!initialSetup)
@@ -332,68 +283,57 @@ public class Targeting : MonoBehaviour
             {
                 ReactivateCombatManager();
             }
-
+            //track up input
             if (Input.GetKeyDown(KeyCode.W))
             {
-                if (targetingEnemies)
+                TrackEnemyUpTargeting();
+            }
+            //track down input
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                TrackEnemyDownTargeting();
+            }
+            //track left input
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                TrackEnemyLeftTargeting();
+            }
+            //track right input
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                TrackEnemyRightTargeting();
+            }
+        }
+        else if (currentAttack.canTargetFriendly)
+        {
+            //set initial target (only player side)
+            if (!initialSetup)
+            {
+                initialSetup = true;
+                targetingEnemies = false;
+                foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
                 {
-                    int column;
-
-                    if (currentlySelectedTargets[0].CombatSpot == 0)
+                    if (!player.Dead)
                     {
-                        column = 0;
-                        for (int i = 3; i > 0; i--)
-                        {
-                            if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
-                            {
-                                ClearTargets();
-                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
-                                Target(currentlySelectedTargets[0]);
-                                break;
-                            }
-                        }
-                    }
-                    else if (currentlySelectedTargets[0].CombatSpot == 4)
-                    {
-                        column = 1;
-                        FindNextSpot(false, false, true, column);
-                    }
-                    else if (currentlySelectedTargets[0].CombatSpot == 8)
-                    {
-                        column = 2;
-                        FindNextSpot(false, false, true, column);
-                    }
-                    else
-                    {
-                        column = 0;
-                        if (currentlySelectedTargets[0].CombatSpot <= 3)
-                            column = 0;
-                        else if (currentlySelectedTargets[0].CombatSpot <= 7)
-                            column = 1;
-                        else
-                            column = 2;
-
-                        ClearTargets();
-                        currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[4]);
-                        Target(EnemyManager.Instance.EnemyCombatSpots[4]);
-                    }
-                }
-                else
-                {
-                    if (currentlySelectedTargets[0].CombatSpot == 0)
-                    {
-
-                    }
-                    else if (currentlySelectedTargets[0].CombatSpot == 4)
-                    {
-
-                    }
-                    else
-                    {
-
+                        currentlySelectedTargets.Add(player);
+                        Target(player);
+                        break;
                     }
                 }
             }
+
+            //track choice
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ReactivateCombatManager();
+            }
+
+            //TODO
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                
+            }
+            //TODO
             else if (Input.GetKeyDown(KeyCode.S))
             {
                 if (targetingEnemies)
@@ -427,6 +367,7 @@ public class Targeting : MonoBehaviour
                     }
                 }
             }
+            //TODO
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 if (targetingEnemies)
@@ -438,6 +379,7 @@ public class Targeting : MonoBehaviour
 
                 }
             }
+            //TODO
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 if (targetingEnemies)
@@ -450,27 +392,10 @@ public class Targeting : MonoBehaviour
                 }
             }
         }
-        else if (currentAttack.canTargetFriendly)
-        {
-            //set initial target (only player side)
-            if (!initialSetup)
-            {
-                initialSetup = true;
-                targetingEnemies = false;
-                foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
-                {
-                    if (!player.Dead)
-                    {
-                        currentlySelectedTargets.Add(player);
-                        Target(player);
-                        break;
-                    }
-                }
-            }
-
-            //track choice
-        }
     }
+
+
+
 
     private void TrackMultiTargetConeInput()
     {
@@ -490,5 +415,463 @@ public class Targeting : MonoBehaviour
     private void TrackAllTargetInput()
     {
 
+    }
+
+    private void TrackEnemyUpTargeting()
+    {
+        //top of enemy column back
+        if (currentlySelectedTargets[0].CombatSpot == 0)
+        {
+            column = 0;
+            for (int i = 3; i > 0; i--)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //top of enemy column front
+        else if (currentlySelectedTargets[0].CombatSpot == 4)
+        {
+            column = 1;
+            for (int i = 7; i > 3; i--)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //top of enemy summon column
+        else if (currentlySelectedTargets[0].CombatSpot == 8)
+        {
+            column = 2;
+            for (int i = 11; i > 7; i--)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //anywhere but the top of a column
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot <= 3)
+                column = 0;
+            else if (currentlySelectedTargets[0].CombatSpot <= 7)
+                column = 1;
+            else
+                column = 2;
+
+            for (int i = currentlySelectedTargets[0].CombatSpot - 1; i > (4 * column) - 1; i--) // 4 * column helps with staying in a specific column
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void TrackPlayerUpTargeting()
+    {
+        //top of player column
+        if (currentlySelectedTargets[0].CombatSpot == 0)
+        {
+            column = 0;
+            for (int i = 3; i > 0; i--)
+            {
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //top of player summon column
+        else if (currentlySelectedTargets[0].CombatSpot == 4)
+        {
+            column = 1;
+            for (int i = 7; i > 3; i--)
+            {
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot <= 3)
+                column = 0;
+            else
+                column = 1;
+
+            for (int i = currentlySelectedTargets[0].CombatSpot - 1; i > (4 * column) - 1; i--) // 4 * column helps with staying in a specific column
+            {
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void TrackEnemyDownTargeting()
+    {
+        //bottom of enemy column back
+        if (currentlySelectedTargets[0].CombatSpot == 3)
+        {
+            column = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //bottom of enemy column front
+        else if (currentlySelectedTargets[0].CombatSpot == 7)
+        {
+            column = 1;
+            for (int i = 4; i < 7; i++)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //bottom of enemy summon column
+        else if (currentlySelectedTargets[0].CombatSpot == 11)
+        {
+            column = 2;
+            for (int i = 8; i < 11; i++)
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+        //anywhere but the top of a column
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot <= 3)
+                column = 0;
+            else if (currentlySelectedTargets[0].CombatSpot <= 7)
+                column = 1;
+            else
+                column = 2;
+
+            for (int i = currentlySelectedTargets[0].CombatSpot + 1; i < (4 * column) + 4; i++) // 4 * column helps with staying in a specific column
+            {
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+                {
+                    ClearTargets();
+                    currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
+                    Target(currentlySelectedTargets[0]);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void TrackEnemyLeftTargeting()
+    {
+        //enemy summon column
+        if (currentlySelectedTargets[0].CombatSpot >= 8)
+        {
+            column = 2;
+
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8].Dead)
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[0]);
+            }
+            else
+            {
+                int tempColumn = column;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (tempColumn == 2)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else if (tempColumn == 1)
+                    {
+                        for (int j = 8; j < 11; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else
+                    {
+                        for (int j = 4; j < 7; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn -= 2;
+                    }
+                }
+            }
+        }
+        //anywhere but the enemy summon column
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot <= 3)
+                column = 0;
+            else
+                column = 1;
+
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 4].Dead)
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 4];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[0]);
+            }
+            else
+            {
+                int tempColumn = column;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (tempColumn == 2)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else if (tempColumn == 1)
+                    {
+                        for (int j = 8; j < 11; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else
+                    {
+                        for (int j = 4; j < 7; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn -= 2;
+                    }
+                }
+            }
+        }
+    }
+
+    private void TrackEnemyRightTargeting()
+    {
+        //enemy summon column
+        if (currentlySelectedTargets[0].CombatSpot <= 3)
+        {
+            column = 0;
+
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8].Dead)
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[0]);
+            }
+            else
+            {
+                int tempColumn = column;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (tempColumn == 2)
+                    {
+                        for (int j = 4; j < 7; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn--;
+                    }
+                    else if (tempColumn == 1)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn--;
+                    }
+                    else
+                    {
+                        for (int j = 8; j < 11; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn += 2;
+                    }
+                }
+            }
+        }
+        //anywhere but the enemy summon column
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot <= 3)
+                column = 0;
+            else
+                column = 1;
+
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead)
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[0]);
+            }
+            else
+            {
+                int tempColumn = column;
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (tempColumn == 2)
+                    {
+                        for (int j = 4; j < 7; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else if (tempColumn == 1)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn++;
+                    }
+                    else
+                    {
+                        for (int j = 8; j < 11; j++)
+                        {
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead)
+                            {
+                                ClearTargets();
+                                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
+                                Target(currentlySelectedTargets[0]);
+                                return;
+                            }
+                        }
+                        tempColumn -= 2;
+                    }
+                }
+            }
+        }
     }
 }

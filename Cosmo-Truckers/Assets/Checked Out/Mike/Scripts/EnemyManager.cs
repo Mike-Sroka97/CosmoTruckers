@@ -70,7 +70,6 @@ public class EnemyManager : MonoBehaviour
                 GameObject prefab = Instantiate(enemy, EnemyPrefabLocation);
                 prefab.transform.position = EnemyLocations[enemyCount].position;
                 prefab.GetComponentInChildren<SpriteRenderer>().sortingOrder = enemyCount;
-                enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
 
                 //TODO Figure out enemy spacing
                 for (int i = enemyCount; i < prefab.GetComponent<Character>().GetSpaceTaken + enemyCount; i++)
@@ -79,6 +78,7 @@ public class EnemyManager : MonoBehaviour
                     prefab.GetComponent<Character>().CombatSpot = i;
                 }
 
+                enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
             }
         }
 

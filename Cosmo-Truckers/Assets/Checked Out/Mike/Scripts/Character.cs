@@ -86,9 +86,11 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Die()
     {
+        //play death animation
         Dead = true;
         GetComponent<CharacterStats>().enabled = false;
-        myRenderer.enabled = false;
+        foreach (SpriteRenderer renderer in TargetingSprites)
+            renderer.enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
@@ -97,6 +99,8 @@ public abstract class Character : MonoBehaviour
     {
         CurrentHealth = newHealth;
         GetComponent<CharacterStats>().enabled = true;
+        foreach (SpriteRenderer renderer in TargetingSprites)
+            renderer.enabled = true;
         turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
