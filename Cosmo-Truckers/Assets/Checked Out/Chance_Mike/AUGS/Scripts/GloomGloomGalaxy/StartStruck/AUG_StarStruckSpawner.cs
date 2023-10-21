@@ -32,7 +32,7 @@ public class AUG_StarStruckSpawner : Augment
             if(!enemy.Item1.Dead)
             {
                 Enemy tempEnemy = enemy.Item1;
-                tempEnemy.CurrentHealth += enemy.Item2;
+                tempEnemy.TakeHealing(enemy.Item2);
                 Debug.Log("Healing " + tempEnemy.name + " for " + enemy.Item2 + " health.");
             }
         }

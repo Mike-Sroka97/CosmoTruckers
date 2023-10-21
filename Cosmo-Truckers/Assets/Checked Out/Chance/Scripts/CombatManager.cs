@@ -369,22 +369,6 @@ public class CombatManager : MonoBehaviour
 
         INAmoving = true;
 
-        //Handle EoT augments (store this data and display visuals in EndCombat()?
-        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
-
-        foreach (DebuffStackSO augment in allAugments)
-        {
-            if (augment.EveryTurnEnd)
-                augment.StopEffect();
-        }
-
-        Augment[] augments = FindObjectsOfType<Augment>();
-
-        foreach (Augment augment in augments)
-        {
-            Destroy(augment.gameObject);
-        }
-
         StartCoroutine(INA.MoveINA(false));
     }
 
@@ -401,18 +385,25 @@ public class CombatManager : MonoBehaviour
 
     public void EndCombat()
     {
+        miniGame.gameObject.SetActive(true);
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
-
-        //delay
-
-
-
-        //Clean up INA
-        CharactersSelected.Clear();
         Destroy(miniGame);
-        foreach(GameObject character in characters)
+        CharactersSelected.Clear();
+
+        //Handle EoT augments (store this data and display visuals in EndCombat()?
+        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+
+        foreach (DebuffStackSO augment in allAugments)
         {
-            Destroy(character);
+            if (augment.EveryTurnEnd)
+                augment.StopEffect();
+        }
+
+        Augment[] augments = FindObjectsOfType<Augment>();
+
+        foreach (Augment augment in augments)
+        {
+            Destroy(augment.gameObject);
         }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
@@ -423,9 +414,18 @@ public class CombatManager : MonoBehaviour
             //button.onClick.RemoveAllListeners();
         }
 
-
-
         FindObjectOfType<TurnOrder>().EndTurn();
+    }
+
+    public void CleanupMinigame()
+    {
+        //Clean up INA
+        foreach (GameObject character in characters)
+        {
+            Destroy(character);
+        }
+
+        miniGame.gameObject.SetActive(false);
     }
 
     private void OnDisable() => Instance = null;

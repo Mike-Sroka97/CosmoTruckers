@@ -12,6 +12,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
     [SerializeField] private bool playerEnemyTargetDifference = false;
+    [SerializeField] private bool defending;
     public float MinigameDuration;
 
     public int Score;
@@ -89,7 +90,16 @@ public abstract class CombatMove : MonoBehaviour
                     //Calculate Damage
                     if (Score < 0)
                         Score = 0;
-                    int currentDamage = maxScore * Damage - Score * Damage;
+                    if (Score >= maxScore)
+                        Score = maxScore;
+
+                    int currentDamage = 0;
+                    //defending/attacking
+                    if (!defending)
+                        currentDamage = Score * Damage;
+                    else
+                        currentDamage = maxScore * Damage - Score * Damage;
+
                     currentDamage += baseDamage;
 
                     //Calculate Augment Stacks

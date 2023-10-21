@@ -16,7 +16,6 @@ public class Targeting : MonoBehaviour
     bool targetingEnemies = true;
     List<Character> currentlySelectedTargets;
     int column = 0;
-    int row = 0;
 
     private void Start()
     {
@@ -31,6 +30,7 @@ public class Targeting : MonoBehaviour
     public void StartTargeting(BaseAttackSO attack)
     {
         isTargeting = true;
+        initialSetup = false;
         currentTargetingType = attack.TargetingType;
         currentAttack = attack;
         currentlySelectedTargets.Clear();

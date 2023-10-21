@@ -124,6 +124,8 @@ public class INAcombat : MonoBehaviour
                 yield return null;
             }
 
+            CombatManager.Instance.CleanupMinigame();
+
             topMask.localPosition = new Vector3(0, topMaskStartingY, 0);
             bottomMask.localPosition = new Vector3(0, bottomMaskStartingY, 0);
 

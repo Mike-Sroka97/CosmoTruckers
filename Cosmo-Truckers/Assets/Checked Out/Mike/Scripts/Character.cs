@@ -26,6 +26,7 @@ public abstract class Character : MonoBehaviour
                 currentHealth += value;
         }
     }
+
     private int currentHealth;
     public int Shield;
 
@@ -65,6 +66,13 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    public virtual void TakeHealing(int healing)
+    {
+        healing = AdjustAttackHealing(healing);
+
+        currentHealth += healing;
+    }
+
     protected int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
@@ -82,6 +90,17 @@ public abstract class Character : MonoBehaviour
         }
 
         return newDamage;
+    }
+
+    protected int AdjustAttackHealing(int healing)
+    {
+        int newHealing = healing;
+
+        //No adjustment if vigor is zero
+        float floatHealing = healing * Stats.Vigor / 100;
+        newHealing = (int)Math.Floor(floatHealing);
+
+        return newHealing;
     }
 
     public virtual void Die()
