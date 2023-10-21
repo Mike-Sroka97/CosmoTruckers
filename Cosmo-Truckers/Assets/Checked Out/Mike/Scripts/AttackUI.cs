@@ -94,7 +94,7 @@ public class AttackUI : MonoBehaviour
 
         currentPlayer.EndTurn();
 
-        FindObjectOfType<CombatManager>().StartCombat(currentPlayer.GetAllAttacks[hold], currentPlayer);
+        CombatManager.Instance.StartCombat(currentPlayer.GetAllAttacks[hold], currentPlayer);
     }
 
     protected void RotateWheel(float rotationValue)

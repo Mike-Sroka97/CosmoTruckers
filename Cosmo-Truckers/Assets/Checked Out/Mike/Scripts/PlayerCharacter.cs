@@ -49,6 +49,11 @@ public class PlayerCharacter : Character
     {
         FadeAugments();
 
+        SetupAttackWheel();
+    }
+
+    public void SetupAttackWheel()
+    {
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }

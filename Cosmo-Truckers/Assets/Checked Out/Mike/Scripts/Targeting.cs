@@ -41,6 +41,9 @@ public class Targeting : MonoBehaviour
         if (!isTargeting)
             return;
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+            CancelAttack();
+
         switch (currentTargetingType)
         {
             case EnumManager.TargetingType.No_Target:
@@ -77,6 +80,15 @@ public class Targeting : MonoBehaviour
         }
 
         CombatManager.Instance.TargetsSelected = true;
+        isTargeting = false;
+        ClearTargets();
+        currentlySelectedTargets.Clear();
+    }
+
+    private void CancelAttack()
+    {
+        CombatManager.Instance.GetCurrentPlayer.SetupAttackWheel();
+        CombatManager.Instance.StopAllCoroutines();
         isTargeting = false;
         ClearTargets();
         currentlySelectedTargets.Clear();
