@@ -36,6 +36,30 @@ public class Targeting : MonoBehaviour
         currentlySelectedTargets.Clear();
     }
 
+    public void EnemyTargeting(BaseAttackSO attack, float waitTime)
+    {
+        CombatManager.Instance.TargetsSelected = false;
+        isTargeting = true;
+        currentAttack = attack;
+        currentlySelectedTargets.Clear();
+
+        foreach (Character character in CombatManager.Instance.CharactersSelected)
+        {
+            currentlySelectedTargets.Add(character);
+            Target(character);
+        }
+
+
+        StartCoroutine(TargetingWait(waitTime));
+    }
+
+    IEnumerator TargetingWait(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        ReactivateCombatManager();
+    }
+
     private void TrackPlayerInput()
     {
         if (!isTargeting)

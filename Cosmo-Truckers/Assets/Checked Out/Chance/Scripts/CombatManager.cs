@@ -17,6 +17,7 @@ public class CombatManager : MonoBehaviour
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
     [SerializeField] Targeting myTargeting;
+    [SerializeField] float enemySpellHoldTime;
 
     [SerializeField] public List<Character> CharactersSelected;
     private List<PlayerCharacter> ActivePlayers;
@@ -125,18 +126,16 @@ public class CombatManager : MonoBehaviour
     public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
     {
         CurrentEnemy = enemy;
-        StartCoroutine(EnemyDelay(attack, enemy));
+        EnemyTarget(attack, enemy);
     }
 
-    IEnumerator EnemyDelay(BaseAttackSO attack, Enemy enemy)
+    private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
     {
         attackable = FindObjectsOfType<PlayerCharacter>();
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
         CurrentPlayer = null;
-
-        yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
         if(enemy.SpecialTargetConditions)
         {
@@ -147,14 +146,6 @@ public class CombatManager : MonoBehaviour
             foreach (Character character in CharactersSelected)
                 if (character.GetComponent<PlayerCharacter>())
                     ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
-
-            //foreach(PlayerCharacter playerCharacter in charactersToSpawn)
-            //{
-            //    ActivePlayers.Add(playerCharacter);
-            //    //character = Instantiate(playerCharacter.GetCharacterController);
-            //    //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * playerCharacter.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-            //    //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
-            //}
         }
         else
         {
@@ -191,8 +182,6 @@ public class CombatManager : MonoBehaviour
                     {
                         CharactersSelected.Add(enemy.TauntedBy);
                         ActivePlayers.Add(enemy.TauntedBy);
-                        //character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                        //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                     }
 
                     foreach (var obj in attackable)
@@ -201,8 +190,6 @@ public class CombatManager : MonoBehaviour
                         {
                             CharactersSelected.Add(obj);
                             ActivePlayers.Add(obj);
-                            //character = Instantiate(obj.GetCharacterController);
-                            //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                         }
                         if (CharactersSelected.Count == attack.NumberOFTargets)
                         {
@@ -224,8 +211,6 @@ public class CombatManager : MonoBehaviour
                     {
                         if (!obj.Dead)
                         {
-                            //character = Instantiate(obj.GetCharacterController);
-                            //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
                             CharactersSelected.Add(obj);
                             ActivePlayers.Add(obj);
                         }
@@ -238,10 +223,10 @@ public class CombatManager : MonoBehaviour
                     AllTargetEnemy(attack);
                     break;
                 #endregion
-
-                default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); yield break;
             }
         }
+
+        myTargeting.EnemyTargeting(attack, enemySpellHoldTime);
 
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
@@ -258,11 +243,7 @@ public class CombatManager : MonoBehaviour
             else
             {
                 CharactersSelected.Add(enemy.TauntedBy);
-
                 ActivePlayers.Add(enemy.TauntedBy);
-                //character = Instantiate(enemy.TauntedBy.GetCharacterController);
-                //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * enemy.TauntedBy.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
             }
         }
         //enemy is not taunted
@@ -283,9 +264,6 @@ public class CombatManager : MonoBehaviour
                         CharactersSelected.Add(obj);
                         ActivePlayers.Add(obj);
 
-                        //character = Instantiate(obj.GetCharacterController);
-                        //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                        //Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against {CharactersSelected[0].name}. . .");
                         break;
                     }
                 }

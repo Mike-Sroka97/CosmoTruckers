@@ -69,25 +69,17 @@ public class Enemy : Character
 
     public override void StartTurn()
     {
-        StartCoroutine(ProcessTurn());
+        FadeAugments();
+
+        if (ChosenAttack == null)
+            ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
+
+        FindObjectOfType<CombatManager>().StartTurnEnemy(ChosenAttack, this);
     }
 
     public override void EndTurn()
     {
         TauntedBy = null;
-    }
-
-    IEnumerator ProcessTurn()
-    {
-        FadeAugments();
-
-        yield return new WaitForSeconds(2f);
-
-        //AI is dumb and does not have target cons
-        if (ChosenAttack == null)
-            ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
-
-        FindObjectOfType<CombatManager>().StartTurnEnemy(ChosenAttack, this);
     }
 
     public override void AdjustDefense(int defense)
