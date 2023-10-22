@@ -29,7 +29,8 @@ public abstract class CombatMove : MonoBehaviour
 
     [Space(20)]
     [Header("Testing Variables")]
-    [SerializeField] bool spawnTest = false; 
+    [SerializeField] bool spawnTest = false;
+    [SerializeField] bool startMoveTest = false; 
 
     protected float currentTime = 0;
 
@@ -55,6 +56,16 @@ public abstract class CombatMove : MonoBehaviour
     }
 
     public virtual void StartMove() { }
+
+    protected void StartMoveTest()
+    {
+        if (startMoveTest)
+        {
+            Debug.LogError("Spawn Test is active");
+            StartMove();
+        }
+    }
+
     public void SetSpawns()
     {
         if (spawnPoints.Length == 0) return; //TEMP
