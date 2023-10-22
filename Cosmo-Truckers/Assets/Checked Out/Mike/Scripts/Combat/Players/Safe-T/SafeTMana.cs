@@ -5,8 +5,11 @@ using UnityEngine;
 public class SafeTMana : Mana
 {
     [SerializeField] int maxAnger;
+    [SerializeField] int superSlamOneCostHealth = 80;
+    [SerializeField] int superSlamZeroCostHealth = 40;
 
     SafeTVessel safeTVessel;
+    SafeTAttackSO superSlam;
 
     const int threeRage = 9;
     const int twoRage = 6;
@@ -17,11 +20,11 @@ public class SafeTMana : Mana
 
     public override void CheckCastableSpells()
     {
-        //Super Slam has a variable mana !!! TODO check myCharacter hp for this!
+        SuperSlamCheck();
 
-        foreach(SafeTAttackSO attack in attacks)
+        foreach (SafeTAttackSO attack in attacks)
         {
-            if(attack.RageRequirement <= currentRage)
+            if (attack.RageRequirement <= currentRage)
             {
                 attack.CanUse = true;
             }
@@ -30,6 +33,18 @@ public class SafeTMana : Mana
                 attack.CanUse = false;
             }
         }
+    }
+
+    private void SuperSlamCheck()
+    {
+        //Super Slam has a variable mana !!!
+        superSlam = (SafeTAttackSO)attacks[4];
+        if (myCharacter.CurrentHealth > superSlamOneCostHealth)
+            superSlam.RageRequirement = 2;
+        else if (myCharacter.CurrentHealth <= superSlamZeroCostHealth)
+            superSlam.RageRequirement = 0;
+        else
+            superSlam.RageRequirement = 1;
     }
 
     public void SetCurrentAnger(int adjuster)
