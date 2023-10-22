@@ -7,7 +7,7 @@ public class RandomNoise : MonoBehaviour
     [SerializeField] float fadeSpeed;
     [SerializeField] float fadeOutSpeed;
 
-    SpriteRenderer myRenderer;
+    SpriteRenderer myRenderer, myFillRenderer;
     Color startingColor;
     Collider2D myCollider;
     WhiteNoise minigame;
@@ -15,7 +15,8 @@ public class RandomNoise : MonoBehaviour
 
     private void Start()
     {
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        myFillRenderer = gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
         startingColor = myRenderer.color;
         myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<WhiteNoise>();
@@ -25,6 +26,7 @@ public class RandomNoise : MonoBehaviour
     {
         StopAllCoroutines();
         myRenderer.color = startingColor;
+        myFillRenderer.color = myRenderer.color;
         StartCoroutine(Fade());
     }
 
@@ -33,9 +35,11 @@ public class RandomNoise : MonoBehaviour
         while(myRenderer.color.a < 1)
         {
             myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, myRenderer.color.a + Time.deltaTime * fadeSpeed);
+            myFillRenderer.color = myRenderer.color; 
+
             yield return new WaitForSeconds(Time.deltaTime);
 
-            if(myRenderer.color.a > .25f && !active)
+            if(myRenderer.color.a > .3f && !active)
             {
                 active = true;
                 myCollider.enabled = true;
@@ -44,9 +48,15 @@ public class RandomNoise : MonoBehaviour
         while (myRenderer.color.a > 0)
         {
             myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, myRenderer.color.a - Time.deltaTime * fadeOutSpeed);
+            myFillRenderer.color = myRenderer.color;
+
             yield return new WaitForSeconds(Time.deltaTime);
+
+            if (myRenderer.color.a < .3f)
+            {
+                myCollider.enabled = false;
+            }
         }
-        myCollider.enabled = false;
         active = false;
     }
 

@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100186481321233}
   - component: {fileID: 3631100186481321228}
-  - component: {fileID: 3631100186481321231}
   - component: {fileID: 3631100186481321230}
   - component: {fileID: 3631100186481321229}
+  - component: {fileID: 8824130228755214887}
   m_Layer: 0
   m_Name: PussyHand (7)
   m_TagString: Untagged
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,22 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100186481321231
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100186481321232}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100186481321230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,9 +113,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &8824130228755214887
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100186481321232}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100186516419059
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,9 +232,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100186566746596}
   - component: {fileID: 3631100186566746595}
-  - component: {fileID: 3631100186566746594}
   - component: {fileID: 3631100186566746597}
   - component: {fileID: 3631100186566746592}
+  - component: {fileID: 3708022238916716481}
   m_Layer: 0
   m_Name: PussyHand (2)
   m_TagString: Untagged
@@ -297,7 +298,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -308,22 +309,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100186566746594
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100186566746599}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100186566746597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,9 +335,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &3708022238916716481
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100186566746599}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100187113799899
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,9 +365,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100187113799896}
   - component: {fileID: 3631100187113799895}
-  - component: {fileID: 3631100187113799894}
   - component: {fileID: 3631100187113799897}
   - component: {fileID: 3631100187113799892}
+  - component: {fileID: 5551000841429640341}
   m_Layer: 0
   m_Name: PussyHand (5)
   m_TagString: Untagged
@@ -429,7 +431,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -440,22 +442,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100187113799894
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100187113799899}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100187113799897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -482,9 +468,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &5551000841429640341
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100187113799899}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100187188580233
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,9 +498,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100187188580230}
   - component: {fileID: 3631100187188580229}
-  - component: {fileID: 3631100187188580228}
   - component: {fileID: 3631100187188580231}
   - component: {fileID: 3631100187188580226}
+  - component: {fileID: 1561472325090000469}
   m_Layer: 0
   m_Name: PussyHand (6)
   m_TagString: Untagged
@@ -561,7 +564,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -572,22 +575,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100187188580228
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100187188580233}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100187188580231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,9 +601,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &1561472325090000469
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100187188580233}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100187350900249
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,9 +631,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100187350900246}
   - component: {fileID: 3631100187350900245}
-  - component: {fileID: 3631100187350900244}
   - component: {fileID: 3631100187350900247}
   - component: {fileID: 3631100187350900242}
+  - component: {fileID: 5370751082343729798}
   m_Layer: 0
   m_Name: PussyHand (1)
   m_TagString: Untagged
@@ -693,7 +697,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -704,22 +708,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100187350900244
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100187350900249}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100187350900247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,9 +734,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &5370751082343729798
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100187350900249}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100187462479719
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,9 +831,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3631100187655280711}
   - component: {fileID: 3631100187655280706}
-  - component: {fileID: 3631100187655280709}
   - component: {fileID: 3631100187655280708}
   - component: {fileID: 3631100187655280707}
+  - component: {fileID: 2165059201015421986}
   m_Layer: 0
   m_Name: PussyHand (3)
   m_TagString: Untagged
@@ -892,7 +897,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 72b152c25ed86214191d42e105fdecdd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b7f91bfcd46117f4a8421971846f5076, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -903,22 +908,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &3631100187655280709
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3631100187655280710}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5416667
 --- !u!114 &3631100187655280708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -945,9 +934,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 799b6d7248f98c04ba1cec69b9bae1e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  successMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
+  successMaterial: {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   damagingMaterial: {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   successDuration: 2.2
+  successParticles: {fileID: 3932973462360758880, guid: f4fbdf8aeafd4144da8f18fd91508cb2, type: 3}
+--- !u!70 &2165059201015421986
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631100187655280710}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.6, y: 1.0833334}
+  m_Direction: 0
 --- !u!1 &3631100187677721242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,6 +1408,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 3443816510426033281}
     m_Modifications:
     - target: {fileID: 1544449454347190408, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1544449454347190408, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_SpriteTilingProperty.adaptiveTiling
       value: 0
       objectReference: {fileID: 0}
@@ -1415,7 +1425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1544449454347190415, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1544449454347190415, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1456,6 +1466,10 @@ PrefabInstance:
     - target: {fileID: 1544449454347190415, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_SpriteTileMode

@@ -8,7 +8,10 @@ public class FollowerNoise : MonoBehaviour
     [SerializeField] float shockCD;
     [SerializeField] float shockDuration;
     [SerializeField] Color shockColor;
+    [SerializeField] SpriteRenderer followerLips; 
+    [SerializeField] Sprite lipsAttack;
 
+    Sprite lipsDefault; 
     GameObject playerPosition;
     float currentTime = 0;
     bool isShocking = false;
@@ -21,11 +24,12 @@ public class FollowerNoise : MonoBehaviour
     private void Start()
     {
         playerPosition = GameObject.FindGameObjectWithTag("Player");
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
         startingColor = myRenderer.color;
         myCollider = GetComponent<Collider2D>();
         currentSpeed = moveTowardsSpeed;
         minigame = GetComponentInParent<WhiteNoise>();
+        lipsDefault = followerLips.sprite; 
     }
 
     private void Update()
@@ -54,6 +58,7 @@ public class FollowerNoise : MonoBehaviour
     {
         currentSpeed = 0;
         myRenderer.color = shockColor;
+        followerLips.sprite = lipsAttack; 
         myCollider.enabled = true;
         isShocking = true;
 
@@ -61,6 +66,7 @@ public class FollowerNoise : MonoBehaviour
 
         currentTime = 0;
         currentSpeed = moveTowardsSpeed;
+        followerLips.sprite = lipsDefault;
         myRenderer.color = startingColor;
         myCollider.enabled = false;
         isShocking = false;

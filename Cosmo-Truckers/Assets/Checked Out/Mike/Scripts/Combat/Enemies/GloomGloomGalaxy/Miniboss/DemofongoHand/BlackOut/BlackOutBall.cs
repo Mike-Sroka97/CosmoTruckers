@@ -7,6 +7,7 @@ public class BlackOutBall : MonoBehaviour
     [SerializeField] Material successMaterial;
     [SerializeField] Material damagingMaterial;
     [SerializeField] float successDuration;
+    [SerializeField] GameObject successParticles; 
 
     TrackPlayerDeath deathTracker;
     SpriteRenderer myRenderer;
@@ -64,6 +65,7 @@ public class BlackOutBall : MonoBehaviour
             Debug.Log(minigame.Score);
             myRenderer.material = successMaterial;
             myCollider.enabled = false;
+            GameObject particle = Instantiate(successParticles, transform.position, successParticles.transform.rotation, null);
         }
     }
 }

@@ -11,13 +11,16 @@ public class BlackOutRotator : Rotator
     [SerializeField] float maxSpeed;
     [SerializeField] float spinTime;
     [SerializeField] float holdTime;
+    [SerializeField] float rotatorSpeeds = 300f; 
 
+    List<Rotator> myRotators = new List<Rotator>(); 
     bool spinningLeft = true;
     BlackOut minigame;
 
     private void Start()
     {
         minigame = FindObjectOfType<BlackOut>();
+        GetRotators(); 
     }
 
 
@@ -40,12 +43,15 @@ public class BlackOutRotator : Rotator
             if (spinningLeft)
             {
                 RotateSpeed = -randomSpeed;
+                SetRotatorSpeeds(-rotatorSpeeds);
             }
             else
             {
                 RotateSpeed = randomSpeed;
+                SetRotatorSpeeds(rotatorSpeeds);
             }
 
+ 
 
             yield return new WaitForSeconds(randomRotationSwap);
 
@@ -71,5 +77,22 @@ public class BlackOutRotator : Rotator
 
         Rotating = false;
         RotateSpeed = 0;
+        SetRotatorSpeeds(0);
+    }
+
+    private void GetRotators()
+    {
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            myRotators.Add(transform.GetChild(i).GetComponent<Rotator>());
+        }
+    }
+
+    private void SetRotatorSpeeds(float speed)
+    {
+        for (int i = 0; i < myRotators.Count; i++)
+        {
+            myRotators[i].RotateSpeed = speed; 
+        }
     }
 }
