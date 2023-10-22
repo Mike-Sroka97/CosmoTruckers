@@ -167,7 +167,7 @@ public class Targeting : MonoBehaviour
 
     private void TrackSelfTargetInput()
     {
-        //set initial target (start enemy side)
+        //set initial target
         if (!initialSetup)
         {
             initialSetup = true;
@@ -454,7 +454,43 @@ public class Targeting : MonoBehaviour
 
     private void TrackAEOTargetInput()
     {
+        //set initial target
+        if (!initialSetup)
+        {
+            initialSetup = true;
 
+            //Target enemies
+            if (currentAttack.canTargetEnemies)
+            {
+                foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
+                {
+                    if (enemy != null && !enemy.Dead)
+                    {
+                        currentlySelectedTargets.Add(enemy);
+                        Target(enemy);
+                    }
+                }
+            }
+
+            //Target players
+            else if (currentAttack.canTargetFriendly)
+            {
+                foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
+                {
+                    if (player != null && !player.Dead)
+                    {
+                        currentlySelectedTargets.Add(player);
+                        Target(player);
+                    }
+                }
+            }
+        }
+
+        //track choice
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReactivateCombatManager();
+        }
     }
 
     private void TrackAllTargetInput()
