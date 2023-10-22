@@ -117,7 +117,7 @@ public class CombatManager : MonoBehaviour
                 break;
             #endregion
 
-            default: Debug.LogError($"{attack.TargetingType} not set up."); EndCombat(); return;
+            default: Debug.LogError($"{attack.TargetingType} not set up."); return;
         }
 
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
@@ -332,17 +332,17 @@ public class CombatManager : MonoBehaviour
         }
 
 
-        if (CharactersSelected.Count > 0)
-        {
-            foreach (Character player in CharactersSelected)  //PlayerCharacter invalid cast
-            {
-                foreach (DebuffStackSO aug in player.GetAUGS)
-                {
-                    if (aug.OnDamage == false)
-                        aug.StopEffect();
-                }
-            }
-        }
+        //if (CharactersSelected.Count > 0)
+        //{
+        //    foreach (Character player in CharactersSelected)  //PlayerCharacter invalid cast
+        //    {
+        //        foreach (DebuffStackSO aug in player.GetAUGS)
+        //        {
+        //            if (aug.OnDamage == false)
+        //                aug.StopEffect();
+        //        }
+        //    }
+        //}
         StopAllCoroutines();
 
         INAmoving = true;
@@ -387,9 +387,6 @@ public class CombatManager : MonoBehaviour
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {
             obj.EndTarget();
-            //Button button = obj.gameObject.GetComponentInChildren<Button>();
-            //button.interactable = false;
-            //button.onClick.RemoveAllListeners();
         }
 
         FindObjectOfType<TurnOrder>().EndTurn();
