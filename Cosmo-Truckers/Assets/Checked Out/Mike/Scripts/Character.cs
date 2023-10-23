@@ -7,6 +7,7 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+    [SerializeField] protected int maxShield = 60;
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
@@ -46,7 +47,16 @@ public abstract class Character : MonoBehaviour
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
             passiveMove.Activate(CurrentHealth);
 
-        if (Shield > 0) Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+        if (Shield > 0)
+        {
+            //calculate overrage damage
+            int overageDamage = damage - Shield;
+
+            Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+
+            if (overageDamage > 0)
+                currentHealth -= overageDamage;
+        } 
         else currentHealth -= damage;
 
         if (CurrentHealth <= 0)
@@ -76,7 +86,16 @@ public abstract class Character : MonoBehaviour
             if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
                 passiveMove.Activate(CurrentHealth);
 
-            if (Shield > 0) Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+            if (Shield > 0)
+            {
+                //calculate overrage damage
+                int overageDamage = damage - Shield;
+
+                Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+
+                if (overageDamage > 0)
+                    currentHealth -= overageDamage;
+            }
             else currentHealth -= damage;
 
             if (CurrentHealth <= 0)
@@ -101,7 +120,15 @@ public abstract class Character : MonoBehaviour
     {
         healing = AdjustAttackHealing(healing);
 
-        currentHealth += healing;
+        CurrentHealth += healing;
+    }
+
+    public virtual void TakeShielding(int shieldAmount)
+    {
+        if (Shield + shieldAmount > maxShield)
+            Shield = maxShield;
+        else
+            Shield += shieldAmount;
     }
 
     protected int AdjustAttackDamage(int damage)

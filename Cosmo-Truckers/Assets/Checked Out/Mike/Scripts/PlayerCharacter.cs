@@ -87,4 +87,15 @@ public class PlayerCharacter : Character
         base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
         MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits);
     }
+
+    public override void TakeHealing(int healing)
+    {
+        base.TakeHealing(healing);
+    }
+
+    public override void TakeShielding(int shieldAmount)
+    {
+        base.TakeShielding(shieldAmount);
+        MyVessel.AdjustShieldDisplay(Shield, shieldAmount);
+    }
 }

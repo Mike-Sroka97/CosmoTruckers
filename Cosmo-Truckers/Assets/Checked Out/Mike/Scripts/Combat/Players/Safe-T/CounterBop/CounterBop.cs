@@ -22,4 +22,18 @@ public class CounterBop : CombatMove
         foreach (CBWaveEnemy waveEnemy in waveEnemies)
             waveEnemy.enabled = true;
     }
+
+    public override void EndMove()
+    {
+        SafeTCharacter character = CombatManager.Instance.GetCurrentPlayer.GetComponent<SafeTCharacter>();
+
+        //Calculate total shields
+        int totalShields = baseDamage;
+        for (int i = 0; i < Score; i++)
+            totalShields += Damage;
+
+        character.TakeShielding(totalShields);
+
+        //Add CountR Guard augment TODO CHANCE
+    }
 }

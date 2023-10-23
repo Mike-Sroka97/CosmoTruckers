@@ -33,13 +33,13 @@ public class SafeTVessel : PlayerVessel
                     angerNodes[i].color = angerColor;
                     break;
                 case 1:
-                    if (i < 3)
+                    if (i < ragePip)
                         angerNodes[i].color = rageColor;
                     else
                         angerNodes[i].color = angerColor;
                     break;
                 case 2:
-                    if (i < 6)
+                    if (i < ragePip * 2)
                         angerNodes[i].color = rageColor;
                     else
                         angerNodes[i].color = angerColor;
@@ -55,6 +55,8 @@ public class SafeTVessel : PlayerVessel
 
     protected override IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
+        TrackShield();
+
         int currentCharacterHealth = myCharacter.CurrentHealth;
 
         for (int i = 0; i < numberOfHits; i++)

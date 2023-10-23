@@ -12,12 +12,15 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] Image characterImage;
     [SerializeField] TextMeshProUGUI currentShield;
     [SerializeField] Image currentHealthBar;
+    [SerializeField] Image currentShieldBar;
 
     [Space(20)]
     [Header("Special Effects")]
     [SerializeField] protected TextMeshProUGUI damageHealingText;
+    [SerializeField] protected TextMeshProUGUI shieldText;
     [SerializeField] protected Color damageColor;
     [SerializeField] protected Color healingColor;
+    [SerializeField] protected Color shieldColor;
     [SerializeField] protected float fadeSpeed;
     [SerializeField] protected float moveSpeed;
 
@@ -34,8 +37,8 @@ public class PlayerVessel : MonoBehaviour
         characterImage.sprite = myCharacter.VesselImage;
 
         //set shield
-        currentShield.text = "0";
-        shieldGO.SetActive(false);
+        shieldText.color = shieldColor;
+        TrackShield();
 
         //set health
         maxHealth.text = myCharacter.Health.ToString();
@@ -74,7 +77,10 @@ public class PlayerVessel : MonoBehaviour
 
     protected virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
+        TrackShield();
+
         int currentCharacterHealth = myCharacter.CurrentHealth;
+        shieldText.text = currentShield.ToString();
 
         for (int i = 0; i < numberOfHits; i++)
         {
@@ -94,6 +100,41 @@ public class PlayerVessel : MonoBehaviour
 
             damageHealingText.transform.localPosition = Vector3.zero;
         }
+    }
+
+    protected void TrackShield()
+    {
+        currentShield.text = myCharacter.Shield.ToString();
+        if (myCharacter.Shield <= 0)
+            shieldGO.SetActive(false);
+    }
+
+    public void AdjustShieldDisplay(int newShield, int shieldAmount)
+    {
+        shieldGO.SetActive(true);
+        currentShield.text = myCharacter.Shield.ToString();
+
+        float currentShieldValue = myCharacter.Shield;
+        float shieldRatio = currentShieldValue / 60; //60 is max shields
+        currentShieldBar.fillAmount = shieldRatio;
+
+        StartCoroutine(ShieldEffect(shieldAmount));
+    }
+
+    protected virtual IEnumerator ShieldEffect(int shieldAmount)
+    {
+        int currentShield = myCharacter.Shield;
+
+        shieldText.text = currentShield.ToString();
+
+        while (shieldText.color.a > 0)
+        {
+            shieldText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+            shieldText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        shieldText.transform.localPosition = Vector3.zero;
     }
 
     public virtual void ManaTracking() { }
