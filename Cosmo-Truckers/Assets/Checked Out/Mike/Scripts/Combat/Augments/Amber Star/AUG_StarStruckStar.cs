@@ -22,7 +22,7 @@ public class AUG_StarStruckStar : TrackPlayerDeath
         {
             dying = true;
             GameObject star = Instantiate(starExplosion, transform);
-            star.transform.parent = null;
+            //star.transform.parent = null;
             GetComponentInChildren<SpriteRenderer>().enabled = false;
             GetComponent<MoveForward>().enabled = false;
             Destroy(transform.parent.gameObject, 1f);

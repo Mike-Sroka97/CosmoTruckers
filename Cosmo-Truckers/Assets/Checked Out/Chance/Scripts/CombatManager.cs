@@ -347,6 +347,22 @@ public class CombatManager : MonoBehaviour
 
         INAmoving = true;
 
+        //Handle EoT augments (store this data and display visuals in EndCombat()?
+        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+
+        foreach (DebuffStackSO augment in allAugments)
+        {
+            if (augment.EveryTurnEnd)
+                augment.StopEffect();
+        }
+
+        Augment[] augments = FindObjectsOfType<Augment>();
+
+        foreach (Augment augment in augments)
+        {
+            Destroy(augment.gameObject);
+        }
+
         StartCoroutine(INA.MoveINA(false));
     }
 
@@ -367,22 +383,6 @@ public class CombatManager : MonoBehaviour
         miniGame.GetComponentInChildren<CombatMove>().EndMove();
         Destroy(miniGame);
         CharactersSelected.Clear();
-
-        //Handle EoT augments (store this data and display visuals in EndCombat()?
-        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
-
-        foreach (DebuffStackSO augment in allAugments)
-        {
-            if (augment.EveryTurnEnd)
-                augment.StopEffect();
-        }
-
-        Augment[] augments = FindObjectsOfType<Augment>();
-
-        foreach (Augment augment in augments)
-        {
-            Destroy(augment.gameObject);
-        }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
         {
