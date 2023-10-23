@@ -21,6 +21,7 @@ public class PunchAPretender : CombatMove
     private void Start()
     {
         GenerateLayout();
+        StartMoveTest(); 
     }
 
     public override void StartMove()

@@ -49,5 +49,11 @@ public class SSPostule : MonoBehaviour
                 }
             }
         }
+
+        if (collision.transform.tag == "PlayerAttack" && !collided)
+        {
+
+        }
     }
+    
 }
