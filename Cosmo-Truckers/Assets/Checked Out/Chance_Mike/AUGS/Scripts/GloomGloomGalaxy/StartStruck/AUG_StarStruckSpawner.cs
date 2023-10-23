@@ -56,7 +56,7 @@ public class AUG_StarStruckSpawner : Augment
             tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
         }
 
-        tempStar.transform.parent = this.gameObject.transform;
+        tempStar.transform.parent = CombatManager.Instance.GetMiniGame.transform; // this.gameObject.transform;
 
         StartCoroutine(SpawnStar());
     }
