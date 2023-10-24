@@ -8,6 +8,7 @@ public class Targeting : MonoBehaviour
     [SerializeField] Material positiveTargetMaterial;
     [SerializeField] Material negativeTargetMaterial;
     [SerializeField] Material notTargetedMaterial;
+    [SerializeField] Material enemyTargetingMaterial;
 
     bool isTargeting = false;
     EnumManager.TargetingType currentTargetingType;
@@ -49,6 +50,10 @@ public class Targeting : MonoBehaviour
             Target(character);
         }
 
+        foreach(SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+        {
+            sprite.material = enemyTargetingMaterial;
+        }
 
         StartCoroutine(TargetingWait(waitTime));
     }
@@ -58,6 +63,10 @@ public class Targeting : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         ReactivateCombatManager();
+        foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+        {
+            sprite.material = notTargetedMaterial;
+        }
     }
 
     private void TrackPlayerInput()
