@@ -19,15 +19,20 @@ public class PPspikeBall : MonoBehaviour
 
     private void Start()
     {
-        myBody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
-        minigame = FindObjectOfType<PowerPummel>();
+        GetStartingVariables();
     }
 
     private void Update()
     {
         CheckForWalls();
         TrackTime();
+    }
+
+    private void GetStartingVariables()
+    {
+        myBody = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<Collider2D>();
+        minigame = FindObjectOfType<PowerPummel>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -189,6 +194,11 @@ public class PPspikeBall : MonoBehaviour
 
     public void DetermineStartingMovement()
     {
+        if (myBody == null) 
+        {
+            GetStartingVariables();
+        }
+
         int rightRandom = UnityEngine.Random.Range(0, 2); //coin flip bb
         int upRandom = UnityEngine.Random.Range(0, 2); //coin flip bb
 

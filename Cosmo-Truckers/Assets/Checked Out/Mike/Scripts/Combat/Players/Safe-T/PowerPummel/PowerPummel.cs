@@ -11,6 +11,7 @@ public class PowerPummel : CombatMove
     private void Start()
     {
         GenerateLayout();
+        StartMoveTest(); 
     }
 
     public override void StartMove()

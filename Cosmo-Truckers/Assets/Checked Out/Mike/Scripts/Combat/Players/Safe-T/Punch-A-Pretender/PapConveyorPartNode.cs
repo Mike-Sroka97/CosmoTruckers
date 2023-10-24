@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PapConveyorPartNode : MonoBehaviour
 {
+    [SerializeField] GameObject goodParticles; 
+
     bool badZone;
     PunchAPretender minigame;
 
@@ -30,6 +32,12 @@ public class PapConveyorPartNode : MonoBehaviour
         else if(!badZone && collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+
+            if (goodParticles != null)
+            {
+                Instantiate(goodParticles, transform.position, goodParticles.transform.rotation, null);
+            }
+
             if(minigame.Score >= minigame.MaxScore)
             {
                 minigame.EndMove();

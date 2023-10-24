@@ -8,17 +8,19 @@ public class PPhittable : MonoBehaviour
     [SerializeField] float distance;
     [SerializeField] float moveSpeedIncrease;
     [SerializeField] float maxMoveSpeed;
+    [SerializeField] Sprite hitSprite; 
+    [SerializeField] float timeBetweenSprites = 0.2f; 
 
     PowerPummel minigame;
     Rigidbody2D myBody;
     Collider2D myCollider;
+    Sprite originalSprite; 
+    SpriteRenderer myRenderer; 
     int layermask = 1 << 9; //ground
 
     private void Start()
     {
-        minigame = FindObjectOfType<PowerPummel>();
-        myBody = GetComponent<Rigidbody2D>();
-        myCollider = GetComponent<Collider2D>();
+        GetStartingVariables();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,9 +29,19 @@ public class PPhittable : MonoBehaviour
         {
             myBody.velocity = -myBody.velocity;
             UpdateSpeed();
+            StartCoroutine(UpdateSprite()); 
             minigame.Score++;
             Debug.Log(minigame.Score);
         }
+    }
+
+    private void GetStartingVariables()
+    {
+        myBody = GetComponent<Rigidbody2D>();
+        minigame = FindObjectOfType<PowerPummel>();
+        myCollider = GetComponent<Collider2D>();
+        myRenderer = GetComponent<SpriteRenderer>();
+        originalSprite = myRenderer.sprite;
     }
 
     private void Update()
@@ -48,6 +60,13 @@ public class PPhittable : MonoBehaviour
             moveSpeed += moveSpeedIncrease;
             ChangeSpeed(moveSpeed);
         }
+    }
+
+    private IEnumerator UpdateSprite()
+    {
+        myRenderer.sprite = hitSprite;
+        yield return new WaitForSeconds(timeBetweenSprites);
+        myRenderer.sprite = originalSprite; 
     }
 
     private void ChangeSpeed(float speed)
@@ -106,6 +125,11 @@ public class PPhittable : MonoBehaviour
 
     public void DetermineStartingMovement()
     {
+        if (myBody == null)
+        {
+            GetStartingVariables();
+        }
+
         int rightRandom = UnityEngine.Random.Range(0, 2); //coin flip bb
         int upRandom = UnityEngine.Random.Range(0, 2); //coin flip bb
 
