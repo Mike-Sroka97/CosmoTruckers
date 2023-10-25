@@ -47,11 +47,13 @@ public class EnemyManager : MonoBehaviour
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in foundEnemies)
-            Enemies.Add(enemy);
+            if(!enemy.GetComponent<EnemySummon>())
+                Enemies.Add(enemy);
 
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
-            Players.Add(player);
+            if(!player.GetComponent<PlayerCharacterSummon>())
+                Players.Add(player);
 
         PlayerVesselManager.Instance.Initialize();
     }
@@ -89,9 +91,9 @@ public class EnemyManager : MonoBehaviour
                 GameObject prefab = Instantiate(enemySummon, EnemySummonPrefabLocation);
                 prefab.transform.position = EnemySummonLocations[enemySummonCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = enemySummonCount;
-                enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
                 EnemyCombatSpots[enemySummonCount + enemySummonIndexAdder] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = enemySummonCount + enemySummonIndexAdder;
+                enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
             }
         }
 
@@ -102,9 +104,9 @@ public class EnemyManager : MonoBehaviour
                 GameObject prefab = Instantiate(player, PlayerPrefabLocation);
                 prefab.transform.position = PlayerLocations[playerCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = playerCount;
-                playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
                 PlayerCombatSpots[playerCount] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerCount;
+                playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
             }
         }
 
@@ -115,9 +117,9 @@ public class EnemyManager : MonoBehaviour
                 GameObject prefab = Instantiate(playerSummon, PlayerSummonPrefabLocation);
                 prefab.transform.position = PlayerSummonLocations[playerSummonCount].position;
                 prefab.GetComponent<SpriteRenderer>().sortingOrder = playerSummonCount;
-                playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
                 PlayerCombatSpots[playerSummonCount + playerSummonIndexAdder] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerSummonCount + playerSummonIndexAdder;
+                playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
             }
         }
     }

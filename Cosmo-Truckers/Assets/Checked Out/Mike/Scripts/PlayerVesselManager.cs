@@ -19,8 +19,11 @@ public class PlayerVesselManager : MonoBehaviour
 
         for (int i = 0; i < EnemyManager.Instance.Players.Count; i++)
         {
-            PlayerVessel currentVessel = Instantiate(EnemyManager.Instance.Players[i].PlayerVessel, vesselSpawns[i]).GetComponent<PlayerVessel>();
-            currentVessel.Initialize(EnemyManager.Instance.Players[i]);
+            if(EnemyManager.Instance.Players[i].PlayerVessel != null)
+            {
+                PlayerVessel currentVessel = Instantiate(EnemyManager.Instance.Players[i].PlayerVessel, vesselSpawns[i]).GetComponent<PlayerVessel>();
+                currentVessel.Initialize(EnemyManager.Instance.Players[i]);
+            }
         }
     }
 }

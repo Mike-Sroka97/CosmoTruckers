@@ -312,7 +312,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 9add680e5c031b64d85998f7cb2f6c69, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.009994984, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -336,15 +336,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
+  maxShield: 60
   Stats: {fileID: 1190336181685528054}
   Health: 10
-  CurrentHealth: 0
-  CombatSpot: 
+  TargetingSprites:
+  - {fileID: 1190336181685528052}
+  CombatSpot: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
   attacks: []
+  damageText: {fileID: 0}
+  healingText: {fileID: 0}
+  damageColor: {r: 0, g: 0, b: 0, a: 0}
+  healingColor: {r: 0, g: 0, b: 0, a: 0}
+  fadeSpeed: 0
+  moveSpeed: 0
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 0
 --- !u!114 &1190336181685528054
