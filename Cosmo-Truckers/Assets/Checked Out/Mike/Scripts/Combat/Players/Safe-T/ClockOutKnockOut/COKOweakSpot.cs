@@ -5,10 +5,12 @@ using UnityEngine;
 public class COKOweakSpot : MonoBehaviour
 {
     ClockOutKnockOut minigame;
-
+    GonzorHurt gonzor; 
+    
     private void Start()
     {
         minigame = FindObjectOfType<ClockOutKnockOut>();
+        gonzor = FindObjectOfType<GonzorHurt>(); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -16,6 +18,7 @@ public class COKOweakSpot : MonoBehaviour
         if(collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+            gonzor.Hurt(); 
             Debug.Log(minigame.Score);
             Destroy(gameObject);
         }
