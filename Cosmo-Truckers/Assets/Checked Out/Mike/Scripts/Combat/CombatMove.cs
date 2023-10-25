@@ -56,6 +56,7 @@ public abstract class CombatMove : MonoBehaviour
     }
 
     public virtual void StartMove() { }
+    public virtual List<Character> NoTargetTargeting() { Debug.LogError("You didn't setup the override you devilish cunt"); return null; }
 
     protected void StartMoveTest()
     {

@@ -51,12 +51,14 @@ public class PlayerVessel : MonoBehaviour
 
     public void AdjustCurrentHealthDisplay(int newHealth, int damageHealingAmount, bool damage = true)
     {
+        if (newHealth < 0)
+            newHealth = 0;
+
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
 
-        float currentHealthValue = myCharacter.CurrentHealth;
         float maxHealth = myCharacter.Health;
-        float healthRatio = currentHealthValue / maxHealth;
+        float healthRatio = newHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
         StartCoroutine(DamageHealingEffect(damage, damageHealingAmount));
@@ -64,12 +66,14 @@ public class PlayerVessel : MonoBehaviour
 
     public void AdjustMultiHitHealthDisplay(int newHealth, int damageHealingAmount, int numberOfHits, bool damage = true)
     {
+        if (newHealth < 0)
+            newHealth = 0;
+
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
 
-        float currentHealthValue = myCharacter.CurrentHealth;
         float maxHealth = myCharacter.Health;
-        float healthRatio = currentHealthValue / maxHealth;
+        float healthRatio = newHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
         StartCoroutine(DamageHealingEffect(damage, damageHealingAmount, numberOfHits));

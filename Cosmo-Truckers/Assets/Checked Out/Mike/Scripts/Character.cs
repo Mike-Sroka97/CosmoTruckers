@@ -23,6 +23,8 @@ public abstract class Character : MonoBehaviour
         {
             if (currentHealth + value > Health)
                 currentHealth = Health;
+            else if (currentHealth + value < 0)
+                currentHealth = 0;
             else
                 currentHealth += value;
         }
@@ -61,6 +63,7 @@ public abstract class Character : MonoBehaviour
 
         if (CurrentHealth <= 0)
         {
+            currentHealth = 0;
             Die();
         }
         //See if any AUGS trigger on Damage (Spike shield)

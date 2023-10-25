@@ -16,16 +16,21 @@ public class VeggieVengeanceCannon : MonoBehaviour
     Rigidbody2D aeglarBody;
     float currentTime;
     bool trackTime;
+    public bool CalculateMove = false;
 
-    private void Start()
+    public void StartMove()
     {
         currentTime = shootCD;
         aeglar = FindObjectOfType<AeglarINA>();
         aeglarBody = aeglar.GetComponent<Rigidbody2D>();
+        CalculateMove = true;
     }
 
     private void Update()
     {
+        if (!CalculateMove)
+            return;
+
         TrackTime();
         if(!aeglar.GetDamaged())
         {
@@ -58,7 +63,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
     {
         currentTime = 0;
         trackTime = true;
-        Instantiate(projectile, barrel.position, transform.rotation);
+        Instantiate(projectile, barrel.position, transform.rotation, FindObjectOfType<CombatMove>().transform);
     }
 
     private void TrackAeglarRotation()

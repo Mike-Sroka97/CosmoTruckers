@@ -6,7 +6,7 @@ public abstract class Mana : MonoBehaviour
 {
     protected PlayerCharacter myCharacter;
     protected List<BaseAttackSO> attacks;
-    public PlayerVessel MyVessel;
+    [HideInInspector] public PlayerVessel MyVessel;
 
     private void Start()
     {

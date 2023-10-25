@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class VeggieVengeance : CombatMove
 {
-    private void Start()
+
+    public override void StartMove()
     {
         GenerateLayout();
+        FindObjectOfType<VeggieVengeanceCannon>().StartMove();
     }
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        FindObjectOfType<VeggieVengeanceCannon>().CalculateMove = false;
     }
 }

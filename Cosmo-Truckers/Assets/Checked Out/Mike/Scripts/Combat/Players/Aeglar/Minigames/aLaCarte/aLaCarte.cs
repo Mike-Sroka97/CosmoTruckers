@@ -18,6 +18,13 @@ public class ALaCarte : CombatMove
         GenerateCurrentLayout();
     }
 
+    public override List<Character> NoTargetTargeting()
+    {
+        List<Character> characters = new List<Character>();
+        characters.Add(FindObjectOfType<AeglarPlayer>());
+        return characters;
+    }
+
     public void GenerateCurrentLayout()
     {
         int tempSpawnIndex = 0;

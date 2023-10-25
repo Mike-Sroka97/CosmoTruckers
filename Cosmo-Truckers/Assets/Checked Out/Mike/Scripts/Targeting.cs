@@ -171,7 +171,23 @@ public class Targeting : MonoBehaviour
 
     private void TrackNoTargetInput()
     {
-        //kill long dog
+        //set initial target
+        if (!initialSetup)
+        {
+            initialSetup = true;
+            List<Character> noTargetCharacters = currentAttack.CombatPrefab.GetComponentInChildren<CombatMove>().NoTargetTargeting();
+            foreach(Character character in noTargetCharacters)
+            {
+                currentlySelectedTargets.Add(character);
+                Target(character);
+            }
+        }
+
+        //track choice
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReactivateCombatManager();
+        }
     }
 
     private void TrackSelfTargetInput()
