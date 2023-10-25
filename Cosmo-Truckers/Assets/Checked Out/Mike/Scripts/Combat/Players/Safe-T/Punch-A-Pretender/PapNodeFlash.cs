@@ -8,8 +8,10 @@ public class PapNodeFlash : MonoBehaviour
     [SerializeField] Color hittableColorFlash;
     [SerializeField] float flashTime;
     [SerializeField] int numberOfFlashes;
+    [SerializeField] Sprite goodSprite, badSprite;
 
     SpriteRenderer myRenderer;
+    Sprite startingSprite;
     Color startingColor;
     PaPConveyorPart myConveyorPart;
 
@@ -18,6 +20,7 @@ public class PapNodeFlash : MonoBehaviour
         myConveyorPart = GetComponentInParent<PaPConveyorPart>();
         myRenderer = GetComponent<SpriteRenderer>();
         startingColor = myRenderer.color;
+        startingSprite = myRenderer.sprite;  
     }
 
     public IEnumerator FlashMe(bool badFlash)
@@ -30,9 +33,11 @@ public class PapNodeFlash : MonoBehaviour
             while (currentFlash < numberOfFlashes)
             {
                 myRenderer.color = badColorFlash;
+                myRenderer.sprite = badSprite; 
                 yield return new WaitForSeconds(flashTime);
 
                 myRenderer.color = startingColor;
+                myRenderer.sprite = startingSprite; 
                 currentFlash++;
                 yield return new WaitForSeconds(flashTime);
             }
@@ -42,9 +47,11 @@ public class PapNodeFlash : MonoBehaviour
             while (currentFlash < numberOfFlashes)
             {
                 myRenderer.color = hittableColorFlash;
+                myRenderer.sprite = goodSprite;
                 yield return new WaitForSeconds(flashTime);
 
                 myRenderer.color = startingColor;
+                myRenderer.sprite = startingSprite;
                 currentFlash++;
                 yield return new WaitForSeconds(flashTime);
             }
