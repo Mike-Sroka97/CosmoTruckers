@@ -11,7 +11,14 @@ public class SeedSprout : CombatMove
     {
         GenerateLayout();
         flowers = GetComponentsInChildren<SeedSproutFlower>();
+    }
+
+    public override void StartMove()
+    {
         NextFlower();
+        SeedSproutMovingPlatform[] platforms = FindObjectsOfType<SeedSproutMovingPlatform>();
+        foreach (SeedSproutMovingPlatform platform in platforms)
+            platform.StartMove();
     }
 
     public void NextFlower()

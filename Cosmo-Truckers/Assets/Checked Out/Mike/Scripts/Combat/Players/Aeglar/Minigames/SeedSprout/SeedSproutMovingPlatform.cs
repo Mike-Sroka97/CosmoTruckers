@@ -10,13 +10,14 @@ public class SeedSproutMovingPlatform : MonoBehaviour
 
     float startingY;
     Rigidbody2D myBody;
+    bool checkDistance = false;
 
-    private void Start()
+    public void StartMove()
     {
         startingY = transform.position.y;
         myBody = GetComponent<Rigidbody2D>();
 
-        if(movingUp)
+        if (movingUp)
         {
             myBody.velocity = new Vector2(0, moveSpeed);
         }
@@ -24,6 +25,8 @@ public class SeedSproutMovingPlatform : MonoBehaviour
         {
             myBody.velocity = new Vector2(0, -moveSpeed);
         }
+
+        checkDistance = true;
     }
 
     private void Update()
@@ -33,6 +36,9 @@ public class SeedSproutMovingPlatform : MonoBehaviour
 
     private void CheckDistance()
     {
+        if (!checkDistance)
+            return;
+
         if(movingUp)
         {
             if(startingY + yDistance < transform.position.y)

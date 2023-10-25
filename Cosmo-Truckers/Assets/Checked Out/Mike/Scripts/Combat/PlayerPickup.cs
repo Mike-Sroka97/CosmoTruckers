@@ -18,7 +18,7 @@ public class PlayerPickup : MonoBehaviour
 
     private void Start()
     {
-        startingY = transform.position.y;
+        startingY = transform.localPosition.y;
         minigame = FindObjectOfType<CombatMove>();
     }
 
@@ -31,16 +31,16 @@ public class PlayerPickup : MonoBehaviour
     {
         if(movingUp)
         {
-            transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
-            if(transform.position.y > startingY + moveDistance)
+            transform.localPosition += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+            if(transform.localPosition.y > startingY + moveDistance)
             {
                 movingUp = !movingUp;
             }
         }
         else
         {
-            transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
-            if (transform.position.y < startingY - moveDistance)
+            transform.localPosition -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+            if (transform.localPosition.y < startingY - moveDistance)
             {
                 movingUp = !movingUp;
             }

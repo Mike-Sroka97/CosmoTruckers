@@ -51,9 +51,23 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 5098754839321406753}
   layouts:
-  - {fileID: 6726334735206080098, guid: bb96ea01255e2754ca5f685898d56649, type: 3}
+  - {fileID: 3858098379554904138, guid: d781fb1b43ae6d54381e1332c97c79c4, type: 3}
+  Damage: 0
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
+  MoveEnded: 0
+  Hits: 0
+  maxScore: 0
+  augmentStacksPerHit: 0
+  maxAugmentStacks: 0
+  baseDamage: 0
+  baseAugmentStacks: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &5098754839148161552
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +151,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &5098754839148161558
 BoxCollider2D:
@@ -382,7 +396,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &5098754840778528161
 GameObject:
@@ -467,7 +481,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &5098754840778528167
 BoxCollider2D:
@@ -577,7 +591,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &5098754841073717630
 GameObject:
@@ -661,7 +675,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &5098754841085943840
 GameObject:
@@ -745,7 +759,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &5098754841137663069
 GameObject:
@@ -787,6 +801,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5098754840252447337}
     m_Modifications:
+    - target: {fileID: 2803824201391436842, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: lastFlower
       value: 1
@@ -794,6 +812,10 @@ PrefabInstance:
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: thornAttackDelay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803824202964592937, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592938, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: m_Name
@@ -857,9 +879,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5098754840252447337}
     m_Modifications:
+    - target: {fileID: 2803824201391436842, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: thornAttackDelay
       value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803824202964592937, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592938, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: m_Name
@@ -923,9 +953,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5098754840252447337}
     m_Modifications:
+    - target: {fileID: 2803824201391436842, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: thornAttackDelay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803824202964592937, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592938, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: m_Name
@@ -989,9 +1027,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5098754840252447337}
     m_Modifications:
+    - target: {fileID: 2803824201391436842, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: thornAttackDelay
       value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803824202964592937, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592938, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: m_Name
@@ -1055,9 +1101,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5098754840252447337}
     m_Modifications:
+    - target: {fileID: 2803824201391436842, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592918, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: thornAttackDelay
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2803824202964592937, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2803824202964592938, guid: b83544e211891be4c9c736ebf7303e7c, type: 3}
       propertyPath: m_Name
