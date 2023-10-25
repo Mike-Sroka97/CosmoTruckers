@@ -6,8 +6,11 @@ public class FullCourse : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+    public override void StartMove()
+    {
+        FindObjectOfType<FullCoursePlatformMovement>().StartMove();
     }
 
     public override void EndMove()

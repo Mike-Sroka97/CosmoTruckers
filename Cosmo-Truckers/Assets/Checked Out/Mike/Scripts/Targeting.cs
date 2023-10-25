@@ -461,7 +461,36 @@ public class Targeting : MonoBehaviour
 
     private void TrackAllTargetInput()
     {
+        //set initial target
+        if (!initialSetup)
+        {
+            initialSetup = true;
 
+            //Target enemies
+            foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
+            {
+                if (enemy != null && !enemy.Dead)
+                {
+                    currentlySelectedTargets.Add(enemy);
+                    Target(enemy);
+                }
+            }
+
+            foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
+            {
+                if (player != null && !player.Dead)
+                {
+                    currentlySelectedTargets.Add(player);
+                    Target(player);
+                }
+            }
+        }
+
+        //track choice
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            ReactivateCombatManager();
+        }
     }
 
     private void TrackEnemyUpTargeting()

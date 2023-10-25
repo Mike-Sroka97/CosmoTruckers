@@ -7,24 +7,32 @@ public class PotentPatty : CombatMove
     [SerializeField] float timeBetweenHands;
 
     PotentPattyHand[] hands;
-    float currentTime = 1.4f; //sue me
+    float handTime = 1.4f; //helps get hands moving faster;
+    bool trackTime = false;
 
     private void Start()
     {
         hands = GetComponentsInChildren<PotentPattyHand>();
         Score = GetComponentsInChildren<PotentPattyPatty>().Length;
-        StartMove();
+    }
+
+    public override void StartMove()
+    {
+        trackTime = true;
     }
 
     private void Update()
     {
         TrackTime();
     }
-    private void TrackTime()
+    protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        if (!trackTime)
+            return;
 
-        if(currentTime >= timeBetweenHands)
+        handTime += Time.deltaTime;
+
+        if(handTime >= timeBetweenHands)
         {
             int random = UnityEngine.Random.Range(0, hands.Length);
             while(hands[random].Activated == true)
@@ -35,10 +43,12 @@ public class PotentPatty : CombatMove
             StartCoroutine(hands[random].Activate());
             currentTime = 0;
         }
+
+        base.TrackTime();
     }
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

@@ -7,12 +7,16 @@ public class FullCoursePlatformMovement : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float moveTime;
     [SerializeField] float moveDelay;
+    [SerializeField] GameObject[] startMoveObjects;
 
     float currentTime = 0;
+    bool trackTime = false;
 
-    private void Start()
+    public void StartMove()
     {
-        FindObjectOfType<AeglarINA>().transform.parent = transform;
+        foreach (GameObject gO in startMoveObjects)
+            gO.SetActive(true);
+        trackTime = true;
     }
 
     private void Update()
@@ -22,6 +26,9 @@ public class FullCoursePlatformMovement : MonoBehaviour
 
     private void TrackTime()
     {
+        if (!trackTime)
+            return;
+
         currentTime += Time.deltaTime;
 
         if(currentTime > moveDelay && currentTime < moveTime + moveDelay)
