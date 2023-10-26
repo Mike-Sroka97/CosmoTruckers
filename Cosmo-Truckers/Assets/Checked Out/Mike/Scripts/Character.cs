@@ -43,7 +43,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
-        if(!defensePiercing)
+        if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
 
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
@@ -58,7 +58,7 @@ public abstract class Character : MonoBehaviour
 
             if (overageDamage > 0)
                 currentHealth -= overageDamage;
-        } 
+        }
         else currentHealth -= damage;
 
         if (CurrentHealth <= 0)
@@ -69,9 +69,9 @@ public abstract class Character : MonoBehaviour
         //See if any AUGS trigger on Damage (Spike shield)
         else
         {
-            foreach(DebuffStackSO aug in AUGS)
+            foreach (DebuffStackSO aug in AUGS)
             {
-                if(aug.OnDamage)
+                if (aug.OnDamage)
                 {
                     aug.GetAugment().Trigger();
                 }
@@ -81,7 +81,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
-        for(int i = 0; i < numberOfHits; i++)
+        for (int i = 0; i < numberOfHits; i++)
         {
             if (!defensePiercing)
                 damage = AdjustAttackDamage(damage);
@@ -137,14 +137,14 @@ public abstract class Character : MonoBehaviour
     protected int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
-        
+
         //No adjustment if defense is zero
-        if(Stats.Defense > 0)
+        if (Stats.Defense > 0)
         {
             float floatDamage = damage - (damage * Stats.Defense / 100);
             newDamage = (int)Math.Floor(floatDamage);
         }
-        else if(Stats.Defense < 0)
+        else if (Stats.Defense < 0)
         {
             float floatDamage = damage + (damage * Mathf.Abs(Stats.Defense) / 100);
             newDamage = (int)Math.Ceiling(floatDamage);
@@ -210,6 +210,33 @@ public abstract class Character : MonoBehaviour
             tempAUG.DebuffEffect();
     }
 
+    public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100)
+    {
+        if (stack == null)
+            return;
+
+        foreach (DebuffStackSO aug in AUGS)
+        {
+            if (String.Equals(aug.DebuffName, stack.DebuffName))
+            {
+                aug.CurrentStacks -= stackToRemove;
+
+                if (aug.CurrentStacks <= 0)
+                    StartCoroutine(DelayedRemoval(aug));
+
+                return;
+            }
+        }
+    }
+    //TODO
+    //Removing on damage augs will cause errors, for now this is the solution
+    //Will need to add a check every turn to see if AUG has 0 stacks and then remove them then
+    IEnumerator DelayedRemoval(DebuffStackSO aug)
+    {
+        yield return new WaitForSeconds(.5f);
+        AUGS.Remove(aug);
+    }
+
     public abstract void AdjustDefense(int defense);
 
     public void AdjustSpeed(int speed)
@@ -230,7 +257,7 @@ public abstract class Character : MonoBehaviour
         //max double vigor and min 0% healing
         if (Stats.Vigor > 200)
             Stats.Vigor = 200;
-        else if(Stats.Vigor < 0)
+        else if (Stats.Vigor < 0)
             Stats.Vigor = 0;
     }
 
@@ -248,13 +275,14 @@ public abstract class Character : MonoBehaviour
     public abstract void StartTurn();
     public abstract void EndTurn();
 
-
+    [Space(10)]
+    [Header("Test AUG")]
     [SerializeField] DebuffStackSO test;
 
     [ContextMenu("Test AUG")]
     public void TestAUG()
     {
-        //AddDebuffStack(test, true);
+        AddDebuffStack(test, 1, true);
     }
 
     protected void FadeAugments()
