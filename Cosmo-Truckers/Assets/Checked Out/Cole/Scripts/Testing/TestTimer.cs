@@ -13,7 +13,7 @@ public class TestTimer : MonoBehaviour
 
     private void Start()
     {
-        currentTime = maxTime;
+        currentTime = maxTime + 1;
         blackImage.enabled = false; 
     }
 

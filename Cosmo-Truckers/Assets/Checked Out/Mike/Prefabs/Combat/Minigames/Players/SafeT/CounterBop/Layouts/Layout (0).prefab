@@ -1,5 +1,39 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &551760109097655219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8984283607195691476}
+  m_Layer: 0
+  m_Name: Platforms
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8984283607195691476
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 551760109097655219}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 851560520631549671}
+  - {fileID: 6362112360900204014}
+  - {fileID: 8984895038304940403}
+  m_Father: {fileID: 9131935453251485286}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6406270718580343595
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,6 +43,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4079490003701729541}
+  - component: {fileID: 4845106823912695902}
   m_Layer: 0
   m_Name: BlockGroup
   m_TagString: Untagged
@@ -35,6 +70,17 @@ Transform:
   m_Father: {fileID: 9131935453251485286}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &4845106823912695902
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6406270718580343595}
+  m_Enabled: 1
+  m_SortingLayerID: 73707659
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1 &9131935451608446365
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,9 +355,7 @@ Transform:
   - {fileID: 4079490003701729541}
   - {fileID: 6124606199780068256}
   - {fileID: 3442737455994774911}
-  - {fileID: 851560520631549671}
-  - {fileID: 6362112360900204014}
-  - {fileID: 8984895038304940403}
+  - {fileID: 8984283607195691476}
   m_Father: {fileID: 9131935451608446354}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1018,15 +1062,19 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 9131935453251485286}
+    m_TransformParent: {fileID: 8984283607195691476}
     m_Modifications:
+    - target: {fileID: 1010488823287622728, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1071,6 +1119,10 @@ PrefabInstance:
     - target: {fileID: 3362300071450175009, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_Name
       value: PM_SFT_SPlatform
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362300071450175015, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
@@ -1731,7 +1783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7808113408394371690, guid: 45547daa3964bdf41896680340f4a177, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.5
+      value: -2.6
       objectReference: {fileID: 0}
     - target: {fileID: 7808113408394371690, guid: 45547daa3964bdf41896680340f4a177, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1781,15 +1833,19 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 9131935453251485286}
+    m_TransformParent: {fileID: 8984283607195691476}
     m_Modifications:
+    - target: {fileID: 1010488823287622728, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1834,6 +1890,10 @@ PrefabInstance:
     - target: {fileID: 3362300071450175009, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_Name
       value: PM_SFT_SPlatform (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362300071450175015, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
@@ -2213,15 +2273,19 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 9131935453251485286}
+    m_TransformParent: {fileID: 8984283607195691476}
     m_Modifications:
+    - target: {fileID: 1010488823287622728, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3362300071450175008, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2266,6 +2330,10 @@ PrefabInstance:
     - target: {fileID: 3362300071450175009, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
       propertyPath: m_Name
       value: PM_SFT_SPlatform (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3362300071450175015, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da119acd3253ae44fb74fc1ffd3d6410, type: 3}

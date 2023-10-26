@@ -7,6 +7,7 @@ public class CBWaveEnemy : MonoBehaviour
     [SerializeField] float xVelocity;
     [SerializeField] float amplitude;
     [SerializeField] float frequency;
+    [SerializeField] GameObject deathParticle; 
 
     Rigidbody2D myBody;
     CounterBop minigame;
@@ -37,6 +38,15 @@ public class CBWaveEnemy : MonoBehaviour
         if (collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+
+            GameObject particle = Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
+            particle.transform.parent = minigame.transform;
+
+            if (collision.transform.position.x > transform.position.x)
+            {
+                particle.transform.eulerAngles = new Vector3(180f, particle.transform.eulerAngles.y, particle.transform.eulerAngles.z); 
+            }
+
             Debug.Log(minigame.Score);
             Destroy(gameObject);
         }
