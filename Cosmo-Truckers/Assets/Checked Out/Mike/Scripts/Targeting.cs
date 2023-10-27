@@ -889,7 +889,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn++;
+                        tempColumn -= 2;
                     }
                     else if (tempColumn == 1)
                     {
@@ -917,7 +917,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn -= 2;
+                        tempColumn++;
                     }
                 }
             }
@@ -992,10 +992,10 @@ public class Targeting : MonoBehaviour
         //anywhere but the enemy summon column
         else
         {
-            if (currentlySelectedTargets[0].CombatSpot <= 3)
-                column = 0;
-            else
+            if (currentlySelectedTargets[0].CombatSpot <= 7)
                 column = 1;
+            else
+                column = 2;
 
             if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4]))
             {
@@ -1383,7 +1383,7 @@ public class Targeting : MonoBehaviour
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
-                    return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
+                    return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
                 }
             }
         }
@@ -1412,7 +1412,7 @@ public class Targeting : MonoBehaviour
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
-                    return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
+                    return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
                 }
             }
         }
