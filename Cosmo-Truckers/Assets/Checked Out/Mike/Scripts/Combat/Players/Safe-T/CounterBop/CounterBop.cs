@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CounterBop : CombatMove
 {
+    [SerializeField] DebuffStackSO counterGuardAUG;
+
     private void Start()
     {
         GenerateLayout();
@@ -35,6 +37,7 @@ public class CounterBop : CombatMove
 
         character.TakeShielding(totalShields);
 
-        //Add CountR Guard augment TODO CHANCE
+        //Add CountR Guard augment
+        character.AddDebuffStack(counterGuardAUG);
     }
 }
