@@ -18,16 +18,21 @@ public class PotentPattyMech : MonoBehaviour
 
     bool isJumping = false;
     bool isDashing = false;
+    bool moveStarted = false;
 
-    private void Start()
+    public void StartMove()
     {
         myBody = GetComponent<Rigidbody2D>();
         aeglar = FindObjectOfType<AeglarINA>();
         aeglarBody = aeglar.GetComponent<Rigidbody2D>();
+        moveStarted = true;
     }
 
     private void Update()
     {
+        if (!moveStarted)
+            return;
+
         Dash();
         Jump();
         MoveMe();   

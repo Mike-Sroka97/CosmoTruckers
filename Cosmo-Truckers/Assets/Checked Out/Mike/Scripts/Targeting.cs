@@ -134,6 +134,7 @@ public class Targeting : MonoBehaviour
             isTargeting = false;
             currentNumberOfTargets = 0;
             ClearTargets();
+            ClearEmptySlots();
             currentlySelectedTargets.Clear();
         }
     }
@@ -145,6 +146,7 @@ public class Targeting : MonoBehaviour
         isTargeting = false;
         currentNumberOfTargets = 0;
         ClearTargets();
+        ClearEmptySlots();
         currentlySelectedTargets.Clear();
     }
 
@@ -172,6 +174,72 @@ public class Targeting : MonoBehaviour
                 else
                 {
                     renderer.material = negativeTargetMaterial;
+                }
+            }
+        }
+    }
+
+    public void TargetEmptySlot(bool playerSide, int combatSpotIndex)
+    {
+        if(playerSide)
+        {
+            if(combatSpotIndex > 3) //in the summon layer
+            {
+                combatSpotIndex -= 4; // adjusts number down to be in range of summon indices
+
+                if (currentAttack.friendlyPositiveEffect)
+                {
+                    EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
+                }
+                else
+                {
+                    EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = negativeTargetMaterial;
+                }
+            }
+            else
+            {
+                if (currentAttack.friendlyPositiveEffect)
+                {
+                    EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
+                }
+                else
+                {
+                    EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = negativeTargetMaterial;
+                }
+            }
+        }
+        else
+        {
+            if(combatSpotIndex > 7) //in the summon layer
+            {
+                combatSpotIndex -= 8; // adjusts number down to be in range of summon indices
+
+                if (currentAttack.enemyPositiveEffect)
+                {
+                    EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
+                }
+                else
+                {
+                    EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = negativeTargetMaterial;
+                }
+            }
+            else
+            {
+                if (currentAttack.enemyPositiveEffect)
+                {
+                    EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
+                }
+                else
+                {
+                    EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
+                    EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = negativeTargetMaterial;
                 }
             }
         }
@@ -223,6 +291,35 @@ public class Targeting : MonoBehaviour
 
         foreach (Character character in currentlySelectedTargets)
             MultiTarget(character);
+    }
+
+    private void ClearEmptySlots()
+    {
+        foreach (Transform spot in EnemyManager.Instance.PlayerSummonLocations)
+        {
+            spot.GetComponent<SpriteRenderer>().color = new Color(spot.GetComponent<SpriteRenderer>().color.r, spot.GetComponent<SpriteRenderer>().color.g, spot.GetComponent<SpriteRenderer>().color.b, 0);
+            spot.GetComponent<SpriteRenderer>().material = notTargetedMaterial;
+        }
+
+        foreach (Transform spot in EnemyManager.Instance.EnemySummonLocations)
+        {
+            spot.GetComponent<SpriteRenderer>().color = new Color(spot.GetComponent<SpriteRenderer>().color.r, spot.GetComponent<SpriteRenderer>().color.g, spot.GetComponent<SpriteRenderer>().color.b, 0);
+
+            spot.GetComponent<SpriteRenderer>().material = notTargetedMaterial;
+        }
+
+        foreach (Transform spot in EnemyManager.Instance.PlayerLocations)
+        {
+            spot.GetComponent<SpriteRenderer>().color = new Color(spot.GetComponent<SpriteRenderer>().color.r, spot.GetComponent<SpriteRenderer>().color.g, spot.GetComponent<SpriteRenderer>().color.b, 0);
+            spot.GetComponent<SpriteRenderer>().material = notTargetedMaterial;
+        }
+
+
+        foreach (Transform spot in EnemyManager.Instance.EnemyLocations)
+        {
+            spot.GetComponent<SpriteRenderer>().color = new Color(spot.GetComponent<SpriteRenderer>().color.r, spot.GetComponent<SpriteRenderer>().color.g, spot.GetComponent<SpriteRenderer>().color.b, 0);
+            spot.GetComponent<SpriteRenderer>().material = notTargetedMaterial;
+        }
     }
 
     private void TrackNoTargetInput()
@@ -792,7 +889,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn++;
+                        tempColumn -= 2;
                     }
                     else if (tempColumn == 1)
                     {
@@ -820,7 +917,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn -= 2;
+                        tempColumn++;
                     }
                 }
             }
@@ -895,10 +992,10 @@ public class Targeting : MonoBehaviour
         //anywhere but the enemy summon column
         else
         {
-            if (currentlySelectedTargets[0].CombatSpot <= 3)
-                column = 0;
-            else
+            if (currentlySelectedTargets[0].CombatSpot <= 7)
                 column = 1;
+            else
+                column = 2;
 
             if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4]))
             {
@@ -1286,7 +1383,7 @@ public class Targeting : MonoBehaviour
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
-                    return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
+                    return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
                 }
             }
         }
@@ -1315,7 +1412,7 @@ public class Targeting : MonoBehaviour
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
-                    return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
+                    return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
                 }
             }
         }

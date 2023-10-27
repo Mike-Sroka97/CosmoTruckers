@@ -7,7 +7,7 @@ public class PotentPatty : CombatMove
     [SerializeField] float timeBetweenHands;
 
     PotentPattyHand[] hands;
-    float handTime = 1.4f; //helps get hands moving faster;
+    float handTime = 0f;
     bool trackTime = false;
 
     private void Start()
@@ -19,6 +19,7 @@ public class PotentPatty : CombatMove
     public override void StartMove()
     {
         trackTime = true;
+        FindObjectOfType<PotentPattyMech>().StartMove();
     }
 
     private void Update()

@@ -52,12 +52,12 @@ public class Enemy : Character
 
     public void StartTarget()
     {
-        enemyAnimation.enabled = true;
+
     }
 
     public void EndTarget()
     {
-        enemyAnimation.enabled = false;
+
     }
 
     public override void Resurrect(int newHealth)

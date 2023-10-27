@@ -20,6 +20,22 @@ public class ALaCarte : CombatMove
 
     public override List<Character> NoTargetTargeting()
     {
+        Targeting tempTargeting = FindObjectOfType<Targeting>();
+
+        int numberOfManaSourcesToSpawn = 3; //three max summons
+
+        for(int i = 8; i <= 11; i++) //checks all enemy summon spots
+        {
+            if (numberOfManaSourcesToSpawn <= 0)
+                break;
+
+            if (EnemyManager.Instance.EnemyCombatSpots[i] == null)
+            {
+                tempTargeting.TargetEmptySlot(false, i);
+                numberOfManaSourcesToSpawn--;
+            }
+        }
+
         List<Character> characters = new List<Character>();
         characters.Add(FindObjectOfType<AeglarPlayer>());
         return characters;
