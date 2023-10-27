@@ -17,10 +17,18 @@ public class SSGun : MonoBehaviour
     [SerializeField] int bulletsInVolley;
     [SerializeField] GameObject bullet;
 
+    [SerializeField] AnimationClip fireCannon; 
+
+    Animator myAnimator; 
     bool isFiring = false;    
     float currentTime = 0;
     int bulletsFired = 0;
     [HideInInspector] public bool trackTime;
+
+    private void Start()
+    {
+        myAnimator = GetComponent<Animator>();         
+    }
 
     private void Update()
     {
@@ -62,6 +70,7 @@ public class SSGun : MonoBehaviour
 
     private void FireBullet()
     {
+        myAnimator.Play(fireCannon.name); 
         bulletsFired++;
         Instantiate(bullet, barrel.position, transform.rotation);
     }

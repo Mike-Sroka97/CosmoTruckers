@@ -32,28 +32,37 @@ public class SSPostule : MonoBehaviour
             {
                 float dotProduct = Vector3.Dot(contact.normal, Vector3.down);
 
-                if (dotProduct > 0.5f) 
+                if (dotProduct > 0.5f)
                 {
                     collided = true;
-                    superSlam.Score++;
 
                     playerBody.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
 
-                    gozor.StartMinigame();
-                    gozor.mySprites.Remove(myRenderer);
-                    gozor.collidersToDisable.Remove(myCollider);
-                    StartCoroutine(gozor.FlashMe());
-                    myRenderer.enabled = false;
-                    Destroy(myCollider);
+                    DamageGonzor();
                     break;
                 }
             }
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (collision.transform.tag == "PlayerAttack" && !collided)
         {
-
+            collided = true;
+            DamageGonzor();
         }
+    }
+
+    private void DamageGonzor()
+    {
+        superSlam.Score++;
+
+        gozor.mySprites.Remove(myRenderer);
+        gozor.collidersToDisable.Remove(myCollider);
+        StartCoroutine(gozor.FlashMe());
+        myRenderer.enabled = false;
+        Destroy(myCollider);
     }
     
 }

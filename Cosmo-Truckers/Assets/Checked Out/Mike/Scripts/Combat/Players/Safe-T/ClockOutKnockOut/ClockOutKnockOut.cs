@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ClockOutKnockOut : CombatMove
 {
-    float timeToEndMove = 1f; 
-
     private void Start()
     {
         GenerateLayout();
@@ -20,25 +18,6 @@ public class ClockOutKnockOut : CombatMove
         {
             hand.SetVelocity();
         }
-    }
-
-    public void CheckScore()
-    {
-        if (Score >= maxScore)
-        {
-            float timeRemaining = MinigameDuration - currentTime; 
-
-            if (timeRemaining > timeToEndMove)
-            {
-                StartCoroutine(CallEndMove()); 
-            }
-        }
-    }
-
-    private IEnumerator CallEndMove()
-    {
-        yield return new WaitForSeconds(timeToEndMove);
-        EndMove(); 
     }
 
     public override void EndMove()

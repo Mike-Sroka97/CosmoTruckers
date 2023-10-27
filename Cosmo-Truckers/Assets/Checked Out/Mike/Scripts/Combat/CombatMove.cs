@@ -26,6 +26,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected int maxAugmentStacks;
     [SerializeField] protected int baseDamage;
     [SerializeField] protected int baseAugmentStacks;
+    [SerializeField] protected float timeToEndMove = 1f;
 
     [Space(20)]
     [Header("Testing Variables")]
@@ -166,5 +167,24 @@ public abstract class CombatMove : MonoBehaviour
         {
             EndMove();
         }
+    }
+
+    public void CheckScore()
+    {
+        if (Score >= maxScore)
+        {
+            float timeRemaining = MinigameDuration - currentTime;
+
+            if (timeRemaining > timeToEndMove)
+            {
+                StartCoroutine(CallEndMove());
+            }
+        }
+    }
+
+    private IEnumerator CallEndMove()
+    {
+        yield return new WaitForSeconds(timeToEndMove);
+        EndMove();
     }
 }
