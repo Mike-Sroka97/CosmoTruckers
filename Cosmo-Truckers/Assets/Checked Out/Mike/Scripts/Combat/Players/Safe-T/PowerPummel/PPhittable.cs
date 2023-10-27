@@ -9,14 +9,17 @@ public class PPhittable : MonoBehaviour
     [SerializeField] float moveSpeedIncrease;
     [SerializeField] float maxMoveSpeed;
     [SerializeField] Sprite hitSprite; 
-    [SerializeField] float timeBetweenSprites = 0.2f; 
+    [SerializeField] float timeBetweenSprites = 0.2f;
+    [SerializeField] Material hurtMaterial;
 
+    Material startingMaterial; 
     PowerPummel minigame;
     Rigidbody2D myBody;
     Collider2D myCollider;
     Sprite originalSprite; 
     SpriteRenderer myRenderer; 
     int layermask = 1 << 9; //ground
+    bool isHit = false; 
 
     private void Start()
     {
@@ -27,11 +30,15 @@ public class PPhittable : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
-            myBody.velocity = -myBody.velocity;
-            UpdateSpeed();
-            StartCoroutine(UpdateSprite()); 
-            minigame.Score++;
-            Debug.Log(minigame.Score);
+            if (!isHit)
+            {
+                myBody.velocity = -myBody.velocity;
+                UpdateSpeed();
+                StartCoroutine(UpdateSprite());
+                minigame.Score++;
+                Debug.Log(minigame.Score);
+                minigame.CheckScore(); 
+            }
         }
     }
 
@@ -42,6 +49,7 @@ public class PPhittable : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
         originalSprite = myRenderer.sprite;
+        startingMaterial = myRenderer.material;
     }
 
     private void Update()
@@ -64,9 +72,13 @@ public class PPhittable : MonoBehaviour
 
     private IEnumerator UpdateSprite()
     {
+        isHit = true; 
         myRenderer.sprite = hitSprite;
+        myRenderer.material = hurtMaterial; 
         yield return new WaitForSeconds(timeBetweenSprites);
-        myRenderer.sprite = originalSprite; 
+        myRenderer.sprite = originalSprite;
+        myRenderer.material = startingMaterial; 
+        isHit = false; 
     }
 
     private void ChangeSpeed(float speed)

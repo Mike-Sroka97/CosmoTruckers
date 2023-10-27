@@ -184,6 +184,7 @@ public abstract class CombatMove : MonoBehaviour
 
     private IEnumerator CallEndMove()
     {
+        //Debug.Log("Early EndMove"); 
         yield return new WaitForSeconds(timeToEndMove);
         EndMove();
     }
