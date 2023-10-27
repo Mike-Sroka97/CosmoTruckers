@@ -6,7 +6,7 @@ public class Porkanator : CombatMove
 {
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+
     }
 
     private void Start()
