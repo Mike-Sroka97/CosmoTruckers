@@ -33,7 +33,7 @@ public class AUG_StarStruckSpawner : Augment
             {
                 Enemy tempEnemy = enemy.Item1;
                 tempEnemy.TakeHealing(enemy.Item2);
-                Debug.Log("Healing " + tempEnemy.name + " for " + enemy.Item2 + " health.");
+                //Debug.Log("Healing " + tempEnemy.name + " for " + enemy.Item2 + " health.");
             }
         }
         AliveEnemies.Clear();

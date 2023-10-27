@@ -18,6 +18,7 @@ public abstract class CombatMove : MonoBehaviour
     public int Score;
     [HideInInspector] public bool PlayerDead = false;
     [HideInInspector] public bool MoveEnded = false;
+    protected bool endMoveCalled = false; 
     public int Hits = 0;
     [Space(20)]
     [Header("Minigame Variables")]
@@ -163,9 +164,9 @@ public abstract class CombatMove : MonoBehaviour
 
         currentTime += Time.deltaTime;
 
-        if ((currentTime >= MinigameDuration || PlayerDead) && !MoveEnded)
+        if ((currentTime >= MinigameDuration || PlayerDead) && !MoveEnded && !endMoveCalled)
         {
-            EndMove();
+            MoveEnded = true;
         }
     }
 
@@ -177,15 +178,15 @@ public abstract class CombatMove : MonoBehaviour
 
             if (timeRemaining > timeToEndMove)
             {
-                StartCoroutine(CallEndMove());
+                StartCoroutine(DelayedCallEndMove());
             }
         }
     }
 
-    private IEnumerator CallEndMove()
+    private IEnumerator DelayedCallEndMove()
     {
-        //Debug.Log("Early EndMove"); 
+        endMoveCalled = true; 
         yield return new WaitForSeconds(timeToEndMove);
-        EndMove();
+        MoveEnded = true;
     }
 }
