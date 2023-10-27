@@ -112,6 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5350314922450396368}
   - component: {fileID: 8049404027646682427}
+  - component: {fileID: 746874254281046639}
   m_Layer: 0
   m_Name: GZTurret
   m_TagString: Untagged
@@ -151,11 +152,32 @@ MonoBehaviour:
   rotationSpeed: 60
   rotatingRight: 1
   barrel: {fileID: 1585808616461755368}
-  fireDelay: 2
-  volleyDelay: 0.4
+  fireDelay: 1.5
+  volleyDelay: 0.25
   bulletsInVolley: 3
   bullet: {fileID: 1268222435246852271, guid: d30af5be5d53f43428cac28e92c08d24, type: 3}
+  fireCannon: {fileID: 7400000, guid: e980dc5411ddec54b8e8f256d39e6d06, type: 2}
   trackTime: 0
+--- !u!95 &746874254281046639
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5490114314435484662}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0fc67a7729f8bc8429003077ead341ca, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6163433515947505754
 GameObject:
   m_ObjectHideFlags: 0
