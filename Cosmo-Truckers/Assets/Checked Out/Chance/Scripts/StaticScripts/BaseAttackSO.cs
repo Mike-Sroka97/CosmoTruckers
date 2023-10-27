@@ -9,12 +9,13 @@ public class BaseAttackSO : ScriptableObject
     [Space(10)]
 
     public string AttackName;
-    [SerializeField] public EnumManager.TargetingType TargetingType;
-    [SerializeField] public bool canTargetFriendly;
-    [SerializeField] public bool friendlyPositiveEffect;
-    [SerializeField] public bool canTargetEnemies;
-    [SerializeField] public bool enemyPositiveEffect;
-    [SerializeField] public int NumberOFTargets;
+    public EnumManager.TargetingType TargetingType;
+    public bool CanTargetFriendly;
+    public bool FriendlyPositiveEffect;
+    public bool CanTargetEnemies;
+    public bool EnemyPositiveEffect;
+    public int NumberOFTargets;
+    public bool TargetsDead;
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;

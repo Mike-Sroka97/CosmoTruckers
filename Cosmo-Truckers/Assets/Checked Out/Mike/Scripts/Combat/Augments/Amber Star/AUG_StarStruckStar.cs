@@ -37,9 +37,10 @@ public class AUG_StarStruckStar : TrackPlayerDeath
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
             Player player = collision.transform.GetComponent<PlayerBody>().Body;
-            HealEnemy();
+
             if (!player.iFrames)
             {
+                HealEnemy();
                 player.TakeDamage();
                 Death();
             }
@@ -54,9 +55,10 @@ public class AUG_StarStruckStar : TrackPlayerDeath
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
             Player player = collision.transform.GetComponent<PlayerBody>().Body;
-            HealEnemy();
+
             if (!player.iFrames)
             {
+                HealEnemy();
                 player.TakeDamage();
                 Death();
             }

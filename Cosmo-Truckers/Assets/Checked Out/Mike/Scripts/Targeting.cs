@@ -17,6 +17,7 @@ public class Targeting : MonoBehaviour
     BaseAttackSO currentAttack;
     bool initialSetup = false;
     bool targetingEnemies = true;
+    bool targetingDead = false;
     List<Character> currentlySelectedTargets;
     int column = 0;
     int currentNumberOfTargets;
@@ -40,6 +41,7 @@ public class Targeting : MonoBehaviour
         currentAttack = attack;
         currentlySelectedTargets.Clear();
         currentNumberOfTargets = 0;
+        targetingDead = attack.TargetsDead;
         if (currentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
             targets = attack.NumberOFTargets;
         else
@@ -156,7 +158,7 @@ public class Targeting : MonoBehaviour
         {
             if(target.GetComponent<Enemy>())
             {
-                if(currentAttack.enemyPositiveEffect)
+                if(currentAttack.EnemyPositiveEffect)
                 {
                     renderer.material = positiveTargetMaterial;
                 }
@@ -167,7 +169,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if(currentAttack.friendlyPositiveEffect)
+                if(currentAttack.FriendlyPositiveEffect)
                 {
                     renderer.material = positiveTargetMaterial;
                 }
@@ -187,7 +189,7 @@ public class Targeting : MonoBehaviour
             {
                 combatSpotIndex -= 4; // adjusts number down to be in range of summon indices
 
-                if (currentAttack.friendlyPositiveEffect)
+                if (currentAttack.FriendlyPositiveEffect)
                 {
                     EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
                     EnemyManager.Instance.PlayerSummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
@@ -200,7 +202,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if (currentAttack.friendlyPositiveEffect)
+                if (currentAttack.FriendlyPositiveEffect)
                 {
                     EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
                     EnemyManager.Instance.PlayerLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
@@ -218,7 +220,7 @@ public class Targeting : MonoBehaviour
             {
                 combatSpotIndex -= 8; // adjusts number down to be in range of summon indices
 
-                if (currentAttack.enemyPositiveEffect)
+                if (currentAttack.EnemyPositiveEffect)
                 {
                     EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
                     EnemyManager.Instance.EnemySummonLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
@@ -231,7 +233,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if (currentAttack.enemyPositiveEffect)
+                if (currentAttack.EnemyPositiveEffect)
                 {
                     EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color = new Color(EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.r, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.g, EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().color.b, 1);
                     EnemyManager.Instance.EnemyLocations[combatSpotIndex].GetComponent<SpriteRenderer>().material = positiveTargetMaterial;
@@ -251,7 +253,7 @@ public class Targeting : MonoBehaviour
         {
             if (target.GetComponent<Enemy>())
             {
-                if (currentAttack.enemyPositiveEffect)
+                if (currentAttack.EnemyPositiveEffect)
                 {
                     renderer.material = positiveSelectedMaterial;
                 }
@@ -262,7 +264,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if (currentAttack.friendlyPositiveEffect)
+                if (currentAttack.FriendlyPositiveEffect)
                 {
                     renderer.material = positiveSelectedMaterial;
                 }
@@ -362,7 +364,7 @@ public class Targeting : MonoBehaviour
 
     private void TrackSingleTargetInput()
     {
-        if (currentAttack.canTargetEnemies && currentAttack.canTargetFriendly)
+        if (currentAttack.CanTargetEnemies && currentAttack.CanTargetFriendly)
         {
             //set initial target (start enemy side)
             if (!initialSetup)
@@ -371,7 +373,7 @@ public class Targeting : MonoBehaviour
                 targetingEnemies = true;
                 foreach(Character enemy in EnemyManager.Instance.EnemyCombatSpots)
                 {
-                    if(!enemy.Dead)
+                    if(((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)))
                     {
                         currentlySelectedTargets.Add(enemy);
                         Target(enemy);
@@ -445,7 +447,7 @@ public class Targeting : MonoBehaviour
             }
 
         }
-        else if (currentAttack.canTargetEnemies)
+        else if (currentAttack.CanTargetEnemies)
         {
             //set initial target (only enemy side)
             if (!initialSetup)
@@ -454,7 +456,7 @@ public class Targeting : MonoBehaviour
                 targetingEnemies = true;
                 foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
                 {
-                    if (enemy != null && !enemy.Dead && !currentlySelectedTargets.Contains(enemy))
+                    if (enemy != null && ((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)) && !currentlySelectedTargets.Contains(enemy))
                     {
                         currentlySelectedTargets.Add(enemy);
                         Target(enemy);
@@ -489,7 +491,7 @@ public class Targeting : MonoBehaviour
                 TrackEnemyRightTargeting();
             }
         }
-        else if (currentAttack.canTargetFriendly)
+        else if (currentAttack.CanTargetFriendly)
         {
             //set initial target (only player side)
             if (!initialSetup)
@@ -498,7 +500,7 @@ public class Targeting : MonoBehaviour
                 targetingEnemies = false;
                 foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
                 {
-                    if (!player.Dead && !currentlySelectedTargets.Contains(player))
+                    if ((!player.Dead || ((!player.Dead && !targetingDead) || (player.Dead && targetingDead)) && !currentlySelectedTargets.Contains(player)))
                     {
                         currentlySelectedTargets.Add(player);
                         Target(player);
@@ -542,7 +544,7 @@ public class Targeting : MonoBehaviour
         {
             foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
             {
-                if (enemy != null && !enemy.Dead && !currentlySelectedTargets.Contains(enemy))
+                if (enemy != null && ((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)) && !currentlySelectedTargets.Contains(enemy))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(enemy);
@@ -555,7 +557,7 @@ public class Targeting : MonoBehaviour
         {
             foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
             {
-                if (player != null && !player.Dead && !currentlySelectedTargets.Contains(player))
+                if (player != null && ((!player.Dead && !targetingDead) || (player.Dead && targetingDead)) && !currentlySelectedTargets.Contains(player))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(player);
@@ -584,11 +586,11 @@ public class Targeting : MonoBehaviour
             initialSetup = true;
 
             //Target enemies
-            if (currentAttack.canTargetEnemies)
+            if (currentAttack.CanTargetEnemies)
             {
                 foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
                 {
-                    if (enemy != null && !enemy.Dead)
+                    if (enemy != null && ((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)))
                     {
                         currentlySelectedTargets.Add(enemy);
                         Target(enemy);
@@ -597,11 +599,11 @@ public class Targeting : MonoBehaviour
             }
 
             //Target players
-            else if (currentAttack.canTargetFriendly)
+            else if (currentAttack.CanTargetFriendly)
             {
                 foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
                 {
-                    if (player != null && !player.Dead)
+                    if (player != null && ((!player.Dead && !targetingDead) || (player.Dead && targetingDead)))
                     {
                         currentlySelectedTargets.Add(player);
                         Target(player);
@@ -627,7 +629,7 @@ public class Targeting : MonoBehaviour
             //Target enemies
             foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
             {
-                if (enemy != null && !enemy.Dead)
+                if (enemy != null && ((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)))
                 {
                     currentlySelectedTargets.Add(enemy);
                     Target(enemy);
@@ -636,7 +638,7 @@ public class Targeting : MonoBehaviour
 
             foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
             {
-                if (player != null && !player.Dead)
+                if (player != null && ((!player.Dead && !targetingDead) || (player.Dead && targetingDead)))
                 {
                     currentlySelectedTargets.Add(player);
                     Target(player);
@@ -659,7 +661,7 @@ public class Targeting : MonoBehaviour
             column = 0;
             for (int i = 3; i > 0; i--)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -674,7 +676,7 @@ public class Targeting : MonoBehaviour
             column = 1;
             for (int i = 7; i > 3; i--)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -689,7 +691,7 @@ public class Targeting : MonoBehaviour
             column = 2;
             for (int i = 11; i > 7; i--)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -710,7 +712,7 @@ public class Targeting : MonoBehaviour
 
             for (int i = currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 1; i > (4 * column) - 1; i--) // 4 * column helps with staying in a specific column
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -729,7 +731,7 @@ public class Targeting : MonoBehaviour
             column = 0;
             for (int i = 0; i < 3; i++)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -744,7 +746,7 @@ public class Targeting : MonoBehaviour
             column = 1;
             for (int i = 4; i < 7; i++)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -759,7 +761,7 @@ public class Targeting : MonoBehaviour
             column = 2;
             for (int i = 8; i < 11; i++)
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -780,7 +782,7 @@ public class Targeting : MonoBehaviour
 
             for (int i = currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 1; i < (4 * column) + 4; i++) // 4 * column helps with staying in a specific column
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[i]);
@@ -798,7 +800,7 @@ public class Targeting : MonoBehaviour
         {
             column = 2;
 
-            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8]))
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8]))
             {
                 Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 8];
                 ClearTargets();
@@ -815,7 +817,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 3; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -829,7 +831,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 8; j < 11; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -843,7 +845,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 4; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -864,7 +866,7 @@ public class Targeting : MonoBehaviour
             else
                 column = 1;
 
-            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4];
                 ClearTargets();
@@ -881,7 +883,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 3; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -895,7 +897,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 8; j < 11; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -909,7 +911,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 4; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -931,7 +933,7 @@ public class Targeting : MonoBehaviour
         {
             column = 0;
 
-            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8]))
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8]))
             {
                 Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 8];
                 ClearTargets();
@@ -948,7 +950,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 4; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -962,7 +964,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 3; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -976,7 +978,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 8; j < 11; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -997,7 +999,7 @@ public class Targeting : MonoBehaviour
             else
                 column = 2;
 
-            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4] != null && !EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4]))
+            if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 4];
                 ClearTargets();
@@ -1014,7 +1016,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 4; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -1028,7 +1030,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 3; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -1042,7 +1044,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 8; j < 11; j++)
                         {
-                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && !EnemyManager.Instance.EnemyCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
+                            if (EnemyManager.Instance.EnemyCombatSpots[j] != null && ((!EnemyManager.Instance.EnemyCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[j]);
@@ -1065,7 +1067,7 @@ public class Targeting : MonoBehaviour
             column = 0;
             for (int i = 3; i > 0; i--)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1080,7 +1082,7 @@ public class Targeting : MonoBehaviour
             column = 1;
             for (int i = 7; i > 3; i--)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1098,7 +1100,7 @@ public class Targeting : MonoBehaviour
 
             for (int i = currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 1; i > (4 * column) - 1; i--) // 4 * column helps with staying in a specific column
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1121,7 +1123,7 @@ public class Targeting : MonoBehaviour
         {
             for (int i = 0; i < 3; i++)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1135,7 +1137,7 @@ public class Targeting : MonoBehaviour
         {
             for (int i = 4; i < 7; i++)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1148,7 +1150,7 @@ public class Targeting : MonoBehaviour
         {
             for (int i = currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 1; i < (4 * column) + 4; i++) // 4 * column helps with staying in a specific column
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     ClearTargets();
                     currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[i]);
@@ -1166,7 +1168,7 @@ public class Targeting : MonoBehaviour
         {
             column = 0;
 
-            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && !EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
+            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && ((!EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4];
                 ClearTargets();
@@ -1183,7 +1185,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 3; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1197,7 +1199,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1215,7 +1217,7 @@ public class Targeting : MonoBehaviour
         {
             column = 1;
 
-            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4] != null && !EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4]))
+            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4] != null && ((!EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4];
                 ClearTargets();
@@ -1232,7 +1234,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 3; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1246,7 +1248,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1268,7 +1270,7 @@ public class Targeting : MonoBehaviour
         {
             column = 0;
 
-            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4] != null && !EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4]))
+            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4] != null && ((!EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4];
                 ClearTargets();
@@ -1285,7 +1287,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 3; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1299,7 +1301,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1317,7 +1319,7 @@ public class Targeting : MonoBehaviour
         {
             column = 1;
 
-            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && !EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
+            if (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4] != null && ((!EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4]))
             {
                 Character tempCharacter = EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot + 4];
                 ClearTargets();
@@ -1334,7 +1336,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 3; j < 7; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1348,7 +1350,7 @@ public class Targeting : MonoBehaviour
                     {
                         for (int j = 0; j < 4; j++)
                         {
-                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && !EnemyManager.Instance.PlayerCombatSpots[j].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
+                            if (EnemyManager.Instance.PlayerCombatSpots[j] != null && ((!EnemyManager.Instance.PlayerCombatSpots[j].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[j].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[j]))
                             {
                                 ClearTargets();
                                 currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[j]);
@@ -1372,7 +1374,7 @@ public class Targeting : MonoBehaviour
         {
             if(player)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
                     return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
@@ -1380,7 +1382,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
                     return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
@@ -1401,7 +1403,7 @@ public class Targeting : MonoBehaviour
         {
             if (player)
             {
-                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && !EnemyManager.Instance.PlayerCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
                     return EnemyManager.Instance.PlayerCombatSpots[i].CombatSpot;
@@ -1409,7 +1411,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
+                if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
                 {
                     currentlySelectedTargets.Add(tempCharacter);
                     return EnemyManager.Instance.EnemyCombatSpots[i].CombatSpot;
