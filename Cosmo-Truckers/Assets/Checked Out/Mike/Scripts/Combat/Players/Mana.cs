@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class Mana : MonoBehaviour
 {
+    [Header("Debug Fields")]
+    [SerializeField] protected bool freeSpells = false; 
+
     protected PlayerCharacter myCharacter;
     protected List<BaseAttackSO> attacks;
     [HideInInspector] public PlayerVessel MyVessel;

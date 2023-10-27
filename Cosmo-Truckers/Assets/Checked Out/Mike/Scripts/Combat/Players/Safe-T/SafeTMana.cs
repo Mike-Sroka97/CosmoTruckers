@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SafeTMana : Mana
 {
+    [Space(20)]
+    [Header("Casting Variables")]
     [SerializeField] int maxAnger;
     [SerializeField] int superSlamOneCostHealth = 80;
     [SerializeField] int superSlamZeroCostHealth = 40;
@@ -20,17 +22,27 @@ public class SafeTMana : Mana
 
     public override void CheckCastableSpells()
     {
-        SuperSlamCheck();
-
-        foreach (SafeTAttackSO attack in attacks)
+        if (freeSpells)
         {
-            if (attack.RageRequirement <= currentRage)
+            foreach (SafeTAttackSO attack in attacks)
             {
                 attack.CanUse = true;
             }
-            else
+        }
+        else
+        {
+            SuperSlamCheck();
+
+            foreach (SafeTAttackSO attack in attacks)
             {
-                attack.CanUse = false;
+                if (attack.RageRequirement <= currentRage)
+                {
+                    attack.CanUse = true;
+                }
+                else
+                {
+                    attack.CanUse = false;
+                }
             }
         }
     }
