@@ -77,7 +77,7 @@ public class MainMenu : MonoBehaviour
         }
     }
 
-    private void Start() => StartUpSettings();
+    private void Awake() => StartUpSettings();
 
     private void StartUpSettings()
     {
@@ -140,6 +140,8 @@ public class MainMenu : MonoBehaviour
 
         PlayerPrefs.SetFloat("Music", MusicSlider.value);
         PlayerPrefs.SetFloat("SFX", SFXSlider.value);
+
+        AudioManager.Instance.CheckVolume();
     }
 
     public void DefaultOptions()
@@ -151,6 +153,13 @@ public class MainMenu : MonoBehaviour
         SFXSlider.value = .5f;
         ResolutionDropDown.value = 2;
         SetResolution();
+
+        AudioManager.Instance.CheckVolume();
+    }
+
+    public void TestVol(float vol)
+    {
+        AudioManager.Instance.TestVolume(vol);
     }
 
     IEnumerator MenuChange(float direction)
@@ -325,14 +334,16 @@ public class MainMenu : MonoBehaviour
             value = true;
         if(MusicSlider.value != PlayerPrefs.GetFloat("Music", .5f))
             value = true;
-        if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
-            PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
-            value = true;
-        if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
-            value = true;
 
-
-
+        //TODO find a better way
+        if (false)
+        {
+            if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
+                PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
+                value = true;
+            if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
+                value = true;
+        }
         return value;
     }
 
