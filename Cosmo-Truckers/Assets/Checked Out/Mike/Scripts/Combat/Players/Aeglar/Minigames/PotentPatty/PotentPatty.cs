@@ -43,6 +43,7 @@ public class PotentPatty : CombatMove
 
             StartCoroutine(hands[random].Activate());
             currentTime = 0;
+            handTime = 0;
         }
 
         base.TrackTime();
