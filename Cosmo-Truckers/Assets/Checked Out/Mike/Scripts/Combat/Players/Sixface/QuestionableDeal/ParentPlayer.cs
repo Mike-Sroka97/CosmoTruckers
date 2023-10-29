@@ -18,10 +18,14 @@ public class ParentPlayer : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            if(collision.transform.GetComponentInParent<Player>())
+            Player player = collision.transform.GetComponentInChildren<Player>();
+            if (player == null)
+                player = collision.transform.GetComponentInParent<Player>();
+
+            if(player != null)
             {
-                collision.transform.GetComponentInParent<Player>().xVelocityAdjuster = myBody.velocity.x;
-                collision.transform.GetComponentInParent<Player>().yVelocityAdjuster = myBody.velocity.y;
+                player.xVelocityAdjuster = myBody.velocity.x;
+                player.yVelocityAdjuster = myBody.velocity.y;
             }
         }
     }
@@ -30,10 +34,14 @@ public class ParentPlayer : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            if (collision.transform.GetComponentInParent<Player>())
+            Player player = collision.transform.GetComponentInChildren<Player>();
+            if (player == null)
+                player = collision.transform.GetComponentInParent<Player>();
+
+            if (player != null)
             {
-                collision.transform.GetComponentInParent<Player>().xVelocityAdjuster = 0;
-                collision.transform.GetComponentInParent<Player>().yVelocityAdjuster = 0;
+                player.xVelocityAdjuster = 0;
+                player.yVelocityAdjuster = 0;
             }
         }
     }

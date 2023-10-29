@@ -18,4 +18,10 @@ public class SuperSlam : CombatMove
         foreach (SSGun ssGun in ssGuns)
             ssGun.trackTime = true;
     }
+
+    public override void EndMove()
+    {
+        base.EndMove();
+        FindObjectOfType<SafeTMana>().SetCurrentAnger(1);
+    }
 }

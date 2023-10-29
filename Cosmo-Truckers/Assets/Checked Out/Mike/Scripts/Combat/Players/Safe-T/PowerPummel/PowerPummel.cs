@@ -47,11 +47,12 @@ public class PowerPummel : CombatMove
                 else
                 {
                     Score = 0;
-                    numberOfHits = 2;
+                    numberOfHits = baseNumberOfAttacks;
                 }
 
                 //adjust number of hits and damage so that damage is static no matter the number of hits
                 character.GetComponent<Character>().TakeMultiHitDamage(baseDamage, numberOfHits);
+                FindObjectOfType<SafeTMana>().SetCurrentAnger(numberOfHits);
             }
         }
     }
