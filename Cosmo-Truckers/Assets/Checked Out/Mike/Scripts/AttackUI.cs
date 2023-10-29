@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class AttackUI : MonoBehaviour
+public abstract class AttackUI : MonoBehaviour
 {
     [SerializeField] protected int currentAttack = 0;
     public int GetCurrentAttack { get => currentAttack; }
@@ -55,6 +55,8 @@ public class AttackUI : MonoBehaviour
 
         SetOpacity(0);
     }
+
+    public abstract void HandleMana();
 
     private void OnDisable()
     {

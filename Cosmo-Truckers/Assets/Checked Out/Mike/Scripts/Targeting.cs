@@ -132,6 +132,7 @@ public class Targeting : MonoBehaviour
                 CombatManager.Instance.CharactersSelected.Add(combatSpot);
             }
 
+            CombatManager.Instance.GetCurrentPlayer.PlayerAttackUI.HandleMana();
             CombatManager.Instance.TargetsSelected = true;
             isTargeting = false;
             currentNumberOfTargets = 0;

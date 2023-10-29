@@ -26,6 +26,7 @@ public class PlayerCharacter : Character
     protected Mana manaBase;
     [HideInInspector] public PlayerVessel MyVessel;
     public GameObject PlayerVessel;
+    public AttackUI PlayerAttackUI;
 
     private void Awake()
     {
