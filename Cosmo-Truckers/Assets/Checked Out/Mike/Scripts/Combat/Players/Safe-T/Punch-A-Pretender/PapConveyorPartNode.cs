@@ -25,11 +25,7 @@ public class PapConveyorPartNode : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(badZone && collision.tag == "Player")
-        {
-            minigame.PlayerDead = true;
-        }
-        else if(!badZone && collision.tag == "PlayerAttack")
+        if(!badZone && collision.tag == "PlayerAttack")
         {
             minigame.Score++;
 
