@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,15 +56,22 @@ public class SafeTVessel : PlayerVessel
 
     protected override IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
-        TrackShield();
-
         int currentCharacterHealth = myCharacter.CurrentHealth;
 
         for (int i = 0; i < numberOfHits; i++)
         {
             safeTMana.SetCurrentAnger(1);
 
-            currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+            if(currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+            {
+                int newShield = int.Parse(currentShield.text) - damageHealingAmount;
+                currentShield.text = newShield.ToString();
+            }
+            else
+            {
+                currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+                TrackShield();
+            }
 
             if (damage)
                 damageHealingText.color = damageColor;
@@ -78,6 +86,11 @@ public class SafeTVessel : PlayerVessel
             }
 
             damageHealingText.transform.localPosition = Vector3.zero;
+
+            if (int.Parse(shieldText.text) <= 0)
+            {
+                TrackShield();
+            }
         }
     }
 }

@@ -73,7 +73,7 @@ public class Targeting : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
 
-        ReactivateCombatManager();
+        ReactivateCombatManager(true);
         foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
         {
             sprite.material = notTargetedMaterial;
@@ -116,7 +116,7 @@ public class Targeting : MonoBehaviour
         }
     }
 
-    private void ReactivateCombatManager()
+    private void ReactivateCombatManager(bool enemyTargeting = false)
     {
         currentNumberOfTargets++;
 
@@ -127,9 +127,12 @@ public class Targeting : MonoBehaviour
         }
         else
         {
-            foreach (Character combatSpot in currentlySelectedTargets)
+            if(!enemyTargeting)
             {
-                CombatManager.Instance.CharactersSelected.Add(combatSpot);
+                foreach (Character combatSpot in currentlySelectedTargets)
+                {
+                    CombatManager.Instance.CharactersSelected.Add(combatSpot);
+                }
             }
 
             if(CombatManager.Instance.GetCurrentPlayer)

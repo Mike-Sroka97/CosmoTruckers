@@ -10,7 +10,7 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] TextMeshProUGUI maxHealth;
     [SerializeField] GameObject shieldGO;
     [SerializeField] Image characterImage;
-    [SerializeField] TextMeshProUGUI currentShield;
+    [SerializeField] protected TextMeshProUGUI currentShield;
     [SerializeField] Image currentHealthBar;
     [SerializeField] Image currentShieldBar;
 
@@ -81,14 +81,21 @@ public class PlayerVessel : MonoBehaviour
 
     protected virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
-        TrackShield();
-
         int currentCharacterHealth = myCharacter.CurrentHealth;
         shieldText.text = currentShield.ToString();
 
         for (int i = 0; i < numberOfHits; i++)
         {
-            currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+            if (currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+            {
+                int newShield = int.Parse(currentShield.text) - damageHealingAmount;
+                currentShield.text = newShield.ToString();
+            }
+            else
+            {
+                currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+                TrackShield();
+            }
 
             if (damage)
                 damageHealingText.color = damageColor;
@@ -103,12 +110,22 @@ public class PlayerVessel : MonoBehaviour
             }
 
             damageHealingText.transform.localPosition = Vector3.zero;
+
+            if (int.Parse(shieldText.text) <= 0)
+            {
+                TrackShield();
+            }
         }
     }
 
     protected void TrackShield()
     {
         currentShield.text = myCharacter.Shield.ToString();
+
+        float currentShieldValue = myCharacter.Shield;
+        float shieldRatio = currentShieldValue / 60; //60 is max shields
+        currentShieldBar.fillAmount = shieldRatio;
+
         if (myCharacter.Shield <= 0)
             shieldGO.SetActive(false);
     }

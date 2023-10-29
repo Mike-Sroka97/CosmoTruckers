@@ -259,17 +259,6 @@ public class CombatManager : MonoBehaviour
         }
 
 
-        //if (CharactersSelected.Count > 0)
-        //{
-        //    foreach (Character player in CharactersSelected)  //PlayerCharacter invalid cast
-        //    {
-        //        foreach (DebuffStackSO aug in player.GetAUGS)
-        //        {
-        //            if (aug.OnDamage == false)
-        //                aug.StopEffect();
-        //        }
-        //    }
-        //}
         StopAllCoroutines();
 
         INAmoving = true;

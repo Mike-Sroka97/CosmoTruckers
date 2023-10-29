@@ -39,5 +39,15 @@ public class CounterBop : CombatMove
 
         //Add CountR Guard augment
         character.AddDebuffStack(counterGuardAUG);
+
+        //Taunt random enemy
+        List<Enemy> aliveEnemies = new List<Enemy>();
+
+        foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+            if (!enemy.Dead)
+                aliveEnemies.Add(enemy);
+
+        int random = Random.Range(0, aliveEnemies.Count);
+        aliveEnemies[random].TauntedBy = character;
     }
 }
