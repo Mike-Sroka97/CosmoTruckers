@@ -42,7 +42,9 @@ public class CBWaveEnemy : MonoBehaviour
             GameObject particle = Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
             particle.transform.parent = minigame.transform;
 
-            if (collision.transform.position.x > transform.position.x)
+            Transform parent = collision.transform.parent; 
+
+            if (parent.position.x > transform.position.x)
             {
                 particle.transform.eulerAngles = new Vector3(180f, particle.transform.eulerAngles.y, particle.transform.eulerAngles.z); 
             }
