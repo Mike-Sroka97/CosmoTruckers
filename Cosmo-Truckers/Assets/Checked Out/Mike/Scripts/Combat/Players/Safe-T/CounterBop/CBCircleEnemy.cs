@@ -4,35 +4,56 @@ using UnityEngine;
 
 public class CBCircleEnemy : MonoBehaviour
 {
-    [SerializeField] float radius;
-    [SerializeField] float speed;
-    [SerializeField] float transformSpeed;
+    [SerializeField] float verticalSpeed;
+    [SerializeField] float horizontalSpeed; 
+    [SerializeField] float zigZagOffset;
 
+    float switchMinimum = 0.1f; 
+    float rightOffset, leftOffset;
+    float startXPosition; 
     float angle;
+    bool goingRight = true; 
     Rigidbody2D myBody;
 
 
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        startXPosition = gameObject.transform.position.x;
+        rightOffset = startXPosition + zigZagOffset; 
+        leftOffset = startXPosition - zigZagOffset;
     }
 
     private void Update()
     {
-        CircularMotion();
+        ZigZagMotion(); 
     }
 
-    private void CircularMotion()
+    private void ZigZagMotion()
     {
-        angle += speed * Time.deltaTime;
+        float currentXPosition = gameObject.transform.position.x;
 
-        float x = Mathf.Cos(angle) * radius;
-        float y = Mathf.Sin(angle) * radius;
-
-        myBody.velocity = new Vector2(x, y);
-        if (myBody.velocity.x > 0)
+        if (goingRight)
         {
-            transform.position += new Vector3(transformSpeed * Time.deltaTime, 0, 0);
+            if ((rightOffset - currentXPosition) > switchMinimum)
+            {
+                myBody.velocity = new Vector2(horizontalSpeed, verticalSpeed);
+            }
+            else
+            {
+                goingRight = false; 
+            }
+        }
+        else
+        {
+            if ((leftOffset - currentXPosition) < switchMinimum)
+            {
+                myBody.velocity = new Vector2(-horizontalSpeed, verticalSpeed);
+            }
+            else
+            {
+                goingRight = true;
+            }
         }
     }
 }
