@@ -7,8 +7,9 @@ public class CBWaveEnemy : MonoBehaviour
     [SerializeField] float xVelocity;
     [SerializeField] float amplitude;
     [SerializeField] float frequency;
-    [SerializeField] GameObject deathParticle; 
+    [SerializeField] GameObject deathParticle;
 
+    float particleVerticalCheck = 0.1f; 
     Rigidbody2D myBody;
     CounterBop minigame;
 
@@ -42,11 +43,23 @@ public class CBWaveEnemy : MonoBehaviour
             GameObject particle = Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
             particle.transform.parent = minigame.transform;
 
-            Transform parent = collision.transform.parent; 
+            Transform parent = collision.transform.parent;
 
-            if (parent.position.x > transform.position.x)
+            float verticalOffset = transform.position.y - parent.position.y; 
+
+            //rotate vertically instead of horizontally
+            if (verticalOffset >= particleVerticalCheck)
             {
-                particle.transform.eulerAngles = new Vector3(180f, particle.transform.eulerAngles.y, particle.transform.eulerAngles.z); 
+                //270f puts it at an upwards angle
+                particle.transform.eulerAngles = new Vector3(270f, particle.transform.eulerAngles.y, particle.transform.eulerAngles.z);
+            }
+            else
+            {
+                //180f puts it to the left
+                if (parent.position.x > transform.position.x)
+                {
+                    particle.transform.eulerAngles = new Vector3(180f, particle.transform.eulerAngles.y, particle.transform.eulerAngles.z);
+                }
             }
 
             Debug.Log(minigame.Score);
