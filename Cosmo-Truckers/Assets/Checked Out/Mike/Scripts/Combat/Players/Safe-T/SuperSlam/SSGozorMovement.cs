@@ -14,6 +14,7 @@ public class SSGozorMovement : MonoBehaviour
     [SerializeField] SSGun[] guns;
     public List<Collider2D> collidersToDisable;
 
+    int hitNumber = 0; 
     Transform point0;
     Transform point1;
     float originalMoveSpeed;
@@ -69,8 +70,17 @@ public class SSGozorMovement : MonoBehaviour
 
     public IEnumerator FlashMe()
     {
-        moveSpeed = 0;
+        if (hitNumber == 0)
+        {
+            moveSpeed = 0;
+        }
+        else
+        {
+            moveSpeed = originalMoveSpeed / 2.0f; 
+        }
+
         ToggleGozor(false);
+        hitNumber++; 
 
         int currentFlash = 0;
         while(currentFlash < numberOfFlashes)
@@ -96,13 +106,13 @@ public class SSGozorMovement : MonoBehaviour
 
     private void ToggleGozor(bool toggle)
     {
+        foreach (Collider2D collider in collidersToDisable)
+        {
+            collider.enabled = toggle;
+        }
         foreach (SSGun gun in guns)
         {
             gun.enabled = toggle;
-        }
-        foreach(Collider2D collider in collidersToDisable)
-        {
-            collider.enabled = toggle;
         }
     }
 }
