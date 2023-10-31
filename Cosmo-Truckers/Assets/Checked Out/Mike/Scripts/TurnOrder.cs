@@ -70,7 +70,15 @@ public class TurnOrder : MonoBehaviour
             }
             else
             {
-                livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
+                //This is really ugly
+                //Need to get if the enemy is trash and then get the first (boss trash) mob
+                if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().isTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
+                    livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
+                //Mob is not trash and has independent turns
+                else if(!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().isTrash)
+                    livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
+                else
+                    EndTurn();
             }
 
             Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
@@ -156,6 +164,8 @@ public class TurnOrder : MonoBehaviour
             }
         }
         livingCharacters = speedList.ToArray();
+
+        EnemyManager.Instance.FuckTrashMobs();
     }
 
     public void AddToSpeedList(CharacterStats characterSpeed)
@@ -169,6 +179,8 @@ public class TurnOrder : MonoBehaviour
         }
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
+
+        EnemyManager.Instance.FuckTrashMobs();
     }
 
     public void EndCombat()

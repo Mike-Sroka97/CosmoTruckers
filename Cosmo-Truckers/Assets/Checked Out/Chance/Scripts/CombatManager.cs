@@ -41,6 +41,8 @@ public class CombatManager : MonoBehaviour
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
+        //To ensure this is cleared on player turn
+        CurrentEnemy = null;
 
         CurrentPlayer = currentPlayer;
         ActivePlayers.Add(currentPlayer);
@@ -280,7 +282,32 @@ public class CombatManager : MonoBehaviour
     public void EndCombat()
     {
         miniGame.gameObject.SetActive(true);
-        miniGame.GetComponentInChildren<CombatMove>().EndMove();
+
+        //If this is the only place combat end move is called this should work, if it gets called from multiple sorces it may cause some strange issues
+        if(CurrentEnemy != null && CurrentEnemy.isTrash)
+        {
+            //Loop over all the trash enemys
+            foreach(var enemy in EnemyManager.Instance.TrashMobCollection)
+            {
+                if(enemy.Key == CurrentEnemy.CharacterName)
+                {
+                    //Found the enemy type and now loop over them all to deal damage independently
+                    for(int i = 0; i < enemy.Value.Count; i++)
+                    {
+                        CurrentEnemy = enemy.Value[i];
+
+                        miniGame.GetComponentInChildren<CombatMove>().EndMove();
+                    }
+                }
+            }
+        }
+        else
+        {
+
+            miniGame.GetComponentInChildren<CombatMove>().EndMove();
+        }
+
+
         Destroy(miniGame);
         CharactersSelected.Clear();
 

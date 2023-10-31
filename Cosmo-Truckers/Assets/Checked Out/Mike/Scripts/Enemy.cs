@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Enemy : Character
 {
-    public string CharacterName { get; private set; }
+    public string CharacterName { get => characterName; }
 
     [SerializeField] protected BaseAttackSO[] attacks;
 
@@ -26,6 +26,10 @@ public class Enemy : Character
     [HideInInspector] public PlayerCharacter TauntedBy;
     public bool SpecialTargetConditions = false;
     protected BaseAttackSO ChosenAttack;
+
+    [Header("Trash mob collector")]
+    public bool isTrash = false;
+    [SerializeField] string characterName;
 
     Animator enemyAnimation;
 
@@ -74,7 +78,7 @@ public class Enemy : Character
         if (ChosenAttack == null)
             ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
 
-        FindObjectOfType<CombatManager>().StartTurnEnemy(ChosenAttack, this);
+        CombatManager.Instance.StartTurnEnemy(ChosenAttack, this);
     }
 
     public override void EndTurn()

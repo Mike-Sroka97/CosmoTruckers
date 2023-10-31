@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour
 
     [Space(10)]
     [HideInInspector] public List<Enemy> Enemies;
+    [HideInInspector] public Dictionary<string, List<Enemy>> TrashMobCollection; //Test for now
     [HideInInspector] public List<PlayerCharacter> Players;
     [HideInInspector] public List<PlayerCharacterSummon> PlayerSummons;
     [HideInInspector] public List<EnemySummon> EnemySummons;
@@ -50,12 +51,15 @@ public class EnemyManager : MonoBehaviour
             if(!enemy.GetComponent<EnemySummon>())
                 Enemies.Add(enemy);
 
+
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             if(!player.GetComponent<PlayerCharacterSummon>())
                 Players.Add(player);
 
         PlayerVesselManager.Instance.Initialize();
+
+        FuckTrashMobs();
     }
 
     private void SetSpawns()
@@ -120,6 +124,23 @@ public class EnemyManager : MonoBehaviour
                 PlayerCombatSpots[playerSummonCount + playerSummonIndexAdder] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerSummonCount + playerSummonIndexAdder;
                 playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
+            }
+        }
+    }
+
+    //Can be called to reset the trash collection if a mob dies or is added to collection
+    public void FuckTrashMobs()
+    {
+        TrashMobCollection = new();
+
+        foreach (var mob in Enemies)
+        {
+            if (mob.isTrash && !mob.Dead)
+            {
+                if (!TrashMobCollection.ContainsKey(mob.CharacterName))
+                    TrashMobCollection.Add(mob.CharacterName, new());
+
+                TrashMobCollection[mob.CharacterName].Add(mob);
             }
         }
     }
