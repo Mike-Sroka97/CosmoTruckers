@@ -303,7 +303,6 @@ public class CombatManager : MonoBehaviour
         }
         else
         {
-
             miniGame.GetComponentInChildren<CombatMove>().EndMove();
         }
 

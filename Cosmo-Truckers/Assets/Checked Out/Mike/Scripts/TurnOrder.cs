@@ -165,7 +165,7 @@ public class TurnOrder : MonoBehaviour
         }
         livingCharacters = speedList.ToArray();
 
-        EnemyManager.Instance.FuckTrashMobs();
+        EnemyManager.Instance.UpdateTrashMobList();
     }
 
     public void AddToSpeedList(CharacterStats characterSpeed)
@@ -180,7 +180,7 @@ public class TurnOrder : MonoBehaviour
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
 
-        EnemyManager.Instance.FuckTrashMobs();
+        EnemyManager.Instance.UpdateTrashMobList();
     }
 
     public void EndCombat()

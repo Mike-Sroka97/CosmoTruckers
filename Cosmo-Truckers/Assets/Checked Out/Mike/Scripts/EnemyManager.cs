@@ -51,7 +51,6 @@ public class EnemyManager : MonoBehaviour
             if(!enemy.GetComponent<EnemySummon>())
                 Enemies.Add(enemy);
 
-
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             if(!player.GetComponent<PlayerCharacterSummon>())
@@ -59,7 +58,7 @@ public class EnemyManager : MonoBehaviour
 
         PlayerVesselManager.Instance.Initialize();
 
-        FuckTrashMobs();
+        UpdateTrashMobList();
     }
 
     private void SetSpawns()
@@ -129,7 +128,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     //Can be called to reset the trash collection if a mob dies or is added to collection
-    public void FuckTrashMobs()
+    public void UpdateTrashMobList()
     {
         TrashMobCollection = new();
 
