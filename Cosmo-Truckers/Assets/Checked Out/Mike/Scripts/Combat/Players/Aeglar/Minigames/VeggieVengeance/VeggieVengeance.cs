@@ -37,9 +37,9 @@ public class VeggieVengeance : CombatMove
             int augmentStacks = 1; //always applies overfed to enemies
 
             //okay here it comes... Im boutta math
-            if(character.CurrentHealth + currentHealing > character.Health)
+            if(character.CurrentHealth + character.AdjustAttackHealing(currentHealing) > character.Health)
             {
-                currentHealing = character.CurrentHealth + currentHealing - character.Health;
+                currentHealing = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
                 character.TakeDamage(currentHealing, true); //pierce defense cause technically healing
             }
             else
