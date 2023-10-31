@@ -401,11 +401,6 @@ public class Targeting : MonoBehaviour
 
             if (targetingEnemies)
             {
-                //track choice
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    ReactivateCombatManager();
-                }
                 //track up input
                 if (Input.GetKeyDown(KeyCode.W))
                 {
