@@ -72,10 +72,10 @@ public class TurnOrder : MonoBehaviour
             {
                 //This is really ugly
                 //Need to get if the enemy is trash and then get the first (boss trash) mob
-                if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().isTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
+                if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
                     livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
                 //Mob is not trash and has independent turns
-                else if(!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().isTrash)
+                else if(!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash)
                     livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
                 else
                     EndTurn();

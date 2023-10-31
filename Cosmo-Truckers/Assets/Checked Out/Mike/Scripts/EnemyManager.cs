@@ -130,14 +130,14 @@ public class EnemyManager : MonoBehaviour
     //Can be called to reset the trash collection if a mob dies or is added to collection
     public void UpdateTrashMobList()
     {
-        TrashMobCollection = new();
+        TrashMobCollection = new Dictionary<string, List<Enemy>>();
 
-        foreach (var mob in Enemies)
+        foreach (Enemy mob in Enemies)
         {
-            if (mob.isTrash && !mob.Dead)
+            if (mob.IsTrash && !mob.Dead)
             {
                 if (!TrashMobCollection.ContainsKey(mob.CharacterName))
-                    TrashMobCollection.Add(mob.CharacterName, new());
+                    TrashMobCollection.Add(mob.CharacterName, new List<Enemy>());
 
                 TrashMobCollection[mob.CharacterName].Add(mob);
             }

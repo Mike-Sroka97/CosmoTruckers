@@ -284,7 +284,7 @@ public class CombatManager : MonoBehaviour
         miniGame.gameObject.SetActive(true);
 
         //If this is the only place combat end move is called this should work, if it gets called from multiple sorces it may cause some strange issues
-        if(CurrentEnemy != null && CurrentEnemy.isTrash)
+        if(CurrentEnemy != null && CurrentEnemy.IsTrash)
         {
             //Loop over all the trash enemys
             foreach(var enemy in EnemyManager.Instance.TrashMobCollection)

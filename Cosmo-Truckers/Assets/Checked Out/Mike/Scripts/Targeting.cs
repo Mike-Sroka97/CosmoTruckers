@@ -61,9 +61,24 @@ public class Targeting : MonoBehaviour
             Target(character);
         }
 
-        foreach(SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+        //handles trash targeting
+        if(CombatManager.Instance.GetCurrentEnemy.IsTrash)
         {
-            sprite.material = enemyTargetingMaterial;
+            foreach(Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
+            {
+                foreach (SpriteRenderer sprite in trashEnemy.TargetingSprites)
+                {
+                    sprite.material = enemyTargetingMaterial;
+                }
+            }
+        }
+        //handles nontrash targeting
+        else
+        {
+            foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            {
+                sprite.material = enemyTargetingMaterial;
+            }
         }
 
         StartCoroutine(TargetingWait(waitTime));

@@ -28,7 +28,7 @@ public class Enemy : Character
     protected BaseAttackSO ChosenAttack;
 
     [Header("Trash mob collector")]
-    public bool isTrash = false;
+    public bool IsTrash = false;
     [SerializeField] string characterName;
 
     Animator enemyAnimation;
