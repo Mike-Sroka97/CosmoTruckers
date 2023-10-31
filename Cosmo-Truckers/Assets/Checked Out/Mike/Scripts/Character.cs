@@ -153,7 +153,7 @@ public abstract class Character : MonoBehaviour
         return newDamage;
     }
 
-    protected int AdjustAttackHealing(int healing)
+    public int AdjustAttackHealing(int healing)
     {
         int newHealing = healing;
 

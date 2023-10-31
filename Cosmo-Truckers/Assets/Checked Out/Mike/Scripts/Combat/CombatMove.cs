@@ -122,10 +122,10 @@ public abstract class CombatMove : MonoBehaviour
                     if (augmentStacks > maxAugmentStacks)
                         augmentStacks = maxAugmentStacks;
 
-                    character.GetComponent<Character>().TakeDamage(currentDamage);
+                    character.TakeDamage(currentDamage);
 
                     //Apply augment
-                    character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+                    character.AddDebuffStack(DebuffToAdd, augmentStacks);
                 }
             }
         }
@@ -136,16 +136,9 @@ public abstract class CombatMove : MonoBehaviour
         }
     }
 
-    private void PlayerEnemyDifference(Character character)
+    protected virtual void PlayerEnemyDifference(Character character)
     {
-        if(character.GetComponent<Enemy>())
-        {
-
-        }
-        else if(character.GetComponent<PlayerCharacter>())
-        {
-
-        }
+        //implement as needed
     }
 
     protected void GenerateLayout()

@@ -111,7 +111,7 @@ public class PlayerVessel : MonoBehaviour
 
             damageHealingText.transform.localPosition = Vector3.zero;
 
-            if (int.Parse(shieldText.text) <= 0)
+            if (shieldGO.activeInHierarchy && int.Parse(shieldText.text) <= 0)
             {
                 TrackShield();
             }
