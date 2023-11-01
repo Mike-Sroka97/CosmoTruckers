@@ -10,24 +10,37 @@ public class SSGun : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] bool rotatingRight;
 
-    //Bullet variables
+    //Laser variables
+    [SerializeField] Transform laser; 
     [SerializeField] Transform barrel;
-    [SerializeField] float fireDelay;
-    [SerializeField] float volleyDelay;
-    [SerializeField] int bulletsInVolley;
-    [SerializeField] GameObject bullet;
+    [SerializeField] float laserResizeTime; 
+    [SerializeField] float chargeTime;
+    [SerializeField] GameObject chargeParticle;
+    [SerializeField] AnimationClip fireCannon;
 
-    [SerializeField] AnimationClip fireCannon; 
-
-    Animator myAnimator; 
-    bool isFiring = false;    
-    float currentTime = 0;
-    int bulletsFired = 0;
+    ParticleUpdater myParticleUpdater; 
+    Animator myAnimator;
+    bool isFiring = false;
+    float growTime = 0;  
+    float shrinkTime;
+    Vector3 zeroScale;
+    Vector3 fullScale;
+    Vector3 currentScale; 
     [HideInInspector] public bool trackTime;
 
     private void Start()
     {
-        myAnimator = GetComponent<Animator>();         
+        myAnimator = GetComponent<Animator>();
+        myParticleUpdater = GetComponent<ParticleUpdater>();
+        myParticleUpdater.SetParticleState(false);
+
+        //Set scaling
+        zeroScale = new Vector3(0, laser.localScale.y, laser.localScale.z);
+        fullScale = new Vector3(1, laser.localScale.y, laser.localScale.z);
+        currentScale = zeroScale;
+
+        //Set this so it doesn't shrink during the beginning of the minigame
+        shrinkTime = laserResizeTime; 
     }
 
     private void Update()
@@ -36,43 +49,72 @@ public class SSGun : MonoBehaviour
             return;
 
         RotateMe();
-        TrackTime();
+        TrackLaser(); 
     }
 
-    private void TrackTime()
+    private void TrackLaser()
     {
-        if(!isFiring)
+        laser.localScale = currentScale; 
+
+        if (isFiring)
         {
-            currentTime += Time.deltaTime;
-            if(currentTime > fireDelay)
+            shrinkTime = 0;
+
+            if (growTime < laserResizeTime)
             {
-                currentTime = 0;
-                isFiring = true;
-                FireBullet();
+                growTime += Time.deltaTime;
+                currentScale = Vector3.Lerp(zeroScale, fullScale, growTime / laserResizeTime);
+            }
+            else 
+            {
+                currentScale = fullScale;
             }
         }
         else
         {
-            currentTime += Time.deltaTime;
-            if(currentTime > volleyDelay)
-            {
-                currentTime = 0;
-                FireBullet();
+            growTime = 0;
 
-                if(bulletsFired >= bulletsInVolley)
-                {
-                    bulletsFired = 0;
-                    isFiring = false;
-                }
+            if (shrinkTime < laserResizeTime)
+            {
+                shrinkTime += Time.deltaTime;
+                currentScale = Vector3.Lerp(fullScale, zeroScale, growTime / laserResizeTime);
+            }
+            else
+            {
+                currentScale = zeroScale;
             }
         }
     }
 
-    private void FireBullet()
+    public void SetLaserState(bool laserGrow)
     {
-        myAnimator.Play(fireCannon.name); 
-        bulletsFired++;
-        Instantiate(bullet, barrel.position, transform.rotation);
+        if (laserGrow)
+        {
+            StartCoroutine(StartLaser());
+            myParticleUpdater.SetParticleState(true);
+        }
+        else
+        {
+            //This check is for the beginning of the minigame
+            if (shrinkTime > 0)
+            {
+                currentScale = zeroScale; 
+            }
+
+            isFiring = false;
+            myParticleUpdater.SetParticleState(false);
+        }
+    }
+
+    private IEnumerator StartLaser()
+    {
+        Instantiate(chargeParticle, barrel);
+
+        yield return new WaitForSeconds(chargeTime);
+
+        myAnimator.Play(fireCannon.name);
+        currentScale = zeroScale;
+        isFiring = true; 
     }
 
     private void RotateMe()
@@ -81,9 +123,9 @@ public class SSGun : MonoBehaviour
         {
             transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
 
-            if(transform.eulerAngles.z > maxZRotation &&  transform.eulerAngles.z < 180)
+            if (transform.localEulerAngles.z > maxZRotation && transform.localEulerAngles.z < 180)
             {
-                transform.eulerAngles = new Vector3(0, 0, maxZRotation);
+                transform.localEulerAngles = new Vector3(0, 0, maxZRotation);
                 rotatingRight = !rotatingRight;
             }
         }
@@ -91,9 +133,9 @@ public class SSGun : MonoBehaviour
         {
             transform.Rotate(new Vector3(0, 0, -rotationSpeed * Time.deltaTime));
 
-            if (transform.eulerAngles.z < 360 - maxZRotation && transform.eulerAngles.z > 180)
+            if (transform.localEulerAngles.z < 360 - maxZRotation && transform.localEulerAngles.z > 180)
             {
-                transform.eulerAngles = new Vector3(0, 0, 360 - maxZRotation);
+                transform.localEulerAngles = new Vector3(0, 0, 360 - maxZRotation);
                 rotatingRight = !rotatingRight;
             }
         }

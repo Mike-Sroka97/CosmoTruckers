@@ -5,6 +5,7 @@ using UnityEngine;
 public class SSPostule : MonoBehaviour
 {
     [SerializeField] float upForce;
+    [SerializeField] Sprite[] buttonSprites;
 
     SuperSlam superSlam;
     SSGozorMovement gozor;
@@ -12,6 +13,8 @@ public class SSPostule : MonoBehaviour
     SpriteRenderer myRenderer;
     Collider2D myCollider;
     Rigidbody2D playerBody;
+    int currentSpriteNumber = 0;
+ 
 
     private void Start()
     {
@@ -35,9 +38,7 @@ public class SSPostule : MonoBehaviour
                 if (dotProduct > 0.5f)
                 {
                     collided = true;
-
                     playerBody.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
-
                     DamageGonzor();
                     break;
                 }
@@ -57,12 +58,28 @@ public class SSPostule : MonoBehaviour
     private void DamageGonzor()
     {
         superSlam.Score++;
+        currentSpriteNumber++; 
 
-        gozor.mySprites.Remove(myRenderer);
-        gozor.collidersToDisable.Remove(myCollider);
-        StartCoroutine(gozor.FlashMe());
-        myRenderer.enabled = false;
-        Destroy(myCollider);
+        if (currentSpriteNumber < buttonSprites.Length)
+        {
+            //Play success sound
+            myRenderer.sprite = buttonSprites[currentSpriteNumber];
+
+            if (superSlam.Score == 1)
+            {
+                StartCoroutine(gozor.FlashMe(true));
+            }
+            else
+            {
+                StartCoroutine(gozor.FlashMe(false));
+            }
+
+            collided = false; 
+        }
+        else
+        {
+            superSlam.CheckScore();
+            Destroy(gameObject);
+        }
     }
-    
 }

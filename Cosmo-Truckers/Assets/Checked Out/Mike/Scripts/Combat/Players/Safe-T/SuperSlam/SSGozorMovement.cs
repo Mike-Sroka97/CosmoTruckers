@@ -13,6 +13,7 @@ public class SSGozorMovement : MonoBehaviour
     [SerializeField] int numberOfFlashes;
     [SerializeField] SSGun[] guns;
     public List<Collider2D> collidersToDisable;
+    [SerializeField] private float firstTimeLaserWait = 2f; 
 
     int hitNumber = 0; 
     Transform point0;
@@ -68,7 +69,7 @@ public class SSGozorMovement : MonoBehaviour
         }
     }
 
-    public IEnumerator FlashMe()
+    public IEnumerator FlashMe(bool firstTime)
     {
         if (hitNumber == 0)
         {
@@ -101,7 +102,15 @@ public class SSGozorMovement : MonoBehaviour
         }
 
         moveSpeed = originalMoveSpeed;
-        ToggleGozor(true);
+
+        if (firstTime)
+        {
+            ToggleGozorFirstTime(); 
+        }
+        else
+        {
+            ToggleGozor(true);
+        }
     }
 
     private void ToggleGozor(bool toggle)
@@ -110,9 +119,30 @@ public class SSGozorMovement : MonoBehaviour
         {
             collider.enabled = toggle;
         }
+
         foreach (SSGun gun in guns)
         {
-            gun.enabled = toggle;
+            gun.SetLaserState(toggle);
+        }
+    }
+
+    private void ToggleGozorFirstTime()
+    {
+        foreach (Collider2D collider in collidersToDisable)
+        {
+            collider.enabled = true;
+        }
+
+        StartCoroutine(FirstTimeLasers());
+    }
+
+    private IEnumerator FirstTimeLasers()
+    {
+        yield return new WaitForSeconds(firstTimeLaserWait);
+
+        foreach (SSGun gun in guns)
+        {
+            gun.SetLaserState(true);
         }
     }
 }
