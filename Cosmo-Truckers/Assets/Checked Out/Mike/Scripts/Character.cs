@@ -119,9 +119,10 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    public virtual void TakeHealing(int healing)
+    public virtual void TakeHealing(int healing, bool ignoreVigor = false)
     {
-        healing = AdjustAttackHealing(healing);
+        if(!ignoreVigor)
+            healing = AdjustAttackHealing(healing);
 
         CurrentHealth += healing;
     }

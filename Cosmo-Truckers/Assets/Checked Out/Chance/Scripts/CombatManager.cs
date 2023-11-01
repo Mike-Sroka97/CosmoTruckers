@@ -19,6 +19,7 @@ public class CombatManager : MonoBehaviour
     [SerializeField] TMP_Text Timer;
     [SerializeField] Targeting myTargeting;
     [SerializeField] float enemySpellHoldTime;
+    [SerializeField] float trashAttackDelay = .25f;
 
     [SerializeField] public List<Character> CharactersSelected;
     private List<PlayerCharacter> ActivePlayers;
@@ -32,6 +33,8 @@ public class CombatManager : MonoBehaviour
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     public bool INAmoving = false;
+
+    bool inTrashEndMove = false;
 
     private void Awake() => Instance = this;
     [HideInInspector] public bool TargetsSelected = true;
@@ -279,26 +282,17 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void EndCombat()
+    public IEnumerator EndCombat()
     {
         miniGame.gameObject.SetActive(true);
 
         //If this is the only place combat end move is called this should work, if it gets called from multiple sorces it may cause some strange issues
         if(CurrentEnemy != null && CurrentEnemy.IsTrash)
         {
-            //Loop over all the trash enemys
-            foreach(var enemy in EnemyManager.Instance.TrashMobCollection)
+            StartCoroutine(DelayEndMove());
+            while(inTrashEndMove)
             {
-                if(enemy.Key == CurrentEnemy.CharacterName)
-                {
-                    //Found the enemy type and now loop over them all to deal damage independently
-                    for(int i = 0; i < enemy.Value.Count; i++)
-                    {
-                        CurrentEnemy = enemy.Value[i];
-
-                        miniGame.GetComponentInChildren<CombatMove>().EndMove();
-                    }
-                }
+                yield return null;
             }
         }
         else
@@ -332,6 +326,29 @@ public class CombatManager : MonoBehaviour
         }
 
         FindObjectOfType<TurnOrder>().EndTurn();
+    }
+
+    IEnumerator DelayEndMove()
+    {
+        inTrashEndMove = true;
+
+        //Loop over all the trash enemys
+        foreach (var enemy in EnemyManager.Instance.TrashMobCollection)
+        {
+            if (enemy.Key == CurrentEnemy.CharacterName)
+            {
+                //Found the enemy type and now loop over them all to deal damage independently
+                for (int i = 0; i < enemy.Value.Count; i++)
+                {
+                    CurrentEnemy = enemy.Value[i];
+
+                    miniGame.GetComponentInChildren<CombatMove>().EndMove();
+                    yield return new WaitForSeconds(trashAttackDelay);
+                }
+            }
+        }
+
+        inTrashEndMove = false;
     }
 
     public void CleanupMinigame()

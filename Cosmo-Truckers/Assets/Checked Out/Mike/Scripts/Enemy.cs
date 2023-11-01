@@ -129,9 +129,10 @@ public class Enemy : Character
         StartCoroutine(DamageHealingEffect(true, damage.ToString(), numberOfHits));
     }
 
-    public override void TakeHealing(int healing)
+    public override void TakeHealing(int healing, bool ignoreVigor = false)
     {
-        base.TakeHealing(healing);
+        if(!ignoreVigor)
+            base.TakeHealing(healing);
 
         if(healing != 0)
             StartCoroutine(DamageHealingEffect(false, healing.ToString()));

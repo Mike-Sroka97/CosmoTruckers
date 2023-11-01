@@ -137,7 +137,7 @@ public class INAcombat : MonoBehaviour
             }
             transform.localPosition = startingPosition;
 
-            CombatManager.Instance.EndCombat();
+            StartCoroutine(CombatManager.Instance.EndCombat());
         }
 
         countDownTimer.enabled = false;

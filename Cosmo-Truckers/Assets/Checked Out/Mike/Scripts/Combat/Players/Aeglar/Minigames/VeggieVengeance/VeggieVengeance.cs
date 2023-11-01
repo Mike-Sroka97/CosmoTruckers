@@ -38,9 +38,11 @@ public class VeggieVengeance : CombatMove
 
             //okay here it comes... Im boutta math
             if(character.CurrentHealth + character.AdjustAttackHealing(currentHealing) > character.Health)
-            {
-                currentHealing = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
-                character.TakeDamage(currentHealing, true); //pierce defense cause technically healing
+            {                
+                int currentDamage = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
+                currentHealing = character.Health - character.CurrentHealth;
+                character.GetComponent<Character>().TakeHealing(currentHealing, true); //heal to full first
+                character.TakeDamage(currentDamage, true); //pierce defense cause technically healing
             }
             else
             {

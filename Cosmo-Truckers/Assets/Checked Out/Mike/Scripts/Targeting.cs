@@ -89,9 +89,23 @@ public class Targeting : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         ReactivateCombatManager(true);
-        foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+
+        if (CombatManager.Instance.GetCurrentEnemy.IsTrash)
         {
-            sprite.material = notTargetedMaterial;
+            foreach (Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
+            {
+                foreach (SpriteRenderer sprite in trashEnemy.TargetingSprites)
+                {
+                    sprite.material = notTargetedMaterial;
+                }
+            }
+        }
+        else
+        {
+            foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            {
+                sprite.material = notTargetedMaterial;
+            }
         }
     }
 
