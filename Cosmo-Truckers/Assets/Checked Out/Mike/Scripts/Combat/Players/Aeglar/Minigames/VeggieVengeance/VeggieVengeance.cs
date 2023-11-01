@@ -49,9 +49,9 @@ public class VeggieVengeance : CombatMove
                 character.GetComponent<Character>().TakeHealing(currentHealing);
             }
 
-            ////Apply augment
-            //if (playerEnemyTargetDifference && character.GetComponent<Enemy>())
-            //    character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+            //Apply augment
+            if (playerEnemyTargetDifference && character.GetComponent<Enemy>())
+                character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
         }
     }
 }
