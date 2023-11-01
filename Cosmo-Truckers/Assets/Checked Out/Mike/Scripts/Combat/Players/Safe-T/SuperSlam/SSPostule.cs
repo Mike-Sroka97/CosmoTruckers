@@ -6,6 +6,7 @@ public class SSPostule : MonoBehaviour
 {
     [SerializeField] float upForce;
     [SerializeField] Sprite[] buttonSprites;
+    [SerializeField] Material offMaterial; 
 
     SuperSlam superSlam;
     SSGozorMovement gozor;
@@ -58,13 +59,13 @@ public class SSPostule : MonoBehaviour
     private void DamageGonzor()
     {
         superSlam.Score++;
-        currentSpriteNumber++; 
+        currentSpriteNumber++;
 
-        if (currentSpriteNumber < buttonSprites.Length)
+        //Play success sound
+        myRenderer.sprite = buttonSprites[currentSpriteNumber];
+
+        if (currentSpriteNumber < (buttonSprites.Length - 1))
         {
-            //Play success sound
-            myRenderer.sprite = buttonSprites[currentSpriteNumber];
-
             if (superSlam.Score == 1)
             {
                 StartCoroutine(gozor.FlashMe(true));
@@ -78,8 +79,9 @@ public class SSPostule : MonoBehaviour
         }
         else
         {
+            myRenderer.material = offMaterial; 
+            gozor.EarlyEndMinigame(offMaterial);
             superSlam.CheckScore();
-            Destroy(gameObject);
         }
     }
 }

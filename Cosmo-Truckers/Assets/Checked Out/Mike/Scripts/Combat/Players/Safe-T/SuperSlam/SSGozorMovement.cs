@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SSGozorMovement : MonoBehaviour
 {
@@ -105,7 +106,7 @@ public class SSGozorMovement : MonoBehaviour
 
         if (firstTime)
         {
-            ToggleGozorFirstTime(); 
+            FirstTimeToggle(); 
         }
         else
         {
@@ -126,7 +127,7 @@ public class SSGozorMovement : MonoBehaviour
         }
     }
 
-    private void ToggleGozorFirstTime()
+    private void FirstTimeToggle()
     {
         foreach (Collider2D collider in collidersToDisable)
         {
@@ -143,6 +144,24 @@ public class SSGozorMovement : MonoBehaviour
         foreach (SSGun gun in guns)
         {
             gun.SetLaserState(true);
+        }
+    }
+
+    public void EarlyEndMinigame(Material offMaterial)
+    {
+        foreach (SpriteRenderer sprite in mySprites)
+        {
+            sprite.material = offMaterial;
+        }
+
+        foreach (Collider2D collider in collidersToDisable)
+        {
+            collider.enabled = false;
+        }
+
+        foreach (SSGun gun in guns)
+        {
+            gun.gameObject.SetActive(false); 
         }
     }
 }

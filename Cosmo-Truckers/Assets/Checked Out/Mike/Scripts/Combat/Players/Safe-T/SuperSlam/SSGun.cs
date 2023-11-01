@@ -16,16 +16,18 @@ public class SSGun : MonoBehaviour
     [SerializeField] float laserResizeTime; 
     [SerializeField] float chargeTime;
     [SerializeField] GameObject chargeParticle;
+    [SerializeField] GameObject shockwaveParticle;
     [SerializeField] AnimationClip fireCannon;
 
     ParticleUpdater myParticleUpdater; 
     Animator myAnimator;
-    bool isFiring = false;
     float growTime = 0;  
     float shrinkTime;
     Vector3 zeroScale;
     Vector3 fullScale;
-    Vector3 currentScale; 
+    Vector3 currentScale;
+    bool isFiring = false;
+    bool laserIsAnimating = false; 
     [HideInInspector] public bool trackTime;
 
     private void Start()
@@ -48,7 +50,11 @@ public class SSGun : MonoBehaviour
         if (!trackTime)
             return;
 
-        RotateMe();
+        if (!laserIsAnimating)
+        {
+            RotateMe();
+        }
+
         TrackLaser(); 
     }
 
@@ -98,7 +104,7 @@ public class SSGun : MonoBehaviour
             //This check is for the beginning of the minigame
             if (shrinkTime > 0)
             {
-                currentScale = zeroScale; 
+                currentScale = zeroScale;
             }
 
             isFiring = false;
@@ -112,9 +118,23 @@ public class SSGun : MonoBehaviour
 
         yield return new WaitForSeconds(chargeTime);
 
+        laserIsAnimating = true; 
         myAnimator.Play(fireCannon.name);
+        SpawnShockwave(); 
+
+        yield return new WaitForSeconds(fireCannon.length);
+
+        laserIsAnimating = false; 
         currentScale = zeroScale;
         isFiring = true; 
+    }
+
+    private void SpawnShockwave()
+    {
+        //Spawn shockwave particle, set start rotation on main to cannon, then play particle system
+        GameObject shockwave = Instantiate(shockwaveParticle, barrel);
+        float rotation = -transform.eulerAngles.z;
+        shockwave.GetComponent<ParticleRotation>().SetParticleRotations((rotation), true);
     }
 
     private void RotateMe()
