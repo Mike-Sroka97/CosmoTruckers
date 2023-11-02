@@ -128,11 +128,30 @@ public class PPhittable : MonoBehaviour
 
     private bool GroundCheck(Vector2 direction, bool horizontal)
     {
+        RaycastHit2D hit; 
+
         if(horizontal)
         {
-            return Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.x + distance, layermask);
+            hit = Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.x + distance, layermask);
         }
-        return Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.y + distance, layermask);
+        else
+        {
+            hit = Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.y + distance, layermask);
+        }
+
+        if (hit)
+        {
+            if (hit.collider.tag.Equals("LDGNoInteraction"))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void DetermineStartingMovement()

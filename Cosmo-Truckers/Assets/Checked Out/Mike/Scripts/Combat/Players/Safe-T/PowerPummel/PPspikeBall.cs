@@ -34,16 +34,6 @@ public class PPspikeBall : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<PowerPummel>();
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
-        }
-    }
-
     private void TrackTime()
     {
         if (!trackTime) { return; }
@@ -189,7 +179,21 @@ public class PPspikeBall : MonoBehaviour
 
     private bool GroundCheck(Vector2 direction)
     {
-        return Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.y + distance, layermask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, myCollider.bounds.extents.y + distance, layermask);
+
+        if (hit)
+        {
+            if (hit.collider.tag.Equals("LDGNoInteraction"))
+            {
+                return false;
+            }
+
+            return true; 
+        }
+        else
+        {
+            return false; 
+        }
     }
 
     public void DetermineStartingMovement()
