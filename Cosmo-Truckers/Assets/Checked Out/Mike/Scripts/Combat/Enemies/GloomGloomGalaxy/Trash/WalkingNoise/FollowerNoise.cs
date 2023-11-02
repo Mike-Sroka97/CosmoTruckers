@@ -10,8 +10,11 @@ public class FollowerNoise : MonoBehaviour
     [SerializeField] Color shockColor;
     [SerializeField] SpriteRenderer followerLips; 
     [SerializeField] Sprite lipsAttack;
+    [SerializeField] SpriteRenderer outlineRenderer;
+    [SerializeField] Material outlineAttackMaterial; 
 
-    Sprite lipsDefault; 
+    Sprite lipsDefault;
+    Material outlineStartMaterial; 
     GameObject playerPosition;
     float currentTime = 0;
     bool isShocking = false;
@@ -25,11 +28,13 @@ public class FollowerNoise : MonoBehaviour
     {
         playerPosition = GameObject.FindGameObjectWithTag("Player");
         myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        startingColor = myRenderer.color;
-        myCollider = GetComponent<Collider2D>();
-        currentSpeed = moveTowardsSpeed;
         minigame = GetComponentInParent<WhiteNoise>();
+        myCollider = GetComponent<Collider2D>();
+
+        currentSpeed = moveTowardsSpeed;
+        startingColor = myRenderer.color;
         lipsDefault = followerLips.sprite; 
+        outlineStartMaterial = outlineRenderer.material;
     }
 
     private void Update()
@@ -56,18 +61,22 @@ public class FollowerNoise : MonoBehaviour
 
     IEnumerator Shock()
     {
+        //Shock
         currentSpeed = 0;
         myRenderer.color = shockColor;
-        followerLips.sprite = lipsAttack; 
+        followerLips.sprite = lipsAttack;
+        outlineRenderer.material = outlineAttackMaterial; 
         myCollider.enabled = true;
         isShocking = true;
 
         yield return new WaitForSeconds(shockDuration);
 
+        //Stop Shock
         currentTime = 0;
         currentSpeed = moveTowardsSpeed;
         followerLips.sprite = lipsDefault;
         myRenderer.color = startingColor;
+        outlineRenderer.material = outlineStartMaterial; 
         myCollider.enabled = false;
         isShocking = false;
     }
