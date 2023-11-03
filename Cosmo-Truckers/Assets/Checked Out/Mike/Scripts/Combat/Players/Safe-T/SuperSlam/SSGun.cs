@@ -118,15 +118,20 @@ public class SSGun : MonoBehaviour
 
         yield return new WaitForSeconds(chargeTime);
 
-        laserIsAnimating = true; 
+        laserIsAnimating = true;
         myAnimator.Play(fireCannon.name);
-        SpawnShockwave(); 
+        SpawnShockwave();
 
-        yield return new WaitForSeconds(fireCannon.length);
+        //Stops rotation of laser momentarily
+        yield return new WaitForSeconds(fireCannon.length / 2.0f);
+
+        currentScale = zeroScale;
+        isFiring = true;
+
+        //Stops rotation of laser momentarily
+        yield return new WaitForSeconds(fireCannon.length / 2.0f);
 
         laserIsAnimating = false; 
-        currentScale = zeroScale;
-        isFiring = true; 
     }
 
     private void SpawnShockwave()

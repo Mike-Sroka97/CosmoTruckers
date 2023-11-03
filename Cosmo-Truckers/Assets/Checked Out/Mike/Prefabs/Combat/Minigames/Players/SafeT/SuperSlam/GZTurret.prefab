@@ -143,7 +143,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1033473101135766574}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -6, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4952,6 +4952,7 @@ GameObject:
   - component: {fileID: 7068610961282890150}
   - component: {fileID: 8164727608186626358}
   - component: {fileID: 2450907321836374304}
+  - component: {fileID: 5513312866770300111}
   m_Layer: 0
   m_Name: GZLaser
   m_TagString: Untagged
@@ -5069,6 +5070,24 @@ SortingGroup:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: -5
+--- !u!114 &5513312866770300111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3334022646276372358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -1054995518, guid: 42653f695fa6df341aa0ff58458176b0, type: 3}
+  - {fileID: 843724209, guid: 42653f695fa6df341aa0ff58458176b0, type: 3}
+  - {fileID: -686099617, guid: 42653f695fa6df341aa0ff58458176b0, type: 3}
+  - {fileID: -172173269, guid: 42653f695fa6df341aa0ff58458176b0, type: 3}
+  timeBetweenEachSprite: 0.05
 --- !u!1 &5490114314435484662
 GameObject:
   m_ObjectHideFlags: 0
@@ -5117,7 +5136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxZRotation: 40
-  rotationSpeed: 20
+  rotationSpeed: 25
   rotatingRight: 1
   laser: {fileID: 5503809463048310773}
   barrel: {fileID: 1585808616461755368}
@@ -5202,6 +5221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3065277312409831759}
   - component: {fileID: 7293341068957336322}
+  - component: {fileID: 1899376729314439045}
   m_Layer: 0
   m_Name: PM_SFT_GZLaser
   m_TagString: Untagged
@@ -5276,6 +5296,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!114 &1899376729314439045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7022388080082821761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21293166, guid: 88fde0f6c4aa08244b77a9ea855b2f7b, type: 3}
+  - {fileID: -1250648335, guid: 88fde0f6c4aa08244b77a9ea855b2f7b, type: 3}
+  - {fileID: 164188229, guid: 88fde0f6c4aa08244b77a9ea855b2f7b, type: 3}
+  - {fileID: 1954352614, guid: 88fde0f6c4aa08244b77a9ea855b2f7b, type: 3}
+  timeBetweenEachSprite: 0.05
 --- !u!1 &8435489678673462036
 GameObject:
   m_ObjectHideFlags: 0
