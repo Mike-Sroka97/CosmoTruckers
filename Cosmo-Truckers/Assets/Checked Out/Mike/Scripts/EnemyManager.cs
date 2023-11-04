@@ -127,6 +127,22 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public void UpdateEnemySummons(GameObject summon)
+    {        
+        for(int i = 8; i < 12; i++)
+        {
+            if(EnemyCombatSpots[i] == null)
+            {
+                GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
+                EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
+                newSummon.transform.position = EnemySummonLocations[i - 8].position;
+                newSummon.GetComponent<SpriteRenderer>().sortingOrder = i;
+                EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
+                break;
+            }
+        }
+    }
+
     //Can be called to reset the trash collection if a mob dies or is added to collection
     public void UpdateTrashMobList()
     {

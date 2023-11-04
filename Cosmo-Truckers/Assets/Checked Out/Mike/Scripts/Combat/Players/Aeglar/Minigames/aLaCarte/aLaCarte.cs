@@ -6,10 +6,19 @@ public class ALaCarte : CombatMove
 {
     [SerializeField] Transform[] collectibleSpawns;
     [SerializeField] aLaCarteCollectible[] collectibles;
+    [SerializeField] GameObject veggieSummon;
+    [SerializeField] GameObject meatSummon;
+    [SerializeField] GameObject sweetSummon;
 
     int noSpawnIndex = 4; //starts as four as this is the spawn for Aeglar
     int currentNumberOfCollectiblesSpawned = 0;
     bool[] spotsTaken;
+
+    const int veggieScore = 3;
+    const int meatScore = 6;
+    const int sweetScore = 9;
+
+    int numberOfManaSourcesToSpawn;
 
     private void Start()
     {
@@ -22,7 +31,7 @@ public class ALaCarte : CombatMove
     {
         Targeting tempTargeting = FindObjectOfType<Targeting>();
 
-        int numberOfManaSourcesToSpawn = 3; //three max summons
+        numberOfManaSourcesToSpawn = 3; //three max summons
 
         for(int i = 8; i <= 11; i++) //checks all enemy summon spots
         {
@@ -68,5 +77,36 @@ public class ALaCarte : CombatMove
 
         currentNumberOfCollectiblesSpawned = 0;
         noSpawnIndex = tempSpawnIndex;
+    }
+
+    public override void EndMove()
+    {
+        Debug.Log("here");
+        AeglarMana aeglarMana = FindObjectOfType<AeglarMana>();
+
+        if(Score >= veggieScore)
+            aeglarMana.AdjustMana(1, 0);
+        if(Score >= meatScore)
+            aeglarMana.AdjustMana(1, 1);
+        if(Score >= sweetScore)
+            aeglarMana.AdjustMana(1, 2);
+
+        for(int i = 0; i < 3 - numberOfManaSourcesToSpawn; i++)
+        {
+            switch(i)
+            {
+                case 0:
+                    EnemyManager.Instance.UpdateEnemySummons(veggieSummon);
+                    break;
+                case 1:
+                    EnemyManager.Instance.UpdateEnemySummons(meatSummon);
+                    break;
+                case 2:
+                    EnemyManager.Instance.UpdateEnemySummons(sweetSummon);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
