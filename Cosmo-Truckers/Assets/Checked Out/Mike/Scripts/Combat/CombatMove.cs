@@ -124,7 +124,8 @@ public abstract class CombatMove : MonoBehaviour
                     if (augmentStacks > maxAugmentStacks)
                         augmentStacks = maxAugmentStacks;
 
-                    character.TakeDamage(currentDamage);
+                    if(currentDamage > 0)
+                        character.TakeDamage(currentDamage);
 
                     //Apply augment
                     character.AddDebuffStack(DebuffToAdd, augmentStacks);

@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Porkanator : CombatMove
 {
-    public override void EndMove()
-    {
-
-    }
 
     private void Start()
     {
