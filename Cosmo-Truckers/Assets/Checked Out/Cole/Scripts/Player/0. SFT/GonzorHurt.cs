@@ -7,6 +7,7 @@ public class GonzorHurt : MonoBehaviour
 {
     [SerializeField] Color hurtColor;
     [SerializeField] float hurtTime = 0.25f;
+    [SerializeField] SpriteRenderer riskERenderer; 
 
     ObjectShaker myShaker; 
     SpriteRenderer myRenderer;
@@ -32,9 +33,11 @@ public class GonzorHurt : MonoBehaviour
     {
         hurt = true; 
         myRenderer.color = hurtColor;
+        riskERenderer.color = hurtColor; 
         myShaker.SetShakeState(true); 
         yield return new WaitForSeconds(hurtTime);
         myRenderer.color = defaultColor;
+        riskERenderer.color = defaultColor; 
         myShaker.SetShakeState(false);
         hurt = false; 
     }
