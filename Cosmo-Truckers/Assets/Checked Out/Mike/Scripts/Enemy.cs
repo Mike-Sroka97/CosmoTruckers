@@ -64,10 +64,9 @@ public class Enemy : Character
 
     }
 
-    public override void Resurrect(int newHealth)
+    public override void Resurrect(int newHealth,  bool ignoreVigor = false)
     {
-        base.Resurrect(newHealth);
-        myRenderer.enabled = true;
+        base.Resurrect(newHealth, ignoreVigor);
         //if an enemy is in this spot do not
     }
 

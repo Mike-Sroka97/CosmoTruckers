@@ -73,6 +73,16 @@ public class PlayerCharacter : Character
             Stats.Defense = -100;
     }
 
+    public override void Resurrect(int newHealth, bool ignoreVigor = false)
+    {
+        base.Resurrect(newHealth, ignoreVigor);
+
+        if (!ignoreVigor)
+            newHealth = AdjustAttackHealing(newHealth);
+
+        MyVessel.AdjustCurrentHealthDisplay(Health, newHealth, false);
+    }
+
     public override void TakeDamage(int damage, bool defensePiercing = false)
     {
         base.TakeDamage(damage, defensePiercing);

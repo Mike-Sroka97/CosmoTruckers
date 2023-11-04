@@ -28,6 +28,8 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected int baseDamage;
     [SerializeField] protected int baseAugmentStacks;
     [SerializeField] protected float timeToEndMove = 1f;
+    [SerializeField] protected bool isDamaging;
+    [SerializeField] protected bool isHealing;
 
     [Space(20)]
     [Header("Testing Variables")]

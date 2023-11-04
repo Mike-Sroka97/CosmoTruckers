@@ -176,9 +176,13 @@ public abstract class Character : MonoBehaviour
         turnOrder.DetermineTurnOrder();
     }
 
-    public virtual void Resurrect(int newHealth)
+    public virtual void Resurrect(int newHealth, bool ignoreVigor = false)
     {
+        if (!ignoreVigor)
+            newHealth = AdjustAttackHealing(newHealth);
+
         CurrentHealth = newHealth;
+        Dead = false;
         GetComponent<CharacterStats>().enabled = true;
         foreach (SpriteRenderer renderer in TargetingSprites)
             renderer.enabled = true;

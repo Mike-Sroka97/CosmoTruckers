@@ -18,6 +18,7 @@ public class Targeting : MonoBehaviour
     bool initialSetup = false;
     bool targetingEnemies = true;
     bool targetingDead = false;
+    bool enemyAttacking = false;
     List<Character> currentlySelectedTargets;
     int column = 0;
     int currentNumberOfTargets;
@@ -51,6 +52,7 @@ public class Targeting : MonoBehaviour
     public void EnemyTargeting(BaseAttackSO attack, float waitTime)
     {
         CombatManager.Instance.TargetsSelected = false;
+        enemyAttacking = true;
         isTargeting = true;
         currentAttack = attack;
         currentlySelectedTargets.Clear();
@@ -111,7 +113,7 @@ public class Targeting : MonoBehaviour
 
     private void TrackPlayerInput()
     {
-        if (!isTargeting)
+        if (!isTargeting || enemyAttacking)
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -168,6 +170,7 @@ public class Targeting : MonoBehaviour
                 CombatManager.Instance.GetCurrentPlayer.PlayerAttackUI.HandleMana();
             CombatManager.Instance.TargetsSelected = true;
             isTargeting = false;
+            enemyAttacking = false;
             currentNumberOfTargets = 0;
             ClearTargets();
             ClearEmptySlots();

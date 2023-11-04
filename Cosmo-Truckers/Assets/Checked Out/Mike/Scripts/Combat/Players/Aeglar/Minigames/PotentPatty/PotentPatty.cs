@@ -51,6 +51,21 @@ public class PotentPatty : CombatMove
 
     public override void EndMove()
     {
-        
+        MoveEnded = true;
+
+        foreach (Character character in CombatManager.Instance.GetCharactersSelected)
+        {
+            //Calculate Damage
+            if (Score < 0)
+                Score = 0;
+            if (Score >= maxScore)
+                Score = maxScore;
+
+            int currentHealing = 0;
+            currentHealing = Score * Damage;
+            currentHealing += baseDamage;
+
+            character.Resurrect(currentHealing);
+        }
     }
 }
