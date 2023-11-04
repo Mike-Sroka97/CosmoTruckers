@@ -684,10 +684,16 @@ public class Targeting : MonoBehaviour
 
     private void TrackEnemyUpTargeting()
     {
-        //top of enemy column back
-        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, false))
-        {
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot <= 3)
             column = 0;
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot <= 7)
+            column = 1;
+        else
+            column = 2;
+
+        //top of enemy column back
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, false) && column == 0)
+        {
             for (int i = 3; i > 0; i--)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -700,9 +706,8 @@ public class Targeting : MonoBehaviour
             }
         }
         //top of enemy column front
-        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, false))
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, false) && column == 1)
         {
-            column = 1;
             for (int i = 7; i > 3; i--)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -715,9 +720,8 @@ public class Targeting : MonoBehaviour
             }
         }
         //top of enemy summon column
-        else if (currentlySelectedTargets[0].CombatSpot == FindMinSlot(column, false))
+        else if (currentlySelectedTargets[0].CombatSpot == FindMinSlot(column, false) && column == 2)
         {
-            column = 2;
             for (int i = 11; i > 7; i--)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -754,10 +758,16 @@ public class Targeting : MonoBehaviour
 
     private void TrackEnemyDownTargeting()
     {
-        //bottom of enemy column back
-        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false))
-        {
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot <= 3)
             column = 0;
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot <= 7)
+            column = 1;
+        else
+            column = 2;
+
+        //bottom of enemy column back
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false) && column == 0)
+        {
             for (int i = 0; i < 3; i++)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -770,9 +780,8 @@ public class Targeting : MonoBehaviour
             }
         }
         //bottom of enemy column front
-        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false))
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false) && column == 1)
         {
-            column = 1;
             for (int i = 4; i < 7; i++)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -785,9 +794,8 @@ public class Targeting : MonoBehaviour
             }
         }
         //bottom of enemy summon column
-        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false))
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, false) && column == 2)
         {
-            column = 2;
             for (int i = 8; i < 11; i++)
             {
                 if (EnemyManager.Instance.EnemyCombatSpots[i] != null && ((!EnemyManager.Instance.EnemyCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[i]))
@@ -1090,10 +1098,14 @@ public class Targeting : MonoBehaviour
 
     private void TrackPlayerUpTargeting()
     {
-        //top of player column
-        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, true))
-        {
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot <= 3)
             column = 0;
+        else
+            column = 1;
+
+        //top of player column
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, true) && column == 0)
+        {
             for (int i = 3; i > 0; i--)
             {
                 if (EnemyManager.Instance.PlayerCombatSpots[i] != null && ((!EnemyManager.Instance.PlayerCombatSpots[i].Dead && !targetingDead) || (EnemyManager.Instance.PlayerCombatSpots[i].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.PlayerCombatSpots[i]))
@@ -1106,7 +1118,7 @@ public class Targeting : MonoBehaviour
             }
         }
         //top of player summon column
-        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, true))
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMinSlot(column, true) && column == 1)
         {
             column = 1;
             for (int i = 7; i > 3; i--)
@@ -1148,7 +1160,7 @@ public class Targeting : MonoBehaviour
             column = 1;
 
         //top of player column
-        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, true))
+        if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, true) && column == 0)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -1162,7 +1174,7 @@ public class Targeting : MonoBehaviour
             }
         }
         //top of player summon column
-        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, true))
+        else if (currentlySelectedTargets[currentNumberOfTargets].CombatSpot == FindMaxSlot(column, true) && column == 1)
         {
             for (int i = 4; i < 7; i++)
             {
