@@ -11,9 +11,12 @@ public class VeggieVengeanceCannon : MonoBehaviour
     [SerializeField] float shootCD;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform barrel;
+    //0 is idle, 1 is fire, 2 is reload
+    [SerializeField] AnimationClip[] cannonAnimations; 
 
     AeglarINA aeglar;
     Rigidbody2D aeglarBody;
+    Animator cannonAnimator;
     float currentTime;
     bool trackTime;
     public bool CalculateMove = false;
@@ -24,6 +27,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
         aeglar = FindObjectOfType<AeglarINA>();
         aeglarBody = aeglar.GetComponent<Rigidbody2D>();
         CalculateMove = true;
+        cannonAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
