@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class AUG_HogWild : Augment
 {
+    public override void Activate(DebuffStackSO stack = null)
+    {
+        base.Activate(stack);
+
+        DebuffSO.MyCharacter.AdjustAttackHealing((int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
+    }
+
     public override void StopEffect()
     {
-        throw new System.NotImplementedException();
+        DebuffSO.MyCharacter.AdjustAttackHealing(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }

@@ -4,8 +4,26 @@ using UnityEngine;
 
 public class AUG_PorkedUp : Augment
 {
+    public DebuffStackSO HogWild;
+
+    public override void Activate(DebuffStackSO stack = null)
+    {
+        base.Activate(stack);
+
+        DebuffSO.MyCharacter.AdjustAttackHealing((int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
+
+        if(Stacks >= 5)
+        {
+            StopEffect();
+            DebuffSO.MyCharacter.AddDebuffStack(HogWild);
+            DebuffSO.MyCharacter.RemoveDebuffStack(DebuffSO, Stacks);
+        }
+    }
+
     public override void StopEffect()
     {
-        throw new System.NotImplementedException();
+        DebuffSO.MyCharacter.AdjustAttackHealing(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }
