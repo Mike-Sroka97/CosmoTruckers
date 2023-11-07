@@ -11,12 +11,14 @@ public class VeggieVengeanceCannon : MonoBehaviour
     [SerializeField] float shootCD;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform barrel;
-    //0 is idle, 1 is fire, 2 is reload
-    [SerializeField] AnimationClip[] cannonAnimations; 
+    [SerializeField] AnimationClip cannonShootAnimation, cannonReloadAnimation;
+    [SerializeField] Material cannonHurtMaterial; 
 
     AeglarINA aeglar;
     Rigidbody2D aeglarBody;
     Animator cannonAnimator;
+    SpriteRenderer cannonSpriteRenderer; 
+    bool canFire = true; 
     float currentTime;
     bool trackTime;
     public bool CalculateMove = false;
@@ -57,17 +59,24 @@ public class VeggieVengeanceCannon : MonoBehaviour
 
     private void TrackAeglarDash()
     {
-        if(!aeglar.GetDashState() && currentTime >= shootCD)
+        if(!aeglar.GetDashState() && currentTime >= shootCD && canFire)
         {
-            Shoot();
+            StartCoroutine(Shoot());
         }
     }
 
-    private void Shoot()
+    private IEnumerator Shoot()
     {
         currentTime = 0;
         trackTime = true;
+        canFire = false; 
         Instantiate(projectile, barrel.position, transform.rotation, FindObjectOfType<CombatMove>().transform);
+
+        cannonAnimator.Play(cannonShootAnimation.name);
+        yield return new WaitForSeconds(cannonShootAnimation.length);
+        cannonAnimator.Play(cannonReloadAnimation.name);
+        yield return new WaitForSeconds(cannonReloadAnimation.length);
+        canFire = true; 
     }
 
     private void TrackAeglarRotation()
