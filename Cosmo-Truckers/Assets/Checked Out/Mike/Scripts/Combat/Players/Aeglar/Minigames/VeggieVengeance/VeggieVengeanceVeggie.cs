@@ -12,10 +12,10 @@ public class VeggieVengeanceVeggie : MonoBehaviour
     [SerializeField] float xVelocity;
     [SerializeField] float gravity;
 
-
     VeggieVengeance minigame;
     AeglarINA aeglar;
     Rigidbody2D myBody;
+    DeathParticleSpawner particleSpawner; 
     float currentTime = 0;
     bool trackTime = true;
 
@@ -29,6 +29,7 @@ public class VeggieVengeanceVeggie : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         minigame = FindObjectOfType<VeggieVengeance>();
         aeglar = FindObjectOfType<AeglarINA>();
+        particleSpawner = GetComponent<DeathParticleSpawner>(); 
     }
 
     private void Update()
@@ -68,6 +69,7 @@ public class VeggieVengeanceVeggie : MonoBehaviour
             {
                 aeglar.TakeDamage(); 
             }
+            particleSpawner.SpawnDeathParticle(transform); 
             Destroy(gameObject);
         }
     }
