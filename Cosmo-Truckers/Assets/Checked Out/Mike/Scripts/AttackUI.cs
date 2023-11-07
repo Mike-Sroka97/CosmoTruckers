@@ -62,8 +62,6 @@ public abstract class AttackUI : MonoBehaviour
     {
         for (int i = 0; i < children.Count; i++)
             children[i].gameObject.SetActive(false);
-
-        currentAttack = 0;
     }
     private void Update()
     {
@@ -92,11 +90,9 @@ public abstract class AttackUI : MonoBehaviour
 
     protected virtual void StartAttack()
     {
-        int hold = currentAttack;
-
         currentPlayer.EndTurn();
 
-        CombatManager.Instance.StartCombat(currentPlayer.GetAllAttacks[hold], currentPlayer);
+        CombatManager.Instance.StartCombat(currentPlayer.GetAllAttacks[currentAttack], currentPlayer);
     }
 
     protected void RotateWheel(float rotationValue)
@@ -147,7 +143,7 @@ public abstract class AttackUI : MonoBehaviour
 
         SetOpacity(currentAttack);
 
-        if (!children[currentAttack].gameObject.activeSelf || !currentPlayer.GetAllAttacks[currentAttack].CanUse)
+        if (!children[currentAttack].gameObject.activeSelf)
         {
             speed = speedIncrease;
             RotateWheel(rotationValue);

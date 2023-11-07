@@ -35,8 +35,20 @@ public class AeglarMana : Mana
                 {
                     attack.CanUse = false;
                 }
+
+                if (attack.AttackName == "Potent Patty")
+                    attack.CanUse = PotentPattyCheck();
             }
         }
+    }
+
+    private bool PotentPattyCheck()
+    {
+        foreach (PlayerCharacter player in EnemyManager.Instance.Players)
+            if (player.Dead)
+                return true;
+
+        return false;
     }
 
     public void AdjustMana(int manaAmount, int manaIndex)

@@ -13,7 +13,6 @@ public class VeggieVengeance : CombatMove
 
     public override void EndMove()
     {
-        FindObjectOfType<VeggieVengeanceCannon>().CalculateMove = false;
         MoveEnded = true;
 
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)

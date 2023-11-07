@@ -284,9 +284,7 @@ public class CombatManager : MonoBehaviour
 
     public IEnumerator EndCombat()
     {
-        miniGame.gameObject.SetActive(true);
-
-        //If this is the only place combat end move is called this should work, if it gets called from multiple sorces it may cause some strange issues
+        //If this is the only place combat end move is called this should work, if it gets called from multiple sources it may cause some strange issues
         if(CurrentEnemy != null && CurrentEnemy.IsTrash)
         {
             StartCoroutine(DelayEndMove());
@@ -300,7 +298,7 @@ public class CombatManager : MonoBehaviour
             miniGame.GetComponentInChildren<CombatMove>().EndMove();
         }
 
-
+        miniGame.gameObject.SetActive(true);
         Destroy(miniGame);
         CharactersSelected.Clear();
 
