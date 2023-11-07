@@ -11,14 +11,14 @@ public class VeggieVengeanceCannon : MonoBehaviour
     [SerializeField] float shootCD;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform barrel;
+    [SerializeField] SpriteRenderer cannonSpriteRenderer;
     [SerializeField] AnimationClip cannonShootAnimation, cannonReloadAnimation;
     [SerializeField] Material cannonHurtMaterial; 
 
     AeglarINA aeglar;
     Rigidbody2D aeglarBody;
     Animator cannonAnimator;
-    SpriteRenderer cannonSpriteRenderer; 
-    bool canFire = true; 
+    Material cannonStartMaterial;
     float currentTime;
     bool trackTime;
     public bool CalculateMove = false;
@@ -30,6 +30,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
         aeglarBody = aeglar.GetComponent<Rigidbody2D>();
         CalculateMove = true;
         cannonAnimator = GetComponentInChildren<Animator>();
+        cannonStartMaterial = cannonSpriteRenderer.material;
     }
 
     private void Update()
@@ -38,6 +39,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
             return;
 
         TrackTime();
+
         if(!aeglar.GetDamaged())
         {
             TrackAeglarDash();
@@ -59,24 +61,41 @@ public class VeggieVengeanceCannon : MonoBehaviour
 
     private void TrackAeglarDash()
     {
-        if(!aeglar.GetDashState() && currentTime >= shootCD && canFire)
+        if (!aeglar.GetDashState() && currentTime >= shootCD)
         {
-            StartCoroutine(Shoot());
+            Shoot();
         }
     }
 
-    private IEnumerator Shoot()
+    private void SetCannonMaterial()
+    {
+        if (!aeglar.GetDamaged())
+        {
+            cannonSpriteRenderer.material = cannonStartMaterial; 
+        }
+        else
+        {
+            cannonSpriteRenderer.material = cannonHurtMaterial;
+        }
+    }
+
+    private void Shoot()
     {
         currentTime = 0;
         trackTime = true;
-        canFire = false; 
         Instantiate(projectile, barrel.position, transform.rotation, FindObjectOfType<CombatMove>().transform);
+        StartCoroutine(CannonAnimation());
+    }
 
+    private IEnumerator CannonAnimation()
+    {
         cannonAnimator.Play(cannonShootAnimation.name);
         yield return new WaitForSeconds(cannonShootAnimation.length);
         cannonAnimator.Play(cannonReloadAnimation.name);
         yield return new WaitForSeconds(cannonReloadAnimation.length);
-        canFire = true; 
+
+        //By the end of this, the player should be able to fire again
+        currentTime = shootCD; 
     }
 
     private void TrackAeglarRotation()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ALaCarte : CombatMove
+public class aLaCarte : CombatMove
 {
     [SerializeField] Transform[] collectibleSpawns;
     [SerializeField] aLaCarteCollectible[] collectibles;
