@@ -10,17 +10,14 @@ public class PorkanatorPig : MonoBehaviour
     AeglarINA player;
     Porkanator minigame;
     SpriteRenderer myRenderer;
+    DeathParticleSpawner myParticleSpawner; 
 
     private void Start()
     {
         player = FindObjectOfType<AeglarINA>();
         minigame = FindObjectOfType<Porkanator>();
         myRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
+        myParticleSpawner = GetComponent<DeathParticleSpawner>(); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -29,6 +26,7 @@ public class PorkanatorPig : MonoBehaviour
         {
             minigame.Score += scoreValue;
             Debug.Log(minigame.Score);
+            myParticleSpawner.SpawnDeathParticle(transform);
             StartCoroutine(Die());
         }
     }

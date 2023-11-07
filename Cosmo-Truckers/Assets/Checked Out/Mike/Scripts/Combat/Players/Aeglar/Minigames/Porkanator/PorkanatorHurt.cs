@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PorkanatorHurt : MonoBehaviour
 {
-    [SerializeField] bool projectile = false;
     [SerializeField] bool spinRight;
     [SerializeField] float rotateSpeed;
     [SerializeField] float xVelocity;
@@ -12,6 +11,7 @@ public class PorkanatorHurt : MonoBehaviour
 
     Porkanator minigame;
     Rigidbody2D myBody;
+    DeathParticleSpawner myParticleSpawner;
     Collider2D myCollider;
 
     static int layermask = 11; //player no interaction
@@ -20,23 +20,18 @@ public class PorkanatorHurt : MonoBehaviour
     {
         minigame = FindObjectOfType<Porkanator>();
 
-        if (projectile)
-        {
-            myBody = GetComponent<Rigidbody2D>();
-            myCollider = GetComponent<Collider2D>();
+        myBody = GetComponent<Rigidbody2D>();
+        myCollider = GetComponent<Collider2D>();
+        myParticleSpawner = GetComponent<DeathParticleSpawner>(); 
 
-            MoveSet();
-        }
+        MoveSet();
     }
 
     private void Update()
     {
-        if(projectile)
-        {
-            RotateMe();
-            YCheck();
-            MoveSet();
-        }
+        RotateMe();
+        YCheck();
+        MoveSet();
     }
 
     private void RotateMe()
@@ -74,25 +69,33 @@ public class PorkanatorHurt : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.transform.name == "Saw Pit")
+        {
+            myParticleSpawner.SpawnDeathParticle(transform); 
+            Destroy(gameObject);
+        }
+        /*
         if(collision.tag == "Player")
         {
             minigame.PlayerDead = true;
             Debug.Log(minigame.PlayerDead);
         }
-        if(collision.transform.name == "Saw Pit")
-        {
-            Destroy(gameObject);
-        }
+        */
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Player")
         {
+            myParticleSpawner.SpawnDeathParticle(transform);
+            Destroy(gameObject);
+            /*
             myCollider.enabled = false;
             myBody.bodyType = RigidbodyType2D.Static;
             minigame.PlayerDead = true;
             Debug.Log(minigame.PlayerDead);
+            */
         }
     }
 

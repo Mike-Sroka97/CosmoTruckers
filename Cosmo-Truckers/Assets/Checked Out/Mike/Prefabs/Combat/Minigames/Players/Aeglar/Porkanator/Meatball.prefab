@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2475235457881628823}
   - component: {fileID: 2475235457881628827}
   - component: {fileID: 2475235457881628826}
+  - component: {fileID: 4970684441556215686}
+  - component: {fileID: 3007460756564113600}
   m_Layer: 0
   m_Name: Meatball
   m_TagString: EnemyDamaging
@@ -55,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -99,7 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be21a268b2e99734bad1247f4ff2ba40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: 1
   spinRight: 1
   rotateSpeed: 200
   xVelocity: 1.5
@@ -141,3 +142,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4970684441556215686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475235457881628822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
+--- !u!114 &3007460756564113600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2475235457881628822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e35979790b2eb48bbef03184b4e65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathParticle: {fileID: 3321816979946951167, guid: 2c158cd0c8021574b8f5c0b2bf737ab5, type: 3}
+  isTrigger: 0
+  noSpecialCase: 0
