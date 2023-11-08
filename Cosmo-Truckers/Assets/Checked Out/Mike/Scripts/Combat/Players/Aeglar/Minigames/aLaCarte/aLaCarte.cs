@@ -5,7 +5,7 @@ using UnityEngine;
 public class aLaCarte : CombatMove
 {
     [SerializeField] Transform[] collectibleSpawns;
-    [SerializeField] aLaCarteCollectible[] collectibles;
+    [SerializeField] Transform[] collectibles;
     [SerializeField] GameObject veggieSummon;
     [SerializeField] GameObject meatSummon;
     [SerializeField] GameObject sweetSummon;
@@ -70,7 +70,7 @@ public class aLaCarte : CombatMove
                 }
 
                 spotsTaken[random] = true;
-                collectibles[currentNumberOfCollectiblesSpawned].transform.position = collectibleSpawns[random].position;
+                collectibles[currentNumberOfCollectiblesSpawned].position = collectibleSpawns[random].position;
                 currentNumberOfCollectiblesSpawned++;
             }
         }

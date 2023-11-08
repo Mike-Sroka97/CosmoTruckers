@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class aLaCarteCollectible : MonoBehaviour
 {
-    [SerializeField] bool damaging = true;
-
     aLaCarte minigame;
 
     private void Start()
@@ -17,17 +15,9 @@ public class aLaCarteCollectible : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if(damaging)
-            {
-                minigame.PlayerDead = true;
-                Debug.Log(minigame.PlayerDead);
-            }
-            else
-            {
-                minigame.Score++;
-                minigame.GenerateCurrentLayout();
-                Debug.Log(minigame.Score);
-            }
+            minigame.Score++;
+            minigame.GenerateCurrentLayout();
+            Debug.Log(minigame.Score);
         }
     }
 }
