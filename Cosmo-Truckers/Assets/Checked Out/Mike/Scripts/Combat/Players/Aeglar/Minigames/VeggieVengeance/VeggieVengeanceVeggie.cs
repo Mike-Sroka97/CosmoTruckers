@@ -15,7 +15,7 @@ public class VeggieVengeanceVeggie : MonoBehaviour
     VeggieVengeance minigame;
     AeglarINA aeglar;
     Rigidbody2D myBody;
-    DeathParticleSpawner particleSpawner; 
+    ParticleSpawner particleSpawner; 
     float currentTime = 0;
     bool trackTime = true;
 
@@ -29,7 +29,7 @@ public class VeggieVengeanceVeggie : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         minigame = FindObjectOfType<VeggieVengeance>();
         aeglar = FindObjectOfType<AeglarINA>();
-        particleSpawner = GetComponent<DeathParticleSpawner>(); 
+        particleSpawner = GetComponent<ParticleSpawner>(); 
     }
 
     private void Update()
