@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SeedSproutFlower : MonoBehaviour
@@ -7,21 +8,24 @@ public class SeedSproutFlower : MonoBehaviour
     [SerializeField] float showThornsDelay;
     [SerializeField] float thornAttackDelay;
 
-    [SerializeField] float showThornsYScale;
-    [SerializeField] float thornAttackYScale;
+    [SerializeField] float showThornsYOffset;
+    [SerializeField] float thornAttackYOffset;
 
     [SerializeField] float showThornsSpeed;
     [SerializeField] float thornAttackSpeed;
 
-    [SerializeField] bool lastFlower = false;
+    [SerializeField] AnimationClip bulbOpen; 
 
+    [SerializeField] bool lastFlower = false;
     [HideInInspector] public bool TrackTime = false;
 
+    Animator myAnimator; 
     float currentTime = 0;
     Transform thorns;
     bool thornsShown = false;
     bool thornsAttacking = false;
     bool attacking = false;
+    Vector3 showThornsPosition, thornAttackPosition; 
 
     SeedSprout minigame;
 
@@ -29,6 +33,10 @@ public class SeedSproutFlower : MonoBehaviour
     {
         minigame = FindObjectOfType<SeedSprout>();
         thorns = transform.Find("FlowerHurt");
+        myAnimator = GetComponent<Animator>(); 
+
+        showThornsPosition = new Vector3(thorns.position.x, thorns.position.y - showThornsYOffset, thorns.position.z);
+        thornAttackPosition = new Vector3(thorns.position.x, thorns.position.y - thornAttackYOffset, thorns.position.z);
     }
 
     private void Update()
@@ -45,7 +53,8 @@ public class SeedSproutFlower : MonoBehaviour
             {
                 currentTime = 0;
                 thornsShown = true;
-                StartCoroutine(ThornsMovement(showThornsYScale, showThornsSpeed));
+                myAnimator.Play(bulbOpen.name); 
+                StartCoroutine(ThornsMovement(showThornsPosition, showThornsSpeed));
             }
         }
         else if(thornsAttacking)
@@ -55,18 +64,20 @@ public class SeedSproutFlower : MonoBehaviour
             {
                 currentTime = 0;
                 thornsAttacking = false;
-                StartCoroutine(ThornsMovement(thornAttackYScale, thornAttackSpeed));
+                StartCoroutine(ThornsMovement(thornAttackPosition, thornAttackSpeed));
             }
         }
     }
 
-    private IEnumerator ThornsMovement(float yScale, float speed)
+    private IEnumerator ThornsMovement(Vector3 newPosition, float speed)
     {
-        while(thorns.localScale.y < yScale)
+        while(thorns.position.y > newPosition.y)
         {
-            thorns.localScale += new Vector3(0, speed * Time.deltaTime, 0);
+            thorns.position -= new Vector3(0, speed * Time.deltaTime, 0);
             yield return new WaitForSeconds(Time.deltaTime);
         }
+
+        thorns.position = newPosition; 
 
         if(!attacking)
         {

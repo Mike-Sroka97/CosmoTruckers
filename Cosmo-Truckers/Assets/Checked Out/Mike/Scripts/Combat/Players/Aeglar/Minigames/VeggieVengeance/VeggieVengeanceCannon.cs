@@ -98,8 +98,6 @@ public class VeggieVengeanceCannon : MonoBehaviour
         yield return new WaitForSeconds(cannonShootAnimation.length);
 
         //By the end of this, the player should be able to fire again
-        //currentTime = shootCD; 
-
         canFire = true; 
     }
 

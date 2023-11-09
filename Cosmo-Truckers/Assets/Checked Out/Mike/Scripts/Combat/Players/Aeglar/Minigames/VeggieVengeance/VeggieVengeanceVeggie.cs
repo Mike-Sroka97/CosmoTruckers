@@ -72,5 +72,9 @@ public class VeggieVengeanceVeggie : MonoBehaviour
             particleSpawner.SpawnDeathParticle(transform); 
             Destroy(gameObject);
         }
+        else if (collision.name == "TopKiller" || collision.name == "RightKiller" || collision.name == "BottomKiller")
+        {
+            Destroy(gameObject);
+        }
     }
 }

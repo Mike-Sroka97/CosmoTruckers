@@ -13,7 +13,7 @@ public class VeggieVengeanceProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "TopKiller" || collision.name == "RightKiller" || collision.GetComponent<VeggieVengeanceVeggie>())
+        if(collision.name == "ProjectileKiller" || collision.GetComponent<VeggieVengeanceVeggie>())
         {
             Destroy(gameObject);
         }
