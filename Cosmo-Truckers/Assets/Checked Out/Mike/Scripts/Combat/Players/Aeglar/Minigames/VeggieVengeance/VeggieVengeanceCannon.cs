@@ -8,24 +8,22 @@ public class VeggieVengeanceCannon : MonoBehaviour
     [SerializeField] float minRotation;
     [SerializeField] float maxRotation;
 
-    [SerializeField] float shootCD;
     [SerializeField] GameObject projectile;
     [SerializeField] Transform barrel;
     [SerializeField] SpriteRenderer cannonSpriteRenderer;
-    [SerializeField] AnimationClip cannonShootAnimation, cannonReloadAnimation;
-    [SerializeField] Material cannonHurtMaterial; 
+    [SerializeField] AnimationClip cannonShootAnimation;
+    [SerializeField] Material cannonHurtMaterial, cannonToggledMaterial; 
 
     AeglarINA aeglar;
     Rigidbody2D aeglarBody;
     Animator cannonAnimator;
     Material cannonStartMaterial;
-    float currentTime;
-    bool trackTime;
+    bool canPlay = true; 
+    bool canFire = true; 
     public bool CalculateMove = false;
 
     public void StartMove()
     {
-        currentTime = shootCD;
         aeglar = FindObjectOfType<AeglarINA>();
         aeglarBody = aeglar.GetComponent<Rigidbody2D>();
         CalculateMove = true;
@@ -38,51 +36,58 @@ public class VeggieVengeanceCannon : MonoBehaviour
         if (!CalculateMove)
             return;
 
-        TrackTime();
+        SetCanPlay(); 
+        SetCannonMaterials();
 
-        if(!aeglar.GetDamaged())
+        if (canPlay)
         {
             TrackAeglarDash();
             TrackAeglarRotation();
         }
     }
 
-    private void TrackTime()
-    {
-        if(trackTime)
-        {
-            currentTime += Time.deltaTime;
-            if(currentTime >= shootCD && !aeglar.GetDashState())
-            {
-                trackTime = false;
-            }
-        }
-    }
-
     private void TrackAeglarDash()
     {
-        if (!aeglar.GetDashState() && currentTime >= shootCD)
+        if (!aeglar.GetDashState() && canFire)
         {
-            Shoot();
+              Shoot();
         }
     }
 
-    private void SetCannonMaterial()
+    private void SetCanPlay()
     {
         if (!aeglar.GetDamaged())
         {
-            cannonSpriteRenderer.material = cannonStartMaterial; 
+            canPlay = true;
         }
         else
         {
-            cannonSpriteRenderer.material = cannonHurtMaterial;
+            canPlay = false; 
         }
+    }
+
+    private void SetCannonMaterials()
+    {
+        if (canPlay && !aeglar.GetIFramesState())
+        {
+            if (canFire && aeglar.GetDashState())
+            {
+                cannonSpriteRenderer.material = cannonStartMaterial;
+            }
+            else
+            {
+                cannonSpriteRenderer.material = cannonToggledMaterial; 
+            }
+        }
+        else if (aeglar.GetIFramesState())
+        {
+            cannonSpriteRenderer.material = cannonHurtMaterial; 
+        } 
     }
 
     private void Shoot()
     {
-        currentTime = 0;
-        trackTime = true;
+        canFire = false; 
         Instantiate(projectile, barrel.position, transform.rotation, FindObjectOfType<CombatMove>().transform);
         StartCoroutine(CannonAnimation());
     }
@@ -91,11 +96,11 @@ public class VeggieVengeanceCannon : MonoBehaviour
     {
         cannonAnimator.Play(cannonShootAnimation.name);
         yield return new WaitForSeconds(cannonShootAnimation.length);
-        cannonAnimator.Play(cannonReloadAnimation.name);
-        yield return new WaitForSeconds(cannonReloadAnimation.length);
 
         //By the end of this, the player should be able to fire again
-        currentTime = shootCD; 
+        //currentTime = shootCD; 
+
+        canFire = true; 
     }
 
     private void TrackAeglarRotation()

@@ -70,6 +70,8 @@ public class AeglarINA : Player
 
     public bool GetDashState() { return canDash; }
 
+    public bool GetIFramesState() { return iFrames; }
+
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
