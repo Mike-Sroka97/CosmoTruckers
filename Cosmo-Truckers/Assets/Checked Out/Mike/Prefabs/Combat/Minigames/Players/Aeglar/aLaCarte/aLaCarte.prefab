@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 8165674583412925603}
   - component: {fileID: 8165674583412925600}
   - component: {fileID: 8165674583412925602}
+  - component: {fileID: 7574298310414825091}
   m_Layer: 0
   m_Name: GoodCollectable
   m_TagString: Untagged
@@ -482,7 +483,7 @@ Transform:
   m_GameObject: {fileID: 8165674583412925606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: 0.7, z: 0}
-  m_LocalScale: {x: 0.90000004, y: 0.90000004, z: 0.90000004}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8165674583078344247}
@@ -568,6 +569,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02cf2c72450b6b74ab1e54833bb0069e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7574298310414825091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8165674583412925606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e35979790b2eb48bbef03184b4e65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleToSpawn: {fileID: 2340603472092158653, guid: 5e4740ed227d2904885e74cefe99ad05, type: 3}
+  isTrigger: 1
+  noSpecialCase: 0
+  deathParticle: 0
+  attackable: 0
 --- !u!1 &8165674583466419077
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +614,7 @@ Transform:
   m_GameObject: {fileID: 8165674583466419077}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 0.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8165674583078344247}
@@ -801,7 +819,7 @@ Transform:
   m_GameObject: {fileID: 8165674583827289109}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8165674583078344247}

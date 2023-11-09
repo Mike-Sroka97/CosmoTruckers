@@ -4831,7 +4831,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6104566453968011286}
   - component: {fileID: 7585012334500676719}
-  - component: {fileID: 2032563148270778826}
   m_Layer: 0
   m_Name: KnifeSprite
   m_TagString: Untagged
@@ -4908,19 +4907,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &2032563148270778826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5576053849747071931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotateSpeed: -3000
 --- !u!1 &7922066987715217317
 GameObject:
   m_ObjectHideFlags: 0
@@ -4931,8 +4917,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7922066987715217313}
   - component: {fileID: 7922066987715217315}
-  - component: {fileID: 7922066987715217316}
   - component: {fileID: 4441142604946812292}
+  - component: {fileID: 954126239968794304}
   m_Layer: 0
   m_Name: VeggieVengeanceProjectile
   m_TagString: Untagged
@@ -4969,22 +4955,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8.4
---- !u!58 &7922066987715217316
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7922066987715217317}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.35
 --- !u!50 &4441142604946812292
 Rigidbody2D:
   serializedVersion: 4
@@ -5006,6 +4976,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!70 &954126239968794304
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7922066987715217317}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.03}
+  m_Size: {x: 0.25, y: 0.7}
+  m_Direction: 0
 --- !u!1 &8416854191961038437
 GameObject:
   m_ObjectHideFlags: 0

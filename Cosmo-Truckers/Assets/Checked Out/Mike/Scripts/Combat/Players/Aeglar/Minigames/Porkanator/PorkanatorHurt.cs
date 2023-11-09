@@ -11,7 +11,7 @@ public class PorkanatorHurt : MonoBehaviour
 
     Porkanator minigame;
     Rigidbody2D myBody;
-    DeathParticleSpawner myParticleSpawner;
+    ParticleSpawner myParticleSpawner;
     Collider2D myCollider;
 
     static int layermask = 11; //player no interaction
@@ -22,7 +22,7 @@ public class PorkanatorHurt : MonoBehaviour
 
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
-        myParticleSpawner = GetComponent<DeathParticleSpawner>(); 
+        myParticleSpawner = GetComponent<ParticleSpawner>(); 
 
         MoveSet();
     }
