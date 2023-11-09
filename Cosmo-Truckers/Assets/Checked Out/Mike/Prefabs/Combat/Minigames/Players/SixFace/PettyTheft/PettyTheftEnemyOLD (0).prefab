@@ -125,6 +125,7 @@ GameObject:
   - component: {fileID: 6193459701291032195}
   - component: {fileID: 6193459701291032192}
   - component: {fileID: 6193459701291032193}
+  - component: {fileID: 6385184693576566295}
   m_Layer: 0
   m_Name: Triangle
   m_TagString: EnemyDamaging
@@ -228,6 +229,20 @@ PolygonCollider2D:
       - {x: -1.8719459, y: -0.95993257}
       - {x: 1.9215343, y: -0.9425766}
       - {x: 0.02948361, y: 0.887001}
+--- !u!114 &6385184693576566295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6193459701291032194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 0
+  TrackingDamage: 1
 --- !u!1 &6193459701576377473
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +255,6 @@ GameObject:
   - component: {fileID: 6193459701576377476}
   - component: {fileID: 6193459701576377479}
   - component: {fileID: 6193459701576377477}
-  - component: {fileID: 6193459701576377594}
   m_Layer: 0
   m_Name: PettyTheftEnemyOLD (0)
   m_TagString: EnemyDamaging
@@ -351,31 +365,17 @@ MonoBehaviour:
   distanceToSway: 0.8
   swaySpeed: 0.42
   distanceToRotate: 30
-  rotationSpeed: 48
+  rotationSpeed: 32
   Money: {fileID: 6193459701087012063}
   onlyBob: 0
   collidersToDisable:
   - {fileID: 6193459701985666020}
   - {fileID: 6193459701576377479}
   - {fileID: 6193459701291032193}
-  spritesToDisable:
-  - {fileID: 6193459701576377476}
-  - {fileID: 6193459701291032192}
+  objectsToDisable: []
   movingUp: 1
   movingRight: 1
   rotatingRight: 1
---- !u!114 &6193459701576377594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6193459701576377473}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 178ff5a29af07bf48a2ba636dc80762a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6193459701706135652
 GameObject:
   m_ObjectHideFlags: 0

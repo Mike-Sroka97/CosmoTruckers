@@ -8,9 +8,15 @@ public class PettyTheft : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
         moneys = FindObjectsOfType<PTMoney>();
+    }
+
+    public override void StartMove()
+    {
+        PettyTheftEnemy[] enemies = FindObjectsOfType<PettyTheftEnemy>();
+        foreach (PettyTheftEnemy enemy in enemies)
+            enemy.ActivateLights();
     }
 
     public void ActivateMoney()
@@ -23,6 +29,8 @@ public class PettyTheft : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        base.EndMove();
+        SixFaceAttackSO attack = (SixFaceAttackSO)CombatManager.Instance.CurrentAttack;
+        FindObjectOfType<SixFaceVessel>().UpdateFace(attack.faceType);
     }
 }

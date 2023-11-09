@@ -30,6 +30,8 @@ public class CombatManager : MonoBehaviour
     PlayerCharacter[] attackable;
     Enemy CurrentEnemy;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
+
+    public BaseAttackSO CurrentAttack;
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     public bool INAmoving = false;
@@ -41,6 +43,7 @@ public class CombatManager : MonoBehaviour
 
     public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
+        CurrentAttack = attack;
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
@@ -57,6 +60,7 @@ public class CombatManager : MonoBehaviour
 
     public void StartTurnEnemy(BaseAttackSO attack, Enemy enemy)
     {
+        CurrentAttack = attack;
         CurrentEnemy = enemy;
         EnemyTarget(attack, enemy);
     }

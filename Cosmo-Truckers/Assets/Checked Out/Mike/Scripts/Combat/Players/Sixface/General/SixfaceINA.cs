@@ -162,6 +162,7 @@ public class SixfaceINA : Player
             playerAnimator.ChangeAnimation(bodyAnimator, downAttack);
             SetSixFacesFace(sixFaceFaces[5]);
             StartCoroutine(SixFaceAttack(downAttackArea));
+            Pogo();
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {

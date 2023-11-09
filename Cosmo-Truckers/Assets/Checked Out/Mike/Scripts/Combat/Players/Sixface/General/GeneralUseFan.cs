@@ -10,18 +10,17 @@ public class GeneralUseFan : MonoBehaviour
     SixfaceINA six;
     PlayerBody sixFace;
     Rigidbody2D sixFaceBody;
-    private void Start()
-    {
-        if(FindObjectOfType<SixfaceINA>())
-        {
-            six = FindObjectOfType<SixfaceINA>();
-            sixFace = six.GetComponentInChildren<PlayerBody>();
-            sixFaceBody = six.GetComponent<Rigidbody2D>();
-        }
-    } 
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        if(!six)
+            if (FindObjectOfType<SixfaceINA>())
+            {
+                six = FindObjectOfType<SixfaceINA>();
+                sixFace = six.GetComponentInChildren<PlayerBody>();
+                sixFaceBody = six.GetComponent<Rigidbody2D>();
+            }
+
         if (sixFace != null && collision.gameObject == sixFace.gameObject)
         {
             if(six.IsHovering)

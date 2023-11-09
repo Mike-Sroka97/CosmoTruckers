@@ -121,12 +121,7 @@ MonoBehaviour:
   IsUtility: 1
   wheel: {fileID: 223488299115762681}
   attacks:
-  - {fileID: 11400000, guid: 8b15de8cef2a9fd48b93762462ee33ab, type: 2}
-  - {fileID: 11400000, guid: 91f963d9300404d438b449d5e06f28e4, type: 2}
-  - {fileID: 11400000, guid: d33bbbf7a65405341a7bf2d4a456c939, type: 2}
   - {fileID: 11400000, guid: c9266b2c8c428ab43a45819ba16f1042, type: 2}
-  - {fileID: 11400000, guid: 953847c3aee162647a393ad27150879e, type: 2}
-  - {fileID: 11400000, guid: cfd1a561c5058c14992e41db444c3d79, type: 2}
   MiniGameControllerPrefab: {fileID: 375630004211662627, guid: d9be5c1e6ca62cf46a325edc82f687bd, type: 3}
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 5074453809647073394, guid: f9e2553964a5c434fa69a972c450376d, type: 3}
@@ -146,7 +141,7 @@ MonoBehaviour:
   Reflex: 10
   Defense: 0
   Vigor: 100
-  Speed: 100
+  Speed: 0
   Damage: 100
 --- !u!114 &7541116417286924018
 MonoBehaviour:
@@ -160,6 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f4c5bb9433d61429bf171d95ecd771, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeSpells: 0
+  MyVessel: {fileID: 0}
   FaceType: 0
 --- !u!1001 &5415354881965461961
 PrefabInstance:
@@ -202,15 +199,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5205820313127535153, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5205820313127535153, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5205820313127535153, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5205820313127535153, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
       propertyPath: m_LocalPosition.x

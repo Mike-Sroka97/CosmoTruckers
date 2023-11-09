@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PettyTheftEnemy : MonoBehaviour
 {
@@ -151,5 +152,13 @@ public class PettyTheftEnemy : MonoBehaviour
         {
             minigame.ActivateMoney();
         }
+    }
+
+    public void ActivateLights()
+    {
+        Light2D[] lights = GetComponentsInChildren<Light2D>();
+
+        foreach (Light2D light in lights)
+            light.enabled = true;
     }
 }

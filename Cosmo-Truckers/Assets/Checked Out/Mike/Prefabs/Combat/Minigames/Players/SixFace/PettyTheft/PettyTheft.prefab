@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 936284237}
   - component: {fileID: 936284239}
   - component: {fileID: 936284238}
+  - component: {fileID: 8035915872854498403}
   m_Layer: 0
   m_Name: KillZone
   m_TagString: EnemyDamaging
@@ -111,6 +112,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8035915872854498403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936284236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &3220644677571549904
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +151,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3220644677571549904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -159,23 +174,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c33bc0ee6c06f4aac6ffa8a1544234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeOfAttack: 0
+  TypeOfAttack: 2
   spawnPoints:
   - {fileID: 7485689264340220014}
   layouts:
   - {fileID: 3398170486297048560, guid: 85e4c58ee76757a4ca6ec23cfc55e6bd, type: 3}
-  - {fileID: 4346155923982019547, guid: 5e00f0b46f6e1ab4686beca80bc6a034, type: 3}
-  - {fileID: 5320609563956050747, guid: 07a92bf036cc0a8448eb0517c24c1765, type: 3}
-  - {fileID: 3875195294714062331, guid: 2ca9d8671825ab24095e2b5d24d5e59c, type: 3}
-  - {fileID: 1431849857791428392, guid: 3730fdc5ff6ab0648be84494c9671792, type: 3}
-  - {fileID: 6423342148107703081, guid: 17b0258559df88f4da3881b323b301a5, type: 3}
-  - {fileID: 6246365584916992359, guid: 46fbe19bda75de046ba25b48a75c3fea, type: 3}
-  - {fileID: 3869393107742623892, guid: 1bf9b313819a1994d84b84cc47ff0ebe, type: 3}
-  - {fileID: 6925383537041137725, guid: 3809836aa0d5e42449226a5674282df0, type: 3}
-  - {fileID: 5610017629665565074, guid: 368b2a97a84f5cd448ab82d8ade87f35, type: 3}
-  - {fileID: 6553407706423597695, guid: 1d2a1f69c02387249ac0b9fd61e44f57, type: 3}
+  Damage: 1
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
+  MoveEnded: 0
+  Hits: 0
+  maxScore: 10
+  augmentStacksPerHit: 0
+  maxAugmentStacks: 0
+  baseDamage: 14
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &7199152519761959481
 GameObject:
   m_ObjectHideFlags: 0
