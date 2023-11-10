@@ -117,9 +117,4 @@ public class Bribery : CombatMove
     {
         moneySpawnDelay += delayIncrement;
     }
-
-    public override void EndMove()
-    {
-        throw new NotImplementedException();
-    }
 }

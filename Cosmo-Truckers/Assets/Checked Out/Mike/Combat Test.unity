@@ -1460,9 +1460,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4987798649750840863, guid: c907a1cf58a66d14aa01fa7d2100bd32, type: 3}
+      propertyPath: attacks.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4987798649750840863, guid: c907a1cf58a66d14aa01fa7d2100bd32, type: 3}
       propertyPath: attacks.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: c9266b2c8c428ab43a45819ba16f1042, type: 2}
+    - target: {fileID: 4987798649750840863, guid: c907a1cf58a66d14aa01fa7d2100bd32, type: 3}
+      propertyPath: attacks.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: d8a2de5636810144386dc46d30e8fa92, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c907a1cf58a66d14aa01fa7d2100bd32, type: 3}
 --- !u!1001 &353836592
@@ -8097,6 +8105,7 @@ MonoBehaviour:
   enemySpellHoldTime: 3
   trashAttackDelay: 0.25
   CharactersSelected: []
+  CurrentAttack: {fileID: 0}
   INAmoving: 0
   TargetsSelected: 1
 --- !u!4 &2131620934
