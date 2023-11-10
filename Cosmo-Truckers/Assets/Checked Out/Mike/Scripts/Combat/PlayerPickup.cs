@@ -61,8 +61,7 @@ public class PlayerPickup : MonoBehaviour
 
             if (collectParticle != null)
             {
-                ParticleSystem particle = Instantiate(collectParticle, gameObject.transform);
-                particle.gameObject.transform.parent = minigame.gameObject.transform; 
+                ParticleSystem particle = Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.gameObject.transform);
             }
 
             Destroy(gameObject);

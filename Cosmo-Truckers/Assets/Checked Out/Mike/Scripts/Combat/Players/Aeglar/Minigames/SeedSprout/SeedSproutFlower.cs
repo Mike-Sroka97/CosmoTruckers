@@ -25,7 +25,7 @@ public class SeedSproutFlower : MonoBehaviour
     bool thornsShown = false;
     bool thornsAttacking = false;
     bool attacking = false;
-    Vector3 showThornsPosition, thornAttackPosition; 
+    Vector3 thornsStartPosition; 
 
     SeedSprout minigame;
 
@@ -33,10 +33,10 @@ public class SeedSproutFlower : MonoBehaviour
     {
         minigame = FindObjectOfType<SeedSprout>();
         thorns = transform.Find("FlowerHurt");
-        myAnimator = GetComponent<Animator>(); 
+        //Make sure it's off so it doesn't show up outside of INA. Thorns are larger than mask
+        thorns.gameObject.SetActive(false); 
 
-        showThornsPosition = new Vector3(thorns.position.x, thorns.position.y - showThornsYOffset, thorns.position.z);
-        thornAttackPosition = new Vector3(thorns.position.x, thorns.position.y - thornAttackYOffset, thorns.position.z);
+        myAnimator = GetComponent<Animator>(); 
     }
 
     private void Update()
@@ -51,10 +51,14 @@ public class SeedSproutFlower : MonoBehaviour
             currentTime += Time.deltaTime;
             if(currentTime >= showThornsDelay)
             {
+                //Turn thorns on and get position
+                thorns.gameObject.SetActive(true);
+                thornsStartPosition = thorns.position;
+
                 currentTime = 0;
                 thornsShown = true;
-                myAnimator.Play(bulbOpen.name); 
-                StartCoroutine(ThornsMovement(showThornsPosition, showThornsSpeed));
+                myAnimator.Play(bulbOpen.name);
+                StartCoroutine(ThornsMovement(showThornsYOffset, showThornsSpeed));
             }
         }
         else if(thornsAttacking)
@@ -64,14 +68,16 @@ public class SeedSproutFlower : MonoBehaviour
             {
                 currentTime = 0;
                 thornsAttacking = false;
-                StartCoroutine(ThornsMovement(thornAttackPosition, thornAttackSpeed));
+                StartCoroutine(ThornsMovement(thornAttackYOffset, thornAttackSpeed));
             }
         }
     }
 
-    private IEnumerator ThornsMovement(Vector3 newPosition, float speed)
+    private IEnumerator ThornsMovement(float yOffset, float speed)
     {
-        while(thorns.position.y > newPosition.y)
+        Vector3 newPosition = new Vector3(thorns.position.x, thornsStartPosition.y - yOffset, thorns.position.z);
+
+        while (thorns.position.y > newPosition.y)
         {
             thorns.position -= new Vector3(0, speed * Time.deltaTime, 0);
             yield return new WaitForSeconds(Time.deltaTime);

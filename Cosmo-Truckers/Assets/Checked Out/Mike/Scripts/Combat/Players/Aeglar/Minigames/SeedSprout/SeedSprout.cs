@@ -27,9 +27,4 @@ public class SeedSprout : CombatMove
         flowers[currentFlower].TrackTime = true;
         currentFlower++;
     }
-
-    public override void EndMove()
-    {
-
-    }
 }

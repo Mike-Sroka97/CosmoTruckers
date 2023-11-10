@@ -14,6 +14,7 @@ public class PotentPatty : CombatMove
     {
         hands = GetComponentsInChildren<PotentPattyHand>();
         Score = GetComponentsInChildren<PotentPattyPatty>().Length;
+        StartMoveTest(); 
     }
 
     public override void StartMove()
