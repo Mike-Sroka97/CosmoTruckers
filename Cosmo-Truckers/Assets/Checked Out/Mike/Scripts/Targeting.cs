@@ -13,9 +13,9 @@ public class Targeting : MonoBehaviour
     [SerializeField] Material positiveSelectedMaterial;
 
     bool isTargeting = false;
-    EnumManager.TargetingType currentTargetingType;
+    public EnumManager.TargetingType CurrentTargetingType;
     BaseAttackSO currentAttack;
-    bool initialSetup = false;
+    public bool InitialSetup = false;
     bool targetingEnemies = true;
     bool targetingDead = false;
     bool enemyAttacking = false;
@@ -37,13 +37,13 @@ public class Targeting : MonoBehaviour
     public void StartTargeting(BaseAttackSO attack)
     {
         isTargeting = true;
-        initialSetup = false;
-        currentTargetingType = attack.TargetingType;
+        InitialSetup = false;
+        CurrentTargetingType = attack.TargetingType;
         currentAttack = attack;
         currentlySelectedTargets.Clear();
         currentNumberOfTargets = 0;
         targetingDead = attack.TargetsDead;
-        if (currentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
+        if (CurrentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
             targets = attack.NumberOFTargets;
         else
             targets = 0;
@@ -119,7 +119,7 @@ public class Targeting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             CancelAttack();
 
-        switch (currentTargetingType)
+        switch (CurrentTargetingType)
         {
             case EnumManager.TargetingType.No_Target:
                 TrackNoTargetInput();
@@ -364,15 +364,16 @@ public class Targeting : MonoBehaviour
     private void TrackNoTargetInput()
     {
         //set initial target
-        if (!initialSetup)
+        if (!InitialSetup)
         {
-            initialSetup = true;
+            InitialSetup = true;
             List<Character> noTargetCharacters = currentAttack.CombatPrefab.GetComponentInChildren<CombatMove>().NoTargetTargeting();
-            foreach(Character character in noTargetCharacters)
-            {
-                currentlySelectedTargets.Add(character);
-                Target(character);
-            }
+            if(noTargetCharacters != null)
+                foreach (Character character in noTargetCharacters)
+                {
+                    currentlySelectedTargets.Add(character);
+                    Target(character);
+                }
         }
 
         //track choice
@@ -385,9 +386,9 @@ public class Targeting : MonoBehaviour
     private void TrackSelfTargetInput()
     {
         //set initial target
-        if (!initialSetup)
+        if (!InitialSetup)
         {
-            initialSetup = true;
+            InitialSetup = true;
             currentlySelectedTargets.Add(CombatManager.Instance.GetCurrentPlayer);
             Target(CombatManager.Instance.GetCurrentPlayer);
         }
@@ -404,9 +405,9 @@ public class Targeting : MonoBehaviour
         if (currentAttack.CanTargetEnemies && currentAttack.CanTargetFriendly)
         {
             //set initial target (start enemy side)
-            if (!initialSetup)
+            if (!InitialSetup)
             {
-                initialSetup = true;
+                InitialSetup = true;
                 targetingEnemies = true;
                 foreach(Character enemy in EnemyManager.Instance.EnemyCombatSpots)
                 {
@@ -482,9 +483,9 @@ public class Targeting : MonoBehaviour
         else if (currentAttack.CanTargetEnemies)
         {
             //set initial target (only enemy side)
-            if (!initialSetup)
+            if (!InitialSetup)
             {
-                initialSetup = true;
+                InitialSetup = true;
                 targetingEnemies = true;
                 foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)
                 {
@@ -526,9 +527,9 @@ public class Targeting : MonoBehaviour
         else if (currentAttack.CanTargetFriendly)
         {
             //set initial target (only player side)
-            if (!initialSetup)
+            if (!InitialSetup)
             {
-                initialSetup = true;
+                InitialSetup = true;
                 targetingEnemies = false;
                 foreach (Character player in EnemyManager.Instance.PlayerCombatSpots)
                 {
@@ -613,9 +614,9 @@ public class Targeting : MonoBehaviour
     private void TrackAEOTargetInput()
     {
         //set initial target
-        if (!initialSetup)
+        if (!InitialSetup)
         {
-            initialSetup = true;
+            InitialSetup = true;
 
             //Target enemies
             if (currentAttack.CanTargetEnemies)
@@ -654,9 +655,9 @@ public class Targeting : MonoBehaviour
     private void TrackAllTargetInput()
     {
         //set initial target
-        if (!initialSetup)
+        if (!InitialSetup)
         {
-            initialSetup = true;
+            InitialSetup = true;
 
             //Target enemies
             foreach (Character enemy in EnemyManager.Instance.EnemyCombatSpots)

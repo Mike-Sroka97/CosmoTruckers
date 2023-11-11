@@ -13,14 +13,14 @@ public class SPPsendBack : MonoBehaviour
     private void Start()
     {
         layoutGenerator = transform.parent.parent.GetComponent<SPPlayoutGenerator>();
-        player = FindObjectOfType<SixfaceINA>().transform;
         minigame = FindObjectOfType<SugarPillPlacebo>();
-
-        Debug.Log(player.name); 
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (player == null)
+            player = FindObjectOfType<SixfaceINA>().transform;
+
         if (collision.transform.parent.transform == player.transform)
         {
             Invoke("MovePlayer", moveDelay);

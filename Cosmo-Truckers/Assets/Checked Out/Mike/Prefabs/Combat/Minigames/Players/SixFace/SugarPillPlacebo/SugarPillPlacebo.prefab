@@ -113,7 +113,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &1004333803
 GameObject:
@@ -197,7 +197,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &1293155606
 GameObject:
@@ -281,7 +281,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &1229447847718493464
 GameObject:
@@ -370,6 +370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  TrackingDamage: 1
 --- !u!1 &2918701176635039946
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,6 +569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &4968314429011306168
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,7 +739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7857762108981457258}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -766,13 +768,25 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 702884939}
   layouts: []
-  Damage: 0
+  Damage: 3
   DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
   Hits: 0
   maxScore: 3
+  augmentStacksPerHit: 0
+  maxAugmentStacks: 1
+  baseDamage: 10
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 0
+  isHealing: 1
+  spawnTest: 0
+  startMoveTest: 0
   CurrentCheckPointLocation: {x: 0, y: 0, z: 0}
 --- !u!1 &7857762109130425882
 GameObject:
@@ -856,7 +870,7 @@ GameObject:
   - component: {fileID: 7857762109171101169}
   - component: {fileID: 7857762109171101171}
   - component: {fileID: 7857762109171101168}
-  - component: {fileID: 7857762109171101170}
+  - component: {fileID: 220807202168955638}
   m_Layer: 0
   m_Name: SuccessOrb (0)
   m_TagString: Untagged
@@ -929,7 +943,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762109171101168
 CircleCollider2D:
@@ -947,7 +961,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &7857762109171101170
+--- !u!114 &220807202168955638
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -956,11 +970,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7857762109171101070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86dff5ce8b2f5b445a2079385b3a8e23, type: 3}
+  m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deltaDistance: 0.1
+  score: 1
   moveSpeed: 0.4
+  moveDistance: 0.1
+  endsMinigame: 0
+  collectParticle: {fileID: 0}
 --- !u!1 &7857762109303725357
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,7 +989,7 @@ GameObject:
   - component: {fileID: 7857762109303725356}
   - component: {fileID: 7857762109303725358}
   - component: {fileID: 7857762109303725359}
-  - component: {fileID: 7857762109303725329}
+  - component: {fileID: 486451674600262724}
   m_Layer: 0
   m_Name: SuccessOrb (2)
   m_TagString: Untagged
@@ -1045,7 +1062,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762109303725359
 CircleCollider2D:
@@ -1063,7 +1080,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &7857762109303725329
+--- !u!114 &486451674600262724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1072,11 +1089,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7857762109303725357}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86dff5ce8b2f5b445a2079385b3a8e23, type: 3}
+  m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deltaDistance: 0.1
+  score: 1
   moveSpeed: 0.4
+  moveDistance: 0.1
+  endsMinigame: 0
+  collectParticle: {fileID: 0}
 --- !u!1 &7857762109383199020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,7 +1348,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762109670234772
 CircleCollider2D:
@@ -1640,7 +1660,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762109925693509
 CircleCollider2D:
@@ -1717,7 +1737,7 @@ GameObject:
   - component: {fileID: 7857762110058842908}
   - component: {fileID: 7857762110058842910}
   - component: {fileID: 7857762110058842911}
-  - component: {fileID: 7857762110058842881}
+  - component: {fileID: 6745275990645612705}
   m_Layer: 0
   m_Name: SuccessOrb (1)
   m_TagString: Untagged
@@ -1790,7 +1810,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762110058842911
 CircleCollider2D:
@@ -1808,7 +1828,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &7857762110058842881
+--- !u!114 &6745275990645612705
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1817,11 +1837,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7857762110058842909}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86dff5ce8b2f5b445a2079385b3a8e23, type: 3}
+  m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deltaDistance: 0.1
+  score: 1
   moveSpeed: 0.4
+  moveDistance: 0.1
+  endsMinigame: 0
+  collectParticle: {fileID: 0}
 --- !u!1 &7857762110205560660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2303,7 +2326,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &7857762110948046734
 CircleCollider2D:
@@ -2422,6 +2445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  TrackingDamage: 1
 --- !u!1001 &1098028919
 PrefabInstance:
   m_ObjectHideFlags: 0

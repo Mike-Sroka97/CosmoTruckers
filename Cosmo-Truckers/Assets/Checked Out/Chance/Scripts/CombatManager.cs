@@ -17,7 +17,7 @@ public class CombatManager : MonoBehaviour
     List<GameObject> characters;   //Currently only one 
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
-    [SerializeField] Targeting myTargeting;
+    public Targeting MyTargeting;
     [SerializeField] float enemySpellHoldTime;
     [SerializeField] float trashAttackDelay = .25f;
 
@@ -53,7 +53,7 @@ public class CombatManager : MonoBehaviour
         CurrentPlayer = currentPlayer;
         ActivePlayers.Add(currentPlayer);
         TargetsSelected = false;
-        myTargeting.StartTargeting(attack);
+        MyTargeting.StartTargeting(attack);
 
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
@@ -162,7 +162,7 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        myTargeting.EnemyTargeting(attack, enemySpellHoldTime);
+        MyTargeting.EnemyTargeting(attack, enemySpellHoldTime);
 
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }

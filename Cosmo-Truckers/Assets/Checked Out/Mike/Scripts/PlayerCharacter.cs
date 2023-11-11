@@ -99,6 +99,17 @@ public class PlayerCharacter : Character
         MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits);
     }
 
+    public override void TakeHealing(int healing, bool ignoreVigor = false)
+    {
+        base.TakeHealing(healing, ignoreVigor);
+
+        if (!ignoreVigor)
+            healing = AdjustAttackHealing(healing);
+
+        MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, healing, false);
+    }
+
+
     public override void TakeShielding(int shieldAmount)
     {
         base.TakeShielding(shieldAmount);
