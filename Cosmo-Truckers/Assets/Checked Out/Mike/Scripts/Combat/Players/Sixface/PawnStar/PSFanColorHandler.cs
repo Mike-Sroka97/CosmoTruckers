@@ -5,36 +5,34 @@ using UnityEngine;
 public class PSFanColorHandler : MonoBehaviour
 {
     [SerializeField] float deactivatedAlpha;
+    [SerializeField] SpriteRenderer myRenderer;
+    Animator myAnimator;
 
-    SpriteRenderer myRenderer;
-    SpriteRenderer myChildRenderer;
+    GeneralUseFan fan;
     Color startingColorMyRenderer;
-    Color startingColorMyChildRenderer;
-
 
     private void Awake()
     {
-        myRenderer = GetComponent<SpriteRenderer>();
-        myChildRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
         startingColorMyRenderer = myRenderer.color;
-        startingColorMyChildRenderer = myChildRenderer.color;
+        fan = GetComponent<GeneralUseFan>();
+        myAnimator = myRenderer.GetComponent<Animator>();
     }
 
     public void ActivateColor()
     {
         transform.tag = "EnemyDamaging";
         myRenderer.color = startingColorMyRenderer;
-        myChildRenderer.color = startingColorMyChildRenderer;
-        myChildRenderer.GetComponent<GeneralUseFan>().enabled = true;
-        myChildRenderer.GetComponent<Collider2D>().enabled = true;
+        fan.enabled = true;
+        fan.GetComponent<Collider2D>().enabled = true;
+        myAnimator.speed = 1;
     }
 
     public void DeactivateColor()
     {
         transform.tag = "Untagged";
         myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, deactivatedAlpha);
-        myChildRenderer.color = new Color(myChildRenderer.color.r, myChildRenderer.color.g, myChildRenderer.color.b, 0);
-        myChildRenderer.GetComponent<GeneralUseFan>().enabled = false;
-        myChildRenderer.GetComponent<Collider2D>().enabled = false;
+        fan.enabled = false;
+        fan.GetComponent<Collider2D>().enabled = false;
+        myAnimator.speed = 0;
     }
 }

@@ -47,7 +47,7 @@ public class PSFanAltering : MonoBehaviour
 
         //randomize active fans
 
-        int random1 = UnityEngine.Random.Range(0, fans.Length);
+        int random1 = UnityEngine.Random.Range(0, 2);
         int random2 = random1;
         while(random2 == random1)
         {

@@ -24,7 +24,7 @@ public class PSmoneyBag : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
         startingColor = myRenderer.color;
-        startingPosition = transform.position;
+        startingPosition = transform.localPosition;
 
         int random = UnityEngine.Random.Range(0, 2); //coin flip huzzah
         if (random == 0)
