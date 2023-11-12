@@ -89,7 +89,6 @@ public class INAcombat : MonoBehaviour
             //Shake
             countDownTimer.text = goText;
             currentTime = shakeDuration;
-            FindObjectOfType<CombatMove>().StartMove();
 
             while (currentTime > 0)
             {
@@ -100,6 +99,8 @@ public class INAcombat : MonoBehaviour
 
                 yield return null;
             }
+
+            FindObjectOfType<CombatMove>().StartMove();
 
             timer.enabled = true;
         }

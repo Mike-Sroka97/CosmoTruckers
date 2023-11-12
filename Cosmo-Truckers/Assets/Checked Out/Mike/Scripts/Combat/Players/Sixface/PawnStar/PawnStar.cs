@@ -79,7 +79,7 @@ public class PawnStar : CombatMove
 
         //TODO CHANCE add array of augments to dish out in base combat
         //Calculate Augment Stacks
-        int augmentStacks = Hits * augmentStacksPerHit;
+        int augmentStacks = AugmentScore * augmentStacksPerScore;
         augmentStacks += baseAugmentStacks;
         if (augmentStacks > maxAugmentStacks)
             augmentStacks = maxAugmentStacks;

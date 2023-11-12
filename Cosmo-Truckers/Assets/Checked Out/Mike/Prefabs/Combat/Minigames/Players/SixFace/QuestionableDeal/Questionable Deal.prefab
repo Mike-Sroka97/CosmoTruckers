@@ -74,6 +74,7 @@ GameObject:
   - component: {fileID: 1441073689205878852}
   - component: {fileID: 1441073689205878875}
   - component: {fileID: 1441073689205878874}
+  - component: {fileID: 2080945873991494725}
   m_Layer: 0
   m_Name: Questionable Deal
   m_TagString: Untagged
@@ -89,7 +90,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441073689205878853}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -114,19 +115,25 @@ MonoBehaviour:
   - {fileID: 1844925690}
   layouts:
   - {fileID: 6085061479929206524, guid: 17675bf94bef5c740a948d839809ed5a, type: 3}
-  - {fileID: 8906472303115359960, guid: 1da672803da7a4149923276026c6fe8e, type: 3}
-  - {fileID: 3600287472797666710, guid: cff421ff01b038d46a234f1fabf7cce6, type: 3}
-  - {fileID: 4310438812695302240, guid: 17f816bbfa691374689e4821e20f87d5, type: 3}
-  - {fileID: 6632793993823024109, guid: 38bf270cc1262e440a2ffa05aaa7b4f4, type: 3}
-  - {fileID: 2311251746155695880, guid: ab319e96f79e9e64c98870329523ebc4, type: 3}
-  - {fileID: 3441068317260505393, guid: a1cbac50237f46a40a8ab26c33c57c82, type: 3}
-  - {fileID: 2302522774219314392, guid: 478b12b4a0a737649b767c5356d57e10, type: 3}
-  - {fileID: 4977296003605387184, guid: afb3b858e9bcda3468dcf9892a05647b, type: 3}
-  - {fileID: 1305136460397401919, guid: 6dbedf2fe958e62469572d1a81d8b894, type: 3}
-  - {fileID: 6453722568745146079, guid: 80b69139fe466844dae26008dc016e09, type: 3}
-  - {fileID: 1322070766026574079, guid: b1fcd1d530fe8684e94b05bfb1009e97, type: 3}
+  Damage: 10
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 30
   Score: 0
   PlayerDead: 0
+  MoveEnded: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 1
+  maxAugmentStacks: 1
+  baseDamage: 0
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 0
+  isHealing: 0
+  spawnTest: 0
+  startMoveTest: 0
   Moving: 1
   successThresholds: 0d0000001000000014000000190000001e000000
   moveSpeed: 1.2
@@ -151,3 +158,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &2080945873991494725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441073689205878853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22eb025d5c9f3a5439e6bd13fede4df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myBody: {fileID: 1441073689205878874}
+  permanentVelocityAdjustment: 1

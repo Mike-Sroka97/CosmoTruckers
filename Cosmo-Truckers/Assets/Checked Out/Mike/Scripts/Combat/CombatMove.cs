@@ -19,11 +19,11 @@ public abstract class CombatMove : MonoBehaviour
     [HideInInspector] public bool PlayerDead = false;
     [HideInInspector] public bool MoveEnded = false;
     protected bool endMoveCalled = false; 
-    public int Hits = 0;
+    public int AugmentScore = 0;
     [Space(20)]
     [Header("Minigame Variables")]
     [SerializeField] protected int maxScore;
-    [SerializeField] protected int augmentStacksPerHit;
+    [SerializeField] protected int augmentStacksPerScore;
     [SerializeField] protected int maxAugmentStacks;
     [SerializeField] protected int baseDamage;
     [SerializeField] protected int baseAugmentStacks;
@@ -120,7 +120,7 @@ public abstract class CombatMove : MonoBehaviour
 
                     //TODO CHANCE add array of augments to dish out in base combat
                     //Calculate Augment Stacks
-                    int augmentStacks = Hits * augmentStacksPerHit;
+                    int augmentStacks = AugmentScore * augmentStacksPerScore;
                     augmentStacks += baseAugmentStacks;
                     if (augmentStacks > maxAugmentStacks)
                         augmentStacks = maxAugmentStacks;
@@ -135,8 +135,8 @@ public abstract class CombatMove : MonoBehaviour
         }
         else //Running tests
         {
-            Debug.Log($"{Damage * Hits} done to player");
-            if (DebuffToAdd != null) Debug.Log($"{Hits} stacks of {DebuffToAdd.DebuffName} added");
+            Debug.Log($"{Damage * AugmentScore} done to player");
+            if (DebuffToAdd != null) Debug.Log($"{AugmentScore} stacks of {DebuffToAdd.DebuffName} added");
         }
     }
 

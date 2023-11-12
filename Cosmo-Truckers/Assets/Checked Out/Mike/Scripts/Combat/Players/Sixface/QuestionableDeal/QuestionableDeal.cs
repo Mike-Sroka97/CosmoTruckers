@@ -8,58 +8,44 @@ public class QuestionableDeal : CombatMove
     [SerializeField] int[] successThresholds;
     [SerializeField] float moveSpeed;
 
+    bool trackTime = false;
     float currentTime = 0;
     Rigidbody2D myBody;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
         myBody = GetComponent<Rigidbody2D>();
+    }
+
+    public override void StartMove()
+    {
+        myBody.velocity = new Vector2(-moveSpeed, 0);
+        GetComponent<ParentPlayer>().AdjustPlayerVelocity(myBody.velocity.x, myBody.velocity.y);
+        trackTime = true;
     }
 
     private void Update()
     {
         TrackTime();
-        MoveMe();
     }
 
     private void TrackTime()
     {
+        if (!trackTime)
+            return;
+
         if(!PlayerDead)
         {
             currentTime += Time.deltaTime;
         }
         if(currentTime >= successThresholds[successThresholds.Length - 1] && Moving)
         {
+            myBody.velocity = Vector2.zero;
             Moving = false;
             PlayerDead = true;
             Score = successThresholds.Length;
         }
-    }
-
-    private void MoveMe()
-    {
-        if(Moving)
-        {
-            myBody.velocity = new Vector2(-moveSpeed, 0);
-        }
-    }
-
-    public void CalculateSuccess()
-    {
-        int timeSurvived = Mathf.RoundToInt(currentTime);
-
-        for(int i = 0; i < successThresholds.Length; i++)
-        {
-            if(timeSurvived > successThresholds[i])
-            {
-                Score++;
-            }
-        }
-
-        Debug.Log(Score);
-        EndMove();
     }
 
     public override void EndMove()
