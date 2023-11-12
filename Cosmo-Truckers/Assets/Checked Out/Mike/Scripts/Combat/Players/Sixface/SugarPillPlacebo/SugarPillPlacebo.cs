@@ -63,9 +63,7 @@ public class SugarPillPlacebo : CombatMove
 
 
         //set face
-        SixFaceAttackSO attack = (SixFaceAttackSO)CombatManager.Instance.CurrentAttack;
-        sixFaceMana.FaceType = attack.faceType;
-        FindObjectOfType<SixFaceVessel>().UpdateFace(attack.faceType);
+        sixFaceMana.UpdateFace();
 
         //minigame result
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)

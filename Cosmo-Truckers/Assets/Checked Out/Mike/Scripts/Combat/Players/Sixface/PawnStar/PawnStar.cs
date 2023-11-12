@@ -89,5 +89,8 @@ public class PawnStar : CombatMove
 
         //Apply augment
         CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
+
+        //Update face
+        FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }

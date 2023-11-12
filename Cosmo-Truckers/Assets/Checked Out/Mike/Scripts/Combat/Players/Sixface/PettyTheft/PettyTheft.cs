@@ -30,8 +30,6 @@ public class PettyTheft : CombatMove
     public override void EndMove()
     {
         base.EndMove();
-        SixFaceAttackSO attack = (SixFaceAttackSO)CombatManager.Instance.CurrentAttack;
-        FindObjectOfType<SixFaceMana>().FaceType = attack.faceType;
-        FindObjectOfType<SixFaceVessel>().UpdateFace(attack.faceType);
+        FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }

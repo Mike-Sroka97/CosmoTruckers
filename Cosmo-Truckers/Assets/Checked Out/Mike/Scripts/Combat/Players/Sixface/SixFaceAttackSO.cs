@@ -7,4 +7,5 @@ using UnityEngine;
 public class SixFaceAttackSO : BaseAttackSO
 {
     public SixFaceMana.FaceTypes faceType;
+    public bool RequiresMegaloManic = false;
 }

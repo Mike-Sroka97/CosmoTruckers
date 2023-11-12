@@ -50,6 +50,7 @@ public class QuestionableDeal : CombatMove
 
     public override void EndMove()
     {
-
+        base.EndMove();
+        FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }

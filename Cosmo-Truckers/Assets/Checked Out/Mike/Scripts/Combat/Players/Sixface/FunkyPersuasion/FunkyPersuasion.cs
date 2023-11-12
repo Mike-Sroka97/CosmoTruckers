@@ -13,7 +13,6 @@ public class FunkyPersuasion : CombatMove
     public override void EndMove()
     {
         base.EndMove();
-        SixFaceAttackSO attack = (SixFaceAttackSO)CombatManager.Instance.CurrentAttack;
-        FindObjectOfType<SixFaceVessel>().UpdateFace(attack.faceType);
+        FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }
