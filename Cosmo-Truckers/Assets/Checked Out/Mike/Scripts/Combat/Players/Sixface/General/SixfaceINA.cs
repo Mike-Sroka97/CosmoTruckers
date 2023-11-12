@@ -43,6 +43,7 @@ public class SixfaceINA : Player
     bool isJumping = true;
     bool canAttack = true;
     bool canHover = true;
+    bool canDownAttack = true;
 
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
@@ -87,6 +88,7 @@ public class SixfaceINA : Player
             if(!damaged && !Input.GetKey("space"))
             {
                 canJump = true;
+                canDownAttack = true;
                 canHover = false;
                 currentJumpHoldTime = 0;
                 currentCoyoteTime = 0;
@@ -157,8 +159,9 @@ public class SixfaceINA : Player
             SetSixFacesFace(sixFaceFaces[1]);
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover))
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover) && canDownAttack)
         {
+            canDownAttack = false;
             playerAnimator.ChangeAnimation(bodyAnimator, downAttack);
             SetSixFacesFace(sixFaceFaces[5]);
             StartCoroutine(SixFaceAttack(downAttackArea));
