@@ -109,7 +109,7 @@ public abstract class CombatMove : MonoBehaviour
                     if (Score >= maxScore)
                         Score = maxScore;
 
-                    int currentDamage = 0;
+                    int currentDamage;
                     //defending/attacking
                     if (!defending)
                         currentDamage = Score * Damage;

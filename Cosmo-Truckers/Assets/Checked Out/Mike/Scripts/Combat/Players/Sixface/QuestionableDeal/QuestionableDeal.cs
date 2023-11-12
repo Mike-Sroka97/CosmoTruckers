@@ -12,6 +12,8 @@ public class QuestionableDeal : CombatMove
     float currentTime = 0;
     Rigidbody2D myBody;
 
+    const int SubductionDamage = 999;
+
     private void Start()
     {
         GenerateLayout();
@@ -50,7 +52,30 @@ public class QuestionableDeal : CombatMove
 
     public override void EndMove()
     {
-        base.EndMove();
+        MoveEnded = true;
+
+        if (Score > 0)
+            AugmentScore++;
+
+        //Calculate Damage
+        if (Score < 0)
+            Score = 0;
+        if (Score >= maxScore)
+            Score = maxScore;
+
+        int currentDamage;
+        //defending/attacking
+        currentDamage = Score * Damage;
+        currentDamage += baseDamage;
+
+        //TODO CHANCE if enemy has subduction deal 999 damage instead. Use variable subductionDamage
+
+        //Apply augment
+        CombatManager.Instance.CharactersSelected[0].AddDebuffStack(DebuffToAdd, AugmentScore);
+
+        if (currentDamage > 0)
+            CombatManager.Instance.CharactersSelected[0].TakeDamage(currentDamage);
+
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }
