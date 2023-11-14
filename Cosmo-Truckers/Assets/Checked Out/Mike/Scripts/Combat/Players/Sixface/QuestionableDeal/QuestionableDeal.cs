@@ -68,7 +68,7 @@ public class QuestionableDeal : CombatMove
         currentDamage = Score * Damage;
         currentDamage += baseDamage;
 
-        //TODO CHANCE if enemy has subduction deal 999 damage instead. Use variable subductionDamage
+        //TODO CHANCE if enemy has subduction && !Enemy.IsBoss deal 999 damage instead. Use variable subductionDamage
 
         //Apply augment
         CombatManager.Instance.CharactersSelected[0].AddDebuffStack(DebuffToAdd, AugmentScore);

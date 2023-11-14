@@ -19,6 +19,7 @@ public class Enemy : Character
     [SerializeField] Color healingColor;
     [SerializeField] float fadeSpeed;
     [SerializeField] float moveSpeed;
+    public bool IsBoss = false;
     Vector3 damageTextStartPosition;
     Vector3 healingTextStartPosition;
 
