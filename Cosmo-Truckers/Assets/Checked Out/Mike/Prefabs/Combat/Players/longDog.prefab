@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1190336181685528049}
   - component: {fileID: 1190336181685528052}
-  - component: {fileID: 1190336181685528055}
+  - component: {fileID: 3581985023691945679}
   - component: {fileID: 1190336181685528054}
+  - component: {fileID: 8473194752589849897}
   m_Layer: 0
   m_Name: longDog
   m_TagString: Untagged
@@ -88,7 +89,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1190336181685528055
+--- !u!114 &3581985023691945679
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,40 +98,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 1190336181685528048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 777a4675d532bba49940692859754365, type: 3}
+  m_Script: {fileID: 11500000, guid: 324033a3e2c3e41458eb8508fec07122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
-  maxShield: 60
+  maxShield: 30
   Stats: {fileID: 1190336181685528054}
-  Health: 0
-  TargetingSprites: []
+  Health: 30
+  TargetingSprites:
+  - {fileID: 5600820234468258814}
+  - {fileID: 2179848013058036202}
+  - {fileID: 8810699800233994324}
   CombatSpot: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
   MyPlayer: {fileID: 0}
-  Name: 
-  VesselImage: {fileID: 0}
-  IsDPS: 0
+  Name: Long Dog
+  VesselImage: {fileID: 21300000, guid: 79a0fa5d9fdbed242949a17129fe1837, type: 3}
+  IsDPS: 1
   IsTank: 0
-  IsSupport: 1
+  IsSupport: 0
   IsUtility: 0
-  wheel: {fileID: 0}
+  wheel: {fileID: 7168459181638185458}
   attacks:
-  - {fileID: 11400000, guid: 9adbfa1de5763564391fa5bd66d0aa60, type: 2}
-  - {fileID: 11400000, guid: c849fca3739c113469f3cdadb4b6bc62, type: 2}
-  - {fileID: 11400000, guid: aaf0a30eef9cc734397ad19aaf8908a3, type: 2}
-  - {fileID: 11400000, guid: 96d71d533f1a4824a9a338efda90d76b, type: 2}
-  - {fileID: 11400000, guid: fea4254295339a04c8445d9432db9386, type: 2}
-  - {fileID: 11400000, guid: dcaf3cac603f89e49a223e6c6e48d908, type: 2}
-  - {fileID: 11400000, guid: a99d4c23fc607fb49bb1451002f0d2de, type: 2}
+  - {fileID: 11400000, guid: d7a7ce1c50aa6c544b290283ae3a83ba, type: 2}
   MiniGameControllerPrefab: {fileID: 805849436612175554, guid: 512e8cfb982f6bc42b833ac6b341944a, type: 3}
   MyVessel: {fileID: 0}
-  PlayerVessel: {fileID: 0}
-  PlayerAttackUI: {fileID: 0}
+  PlayerVessel: {fileID: 5074453809647073394, guid: 44b1dd4be563c724b907cb1957bccb84, type: 3}
+  PlayerAttackUI: {fileID: 1020425248598480499}
 --- !u!114 &1190336181685528054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,11 +141,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 0
+  Reflex: 50
   Defense: 0
   Vigor: 100
   Speed: 0
   Damage: 100
+--- !u!114 &8473194752589849897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190336181685528048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6db1913a6f98c49a7cb503ea9a5945, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freeSpells: 0
+  MyVessel: {fileID: 0}
+  HeadAlive: 1
+  BodyAlive: 1
+  LegAlive: 1
+  loadedBullets: 010000000100000001000000
+  reserveBullets: 
 --- !u!1 &1208080106502139491
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,7 +581,7 @@ MonoBehaviour:
   currentAttack: 0
   speedIncrease: 150
   baseSpeed: 500
-  myCharacter: {fileID: 0}
+  myCharacter: {fileID: 3581985023691945679}
   children:
   - {fileID: 7168459181851082767}
   - {fileID: 7168459182059283670}
@@ -594,6 +611,11 @@ RectTransform:
 --- !u!224 &7168459181597835381 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5205820313221362615, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
+  m_PrefabInstance: {fileID: 3118094421004170178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7168459181638185458 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5205820313127535152, guid: ecf196d0c3f73554b8c3eb2a0f579f97, type: 3}
   m_PrefabInstance: {fileID: 3118094421004170178}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7168459181638185459 stripped

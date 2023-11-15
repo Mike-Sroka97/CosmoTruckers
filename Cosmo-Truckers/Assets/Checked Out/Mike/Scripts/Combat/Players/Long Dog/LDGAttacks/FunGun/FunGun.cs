@@ -11,9 +11,17 @@ public class FunGun : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+
+    }
+
+    public override void StartMove()
+    {
         guns = FindObjectsOfType<FGGun>();
+
+        foreach (FGGun gun in guns)
+            gun.StartMove();
+
         currentActiveGun = UnityEngine.Random.Range(0, guns.Length);
         guns[currentActiveGun].TrackingTime = true;
     }

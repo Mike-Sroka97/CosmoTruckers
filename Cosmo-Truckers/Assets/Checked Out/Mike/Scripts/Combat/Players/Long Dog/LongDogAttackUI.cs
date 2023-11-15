@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongDogAttackUI : MonoBehaviour
+public class LongDogAttackUI : AttackUI
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void HandleMana()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        LongDogMana mana = myCharacter.GetComponent<LongDogMana>();
+        LongDogAttackSO tempAttack = (LongDogAttackSO)currentPlayer.GetAllAttacks[currentAttack];
+        for(int i = 0; i < tempAttack.RequiredBullets; i++)
+        {
+            mana.loadedBullets.Remove(0);
+        }
     }
 }

@@ -20,16 +20,26 @@ public class FGGun : MonoBehaviour
     FunGun minigame;
     bool nextGun = false;
 
+    bool lookTowardsPlayer = false;
+
     private void Start()
     {
         minigame = FindObjectOfType<FunGun>();
-        player = FindObjectOfType<LongDogHead>().transform;
         myRenderer = GetComponent<SpriteRenderer>();
         startingColor = myRenderer.color;
     }
 
+    public void StartMove()
+    {
+        player = FindObjectOfType<LongDogHead>().transform;
+        lookTowardsPlayer = true;
+    }
+
     private void Update()
     {
+        if (!lookTowardsPlayer)
+            return;
+
         LookTowardsPlayer();
         TrackTime();
     }
@@ -81,7 +91,8 @@ public class FGGun : MonoBehaviour
             yield return new WaitForSeconds(timeBetweenFlashes);
         }
         myRenderer.color = startingColor;
-        Instantiate(bullet, barrel.transform);
+        GameObject tempBullet = Instantiate(bullet, barrel.transform.position, transform.rotation, minigame.transform);
+        tempBullet.transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 90);
         currentTime = 0;
         TrackingTime = false;
     }

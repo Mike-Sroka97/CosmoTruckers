@@ -133,8 +133,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 73707659
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.18292904, g: 0.8679245, b: 0, a: 1}
@@ -145,7 +145,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &6726099048659352014
 BoxCollider2D:
@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6726099048825096841}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -296,16 +296,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7bd721a9309dd94db57c23096c95fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeOfAttack: 0
+  TypeOfAttack: 2
   spawnPoints:
   - {fileID: 1624891976}
   layouts:
   - {fileID: 1402448879887129711, guid: b3c9784f8a530004685c4c4273ae5770, type: 3}
-  - {fileID: 2974927252674136695, guid: 8c2578023ec342045af6e1a11795e510, type: 3}
-  - {fileID: 7425797833059822736, guid: 1375461903db0154387f4390f13244f9, type: 3}
-  - {fileID: 6206140238936505532, guid: fbf647bb89a9e84478d1f11c41647be9, type: 3}
+  Damage: 1
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
+  MoveEnded: 0
+  AugmentScore: 0
+  maxScore: 6
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 10
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  spawnTest: 0
+  startMoveTest: 0
   maxLayouts: 3
 --- !u!1 &6726099049400212003
 GameObject:
@@ -378,8 +392,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 73707659
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0, g: 0.33505479, b: 0.8666667, a: 1}
@@ -390,7 +404,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &6726099049400212000
 BoxCollider2D:

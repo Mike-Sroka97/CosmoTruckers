@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongDogAttackSO : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+[CreateAssetMenu(fileName = "LongDogAttack", menuName = "ScriptableObjects/Attacks/LongDogAttack")]
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public class LongDogAttackSO : BaseAttackSO
+{
+    public bool RequiresHead;
+    public bool RequiresBody;
+    public bool RequiresLeg;
+
+    public int RequiredBullets;
 }
