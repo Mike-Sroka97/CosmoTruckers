@@ -125,8 +125,17 @@ public abstract class CombatMove : MonoBehaviour
                     if (augmentStacks > maxAugmentStacks)
                         augmentStacks = maxAugmentStacks;
 
-                    if(currentDamage > 0)
+                    if (currentDamage > 0 && isDamaging)
+                    {
+                        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
                         character.TakeDamage(currentDamage);
+                    }
+
+                    else if (currentDamage > 0 && isHealing)
+                    {
+                        //TODO CHANCE HEALING BUFF AUG (ALSO POTENCY AUG)
+                        character.TakeHealing(currentDamage);
+                    }
 
                     //Apply augment
                     character.AddDebuffStack(DebuffToAdd, augmentStacks);

@@ -16,6 +16,10 @@ public class LPPlatformMovement : MonoBehaviour
     private void Start()
     {
         minigame = FindObjectOfType<LengthyProcedure>();
+    }
+
+    public void StartMove()
+    {
         startingPos = pointOne.position;
         secondPos = pointTwo.position;
     }
@@ -47,14 +51,6 @@ public class LPPlatformMovement : MonoBehaviour
                 yield return new WaitForSeconds(Time.deltaTime);
             }
             transform.position = pointOne.position;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            minigame.EndMove();
         }
     }
 }

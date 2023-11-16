@@ -10,8 +10,6 @@ public class LengthyProcedure : CombatMove
 
     private void Start()
     {
-        StartMove();
-
         random = UnityEngine.Random.Range(0, layouts.Length);
         Instantiate(layouts[random], transform.Find("Layout"));
 
@@ -25,21 +23,23 @@ public class LengthyProcedure : CombatMove
         activatedNodes.Add(successNodes[random].gameObject);
     }
 
+    public override void StartMove()
+    {
+        LPPlatformMovement[] platforms = GetComponentsInChildren<LPPlatformMovement>();
+        foreach (LPPlatformMovement platform in platforms)
+            platform.StartMove();
+    }
+
     public void NextNode()
     {
         if(activatedNodes.Count != successNodes.Length)
         {
             while (activatedNodes.Contains(successNodes[random].gameObject))
             {
-                random = UnityEngine.Random.Range(0, successNodes.Length);
+                random = Random.Range(0, successNodes.Length);
             }
             successNodes[random].gameObject.SetActive(true);
             activatedNodes.Add(successNodes[random].gameObject);
         }
-    }
-
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
     }
 }
