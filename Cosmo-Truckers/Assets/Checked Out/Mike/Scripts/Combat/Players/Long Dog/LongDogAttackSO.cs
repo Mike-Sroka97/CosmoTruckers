@@ -6,9 +6,5 @@ using UnityEngine;
 
 public class LongDogAttackSO : BaseAttackSO
 {
-    public bool RequiresHead;
-    public bool RequiresBody;
-    public bool RequiresLeg;
-
     public int RequiredBullets;
 }

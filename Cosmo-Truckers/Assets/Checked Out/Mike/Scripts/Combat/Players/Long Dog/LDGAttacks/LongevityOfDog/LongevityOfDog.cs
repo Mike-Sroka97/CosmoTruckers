@@ -49,6 +49,23 @@ public class LongevityOfDog : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        MoveEnded = true;
+
+        //Calculate Damage
+        if (Score < 0)
+            Score = 0;
+        if (Score >= maxScore)
+            Score = maxScore;
+
+        //Calculate Augment Stacks
+        int augmentStacks = Score * augmentStacksPerScore;
+        augmentStacks += baseAugmentStacks;
+        if (augmentStacks > maxAugmentStacks)
+            augmentStacks = maxAugmentStacks;
+        if (CombatManager.Instance.GetCharactersSelected[0].GetComponent<LongDogCharacter>())
+            augmentStacks *= 2;
+
+        //Apply augment
+        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
     }
 }

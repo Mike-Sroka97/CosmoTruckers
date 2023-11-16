@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class LongDogMana : Mana
 {
-    public bool HeadAlive = true;
-    public bool BodyAlive = true;
-    public bool LegAlive = true;
-
+    [Header("basic = 0, gold = 1, stimulant = 2")]
     const int clipSize = 5;
-    public List<int> loadedBullets = new List<int>();
-    public List<int> reserveBullets = new List<int>();
+    public List<int> LoadedBullets = new List<int>();
+    public List<int> ReserveBullets = new List<int>();
 
     public override void CheckCastableSpells()
     {
@@ -26,36 +23,7 @@ public class LongDogMana : Mana
             foreach (LongDogAttackSO attack in attacks)
             {
                 //Checks bullets
-                if (loadedBullets.Count >= attack.RequiredBullets)
-                    attack.CanUse = true;
-                else
-                {
-                    attack.CanUse = false;
-                    continue;
-                }
-
-                //Checks head (lol)
-                if (attack.RequiresHead && HeadAlive)
-                    attack.CanUse = true;
-                else if(attack.RequiresHead)
-                {
-                    attack.CanUse = false;
-                    continue;
-                }
-
-                //Checks body
-                if (attack.RequiresBody && BodyAlive)
-                    attack.CanUse = true;
-                else if (attack.RequiresBody)
-                {
-                    attack.CanUse = false;
-                    continue;
-                }
-
-                //Checks leg
-                if (attack.RequiresLeg && LegAlive)
-                    attack.CanUse = true;
-                else if (attack.RequiresLeg)
+                if (LoadedBullets.Count < attack.RequiredBullets)
                 {
                     attack.CanUse = false;
                     continue;
@@ -64,5 +32,20 @@ public class LongDogMana : Mana
                 attack.CanUse = true;
             }
         }
+    }
+
+    public void Shoot(int numberOfBullets = 1)
+    {
+
+    }
+
+    public void Reload()
+    {
+
+    }
+
+    public void AddBulletsToReserve()
+    {
+
     }
 }
