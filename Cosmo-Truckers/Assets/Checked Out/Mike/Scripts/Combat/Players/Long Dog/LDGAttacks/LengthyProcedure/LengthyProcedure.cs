@@ -42,4 +42,10 @@ public class LengthyProcedure : CombatMove
             activatedNodes.Add(successNodes[random].gameObject);
         }
     }
+
+    public override void EndMove()
+    {
+        base.EndMove();
+        FindObjectOfType<LongDogMana>().AddBulletsToReserve();
+    }
 }

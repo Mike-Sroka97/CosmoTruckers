@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class StretchySpineProjectile : MonoBehaviour
 {
-    //TODO Add Scoring
-
     [SerializeField] float moveSpeed;
     [SerializeField] float deadForceBoost;
     [SerializeField] bool good;

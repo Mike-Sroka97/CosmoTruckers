@@ -29,8 +29,6 @@ public class aLaCarte : CombatMove
 
     public override List<Character> NoTargetTargeting()
     {
-        Targeting tempTargeting = FindObjectOfType<Targeting>();
-
         numberOfManaSourcesToSpawn = 3; //three max summons
 
         for(int i = 8; i <= 11; i++) //checks all enemy summon spots
@@ -40,7 +38,7 @@ public class aLaCarte : CombatMove
 
             if (EnemyManager.Instance.EnemyCombatSpots[i] == null)
             {
-                tempTargeting.TargetEmptySlot(false, i);
+                CombatManager.Instance.MyTargeting.TargetEmptySlot(false, i);
                 numberOfManaSourcesToSpawn--;
             }
         }

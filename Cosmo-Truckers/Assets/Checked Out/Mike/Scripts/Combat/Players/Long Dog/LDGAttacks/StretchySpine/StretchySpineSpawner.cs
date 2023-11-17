@@ -9,11 +9,11 @@ public class StretchySpineSpawner : MonoBehaviour
     [SerializeField] float projectileSpawnRate;
     [SerializeField] float spawnRotationVariance;
 
-    const int maxGoodProjectiles = 5;
-    const int maxBadProjectiles = 10;
+    const int maxGoodProjectiles = 3;
+    const int maxBadProjectiles = 6;
     int currentGoodProjectiles = 0;
     int currentBadProjectiles = 0;
-    int tempType = 1;
+    int tempType = -1;
     int random;
     float currentTime = 0;
     float tempAngle;
@@ -26,10 +26,10 @@ public class StretchySpineSpawner : MonoBehaviour
 
     private void TrackTime()
     {
-        if (currentTime >= projectileSpawnRate)
+        if (currentTime >= projectileSpawnRate && (currentBadProjectiles < maxBadProjectiles || currentGoodProjectiles < maxGoodProjectiles))
         {
             currentTime = 0;
-            if(tempType == 1)
+            if(tempType == -1)
             {
                 random = 0;
             }

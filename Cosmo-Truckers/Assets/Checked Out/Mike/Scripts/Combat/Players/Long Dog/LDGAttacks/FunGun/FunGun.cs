@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,25 +52,32 @@ public class FunGun : CombatMove
             Score = maxScore;
 
         int currentDamage;
-        //defending/attacking
-        if (!defending)
-            currentDamage = Score * Damage;
-        else
-            currentDamage = maxScore * Damage - Score * Damage;
+        currentDamage = Score * Damage;
 
         currentDamage += baseDamage;
 
-        //TODO CHANCE add array of augments to dish out in base combat
-        //Calculate Augment Stacks
-        int augmentStacks = AugmentScore * augmentStacksPerScore;
-        augmentStacks += baseAugmentStacks;
-        if (augmentStacks > maxAugmentStacks)
-            augmentStacks = maxAugmentStacks;
-
+        LongDogMana mana = FindObjectOfType<LongDogMana>();
         if (currentDamage > 0)
-            CombatManager.Instance.GetCharactersSelected[0].TakeDamage(currentDamage);
+        {
+            switch (mana.LoadedBullets[0])
+            {
+                case 0:
+                    CombatManager.Instance.GetCharactersSelected[0].TakeDamage(currentDamage, true);
+                    break;
+                case 1:
+                    currentDamage = mana.GoldBulletDamageAdjustment(currentDamage);
+                    CombatManager.Instance.GetCharactersSelected[0].TakeDamage(currentDamage, true);
+                    break;
+                case 2:
+                    //TODO CHANCE ADD 2 STACKS OF LONGEVITY
+                    CombatManager.Instance.GetCharactersSelected[0].TakeHealing(currentDamage, true);
+                    break;
+            }
+        }
 
-        //Apply augment
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
+
+
+
+        FindObjectOfType<LongDogMana>().Shoot();
     }
 }

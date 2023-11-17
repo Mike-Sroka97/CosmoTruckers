@@ -27,7 +27,7 @@ public class PlayerVessel : MonoBehaviour
     protected PlayerCharacter myCharacter;
     [HideInInspector] public Mana MyMana;
 
-    public void Initialize(PlayerCharacter player)
+    public virtual void Initialize(PlayerCharacter player)
     {
         //set player
         myCharacter = player;
