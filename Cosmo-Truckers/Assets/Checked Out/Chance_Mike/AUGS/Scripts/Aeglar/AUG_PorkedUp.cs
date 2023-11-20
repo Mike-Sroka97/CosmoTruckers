@@ -10,7 +10,6 @@ public class AUG_PorkedUp : Augment
     {
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.AdjustAttackHealing((int)StatusEffect);
         DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
 
         if(Stacks >= 5)
@@ -23,7 +22,6 @@ public class AUG_PorkedUp : Augment
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustAttackHealing(-(int)StatusEffect);
         DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }

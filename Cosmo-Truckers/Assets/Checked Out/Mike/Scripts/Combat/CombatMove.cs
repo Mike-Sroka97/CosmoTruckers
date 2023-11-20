@@ -125,14 +125,40 @@ public abstract class CombatMove : MonoBehaviour
 
                     if (currentDamage > 0 && isDamaging)
                     {
+                        //1 being base damage
+                        float DamageAdj = 1;
+
                         //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
-                        character.TakeDamage(currentDamage, pierces);
+                        //Damage on players must be divided by 100 to multiply the final
+                        if(CombatManager.Instance.GetCurrentPlayer != null)
+                        {
+                            DamageAdj = CombatManager.Instance.GetCurrentPlayer.Stats.Damage / 100;
+                        }
+                        else if(CombatManager.Instance.GetCurrentEnemy != null)
+                        {
+                            DamageAdj = CombatManager.Instance.GetCurrentEnemy.Stats.Damage / 100;
+                        }
+
+                        character.TakeDamage((int)(currentDamage * DamageAdj), pierces);
                     }
 
                     else if (currentDamage > 0 && isHealing)
                     {
-                        //TODO CHANCE HEALING BUFF AUG (ALSO POTENCY AUG)
-                        character.TakeHealing(currentDamage, pierces);
+                        //1 being base damage
+                        float DamageAdj = 1;
+
+                        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
+                        //Damage on players must be divided by 100 to multiply the final
+                        if (CombatManager.Instance.GetCurrentPlayer != null)
+                        {
+                            DamageAdj = CombatManager.Instance.GetCurrentPlayer.Stats.Damage / 100;
+                        }
+                        else if (CombatManager.Instance.GetCurrentEnemy != null)
+                        {
+                            DamageAdj = CombatManager.Instance.GetCurrentEnemy.Stats.Damage / 100;
+                        }
+
+                        character.TakeHealing((int)(currentDamage * DamageAdj), pierces);
                     }
 
                     //Apply augment

@@ -8,13 +8,11 @@ public class AUG_HogWild : Augment
     {
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.AdjustAttackHealing((int)StatusEffect);
         DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustAttackHealing(-(int)StatusEffect);
         DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }
