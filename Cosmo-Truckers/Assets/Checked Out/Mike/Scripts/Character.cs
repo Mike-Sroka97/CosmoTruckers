@@ -127,6 +127,15 @@ public abstract class Character : MonoBehaviour
         CurrentHealth += healing;
     }
 
+    public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
+    {
+        for (int i = 0; i < numberOfHeals; i++)
+        {
+            if (!ignoreVigor)
+                healing = AdjustAttackHealing(healing);
+        }
+    }
+
     public virtual void TakeShielding(int shieldAmount)
     {
         if (Shield + shieldAmount > maxShield)

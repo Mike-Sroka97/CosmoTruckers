@@ -75,9 +75,6 @@ public class FunGun : CombatMove
             }
         }
 
-
-
-
-        FindObjectOfType<LongDogMana>().Shoot();
+        mana.Shoot();
     }
 }

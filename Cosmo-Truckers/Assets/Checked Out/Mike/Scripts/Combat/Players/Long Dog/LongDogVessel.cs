@@ -8,9 +8,12 @@ public class LongDogVessel : PlayerVessel
     [SerializeField] GameObject[] LoadedBullets;
     [SerializeField] GameObject[] ReserveBullets;
 
+    LongDogMana mana;
+
     public override void Initialize(PlayerCharacter player)
     {
         base.Initialize(player);
+        mana = MyMana.GetComponent<LongDogMana>();
         DisplayBullets();
     }
 
@@ -18,13 +21,13 @@ public class LongDogVessel : PlayerVessel
     {
         ClearBullets();
 
-        for(int i = 0; i < MyMana.GetComponent<LongDogMana>().LoadedBullets.Count; i++)
+        for(int i = 0; i < mana.LoadedBullets.Count; i++)
         {
             LoadedBullets[i].SetActive(true);
             //handle sprite based on type of bullet
         }
 
-        for (int i = 0; i < MyMana.GetComponent<LongDogMana>().ReserveBullets.Count; i++)
+        for (int i = 0; i < mana.ReserveBullets.Count; i++)
         {
             ReserveBullets[i].SetActive(true);
             //handle sprite based on type of bullet

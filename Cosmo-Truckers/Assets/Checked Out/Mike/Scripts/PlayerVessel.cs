@@ -86,15 +86,22 @@ public class PlayerVessel : MonoBehaviour
 
         for (int i = 0; i < numberOfHits; i++)
         {
-            if (currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+            if(damage)
             {
-                int newShield = int.Parse(currentShield.text) - damageHealingAmount;
-                currentShield.text = newShield.ToString();
+                if (currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+                {
+                    int newShield = int.Parse(currentShield.text) - damageHealingAmount;
+                    currentShield.text = newShield.ToString();
+                }
+                else
+                {
+                    currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
+                    TrackShield();
+                }
             }
             else
             {
                 currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
-                TrackShield();
             }
 
             if (damage)

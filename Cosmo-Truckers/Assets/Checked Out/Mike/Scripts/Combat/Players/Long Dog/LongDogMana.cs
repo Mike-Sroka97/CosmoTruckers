@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LongDogMana : Mana
@@ -49,8 +50,9 @@ public class LongDogMana : Mana
 
     public void Reload()
     {
-        LoadedBullets = ReserveBullets;
+        LoadedBullets = ReserveBullets.ToList();
         ReserveBullets.Clear();
+        MyVessel.GetComponent<LongDogVessel>().DisplayBullets();
     }
 
     public void AddBulletsToReserve(int numberOfBullets = 1, int typeOfbullet = 0)

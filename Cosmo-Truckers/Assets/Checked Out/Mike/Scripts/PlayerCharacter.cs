@@ -96,6 +96,10 @@ public class PlayerCharacter : Character
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
         base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+
+        if (!defensePiercing)
+            damage = AdjustAttackDamage(damage);
+
         MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits);
     }
 
@@ -107,6 +111,16 @@ public class PlayerCharacter : Character
             healing = AdjustAttackHealing(healing);
 
         MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, healing, false);
+    }
+
+    public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
+    {
+        base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+
+        if (!ignoreVigor)
+            healing = AdjustAttackHealing(healing);
+
+        MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, healing, numberOfHeals, false);
     }
 
 

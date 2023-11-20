@@ -6,8 +6,7 @@ public class SuperSlam : CombatMove
 {
     private void Start()
     {
-        GenerateLayout();
-        StartMoveTest(); 
+        GenerateLayout(); 
     }
 
     public override void StartMove()

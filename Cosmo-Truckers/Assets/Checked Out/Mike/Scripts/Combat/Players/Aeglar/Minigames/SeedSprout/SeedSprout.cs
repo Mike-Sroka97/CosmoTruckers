@@ -11,7 +11,6 @@ public class SeedSprout : CombatMove
     {
         GenerateLayout();
         flowers = GetComponentsInChildren<SeedSproutFlower>();
-        StartMoveTest(); 
     }
 
     public override void StartMove()

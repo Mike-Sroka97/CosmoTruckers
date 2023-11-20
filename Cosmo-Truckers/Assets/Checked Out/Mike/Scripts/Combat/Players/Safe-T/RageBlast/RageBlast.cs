@@ -14,7 +14,6 @@ public class RageBlast : CombatMove
     private void Start()
     {
         nonDuplicateRandom = lastNumber;
-        StartMoveTest();
     }
 
     public override void StartMove()

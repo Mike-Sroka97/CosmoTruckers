@@ -30,6 +30,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected float timeToEndMove = 1f;
     [SerializeField] protected bool isDamaging;
     [SerializeField] protected bool isHealing;
+    [SerializeField] private bool pierces = false;
 
     [Space(20)]
     [Header("Testing Variables")]
@@ -44,6 +45,12 @@ public abstract class CombatMove : MonoBehaviour
         {
             Debug.LogError("Spawn Test is active"); 
             SetSpawns(); 
+        }
+
+        if (startMoveTest)
+        {
+            Debug.LogError("Spawn Test is active");
+            StartMove();
         }
     }
 
@@ -61,15 +68,6 @@ public abstract class CombatMove : MonoBehaviour
 
     public virtual void StartMove() { }
     public virtual List<Character> NoTargetTargeting() { Debug.LogError("You didn't setup the override you devilish cunt"); return null; }
-
-    protected void StartMoveTest()
-    {
-        if (startMoveTest)
-        {
-            Debug.LogError("Spawn Test is active");
-            StartMove();
-        }
-    }
 
     public void SetSpawns()
     {
@@ -128,13 +126,13 @@ public abstract class CombatMove : MonoBehaviour
                     if (currentDamage > 0 && isDamaging)
                     {
                         //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
-                        character.TakeDamage(currentDamage);
+                        character.TakeDamage(currentDamage, pierces);
                     }
 
                     else if (currentDamage > 0 && isHealing)
                     {
                         //TODO CHANCE HEALING BUFF AUG (ALSO POTENCY AUG)
-                        character.TakeHealing(currentDamage);
+                        character.TakeHealing(currentDamage, pierces);
                     }
 
                     //Apply augment

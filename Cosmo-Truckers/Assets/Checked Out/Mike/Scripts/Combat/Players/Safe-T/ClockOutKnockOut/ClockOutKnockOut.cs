@@ -7,7 +7,6 @@ public class ClockOutKnockOut : CombatMove
     private void Start()
     {
         GenerateLayout();
-        StartMoveTest(); 
     }
 
     public override void StartMove()
