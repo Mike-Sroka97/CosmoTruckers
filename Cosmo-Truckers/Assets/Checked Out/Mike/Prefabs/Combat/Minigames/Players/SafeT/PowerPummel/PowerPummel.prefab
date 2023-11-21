@@ -136,13 +136,16 @@ MonoBehaviour:
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
   maxScore: 4
-  augmentStacksPerHit: 0
+  augmentStacksPerScore: 0
   maxAugmentStacks: 0
   baseDamage: 15
   baseAugmentStacks: 0
   timeToEndMove: 0.5
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
   spawnTest: 0
   startMoveTest: 0
 --- !u!1001 &106676741
@@ -222,15 +225,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_SpriteTilingProperty.border.w
-      value: 0.1875
+      value: 0.10416667
       objectReference: {fileID: 0}
     - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_SpriteTilingProperty.border.x
-      value: 0.10416667
+      value: 0.083333336
       objectReference: {fileID: 0}
     - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_SpriteTilingProperty.border.y
       value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0.083333336
       objectReference: {fileID: 0}
     - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y

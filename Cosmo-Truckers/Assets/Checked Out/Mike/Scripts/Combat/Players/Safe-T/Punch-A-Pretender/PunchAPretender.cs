@@ -98,8 +98,13 @@ public class PunchAPretender : CombatMove
                 numberOfHits = 2;
             }
 
-            //adjust number of hits and damage so that damage is static no matter the number of hits
-            character.GetComponent<Character>().TakeMultiHitDamage(baseDamage / numberOfHits, numberOfHits);
+            //1 being base damage
+            float DamageAdj = 1;
+
+            //Damage on players must be divided by 100 to multiply the final
+            DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+
+            character.GetComponent<Character>().TakeMultiHitDamage(baseDamage / numberOfHits + character.FlatDamageAdjustment, numberOfHits);
         }
     }
 }

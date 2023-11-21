@@ -98,15 +98,16 @@ MonoBehaviour:
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
   maxScore: 0
-  augmentStacksPerHit: 0
+  augmentStacksPerScore: 0
   maxAugmentStacks: 0
   baseDamage: 12
   baseAugmentStacks: 0
   timeToEndMove: 1
-  isDamaging: 0
+  isDamaging: 1
   isHealing: 0
+  pierces: 0
   spawnTest: 0
   startMoveTest: 0
   MaxScore: 10
@@ -904,6 +905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBody: {fileID: 267604340851279931}
+  permanentVelocityAdjustment: 0
 --- !u!4 &267604340851279929 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8572190356446417942, guid: 411e124f0e21a314ba3104bf932bb9c9, type: 3}

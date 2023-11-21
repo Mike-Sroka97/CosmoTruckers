@@ -56,6 +56,7 @@ public class StretchySpine : CombatMove
         //kill summons
         //animate
         //set an animation to occur at ldgs next start turn
+        //take up summon spots
 
         LongDogCharacter longDog = FindObjectOfType<LongDogCharacter>();
 

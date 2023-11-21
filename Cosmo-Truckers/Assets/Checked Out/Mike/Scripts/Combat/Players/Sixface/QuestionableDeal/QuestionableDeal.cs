@@ -73,8 +73,14 @@ public class QuestionableDeal : CombatMove
         //Apply augment
         CombatManager.Instance.CharactersSelected[0].AddDebuffStack(DebuffToAdd, AugmentScore);
 
-        if (currentDamage > 0)
-            CombatManager.Instance.CharactersSelected[0].TakeDamage(currentDamage);
+        //1 being base damage
+        float DamageAdj = 1;
+
+        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
+        //Damage on players must be divided by 100 to multiply the final
+        DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+
+        CombatManager.Instance.CharactersSelected[0].TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
 
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }

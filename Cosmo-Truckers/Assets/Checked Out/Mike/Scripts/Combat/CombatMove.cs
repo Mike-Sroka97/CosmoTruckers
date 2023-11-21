@@ -128,7 +128,6 @@ public abstract class CombatMove : MonoBehaviour
                         //1 being base damage
                         float DamageAdj = 1;
 
-                        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
                         //Damage on players must be divided by 100 to multiply the final
                         DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
 
@@ -140,7 +139,6 @@ public abstract class CombatMove : MonoBehaviour
                         //1 being base damage
                         float HealingAdj = 1;
 
-                        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
                         //Damage on players must be divided by 100 to multiply the final
                         HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
 

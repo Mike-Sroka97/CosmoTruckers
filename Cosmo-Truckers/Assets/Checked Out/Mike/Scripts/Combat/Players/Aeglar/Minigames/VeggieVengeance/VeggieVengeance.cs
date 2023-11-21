@@ -38,7 +38,6 @@ public class VeggieVengeance : CombatMove
             //1 being base damage
             float HealingAdj = 1;
 
-            //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
             //Damage on players must be divided by 100 to multiply the final
             HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
             float tempHealing = (float)currentHealing * HealingAdj + (float)CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment;
@@ -54,7 +53,7 @@ public class VeggieVengeance : CombatMove
             }
             else
             {
-                character.TakeHealing((int)(currentHealing));
+                character.TakeHealing(currentHealing);
             }
 
             //Apply augment

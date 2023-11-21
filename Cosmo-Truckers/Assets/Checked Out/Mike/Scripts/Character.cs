@@ -192,6 +192,9 @@ public abstract class Character : MonoBehaviour
         if (!ignoreVigor)
             newHealth = AdjustAttackHealing(newHealth);
 
+        if (newHealth >= Health)
+            newHealth = Health;
+
         CurrentHealth = newHealth;
         Dead = false;
         GetComponent<CharacterStats>().enabled = true;

@@ -51,4 +51,10 @@ public class RageBlast : CombatMove
         nonDuplicateRandom = lastNumber;
         platforms[nonDuplicateRandom].DisableMe();
     }
+
+    public override void EndMove()
+    {
+        base.EndMove();
+        FindObjectOfType<SafeTMana>().SetCurrentAnger(CombatManager.Instance.GetCharactersSelected.Count);
+    }
 }

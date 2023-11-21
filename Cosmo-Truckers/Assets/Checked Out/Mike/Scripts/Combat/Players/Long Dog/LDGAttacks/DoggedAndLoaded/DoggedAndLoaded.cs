@@ -24,6 +24,14 @@ public class DoggedAndLoaded : CombatMove
 
         currentDamage += baseDamage;
 
+        //1 being base damage
+        float DamageAdj = 1;
+        float HealingAdj = 1;
+
+        //Damage on players must be divided by 100 to multiply the final
+        DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+        HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+
         mana = FindObjectOfType<LongDogMana>();
         //Don't Shoot
         if(mana.ReserveBullets.Count <= 0)
@@ -34,19 +42,22 @@ public class DoggedAndLoaded : CombatMove
         else if(mana.ReserveBullets.Count == 1)
         {
             mana.Reload();
-            switch (mana.LoadedBullets[0])
+            if (currentDamage > 0)
             {
-                case 0:
-                    CombatManager.Instance.GetCharactersSelected[0].TakeDamage(currentDamage, true);
-                    break;
-                case 1:
-                    currentDamage = mana.GoldBulletDamageAdjustment(currentDamage);
-                    CombatManager.Instance.GetCharactersSelected[0].TakeDamage(currentDamage, true);
-                    break;
-                case 2:
-                    //TODO CHANCE ADD 2 STACKS OF LONGEVITY
-                    CombatManager.Instance.GetCharactersSelected[0].TakeHealing(currentDamage, true);
-                    break;
+                switch (mana.LoadedBullets[0])
+                {
+                    case 0:
+                        CombatManager.Instance.GetCharactersSelected[0].TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), true);
+                        break;
+                    case 1:
+                        currentDamage = mana.GoldBulletDamageAdjustment(currentDamage);
+                        CombatManager.Instance.GetCharactersSelected[0].TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), true);
+                        break;
+                    case 2:
+                        //TODO CHANCE ADD 2 STACKS OF LONGEVITY
+                        CombatManager.Instance.GetCharactersSelected[0].TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), true);
+                        break;
+                }
             }
             mana.Shoot();
         }
@@ -57,15 +68,15 @@ public class DoggedAndLoaded : CombatMove
             switch (mana.LoadedBullets[0])
             {
                 case 0:
-                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage(currentDamage, 2, true);
+                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), 2, true);
                     break;
                 case 1:
                     currentDamage = mana.GoldBulletDamageAdjustment(currentDamage);
-                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage(currentDamage, 2, true);
+                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), 2, true);
                     break;
                 case 2:
                     //TODO CHANCE ADD 2 STACKS OF LONGEVITY
-                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitHealing(currentDamage, 2, true);
+                    CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), 2, true);
                     break;
             }
             mana.Shoot(2);

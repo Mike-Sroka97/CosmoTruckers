@@ -79,7 +79,6 @@ public class aLaCarte : CombatMove
 
     public override void EndMove()
     {
-        Debug.Log("here");
         AeglarMana aeglarMana = FindObjectOfType<AeglarMana>();
 
         if(Score >= veggieScore)

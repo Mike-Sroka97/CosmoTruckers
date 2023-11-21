@@ -65,6 +65,15 @@ public class PotentPatty : CombatMove
             currentHealing = Score * Damage;
             currentHealing += baseDamage;
 
+            //1 being base damage
+            float HealingAdj = 1;
+
+            //Damage on players must be divided by 100 to multiply the final
+            HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+
+            float tempHealing = currentHealing * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment;
+            currentHealing = (int)tempHealing;
+
             character.Resurrect(currentHealing);
         }
     }
