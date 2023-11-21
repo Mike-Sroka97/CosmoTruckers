@@ -9,7 +9,8 @@ public class BriberyEnemy : MonoBehaviour
     [SerializeField] float sendBackDistance;
     [SerializeField] float totalDistance; 
     [SerializeField] int row;
-    [SerializeField] SpriteRenderer moneyLine;  
+    [SerializeField] SpriteRenderer moneyLine;
+    [SerializeField] Vector2 pixelSlice = new Vector2(-7f, 5f); 
 
     [HideInInspector] public float StartDelay;
 
@@ -20,14 +21,17 @@ public class BriberyEnemy : MonoBehaviour
     bool movingBack = false;
     float startingX; 
     bool doneMoving = false;
-    Material moneyMaterial;
     Bribery minigame;
+    Material moneyMaterial;
+    float pixelSliceAdder;
 
     private void Start()
     {
         startingX = transform.position.x;
         minigame = FindObjectOfType<Bribery>();
-        moneyMaterial = moneyLine.material; 
+        moneyMaterial = moneyLine.material;
+
+        pixelSliceAdder = Mathf.Abs(pixelSlice.x) + Mathf.Abs(pixelSlice.y);  
     }
 
     private void Update()
@@ -35,7 +39,11 @@ public class BriberyEnemy : MonoBehaviour
         Movement();
         TrackTime();
 
-        moneyMaterial.SetFloat("_MainVal", distanceMoved / totalDistance); 
+        float movePercentage = distanceMoved / totalDistance;
+        float sliceValue = pixelSlice.x + (pixelSliceAdder * movePercentage); 
+
+        moneyMaterial.SetFloat("_MainVal", movePercentage);
+        moneyMaterial.SetFloat("_PixelSlice", sliceValue); 
     }
 
     public void DoneMoving()
