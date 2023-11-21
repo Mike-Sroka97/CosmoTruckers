@@ -13,6 +13,8 @@ public abstract class Character : MonoBehaviour
     public int Health;
     public SpriteRenderer[] TargetingSprites;
     public int CombatSpot;
+    public int FlatDamageAdjustment = 0;
+    public int FlatHealingAdjustment = 0;
     [HideInInspector] public int CurrentHealth
     {
         get
@@ -284,6 +286,17 @@ public abstract class Character : MonoBehaviour
             Stats.Damage = 300;
         else if (Stats.Damage < 60)
             Stats.Damage = 60;
+    }
+
+    public void AdjustRestoration(int restoration)
+    {
+        Stats.Restoration = restoration;
+
+        //max double healing and min 40%
+        if (Stats.Restoration > 200)
+            Stats.Damage = 200;
+        else if (Stats.Restoration < 40)
+            Stats.Restoration = 40;
     }
 
     public abstract void StartTurn();

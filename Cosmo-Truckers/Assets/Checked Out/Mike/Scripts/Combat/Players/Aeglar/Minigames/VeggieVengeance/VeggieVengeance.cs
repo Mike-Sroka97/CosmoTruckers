@@ -35,8 +35,17 @@ public class VeggieVengeance : CombatMove
             //Calculate Augment Stacks
             int augmentStacks = 1; //always applies overfed to enemies
 
+            //1 being base damage
+            float HealingAdj = 1;
+
+            //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
+            //Damage on players must be divided by 100 to multiply the final
+            HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+            float tempHealing = (float)currentHealing * HealingAdj + (float)CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment;
+            currentHealing = (int)tempHealing;
+
             //okay here it comes... Im boutta math
-            if(character.CurrentHealth + character.AdjustAttackHealing(currentHealing) > character.Health)
+            if (character.CurrentHealth + character.AdjustAttackHealing(currentHealing) > character.Health)
             {                
                 int currentDamage = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
                 currentHealing = character.Health - character.CurrentHealth;
@@ -45,7 +54,7 @@ public class VeggieVengeance : CombatMove
             }
             else
             {
-                character.GetComponent<Character>().TakeHealing(currentHealing);
+                character.TakeHealing((int)(currentHealing));
             }
 
             //Apply augment

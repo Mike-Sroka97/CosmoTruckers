@@ -30,7 +30,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected float timeToEndMove = 1f;
     [SerializeField] protected bool isDamaging;
     [SerializeField] protected bool isHealing;
-    [SerializeField] private bool pierces = false;
+    [SerializeField] protected bool pierces = false;
 
     [Space(20)]
     [Header("Testing Variables")]
@@ -130,35 +130,21 @@ public abstract class CombatMove : MonoBehaviour
 
                         //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
                         //Damage on players must be divided by 100 to multiply the final
-                        if(CombatManager.Instance.GetCurrentPlayer != null)
-                        {
-                            DamageAdj = CombatManager.Instance.GetCurrentPlayer.Stats.Damage / 100;
-                        }
-                        else if(CombatManager.Instance.GetCurrentEnemy != null)
-                        {
-                            DamageAdj = CombatManager.Instance.GetCurrentEnemy.Stats.Damage / 100;
-                        }
+                        DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
 
-                        character.TakeDamage((int)(currentDamage * DamageAdj), pierces);
+                        character.TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
                     }
 
                     else if (currentDamage > 0 && isHealing)
                     {
                         //1 being base damage
-                        float DamageAdj = 1;
+                        float HealingAdj = 1;
 
                         //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
                         //Damage on players must be divided by 100 to multiply the final
-                        if (CombatManager.Instance.GetCurrentPlayer != null)
-                        {
-                            DamageAdj = CombatManager.Instance.GetCurrentPlayer.Stats.Damage / 100;
-                        }
-                        else if (CombatManager.Instance.GetCurrentEnemy != null)
-                        {
-                            DamageAdj = CombatManager.Instance.GetCurrentEnemy.Stats.Damage / 100;
-                        }
+                        HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
 
-                        character.TakeHealing((int)(currentDamage * DamageAdj), pierces);
+                        character.TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
                     }
 
                     //Apply augment

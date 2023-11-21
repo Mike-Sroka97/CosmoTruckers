@@ -29,10 +29,13 @@ public class CombatManager : MonoBehaviour
     PlayerCharacter CurrentPlayer;
     PlayerCharacter[] attackable;
     Enemy CurrentEnemy;
+    Character CurrentCharacter;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
 
     public BaseAttackSO CurrentAttack;
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
+
+    public Character GetCurrentCharacter { get => CurrentCharacter; }
 
     public bool INAmoving = false;
 
@@ -49,7 +52,7 @@ public class CombatManager : MonoBehaviour
         characters = new List<GameObject>();
         //To ensure this is cleared on player turn
         CurrentEnemy = null;
-
+        CurrentCharacter = currentPlayer;
         CurrentPlayer = currentPlayer;
         ActivePlayers.Add(currentPlayer);
         TargetsSelected = false;
@@ -72,6 +75,7 @@ public class CombatManager : MonoBehaviour
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
         CurrentPlayer = null;
+        CurrentCharacter = enemy;
 
         if(enemy.SpecialTargetConditions)
         {

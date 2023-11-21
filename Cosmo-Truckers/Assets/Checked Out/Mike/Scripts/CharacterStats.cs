@@ -10,6 +10,7 @@ public class CharacterStats : MonoBehaviour
     public int Vigor = 100;
     public int Speed = 100;
     public int Damage = 100;
+    public int Restoration = 100;
 
     TurnOrder turnOrder;
 
