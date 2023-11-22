@@ -257,9 +257,14 @@ public class CombatManager : MonoBehaviour
         {
             foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
             {
-                foreach (var aug in character.GetAUGS)
-                    if (aug.InCombat)
-                        aug.DebuffEffect();
+                for(int i = 0; i < character.GetAUGS.Count; i++)
+                {
+                    if (character.GetAUGS[i].InCombat)
+                        character.GetAUGS[i].DebuffEffect();
+                }
+                //foreach (var aug in character.GetAUGS)
+                //    if (aug.InCombat)
+                //        aug.DebuffEffect();
             }
         }
 

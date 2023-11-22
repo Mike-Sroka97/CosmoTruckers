@@ -203,8 +203,10 @@ public abstract class Character : MonoBehaviour
         turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
-    public void AddDebuffStack(DebuffStackSO stack, int stacksToAdd = 0, bool test = false)
+    public void AddDebuffStack(DebuffStackSO stack, int stacksToAdd = 1, bool test = false)
     {
+        if (stacksToAdd == 0) return;
+
         foreach (DebuffStackSO aug in AUGS)
         {
             if (String.Equals(aug.DebuffName, stack.DebuffName))
