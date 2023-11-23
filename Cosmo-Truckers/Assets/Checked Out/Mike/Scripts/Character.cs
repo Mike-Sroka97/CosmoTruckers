@@ -46,6 +46,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
+        if (Dead)
+            return;
+
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
 
@@ -89,6 +92,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
+        if (Dead)
+            return;
+
         for (int i = 0; i < numberOfHits; i++)
         {
             if (!defensePiercing)
@@ -134,6 +140,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeHealing(int healing, bool ignoreVigor = false)
     {
+        if (Dead)
+            return;
+
         if(!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
@@ -142,6 +151,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
+        if (Dead)
+            return;
+
         for (int i = 0; i < numberOfHeals; i++)
         {
             if (!ignoreVigor)
@@ -151,6 +163,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeShielding(int shieldAmount)
     {
+        if (Dead)
+            return;
+
         if (Shield + shieldAmount > maxShield)
             Shield = maxShield;
         else

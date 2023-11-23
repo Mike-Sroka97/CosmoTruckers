@@ -5,10 +5,8 @@ using UnityEngine;
 public class AeglarINA : Player
 {
     [SerializeField] float dashSpeed;
-    [SerializeField] float dashCD;
     [SerializeField] float dashDuration;
-    [SerializeField] float dashSlow;
-    [SerializeField] float CDbetweenDashes = .25f;
+    [SerializeField] float dashCoolDown;
     [SerializeField] float dashUpForce;
 
     //mech helpers
@@ -219,15 +217,19 @@ public class AeglarINA : Player
         {
             if (up)
             {
+                if (currentDashTime > dashCoolDown && currentNumberOfJumps < numberOfJumps)
+                    canDash = true;
                 myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             }
             else
             {
+                if (currentDashTime > dashCoolDown && currentNumberOfAttacks < numberOfAttacks)
+                    canDash = true;
                 myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
             }
 
             currentDashTime += Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
@@ -240,13 +242,6 @@ public class AeglarINA : Player
         else
         {
             horizontalAttackArea.SetActive(false);
-        }
-
-        currentDashTime = 0;
-        while (currentDashTime < CDbetweenDashes)
-        {
-            currentDashTime += Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
         }
 
         DashingUp = false;
