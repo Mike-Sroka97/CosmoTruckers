@@ -13,7 +13,6 @@ public class Bribery : CombatMove
     [HideInInspector] public bool[] DisabledRows;
 
     BriberyEnemy[] enemies;
-    float currentTime = 0;
     bool allFull = false;
 
     private void Awake()
@@ -65,9 +64,10 @@ public class Bribery : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        base.TrackTime();
+
         if(currentTime >= moneySpawnDelay)
         {
             currentTime = 0;

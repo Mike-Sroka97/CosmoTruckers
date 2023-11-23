@@ -5,11 +5,10 @@ using UnityEngine;
 public class QuestionableDeal : CombatMove
 {
     [HideInInspector] public bool Moving = true;
-    [SerializeField] int[] successThresholds;
+    [SerializeField] int successThreshold;
     [SerializeField] float moveSpeed;
 
     bool trackTime = false;
-    float currentTime = 0;
     Rigidbody2D myBody;
 
     const int SubductionDamage = 999;
@@ -32,21 +31,18 @@ public class QuestionableDeal : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
         if (!trackTime)
             return;
 
-        if(!PlayerDead)
-        {
-            currentTime += Time.deltaTime;
-        }
-        if(currentTime >= successThresholds[successThresholds.Length - 1] && Moving)
+        base.TrackTime();
+        if(currentTime >= successThreshold && Moving)
         {
             myBody.velocity = Vector2.zero;
             Moving = false;
             PlayerDead = true;
-            Score = successThresholds.Length;
+            Score = 1;
         }
     }
 
