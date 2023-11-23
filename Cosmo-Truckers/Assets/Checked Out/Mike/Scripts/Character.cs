@@ -207,11 +207,12 @@ public abstract class Character : MonoBehaviour
     {
         foreach (DebuffStackSO aug in AUGS)
         {
-            if (String.Equals(aug.DebuffName, stack.DebuffName))
+            if (string.Equals(aug.DebuffName, stack.DebuffName))
             {
                 if (aug.CurrentStacks < aug.MaxStacks)
                     aug.CurrentStacks += stacksToAdd;
-
+                if (stack.StartUp || stack.StatChange || test)
+                    aug.DebuffEffect();
                 return;
             }
         }
@@ -225,7 +226,7 @@ public abstract class Character : MonoBehaviour
 
         AUGS.Add(tempAUG);
 
-        if (stack.StartUp || test)
+        if (stack.StartUp || stack.StatChange || test)
             tempAUG.DebuffEffect();
     }
 
@@ -318,7 +319,6 @@ public abstract class Character : MonoBehaviour
     protected void FadeAugments()
     {
         foreach (DebuffStackSO augment in AUGS)
-            if (augment.FadingAugment)
-                augment.Fade();
+            augment.Fade();
     }
 }

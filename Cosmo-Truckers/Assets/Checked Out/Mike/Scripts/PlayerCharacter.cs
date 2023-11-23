@@ -48,8 +48,6 @@ public class PlayerCharacter : Character
 
     public override void StartTurn()
     {
-        FadeAugments();
-
         SetupAttackWheel();
     }
 
@@ -60,6 +58,7 @@ public class PlayerCharacter : Character
     }
     public override void EndTurn()
     {
+        FadeAugments();
         wheel.SetActive(false);
     }
 

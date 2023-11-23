@@ -62,6 +62,14 @@ public class DebuffStackSO : ScriptableObject
         if(temp != null)
         {
             temp.GetComponent<Augment>().StopEffect();
+
+            foreach (DebuffStackSO aug in MyCharacter.GetAUGS)
+                if (string.Equals(aug.DebuffName, DebuffName))
+                {
+                    MyCharacter.GetAUGS.Remove(aug); 
+                    break;
+                }
+
             Destroy(temp);
         }
     }
@@ -73,13 +81,18 @@ public class DebuffStackSO : ScriptableObject
 
     public void Fade()
     {
+        if (temp == null)
+            return;
+
+        temp.GetComponent<Augment>().AdjustStatusEffect(fadePerTurn);
+
         //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
-        if(temp.GetComponent<Augment>().GetStacks <= 0)
+        if (temp.GetComponent<Augment>().GetStacks <= 0)
         {
             StopEffect();
             return;
         }
-
-        temp.GetComponent<Augment>().AdjustStatusEffect(fadePerTurn);
+        else
+            temp.GetComponent<Augment>().Activate(this);
     }
 }

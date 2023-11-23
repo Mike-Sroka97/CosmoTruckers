@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AUG_PorkedUp : Augment
 {
-    public DebuffStackSO HogWild;
+    [SerializeField] DebuffStackSO hogWild;
 
     public override void Activate(DebuffStackSO stack = null)
     {
@@ -15,10 +15,11 @@ public class AUG_PorkedUp : Augment
         DebuffSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
         DebuffSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
 
-        if(Stacks >= 5)
+        if(Stacks >= 1)
         {
-            StopEffect();
-            DebuffSO.MyCharacter.AddDebuffStack(HogWild);
+            stack.StopEffect();
+            hogWild = Resources.Load("Assets/Checked Out/Chance_Mike/AUGS/ScriptableOBJ/Aeglar/HogWild") as DebuffStackSO;
+            DebuffSO.MyCharacter.AddDebuffStack(hogWild);
             DebuffSO.MyCharacter.RemoveDebuffStack(DebuffSO, Stacks);
         }
     }
