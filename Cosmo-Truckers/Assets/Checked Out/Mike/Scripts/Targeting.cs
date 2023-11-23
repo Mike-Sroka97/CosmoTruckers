@@ -44,9 +44,90 @@ public class Targeting : MonoBehaviour
         currentNumberOfTargets = 0;
         targetingDead = attack.TargetsDead;
         if (CurrentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
-            targets = attack.NumberOFTargets;
+            targets = MaxNumberOfTargets(attack);
         else
             targets = 0;
+    }
+
+    private static int MaxNumberOfTargets(BaseAttackSO attack)
+    {
+        int maxTargetableCharacters = 0;
+
+        if (attack.CanTargetEnemies && attack.CanTargetFriendly)
+        {
+            foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+                if (!enemy.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+                if (!playerCharacter.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
+                if (!enemySummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
+                if (!playerCharacterSummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+        else if (attack.CanTargetEnemies)
+        {
+            foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+                if (!enemy.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
+                if (!enemySummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+        else if (attack.CanTargetFriendly)
+        {
+            foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+                if (!playerCharacter.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
+                if (!playerCharacterSummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+
+        return maxTargetableCharacters;
     }
 
     public void EnemyTargeting(BaseAttackSO attack, float waitTime)
