@@ -14,14 +14,6 @@ public class AUG_PorkedUp : Augment
 
         DebuffSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
         DebuffSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
-
-        if(Stacks >= 1)
-        {
-            stack.StopEffect();
-            hogWild = Resources.Load("Assets/Checked Out/Chance_Mike/AUGS/ScriptableOBJ/Aeglar/HogWild") as DebuffStackSO;
-            DebuffSO.MyCharacter.AddDebuffStack(hogWild);
-            DebuffSO.MyCharacter.RemoveDebuffStack(DebuffSO, Stacks);
-        }
     }
 
     public override void StopEffect()

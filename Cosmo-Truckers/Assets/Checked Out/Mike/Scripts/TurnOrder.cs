@@ -87,6 +87,7 @@ public class TurnOrder : MonoBehaviour
 
     public void EndTurn()
     {
+        livingCharacters[currentCharactersTurn].GetComponent<Character>().FadeAugments();
         if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
         {
             livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();

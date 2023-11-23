@@ -7,6 +7,7 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+    public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
     [SerializeField] protected int maxShield = 60;
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
@@ -244,6 +245,7 @@ public abstract class Character : MonoBehaviour
                 aug.CurrentStacks -= stackToRemove;
 
                 if (aug.CurrentStacks <= 0)
+                    aug.StopEffect();
                     StartCoroutine(DelayedRemoval(aug));
 
                 return;
@@ -285,7 +287,7 @@ public abstract class Character : MonoBehaviour
 
     public void AdjustDamage(int damage)
     {
-        Stats.Damage = damage;
+        Stats.Damage += damage;
 
         //max x3 damage min 60% damage
         if (Stats.Damage > 300)
@@ -296,7 +298,7 @@ public abstract class Character : MonoBehaviour
 
     public void AdjustRestoration(int restoration)
     {
-        Stats.Restoration = restoration;
+        Stats.Restoration += restoration;
 
         //max double healing and min 40%
         if (Stats.Restoration > 200)
@@ -318,9 +320,13 @@ public abstract class Character : MonoBehaviour
         AddDebuffStack(test, 1, true);
     }
 
-    protected void FadeAugments()
+    public void FadeAugments()
     {
+        AugmentsToRemove.Clear();
+
         foreach (DebuffStackSO augment in AUGS)
             augment.Fade();
+        foreach (DebuffStackSO augment in AugmentsToRemove)
+            AUGS.Remove(augment);
     }
 }

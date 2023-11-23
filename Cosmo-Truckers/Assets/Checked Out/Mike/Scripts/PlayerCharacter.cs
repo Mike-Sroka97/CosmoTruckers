@@ -58,7 +58,6 @@ public class PlayerCharacter : Character
     }
     public override void EndTurn()
     {
-        FadeAugments();
         wheel.SetActive(false);
     }
 
