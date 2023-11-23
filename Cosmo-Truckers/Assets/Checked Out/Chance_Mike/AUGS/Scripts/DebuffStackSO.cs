@@ -40,7 +40,7 @@ public class DebuffStackSO : ScriptableObject
         }
     }
 
-    private int currentStacks;
+    [SerializeField] private int currentStacks;
 
     [Header("X = Initial Stack Value, Y = Subsequent Stack Values")]
     public Vector2 StackValue;
