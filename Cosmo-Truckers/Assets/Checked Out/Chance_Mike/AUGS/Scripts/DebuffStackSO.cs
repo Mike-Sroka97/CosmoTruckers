@@ -34,11 +34,19 @@ public class DebuffStackSO : ScriptableObject
         }
         set
         {
+            if (!initialized)
+                initialized = true;
+            else
+                LastStacks = currentStacks;
+
             currentStacks = value;
             if (currentStacks > MaxStacks)
                 currentStacks = MaxStacks;
         }
     }
+
+    private bool initialized = false;
+    public int LastStacks = -1;
 
     [SerializeField] private int currentStacks;
 

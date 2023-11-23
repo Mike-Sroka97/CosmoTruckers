@@ -9,10 +9,12 @@ public class AUG_HogWild : Augment
         base.Activate(stack);
 
         DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustRestoration((int)StatusEffect);
     }
 
     public override void StopEffect()
     {
         DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
+        DebuffSO.MyCharacter.AdjustRestoration(-(int)StatusEffect);
     }
 }
