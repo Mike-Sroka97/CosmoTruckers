@@ -72,6 +72,8 @@ public abstract class Character : MonoBehaviour
         //See if any AUGS trigger on Damage (Spike shield)
         else
         {
+            AugmentsToRemove.Clear();
+
             foreach (DebuffStackSO aug in AUGS)
             {
                 if (aug.OnDamage)
@@ -79,6 +81,9 @@ public abstract class Character : MonoBehaviour
                     aug.GetAugment().Trigger();
                 }
             }
+
+            foreach (DebuffStackSO augment in AugmentsToRemove)
+                AUGS.Remove(augment);
         }
     }
 
@@ -111,6 +116,8 @@ public abstract class Character : MonoBehaviour
             //See if any AUGS trigger on Damage (Spike shield)
             else
             {
+                AugmentsToRemove.Clear();
+
                 foreach (DebuffStackSO aug in AUGS)
                 {
                     if (aug.OnDamage)
@@ -118,6 +125,9 @@ public abstract class Character : MonoBehaviour
                         aug.GetAugment().Trigger();
                     }
                 }
+
+                foreach (DebuffStackSO augment in AugmentsToRemove)
+                    AUGS.Remove(augment);
             }
         }
     }
