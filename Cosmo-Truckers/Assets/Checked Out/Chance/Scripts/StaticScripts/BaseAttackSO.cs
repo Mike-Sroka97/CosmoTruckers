@@ -14,7 +14,7 @@ public class BaseAttackSO : ScriptableObject
     public bool FriendlyPositiveEffect;
     public bool CanTargetEnemies;
     public bool EnemyPositiveEffect;
-    public int NumberOFTargets;
+    public int NumberOfTargets;
     public bool TargetsDead;
     [Space(10)]
     public GameObject CombatPrefab;

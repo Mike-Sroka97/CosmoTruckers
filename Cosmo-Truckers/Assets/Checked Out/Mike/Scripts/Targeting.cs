@@ -44,7 +44,7 @@ public class Targeting : MonoBehaviour
         currentNumberOfTargets = 0;
         targetingDead = attack.TargetsDead;
         if (CurrentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
-            targets = MaxNumberOfTargets(attack);
+             targets = MaxNumberOfTargets(attack);
         else
             targets = 0;
     }
@@ -58,7 +58,7 @@ public class Targeting : MonoBehaviour
             foreach (Enemy enemy in EnemyManager.Instance.Enemies)
                 if (!enemy.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -66,7 +66,7 @@ public class Targeting : MonoBehaviour
             foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
                 if (!playerCharacter.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -74,7 +74,7 @@ public class Targeting : MonoBehaviour
             foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
                 if (!enemySummon.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -82,7 +82,7 @@ public class Targeting : MonoBehaviour
             foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
                 if (!playerCharacterSummon.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -93,7 +93,7 @@ public class Targeting : MonoBehaviour
             foreach (Enemy enemy in EnemyManager.Instance.Enemies)
                 if (!enemy.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -101,7 +101,7 @@ public class Targeting : MonoBehaviour
             foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
                 if (!enemySummon.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -112,7 +112,7 @@ public class Targeting : MonoBehaviour
             foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
                 if (!playerCharacter.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;
@@ -120,7 +120,7 @@ public class Targeting : MonoBehaviour
             foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
                 if (!playerCharacterSummon.Dead)
                 {
-                    if (maxTargetableCharacters >= attack.NumberOFTargets)
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
                         break;
 
                     maxTargetableCharacters++;

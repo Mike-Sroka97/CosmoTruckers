@@ -194,7 +194,6 @@ public class AeglarINA : Player
             playerAnimator.ChangeAnimation(myAnimator, dashRight);
         }
 
-        canDash = false;
         canMove = false;
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
@@ -253,7 +252,6 @@ public class AeglarINA : Player
         DashingUp = false;
         DashingLeft = false;
         DashingRight = false;
-        canDash = true;
     }
     public void SpecialMove()
     {
