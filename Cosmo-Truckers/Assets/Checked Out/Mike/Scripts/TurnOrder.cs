@@ -41,18 +41,6 @@ public class TurnOrder : MonoBehaviour
     public void DetermineTurnOrder()
     {        
         Array.Sort(livingCharacters, new SpeedComparer());
-
-        foreach (CharacterStats speed in livingCharacters)
-        {
-            if (speed.GetComponent<PlayerCharacter>())
-            {
-                //Debug.Log(speed.GetComponent<PlayerCharacter>().GetName() + " " + speed.speed);
-            }
-            else
-            {
-                //Debug.Log(speed.GetComponent<Enemy>().GetName() + " " + speed.speed);
-            }
-        }
     }
 
     private void StartTurn()
