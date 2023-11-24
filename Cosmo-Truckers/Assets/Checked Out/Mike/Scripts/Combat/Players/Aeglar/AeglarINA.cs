@@ -60,7 +60,9 @@ public class AeglarINA : Player
 
     private bool IsGrounded(float distance)
     {
-        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
+        Vector2 size = new Vector2(myCollider.bounds.size.x / 2, myCollider.bounds.size.y);
+
+        if (Physics2D.BoxCast(myCollider.bounds.center, size, 0, Vector2.down, distance, layermask))
             return true;
 
         else return false;
@@ -123,7 +125,7 @@ public class AeglarINA : Player
         if (damaged)
             return;
 
-        if (IsGrounded(0.02f) && canDash)
+        if (IsGrounded(0.05f) && canDash)
         {
             currentNumberOfAttacks = 0;
             currentNumberOfJumps = 0;
@@ -192,6 +194,7 @@ public class AeglarINA : Player
             playerAnimator.ChangeAnimation(myAnimator, dashRight);
         }
 
+        canDash = false;
         canMove = false;
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
@@ -233,7 +236,7 @@ public class AeglarINA : Player
         }
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
-
+        canDash = true;
         canMove = true;
         if (up)
         {
