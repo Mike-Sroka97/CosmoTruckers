@@ -716,6 +716,9 @@ public class Targeting : MonoBehaviour
         //Get primary target
         TrackSingleTargetInput();
 
+        if (!isTargeting)
+            return;
+
         //Get the cone
         if(currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
         {

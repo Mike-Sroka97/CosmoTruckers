@@ -13,8 +13,7 @@ public class HeadRush : CombatMove
 
     private void Start()
     {
-        StartMove();
-        DetermineLayout();
+        GenerateLayout();
     }
 
     public void DetermineLayout()
@@ -46,13 +45,6 @@ public class HeadRush : CombatMove
             currentLayout = Instantiate(layouts[random], currentLayout.transform.position, Quaternion.identity, gameObject.transform);
             usedLayouts.Add(layouts[random]);
             lastRandom = random;
-        }
-        
-
-    }
-
-    public override void EndMove()
-    {
-        throw new System.NotImplementedException();
+        }  
     }
 }
