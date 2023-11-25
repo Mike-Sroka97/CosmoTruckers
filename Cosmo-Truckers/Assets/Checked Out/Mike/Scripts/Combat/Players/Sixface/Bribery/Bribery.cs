@@ -9,6 +9,8 @@ public class Bribery : CombatMove
     [SerializeField] float moneySpawnDelay;
     [SerializeField] float delayIncrement;
     [SerializeField] GameObject[] rows;
+    [SerializeField] float[] movementSpeeds;
+    [SerializeField] float[] sendBackDistances;
     [HideInInspector] public bool[] ActivatedRows;
     [HideInInspector] public bool[] DisabledRows;
 
@@ -51,9 +53,11 @@ public class Bribery : CombatMove
             randomIndices[i]--;
         }
 
+        //set start delay, movementspeed, and sendBackDistance randomly here
         for(int i = 0; i < enemies.Length; i++)
         {
             enemies[i].StartDelay = startDelays[randomIndices[i]];
+            enemies[i].SetMoveValues(movementSpeeds[i], sendBackDistances[i]); 
         }
     }
 

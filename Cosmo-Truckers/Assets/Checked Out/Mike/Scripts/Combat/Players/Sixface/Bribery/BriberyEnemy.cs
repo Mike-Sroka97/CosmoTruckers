@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class BriberyEnemy : MonoBehaviour
 {
-    [SerializeField] float movementSpeed;
-    [SerializeField] float sendBackDistance;
     [SerializeField] float totalDistance; 
     [SerializeField] int row;
     [SerializeField] SpriteRenderer moneyLine;
@@ -22,6 +20,8 @@ public class BriberyEnemy : MonoBehaviour
     Material moneyMaterial;
     GameObject whaleMouthPosition;
 
+    float movementSpeed;
+    float sendBackDistance;
     float currentTime = 0;
     float currentDistance = 0;
     float distanceMoved; 
@@ -141,5 +141,11 @@ public class BriberyEnemy : MonoBehaviour
         }
         currentDistance = 0;
         movingBack = false;
+    }
+
+    public void SetMoveValues(float _moveSpeed, float _sendBackDistance)
+    {
+        movementSpeed = _moveSpeed;
+        sendBackDistance = _sendBackDistance; 
     }
 }
