@@ -104,7 +104,7 @@ public class Bribery : CombatMove
             {
                 if(ActivatedRows[i] == false && DisabledRows[i] == false)
                 {
-                    int random2 = UnityEngine.Random.Range(0, 3); //three per row
+                    int random2 = UnityEngine.Random.Range(0, 2); //two per row
 
                     rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
                 }
