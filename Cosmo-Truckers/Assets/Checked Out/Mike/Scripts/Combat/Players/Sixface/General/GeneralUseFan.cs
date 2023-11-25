@@ -27,6 +27,10 @@ public class GeneralUseFan : MonoBehaviour
             {
                 sixFaceBody.velocity = new Vector2(sixFaceBody.velocity.x, sixFaceBody.velocity.y + hoverBlowForce);
             }
+            else if(six.damaged)
+            {
+                sixFaceBody.velocity = new Vector2(sixFaceBody.velocity.x, blowForce);
+            }
             else
             {
                 sixFaceBody.velocity = new Vector2(sixFaceBody.velocity.x, sixFaceBody.velocity.y + blowForce);

@@ -103,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
+  AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 1190336181685528054}
   Health: 90
@@ -111,6 +112,8 @@ MonoBehaviour:
   - {fileID: 2179848013058036202}
   - {fileID: 8810699800233994324}
   CombatSpot: 0
+  FlatDamageAdjustment: 0
+  FlatHealingAdjustment: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
@@ -127,6 +130,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d7a7ce1c50aa6c544b290283ae3a83ba, type: 2}
   - {fileID: 11400000, guid: 15e4d56111017fe46bdbbd5252c811da, type: 2}
   - {fileID: 11400000, guid: c7d76436184b2f24f819cf9029a9869b, type: 2}
+  - {fileID: 11400000, guid: c849fca3739c113469f3cdadb4b6bc62, type: 2}
   - {fileID: 11400000, guid: ebbf0219f75d98e4face8cd158e5355b, type: 2}
   - {fileID: 11400000, guid: 8ac99c0a7d8102f4f83e52bb5dd306c2, type: 2}
   MiniGameControllerPrefab: {fileID: 805849436612175554, guid: 512e8cfb982f6bc42b833ac6b341944a, type: 3}
@@ -150,6 +154,7 @@ MonoBehaviour:
   Vigor: 100
   Speed: 0
   Damage: 100
+  Restoration: 100
 --- !u!114 &8473194752589849897
 MonoBehaviour:
   m_ObjectHideFlags: 0
