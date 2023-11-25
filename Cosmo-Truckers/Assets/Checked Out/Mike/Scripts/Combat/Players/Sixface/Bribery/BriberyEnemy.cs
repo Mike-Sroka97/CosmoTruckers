@@ -12,7 +12,8 @@ public class BriberyEnemy : MonoBehaviour
     [SerializeField] SpriteRenderer moneyLine;
     [SerializeField] float suckedInSpeed = 2f;
     [SerializeField] float rotationSpeed = 360f;
-    [SerializeField] float shrinkScale = 0.5f; 
+    [SerializeField] float shrinkScale = 0.5f;
+    [SerializeField] float shrinkSpeed = 0.5f; 
 
     [HideInInspector] public float StartDelay;
 
@@ -52,8 +53,9 @@ public class BriberyEnemy : MonoBehaviour
 
     public void DoneMoving()
     {
-        Debug.Log(gameObject.name + " Done Moving");
         doneMoving = true;
+        GetComponent<Collider2D>().enabled = false;
+        
         StartCoroutine(MoveToWhale());
         myRotator.RotateSpeed = rotationSpeed;
 
@@ -67,7 +69,7 @@ public class BriberyEnemy : MonoBehaviour
 
         while (transform.position.x < whaleMouthPosition.transform.position.x) 
         {
-            transform.localScale = Vector3.MoveTowards(transform.localScale, shrunkScale, (suckedInSpeed / 2.0f) * Time.deltaTime); 
+            transform.localScale = Vector3.MoveTowards(transform.localScale, shrunkScale, shrinkSpeed * Time.deltaTime); 
             transform.position = Vector3.MoveTowards(transform.position, whaleMouthPosition.transform.position, suckedInSpeed * Time.deltaTime);
             yield return null;
         }
@@ -113,7 +115,7 @@ public class BriberyEnemy : MonoBehaviour
         moneyMaterial.SetFloat("_MainVal", movePercentage);
         moneyLine.size = new Vector2(spriteSizeUpdater, moneyLine.size.y);
 
-        if (spriteSizeUpdater < 0.5)
+        if (spriteSizeUpdater < 0.05)
         {
             moneyLine.enabled = false; 
         }

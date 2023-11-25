@@ -49,13 +49,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0c8f7dc8983264abd02b917c583c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 1
-  sendBackDistance: 1.5
+  movementSpeed: 0.9
+  sendBackDistance: 2.2
   totalDistance: 8
   row: 2
   moneyLine: {fileID: 1479705398060662481}
-  suckedInSpeed: 3
+  suckedInSpeed: 3.5
   rotationSpeed: 360
+  shrinkScale: 0.5
+  shrinkSpeed: 0.5
   StartDelay: 0
 --- !u!50 &1273775125
 Rigidbody2D:
@@ -116,7 +118,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.4}
+  m_Size: {x: 0.8, y: 0.3}
   m_EdgeRadius: 0
 --- !u!1 &2320295623871115211
 GameObject:
@@ -146,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 2320295623871115211}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 314584244330372902}
@@ -221,7 +223,7 @@ MonoBehaviour:
   - {fileID: -1090754097, guid: 62234e1074e028244b4515ed01ebcfa7, type: 3}
   - {fileID: 496037387, guid: 62234e1074e028244b4515ed01ebcfa7, type: 3}
   - {fileID: -1606101756, guid: 62234e1074e028244b4515ed01ebcfa7, type: 3}
-  timeBetweenEachSprite: 0.25
+  timeBetweenEachSprite: 0.1
 --- !u!114 &2842815584449091697
 MonoBehaviour:
   m_ObjectHideFlags: 0

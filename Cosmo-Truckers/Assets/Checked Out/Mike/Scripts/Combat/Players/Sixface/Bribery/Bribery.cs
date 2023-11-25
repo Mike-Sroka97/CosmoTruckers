@@ -13,18 +13,23 @@ public class Bribery : CombatMove
     [HideInInspector] public bool[] DisabledRows;
 
     BriberyEnemy[] enemies;
+    List<int> lastRandomValue; 
     bool allFull = false;
 
     private void Awake()
     {
         enemies = GetComponentsInChildren<BriberyEnemy>();
         List<int> randomIndices = new List<int>(new int[enemies.Length]);
+        lastRandomValue = new List<int>(new int[enemies.Length]);
 
         int random = 0;
         bool first = true;
 
         for(int i = 0; i < enemies.Length; i++)
         {
+            //Set all lastRandomValues to -1 so it doesn't always exclude position 0 from start of money spawn
+            lastRandomValue[i] = -1; 
+
             if(first)
             {
                 random = UnityEngine.Random.Range(1, enemies.Length + 1);
@@ -106,7 +111,11 @@ public class Bribery : CombatMove
                 {
                     int random2 = UnityEngine.Random.Range(0, 2); //two per row
 
-                    rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
+                    if (random2 != lastRandomValue[i])
+                    {
+                        rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
+                        lastRandomValue[i] = random2;
+                    }
                 }
             }
 
