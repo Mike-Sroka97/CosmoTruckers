@@ -5,52 +5,76 @@ using UnityEngine;
 
 public class BriberyEnemy : MonoBehaviour
 {
-    [SerializeField] float movementSpeed;
-    [SerializeField] float sendBackDistance;
     [SerializeField] float totalDistance; 
     [SerializeField] int row;
     [SerializeField] SpriteRenderer moneyLine;
-    [SerializeField] Vector2 pixelSlice = new Vector2(-7f, 5f); 
+    [SerializeField] float suckedInSpeed = 2f;
+    [SerializeField] float rotationSpeed = 360f;
+    [SerializeField] float shrinkScale = 0.5f;
+    [SerializeField] float shrinkSpeed = 0.5f; 
 
     [HideInInspector] public float StartDelay;
 
+    Rotator myRotator; 
+    Bribery minigame;
+    Material moneyMaterial;
+    GameObject whaleMouthPosition;
+
+    float movementSpeed;
+    float sendBackDistance;
     float currentTime = 0;
     float currentDistance = 0;
     float distanceMoved; 
+    float startingX; 
+    float spriteStartWidth;
+
     bool delayOver = false;
     bool movingBack = false;
-    float startingX; 
     bool doneMoving = false;
-    Bribery minigame;
-    Material moneyMaterial;
-    float pixelSliceAdder;
 
     private void Start()
     {
-        startingX = transform.position.x;
         minigame = FindObjectOfType<Bribery>();
-        moneyMaterial = moneyLine.material;
+        myRotator = GetComponentInChildren<Rotator>();
 
-        pixelSliceAdder = Mathf.Abs(pixelSlice.x) + Mathf.Abs(pixelSlice.y);  
+        whaleMouthPosition = GameObject.Find("WhaleTarget"); 
+
+        startingX = transform.position.x;
+        moneyMaterial = moneyLine.material;
+        spriteStartWidth = moneyLine.size.x; 
     }
 
     private void Update()
     {
         Movement();
         TrackTime();
-
-        float movePercentage = distanceMoved / totalDistance;
-        float sliceValue = pixelSlice.x + (pixelSliceAdder * movePercentage); 
-
-        moneyMaterial.SetFloat("_MainVal", movePercentage);
-        moneyMaterial.SetFloat("_PixelSlice", sliceValue); 
+        UpdateMoneyLine();
     }
 
     public void DoneMoving()
     {
         doneMoving = true;
+        GetComponent<Collider2D>().enabled = false;
+        
+        StartCoroutine(MoveToWhale());
+        myRotator.RotateSpeed = rotationSpeed;
+
         minigame.DisabledRows[row] = true;
         minigame.IncreaseSpawnTimer();
+    }
+
+    IEnumerator MoveToWhale()
+    {
+        Vector3 shrunkScale = new Vector3(shrinkScale, shrinkScale, shrinkScale);
+
+        while (transform.position.x < whaleMouthPosition.transform.position.x) 
+        {
+            transform.localScale = Vector3.MoveTowards(transform.localScale, shrunkScale, shrinkSpeed * Time.deltaTime); 
+            transform.position = Vector3.MoveTowards(transform.position, whaleMouthPosition.transform.position, suckedInSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        gameObject.SetActive(false);
     }
 
     private void Movement()
@@ -83,6 +107,20 @@ public class BriberyEnemy : MonoBehaviour
         }
     }
 
+    private void UpdateMoneyLine()
+    {
+        float movePercentage = distanceMoved / totalDistance;
+        float spriteSizeUpdater = spriteStartWidth * (1 - movePercentage);
+
+        moneyMaterial.SetFloat("_MainVal", movePercentage);
+        moneyLine.size = new Vector2(spriteSizeUpdater, moneyLine.size.y);
+
+        if (spriteSizeUpdater < 0.05)
+        {
+            moneyLine.enabled = false; 
+        }
+    }
+
     IEnumerator SendBackCoroutine()
     {
         movingBack = true;
@@ -103,5 +141,11 @@ public class BriberyEnemy : MonoBehaviour
         }
         currentDistance = 0;
         movingBack = false;
+    }
+
+    public void SetMoveValues(float _moveSpeed, float _sendBackDistance)
+    {
+        movementSpeed = _moveSpeed;
+        sendBackDistance = _sendBackDistance; 
     }
 }

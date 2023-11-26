@@ -48,8 +48,6 @@ public class PlayerCharacter : Character
 
     public override void StartTurn()
     {
-        FadeAugments();
-
         SetupAttackWheel();
     }
 

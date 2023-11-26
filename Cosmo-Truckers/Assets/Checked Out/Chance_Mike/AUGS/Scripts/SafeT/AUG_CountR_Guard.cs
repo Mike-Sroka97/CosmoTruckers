@@ -26,8 +26,7 @@ public class AUG_CountR_Guard : Augment
             CombatManager.Instance.GetCurrentEnemy.TakeDamage(currentShield - DebuffSO.MyCharacter.Shield);
 
             //Remove after activation
-            DebuffSO.StopEffect();
-            DebuffSO.MyCharacter.RemoveDebuffStack(DebuffSO);
+            DebuffSO.MyCharacter.AugmentsToRemove.Add(DebuffSO);
         }
     }
 }

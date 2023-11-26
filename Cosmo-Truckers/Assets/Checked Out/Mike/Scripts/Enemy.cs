@@ -73,8 +73,6 @@ public class Enemy : Character
 
     public override void StartTurn()
     {
-        FadeAugments();
-
         if (ChosenAttack == null)
             ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
 
@@ -83,6 +81,7 @@ public class Enemy : Character
 
     public override void EndTurn()
     {
+        FadeAugments();
         TauntedBy = null;
     }
 

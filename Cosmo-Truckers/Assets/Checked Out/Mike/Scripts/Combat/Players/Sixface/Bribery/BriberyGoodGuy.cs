@@ -15,12 +15,15 @@ public class BriberyGoodGuy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<BriberyEnemy>())
+        BriberyEnemy briberyEnemy = collision.GetComponent<BriberyEnemy>(); 
+
+        if(briberyEnemy != null)
         {
-            if(myCollider.enabled)
+            briberyEnemy.DoneMoving();
+
+            if (myCollider.enabled)
             {
                 myCollider.enabled = false;
-                collision.GetComponent<BriberyEnemy>().DoneMoving();
                 minigame.Score--;
                 Debug.Log(minigame.Score);
                 Destroy(gameObject);

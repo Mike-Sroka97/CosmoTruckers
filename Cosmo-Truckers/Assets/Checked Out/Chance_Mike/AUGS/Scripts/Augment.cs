@@ -7,10 +7,9 @@ public abstract class Augment : MonoBehaviour
     [SerializeField] protected float baseStatusEffect;
     [SerializeField] protected float additionalStatusEffect;
     public DebuffStackSO DebuffSO;
-    protected int Stacks;
+    public int Stacks;
     protected float StatusEffect;
     protected float MaxStatusEffect;
-    public int GetStacks { get => Stacks; }
 
     //LifeSpan
 

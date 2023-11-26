@@ -34,11 +34,19 @@ public class DebuffStackSO : ScriptableObject
         }
         set
         {
+            if (!initialized)
+                initialized = true;
+            else
+                LastStacks = currentStacks;
+
             currentStacks = value;
             if (currentStacks > MaxStacks)
                 currentStacks = MaxStacks;
         }
     }
+
+    private bool initialized = false;
+    public int LastStacks = -1;
 
     [SerializeField] private int currentStacks;
 
@@ -62,6 +70,14 @@ public class DebuffStackSO : ScriptableObject
         if(temp != null)
         {
             temp.GetComponent<Augment>().StopEffect();
+
+            foreach (DebuffStackSO aug in MyCharacter.GetAUGS)
+                if (string.Equals(aug.DebuffName, DebuffName))
+                {
+                    MyCharacter.GetAUGS.Remove(aug); 
+                    break;
+                }
+
             Destroy(temp);
         }
     }
@@ -73,13 +89,13 @@ public class DebuffStackSO : ScriptableObject
 
     public void Fade()
     {
-        //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
-        if(temp.GetComponent<Augment>().GetStacks <= 0)
-        {
-            StopEffect();
+        if (temp == null)
             return;
-        }
+        
+        temp.GetComponent<Augment>().AdjustStatusEffect(-fadePerTurn);
 
-        temp.GetComponent<Augment>().AdjustStatusEffect(fadePerTurn);
+        //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
+        if (temp.GetComponent<Augment>().Stacks <= 0)
+            MyCharacter.AugmentsToRemove.Add(this);
     }
 }

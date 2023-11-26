@@ -23,9 +23,13 @@ public class GeneralUseFan : MonoBehaviour
 
         if (sixFace != null && collision.gameObject == sixFace.gameObject)
         {
-            if(six.IsHovering)
+            if(six.IsHovering && !six.damaged)
             {
                 sixFaceBody.velocity = new Vector2(sixFaceBody.velocity.x, sixFaceBody.velocity.y + hoverBlowForce);
+            }
+            else if(six.damaged)
+            {
+                sixFaceBody.velocity = new Vector2(sixFaceBody.velocity.x, blowForce);
             }
             else
             {

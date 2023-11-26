@@ -78,12 +78,12 @@ SpriteRenderer:
   m_SortingLayerID: -793516377
   m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: -1553553070, guid: 93d72fdc7dab173498ec6a6abbc6865b, type: 3}
+  m_Sprite: {fileID: 651673502, guid: b9d26b94f0e04244fba978d46d11c32f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.75, y: 3.6}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -103,12 +103,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
+  AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 2365435096106904468}
   Health: 120
   TargetingSprites:
   - {fileID: 2365435096106904470}
   CombatSpot: 0
+  FlatDamageAdjustment: 0
+  FlatHealingAdjustment: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
@@ -149,6 +152,7 @@ MonoBehaviour:
   Vigor: 100
   Speed: 0
   Damage: 100
+  Restoration: 100
 --- !u!114 &5534074537951545954
 MonoBehaviour:
   m_ObjectHideFlags: 0

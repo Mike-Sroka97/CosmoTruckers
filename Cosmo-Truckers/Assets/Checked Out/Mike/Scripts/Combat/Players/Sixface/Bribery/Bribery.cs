@@ -9,23 +9,29 @@ public class Bribery : CombatMove
     [SerializeField] float moneySpawnDelay;
     [SerializeField] float delayIncrement;
     [SerializeField] GameObject[] rows;
+    [SerializeField] float[] movementSpeeds;
+    [SerializeField] float[] sendBackDistances;
     [HideInInspector] public bool[] ActivatedRows;
     [HideInInspector] public bool[] DisabledRows;
 
     BriberyEnemy[] enemies;
-    float currentTime = 0;
+    List<int> lastRandomValue; 
     bool allFull = false;
 
     private void Awake()
     {
         enemies = GetComponentsInChildren<BriberyEnemy>();
         List<int> randomIndices = new List<int>(new int[enemies.Length]);
+        lastRandomValue = new List<int>(new int[enemies.Length]);
 
         int random = 0;
         bool first = true;
 
         for(int i = 0; i < enemies.Length; i++)
         {
+            //Set all lastRandomValues to -1 so it doesn't always exclude position 0 from start of money spawn
+            lastRandomValue[i] = -1; 
+
             if(first)
             {
                 random = UnityEngine.Random.Range(1, enemies.Length + 1);
@@ -47,9 +53,11 @@ public class Bribery : CombatMove
             randomIndices[i]--;
         }
 
+        //set start delay, movementspeed, and sendBackDistance randomly here
         for(int i = 0; i < enemies.Length; i++)
         {
             enemies[i].StartDelay = startDelays[randomIndices[i]];
+            enemies[i].SetMoveValues(movementSpeeds[i], sendBackDistances[i]); 
         }
     }
 
@@ -65,9 +73,10 @@ public class Bribery : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        base.TrackTime();
+
         if(currentTime >= moneySpawnDelay)
         {
             currentTime = 0;
@@ -104,9 +113,13 @@ public class Bribery : CombatMove
             {
                 if(ActivatedRows[i] == false && DisabledRows[i] == false)
                 {
-                    int random2 = UnityEngine.Random.Range(0, 3); //three per row
+                    int random2 = UnityEngine.Random.Range(0, 2); //two per row
 
-                    rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
+                    if (random2 != lastRandomValue[i])
+                    {
+                        rows[i].GetComponentsInChildren<BriberyCollectable>()[random2].Activate();
+                        lastRandomValue[i] = random2;
+                    }
                 }
             }
 

@@ -7,6 +7,7 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+    public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
     [SerializeField] protected int maxShield = 60;
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
@@ -45,6 +46,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
+        if (Dead)
+            return;
+
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
 
@@ -71,6 +75,8 @@ public abstract class Character : MonoBehaviour
         //See if any AUGS trigger on Damage (Spike shield)
         else
         {
+            AugmentsToRemove.Clear();
+
             foreach (DebuffStackSO aug in AUGS)
             {
                 if (aug.OnDamage)
@@ -78,11 +84,17 @@ public abstract class Character : MonoBehaviour
                     aug.GetAugment().Trigger();
                 }
             }
+
+            foreach (DebuffStackSO augment in AugmentsToRemove)
+                AUGS.Remove(augment);
         }
     }
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
+        if (Dead)
+            return;
+
         for (int i = 0; i < numberOfHits; i++)
         {
             if (!defensePiercing)
@@ -110,6 +122,8 @@ public abstract class Character : MonoBehaviour
             //See if any AUGS trigger on Damage (Spike shield)
             else
             {
+                AugmentsToRemove.Clear();
+
                 foreach (DebuffStackSO aug in AUGS)
                 {
                     if (aug.OnDamage)
@@ -117,12 +131,18 @@ public abstract class Character : MonoBehaviour
                         aug.GetAugment().Trigger();
                     }
                 }
+
+                foreach (DebuffStackSO augment in AugmentsToRemove)
+                    AUGS.Remove(augment);
             }
         }
     }
 
     public virtual void TakeHealing(int healing, bool ignoreVigor = false)
     {
+        if (Dead)
+            return;
+
         if(!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
@@ -131,6 +151,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
+        if (Dead)
+            return;
+
         for (int i = 0; i < numberOfHeals; i++)
         {
             if (!ignoreVigor)
@@ -140,6 +163,9 @@ public abstract class Character : MonoBehaviour
 
     public virtual void TakeShielding(int shieldAmount)
     {
+        if (Dead)
+            return;
+
         if (Shield + shieldAmount > maxShield)
             Shield = maxShield;
         else
@@ -209,11 +235,12 @@ public abstract class Character : MonoBehaviour
 
         foreach (DebuffStackSO aug in AUGS)
         {
-            if (String.Equals(aug.DebuffName, stack.DebuffName))
+            if (string.Equals(aug.DebuffName, stack.DebuffName))
             {
                 if (aug.CurrentStacks < aug.MaxStacks)
                     aug.CurrentStacks += stacksToAdd;
-
+                if (stack.StartUp || stack.StatChange || test)
+                    aug.DebuffEffect();
                 return;
             }
         }
@@ -227,7 +254,7 @@ public abstract class Character : MonoBehaviour
 
         AUGS.Add(tempAUG);
 
-        if (stack.StartUp || test)
+        if (stack.StartUp || stack.StatChange || test)
             tempAUG.DebuffEffect();
     }
 
@@ -243,6 +270,7 @@ public abstract class Character : MonoBehaviour
                 aug.CurrentStacks -= stackToRemove;
 
                 if (aug.CurrentStacks <= 0)
+                    aug.StopEffect();
                     StartCoroutine(DelayedRemoval(aug));
 
                 return;
@@ -284,7 +312,7 @@ public abstract class Character : MonoBehaviour
 
     public void AdjustDamage(int damage)
     {
-        Stats.Damage = damage;
+        Stats.Damage += damage;
 
         //max x3 damage min 60% damage
         if (Stats.Damage > 300)
@@ -295,7 +323,7 @@ public abstract class Character : MonoBehaviour
 
     public void AdjustRestoration(int restoration)
     {
-        Stats.Restoration = restoration;
+        Stats.Restoration += restoration;
 
         //max double healing and min 40%
         if (Stats.Restoration > 200)
@@ -317,10 +345,13 @@ public abstract class Character : MonoBehaviour
         AddDebuffStack(test, 1, true);
     }
 
-    protected void FadeAugments()
+    public void FadeAugments()
     {
+        AugmentsToRemove.Clear();
+
         foreach (DebuffStackSO augment in AUGS)
-            if (augment.FadingAugment)
-                augment.Fade();
+            augment.Fade();
+        foreach (DebuffStackSO augment in AugmentsToRemove)
+            AUGS.Remove(augment);
     }
 }

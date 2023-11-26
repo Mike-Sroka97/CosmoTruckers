@@ -44,9 +44,90 @@ public class Targeting : MonoBehaviour
         currentNumberOfTargets = 0;
         targetingDead = attack.TargetsDead;
         if (CurrentTargetingType == EnumManager.TargetingType.Multi_Target_Choice)
-            targets = attack.NumberOFTargets;
+             targets = MaxNumberOfTargets(attack);
         else
             targets = 0;
+    }
+
+    private static int MaxNumberOfTargets(BaseAttackSO attack)
+    {
+        int maxTargetableCharacters = 0;
+
+        if (attack.CanTargetEnemies && attack.CanTargetFriendly)
+        {
+            foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+                if (!enemy.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+                if (!playerCharacter.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
+                if (!enemySummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
+                if (!playerCharacterSummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+        else if (attack.CanTargetEnemies)
+        {
+            foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+                if (!enemy.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
+                if (!enemySummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+        else if (attack.CanTargetFriendly)
+        {
+            foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+                if (!playerCharacter.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+            foreach (PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
+                if (!playerCharacterSummon.Dead)
+                {
+                    if (maxTargetableCharacters >= attack.NumberOfTargets)
+                        break;
+
+                    maxTargetableCharacters++;
+                }
+        }
+
+        return maxTargetableCharacters;
     }
 
     public void EnemyTargeting(BaseAttackSO attack, float waitTime)
@@ -149,6 +230,15 @@ public class Targeting : MonoBehaviour
 
     private void ReactivateCombatManager(bool enemyTargeting = false)
     {
+        //actually adds cone targets to the list
+        if(currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
+        {
+            if (currentlySelectedTargets[0].GetComponent<Player>())
+                ConeSelect(currentlySelectedTargets[0].CombatSpot, true);
+            else
+                ConeSelect(currentlySelectedTargets[0].CombatSpot, false);
+        }
+
         currentNumberOfTargets++;
 
         if(currentNumberOfTargets < targets)
@@ -315,19 +405,39 @@ public class Targeting : MonoBehaviour
 
     private void ClearTargets()
     {
+        //clears material for all characters in list
         foreach (Character character in currentlySelectedTargets)
-        {
             foreach (SpriteRenderer renderer in character.TargetingSprites)
-            {
                 renderer.material = notTargetedMaterial;
+
+        //cone clearing since it doesn't target until selection
+        if (currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
+        {
+            if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && currentlySelectedTargets[0].CombatSpot != 11)
+            {
+                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
+                    foreach (SpriteRenderer renderer in EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot + 1].TargetingSprites)
+                        renderer.material = notTargetedMaterial;
+                else
+                    foreach (SpriteRenderer renderer in EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 1].TargetingSprites)
+                        renderer.material = notTargetedMaterial;
+            }
+            if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && currentlySelectedTargets[0].CombatSpot != 8)
+            {
+                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
+                    foreach (SpriteRenderer renderer in EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot - 1].TargetingSprites)
+                        renderer.material = notTargetedMaterial;
+                else
+                    foreach (SpriteRenderer renderer in EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 1].TargetingSprites)
+                        renderer.material = notTargetedMaterial;
             }
         }
 
-        while(currentlySelectedTargets.Count > currentNumberOfTargets)
-        {
+        //resets targeting list
+        while (currentlySelectedTargets.Count > currentNumberOfTargets)
             currentlySelectedTargets.Remove(currentlySelectedTargets[currentlySelectedTargets.Count - 1]);
-        }
 
+        //multi-targeting
         foreach (Character character in currentlySelectedTargets)
             MultiTarget(character);
     }
@@ -603,7 +713,73 @@ public class Targeting : MonoBehaviour
 
     private void TrackMultiTargetConeInput()
     {
+        //Get primary target
+        TrackSingleTargetInput();
 
+        if (!isTargeting)
+            return;
+
+        //Get the cone
+        if(currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
+        {
+            ConeTarget(currentlySelectedTargets[0].CombatSpot, true);
+        }
+        else if(currentlySelectedTargets[0].GetComponent<Enemy>())
+        {
+            ConeTarget(currentlySelectedTargets[0].CombatSpot, false);
+        }
+    }
+
+    private void ConeTarget(int index, bool playerSide)
+    {
+        if(playerSide)
+        {
+            if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && EnemyManager.Instance.PlayerCombatSpots[index + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[index + 1].Dead)
+            {
+                Target(EnemyManager.Instance.PlayerCombatSpots[index + 1]);
+            }
+            if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && EnemyManager.Instance.PlayerCombatSpots[index - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[index - 1].Dead)
+            {
+                Target(EnemyManager.Instance.PlayerCombatSpots[index - 1]);
+            }
+        }
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && currentlySelectedTargets[0].CombatSpot != 11 && EnemyManager.Instance.EnemyCombatSpots[index + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[index + 1].Dead)
+            {
+                Target(EnemyManager.Instance.EnemyCombatSpots[index + 1]);
+            }
+            if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && currentlySelectedTargets[0].CombatSpot != 8 && EnemyManager.Instance.EnemyCombatSpots[index - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[index - 1].Dead)
+            {
+                Target(EnemyManager.Instance.EnemyCombatSpots[index - 1]);
+            }
+        }
+    }
+
+    private void ConeSelect(int index, bool playerSide)
+    {
+        if (playerSide)
+        {
+            if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && EnemyManager.Instance.PlayerCombatSpots[index + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[index + 1].Dead)
+            {
+                currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[index + 1]);
+            }
+            if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && EnemyManager.Instance.PlayerCombatSpots[index - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[index - 1].Dead)
+            {
+                currentlySelectedTargets.Add(EnemyManager.Instance.PlayerCombatSpots[index - 1]);
+            }
+        }
+        else
+        {
+            if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && currentlySelectedTargets[0].CombatSpot != 11 && EnemyManager.Instance.EnemyCombatSpots[index + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[index + 1].Dead)
+            {
+                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[index + 1]);
+            }
+            if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && currentlySelectedTargets[0].CombatSpot != 8 && EnemyManager.Instance.EnemyCombatSpots[index - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[index - 1].Dead)
+            {
+                currentlySelectedTargets.Add(EnemyManager.Instance.EnemyCombatSpots[index - 1]);
+            }
+        }
     }
 
     private void TrackMultiTargetChoice()

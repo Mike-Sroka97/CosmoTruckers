@@ -131,7 +131,7 @@ public class CombatManager : MonoBehaviour
                             CharactersSelected.Add(obj);
                             ActivePlayers.Add(obj);
                         }
-                        if (CharactersSelected.Count == attack.NumberOFTargets)
+                        if (CharactersSelected.Count == attack.NumberOfTargets)
                         {
                             string text = $"Doing Combat Stuff for {attack.AttackName} against";
                             for (int i = 0; i < CharactersSelected.Count; i++)

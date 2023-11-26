@@ -5,10 +5,8 @@ using UnityEngine;
 public class AeglarINA : Player
 {
     [SerializeField] float dashSpeed;
-    [SerializeField] float dashCD;
     [SerializeField] float dashDuration;
-    [SerializeField] float dashSlow;
-    [SerializeField] float CDbetweenDashes = .25f;
+    [SerializeField] float dashCoolDown;
     [SerializeField] float dashUpForce;
 
     //mech helpers
@@ -62,7 +60,9 @@ public class AeglarINA : Player
 
     private bool IsGrounded(float distance)
     {
-        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
+        Vector2 size = new Vector2(myCollider.bounds.size.x / 2, myCollider.bounds.size.y);
+
+        if (Physics2D.BoxCast(myCollider.bounds.center, size, 0, Vector2.down, distance, layermask))
             return true;
 
         else return false;
@@ -125,7 +125,7 @@ public class AeglarINA : Player
         if (damaged)
             return;
 
-        if (IsGrounded(0.02f) && canDash)
+        if (IsGrounded(0.05f) && canDash)
         {
             currentNumberOfAttacks = 0;
             currentNumberOfJumps = 0;
@@ -220,19 +220,23 @@ public class AeglarINA : Player
         {
             if (up)
             {
+                if (currentDashTime > dashCoolDown && currentNumberOfJumps < numberOfJumps)
+                    canDash = true;
                 myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             }
             else
             {
+                if (currentDashTime > dashCoolDown && currentNumberOfAttacks < numberOfAttacks)
+                    canDash = true;
                 myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
             }
 
             currentDashTime += Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
+            yield return null;
         }
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
-
+        canDash = true;
         canMove = true;
         if (up)
         {
@@ -243,17 +247,9 @@ public class AeglarINA : Player
             horizontalAttackArea.SetActive(false);
         }
 
-        currentDashTime = 0;
-        while (currentDashTime < CDbetweenDashes)
-        {
-            currentDashTime += Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-
         DashingUp = false;
         DashingLeft = false;
         DashingRight = false;
-        canDash = true;
     }
     public void SpecialMove()
     {
