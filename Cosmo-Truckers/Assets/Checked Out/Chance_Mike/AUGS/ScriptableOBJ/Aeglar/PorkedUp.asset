@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: PorkedUp
   m_EditorClassIdentifier: 
-  InCombat: 0
-  StartUp: 1
+  InCombat: 1
+  StartUp: 0
   TurnStart: 0
   TurnEnd: 0
-  StatChange: 1
+  StatChange: 0
   OnDamage: 0
-  EveryTurnEnd: 0
+  EveryTurnEnd: 1
   EveryTurnStart: 0
   DebuffName: Pork'd Up
   DebuffDescription: This characters potency is increased by the number of Pork'd
@@ -28,6 +28,7 @@ MonoBehaviour:
   IsDebuff: 0
   Stackable: 1
   MaxStacks: 5
+  currentStacks: 0
   StackValue: {x: 1, y: 1}
   fadePerTurn: 0
   AugSpawner: {fileID: 8266763927990048678, guid: 2c54bef5d85e2e848a3319591830faee, type: 3}
