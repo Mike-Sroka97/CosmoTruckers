@@ -68,8 +68,7 @@ public class PlayerCharacter : Character
 
     public override void StartTurn()
     {
-        //isTurn = true;
-        SetupAttackWheel();
+        isTurn = true;
     }
 
     public void SetupAttackWheel()
