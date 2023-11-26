@@ -15,6 +15,8 @@ public class PlayerCharacter : Character
     public bool IsUtility;
     public string CharacterName { get => Name; private set => Name = value; }
     [SerializeField] GameObject wheel;
+    [SerializeField] GameObject augList;
+
     [SerializeField] List<BaseAttackSO> attacks;
     protected List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
 
@@ -27,6 +29,8 @@ public class PlayerCharacter : Character
     [HideInInspector] public PlayerVessel MyVessel;
     public GameObject PlayerVessel;
     public AttackUI PlayerAttackUI;
+
+    bool isTurn = false;
 
     private void Awake()
     {
@@ -46,9 +50,25 @@ public class PlayerCharacter : Character
         myRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    private void Update()
+    {
+        if (!isTurn) return;
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SetupAttackWheel();
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            //Just this character for now to test out
+            //TODO will take in any character based on targeting
+            SetUpAUGDescription(this);
+        }
+    }
+
     public override void StartTurn()
     {
-        SetupAttackWheel();
+        isTurn = true;
     }
 
     public void SetupAttackWheel()
@@ -56,9 +76,20 @@ public class PlayerCharacter : Character
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }
+    public void SetUpAUGDescription(Character character)
+    {
+        //Just untill the augList is set for all characters
+        if (augList == null) return;
+
+        augList.SetActive(true);
+        augList.GetComponent<UI_AUG_DESCRIPTION>().InitList(character);
+    }
     public override void EndTurn()
     {
         wheel.SetActive(false);
+        augList.SetActive(false);
+
+        isTurn = false;
     }
 
     public override void AdjustDefense(int defense)
