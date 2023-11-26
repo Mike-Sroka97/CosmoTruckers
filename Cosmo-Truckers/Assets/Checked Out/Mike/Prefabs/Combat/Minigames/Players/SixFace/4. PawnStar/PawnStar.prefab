@@ -60,9 +60,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 248592230469759787}
-  - {fileID: 7759061436703895798}
   - {fileID: 2635366867420300786}
+  - {fileID: 7759061436703895798}
+  - {fileID: 248592230469759787}
   - {fileID: 790515841754164704}
   m_Father: {fileID: 5768246736355278059}
   m_RootOrder: 1
@@ -183,6 +183,7 @@ MonoBehaviour:
   timeToEndMove: 1
   isDamaging: 1
   isHealing: 0
+  pierces: 0
   spawnTest: 0
   startMoveTest: 0
   projectile: {fileID: 5768246734752063071}
@@ -205,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344713, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344713, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_LocalScale.x
@@ -257,7 +258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344757, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_Name
-      value: BoxFan (hurt variant) Variant
+      value: BoxFan (hurt variant) (1)
       objectReference: {fileID: 0}
     - target: {fileID: 864887950366190261, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
@@ -667,7 +668,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344757, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_Name
-      value: BoxFan (hurt variant) Variant (3)
+      value: BoxFan (hurt variant) (0)
       objectReference: {fileID: 0}
     - target: {fileID: 864887950366190261, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
@@ -837,7 +838,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344713, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344713, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_LocalScale.x
@@ -889,7 +890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344757, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_Name
-      value: BoxFan (hurt variant) Variant (2)
+      value: BoxFan (hurt variant) (3)
       objectReference: {fileID: 0}
     - target: {fileID: 864887950366190261, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
@@ -1001,7 +1002,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5597030195564330475, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7529376662561406211, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
@@ -1208,6 +1209,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
@@ -1295,7 +1300,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 248592230570344757, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_Name
-      value: BoxFan (hurt variant) Variant (1)
+      value: BoxFan (hurt variant) (2)
       objectReference: {fileID: 0}
     - target: {fileID: 864887950366190261, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
@@ -1407,7 +1412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5597030195564330475, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7529376662561406211, guid: 5b7fe0f48f908704f8bdc9d70aa205e5, type: 3}
       propertyPath: ShapeModule.radius.value
