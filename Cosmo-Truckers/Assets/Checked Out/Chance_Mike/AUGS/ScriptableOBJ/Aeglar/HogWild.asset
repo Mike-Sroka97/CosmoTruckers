@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: HogWild
   m_EditorClassIdentifier: 
-  InCombat: 0
-  StartUp: 0
+  InCombat: 1
+  StartUp: 1
   TurnStart: 0
   TurnEnd: 0
-  StatChange: 1
+  StatChange: 0
   OnDamage: 0
-  EveryTurnEnd: 0
+  EveryTurnEnd: 1
   EveryTurnStart: 0
   DebuffName: Hog Wild
   DebuffDescription: This characters potency on their spells is increase a great
@@ -28,6 +28,7 @@ MonoBehaviour:
   IsDebuff: 0
   Stackable: 0
   MaxStacks: 1
+  currentStacks: 0
   StackValue: {x: 15, y: 0}
   fadePerTurn: 1
   AugSpawner: {fileID: 8266763927990048678, guid: 8133a45f795742c4e9ed93b1b230905c, type: 3}
