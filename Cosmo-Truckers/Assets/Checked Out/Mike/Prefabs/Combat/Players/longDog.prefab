@@ -34,6 +34,7 @@ Transform:
   m_Children:
   - {fileID: 7168459181638185459}
   - {fileID: 3274958320034546933}
+  - {fileID: 6903608116121646091}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -137,6 +138,7 @@ MonoBehaviour:
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 5074453809647073394, guid: 44b1dd4be563c724b907cb1957bccb84, type: 3}
   PlayerAttackUI: {fileID: 1020425248598480499}
+  ResetCombatPosition: 0
 --- !u!114 &1190336181685528054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +375,37 @@ Transform:
   - {fileID: 3061534864025771100}
   m_Father: {fileID: 1190336181685528049}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8139173637647644164
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6903608116121646091}
+  m_Layer: 0
+  m_Name: PlayerOptions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6903608116121646091
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8139173637647644164}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1190336181685528049}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9115630546534476977
 GameObject:

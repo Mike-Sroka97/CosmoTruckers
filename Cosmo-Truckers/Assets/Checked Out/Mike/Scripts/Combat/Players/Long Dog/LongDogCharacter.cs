@@ -4,8 +4,27 @@ using UnityEngine;
 
 public class LongDogCharacter : PlayerCharacter
 {
+    public bool ResetCombatPosition = false;
+
     const int legOnlyHealth = 30;
     const int bodyAndLegHealth = 60;
+
+    public override void StartTurn()
+    {
+        if(ResetCombatPosition)
+        {
+            for(int i = 0; i < EnemyManager.Instance.PlayerCombatSpots.Length; i++)
+            {
+                if (EnemyManager.Instance.PlayerCombatSpots[i] != null && EnemyManager.Instance.PlayerCombatSpots[i] == this)
+                    EnemyManager.Instance.PlayerCombatSpots[i] = null;
+            }
+
+            ResetCombatPosition = false;
+            EnemyManager.Instance.PlayerCombatSpots[CombatSpot] = this;
+        }
+
+        base.StartTurn();
+    }
 
     public override void TakeDamage(int damage, bool defensePiercing = false)
     {

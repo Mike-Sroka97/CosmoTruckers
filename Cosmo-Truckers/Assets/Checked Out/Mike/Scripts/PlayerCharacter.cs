@@ -85,6 +85,9 @@ public class PlayerCharacter : Character
     {
         base.TakeDamage(damage, defensePiercing);
 
+        if (GetComponent<PlayerCharacterSummon>())
+            return;
+
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
 
@@ -94,6 +97,9 @@ public class PlayerCharacter : Character
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
         base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+
+        if (GetComponent<PlayerCharacterSummon>())
+            return;
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
@@ -105,6 +111,9 @@ public class PlayerCharacter : Character
     {
         base.TakeHealing(healing, ignoreVigor);
 
+        if (GetComponent<PlayerCharacterSummon>())
+            return;
+
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
@@ -114,6 +123,9 @@ public class PlayerCharacter : Character
     public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
         base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+
+        if (GetComponent<PlayerCharacterSummon>())
+            return;
 
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
@@ -125,6 +137,10 @@ public class PlayerCharacter : Character
     public override void TakeShielding(int shieldAmount)
     {
         base.TakeShielding(shieldAmount);
+
+        if (GetComponent<PlayerCharacterSummon>())
+            return;
+
         MyVessel.AdjustShieldDisplay(Shield, shieldAmount);
     }
 }

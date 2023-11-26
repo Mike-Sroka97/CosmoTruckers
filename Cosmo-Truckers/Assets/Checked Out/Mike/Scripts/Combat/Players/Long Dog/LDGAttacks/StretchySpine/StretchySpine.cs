@@ -60,6 +60,19 @@ public class StretchySpine : CombatMove
 
         LongDogCharacter longDog = FindObjectOfType<LongDogCharacter>();
 
+        //take up summon layer spots
+        EnemyManager.Instance.PlayerCombatSpots[longDog.CombatSpot] = null;
+        longDog.ResetCombatPosition = true; 
+
+        for(int i = 4; i <= 7; i++)
+        {
+            if(EnemyManager.Instance.PlayerCombatSpots[i] != null)
+            {
+                EnemyManager.Instance.PlayerCombatSpots[i].TakeDamage(999, true);
+            }
+            EnemyManager.Instance.PlayerCombatSpots[i] = longDog;
+        }
+
         //Calculate Shield
         if (Score < 0)
             Score = 0;

@@ -130,11 +130,22 @@ public class Enemy : Character
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
     {
-        if(!ignoreVigor)
-            base.TakeHealing(healing);
+        base.TakeHealing(healing, ignoreVigor);
 
-        if(healing != 0)
-            StartCoroutine(DamageHealingEffect(false, healing.ToString()));
+        if (!ignoreVigor)
+            healing = AdjustAttackHealing(healing);
+
+        StartCoroutine(DamageHealingEffect(false, healing.ToString()));
+    }
+
+    public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
+    {
+        base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+
+        if (!ignoreVigor)
+            healing = AdjustAttackHealing(healing);
+
+        StartCoroutine(DamageHealingEffect(false, healing.ToString(), numberOfHeals));
     }
 
     IEnumerator DamageHealingEffect(bool damage, string text = null, int numberOfHits = 1)

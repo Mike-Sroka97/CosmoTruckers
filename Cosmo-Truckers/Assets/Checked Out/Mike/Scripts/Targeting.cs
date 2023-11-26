@@ -567,22 +567,22 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                //track choice
+                //track up input
                 if (Input.GetKeyDown(KeyCode.W))
                 {
                     TrackPlayerUpTargeting();
                 }
-                //TODO
+                //track down input
                 else if (Input.GetKeyDown(KeyCode.S))
                 {
                     TrackPlayerDownTargeting();
                 }
-                //TODO
+                //track left input
                 else if (Input.GetKeyDown(KeyCode.A))
                 {
                     TrackPlayerLeftTargeting();
                 }
-                //TODO
+                //track right input
                 else if (Input.GetKeyDown(KeyCode.D))
                 {
                     TrackPlayerRightTargeting();

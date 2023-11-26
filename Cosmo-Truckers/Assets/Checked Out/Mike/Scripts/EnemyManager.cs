@@ -41,7 +41,7 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         //Instantiate(testMockup)
-        PlayerCombatSpots = new Character[12];
+        PlayerCombatSpots = new Character[8];
         EnemyCombatSpots = new Character[12];
         
         SetSpawns();

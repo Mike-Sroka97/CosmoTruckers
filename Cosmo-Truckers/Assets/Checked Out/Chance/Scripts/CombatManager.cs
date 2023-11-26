@@ -22,12 +22,12 @@ public class CombatManager : MonoBehaviour
     [SerializeField] float trashAttackDelay = .25f;
 
     [SerializeField] public List<Character> CharactersSelected;
-    private List<PlayerCharacter> ActivePlayers;
+    public List<PlayerCharacter> ActivePlayers;
 
     public List<Character> GetCharactersSelected { get => CharactersSelected; }
 
     PlayerCharacter CurrentPlayer;
-    PlayerCharacter[] attackable;
+    List<PlayerCharacter> attackable;
     Enemy CurrentEnemy;
     Character CurrentCharacter;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
@@ -70,7 +70,10 @@ public class CombatManager : MonoBehaviour
 
     private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
     {
-        attackable = FindObjectsOfType<PlayerCharacter>();
+        attackable = new List<PlayerCharacter>();
+        foreach (PlayerCharacter character in EnemyManager.Instance.PlayerCombatSpots)
+            if (character != null)
+                attackable.Add(character);
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
@@ -115,7 +118,7 @@ public class CombatManager : MonoBehaviour
                 #region Multi Target Choice
                 case EnumManager.TargetingType.Multi_Target_Choice:
                     System.Random multiRand = new System.Random();
-                    attackable = attackable.OrderBy(x => multiRand.Next()).ToArray();
+                    PlayerCharacter[] attackableCharacters = attackable.OrderBy(x => multiRand.Next()).ToArray();
 
                     //taunted
                     if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
@@ -190,14 +193,18 @@ public class CombatManager : MonoBehaviour
         else
         {
             System.Random singleRand = new System.Random();
-            attackable = attackable.OrderBy(x => singleRand.Next()).ToArray();
+            PlayerCharacter[] attackableCharacters = attackable.OrderBy(x => singleRand.Next()).ToArray();
             foreach (PlayerCharacter obj in attackable)
             {
                 if (!obj.Dead)
                 {
-                    if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+                    if (!obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
                     {
                         CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                        //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
+                        ActivePlayers.Add(obj);
+
+                        break;
                     }
                     else
                     {

@@ -51,12 +51,12 @@ public class StretchySpineSpawner : MonoBehaviour
                 if (currentGoodProjectiles < maxGoodProjectiles)
                 {
                     currentGoodProjectiles++;
-                    Instantiate(goodProjectile, transform.position, rotation);
+                    Instantiate(goodProjectile, transform.position, rotation, transform);
                 }
                 else if (currentBadProjectiles < maxBadProjectiles)
                 {
                     currentBadProjectiles++;
-                    Instantiate(badProjectile, transform.position, rotation);
+                    Instantiate(badProjectile, transform.position, rotation, transform);
                 }
             }
             else
@@ -64,12 +64,12 @@ public class StretchySpineSpawner : MonoBehaviour
                 if (currentBadProjectiles < maxBadProjectiles)
                 {
                     currentBadProjectiles++;
-                    Instantiate(badProjectile, transform.position, rotation);
+                    Instantiate(badProjectile, transform.position, rotation, transform);
                 }
                 else if (currentGoodProjectiles < maxGoodProjectiles)
                 {
                     currentGoodProjectiles++;
-                    Instantiate(goodProjectile, transform.position, rotation);
+                    Instantiate(goodProjectile, transform.position, rotation, transform);
                 }
             }
         }
