@@ -5,7 +5,6 @@ using UnityEngine;
 public class QuestionableDeal : CombatMove
 {
     [HideInInspector] public bool Moving = true;
-    [SerializeField] int successThreshold;
     [SerializeField] float moveSpeed;
 
     bool trackTime = false;
@@ -37,7 +36,7 @@ public class QuestionableDeal : CombatMove
             return;
 
         base.TrackTime();
-        if(currentTime >= successThreshold && Moving)
+        if(currentTime >= MinigameDuration - 3 && Moving)
         {
             myBody.velocity = Vector2.zero;
             Moving = false;
