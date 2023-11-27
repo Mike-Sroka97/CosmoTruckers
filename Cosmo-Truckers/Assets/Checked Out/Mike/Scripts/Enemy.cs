@@ -73,6 +73,14 @@ public class Enemy : Character
 
     public override void StartTurn()
     {
+        foreach (DebuffStackSO aug in AUGS)
+        {
+            if (aug.TurnStart)
+            {
+                aug.GetAugment().Trigger();
+            }
+        }
+
         if (ChosenAttack == null)
             ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
 
@@ -81,7 +89,6 @@ public class Enemy : Character
 
     public override void EndTurn()
     {
-        FadeAugments();
         TauntedBy = null;
     }
 

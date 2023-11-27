@@ -69,6 +69,14 @@ public class PlayerCharacter : Character
     public override void StartTurn()
     {
         isTurn = true;
+
+        foreach (DebuffStackSO aug in AUGS)
+        {
+            if (aug.TurnStart)
+            {
+                aug.GetAugment().Trigger();
+            }
+        }
     }
 
     public void SetupAttackWheel()

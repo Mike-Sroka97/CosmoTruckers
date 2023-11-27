@@ -250,6 +250,7 @@ public abstract class Character : MonoBehaviour
 
         DebuffStackSO tempAUG = Instantiate(stack);
         tempAUG.CurrentStacks = stacksToAdd;
+        tempAUG.SetTemp();
         tempAUG.MyCharacter = this;
 
         AUGS.Add(tempAUG);

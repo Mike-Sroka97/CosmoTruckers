@@ -59,10 +59,16 @@ public class DebuffStackSO : ScriptableObject
     public GameObject AugSpawner;
     GameObject temp;
 
+    public void SetTemp()
+    {
+        if (temp == null) temp = Instantiate(AugSpawner);
+        temp.GetComponent<Augment>().InitializeAugment(this);
+    }
+
     public virtual void DebuffEffect() 
     {
-            if(temp == null) temp = Instantiate(AugSpawner);
-            temp.GetComponent<Augment>().Activate(this);
+        SetTemp();
+        temp.GetComponent<Augment>().Activate(this);
     }
 
     public virtual void StopEffect() 
