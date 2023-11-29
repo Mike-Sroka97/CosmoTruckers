@@ -77,13 +77,6 @@ public class DebuffStackSO : ScriptableObject
         {
             temp.GetComponent<Augment>().StopEffect();
 
-            foreach (DebuffStackSO aug in MyCharacter.GetAUGS)
-                if (string.Equals(aug.DebuffName, DebuffName))
-                {
-                    MyCharacter.GetAUGS.Remove(aug); 
-                    break;
-                }
-
             Destroy(temp);
         }
     }
