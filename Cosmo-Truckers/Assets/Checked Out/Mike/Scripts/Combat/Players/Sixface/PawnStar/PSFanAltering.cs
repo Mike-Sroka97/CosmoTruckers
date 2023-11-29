@@ -42,7 +42,7 @@ public class PSFanAltering : MonoBehaviour
         }
         foreach(PSFanColorHandler fan in colorHandlers)
         {
-            fan.ActivateColor();
+            fan.ActivateFan();
         }
 
         //randomize active fans
@@ -54,8 +54,8 @@ public class PSFanAltering : MonoBehaviour
             random2 = UnityEngine.Random.Range(0, fans.Length);
         }
 
-        colorHandlers[random1].DeactivateColor();
-        colorHandlers[random2].DeactivateColor();
+        colorHandlers[random1].DeactivateFan();
+        colorHandlers[random2].DeactivateFan();
         fans[random1].enabled = false;
         fans[random2].enabled = true;
     }
