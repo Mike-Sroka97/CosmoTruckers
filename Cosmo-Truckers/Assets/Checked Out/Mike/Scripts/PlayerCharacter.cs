@@ -14,6 +14,9 @@ public class PlayerCharacter : Character
     public bool IsSupport;
     public bool IsUtility;
     public string CharacterName { get => Name; private set => Name = value; }
+
+    [Header("Start turn objects")]
+    [SerializeField] UI_PlayerTurnStart selectionUI;
     [SerializeField] GameObject wheel;
     [SerializeField] GameObject augList;
 
@@ -56,19 +59,26 @@ public class PlayerCharacter : Character
 
         if (Input.GetKeyDown(KeyCode.E))
         {
+            ClosePages();
             SetupAttackWheel();
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             //Just this character for now to test out
             //TODO will take in any character based on targeting
+            ClosePages();
             SetUpAUGDescription(this);
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape) && (wheel.activeInHierarchy || augList.activeInHierarchy))
+        {
+            ClosePages();
         }
     }
 
     public override void StartTurn()
     {
         isTurn = true;
+        selectionUI.gameObject.SetActive(true);
 
         foreach (DebuffStackSO aug in AUGS)
         {
@@ -79,9 +89,19 @@ public class PlayerCharacter : Character
         }
     }
 
+    void ClosePages()
+    {
+        wheel.SetActive(false);
+        augList.SetActive(false);
+
+        selectionUI.ResetColor();
+    }
+
     public void SetupAttackWheel()
     {
+        isTurn = true;
         wheel.SetActive(true);
+        selectionUI.StartAttack();
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }
     public void SetUpAUGDescription(Character character)
@@ -90,6 +110,7 @@ public class PlayerCharacter : Character
         if (augList == null) return;
 
         augList.SetActive(true);
+        selectionUI.StartAUG();
         augList.GetComponent<UI_AUG_DESCRIPTION>().InitList(character);
     }
     public override void EndTurn()
@@ -98,6 +119,7 @@ public class PlayerCharacter : Character
         augList.SetActive(false);
 
         isTurn = false;
+        selectionUI.gameObject.SetActive(false);
     }
 
     public override void AdjustDefense(int defense)
