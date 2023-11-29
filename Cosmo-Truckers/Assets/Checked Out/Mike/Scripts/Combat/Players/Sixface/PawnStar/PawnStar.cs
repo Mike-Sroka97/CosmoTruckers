@@ -9,6 +9,7 @@ public class PawnStar : CombatMove
     [SerializeField] int twoScore;
 
     SixFaceMana sixFaceMana;
+
     public override void StartMove()
     {
         projectile.SetActive(true);

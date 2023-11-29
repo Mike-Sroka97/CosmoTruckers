@@ -49,7 +49,7 @@ public abstract class CombatMove : MonoBehaviour
 
         if (startMoveTest)
         {
-            Debug.LogError("Spawn Test is active");
+            Debug.LogError("Start Move Test is active");
             StartMove();
         }
     }
