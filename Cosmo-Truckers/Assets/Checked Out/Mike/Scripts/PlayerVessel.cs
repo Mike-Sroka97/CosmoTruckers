@@ -8,10 +8,10 @@ public class PlayerVessel : MonoBehaviour
 {
     [SerializeField] protected TextMeshProUGUI currentHealth;
     [SerializeField] TextMeshProUGUI maxHealth;
-    [SerializeField] GameObject shieldGO;
+    [SerializeField] protected GameObject shieldGO;
     [SerializeField] Image characterImage;
     [SerializeField] protected TextMeshProUGUI currentShield;
-    [SerializeField] Image currentHealthBar;
+    [SerializeField] protected Image currentHealthBar;
     [SerializeField] Image currentShieldBar;
 
     [Space(20)]

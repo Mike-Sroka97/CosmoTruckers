@@ -63,9 +63,9 @@ public abstract class Character : MonoBehaviour
             Shield = Shield - damage <= 0 ? 0 : Shield - damage;
 
             if (overageDamage > 0)
-                currentHealth -= overageDamage;
+                CurrentHealth = -overageDamage;
         }
-        else currentHealth -= damage;
+        else CurrentHealth = -damage;
 
         if (CurrentHealth <= 0)
         {
@@ -111,9 +111,9 @@ public abstract class Character : MonoBehaviour
                 Shield = Shield - damage <= 0 ? 0 : Shield - damage;
 
                 if (overageDamage > 0)
-                    currentHealth -= overageDamage;
+                    CurrentHealth = -overageDamage;
             }
-            else currentHealth -= damage;
+            else CurrentHealth = -damage;
 
             if (CurrentHealth <= 0)
             {
@@ -146,7 +146,7 @@ public abstract class Character : MonoBehaviour
         if(!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
-        CurrentHealth += healing;
+        CurrentHealth = healing;
     }
 
     public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
@@ -158,6 +158,8 @@ public abstract class Character : MonoBehaviour
         {
             if (!ignoreVigor)
                 healing = AdjustAttackHealing(healing);
+
+            CurrentHealth = healing;
         }
     }
 

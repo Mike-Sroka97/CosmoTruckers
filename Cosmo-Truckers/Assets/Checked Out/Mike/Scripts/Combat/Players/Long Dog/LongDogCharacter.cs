@@ -38,13 +38,61 @@ public class LongDogCharacter : PlayerCharacter
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
-        //if (!defensePiercing)
-        //    damage = AdjustAttackDamage(damage);
+        if (Dead)
+            return;
 
-        //int tempDamage = damage * numberOfHits;
-        //AdjustDamageHealingBasedOnBodyParts(tempDamage, true);
+        List<int> damageList = new List<int>();
 
-        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+        for (int i = 0; i < numberOfHits; i++)
+        {
+            if (!defensePiercing)
+                damage = AdjustAttackDamage(damage);
+
+            int tempDamage = AdjustDamageHealingBasedOnBodyParts(damage, true);
+            damageList.Add(tempDamage);
+
+            if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
+                passiveMove.Activate(CurrentHealth);
+
+            if (Shield > 0)
+            {
+                //calculate overrage damage
+                int overageDamage = damage - Shield;
+
+                Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+
+                if (overageDamage > 0)
+                    CurrentHealth = -overageDamage;
+            }
+            else
+            {
+                CurrentHealth = -damage;
+            }
+
+                if (CurrentHealth <= 0)
+            {
+                CurrentHealth = 0;
+                Die();
+            }
+            //See if any AUGS trigger on Damage (Spike shield)
+            else
+            {
+                AugmentsToRemove.Clear();
+
+                foreach (DebuffStackSO aug in AUGS)
+                {
+                    if (aug.OnDamage)
+                    {
+                        aug.GetAugment().Trigger();
+                    }
+                }
+
+                foreach (DebuffStackSO augment in AugmentsToRemove)
+                    AUGS.Remove(augment);
+            }
+        }
+
+        StartCoroutine(MyVessel.GetComponent<LongDogVessel>().LongDogDamageHealingEffect(damageList));
     }
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
@@ -58,54 +106,64 @@ public class LongDogCharacter : PlayerCharacter
 
     public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
-        //if (!ignoreVigor)
-        //    healing = AdjustAttackHealing(healing);
+        if (Dead)
+            return;
 
-        //int tempHealing = 
+        List<int> healingList = new List<int>();
 
-        AdjustDamageHealingBasedOnBodyParts(healing, false);
-        base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+        for (int i = 0; i < numberOfHeals; i++)
+        {
+            if (!ignoreVigor)
+                healing = AdjustAttackHealing(healing);
+
+            int tempHealing = AdjustDamageHealingBasedOnBodyParts(healing, false);
+            healingList.Add(tempHealing);
+            CurrentHealth = healing;
+        }
+
+        StartCoroutine(MyVessel.GetComponent<LongDogVessel>().LongDogDamageHealingEffect(healingList, false));
     }
 
     private int AdjustDamageHealingBasedOnBodyParts(int amount, bool damage)
     {
         //TODO add 1 turn 0 vigor AUG if any of these trigger
+        int currentHealth = CurrentHealth;
 
         if (damage)
         {
             //Damage reducing LDG below 60 sets health to 60
-            if(CurrentHealth > bodyAndLegHealth)
+            if(currentHealth > bodyAndLegHealth)
             {
-                if(CurrentHealth - amount < bodyAndLegHealth)
+                if(currentHealth - amount < bodyAndLegHealth)
                 {
-                    amount = CurrentHealth - bodyAndLegHealth;
+                    amount = currentHealth - bodyAndLegHealth;
                 }
             }
             //Damage reducing LDG below 30 sets health to 30
-            else if(CurrentHealth > legOnlyHealth)
+            else if(currentHealth > legOnlyHealth)
             {
-                if (CurrentHealth - amount < legOnlyHealth)
+                if (currentHealth - amount < legOnlyHealth)
                 {
-                    amount = CurrentHealth - legOnlyHealth;
+                    amount = currentHealth - legOnlyHealth;
                 }
             }
         }
         else
         {
             //Healing raising health above 60 sets health to 60
-            if(CurrentHealth < bodyAndLegHealth)
+            if(currentHealth < bodyAndLegHealth)
             {
-                if (CurrentHealth + amount > bodyAndLegHealth)
+                if (currentHealth + amount > bodyAndLegHealth)
                 {
-                    amount = bodyAndLegHealth - CurrentHealth;
+                    amount = bodyAndLegHealth - currentHealth;
                 }
             }
             //Healing raising health above 30 sets health to 30
-            else if(CurrentHealth < legOnlyHealth)
+            else if(currentHealth < legOnlyHealth)
             {
-                if (CurrentHealth + amount > legOnlyHealth)
+                if (currentHealth + amount > legOnlyHealth)
                 {
-                    amount = legOnlyHealth - CurrentHealth;
+                    amount = legOnlyHealth - currentHealth;
                 }
             }
         }
