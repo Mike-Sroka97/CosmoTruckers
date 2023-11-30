@@ -54,8 +54,11 @@ public class PowerPummel : CombatMove
 
                 //Damage on players must be divided by 100 to multiply the final
                 DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+                float newDamage = baseDamage * DamageAdj;
+                baseDamage = (int)newDamage;
+                int totalDamage = baseDamage * numberOfHits + character.FlatDamageAdjustment * numberOfHits;
 
-                character.GetComponent<Character>().TakeMultiHitDamage(baseDamage / numberOfHits + character.FlatDamageAdjustment, numberOfHits);
+                character.GetComponent<Character>().TakeMultiHitDamage(totalDamage / numberOfHits, numberOfHits);
                 FindObjectOfType<SafeTMana>().SetCurrentAnger(numberOfHits);
             }
         }
