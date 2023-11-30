@@ -32,7 +32,42 @@ public class LongDogMana : Mana
                     continue;
                 }
 
+                //Updates targeting materials based on loaded bullet [0]
+                if(attack.RequiredBullets > 0)
+                {
+                    if (LoadedBullets[0] == 2)
+                    {
+                        attack.FriendlyPositiveEffect = true;
+                        attack.EnemyPositiveEffect = true;
+                    }
+                    else
+                    {
+                        attack.FriendlyPositiveEffect = false;
+                        attack.EnemyPositiveEffect = false;
+                    }
+                }
+
+                //Special Cases
+                SpecialCaseDoggedAndReloaded(attack);
+
                 attack.CanUse = true;
+            }
+        }
+    }
+
+    private void SpecialCaseDoggedAndReloaded(LongDogAttackSO attack)
+    {
+        if(attack.AttackName == "Dogged & Loaded")
+        {
+            if (ReserveBullets[0] == 2)
+            {
+                attack.FriendlyPositiveEffect = true;
+                attack.EnemyPositiveEffect = true;
+            }
+            else
+            {
+                attack.FriendlyPositiveEffect = false;
+                attack.EnemyPositiveEffect = false;
             }
         }
     }
