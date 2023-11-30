@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LongDogCharacter : PlayerCharacter
 {
+    [SerializeField] DebuffStackSO hollowBones;
+
     public bool ResetCombatPosition = false;
 
     const int legOnlyHealth = 30;
@@ -136,6 +138,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if(currentHealth - amount < bodyAndLegHealth)
                 {
+                    AddDebuffStack(hollowBones);
                     amount = currentHealth - bodyAndLegHealth;
                 }
             }
@@ -144,6 +147,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth - amount < legOnlyHealth)
                 {
+                    AddDebuffStack(hollowBones);
                     amount = currentHealth - legOnlyHealth;
                 }
             }
@@ -155,6 +159,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth + amount > bodyAndLegHealth)
                 {
+                    AddDebuffStack(hollowBones);
                     amount = bodyAndLegHealth - currentHealth;
                 }
             }
@@ -163,6 +168,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth + amount > legOnlyHealth)
                 {
+                    AddDebuffStack(hollowBones);
                     amount = legOnlyHealth - currentHealth;
                 }
             }
