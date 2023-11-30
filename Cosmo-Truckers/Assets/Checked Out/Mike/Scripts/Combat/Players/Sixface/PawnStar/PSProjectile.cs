@@ -18,11 +18,13 @@ public class PSProjectile : MonoBehaviour
     bool waiting = true;
     float currentTime = 0;
     PawnStar minigame;
+    Transform mySpriteObject; 
 
     private void Start()
     {
         player = FindObjectOfType<SixfaceINA>().transform;
         minigame = FindObjectOfType<PawnStar>();
+        mySpriteObject = GetComponentInChildren<Transform>();
     }
 
     private void RandomDistance()
@@ -87,20 +89,30 @@ public class PSProjectile : MonoBehaviour
         float nextX;
 
         float normalizedTime = (Time.time - startTime) * speed / distance;
-        if(!movingRight)
+
+        //calculate angle
+        float angle = normalizedTime * 180f;
+        float yAngle = 0f; 
+
+        if (!movingRight)
         {
             nextX = startPosition.x - normalizedTime * distance;
         }
         else
         {
             nextX = startPosition.x + normalizedTime * distance;
+            yAngle = 180f; 
         }
 
         float nextY = startPosition.y + height * Mathf.Sin(normalizedTime * Mathf.PI);
 
+
         transform.position = new Vector3(nextX, nextY, transform.position.z);
 
-        if(transform.position.y < startPosition.y)
+        //Set Z to angle, y angle should be based on moving left or right
+        mySpriteObject.localEulerAngles = new Vector3(mySpriteObject.localEulerAngles.x, yAngle, angle);
+
+        if (transform.position.y < startPosition.y)
         {
             ResetParabola();
         }
@@ -113,7 +125,7 @@ public class PSProjectile : MonoBehaviour
 
         RandomDistance();
         //distance = Mathf.Abs(xSpawns) - Mathf.Abs(transform.position.x);
-
+        mySpriteObject.eulerAngles = new Vector3(mySpriteObject.eulerAngles.x, mySpriteObject.eulerAngles.y, 0f); //reset y rotation
         height = Mathf.Abs(player.position.y) + Mathf.Abs(startPosition.y); //offset from starting negative y value
         if (player.position.x < startPosition.x)
         {
