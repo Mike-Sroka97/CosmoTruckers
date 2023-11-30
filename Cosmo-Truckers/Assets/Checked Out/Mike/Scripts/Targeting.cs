@@ -5,12 +5,12 @@ using UnityEngine;
 public class Targeting : MonoBehaviour
 {
     [Header("Targeting Materials")]
-    [SerializeField] Material positiveTargetMaterial;
-    [SerializeField] Material negativeTargetMaterial;
-    [SerializeField] Material notTargetedMaterial;
-    [SerializeField] Material enemyTargetingMaterial;
-    [SerializeField] Material negativeSelectedMaterial;
-    [SerializeField] Material positiveSelectedMaterial;
+    [SerializeField] Material positiveTargetMaterial; //Flashing green
+    [SerializeField] Material negativeTargetMaterial; //Flashing red
+    [SerializeField] Material notTargetedMaterial; //default
+    [SerializeField] Material enemyTargetingMaterial; //Flashing white
+    [SerializeField] Material negativeSelectedMaterial; //Solid red
+    [SerializeField] Material positiveSelectedMaterial; //Solid green
 
     bool isTargeting = false;
     public EnumManager.TargetingType CurrentTargetingType;
@@ -149,18 +149,18 @@ public class Targeting : MonoBehaviour
         {
             foreach(Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
             {
-                foreach (SpriteRenderer sprite in trashEnemy.TargetingSprites)
+                foreach (SpriteRenderer renderer in trashEnemy.TargetingSprites)
                 {
-                    sprite.material = enemyTargetingMaterial;
+                    renderer.material = enemyTargetingMaterial;
                 }
             }
         }
         //handles nontrash targeting
         else
         {
-            foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
             {
-                sprite.material = enemyTargetingMaterial;
+                renderer.material = enemyTargetingMaterial;
             }
         }
 
@@ -177,17 +177,17 @@ public class Targeting : MonoBehaviour
         {
             foreach (Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
             {
-                foreach (SpriteRenderer sprite in trashEnemy.TargetingSprites)
+                foreach (SpriteRenderer renderer in trashEnemy.TargetingSprites)
                 {
-                    sprite.material = notTargetedMaterial;
+                    renderer.material = notTargetedMaterial;
                 }
             }
         }
         else
         {
-            foreach (SpriteRenderer sprite in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
             {
-                sprite.material = notTargetedMaterial;
+                renderer.material = notTargetedMaterial;
             }
         }
     }
