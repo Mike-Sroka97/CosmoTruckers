@@ -154,6 +154,7 @@ MonoBehaviour:
   stretchSpeed: 3.4
   stretchReturnSpeed: 5
   stretchRotateSpeed: 225
+  positionFlipModifier: -0.25
   head: {fileID: 805849437263682067}
   body: {fileID: 805849436701896821}
   linePrefab: {fileID: 7288411346145951429, guid: 890252baff1bafe4db22091895a67edb, type: 3}
@@ -421,7 +422,6 @@ GameObject:
   - component: {fileID: 805849437263682060}
   - component: {fileID: 805849437263682061}
   - component: {fileID: 805849437263682062}
-  - component: {fileID: 805849437263682056}
   - component: {fileID: 341003513}
   - component: {fileID: 341003515}
   - component: {fileID: 341003514}
@@ -441,7 +441,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805849437263682067}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -526,18 +526,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &805849437263682056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805849437263682067}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c7cec373ca1b614fb7e7b95679793bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!70 &341003513
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

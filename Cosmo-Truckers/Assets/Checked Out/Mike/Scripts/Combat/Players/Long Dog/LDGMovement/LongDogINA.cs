@@ -7,6 +7,7 @@ public class LongDogINA : Player
     [SerializeField] float stretchSpeed;
     [SerializeField] float stretchReturnSpeed;
     [SerializeField] float stretchRotateSpeed;
+    [SerializeField] float positionFlipModifier;
     [SerializeField] GameObject head;
     [SerializeField] GameObject body;
     [SerializeField] GameObject linePrefab;
@@ -376,13 +377,21 @@ public class LongDogINA : Player
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
             {
                 myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
-                head.transform.eulerAngles = new Vector3(0, 0, 0);
+                if (head.transform.eulerAngles != new Vector3(0, 0, 0))
+                {
+                    head.transform.eulerAngles = new Vector3(0, 0, 0);
+                    head.transform.position += new Vector3(positionFlipModifier, 0, 0);
+                }
                 playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
                 myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
-                head.transform.eulerAngles = new Vector3(0, 180, 0);
+                if(head.transform.eulerAngles != new Vector3(0, 180, 0))
+                {
+                    head.transform.eulerAngles = new Vector3(0, 180, 0);
+                    head.transform.position -= new Vector3(positionFlipModifier, 0, 0);
+                }
                 playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
             }
             else if(IsGrounded())

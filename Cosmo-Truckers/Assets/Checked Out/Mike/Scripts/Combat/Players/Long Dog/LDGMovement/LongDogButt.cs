@@ -46,38 +46,6 @@ public class LongDogButt : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dogINA.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dogINA.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dogINA.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dogINA.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
     public void StartButtToHeadMovement()
     {
         neck = FindObjectOfType<LongDogNeck>();
