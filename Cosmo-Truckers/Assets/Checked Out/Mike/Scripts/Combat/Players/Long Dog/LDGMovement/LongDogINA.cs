@@ -83,6 +83,8 @@ public class LongDogINA : Player
         damaged = toggle;
     }
 
+    public GameObject GetHead() { return head; }
+
     public void StretchingCollision(string collision)
     {
         if(collision != "LDGNoInteraction")

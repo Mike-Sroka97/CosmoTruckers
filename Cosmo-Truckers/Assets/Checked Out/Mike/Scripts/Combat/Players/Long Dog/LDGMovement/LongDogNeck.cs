@@ -7,7 +7,9 @@ public class LongDogNeck : MonoBehaviour
     
     [SerializeField] LineRenderer myLineRenderer;
     [SerializeField] EdgeCollider2D myCollider;
-    [SerializeField] float myEdgeRadius; 
+    [SerializeField] float myEdgeRadius;
+    [SerializeField] Texture rightFacingNeck;
+    [SerializeField] Texture leftFacingNeck;
 
     List<Vector2> linePoints = new List<Vector2>();
     int pointCount = 0;
@@ -21,53 +23,12 @@ public class LongDogNeck : MonoBehaviour
         dog = transform.parent.GetComponent<LongDogINA>();
         myBody = GetComponent<PlayerBody>();
 
+        if (dog.GetHead().transform.eulerAngles.y == 0)
+            myLineRenderer.material.mainTexture = leftFacingNeck;
+        else
+            myLineRenderer.material.mainTexture = rightFacingNeck;
+
         myBody.Body = dog;
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dog.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            if (collision.gameObject.GetComponent<StretchySpineProjectile>() || collision.gameObject.GetComponent<LockedAndDoggedProjectile>())
-            {
-                dog.StretchingCollision("LDGNoInteraction");
-            }
-            else
-            {
-                dog.StretchingCollision(collision.gameObject.tag);
-            }
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            dog.StretchingCollision(collision.gameObject.tag);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "EnemyDamaging")
-        {
-            if(collision.gameObject.GetComponent<StretchySpineProjectile>() || collision.gameObject.GetComponent<LockedAndDoggedProjectile>())
-            {
-                dog.StretchingCollision("LDGNoInteraction");
-            }
-            else
-            {
-                dog.StretchingCollision(collision.gameObject.tag);
-            }
-        }
     }
 
     public void AddPoint(Vector2 point)
