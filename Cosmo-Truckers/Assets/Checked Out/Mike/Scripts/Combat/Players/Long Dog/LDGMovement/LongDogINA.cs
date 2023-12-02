@@ -38,8 +38,16 @@ public class LongDogINA : Player
     [SerializeField] AnimationClip moveBody;
     [SerializeField] AnimationClip stretchBody;
 
+    [Space(20)]
+    [Header("Jump")]
+    [SerializeField] float jumpSpeed;
+    [SerializeField] float jumpMaxHoldTime;
+    [SerializeField] float coyoteTime;
+
     LongDogNeck currentLine;
 
+    bool canJump = false;
+    bool isJumping = false;
     bool stretching = false;
     bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
@@ -48,9 +56,12 @@ public class LongDogINA : Player
     bool goingRight = false;
     bool startupStretch = false;
     bool canBark = true;
+    bool postSpin = false;
 
     Vector3 buttStartingLocation;
     float startingGravityScale;
+    float currentJumpHoldTime = 0;
+    float currentCoyoteTime = 0;
     int layermask = 1 << 9;
     Collider2D myCollider;
     PlayerAnimator playerAnimator;
@@ -146,7 +157,7 @@ public class LongDogINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch && !IsGrounded())
         {
             canStretch = false;
             myBody.velocity = Vector2.zero;
@@ -225,6 +236,7 @@ public class LongDogINA : Player
 
     IEnumerator ATHSpin()
     {
+        postSpin = true;
         iFrames = true;
         bool completedRotation = false;
         float currentDegrees = 0;
@@ -295,7 +307,30 @@ public class LongDogINA : Player
     /// </summary>
     public void Jump()
     {
+        if (stretching)
+            return;
 
+        IsGroundedJump();
+
+        if (Input.GetKeyDown("space") && canJump && !isJumping)
+        {
+            canJump = false;
+            isJumping = true;
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
+            playerAnimator.ChangeAnimation(bodyAnimator, stretchBody);
+        }
+        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
+        {
+            currentCoyoteTime = coyoteTime;
+            currentJumpHoldTime += Time.deltaTime;
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
+            playerAnimator.ChangeAnimation(bodyAnimator, stretchBody);
+        }
+        else if (isJumping)
+        {
+            isJumping = false;
+            playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
+        }
     }
     #endregion
 
@@ -384,7 +419,12 @@ public class LongDogINA : Player
                     head.transform.eulerAngles = new Vector3(0, 0, 0);
                     head.transform.position += new Vector3(positionFlipModifier, 0, 0);
                 }
-                playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
+
+                if (IsGrounded())
+                    playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
+
+                if (postSpin)
+                    postSpin = false;
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
             {
@@ -394,23 +434,55 @@ public class LongDogINA : Player
                     head.transform.eulerAngles = new Vector3(0, 180, 0);
                     head.transform.position -= new Vector3(positionFlipModifier, 0, 0);
                 }
-                playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
+
+                if (IsGrounded())
+                    playerAnimator.ChangeAnimation(bodyAnimator, moveBody);
+
+                if (postSpin)
+                    postSpin = false;
             }
-            else if(IsGrounded())
+            else if(!postSpin || IsGrounded())
             {
+                postSpin = false;
                 myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-                playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
+                if(IsGrounded())
+                    playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
             }
         }
     }
 
     private bool IsGrounded()
     {
-        if (Physics2D.Raycast(head.transform.position, Vector2.down, myCollider.bounds.extents.y + .25f, layermask))
+        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, .05f, layermask))
         {
             return true;
         }
         return false;
+    }
+
+    private void IsGroundedJump()
+    {
+        if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, .05f, layermask))
+        {
+
+            if (!damaged && Input.GetKey("space") && canMove && !stretching)
+            {
+                canJump = true;
+            }
+            if (!isJumping)
+            {
+                currentJumpHoldTime = 0;
+                currentCoyoteTime = 0;
+            }
+        }
+        else if (currentCoyoteTime > coyoteTime)
+        {
+            canJump = false;
+        }
+        else
+        {
+            currentCoyoteTime += Time.deltaTime;
+        }
     }
     #endregion
 
