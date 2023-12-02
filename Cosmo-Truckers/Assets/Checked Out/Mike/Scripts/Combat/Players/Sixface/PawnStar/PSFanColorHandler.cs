@@ -6,6 +6,7 @@ public class PSFanColorHandler : MonoBehaviour
 {
     [SerializeField] float deactivatedAlpha;
     [SerializeField] SpriteRenderer myRenderer;
+    [SerializeField] float timeToFadeParticles = 0.25f;
     Animator myAnimator;
     ParticleUpdater particleUpdater;
 

@@ -8,6 +8,7 @@ public class PSProjectile : MonoBehaviour
     [SerializeField] float initialDelay;
     [SerializeField] float speed;
     [SerializeField] float xSpawns;
+    [SerializeField] float firstTimeHeight = 2f; 
 
     Vector3 startPosition;
     float startTime;
@@ -18,7 +19,9 @@ public class PSProjectile : MonoBehaviour
     bool waiting = true;
     float currentTime = 0;
     PawnStar minigame;
-    Transform mySpriteObject; 
+    Transform mySpriteObject;
+
+    bool firstTime = true; 
 
     private void Start()
     {
@@ -40,7 +43,7 @@ public class PSProjectile : MonoBehaviour
 
     private void Update()
     {
-        if(!waiting)
+        if (!waiting)
         {
             ParabolicMotion();
         }
@@ -61,16 +64,28 @@ public class PSProjectile : MonoBehaviour
 
     private void TrackTime()
     {
+        //Wait initial delay when minigame starts
         currentTime += Time.deltaTime;
         if (currentTime >= initialDelay)
         {
             waiting = false;
             startTime = Time.time;
-            height = Mathf.Abs(player.position.y) + Mathf.Abs(startPosition.y); //offset from starting negative y value
+
+            if (firstTime)
+            {
+                //Make sure it's high enough the first time to be visible
+                height = firstTimeHeight + Mathf.Abs(startPosition.y);
+                firstTime = false; 
+            }
+            else
+            {
+                height = Mathf.Abs(player.position.y) + Mathf.Abs(startPosition.y); //offset from starting negative y value
+            }
+
 
             RandomDistance();
 
-            //startPosition = transform.position;
+            startPosition = transform.position;
             distance = Mathf.Abs(xSpawns) - Mathf.Abs(transform.position.x);
 
             if (player.position.x < startPosition.x)
