@@ -22,8 +22,10 @@ public class LongDogINA : Player
     [SerializeField] float barkCooldown;
     [SerializeField] float barkDuration;
     [SerializeField] GameObject attackArea;
+    [SerializeField] GameObject barkArea;
     [SerializeField] BoxCollider2D headBody;
     [SerializeField] BoxCollider2D bodyBody;
+    [SerializeField] Transform neckSpawn;
 
     [Space(20)]
     [Header("Animation")]
@@ -90,6 +92,7 @@ public class LongDogINA : Player
     {
         stretching = false;
         myNose.enabled = false;
+        myNose.GetComponent<LongDogNose>().enabled = false;
         EndDraw();
         damaged = toggle;
     }
@@ -104,6 +107,7 @@ public class LongDogINA : Player
             {
                 stretching = false;
                 myNose.enabled = false;
+                myNose.GetComponent<LongDogNose>().enabled = false;
                 EndDraw();
             }
         }
@@ -192,11 +196,11 @@ public class LongDogINA : Player
     {
         attackArea.SetActive(true);
         stretching = true;
-        myNose.enabled = true;
+        myNose.enabled = true; myNose.GetComponent<LongDogNose>().enabled = true;
         body.transform.SetParent(transform);
         myBody.gravityScale = 0;
 
-        currentLine = Instantiate(linePrefab, transform).GetComponent<LongDogNeck>();
+        currentLine = Instantiate(linePrefab, neckSpawn.localPosition, neckSpawn.localRotation, transform).GetComponent<LongDogNeck>();
     }
 
     void Draw()
@@ -298,6 +302,7 @@ public class LongDogINA : Player
         buttStretching = false;
         stretching = false;
         myNose.enabled = false;
+        myNose.GetComponent<LongDogNose>().enabled = false;
     }
     #endregion
 
@@ -500,6 +505,7 @@ public class LongDogINA : Player
 
     IEnumerator Bark()
     {
+        barkArea.SetActive(true);
         playerAnimator.ChangeAnimation(headAnimator, barkHead);
         playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
         canBark = false;
@@ -510,6 +516,7 @@ public class LongDogINA : Player
 
         yield return new WaitForSeconds(barkDuration);
 
+        barkArea.SetActive(false);
         canMove = true;
         canStretch = true;
         iFrames = false;
