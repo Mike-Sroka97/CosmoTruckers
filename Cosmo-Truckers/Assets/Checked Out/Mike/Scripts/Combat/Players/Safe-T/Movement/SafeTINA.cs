@@ -123,14 +123,11 @@ public class SafeTINA : Player
 
     IEnumerator SafeTAttack(GameObject attack)
     {
-        canMove = false;
         canAttack = false;
-        myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         attack.SetActive(true);
         yield return new WaitForSeconds(attackDuration);
         attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
-        canMove = true;
         canAttack = true;
     }
     #endregion
@@ -240,7 +237,7 @@ public class SafeTINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
-            if (myBody.velocity.y <= 0)
+            if (myBody.velocity.y <= 0 && canAttack)
             {
                 playerAnimator.ChangeAnimation(myAnimator, move);
             }
@@ -253,7 +250,7 @@ public class SafeTINA : Player
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
-            if (myBody.velocity.y <= 0)
+            if (myBody.velocity.y <= 0 && canAttack)
             {
                 playerAnimator.ChangeAnimation(myAnimator, move);
             }

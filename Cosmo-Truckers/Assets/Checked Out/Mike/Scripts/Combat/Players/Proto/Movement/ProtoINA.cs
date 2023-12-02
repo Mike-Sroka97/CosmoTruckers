@@ -165,8 +165,6 @@ public class ProtoINA : Player
     IEnumerator ProtoAttack(bool horizontal)
     {
         canAttack = false;
-        canMove = false;
-        myBody.velocity = Vector2.zero;
 
         if(horizontal)
         {
@@ -187,7 +185,6 @@ public class ProtoINA : Player
         playerAnimator.ChangeAnimation(myAnimator, idle);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
-        canMove = true;
     }
     #endregion
 
@@ -227,30 +224,30 @@ public class ProtoINA : Player
     {
         if (!canMove) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y == 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
-            if(myBody.velocity.y == 0)
+            if(myBody.velocity.y == 0 && !horizontalAttackArea.activeInHierarchy)
                 playerAnimator.ChangeAnimation(myAnimator, move);
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
             {
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
-            if(myBody.velocity.y == 0)
+            if(myBody.velocity.y == 0 && !horizontalAttackArea.activeInHierarchy)
                 playerAnimator.ChangeAnimation(myAnimator, move);
         }
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-            if(myBody.velocity == Vector2.zero && !IsTeleporting)
+            if(myBody.velocity == Vector2.zero && !IsTeleporting && canAttack)
                 playerAnimator.ChangeAnimation(myAnimator, idle);
         }
     }

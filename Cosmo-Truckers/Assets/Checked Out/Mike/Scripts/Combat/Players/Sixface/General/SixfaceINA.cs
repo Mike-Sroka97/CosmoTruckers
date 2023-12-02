@@ -178,8 +178,6 @@ public class SixfaceINA : Player
     IEnumerator SixFaceAttack(GameObject attack)
     {
         canAttack = false;
-        canMove = false;
-        myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         attack.SetActive(true);
         attack.GetComponent<Collider2D>().enabled = true;
         yield return new WaitForSeconds(attackDuration);
@@ -187,7 +185,6 @@ public class SixfaceINA : Player
         attack.SetActive(false);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
-        canMove = true;
         playerAnimator.ChangeAnimation(bodyAnimator, idle);
     }
     #endregion
@@ -235,7 +232,7 @@ public class SixfaceINA : Player
     {
         if (!canMove) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A) && !horizontalAttackArea.activeInHierarchy)
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
             if (transform.rotation.eulerAngles.y == 0)
@@ -243,13 +240,13 @@ public class SixfaceINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
 
-            if (!IsHovering && canAttack && !isJumping)
+            if (!IsHovering && canAttack && !isJumping && !horizontalAttackArea.activeInHierarchy)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, move);
                 SetSixFacesFace(sixFaceFaces[0]);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D) && !horizontalAttackArea.activeInHierarchy)
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
@@ -257,7 +254,7 @@ public class SixfaceINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
 
-            if(!IsHovering && canAttack && !isJumping)
+            if(!IsHovering && canAttack && !isJumping && !horizontalAttackArea.activeInHierarchy)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, move);
                 SetSixFacesFace(sixFaceFaces[0]);
@@ -266,7 +263,7 @@ public class SixfaceINA : Player
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-            if (!IsHovering && canAttack && !isJumping && !iFrames)
+            if (!IsHovering && canAttack && !isJumping && !iFrames && canAttack)
             {
                 playerAnimator.ChangeAnimation(bodyAnimator, idle);
             }
