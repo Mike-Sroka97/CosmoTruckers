@@ -8,14 +8,21 @@ public class ElectroWhip : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
         enemies = FindObjectsOfType<ElectroWhipEnemy>();
         Score = enemies.Length;
+
+        foreach (ElectroWhipEnemy enemy in enemies)
+            enemy.Initialize();
     }
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        base.EndMove();
+        CombatManager.Instance.CharactersSelected[0].GetComponent<Enemy>().TauntedBy = CombatManager.Instance.GetCurrentPlayer;
     }
 }

@@ -44,7 +44,7 @@ public class aLaCarte : CombatMove
         }
 
         List<Character> characters = new List<Character>();
-        characters.Add(FindObjectOfType<AeglarPlayer>());
+        characters.Add(FindObjectOfType<AeglarCharacter>());
         return characters;
     }
 

@@ -82,7 +82,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &6806675141371785172
 GameObject:
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6806675141371785172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -135,13 +135,26 @@ MonoBehaviour:
   - {fileID: 6806675141528845545}
   layouts:
   - {fileID: 6164777756585526721, guid: c09617bc36a7e7f4b86ede0154f6dcd4, type: 3}
-  Score: 0
+  Damage: 2
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
+  Score: 4
   PlayerDead: 0
-  enemies:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  MoveEnded: 0
+  AugmentScore: 0
+  maxScore: 4
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 10
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &6806675141528845546
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +271,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &6806675142031489260
 BoxCollider2D:

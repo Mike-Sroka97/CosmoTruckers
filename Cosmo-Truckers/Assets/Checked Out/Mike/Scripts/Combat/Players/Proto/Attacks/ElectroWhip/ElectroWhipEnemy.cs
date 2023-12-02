@@ -38,6 +38,7 @@ public class ElectroWhipEnemy : MonoBehaviour
     bool isLeashed = true;
     bool overLoadedPositiveRotation = false;
     bool overLoadedNegativeRotation = false;
+    bool active = false;
 
     private void Start()
     {
@@ -64,7 +65,9 @@ public class ElectroWhipEnemy : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
         box = FindObjectOfType<ElectroWhipCenterBox>();
-        startingPos = transform.position;
+        startingPos = transform.localPosition;
+
+        UpdateLeash();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -75,17 +78,25 @@ public class ElectroWhipEnemy : MonoBehaviour
         }
     }
 
+    public void Initialize()
+    {
+        active = true;
+    }
+
     private void Update()
     {
-        CheckLeash();
+        UpdateLeash();
+
+        if (!active)
+            return;
 
         //Unleashed Stuff
+        CheckLeash();
         UnleashedMovement();
 
         //Leash Stuff
         LeashRotation();
         LeashMovement();
-        UpdateLeash();
     }
 
     private void CheckLeash()
@@ -93,7 +104,6 @@ public class ElectroWhipEnemy : MonoBehaviour
         if(Vector3.Distance(leashPoints[0], leashPoints[1]) > breakDistance && isLeashed)
         {
             minigame.Score--;
-            Debug.Log(minigame.Score);
             isLeashed = false;
             leash.enabled = false;
             StartingVelocity();
@@ -158,7 +168,7 @@ public class ElectroWhipEnemy : MonoBehaviour
 
     private void LeashRotation()
     {
-        if (!isLeashed)
+        if (!isLeashed && !releashing)
             return;
 
         //the magic 10s are just a buffer. SUE ME
@@ -196,7 +206,7 @@ public class ElectroWhipEnemy : MonoBehaviour
 
     private void LeashMovement()
     {
-        if (!isLeashed)
+        if (!isLeashed && ! releashing)
             return;
 
         transform.Translate(Vector2.up * leashedSpeed * Time.deltaTime);
@@ -218,19 +228,21 @@ public class ElectroWhipEnemy : MonoBehaviour
 
     IEnumerator Releash()
     {
-        isLeashed = false;
         releashing = true;
 
-        while (Vector3.Distance(transform.position, startingPos) > threshold)
+        while (Vector3.Distance(transform.localPosition, startingPos) > threshold)
         {
             // Calculate the direction towards the target position
-            Vector3 direction = (startingPos - transform.position).normalized;
+            Vector3 direction = (startingPos - transform.localPosition).normalized;
 
             // Move towards the target position
             transform.position += direction * releashSpeed * Time.deltaTime;
 
             yield return null;
         }
+
+        if(!isLeashed)
+            minigame.Score++;
 
         releashing = false;
         isLeashed = true;
