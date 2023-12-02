@@ -7,15 +7,20 @@ public class EnergonJab : CombatMove
     [SerializeField] float timeBetweenShockAreaActivations;
 
     EnergonJabShockArea[] shockAreas;
-    float currentTime = 2.5f;
     int lastRandom = -1;
     int lastlastRandom = -1;
+    bool trackShockZones = false;
 
     private void Start()
     {
         GenerateLayout();
+        currentTime = 2.5f;
         shockAreas = FindObjectsOfType<EnergonJabShockArea>();
-        StartMove();
+    }
+
+    public override void StartMove()
+    {
+        trackShockZones = true;
     }
 
     private void Update()
@@ -23,9 +28,12 @@ public class EnergonJab : CombatMove
         TrackTime();
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        if (!trackShockZones)
+            return;
+
+        base.TrackTime();
         
         if(currentTime >= timeBetweenShockAreaActivations)
         {
@@ -46,6 +54,16 @@ public class EnergonJab : CombatMove
 
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        base.EndMove();
+
+        ProtoMana mana = CombatManager.Instance.GetCurrentPlayer.GetComponent<ProtoMana>();
+
+        if (mana.CurrentBattery == 0)
+        {
+            if (Score >= maxScore)
+                mana.UpdateMana(2);
+            else if (Score >= maxScore / 2)
+                mana.UpdateMana(1);
+        }
     }
 }

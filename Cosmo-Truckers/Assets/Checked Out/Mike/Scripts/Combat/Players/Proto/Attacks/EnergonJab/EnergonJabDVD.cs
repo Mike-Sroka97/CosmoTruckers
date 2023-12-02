@@ -10,9 +10,11 @@ public class EnergonJabDVD : DVDlogoMovement
     float currentTime = 0;
     bool trackTime = false;
     SpriteRenderer[] myRenderers;
+    EnergonJab minigame;
 
     private void Start()
     {
+        minigame = GetComponentInParent<EnergonJab>();
         myRenderers = GetComponentsInChildren<SpriteRenderer>();
         Initialize();
         RandomStartVelocity();
@@ -44,10 +46,11 @@ public class EnergonJabDVD : DVDlogoMovement
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.tag == "PlayerAttack" && !trackTime)
         {
             trackTime = true;
-            foreach(SpriteRenderer sprite in myRenderers)
+            minigame.Score++;
+            foreach (SpriteRenderer sprite in myRenderers)
             {
                 sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
             }

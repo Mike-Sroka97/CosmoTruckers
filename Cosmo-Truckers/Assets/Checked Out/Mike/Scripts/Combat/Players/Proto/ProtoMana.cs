@@ -33,7 +33,7 @@ public class ProtoMana : Mana
             }
         }
     }
-    public void UpdateMana(int adjuster = 3)
+    public void UpdateMana(int adjuster)
     {
         //update mana
         CurrentBattery += adjuster;
