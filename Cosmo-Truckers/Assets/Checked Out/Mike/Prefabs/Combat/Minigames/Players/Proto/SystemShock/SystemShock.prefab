@@ -124,7 +124,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370651319881407
 CircleCollider2D:
@@ -157,6 +157,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370652804751200}
 --- !u!1 &3655370651333095207
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3655370651333095200}
   - component: {fileID: 3655370651333095201}
-  - component: {fileID: 3655370651333095202}
+  - component: {fileID: 3006598896612687845}
   m_Layer: 9
   m_Name: Center
   m_TagString: Untagged
@@ -243,9 +244,9 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &3655370651333095202
+--- !u!114 &3006598896612687845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -254,10 +255,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3655370651333095207}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c575c78f2be09348bd46f63769fa471, type: 3}
+  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 10
+  RotateSpeed: 0
 --- !u!1 &3655370651336733049
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +341,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651399393053
 GameObject:
@@ -456,7 +457,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651606881779
 GameObject:
@@ -540,7 +541,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651734185206
 GameObject:
@@ -655,7 +656,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651798789125
 GameObject:
@@ -739,7 +740,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651817042058
 GameObject:
@@ -823,7 +824,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370651838653482
 GameObject:
@@ -907,7 +908,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652006083528
 GameObject:
@@ -934,7 +935,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3655370652006083528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -964,8 +965,26 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 3655370651734185207}
   layouts: []
+  Damage: 0
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  defending: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
+  MoveEnded: 0
+  AugmentScore: 0
+  maxScore: 6
+  augmentStacksPerScore: 1
+  maxAugmentStacks: 0
+  baseDamage: 0
+  baseAugmentStacks: 6
+  timeToEndMove: 1
+  isDamaging: 0
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
   teleportBounds: {x: 2.8, y: 3.6, z: -2.8, w: -0.7}
   zappers:
   - {fileID: 3655370652777468861}
@@ -978,6 +997,7 @@ MonoBehaviour:
   - {fileID: 3655370651817042059}
   zap: {fileID: 3819122699065789282, guid: aeb6f772710d8e84080d4a3a1fcbd0d3, type: 3}
   zapDelay: 3.4
+  HittablesHit: 0
 --- !u!1 &3655370652007663999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1059,6 +1079,7 @@ GameObject:
   - component: {fileID: 3655370652169479233}
   - component: {fileID: 3655370652169479235}
   - component: {fileID: 3655370652169479234}
+  - component: {fileID: 6493675320712417755}
   m_Layer: 9
   m_Name: Blade (1)
   m_TagString: EnemyDamaging
@@ -1131,7 +1152,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &3655370652169479234
 BoxCollider2D:
@@ -1159,6 +1180,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6493675320712417755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3655370652169479232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &3655370652334838713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,7 +1276,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652339183139
 GameObject:
@@ -1325,7 +1360,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652363982239
 GameObject:
@@ -1410,7 +1445,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652368413267
 GameObject:
@@ -1495,7 +1530,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &3655370652368413262
 BoxCollider2D:
@@ -1607,7 +1642,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &3655370652374834646
 MonoBehaviour:
@@ -1636,6 +1671,7 @@ GameObject:
   - component: {fileID: 3655370652565784437}
   - component: {fileID: 3655370652565784439}
   - component: {fileID: 3655370652565784438}
+  - component: {fileID: 7098284775171432325}
   m_Layer: 9
   m_Name: Blade (2)
   m_TagString: EnemyDamaging
@@ -1708,7 +1744,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &3655370652565784438
 BoxCollider2D:
@@ -1736,6 +1772,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &7098284775171432325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3655370652565784436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &3655370652593755417
 GameObject:
   m_ObjectHideFlags: 0
@@ -1821,7 +1871,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370652593755419
 CircleCollider2D:
@@ -1854,6 +1904,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370651495471154}
 --- !u!1 &3655370652777468860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1936,7 +1987,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652786203129
 GameObject:
@@ -2020,7 +2071,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652798532692
 GameObject:
@@ -2107,7 +2158,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370652798532694
 CircleCollider2D:
@@ -2140,6 +2191,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370652786203131}
 --- !u!1 &3655370652804751206
 GameObject:
   m_ObjectHideFlags: 0
@@ -2222,7 +2274,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370652875996368
 GameObject:
@@ -2309,7 +2361,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370652875996370
 CircleCollider2D:
@@ -2342,6 +2394,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370651336733051}
 --- !u!1 &3655370652882418629
 GameObject:
   m_ObjectHideFlags: 0
@@ -2461,7 +2514,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370653016346346
 GameObject:
@@ -2546,7 +2599,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &3655370653016346341
 BoxCollider2D:
@@ -2585,6 +2638,7 @@ GameObject:
   - component: {fileID: 3655370653073012837}
   - component: {fileID: 3655370653073012839}
   - component: {fileID: 3655370653073012838}
+  - component: {fileID: 2579189677251102045}
   m_Layer: 9
   m_Name: Blade (0)
   m_TagString: EnemyDamaging
@@ -2657,7 +2711,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &3655370653073012838
 BoxCollider2D:
@@ -2685,6 +2739,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2579189677251102045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3655370653073012836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &3655370653100846575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2770,7 +2838,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370653100846569
 CircleCollider2D:
@@ -2803,6 +2871,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370651838653476}
 --- !u!1 &3655370653165454445
 GameObject:
   m_ObjectHideFlags: 0
@@ -2885,7 +2954,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &3655370653177211544
 GameObject:
@@ -2972,7 +3041,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &3655370653177211546
 CircleCollider2D:
@@ -3005,6 +3074,7 @@ MonoBehaviour:
   disabledColor: {r: 0, g: 0, b: 0, a: 1}
   enabledColor: {r: 1, g: 0, b: 1, a: 1}
   hitColor: {r: 0, g: 1, b: 0, a: 1}
+  myRenderer: {fileID: 3655370652928421858}
 --- !u!1 &3655370653268048914
 GameObject:
   m_ObjectHideFlags: 0

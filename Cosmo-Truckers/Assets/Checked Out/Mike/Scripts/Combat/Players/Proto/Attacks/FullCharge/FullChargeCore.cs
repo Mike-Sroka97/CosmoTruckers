@@ -12,11 +12,6 @@ public class FullChargeCore : MonoBehaviour
 
     [HideInInspector] public bool Following;
 
-    private void Start()
-    {
-        proto = FindObjectOfType<ProtoINA>();
-    }
-
     private void Update()
     {
         Follow();
@@ -27,7 +22,10 @@ public class FullChargeCore : MonoBehaviour
         if (!Following)
             return;
 
-        if(Vector2.Distance(transform.position, proto.transform.position) > maxDistance || proto.IsTeleporting)
+        if(proto == null)
+            proto = FindObjectOfType<ProtoINA>();
+
+        if (Vector2.Distance(transform.position, proto.transform.position) > maxDistance || proto.IsTeleporting)
         {
             Following = false;
         }

@@ -10,16 +10,20 @@ public class SystemShockTurret : MonoBehaviour
     [SerializeField] Transform barrel;
     [SerializeField] GameObject zap;
 
+    bool initialized = false;
     float currentTime = 0;
     ProtoINA proto;
-
-    private void Start()
+    public void Initialize()
     {
         proto = FindObjectOfType<ProtoINA>();
+        initialized = true;
     }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         RotateMe();
         TrackTime();
     }

@@ -12,50 +12,59 @@ public class SystemShock : CombatMove
 
     SystemShockHittable[] hittables;
     ProtoINA proto;
-    float currentTime = 0;
     int lastRandom = -1;
     int lastRandomAgain = -1;
     int lastHittableRandom = -1;
     int lastHittableRandomAgain = -1;
+    public int HittablesHit = 0;
+    float currentTurretTime = 0;
+    bool initialized = false;
 
     private void Start()
     {
         hittables = FindObjectsOfType<SystemShockHittable>();
+        GenerateHittables();
+    }
+
+    public override void StartMove()
+    {
         proto = FindObjectOfType<ProtoINA>();
         proto.SetTelportBoundaries(teleportBounds.x, teleportBounds.y, teleportBounds.z, teleportBounds.w);
-        GenerateHittables();
-        StartMove();
+        SystemShockTurret[] turrets = FindObjectsOfType<SystemShockTurret>();
+        foreach (SystemShockTurret turret in turrets)
+            turret.Initialize();
+        FindObjectOfType<Rotator>().RotateSpeed = 10;
+
+        initialized = true;
     }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         TrackScore();
         TrackTime();
     }
 
     private void TrackScore()
     {
-
-        int hittablesHit = 0;
-        foreach(SystemShockHittable hittable in hittables)
+        if(HittablesHit >= 2)
         {
-            if (hittable.Hit)
-                hittablesHit++;
-        }
-
-        if(hittablesHit >= 2)
-        {
+            HittablesHit = 0;
             GenerateHittables();
         }
     }
 
-    private void TrackTime()
+    protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        base.TrackTime();
 
-        if(currentTime >= zapDelay)
+        currentTurretTime += Time.deltaTime;
+
+        if(currentTurretTime >= zapDelay)
         {
-            currentTime = 0;
+            currentTurretTime = 0;
 
             int randomOne = UnityEngine.Random.Range(0, zappers.Length);
 
@@ -109,6 +118,7 @@ public class SystemShock : CombatMove
 
     public override void EndMove()
     {
+        base.EndMove();
         proto.ResetTeleportBoundaries();
     }
 }

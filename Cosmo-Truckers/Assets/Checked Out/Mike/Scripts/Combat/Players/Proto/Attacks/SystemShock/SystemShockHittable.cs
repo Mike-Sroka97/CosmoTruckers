@@ -7,16 +7,15 @@ public class SystemShockHittable : MonoBehaviour
     [SerializeField] Color disabledColor;
     [SerializeField] Color enabledColor;
     [SerializeField] Color hitColor;
+    [SerializeField] SpriteRenderer myRenderer;
     [HideInInspector] public bool Hit { get; private set; }
 
-    SpriteRenderer myRenderer;
+
     Collider2D myCollider;
     SystemShock minigame;
 
     private void Start()
     {
-        myRenderer = GetComponentsInChildren<SpriteRenderer>()[1];
-        myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<SystemShock>();
     }
 
@@ -28,15 +27,17 @@ public class SystemShockHittable : MonoBehaviour
 
     public void ActivateMe()
     {
+        myCollider = GetComponent<Collider2D>();
         myRenderer.color = enabledColor;
         myCollider.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if (collision.tag == "PlayerAttack" && !Hit)
         {
-            minigame.Score++;
+            minigame.AugmentScore++;
+            minigame.GetComponent<SystemShock>().HittablesHit++;
             Hit = true;
             myRenderer.color = hitColor;
             myCollider.enabled = false;

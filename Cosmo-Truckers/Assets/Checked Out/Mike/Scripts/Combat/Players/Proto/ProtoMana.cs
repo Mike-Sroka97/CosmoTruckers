@@ -6,6 +6,7 @@ public class ProtoMana : Mana
 {
     ProtoVessel protoVessel;
     public int CurrentBattery = 0;
+    public bool InUse = false;
 
     const int maxBattery = 4;
 
@@ -22,6 +23,8 @@ public class ProtoMana : Mana
         {
             foreach (ProtoAttackSO attack in attacks)
             {
+                FullChargeCheck(attack);
+
                 if (attack.BatteryCost <= CurrentBattery)
                 {
                     attack.CanUse = true;
@@ -33,6 +36,15 @@ public class ProtoMana : Mana
             }
         }
     }
+
+    private void FullChargeCheck(ProtoAttackSO attack)
+    {
+        if (attack.AttackName == "Full Charage" && InUse)
+            attack.BatteryCost = 5; //more mana than Proto will ever have
+        else if (attack.AttackName == "Full Charge")
+            attack.BatteryCost = CurrentBattery;
+    }
+
     public void UpdateMana(int adjuster)
     {
         //update mana
