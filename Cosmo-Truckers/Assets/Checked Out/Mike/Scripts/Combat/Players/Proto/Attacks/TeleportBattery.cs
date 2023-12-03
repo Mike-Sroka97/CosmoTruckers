@@ -24,8 +24,7 @@ public class TeleportBattery : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
         startColor = myRenderer.color;
-        startingPosition = transform.position;
-        proto = FindObjectOfType<ProtoINA>();
+        startingPosition = transform.localPosition;
 
         int random = UnityEngine.Random.Range(0, 2);
 
@@ -48,18 +47,18 @@ public class TeleportBattery : MonoBehaviour
     {
         if(movingUp)
         {
-            transform.position += new Vector3(0, floatSpeed * Time.deltaTime, 0);
+            transform.localPosition += new Vector3(0, floatSpeed * Time.deltaTime, 0);
 
-            if(transform.position.y > startingPosition.y + clamp)
+            if(transform.localPosition.y > startingPosition.y + clamp)
             {
                 movingUp = false;
             }
         }
         else
         {
-            transform.position -= new Vector3(0, floatSpeed * Time.deltaTime, 0);
+            transform.localPosition -= new Vector3(0, floatSpeed * Time.deltaTime, 0);
 
-            if (transform.position.y < startingPosition.y - clamp)
+            if (transform.localPosition.y < startingPosition.y - clamp)
             {
                 movingUp = true;
             }
@@ -81,6 +80,9 @@ public class TeleportBattery : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            if(proto == null)
+                proto = FindObjectOfType<ProtoINA>();
+
             proto.SetCanTeleport(rechargeTeleport);
             if(destroyMe)
             {

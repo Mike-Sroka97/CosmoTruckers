@@ -44,6 +44,7 @@ public class TripleTetherEnemy : MonoBehaviour
     bool isAttacking;
     bool movingLeft;
     bool startDelay = true;
+    bool initialized = false;
 
     private void Awake()
     {
@@ -54,11 +55,19 @@ public class TripleTetherEnemy : MonoBehaviour
     {
         myBody = GetComponent<Rigidbody2D>();
         minigame = FindObjectOfType<TripleTether>();
+    }
+
+    public void Intialize()
+    {
+        initialized = true;
         proto = FindObjectOfType<ProtoINA>();
     }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         TrackRotation();
         Attack();
         MoveTowardsPlayer();
