@@ -105,6 +105,11 @@ public class SixfaceINA : Player
         }
     }
 
+    private bool Grounded()
+    {
+        return Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask);
+    }
+
     public override IEnumerator Damaged()
     {
         canMove = false;
@@ -285,6 +290,15 @@ public class SixfaceINA : Player
     {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space)) && canHover)
         {
+            if (IsHovering && Grounded())
+            {
+                IsHovering = false;
+                canHover = false;
+                SetSixFacesFace(sixFaceFaces[0]);
+                playerAnimator.ChangeAnimation(bodyAnimator, idle);
+                return;
+            }
+
             IsHovering = true;
             myBody.gravityScale = hoverGravityModifier;
             if(myBody.velocity.y < hoverVelocityYMax)
