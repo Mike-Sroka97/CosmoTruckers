@@ -39,6 +39,7 @@ public class QuestionableDeal : CombatMove
         if(currentTime >= MinigameDuration - 3 && Moving)
         {
             myBody.velocity = Vector2.zero;
+            GetComponent<ParentPlayer>().AdjustPlayerVelocity(myBody.velocity.x, myBody.velocity.y);
             Moving = false;
             PlayerDead = true;
             Score = 1;

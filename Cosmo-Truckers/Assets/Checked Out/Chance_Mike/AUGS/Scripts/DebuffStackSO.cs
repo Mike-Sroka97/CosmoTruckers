@@ -95,6 +95,9 @@ public class DebuffStackSO : ScriptableObject
 
         //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
         if (temp.GetComponent<Augment>().Stacks <= 0)
+        {
             MyCharacter.AugmentsToRemove.Add(this);
+            StopEffect();
+        }
     }
 }

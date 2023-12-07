@@ -10,6 +10,6 @@ public class FullCharge : CombatMove
     }
     public override void EndMove()
     {
-        Debug.Log("move done");
+        base.EndMove();
     }
 }
