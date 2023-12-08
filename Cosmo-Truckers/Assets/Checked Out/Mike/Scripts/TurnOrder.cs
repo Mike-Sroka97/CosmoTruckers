@@ -75,6 +75,8 @@ public class TurnOrder : MonoBehaviour
 
     public void EndTurn()
     {
+        EnemyManager.Instance.UpdateTrashMobList();
+
         livingCharacters[currentCharactersTurn].GetComponent<Character>().FadeAugments();
         if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
         {
@@ -154,7 +156,7 @@ public class TurnOrder : MonoBehaviour
         }
         livingCharacters = speedList.ToArray();
 
-        EnemyManager.Instance.UpdateTrashMobList();
+        //EnemyManager.Instance.UpdateTrashMobList();
     }
 
     public void AddToSpeedList(CharacterStats characterSpeed)
@@ -169,7 +171,7 @@ public class TurnOrder : MonoBehaviour
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
 
-        EnemyManager.Instance.UpdateTrashMobList();
+        //EnemyManager.Instance.UpdateTrashMobList();
     }
 
     public void EndCombat()

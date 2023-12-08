@@ -374,6 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
   AUGS: []
+  AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 3105286010299706996}
   Health: 35
@@ -381,6 +382,8 @@ MonoBehaviour:
   - {fileID: 8121223236178758319}
   - {fileID: 508866206795611117}
   CombatSpot: 0
+  FlatDamageAdjustment: 0
+  FlatHealingAdjustment: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
@@ -393,6 +396,7 @@ MonoBehaviour:
   healingColor: {r: 0, g: 1, b: 0, a: 1}
   fadeSpeed: 2
   moveSpeed: 0.5
+  IsBoss: 0
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 0
   IsTrash: 1
@@ -414,6 +418,7 @@ MonoBehaviour:
   Vigor: 100
   Speed: 100
   Damage: 100
+  Restoration: 100
 --- !u!95 &3105286010299707272
 Animator:
   serializedVersion: 4

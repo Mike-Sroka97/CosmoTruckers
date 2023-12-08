@@ -81,6 +81,7 @@ public class EnemyManager : MonoBehaviour
                 {
                     EnemyCombatSpots[i] = prefab.GetComponent<Character>();
                     prefab.GetComponent<Character>().CombatSpot = i;
+                    prefab.name = $"{prefab.name}{i}";
                 }
 
                 enemyCount += prefab.GetComponent<Character>().GetSpaceTaken;
