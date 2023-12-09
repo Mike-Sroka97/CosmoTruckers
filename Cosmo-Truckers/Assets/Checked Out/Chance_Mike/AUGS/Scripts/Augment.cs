@@ -50,6 +50,8 @@ public abstract class Augment : MonoBehaviour
         additionalStatusEffect = stack.StackValue.y;
         Stacks = stack.CurrentStacks;
         MaxStatusEffect = stack.StackValue.x + stack.StackValue.y * (stack.MaxStacks - 1);
+        if (DebuffSO.LastStacks == -1)
+            DebuffSO.LastStacks = Stacks;
     }
 
     protected void AdjustMaxStatusEffect()

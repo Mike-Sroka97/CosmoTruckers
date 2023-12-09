@@ -230,6 +230,12 @@ public class Targeting : MonoBehaviour
 
     private void ReactivateCombatManager(bool enemyTargeting = false)
     {
+        foreach(DebuffStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
+        {
+            if (aug.OnSpellCast)
+                aug.DebuffEffect();
+        }
+
         //actually adds cone targets to the list
         if(currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
         {

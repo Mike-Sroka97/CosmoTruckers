@@ -8,11 +8,8 @@ public class AUG_DeviceInUse : Augment
 
     public override void StopEffect()
     {
-        //Add mega watt
-        ProtoMana mana = FindObjectOfType<ProtoMana>();
-        int batteryOverrage = mana.CurrentBattery;
-
         //Recharge battery
+        ProtoMana mana = FindObjectOfType<ProtoMana>();
         mana.UpdateMana(fullCharge);
     }
 }

@@ -78,6 +78,7 @@ public class TurnOrder : MonoBehaviour
         EnemyManager.Instance.UpdateTrashMobList();
 
         livingCharacters[currentCharactersTurn].GetComponent<Character>().FadeAugments();
+
         if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
         {
             livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();

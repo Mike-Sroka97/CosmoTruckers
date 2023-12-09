@@ -39,6 +39,9 @@ public abstract class CombatMove : MonoBehaviour
 
     protected float currentTime = 0;
 
+    public bool GetIsDamaging() { return isDamaging; }
+    public bool GetIsHealing() { return isHealing; }
+
     private void Awake()
     {
         if (spawnTest)
@@ -129,7 +132,7 @@ public abstract class CombatMove : MonoBehaviour
                         float DamageAdj = 1;
 
                         //Damage on players must be divided by 100 to multiply the final
-                        DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+                        DamageAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
 
                         character.TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
                     }
@@ -140,7 +143,7 @@ public abstract class CombatMove : MonoBehaviour
                         float HealingAdj = 1;
 
                         //Damage on players must be divided by 100 to multiply the final
-                        HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+                        HealingAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
 
                         character.TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
                     }

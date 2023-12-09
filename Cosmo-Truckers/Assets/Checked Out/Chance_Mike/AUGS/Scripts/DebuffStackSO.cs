@@ -15,6 +15,7 @@ public class DebuffStackSO : ScriptableObject
     public bool OnDamage;
     public bool EveryTurnEnd;
     public bool EveryTurnStart;
+    public bool OnSpellCast;
 
     [Header("Base Variables")]
     public string DebuffName;
@@ -100,4 +101,6 @@ public class DebuffStackSO : ScriptableObject
             StopEffect();
         }
     }
+
+    public void SetFade(int newFade) { fadePerTurn = newFade; }
 }

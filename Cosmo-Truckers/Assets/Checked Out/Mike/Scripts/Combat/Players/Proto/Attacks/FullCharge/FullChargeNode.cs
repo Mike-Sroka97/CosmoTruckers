@@ -36,7 +36,7 @@ public class FullChargeNode : MonoBehaviour
         if(nodeFull && pairingNode.nodeFull && !connectionMade)
         {
             connectionMade = true;
-            minigame.Score++;
+            minigame.AugmentScore += 2;
 
             pairLine.startColor = pairLineColor;
             pairLine.endColor = pairLineColor;
@@ -44,10 +44,6 @@ public class FullChargeNode : MonoBehaviour
             if(gate != null)
             {
                 gate.SetActive(false);
-            }
-            else
-            {
-                minigame.EndMove();
             }
         }
     }
