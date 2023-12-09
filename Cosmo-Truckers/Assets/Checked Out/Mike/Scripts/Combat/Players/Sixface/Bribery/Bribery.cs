@@ -57,7 +57,7 @@ public class Bribery : CombatMove
         for(int i = 0; i < enemies.Length; i++)
         {
             enemies[i].StartDelay = startDelays[randomIndices[i]];
-            enemies[i].SetMoveValues(movementSpeeds[i], sendBackDistances[i]); 
+            enemies[i].SetMoveValues(movementSpeeds[randomIndices[i]], sendBackDistances[randomIndices[i]]); 
         }
     }
 
