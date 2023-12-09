@@ -120,5 +120,11 @@ public class SystemShock : CombatMove
     {
         base.EndMove();
         proto.ResetTeleportBoundaries();
+
+        //mana stuff
+        ProtoMana mana = FindObjectOfType<ProtoMana>();
+        if (AugmentScore > maxAugmentStacks)
+            AugmentScore = maxAugmentStacks;
+        mana.AdjustRetention(AugmentScore / 3); //3 because it is 1/3 of the debuff stacks to give out
     }
 }

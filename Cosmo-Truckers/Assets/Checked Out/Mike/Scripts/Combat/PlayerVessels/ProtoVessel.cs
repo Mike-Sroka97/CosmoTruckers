@@ -8,6 +8,7 @@ public class ProtoVessel : PlayerVessel
     [SerializeField] Image[] batteryPips;
     [SerializeField] Color offColor;
     [SerializeField] Color onColor;
+    [SerializeField] Color retentionColor;
 
     ProtoMana protoMana;
 
@@ -28,10 +29,13 @@ public class ProtoVessel : PlayerVessel
         //set current mana
         protoMana = MyMana.GetComponent<ProtoMana>();
         int batteryCount = protoMana.CurrentBattery;
+        int retentionCount = protoMana.CurrentRetention;
 
         for (int i = 0; i < maxBattery; i++)
         {
-            if (i < batteryCount)
+            if(i < retentionCount)
+                batteryPips[i].color = retentionColor;
+            else if (i < batteryCount)
                 batteryPips[i].color = onColor;
             else
                 batteryPips[i].color = offColor;

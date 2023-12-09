@@ -6,6 +6,8 @@ public class ProtoMana : Mana
 {
     ProtoVessel protoVessel;
     public int CurrentBattery = 0;
+    public int CurrentRetention = 0;
+    public bool ResetRetention = false;
     public bool InUse = false;
 
     const int maxBattery = 4;
@@ -39,7 +41,7 @@ public class ProtoMana : Mana
 
     private void FullChargeCheck(ProtoAttackSO attack)
     {
-        if (attack.AttackName == "Full Charage" && InUse)
+        if (attack.AttackName == "Full Charge" && InUse)
             attack.BatteryCost = 5; //more mana than Proto will ever have
         else if (attack.AttackName == "Full Charge")
             attack.BatteryCost = CurrentBattery;
@@ -49,6 +51,9 @@ public class ProtoMana : Mana
     {
         //update mana
         CurrentBattery += adjuster;
+
+        if (CurrentBattery < CurrentRetention)
+            CurrentBattery = CurrentRetention;
 
         if (CurrentBattery > maxBattery)
             CurrentBattery = maxBattery;
@@ -62,5 +67,23 @@ public class ProtoMana : Mana
     {
         base.SetVessel(newVessel);
         protoVessel = MyVessel.GetComponent<ProtoVessel>();
+    }
+
+    public void AdjustRetention(int newRetention)
+    {
+        if (newRetention > CurrentBattery)
+            CurrentRetention = CurrentBattery;
+        else
+            CurrentRetention = newRetention;
+
+        MyVessel.ManaTracking();
+    }
+
+    public void ClearRetention()
+    {
+        ResetRetention = false;
+        CurrentRetention = 0;
+
+        MyVessel.ManaTracking();
     }
 }

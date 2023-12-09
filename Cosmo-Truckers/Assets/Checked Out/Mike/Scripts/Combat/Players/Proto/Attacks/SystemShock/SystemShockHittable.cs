@@ -34,6 +34,8 @@ public class SystemShockHittable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision);
+
         if (collision.tag == "PlayerAttack" && !Hit)
         {
             minigame.AugmentScore++;
