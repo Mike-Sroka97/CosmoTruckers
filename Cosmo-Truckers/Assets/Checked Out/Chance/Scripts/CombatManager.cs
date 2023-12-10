@@ -335,7 +335,8 @@ public class CombatManager : MonoBehaviour
 
         foreach (Augment augment in augments)
         {
-            Destroy(augment.gameObject);
+            if(augment.DebuffSO.InCombat)
+                Destroy(augment.gameObject);
         }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)

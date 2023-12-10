@@ -42,6 +42,10 @@ public class PlayerCharacter : Character
 
     private void Start()
     {
+        foreach (DebuffStackSO augment in passiveAugments)
+            if (!AUGS.Contains(augment))
+                AddDebuffStack(augment);
+
         foreach (DebuffStackSO augment in AUGS)
             augment.MyCharacter = this;
 

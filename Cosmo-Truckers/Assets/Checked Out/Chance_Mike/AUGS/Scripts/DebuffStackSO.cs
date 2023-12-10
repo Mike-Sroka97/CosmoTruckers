@@ -99,6 +99,7 @@ public class DebuffStackSO : ScriptableObject
         {
             MyCharacter.AugmentsToRemove.Add(this);
             StopEffect();
+            Destroy(temp);
         }
     }
 

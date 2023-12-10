@@ -16,7 +16,7 @@ public class SparkShieldCollectable : MonoBehaviour
     SparkShield miniGame;
     Rigidbody2D myBody;
 
-    private void Start()
+    public void Initialize()
     {
         miniGame = FindObjectOfType<SparkShield>();
         myBody = GetComponent<Rigidbody2D>();
@@ -34,20 +34,28 @@ public class SparkShieldCollectable : MonoBehaviour
         myBody.velocity = new Vector2(tempX, tempY);
     }
 
-    private void TypeSpecificTrigger()
+    private void TypeSpecificTrigger(bool playerIframes)
     {
         if(isProton)
         {
+            if (playerIframes)
+                return;
+
             miniGame.Score += score;
         }
         else if(isNeutron)
         {
-            miniGame.PlayerBuff = true;
+            miniGame.AugmentScore++;
         }
         else if(isElectron)
         {
+            if (playerIframes)
+                return;
+
             miniGame.Score -= score;
         }
+
+        Destroy(gameObject);
     }
 
     public void VelocityUpdate(int quadrant)
@@ -80,9 +88,7 @@ public class SparkShieldCollectable : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            TypeSpecificTrigger();
-            Debug.Log(miniGame.Score);
-            Destroy(gameObject);
+            TypeSpecificTrigger(FindObjectOfType<Player>().iFrames);
         }
         else if(collision.gameObject.name == "PlayArea")
         {

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
-  m_Name: DeviceInUse
+  m_Name: Grounded
   m_EditorClassIdentifier: 
   InCombat: 0
   StartUp: 0
@@ -21,16 +21,16 @@ MonoBehaviour:
   EveryTurnEnd: 0
   EveryTurnStart: 0
   OnSpellCast: 0
-  DebuffName: Device In Use
-  DebuffDescription: Your battery will fully charge when all stacks of this augment
-    are removed. Any excess charge will be converted into Mega Watt.
+  DebuffName: Grounded
+  DebuffDescription: Gain megawatt equal to your grounded stacks when you battery
+    reaches 0 charge.
   MyCharacter: {fileID: 0}
-  IsBuff: 0
-  IsDebuff: 1
+  IsBuff: 1
+  IsDebuff: 0
   Stackable: 1
-  MaxStacks: 2
+  MaxStacks: 10
   LastStacks: -1
   currentStacks: 0
-  StackValue: {x: 0, y: 0}
+  StackValue: {x: 1, y: 1}
   fadePerTurn: 0
-  AugSpawner: {fileID: 8266763927990048678, guid: 1fbbc6b1abadf2a4f9716aff9b8bd229, type: 3}
+  AugSpawner: {fileID: 8266763927990048678, guid: b31cc41cb14b43e4db6fa2712ad9bb01, type: 3}

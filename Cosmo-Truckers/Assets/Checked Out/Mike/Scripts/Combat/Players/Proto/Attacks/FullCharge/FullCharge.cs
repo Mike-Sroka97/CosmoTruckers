@@ -22,5 +22,6 @@ public class FullCharge : CombatMove
         //Apply augment
         CombatManager.Instance.GetCurrentPlayer.AddDebuffStack(megawatt, augmentStacks);
         CombatManager.Instance.GetCurrentPlayer.AddDebuffStack(DebuffToAdd, 2); //always two on device in use
+        FindObjectOfType<ProtoMana>().InUse = true;
     }
 }

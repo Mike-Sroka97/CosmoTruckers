@@ -49,6 +49,8 @@ public class ProtoMana : Mana
 
     public void UpdateMana(int adjuster)
     {
+        int tempBattery = CurrentBattery;
+
         //update mana
         CurrentBattery += adjuster;
 
@@ -59,6 +61,15 @@ public class ProtoMana : Mana
             CurrentBattery = maxBattery;
         else if (CurrentBattery < 0)
             CurrentBattery = 0;
+
+        //Triggers Grounded if you had more than 0 battery 
+        if(CurrentBattery == 0 && tempBattery > 0)
+            foreach (DebuffStackSO aug in myCharacter.GetAUGS)
+                if (aug.name == "Grounded(Clone)")
+                {
+                    aug.DebuffEffect();
+                    break;
+                }
 
         MyVessel.ManaTracking();
     }

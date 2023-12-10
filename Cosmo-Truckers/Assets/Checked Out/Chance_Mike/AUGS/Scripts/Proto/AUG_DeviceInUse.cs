@@ -11,5 +11,6 @@ public class AUG_DeviceInUse : Augment
         //Recharge battery
         ProtoMana mana = FindObjectOfType<ProtoMana>();
         mana.UpdateMana(fullCharge);
+        mana.InUse = false;
     }
 }

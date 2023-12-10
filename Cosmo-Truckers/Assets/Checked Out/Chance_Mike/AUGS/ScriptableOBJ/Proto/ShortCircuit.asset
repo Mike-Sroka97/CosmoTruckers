@@ -10,27 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
-  m_Name: DeviceInUse
+  m_Name: ShortCircuit
   m_EditorClassIdentifier: 
   InCombat: 0
   StartUp: 0
   TurnStart: 0
   TurnEnd: 0
   StatChange: 0
-  OnDamage: 0
+  OnDamage: 1
   EveryTurnEnd: 0
   EveryTurnStart: 0
-  OnSpellCast: 0
-  DebuffName: Device In Use
-  DebuffDescription: Your battery will fully charge when all stacks of this augment
-    are removed. Any excess charge will be converted into Mega Watt.
+  OnSpellCast: 1
+  DebuffName: Short Circuit
+  DebuffDescription: Lol idk
   MyCharacter: {fileID: 0}
   IsBuff: 0
-  IsDebuff: 1
+  IsDebuff: 0
   Stackable: 1
-  MaxStacks: 2
+  MaxStacks: 30
   LastStacks: -1
   currentStacks: 0
-  StackValue: {x: 0, y: 0}
+  StackValue: {x: 1, y: 1}
   fadePerTurn: 0
-  AugSpawner: {fileID: 8266763927990048678, guid: 1fbbc6b1abadf2a4f9716aff9b8bd229, type: 3}
+  AugSpawner: {fileID: 8266763927990048678, guid: e724b7c26f8fa3440a2567943db2093d, type: 3}

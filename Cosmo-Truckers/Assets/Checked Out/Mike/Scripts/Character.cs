@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected EnemyPassiveBase passiveMove;
+    [SerializeField] protected DebuffStackSO[] passiveAugments;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
     public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
     [SerializeField] protected int maxShield = 60;
