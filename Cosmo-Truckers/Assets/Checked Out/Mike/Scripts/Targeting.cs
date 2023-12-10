@@ -230,12 +230,6 @@ public class Targeting : MonoBehaviour
 
     private void ReactivateCombatManager(bool enemyTargeting = false)
     {
-        foreach(DebuffStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
-        {
-            if (aug.OnSpellCast)
-                aug.DebuffEffect();
-        }
-
         //actually adds cone targets to the list
         if(currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
         {
@@ -262,7 +256,27 @@ public class Targeting : MonoBehaviour
                 }
             }
 
-            if(CombatManager.Instance.GetCurrentPlayer)
+            if(enemyTargeting && CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().IsTrash)
+            {
+                foreach(Enemy enemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().CharacterName])
+                {
+                    foreach (DebuffStackSO aug in enemy.GetAUGS)
+                    {
+                        if (aug.OnSpellCast)
+                            aug.DebuffEffect();
+                    }
+                }
+            }
+            else
+            {
+                foreach (DebuffStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
+                {
+                    if (aug.OnSpellCast)
+                        aug.DebuffEffect();
+                }
+            }
+
+            if (CombatManager.Instance.GetCurrentPlayer)
                 CombatManager.Instance.GetCurrentPlayer.PlayerAttackUI.HandleMana();
             CombatManager.Instance.TargetsSelected = true;
             isTargeting = false;

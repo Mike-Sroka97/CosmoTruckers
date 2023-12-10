@@ -62,8 +62,11 @@ public class DebuffStackSO : ScriptableObject
 
     public void SetTemp()
     {
-        if (temp == null) temp = Instantiate(AugSpawner);
-        temp.GetComponent<Augment>().InitializeAugment(this);
+        if (temp == null)
+        {
+            temp = Instantiate(AugSpawner);
+            temp.GetComponent<Augment>().InitializeAugment(this);
+        }
     }
 
     public virtual void DebuffEffect() 

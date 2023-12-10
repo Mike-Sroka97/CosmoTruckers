@@ -125,6 +125,10 @@ public class SystemShock : CombatMove
         ProtoMana mana = FindObjectOfType<ProtoMana>();
         if (AugmentScore > maxAugmentStacks)
             AugmentScore = maxAugmentStacks;
-        mana.AdjustRetention(AugmentScore / 3); //3 because it is 1/3 of the debuff stacks to give out
+
+        int retention = AugmentScore / 3;
+        if (retention > 2)
+            retention = 2;
+        mana.AdjustRetention(retention); //3 because it is 1/3 of the debuff stacks to give out
     }
 }
