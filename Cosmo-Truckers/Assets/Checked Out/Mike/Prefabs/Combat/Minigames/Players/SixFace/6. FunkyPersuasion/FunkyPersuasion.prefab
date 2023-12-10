@@ -65,6 +65,37 @@ Transform:
   m_Father: {fileID: 1280960183160664524}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &1191375342249162421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5618224153895891127}
+  m_Layer: 0
+  m_Name: SpawnPosition (0)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5618224153895891127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191375342249162421}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.42, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1280960182683371758}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1280960181407393278
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +869,7 @@ GameObject:
   - component: {fileID: 1280960182683371667}
   - component: {fileID: 1280960182683371756}
   - component: {fileID: 1280960182683371666}
+  - component: {fileID: 4433391942720907448}
   m_Layer: 0
   m_Name: TrashZoneCollider
   m_TagString: Untagged
@@ -856,7 +888,10 @@ Transform:
   m_LocalPosition: {x: 3, y: -3.8, z: 0}
   m_LocalScale: {x: 5, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5618224153895891127}
+  - {fileID: 5620908233298400638}
+  - {fileID: 469289296262008747}
   m_Father: {fileID: 6974274102564323896}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -901,6 +936,9 @@ MonoBehaviour:
   twoPointDistance: 0
   onePointDistance: 0
   trashZone: 1
+  dancePose: {fileID: 0}
+  dancePoseSpawn: {fileID: 0}
+  dancePoseSprite: {fileID: 0}
 --- !u!50 &1280960182683371666
 Rigidbody2D:
   serializedVersion: 4
@@ -922,6 +960,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4433391942720907448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1280960182683371759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 072e8857af1f24f4bab4a89b476552c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trashDestroyParticle: {fileID: 3578404410875928182, guid: 05dfccc5be253004c9565959f6e87084, type: 3}
+  spawnPoints:
+  - {fileID: 5618224153895891127}
+  - {fileID: 5620908233298400638}
+  - {fileID: 469289296262008747}
+  distanceCheck: 1
 --- !u!1 &1280960182720553114
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,7 +1125,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 237562362, guid: ddb3bfb8467059d4cbfc2832c8fe57ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1143,6 +1199,9 @@ MonoBehaviour:
   twoPointDistance: 0.1
   onePointDistance: 0.3
   trashZone: 0
+  dancePose: {fileID: 5414010671606946654, guid: 5e65f42ee645c1c4fb54218cfd1fff78, type: 3}
+  dancePoseSpawn: {fileID: 1241056707}
+  dancePoseSprite: {fileID: 1831061666, guid: eda35ccccce96a04db7844b473735f6f, type: 3}
 --- !u!1 &1280960182983081154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,9 +1287,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myDDRbuttonCollider: {fileID: 1280960183296370950}
-  toggledMaterial: {fileID: 0}
+  toggledMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
   onTime: 0.2
-  myDDRbuttonRenderer: {fileID: 0}
+  myDDRbuttonRenderer: {fileID: 1280960183296370949}
+  myRenderer: {fileID: 5833144180799691641}
 --- !u!50 &1280960183097441852
 Rigidbody2D:
   serializedVersion: 4
@@ -1590,7 +1650,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1610327911, guid: ddb3bfb8467059d4cbfc2832c8fe57ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1664,6 +1724,9 @@ MonoBehaviour:
   twoPointDistance: 0.1
   onePointDistance: 0.3
   trashZone: 0
+  dancePose: {fileID: 5414010671606946654, guid: 5e65f42ee645c1c4fb54218cfd1fff78, type: 3}
+  dancePoseSpawn: {fileID: 1241056707}
+  dancePoseSprite: {fileID: -1098607448, guid: eda35ccccce96a04db7844b473735f6f, type: 3}
 --- !u!1 &1280960183296370944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1739,7 +1802,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 1984973599, guid: ddb3bfb8467059d4cbfc2832c8fe57ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1813,6 +1876,9 @@ MonoBehaviour:
   twoPointDistance: 0.1
   onePointDistance: 0.3
   trashZone: 0
+  dancePose: {fileID: 5414010671606946654, guid: 5e65f42ee645c1c4fb54218cfd1fff78, type: 3}
+  dancePoseSpawn: {fileID: 1241056707}
+  dancePoseSprite: {fileID: 1147308070, guid: eda35ccccce96a04db7844b473735f6f, type: 3}
 --- !u!1 &1280960183299819496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,6 +2047,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!1 &2169471034126100833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 469289296262008747}
+  m_Layer: 0
+  m_Name: SpawnPosition (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &469289296262008747
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169471034126100833}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.42, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1280960182683371758}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2723393488003279840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5620908233298400638}
+  m_Layer: 0
+  m_Name: SpawnPosition (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5620908233298400638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2723393488003279840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1280960182683371758}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3336027953298469497
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,9 +2259,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myDDRbuttonCollider: {fileID: 1280960182901175877}
-  toggledMaterial: {fileID: 0}
+  toggledMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
   onTime: 0.2
-  myDDRbuttonRenderer: {fileID: 0}
+  myDDRbuttonRenderer: {fileID: 1280960182901175876}
+  myRenderer: {fileID: 8352979658177683117}
 --- !u!50 &1834622960854453119
 Rigidbody2D:
   serializedVersion: 4
@@ -2336,7 +2465,7 @@ GameObject:
   - component: {fileID: 2675392387151432569}
   - component: {fileID: 4006386868903939415}
   m_Layer: 9
-  m_Name: ButtonLeft
+  m_Name: ButtonRight
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2370,9 +2499,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myDDRbuttonCollider: {fileID: 1280960183276798003}
-  toggledMaterial: {fileID: 0}
+  toggledMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
   onTime: 0.2
-  myDDRbuttonRenderer: {fileID: 0}
+  myDDRbuttonRenderer: {fileID: 1280960183276798002}
+  myRenderer: {fileID: 6912437109207642819}
 --- !u!50 &2675392387151432569
 Rigidbody2D:
   serializedVersion: 4
