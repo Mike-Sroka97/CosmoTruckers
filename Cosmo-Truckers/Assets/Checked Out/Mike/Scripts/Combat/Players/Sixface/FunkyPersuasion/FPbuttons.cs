@@ -5,17 +5,16 @@ using UnityEngine;
 public class FPbuttons : MonoBehaviour
 {
     [SerializeField] Collider2D myDDRbuttonCollider;
-    [SerializeField] Color onColor;
+    [SerializeField] Material toggledMaterial;
     [SerializeField] float onTime;
-
-    SpriteRenderer myDDRbuttonRenderer;
-    Color offColor;
+    [SerializeField] SpriteRenderer myDDRbuttonRenderer;
+    
+    Material defaultMaterial;
     Collider2D myCollider;
     private void Start()
     {
         myCollider = GetComponent<Collider2D>();
         myDDRbuttonRenderer = myDDRbuttonCollider.GetComponent<SpriteRenderer>();
-        offColor = myDDRbuttonRenderer.color;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -30,10 +29,10 @@ public class FPbuttons : MonoBehaviour
     IEnumerator ActivateDDRButton()
     {
         myDDRbuttonCollider.enabled = true;
-        myDDRbuttonRenderer.color = onColor;
+        myDDRbuttonRenderer.material = toggledMaterial;
         yield return new WaitForSeconds(onTime);
         myDDRbuttonCollider.enabled = false;
-        myDDRbuttonRenderer.color = offColor;
+        myDDRbuttonRenderer.material = defaultMaterial;
         myCollider.enabled = true;
     }
 }
