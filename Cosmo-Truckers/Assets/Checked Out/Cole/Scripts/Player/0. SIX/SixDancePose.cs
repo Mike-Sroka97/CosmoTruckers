@@ -15,7 +15,7 @@ public class SixDancePose : MonoBehaviour
 
     public void StartDancePose(Sprite sprite)
     {
-        Debug.Log("Start Dance Pose"); 
+        //Debug.Log("Start Dance Pose"); 
         myRenderer = GetComponent<SpriteRenderer>();
         myRenderer.sprite = sprite;
 
