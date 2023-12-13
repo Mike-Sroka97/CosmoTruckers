@@ -20,6 +20,7 @@ MonoBehaviour:
   OnDamage: 0
   EveryTurnEnd: 1
   EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Star Struck
   DebuffDescription: "Stars fall on the screen during minigames depending on the
     number of stacks a player has. \r\n\r\nStar-Struck will only spawn (X) number
@@ -28,9 +29,12 @@ MonoBehaviour:
     Heals a random enemy less than 100% by a small amount. \r"
   MyCharacter: {fileID: 0}
   IsBuff: 0
-  IsDebuff: 0
+  IsDebuff: 1
+  Removable: 1
   Stackable: 1
   MaxStacks: 10
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 0.6, y: 0.3}
   fadePerTurn: 0
   AugSpawner: {fileID: 2993090165663411306, guid: 2f665ea3dc3a2b0498ac37882544111b, type: 3}

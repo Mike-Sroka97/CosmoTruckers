@@ -328,7 +328,7 @@ public class CombatManager : MonoBehaviour
         foreach (DebuffStackSO augment in allAugments)
         {
             if (augment.EveryTurnEnd)
-                augment.StopEffect();
+                augment.DebuffEffect();
         }
 
         Augment[] augments = FindObjectsOfType<Augment>();

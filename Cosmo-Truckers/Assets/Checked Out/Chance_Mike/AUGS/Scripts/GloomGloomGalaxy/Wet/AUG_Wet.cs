@@ -12,7 +12,7 @@ public class AUG_Wet : VisualAugment
     {
         base.Activate(stack);
 
-        vigorAdjustment = -(Stacks * vigorModifier);
+        vigorAdjustment = -(DebuffSO.CurrentStacks * vigorModifier);
         DebuffSO.MyCharacter.AdjustVigor(vigorAdjustment);
     }
 
@@ -20,7 +20,7 @@ public class AUG_Wet : VisualAugment
     {
         AdjustVigor();
         base.AdjustStatusEffect(adjuster);
-        vigorAdjustment = -(Stacks * vigorModifier);
+        vigorAdjustment = -(DebuffSO.CurrentStacks * vigorModifier);
         DebuffSO.MyCharacter.AdjustVigor(vigorAdjustment);
     }
 

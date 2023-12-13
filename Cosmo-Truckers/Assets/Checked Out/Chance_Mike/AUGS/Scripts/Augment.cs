@@ -7,7 +7,6 @@ public abstract class Augment : MonoBehaviour
     [SerializeField] protected float baseStatusEffect;
     [SerializeField] protected float additionalStatusEffect;
     [HideInInspector] public DebuffStackSO DebuffSO;
-    public int Stacks;
     protected float StatusEffect;
     protected float MaxStatusEffect;
 
@@ -22,14 +21,14 @@ public abstract class Augment : MonoBehaviour
         if (stack)
             InitializeAugment(stack);
 
-        if (Stacks == 1)
+        if (DebuffSO.CurrentStacks == 1)
         {
             StatusEffect = baseStatusEffect;
         }
-        else if (Stacks > 1)
+        else if (DebuffSO.CurrentStacks > 1)
         {
             StatusEffect = baseStatusEffect;
-            for (int i = 0; i < Stacks - 1; i++)
+            for (int i = 0; i < DebuffSO.CurrentStacks - 1; i++)
             {
                 StatusEffect += additionalStatusEffect;
             }
@@ -48,10 +47,9 @@ public abstract class Augment : MonoBehaviour
         DebuffSO.MyCharacter = stack.MyCharacter;
         baseStatusEffect = stack.StackValue.x;
         additionalStatusEffect = stack.StackValue.y;
-        Stacks = stack.CurrentStacks;
         MaxStatusEffect = stack.StackValue.x + stack.StackValue.y * (stack.MaxStacks - 1);
         if (DebuffSO.LastStacks == -1)
-            DebuffSO.LastStacks = Stacks;
+            DebuffSO.LastStacks = DebuffSO.CurrentStacks;
     }
 
     protected void AdjustMaxStatusEffect()
@@ -67,7 +65,7 @@ public abstract class Augment : MonoBehaviour
 
     public virtual void AdjustStatusEffect(int adjuster)
     {
-        Stacks += adjuster;
+        DebuffSO.CurrentStacks += adjuster;
     }
 
     /// <summary>
