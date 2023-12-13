@@ -17,7 +17,6 @@ public class AUG_Megawatt : Augment
 
     public override void StopEffect()
     {
-        Debug.Log("here");
         DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }

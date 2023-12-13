@@ -24,8 +24,7 @@ public class BriberyGoodGuy : MonoBehaviour
             if (myCollider.enabled)
             {
                 myCollider.enabled = false;
-                minigame.Score--;
-                Debug.Log(minigame.Score);
+                minigame.AugmentScore--;
                 Destroy(gameObject);
             }
         }
