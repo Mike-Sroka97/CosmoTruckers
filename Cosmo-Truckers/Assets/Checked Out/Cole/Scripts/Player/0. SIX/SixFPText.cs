@@ -10,11 +10,13 @@ public class SixFPText : MonoBehaviour
     [SerializeField] float fadeOutSpeed;
     [SerializeField] Color startColor;
     [SerializeField] Sprite[] sprites;
+    [SerializeField] float timeBeforeFadeOut = 0.5f; 
     [SerializeField] float varianceCheckIn = 0.01f, varianceCheckOut = 0.1f; 
 
     SpriteRenderer myRenderer; 
     Color currentColor, endColor; 
-    bool fadeIn = true; 
+    bool fadeIn = true;
+    float timer; 
 
     public void StartText(int score)
     {
@@ -59,18 +61,26 @@ public class SixFPText : MonoBehaviour
             else
             {
                 fadeIn = false;
+                myRenderer.color = startColor; 
             }
         }
         else
         {
-            if (currentColor.a > varianceCheckOut)
+            if (timer < timeBeforeFadeOut)
             {
-                currentColor = Color.Lerp(currentColor, endColor, fadeOutSpeed * Time.deltaTime);
-                myRenderer.color = currentColor;
+                timer += Time.deltaTime; 
             }
             else
             {
-                Destroy(gameObject);
+                if (currentColor.a > varianceCheckOut)
+                {
+                    currentColor = Color.Lerp(currentColor, endColor, fadeOutSpeed * Time.deltaTime);
+                    myRenderer.color = currentColor;
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
