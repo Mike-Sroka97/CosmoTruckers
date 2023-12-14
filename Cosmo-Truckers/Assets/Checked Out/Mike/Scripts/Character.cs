@@ -17,7 +17,7 @@ public abstract class Character : MonoBehaviour
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
-    [HideInInspector] public int CurrentHealth
+    public int CurrentHealth
     {
         get
         {
