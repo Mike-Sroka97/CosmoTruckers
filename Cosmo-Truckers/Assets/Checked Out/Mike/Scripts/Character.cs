@@ -91,7 +91,11 @@ public abstract class Character : MonoBehaviour
             }
 
             foreach (DebuffStackSO augment in AugmentsToRemove)
+            {
                 AUGS.Remove(augment);
+                Destroy(augment);
+            }
+
         }
     }
 

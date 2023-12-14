@@ -89,15 +89,13 @@ public class SugarPillPlacebo : CombatMove
             //1 being base damage
             float HealingAdj = 1;
 
-            //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
             //Damage on players must be divided by 100 to multiply the final
             HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
 
             character.TakeHealing((int)(currentHealing * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
 
             //Apply augment
-            if (playerEnemyTargetDifference && character.GetComponent<Enemy>())
-                character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+            character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
         }
     }
 }
