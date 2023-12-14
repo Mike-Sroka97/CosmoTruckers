@@ -247,6 +247,27 @@ public class CombatManager : MonoBehaviour
         miniGame = Instantiate(attack.CombatPrefab, INA.transform);
         StartCoroutine(INA.MoveINA(true));
 
+        if (ActivePlayers.Count > 0)
+        {
+            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
+            {
+                for (int i = 0; i < character.GetAUGS.Count; i++)
+                {
+                    if (character.GetAUGS[i].InCombat)
+                        character.GetAUGS[i].DebuffEffect();
+                }
+            }
+        }
+
+        if (CurrentCharacter.GetComponent<Enemy>())
+        {
+            foreach (DebuffStackSO augment in CurrentCharacter.GetAUGS)
+            {
+                if (augment.InCombat)
+                    augment.DebuffEffect();
+            }
+        }
+
         while (INAmoving)
             yield return null;
 
@@ -259,21 +280,6 @@ public class CombatManager : MonoBehaviour
         }
 
         attack.StartCombat();
-
-        if (ActivePlayers.Count > 0)
-        {
-            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
-            {
-                for(int i = 0; i < character.GetAUGS.Count; i++)
-                {
-                    if (character.GetAUGS[i].InCombat)
-                        character.GetAUGS[i].DebuffEffect();
-                }
-                //foreach (var aug in character.GetAUGS)
-                //    if (aug.InCombat)
-                //        aug.DebuffEffect();
-            }
-        }
 
         while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
         {

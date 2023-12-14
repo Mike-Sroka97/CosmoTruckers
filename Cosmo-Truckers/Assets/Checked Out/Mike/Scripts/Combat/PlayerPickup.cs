@@ -8,6 +8,7 @@ public class PlayerPickup : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float moveDistance;
     [SerializeField] bool givesAugmentScore = false;
+    [SerializeField] bool givesScore = true;
 
     [Header("PS on Collect (can be empty)")]
     [SerializeField] ParticleSystem collectParticle; 
@@ -51,9 +52,9 @@ public class PlayerPickup : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if (!givesAugmentScore)
+            if (givesScore)
                 minigame.Score += score;
-            else
+            if(givesAugmentScore)
                 minigame.AugmentScore += score;
 
             if (collectParticle != null)

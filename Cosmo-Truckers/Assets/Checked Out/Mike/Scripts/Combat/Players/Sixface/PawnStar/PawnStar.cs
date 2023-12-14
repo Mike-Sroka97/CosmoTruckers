@@ -32,16 +32,28 @@ public class PawnStar : CombatMove
         {
             //Actual target condition
             Enemy highestSubductionEnemy = null;
+            int highestSubduction = 0;
 
-            //TODO CHANCE make this check for the highest subduction alive enemy
             foreach (Enemy enemy in EnemyManager.Instance.Enemies)
             {
                 if (!enemy.Dead && highestSubductionEnemy == null)
+                {
                     highestSubductionEnemy = enemy;
-                //else if (!enemy.Dead && /*FIND NUMBER OF STACKS OF SUBDUCTION FOR highestSubductionEnemy AND enemy then compare*/)
-                //    highestSubductionEnemy = enemy;
+                    foreach (DebuffStackSO augment in enemy.GetAUGS)
+                        if (augment.DebuffName == "Subduction")
+                            highestSubduction = augment.CurrentStacks;
+                }
+
+                else if (!enemy.Dead)
+                {
+                    foreach(DebuffStackSO augment in enemy.GetAUGS)
+                        if(augment.DebuffName == "Subduction" && augment.CurrentStacks > highestSubduction)
+                        {
+                            highestSubduction = augment.CurrentStacks;
+                            highestSubductionEnemy = enemy;
+                        }
+                }
             }
-            //END TODO
 
             List<Character> target = new List<Character>();
             target.Add(highestSubductionEnemy);
@@ -53,6 +65,23 @@ public class PawnStar : CombatMove
 
     public override void EndMove()
     {
+        sixFaceMana = FindObjectOfType<SixFaceMana>();
+
+        //if Dizzy do the dizzy thing
+        sixFaceMana = FindObjectOfType<SixFaceMana>();
+        if (sixFaceMana.FaceType == SixFaceMana.FaceTypes.Dizzy)
+        {
+            List<Character> aliveEnemies = new List<Character>();
+            foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+            {
+                if (!enemy.Dead)
+                    aliveEnemies.Add(enemy);
+            }
+
+            int random = Random.Range(0, aliveEnemies.Count);
+            CombatManager.Instance.GetCharactersSelected.Add(aliveEnemies[random]);
+        }
+
         MoveEnded = true;
 
         if (Score >= twoScore)
@@ -63,41 +92,46 @@ public class PawnStar : CombatMove
         //Calculate Damage
         if (Score < 0)
             Score = 0;
-        if (Score >= maxScore)
-            Score = maxScore;
+
+        AugmentScore = Score;
 
         int currentDamage = 0;
         //defending/attacking
-        if (!defending)
-            currentDamage = Score * Damage;
-        else
-            currentDamage = maxScore * Damage - Score * Damage;
-
+        currentDamage = Score * Damage;
         currentDamage += baseDamage;
 
-        //TODO CHANCE ADD line
-        //currentDamage *= 1 + (CombatManager.Instance.GetCharactersSelected[0].stacksOfSubduction * .1);
-
-        //TODO CHANCE add array of augments to dish out in base combat
         //Calculate Augment Stacks
         int augmentStacks = AugmentScore * augmentStacksPerScore;
         augmentStacks += baseAugmentStacks;
         if (augmentStacks > maxAugmentStacks)
             augmentStacks = maxAugmentStacks;
 
+        //Apply augment
+        if (sixFaceMana.FaceType == SixFaceMana.FaceTypes.Hype)
+            augmentStacks++;
+        
+        if(sixFaceMana.FaceType != SixFaceMana.FaceTypes.Sad)
+            CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
+
+        float stacksOfSubduction = 0;
+
+        foreach(DebuffStackSO augment in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
+            if (augment.DebuffName == "Subduction")
+                stacksOfSubduction = augment.CurrentStacks;
+
+        double tempDamage = currentDamage;
+        tempDamage *= (1 + (stacksOfSubduction * .1));
+        currentDamage = (int)tempDamage;
+
         //1 being base damage
         float DamageAdj = 1;
 
-        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
         //Damage on players must be divided by 100 to multiply the final
         DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
 
         CombatManager.Instance.GetCharactersSelected[0].TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
 
-        //Apply augment
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
-
         //Update face
-        FindObjectOfType<SixFaceMana>().UpdateFace();
+        sixFaceMana.UpdateFace();
     }
 }
