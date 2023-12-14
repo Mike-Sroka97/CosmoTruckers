@@ -6,19 +6,15 @@ public class AUG_Crust : Augment
 {
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
-        DebuffSO.MyCharacter.AdjustDefense((int)StatusEffect);
-    }
+        if (AugmentSO != null && AugmentSO.LastStacks != -1)
+            StopEffect();
 
-    public override void AdjustStatusEffect(int adjuster)
-    {
-        StopEffect();
-        base.AdjustStatusEffect(adjuster);
-        Activate(DebuffSO);
+        base.Activate(stack);
+        AugmentSO.MyCharacter.AdjustDefense((int)StatusEffect);
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
     }
 }

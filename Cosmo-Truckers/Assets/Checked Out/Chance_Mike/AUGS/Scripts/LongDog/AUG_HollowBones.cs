@@ -15,11 +15,11 @@ public class AUG_HollowBones : Augment
     {
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.AdjustVigor((int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustVigor((int)StatusEffect);
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustVigor(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustVigor(-(int)StatusEffect);
     }
 }

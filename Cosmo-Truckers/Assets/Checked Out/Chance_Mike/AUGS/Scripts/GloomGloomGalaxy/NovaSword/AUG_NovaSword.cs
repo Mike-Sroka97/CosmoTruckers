@@ -11,13 +11,13 @@ public class AUG_NovaSword : Augment
     {
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.Shield = ShieldAmount;
+        AugmentSO.MyCharacter.Shield = ShieldAmount;
     }
 
     public override void StopEffect()
     {
         //Remove all sheild
-        DebuffSO.MyCharacter.Shield = 0;
+        AugmentSO.MyCharacter.Shield = 0;
     }
 
     public override void Trigger()

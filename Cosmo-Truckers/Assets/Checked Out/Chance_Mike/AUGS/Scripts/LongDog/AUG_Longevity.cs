@@ -21,11 +21,11 @@ public class AUG_Longevity : Augment
 
     public override void Trigger()
     {
-        Activate(DebuffSO);
+        Activate(AugmentSO);
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
     }
 }

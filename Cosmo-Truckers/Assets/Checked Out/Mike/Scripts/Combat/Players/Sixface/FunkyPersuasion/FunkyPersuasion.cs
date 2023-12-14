@@ -13,6 +13,21 @@ public class FunkyPersuasion : CombatMove
     public override void EndMove()
     {
         base.EndMove();
+
+        Character target = CombatManager.Instance.CharactersSelected[0];
+        int subductionToAdd = 2; //base augment to add. Reduce if they are already subdued
+
+        foreach(DebuffStackSO augment in target.GetAUGS)
+        {
+            if(augment.DebuffName == "Subduction")
+            {
+                subductionToAdd--;
+                break;
+            }
+        }
+
+        target.AddDebuffStack(DebuffToAdd, subductionToAdd);
+
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
 }
