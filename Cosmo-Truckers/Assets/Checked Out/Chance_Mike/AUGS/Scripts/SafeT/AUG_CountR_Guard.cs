@@ -19,7 +19,8 @@ public class AUG_CountR_Guard : Augment
 
     public override void StopEffect()
     {
-        //Nothing to remove or reset for this AUG right now
+        AugmentSO.MyCharacter.Shield = 0;
+        AugmentSO.MyCharacter.GetComponent<PlayerCharacter>().MyVessel.ManuallySetShield(0);
     }
 
     public void UpdateLastHealth()
@@ -30,10 +31,9 @@ public class AUG_CountR_Guard : Augment
     public override void Trigger()
     {
         //Only call damage if player has shield and it was delt damage
-        if(currentShield > 0 && currentShield > AugmentSO.MyCharacter.Shield && AugmentSO.MyCharacter.CurrentHealth >= )
+        if(currentShield > 0 && currentShield > AugmentSO.MyCharacter.Shield && AugmentSO.MyCharacter.CurrentHealth >= lastHealth)
         {
             CombatManager.Instance.GetCurrentEnemy.TakeDamage(currentShield - AugmentSO.MyCharacter.Shield);
-            AugmentSO.MyCharacter.TakeDamage(AugmentSO.MyCharacter.Shield, true);
         }
 
         //Remove after activation

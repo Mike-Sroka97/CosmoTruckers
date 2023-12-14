@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Character : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public abstract class Character : MonoBehaviour
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
+    public UnityEvent HealthChangeEvent = new UnityEvent();
     public int CurrentHealth
     {
         get
@@ -25,6 +27,8 @@ public abstract class Character : MonoBehaviour
         }
         set
         {
+            HealthChangeEvent.Invoke();
+
             if (currentHealth + value > Health)
                 currentHealth = Health;
             else if (currentHealth + value < 0)
