@@ -16,13 +16,13 @@ public class AUG_PorkedUp : Augment
 
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
-        DebuffSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.FlatDamageAdjustment -= (int)StatusEffect;
-        DebuffSO.MyCharacter.FlatHealingAdjustment -= (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatDamageAdjustment -= (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatHealingAdjustment -= (int)StatusEffect;
     }
 }

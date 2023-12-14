@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class AUG_Subduction : Augment
 {
+    bool firstRun = true;
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
-        DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
-    }
+        if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstRun)
+            StopEffect();
 
-    public override void AdjustStatusEffect(int adjuster)
-    {
-        StopEffect();
-        base.AdjustStatusEffect(adjuster);
-        Activate(DebuffSO);
+        base.Activate(stack);
+        AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
+        AugmentSO.LastStacks = AugmentSO.CurrentStacks;
+        firstRun = false;
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
     }
 }

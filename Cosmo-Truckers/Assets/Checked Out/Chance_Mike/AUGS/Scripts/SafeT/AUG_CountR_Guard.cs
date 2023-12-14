@@ -21,12 +21,12 @@ public class AUG_CountR_Guard : Augment
     public override void Trigger()
     {
         //Only call damage if player has shield and it was delt damage
-        if(currentShield > 0 && currentShield > DebuffSO.MyCharacter.Shield)
+        if(currentShield > 0 && currentShield > AugmentSO.MyCharacter.Shield)
         {
-            CombatManager.Instance.GetCurrentEnemy.TakeDamage(currentShield - DebuffSO.MyCharacter.Shield);
+            CombatManager.Instance.GetCurrentEnemy.TakeDamage(currentShield - AugmentSO.MyCharacter.Shield);
 
             //Remove after activation
-            DebuffSO.MyCharacter.AugmentsToRemove.Add(DebuffSO);
+            AugmentSO.MyCharacter.AugmentsToRemove.Add(AugmentSO);
         }
     }
 }

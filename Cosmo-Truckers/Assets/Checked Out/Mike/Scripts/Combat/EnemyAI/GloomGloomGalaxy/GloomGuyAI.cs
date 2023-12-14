@@ -10,7 +10,7 @@ public class GloomGuyAI : Enemy
         {
             ChosenAttack = attacks[0];
         }
-        else if (FindObjectOfType<AUG_BullsEye>() && FindObjectOfType<AUG_BullsEye>().DebuffSO.MyCharacter != TauntedBy)
+        else if (FindObjectOfType<AUG_BullsEye>() && FindObjectOfType<AUG_BullsEye>().AugmentSO.MyCharacter != TauntedBy)
         {
             ChosenAttack = attacks[1];
         }

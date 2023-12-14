@@ -335,7 +335,7 @@ public class CombatManager : MonoBehaviour
 
         foreach (Augment augment in augments)
         {
-            if(augment.DebuffSO.InCombat)
+            if(augment.AugmentSO.InCombat)
                 Destroy(augment.gameObject);
         }
 

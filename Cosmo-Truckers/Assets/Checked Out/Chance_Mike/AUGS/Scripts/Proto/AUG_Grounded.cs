@@ -9,8 +9,8 @@ public class AUG_Grounded : Augment
         base.Activate(stack);
 
         //just in case someone else gets this for some reason
-        if(DebuffSO.MyCharacter.GetComponent<ProtoCharacter>())
-            DebuffSO.MyCharacter.AddDebuffStack(DebuffSO.MyCharacter.GetComponent<ProtoCharacter>().Megawatt, (int)StatusEffect);
+        if(AugmentSO.MyCharacter.GetComponent<ProtoCharacter>())
+            AugmentSO.MyCharacter.AddDebuffStack(AugmentSO.MyCharacter.GetComponent<ProtoCharacter>().Megawatt, (int)StatusEffect);
     }
 
     public override void StopEffect()
