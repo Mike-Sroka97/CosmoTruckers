@@ -25,8 +25,9 @@ public class AUG_CountR_Guard : Augment
         {
             CombatManager.Instance.GetCurrentEnemy.TakeDamage(currentShield - AugmentSO.MyCharacter.Shield);
             AugmentSO.MyCharacter.TakeDamage(AugmentSO.MyCharacter.Shield, true);
-            //Remove after activation
-            AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO);
         }
+
+        //Remove after activation
+        AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO);
     }
 }
