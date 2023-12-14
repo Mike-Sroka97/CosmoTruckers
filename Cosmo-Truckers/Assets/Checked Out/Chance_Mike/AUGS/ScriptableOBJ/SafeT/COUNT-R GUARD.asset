@@ -20,13 +20,17 @@ MonoBehaviour:
   OnDamage: 1
   EveryTurnEnd: 0
   EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: COUNT-R-GUARD
   DebuffDescription: 
   MyCharacter: {fileID: 0}
   IsBuff: 1
   IsDebuff: 0
+  Removable: 1
   Stackable: 0
-  MaxStacks: 1
+  MaxStacks: 2
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 0, y: 0}
   fadePerTurn: 1
   AugSpawner: {fileID: 8266763927990048678, guid: 5b9cbd2ce7b07aa4b9ff5a32b4141f17, type: 3}
