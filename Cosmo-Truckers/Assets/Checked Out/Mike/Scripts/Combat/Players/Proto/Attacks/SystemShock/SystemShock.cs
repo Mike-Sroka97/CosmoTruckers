@@ -28,8 +28,6 @@ public class SystemShock : CombatMove
 
     public override void StartMove()
     {
-        proto = FindObjectOfType<ProtoINA>();
-        proto.SetTelportBoundaries(teleportBounds.x, teleportBounds.y, teleportBounds.z, teleportBounds.w);
         SystemShockTurret[] turrets = FindObjectsOfType<SystemShockTurret>();
         foreach (SystemShockTurret turret in turrets)
             turret.Initialize();
@@ -119,7 +117,6 @@ public class SystemShock : CombatMove
     public override void EndMove()
     {
         base.EndMove();
-        proto.ResetTeleportBoundaries();
 
         //mana stuff
         ProtoMana mana = FindObjectOfType<ProtoMana>();
