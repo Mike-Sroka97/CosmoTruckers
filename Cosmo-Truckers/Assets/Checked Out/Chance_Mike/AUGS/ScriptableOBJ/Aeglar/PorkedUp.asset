@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: PorkedUp
   m_EditorClassIdentifier: 
-  InCombat: 1
+  InCombat: 0
   StartUp: 0
   TurnStart: 0
   TurnEnd: 0
@@ -20,14 +20,17 @@ MonoBehaviour:
   OnDamage: 0
   EveryTurnEnd: 1
   EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Pork'd Up
   DebuffDescription: This characters potency is increased by the number of Pork'd
     Up stacks they have.
   MyCharacter: {fileID: 0}
   IsBuff: 1
   IsDebuff: 0
+  Removable: 1
   Stackable: 1
   MaxStacks: 5
+  LastStacks: -1
   currentStacks: 0
   StackValue: {x: 1, y: 1}
   fadePerTurn: 0

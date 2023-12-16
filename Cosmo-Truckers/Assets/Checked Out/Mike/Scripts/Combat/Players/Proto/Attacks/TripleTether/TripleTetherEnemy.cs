@@ -181,7 +181,6 @@ public class TripleTetherEnemy : MonoBehaviour
     {
         health--;
         minigame.Score++;
-        Debug.Log(minigame.Score);
 
         if(health <= 0)
         {

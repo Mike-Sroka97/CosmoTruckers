@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 124856321312060351}
   - component: {fileID: 124856321312060349}
   - component: {fileID: 124856321312060348}
+  - component: {fileID: 373814914526146505}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: EnemyDamaging
@@ -115,6 +116,20 @@ PolygonCollider2D:
       - {x: -0.32, y: -0.32}
       - {x: 0.32, y: -0.32}
       - {x: 0.32, y: 0.32}
+--- !u!114 &373814914526146505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124856321312060350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  TrackingDamage: 1
 --- !u!1 &124856321733772153
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,4 +178,7 @@ MonoBehaviour:
   killPlayer: 1
   moveSpeed: 3
   shrinkSpeed: 0.75
+  disableColliderScale: 0.2
   destroyScale: 0.05
+  destroyClamp: 3.75
+  startingOneScale: 1

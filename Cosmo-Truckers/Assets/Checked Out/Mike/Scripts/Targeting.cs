@@ -435,19 +435,19 @@ public class Targeting : MonoBehaviour
         {
             if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && currentlySelectedTargets[0].CombatSpot != 11)
             {
-                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
+                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>() && EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot + 1] != null)
                     foreach (SpriteRenderer renderer in EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot + 1].TargetingSprites)
                         renderer.material = notTargetedMaterial;
-                else
+                else if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 1] != null)
                     foreach (SpriteRenderer renderer in EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot + 1].TargetingSprites)
                         renderer.material = notTargetedMaterial;
             }
             if (currentlySelectedTargets[0].CombatSpot != 0 && currentlySelectedTargets[0].CombatSpot != 4 && currentlySelectedTargets[0].CombatSpot != 8)
             {
-                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>())
+                if (currentlySelectedTargets[0].GetComponent<PlayerCharacter>() && EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot - 1] != null)
                     foreach (SpriteRenderer renderer in EnemyManager.Instance.PlayerCombatSpots[currentlySelectedTargets[0].CombatSpot - 1].TargetingSprites)
                         renderer.material = notTargetedMaterial;
-                else
+                else if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 1] != null)
                     foreach (SpriteRenderer renderer in EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 1].TargetingSprites)
                         renderer.material = notTargetedMaterial;
             }
