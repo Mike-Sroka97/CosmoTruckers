@@ -12,7 +12,6 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
     [SerializeField] protected bool playerEnemyTargetDifference = false;
-    [SerializeField] protected bool defending;
     public float MinigameDuration;
 
     public int Score;
@@ -111,12 +110,7 @@ public abstract class CombatMove : MonoBehaviour
                         Score = maxScore;
 
                     int currentDamage;
-                    //defending/attacking
-                    if (!defending)
-                        currentDamage = Score * Damage;
-                    else
-                        currentDamage = maxScore * Damage - Score * Damage;
-
+                    currentDamage = Score * Damage;
                     currentDamage += baseDamage;
 
                     //TODO CHANCE add array of augments to dish out in base combat

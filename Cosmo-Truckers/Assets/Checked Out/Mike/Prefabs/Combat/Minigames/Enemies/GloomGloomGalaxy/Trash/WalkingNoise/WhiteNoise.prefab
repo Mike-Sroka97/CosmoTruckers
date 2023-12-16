@@ -145,7 +145,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &1844137505
 GameObject:
@@ -158,7 +158,6 @@ GameObject:
   - component: {fileID: 1844137506}
   - component: {fileID: 1844137509}
   - component: {fileID: 1844137508}
-  - component: {fileID: 1844137507}
   m_Layer: 0
   m_Name: FollowerNoise
   m_TagString: Untagged
@@ -232,7 +231,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &1844137508
 MonoBehaviour:
@@ -252,19 +251,6 @@ MonoBehaviour:
   - {fileID: -1080452982, guid: 87cb5be7ae41a7d4cb898b4dfc9716fe, type: 3}
   - {fileID: -700960652, guid: 87cb5be7ae41a7d4cb898b4dfc9716fe, type: 3}
   timeBetweenEachSprite: 0.1
---- !u!114 &1844137507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1844137505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotateSpeed: 135
 --- !u!1 &6936618049241391940
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,20 +308,23 @@ MonoBehaviour:
   Damage: 5
   DebuffToAdd: {fileID: 11400000, guid: 816227394289cea4fad13b9f8806cd01, type: 2}
   playerEnemyTargetDifference: 0
-  defending: 0
-  MinigameDuration: 10
+  defending: 1
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
-  maxScore: 0
-  augmentStacksPerHit: 0
-  maxAugmentStacks: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 1
+  maxAugmentStacks: 2
   baseDamage: 0
-  baseAugmentStacks: 0
+  baseAugmentStacks: 1
   timeToEndMove: 1
-  spawnTest: 1
-  startMoveTest: 1
+  isDamaging: 0
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &6936618049627811992
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +369,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6936618049627811992}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 162ec53d9178b984cb98b4521b77bb98, type: 3}
   m_Name: 
@@ -443,6 +432,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &6936618050408371193
 GameObject:
@@ -486,7 +477,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6936618050408371193}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc9ab3a81533bdf4d94f84a4adc6cc5d, type: 3}
   m_Name: 
@@ -495,8 +486,8 @@ MonoBehaviour:
   - {fileID: 1645725414190998478}
   - {fileID: 1645725413873045882}
   - {fileID: 1645725413521635275}
-  radius: 3.2
-  timeBetweenNoise: 1
+  radius: 2.6
+  timeBetweenNoise: 0.8
   xBound: 5.5
   yBound: 3.2
 --- !u!1 &8691342669205830634
@@ -582,7 +573,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &1900592082489150891
 MonoBehaviour:
@@ -665,7 +656,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1490770606}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ad2c1fef7954646a15eaab325b50be, type: 3}
   m_Name: 
@@ -738,7 +729,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1623101099}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ad2c1fef7954646a15eaab325b50be, type: 3}
   m_Name: 
@@ -811,7 +802,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1974287391}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ad2c1fef7954646a15eaab325b50be, type: 3}
   m_Name: 
@@ -835,6 +826,14 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Size.x
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name

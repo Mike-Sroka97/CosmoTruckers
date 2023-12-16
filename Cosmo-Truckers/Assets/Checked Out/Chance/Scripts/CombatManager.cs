@@ -72,7 +72,7 @@ public class CombatManager : MonoBehaviour
     {
         attackable = new List<PlayerCharacter>();
         foreach (PlayerCharacter character in EnemyManager.Instance.PlayerCombatSpots)
-            if (character != null)
+            if (character != null && !character.Dead)
                 attackable.Add(character);
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
@@ -192,8 +192,16 @@ public class CombatManager : MonoBehaviour
         //enemy is not taunted
         else
         {
-            System.Random singleRand = new System.Random();
-            PlayerCharacter[] attackableCharacters = attackable.OrderBy(x => singleRand.Next()).ToArray();
+            System.Random random = new System.Random();
+
+            for (int i = 0; i < attackable.Count - 1; i++)
+            {
+                int j = random.Next(i, attackable.Count);
+                PlayerCharacter temp = attackable[i];
+                attackable[i] = attackable[j];
+                attackable[j] = temp;
+            }
+
             foreach (PlayerCharacter obj in attackable)
             {
                 if (!obj.Dead)
@@ -230,8 +238,6 @@ public class CombatManager : MonoBehaviour
                 ActivePlayers.Add(obj);
             }
         }
-
-        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
     }
 
     IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
@@ -335,14 +341,8 @@ public class CombatManager : MonoBehaviour
         {
             if (augment.EveryTurnEnd)
                 augment.DebuffEffect();
-        }
-
-        Augment[] augments = FindObjectsOfType<Augment>();
-
-        foreach (Augment augment in augments)
-        {
-            if(augment.AugmentSO.InCombat)
-                Destroy(augment.gameObject);
+            if (augment.InCombat && augment.GetAugment() != null)
+                augment.GetAugment().StopEffect();
         }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)

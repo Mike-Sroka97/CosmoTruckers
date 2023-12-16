@@ -78,6 +78,9 @@ public class DebuffStackSO : ScriptableObject
 
     public Augment GetAugment()
     {
+        if (!temp)
+            return null;
+
         return temp.GetComponent<Augment>();
     }
 

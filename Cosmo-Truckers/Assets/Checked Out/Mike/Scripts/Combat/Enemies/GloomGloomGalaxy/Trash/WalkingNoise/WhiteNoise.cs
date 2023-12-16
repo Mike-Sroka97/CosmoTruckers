@@ -6,7 +6,18 @@ public class WhiteNoise : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        FollowerNoise[] followerNoise = GetComponentsInChildren<FollowerNoise>();
+        RandomNoise[] randomNoise = GetComponentsInChildren<RandomNoise>();
+        GetComponentInChildren<RandomNoiseGenerator>().enabled = true;
+
+        foreach (FollowerNoise noise in followerNoise)
+            noise.enabled = true;
+        foreach (RandomNoise noise in randomNoise)
+            noise.enabled = true;
     }
 }

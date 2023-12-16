@@ -81,13 +81,21 @@ public class FollowerNoise : MonoBehaviour
         isShocking = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.tag == "Player")
         {
             minigame.Score++;
-            myCollider.enabled = false;
-            Debug.Log(minigame.Score);
+            minigame.AugmentScore++;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            minigame.Score++;
+            minigame.AugmentScore++;
         }
     }
 }

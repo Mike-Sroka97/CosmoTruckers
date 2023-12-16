@@ -16,9 +16,23 @@ public class RandomNoise : MonoBehaviour
     Collider2D myCollider;
     WhiteNoise minigame;
     bool active = false;
+    bool initialized = false;
 
-    private void Start()
+    public void NewSpawn()
     {
+        if (!initialized)
+            Initialize();
+
+        StopAllCoroutines();
+        myRenderer.color = startingColor;
+        myFillRenderer.color = myRenderer.color;
+        StartCoroutine(Fade());
+    }
+
+    private void Initialize()
+    {
+        initialized = true;
+
         myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
         myFillRenderer = gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
         myCollider = GetComponent<Collider2D>();
@@ -26,14 +40,6 @@ public class RandomNoise : MonoBehaviour
 
         startingColor = myRenderer.color;
         outlineStartMaterial = outlineRenderer.material;
-    }
-
-    public void NewSpawn()
-    {
-        StopAllCoroutines();
-        myRenderer.color = startingColor;
-        myFillRenderer.color = myRenderer.color;
-        StartCoroutine(Fade());
     }
 
     IEnumerator Fade()
@@ -73,13 +79,21 @@ public class RandomNoise : MonoBehaviour
         active = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.tag == "Player")
         {
             minigame.Score++;
-            myCollider.enabled = false;
-            Debug.Log(minigame.Score);
+            minigame.AugmentScore++;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            minigame.Score++;
+            minigame.AugmentScore++;
         }
     }
 }

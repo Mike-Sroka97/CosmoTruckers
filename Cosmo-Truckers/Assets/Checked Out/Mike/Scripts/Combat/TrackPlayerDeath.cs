@@ -5,6 +5,8 @@ using UnityEngine;
 public class TrackPlayerDeath : MonoBehaviour
 {
     [SerializeField] bool trackDeath = true;
+    [SerializeField] int scoreIncrease = 0;
+    [SerializeField] int augmentScoreIncrease = 0;
 
     [HideInInspector] public bool TrackingDamage = true;
 
@@ -20,7 +22,6 @@ public class TrackPlayerDeath : MonoBehaviour
         if (trackDeath && minigame)
         {
             minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
         }
     }
 
@@ -35,6 +36,8 @@ public class TrackPlayerDeath : MonoBehaviour
             if (!player.iFrames)
             {
                 player.TakeDamage();
+                minigame.Score += scoreIncrease;
+                minigame.AugmentScore += augmentScoreIncrease;
                 Death();
             }
         }
@@ -51,6 +54,8 @@ public class TrackPlayerDeath : MonoBehaviour
             if (!player.iFrames)
             {
                 player.TakeDamage();
+                minigame.Score += scoreIncrease;
+                minigame.AugmentScore += augmentScoreIncrease;
                 Death();
             }
         }
@@ -68,6 +73,8 @@ public class TrackPlayerDeath : MonoBehaviour
             if (!player.iFrames)
             {
                 player.TakeDamage();
+                minigame.Score += scoreIncrease;
+                minigame.AugmentScore += augmentScoreIncrease;
                 Death();
             }
         }
@@ -84,6 +91,8 @@ public class TrackPlayerDeath : MonoBehaviour
             if (!player.iFrames)
             {
                 player.TakeDamage();
+                minigame.Score += scoreIncrease;
+                minigame.AugmentScore += augmentScoreIncrease;
                 Death();
             }
         }
