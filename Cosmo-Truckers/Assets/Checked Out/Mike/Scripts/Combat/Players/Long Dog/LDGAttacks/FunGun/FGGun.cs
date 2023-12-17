@@ -25,13 +25,13 @@ public class FGGun : MonoBehaviour
     private void Start()
     {
         minigame = FindObjectOfType<FunGun>();
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponentInChildren<SpriteRenderer>();
         startingColor = myRenderer.color;
     }
 
     public void StartMove()
     {
-        player = FindObjectOfType<LongDogHead>().transform;
+        player = FindObjectOfType<PlayerBody>().transform;
         lookTowardsPlayer = true;
     }
 

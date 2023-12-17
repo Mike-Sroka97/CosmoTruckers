@@ -21,7 +21,6 @@ public class SimpleFrameAnimation : MonoBehaviour
         }
     }
     
-
     IEnumerator ChangeSprites()
     {
         if (currentSprite >= sprites.Length)
@@ -32,5 +31,10 @@ public class SimpleFrameAnimation : MonoBehaviour
         currentSprite++;
 
         StartCoroutine(ChangeSprites());
+    }
+
+    public void StopAnimation()
+    {
+        StopAllCoroutines(); 
     }
 }
