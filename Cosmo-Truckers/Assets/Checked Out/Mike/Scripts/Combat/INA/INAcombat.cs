@@ -106,15 +106,6 @@ public class INAcombat : MonoBehaviour
         }
         else
         {
-            //Turn off lines
-            LineRenderer[] lineRenderers = FindObjectsOfType<LineRenderer>();
-            TrailRenderer[] trailRenderers = FindObjectsOfType<TrailRenderer>();
-
-            foreach (LineRenderer lineRenderer in lineRenderers)
-                lineRenderer.enabled = false;
-            foreach (TrailRenderer trailRenderer in trailRenderers)
-                trailRenderer.enabled = false;
-
             //CloseScreen
 
             while (topMask.localPosition.y > topMaskStartingY)

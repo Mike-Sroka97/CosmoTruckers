@@ -205,7 +205,7 @@ public class LongDogINA : Player
 
     void Draw()
     {
-        currentLine.AddPoint(head.transform.localPosition);
+        currentLine.AddPoint(head.transform.position);
     }
     void EndDraw()
     {

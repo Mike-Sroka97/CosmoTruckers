@@ -15,7 +15,7 @@ public class LPSuccess : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<LongDogHead>())
+        if(collision.transform.tag == "PlayerAttack")
         {
             foreach (LPPlatformMovement platform in damagingPlatforms)
             {
