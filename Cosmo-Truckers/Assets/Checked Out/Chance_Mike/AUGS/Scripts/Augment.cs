@@ -9,6 +9,7 @@ public abstract class Augment : MonoBehaviour
     [HideInInspector] public DebuffStackSO AugmentSO;
     protected float StatusEffect;
     protected float MaxStatusEffect;
+    protected bool firstGo = true;
     private bool initialized = false;
 
     //LifeSpan

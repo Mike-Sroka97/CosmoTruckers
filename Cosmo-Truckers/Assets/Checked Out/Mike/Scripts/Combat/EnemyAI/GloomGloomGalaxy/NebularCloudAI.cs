@@ -28,7 +28,7 @@ public class NebularCloudAI : Enemy
         else
         {
             usingMelancholyPrecipitation = !usingMelancholyPrecipitation;
-            ChosenAttack = attacks[1];
+            ChosenAttack = attacks[0];
         }
 
         base.StartTurn();

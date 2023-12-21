@@ -89,69 +89,74 @@ public abstract class CombatMove : MonoBehaviour
 
     public virtual void EndMove()
     {
-        Debug.Log(Score);
         MoveEnded = true;
 
-        if (CombatManager.Instance != null) //In the combat screen
+        foreach (Character character in CombatManager.Instance.GetCharactersSelected)
         {
-            foreach (Character character in CombatManager.Instance.GetCharactersSelected)
-            {
-                //handles if the outcome effects enemies and players differently
-                if(playerEnemyTargetDifference)
-                {
-                    PlayerEnemyDifference(character);
-                }
-                else
-                {
-                    //Calculate Damage
-                    if (Score < 0)
-                        Score = 0;
-                    if (Score >= maxScore)
-                        Score = maxScore;
+            //Calculate Damage
+            int currentDamage = CalculateScore();
 
-                    int currentDamage;
-                    currentDamage = Score * Damage;
-                    currentDamage += baseDamage;
+            //Calculate Augment Stacks
+            int augmentStacks = CalculateAugmentScore();
 
-                    //TODO CHANCE add array of augments to dish out in base combat
-                    //Calculate Augment Stacks
-                    int augmentStacks = AugmentScore * augmentStacksPerScore;
-                    augmentStacks += baseAugmentStacks;
-                    if (augmentStacks > maxAugmentStacks)
-                        augmentStacks = maxAugmentStacks;
+            //Deals damage or heals target based on booleans set in inspector
+            DealDamageOrHealing(character, currentDamage);
 
-                    if (currentDamage > 0 && isDamaging)
-                    {
-                        //1 being base damage
-                        float DamageAdj = 1;
-
-                        //Damage on players must be divided by 100 to multiply the final
-                        DamageAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
-
-                        character.TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
-                    }
-
-                    else if (currentDamage > 0 && isHealing)
-                    {
-                        //1 being base damage
-                        float HealingAdj = 1;
-
-                        //Damage on players must be divided by 100 to multiply the final
-                        HealingAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
-
-                        character.TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
-                    }
-
-                    //Apply augment
-                    character.AddDebuffStack(DebuffToAdd, augmentStacks);
-                }
-            }
+            //Apply augment
+            ApplyAugment(character, augmentStacks);
         }
-        else //Running tests
+    }
+
+    protected void ApplyAugment(Character character, int augmentStacks)
+    {
+        character.AddDebuffStack(DebuffToAdd, augmentStacks);
+    }
+
+    protected void DealDamageOrHealing(Character character, int currentDamage)
+    {
+        if (currentDamage > 0 && isDamaging)
         {
-            Debug.Log($"{Damage * AugmentScore} done to player");
-            if (DebuffToAdd != null) Debug.Log($"{AugmentScore} stacks of {DebuffToAdd.DebuffName} added");
+            //1 being base damage
+            float DamageAdj = 1;
+
+            //Damage on players must be divided by 100 to multiply the final
+            DamageAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+
+            character.TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
         }
+
+        else if (currentDamage > 0 && isHealing)
+        {
+            //1 being base damage
+            float HealingAdj = 1;
+
+            //Damage on players must be divided by 100 to multiply the final
+            HealingAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+
+            character.TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
+        }
+    }
+
+    protected int CalculateScore()
+    {
+        if (Score < 0)
+            Score = 0;
+        if (Score >= maxScore)
+            Score = maxScore;
+
+        int currentDamage;
+        currentDamage = Score * Damage;
+        currentDamage += baseDamage;
+        return currentDamage;
+    }
+
+    protected int CalculateAugmentScore()
+    {
+        int augmentStacks = AugmentScore * augmentStacksPerScore;
+        augmentStacks += baseAugmentStacks;
+        if (augmentStacks > maxAugmentStacks)
+            augmentStacks = maxAugmentStacks;
+        return augmentStacks;
     }
 
     protected virtual void PlayerEnemyDifference(Character character)

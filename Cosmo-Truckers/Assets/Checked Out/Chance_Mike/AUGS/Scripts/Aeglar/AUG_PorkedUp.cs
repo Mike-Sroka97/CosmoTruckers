@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class AUG_PorkedUp : Augment
 {
-    [SerializeField] DebuffStackSO hogWild;
-
-    bool firstGo = true;
-
     public override void Activate(DebuffStackSO stack = null)
     {
         if (!firstGo)

@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2955998838201670095
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8862552731846479842}
+  m_Layer: 5
+  m_Name: Osc Point Lower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8862552731846479842
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2955998838201670095}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 5094879767465362559}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.35}
+  m_SizeDelta: {x: 1.6, y: 1.6}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3066111710454585066
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,10 +359,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5094879767465362559}
-  - component: {fileID: 5094879767465362557}
+  - component: {fileID: 7770955105747934495}
   - component: {fileID: 5094879767465362818}
   - component: {fileID: 5094879767465362558}
-  - component: {fileID: 1344708382362617979}
   m_Layer: 5
   m_Name: Nebular Cloud
   m_TagString: Untagged
@@ -350,6 +385,8 @@ RectTransform:
   - {fileID: 3879545433173546250}
   - {fileID: 6539893716902868818}
   - {fileID: 6901011501442582119}
+  - {fileID: 8862552731846479842}
+  - {fileID: 2664166948589544634}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -358,7 +395,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1.6, y: 1.6}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5094879767465362557
+--- !u!114 &7770955105747934495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -367,7 +404,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5094879767465362817}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6398b03d8efcc244bb698c492774a06, type: 3}
+  m_Script: {fileID: 11500000, guid: d96788a20d1f904409ed9854e6ebc3e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
@@ -376,7 +413,7 @@ MonoBehaviour:
   AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 5094879767465362818}
-  Health: 25
+  Health: 0
   TargetingSprites:
   - {fileID: 2096696700430917977}
   CombatSpot: 0
@@ -390,7 +427,8 @@ MonoBehaviour:
   spaceTaken: 1
   test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: 22914ee7dc4ec934ca81431deb582165, type: 2}
+  - {fileID: 11400000, guid: 5459007e5149e83448bcb20897f6e90b, type: 2}
+  - {fileID: 11400000, guid: 2845c3691c3d7a74c9be3b0d5033a717, type: 2}
   damageText: {fileID: 4494322636999040873}
   healingText: {fileID: 8055863028387985943}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
@@ -399,9 +437,9 @@ MonoBehaviour:
   moveSpeed: 0.5
   IsBoss: 0
   TauntedBy: {fileID: 0}
-  SpecialTargetConditions: 0
+  SpecialTargetConditions: 1
   IsTrash: 1
-  characterName: Walking Noise
+  characterName: Nebular Cloud
 --- !u!114 &5094879767465362818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 0
+  Reflex: 30
   Defense: 0
   Vigor: 100
   Speed: 100
@@ -440,20 +478,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1344708382362617979
-MonoBehaviour:
+--- !u!1 &5530135631461156049
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5094879767465362817}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04567fbe497e4f4fa9393d28975c0f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
-  debuffToAdd: {fileID: 11400000, guid: 12aeb9f5addb92846b294e30aa354cad, type: 2}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2664166948589544634}
+  m_Layer: 5
+  m_Name: Osc Point Upper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2664166948589544634
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5530135631461156049}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 5094879767465362559}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.65}
+  m_SizeDelta: {x: 1.6, y: 1.6}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6388882935162407420
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +524,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2647779337772803039}
   - component: {fileID: 2096696700430917977}
+  - component: {fileID: 3052295440452911239}
   m_Layer: 5
   m_Name: NebularCloudArt
   m_TagString: Untagged
@@ -488,7 +549,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.5}
   m_SizeDelta: {x: 1.6, y: 1.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &2096696700430917977
@@ -543,6 +604,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3052295440452911239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6388882935162407420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b38625e6bf45a4b8094f4f6c48d9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 8862552731846479842}
+  endPoint: {fileID: 2664166948589544634}
+  frequency: 0.65
 --- !u!1 &9006772282301765825
 GameObject:
   m_ObjectHideFlags: 0
