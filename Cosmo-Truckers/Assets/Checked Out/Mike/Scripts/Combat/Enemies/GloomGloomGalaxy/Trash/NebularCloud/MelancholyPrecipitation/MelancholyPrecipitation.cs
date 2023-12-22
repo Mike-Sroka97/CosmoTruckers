@@ -48,6 +48,8 @@ public class MelancholyPrecipitation : CombatMove
 
     public override void EndMove()
     {
+        MoveEnded = true;
+
         AugmentScore = (int)currentTime;
 
         if (AugmentScore >= maxScoreTime)

@@ -6,39 +6,35 @@ public class ShockingShock : CombatMove
 {
     [SerializeField] float lightningDelay;
     [SerializeField] float maxMinigameTime = 15f;
+    [SerializeField] float oneScoreTime = 9f;
+    [SerializeField] float twoScoreTime = 12f;
+    [SerializeField] float maxScoreTime = 15f;
 
     ShockingShockLightning[] lightning;
     float scoreTime = 0;
     int numberOfLightningToAssign;
     [HideInInspector] public int CurrentActivatedLightning = 0;
-    bool trackTime = true;
+    bool trackTime = false;
+    float lightningTime = 0;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
         lightning = GetComponentsInChildren<ShockingShockLightning>();
         numberOfLightningToAssign = lightning.Length - 1; //always activate all lightning minus one
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackScoreTime();
-        CheckShockStatus();
-        TrackTime();
+        trackTime = true;
+        GetComponentInChildren<PlayerBasedParabolaMovement>().SetPlayer(FindObjectOfType<Player>());
+        GetComponentInChildren<PlayerBasedParabolaMovement>().Active = true;
     }
 
-    private void TrackScoreTime()
+    private void Update()
     {
-        scoreTime += Time.deltaTime;
-
-        if((scoreTime >= maxMinigameTime || PlayerDead) && !MoveEnded)
-        {
-            if(scoreTime >= maxMinigameTime)
-                scoreTime = maxMinigameTime;
-
-            EndMove();
-        }
+        CheckShockStatus();
+        TrackTime();
     }
 
     private void CheckShockStatus()
@@ -58,11 +54,13 @@ public class ShockingShock : CombatMove
         if (!trackTime)
             return;
 
-        currentTime += Time.deltaTime;
+        base.TrackTime();
+
+        lightningTime += Time.deltaTime;
         
         if(currentTime >= lightningDelay)
         {
-            currentTime = 0;
+            lightningTime = 0;
             HandleLightning();
         }
     }
@@ -92,7 +90,20 @@ public class ShockingShock : CombatMove
     public override void EndMove()
     {
         MoveEnded = true;
-        Score = (int)scoreTime;
-        Debug.Log(scoreTime);
+
+        int timeScore = (int)currentTime;
+
+        if (timeScore >= maxScoreTime)
+            Score = 0;
+        else if (timeScore >= twoScoreTime)
+            Score = 1;
+        else
+            Score = 2;
+
+        int damage = CalculateScore();
+
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
+
+        //Remove enemy augments
     }
 }

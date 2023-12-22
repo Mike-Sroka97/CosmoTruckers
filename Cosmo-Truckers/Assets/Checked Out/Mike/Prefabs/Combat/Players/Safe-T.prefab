@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 9001015385912199534}
   - component: {fileID: 2365435096106904468}
   - component: {fileID: 5534074537951545954}
-  - component: {fileID: 6787977163094979950}
   m_Layer: 0
   m_Name: Safe-T
   m_TagString: Untagged
@@ -112,7 +111,7 @@ SpriteRenderer:
   m_SortingLayerID: -793516377
   m_SortingLayer: 2
   m_SortingOrder: 1
-  m_Sprite: {fileID: 651673502, guid: b9d26b94f0e04244fba978d46d11c32f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 49d3352778a5d2b4aa274106102894fd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -147,6 +146,9 @@ MonoBehaviour:
   CombatSpot: 0
   FlatDamageAdjustment: 0
   FlatHealingAdjustment: 0
+  HealthChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Shield: 0
   Dead: 0
   spaceTaken: 1
@@ -207,26 +209,6 @@ MonoBehaviour:
   maxAnger: 9
   superSlamOneCostHealth: 80
   superSlamZeroCostHealth: 40
---- !u!95 &6787977163094979950
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2365435096106904471}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 4dde45f4024853a408eff6b0a88479eb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &4577375711190384818
 PrefabInstance:
   m_ObjectHideFlags: 0

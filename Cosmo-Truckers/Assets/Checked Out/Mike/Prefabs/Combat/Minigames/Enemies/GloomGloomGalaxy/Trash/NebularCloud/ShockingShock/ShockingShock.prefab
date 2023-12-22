@@ -82,7 +82,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &7074230753012995296
 GameObject:
@@ -166,7 +166,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &7074230753189828538
 GameObject:
@@ -349,6 +349,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  TrackingDamage: 1
 --- !u!114 &7074230753316099901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,6 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdd9144b30367db4b8537df1f20e8ab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Active: 0
   spawns:
   - {fileID: 7074230753012995297}
   - {fileID: 7074230753512060717}
@@ -472,7 +477,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &7074230753558450501
 GameObject:
@@ -499,7 +504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7074230753558450501}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -527,11 +532,30 @@ MonoBehaviour:
   - {fileID: 7074230753286066957}
   layouts:
   - {fileID: 6495652555489585923, guid: 633ad46b6f315244886411d14cbd2bc7, type: 3}
+  Damage: 4
+  DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  lightningDelay: 3
+  AugmentScore: 0
+  maxScore: 2
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 12
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
+  lightningDelay: 5
   maxMinigameTime: 15
+  oneScoreTime: 9
+  twoScoreTime: 12
+  maxScoreTime: 15
   CurrentActivatedLightning: 0
 --- !u!1001 &7074230752829828289
 PrefabInstance:

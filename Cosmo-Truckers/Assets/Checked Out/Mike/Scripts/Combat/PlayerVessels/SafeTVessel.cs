@@ -60,6 +60,9 @@ public class SafeTVessel : PlayerVessel
 
         for (int i = 0; i < numberOfHits; i++)
         {
+            if(!safeTMana)
+                safeTMana = MyMana.GetComponent<SafeTMana>();
+
             safeTMana.SetCurrentAnger(1);
 
             if(currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
