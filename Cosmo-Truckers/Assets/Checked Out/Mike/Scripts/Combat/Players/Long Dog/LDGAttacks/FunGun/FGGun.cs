@@ -12,7 +12,9 @@ public class FGGun : MonoBehaviour
     [SerializeField] float flashingTime;
     [SerializeField] Color flashColor;
     [SerializeField] float timeBetweenFlashes;
+    [SerializeField] AnimationClip fireAnimation; 
 
+    Animator myAnimator; 
     Transform player;
     float currentTime = 0;
     Color startingColor;
@@ -26,6 +28,7 @@ public class FGGun : MonoBehaviour
     {
         minigame = FindObjectOfType<FunGun>();
         myRenderer = GetComponentInChildren<SpriteRenderer>();
+        myAnimator = GetComponent<Animator>(); 
         startingColor = myRenderer.color;
     }
 
@@ -95,5 +98,6 @@ public class FGGun : MonoBehaviour
         tempBullet.transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 90);
         currentTime = 0;
         TrackingTime = false;
+        myAnimator.Play(fireAnimation.name); 
     }
 }
