@@ -36,5 +36,13 @@ public class DungeonDisplay : NetworkBehaviour
     void EnterDungeon(string name)
     {
         print($"Going to dungeon {name}");
+
+        CmdEnterDungeon(name);
+    }
+
+    [Command(requiresAuthority = false)]
+    private void CmdEnterDungeon(string name)
+    {
+        NetworkManager.singleton.ServerChangeScene("DungeonSelection");
     }
 }

@@ -36,11 +36,33 @@ public class EnemyManager : MonoBehaviour
     const int enemySummonIndexAdder = 8;
     public int playerSummonIndexAdder = 4;
 
-    private void Awake() => Instance = this;
+    private void Awake() 
+    { 
+        Instance = this; 
+        if(CombatData.Instance != null)
+        {
+            EnemiesToSpawn.Clear();
+            testMockup = CombatData.Instance.EnemysToSpawn;
+
+            PlayersToSpawn.Clear();
+            PlayersToSpawn = CombatData.Instance.PlayersToSpawn;
+        }
+    }
 
     void Start()
     {
-        //Instantiate(testMockup)
+        if (testMockup != null)
+        {
+            GameObject mockUp = Instantiate(testMockup);
+
+            Enemy[] spawnedEnemys = FindObjectsOfType<Enemy>();
+            foreach (Enemy enemy in spawnedEnemys)
+                if (!enemy.GetComponent<EnemySummon>())
+                    EnemiesToSpawn.Add(enemy.gameObject);
+
+            Destroy(mockUp);
+        }
+
         PlayerCombatSpots = new Character[8];
         EnemyCombatSpots = new Character[12];
         

@@ -15,5 +15,7 @@ namespace Node
         public string SceneName;
         //Display of the node
         public Sprite NodeImage;
+        //Enemys to spawn in combat
+        public GameObject EnemyHolder;
     }
 }

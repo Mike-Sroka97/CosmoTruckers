@@ -11,6 +11,7 @@ public class DungeonGen : MonoBehaviour
     [SerializeField] List<Node.DungeonNodeBase> CombatNodes;
     [SerializeField] List<Node.DungeonNodeBase> MiddleNodes;
     [SerializeField] List<Node.DungeonNodeBase> BossNode;
+    [SerializeField] bool rest = true;
 
     [Header("Line Options")]
     [SerializeField] Color LineStartColor;
@@ -50,6 +51,15 @@ public class DungeonGen : MonoBehaviour
         public int Seed;
     }
     #endregion
+
+    private void Awake()
+    {
+        //For now just all combat nodes
+        ClearOldMap();
+        ClearMapMemory();
+        GenerateMap();
+        ShowMap();
+    }
 
     /// <summary>
     /// Generate a new Dungeon in memory
@@ -99,7 +109,7 @@ public class DungeonGen : MonoBehaviour
             #endregion
             #region Pure chaos mode
             //The Rest Node
-            if (i == Levels.Length - 2)
+            if (i == Levels.Length - 2 && rest)
             {
                 CurrentLayout[i].Add(RestNode);
                 NodesToAddNext = 1;
