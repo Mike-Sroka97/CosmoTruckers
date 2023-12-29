@@ -4,24 +4,18 @@ using UnityEngine;
 
 public class MelancholyPrecipitationLayoutMovement : MonoBehaviour
 {
-    [SerializeField] float startDelay = 1f;
     [SerializeField] float moveSpeed;
 
-    float currentTime = 0;
+    Rigidbody2D myBody;
 
-
-    private void Update()
+    private void Start()
     {
-        MoveMe();
+        myBody = GetComponent<Rigidbody2D>();
     }
 
-    private void MoveMe()
+    public void Initialize()
     {
-        currentTime += Time.deltaTime;
-
-        if(currentTime >= startDelay)
-        {
-            transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
-        }
+        myBody.velocity = new Vector2(0, -moveSpeed);
+        GetComponent<ParentPlayer>().AdjustPlayerVelocity(myBody.velocity.x, myBody.velocity.y, FindObjectOfType<Player>());
     }
 }

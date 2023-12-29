@@ -9,9 +9,18 @@ public class MelancholyPrecipitationRaindrop : MonoBehaviour
     [SerializeField] float minY;
 
     int lastRandom = -1;
+    bool initialized = false;
+
+    public void Initialize()
+    {
+        initialized = true;
+    }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         MoveMe();
     }
 

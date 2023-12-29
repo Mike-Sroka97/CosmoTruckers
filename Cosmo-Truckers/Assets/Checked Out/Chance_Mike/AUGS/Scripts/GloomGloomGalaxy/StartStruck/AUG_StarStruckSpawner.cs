@@ -26,18 +26,18 @@ public class AUG_StarStruckSpawner : Augment
 
     public override void StopEffect()
     {
-        //COLE TODO Heals enemies (put on a delay????)
         foreach((Enemy, int) enemy in AliveEnemies)
         {
             if(!enemy.Item1.Dead)
             {
                 Enemy tempEnemy = enemy.Item1;
                 tempEnemy.TakeHealing(enemy.Item2);
-                //Debug.Log("Healing " + tempEnemy.name + " for " + enemy.Item2 + " health.");
             }
         }
         AliveEnemies.Clear();
         StopAllCoroutines();
+
+        Destroy(gameObject);
     }
 
     IEnumerator SpawnStar()

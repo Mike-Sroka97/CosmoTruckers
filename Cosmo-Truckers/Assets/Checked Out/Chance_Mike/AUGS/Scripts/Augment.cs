@@ -6,10 +6,11 @@ public abstract class Augment : MonoBehaviour
 {
     [SerializeField] protected float baseStatusEffect;
     [SerializeField] protected float additionalStatusEffect;
-    [HideInInspector] public DebuffStackSO DebuffSO;
-    public int Stacks;
+    [HideInInspector] public DebuffStackSO AugmentSO;
     protected float StatusEffect;
     protected float MaxStatusEffect;
+    protected bool firstGo = true;
+    private bool initialized = false;
 
     //LifeSpan
 
@@ -22,14 +23,14 @@ public abstract class Augment : MonoBehaviour
         if (stack)
             InitializeAugment(stack);
 
-        if (Stacks == 1)
+        if (AugmentSO.CurrentStacks == 1)
         {
             StatusEffect = baseStatusEffect;
         }
-        else if (Stacks > 1)
+        else if (AugmentSO.CurrentStacks > 1)
         {
             StatusEffect = baseStatusEffect;
-            for (int i = 0; i < Stacks - 1; i++)
+            for (int i = 0; i < AugmentSO.CurrentStacks - 1; i++)
             {
                 StatusEffect += additionalStatusEffect;
             }
@@ -44,14 +45,17 @@ public abstract class Augment : MonoBehaviour
 
     public void InitializeAugment(DebuffStackSO stack)
     {
-        DebuffSO = stack;
-        DebuffSO.MyCharacter = stack.MyCharacter;
+        if (initialized)
+            return;
+
+        AugmentSO = stack;
+        AugmentSO.MyCharacter = stack.MyCharacter;
         baseStatusEffect = stack.StackValue.x;
         additionalStatusEffect = stack.StackValue.y;
-        Stacks = stack.CurrentStacks;
         MaxStatusEffect = stack.StackValue.x + stack.StackValue.y * (stack.MaxStacks - 1);
-        if (DebuffSO.LastStacks == -1)
-            DebuffSO.LastStacks = Stacks;
+        if (AugmentSO.LastStacks == -1)
+            AugmentSO.LastStacks = AugmentSO.CurrentStacks;
+        initialized = true;
     }
 
     protected void AdjustMaxStatusEffect()
@@ -67,7 +71,7 @@ public abstract class Augment : MonoBehaviour
 
     public virtual void AdjustStatusEffect(int adjuster)
     {
-        Stacks += adjuster;
+        AugmentSO.CurrentStacks += adjuster;
     }
 
     /// <summary>

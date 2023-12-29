@@ -12,20 +12,20 @@ public class AUG_Wet : VisualAugment
     {
         base.Activate(stack);
 
-        vigorAdjustment = -(Stacks * vigorModifier);
-        DebuffSO.MyCharacter.AdjustVigor(vigorAdjustment);
+        vigorAdjustment = -(AugmentSO.CurrentStacks * vigorModifier);
+        AugmentSO.MyCharacter.AdjustVigor(vigorAdjustment);
     }
 
     public override void AdjustStatusEffect(int adjuster)
     {
         AdjustVigor();
         base.AdjustStatusEffect(adjuster);
-        vigorAdjustment = -(Stacks * vigorModifier);
-        DebuffSO.MyCharacter.AdjustVigor(vigorAdjustment);
+        vigorAdjustment = -(AugmentSO.CurrentStacks * vigorModifier);
+        AugmentSO.MyCharacter.AdjustVigor(vigorAdjustment);
     }
 
     private void AdjustVigor()
     {
-        DebuffSO.MyCharacter.AdjustVigor(-(int)vigorAdjustment);
+        AugmentSO.MyCharacter.AdjustVigor(-(int)vigorAdjustment);
     }
 }

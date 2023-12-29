@@ -11,28 +11,28 @@ public class AUG_ShortCircuit : Augment
         base.Activate(stack);
 
         if(!activated || 
-            (CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>() && !DebuffSO.MyCharacter.GetComponent<Enemy>()) ||
-            (CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>() && !DebuffSO.MyCharacter.GetComponent<PlayerCharacter>()))
+            (CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>() && !AugmentSO.MyCharacter.GetComponent<Enemy>()) ||
+            (CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>() && !AugmentSO.MyCharacter.GetComponent<PlayerCharacter>()))
         {
             activated = true;
 
-            if (DebuffSO.MyCharacter.GetComponent<Enemy>())
-                DebuffSO.MyCharacter.TakeDamage((int)StatusEffect);
+            if (AugmentSO.MyCharacter.GetComponent<Enemy>())
+                AugmentSO.MyCharacter.TakeDamage((int)StatusEffect);
 
-            if (DebuffSO.MyCharacter.GetComponent<PlayerCharacter>())
-                DebuffSO.MyCharacter.AdjustDefense((int)StatusEffect);
+            if (AugmentSO.MyCharacter.GetComponent<PlayerCharacter>())
+                AugmentSO.MyCharacter.AdjustDefense((int)StatusEffect);
         }
         else if(CombatManager.Instance.CurrentAttack.CombatPrefab.GetComponent<CombatMove>().GetIsDamaging())
         {
             foreach (Character character in CombatManager.Instance.CharactersSelected)
-                character.AddDebuffStack(DebuffSO, DebuffSO.CurrentStacks);
-            DebuffSO.MyCharacter.RemoveDebuffStack(DebuffSO, DebuffSO.MaxStacks);
+                character.AddDebuffStack(AugmentSO, AugmentSO.CurrentStacks);
+            AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO, AugmentSO.MaxStacks);
         }
     }
 
     public override void StopEffect()
     {
-        if(DebuffSO.MyCharacter.GetComponent<PlayerCharacter>())
-            DebuffSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
+        if(AugmentSO.MyCharacter.GetComponent<PlayerCharacter>())
+            AugmentSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
     }
 }

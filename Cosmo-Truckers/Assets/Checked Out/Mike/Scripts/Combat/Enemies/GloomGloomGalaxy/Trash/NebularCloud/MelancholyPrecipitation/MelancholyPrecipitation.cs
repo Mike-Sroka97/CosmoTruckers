@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class MelancholyPrecipitation : CombatMove
 {
-    [SerializeField] float maxScoreTime;
+    [SerializeField] float oneScoreTime = 9f;
+    [SerializeField] float twoScoreTime = 12f;
+    [SerializeField] float maxScoreTime = 15f;
+
+    bool trackTime = false;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
+        MelancholyPrecipitationRaindrop[] raindrops = GetComponentsInChildren<MelancholyPrecipitationRaindrop>();
+        foreach (MelancholyPrecipitationRaindrop raindrop in raindrops)
+            raindrop.Initialize();
+        
+        GetComponentInChildren<MelancholyPrecipitationLayoutMovement>().Initialize();
+        trackTime = true;
     }
 
     private void Update()
@@ -19,22 +32,37 @@ public class MelancholyPrecipitation : CombatMove
 
     protected override void TrackTime()
     {
-        currentTime += Time.deltaTime;
+        if (MoveEnded || !trackTime)
+            return;
 
-        if((currentTime >= maxScoreTime || PlayerDead) && !MoveEnded)
+        base.TrackTime();
+
+        if(currentTime >= maxScoreTime)
         {
             if(currentTime >= maxScoreTime)
             {
                 currentTime = maxScoreTime;
             }
-            EndMove();
         }
     }
 
     public override void EndMove()
     {
-        Score = (int)currentTime;
-        Debug.Log(Score);
         MoveEnded = true;
+
+        AugmentScore = (int)currentTime;
+
+        if (AugmentScore >= maxScoreTime)
+            AugmentScore = 0;
+        else if (AugmentScore >= twoScoreTime)
+            AugmentScore = 1;
+        else if (AugmentScore >= oneScoreTime)
+            AugmentScore = 2;
+
+        AugmentScore += baseAugmentStacks;
+        int damage = baseDamage;
+
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
+        ApplyAugment(CombatManager.Instance.GetCharactersSelected[0], AugmentScore);
     }
 }

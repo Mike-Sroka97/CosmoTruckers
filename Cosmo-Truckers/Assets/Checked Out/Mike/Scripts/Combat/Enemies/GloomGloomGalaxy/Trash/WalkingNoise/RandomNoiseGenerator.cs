@@ -12,12 +12,7 @@ public class RandomNoiseGenerator : MonoBehaviour
 
     int currentIndex = 0;
     float currentTime = 0;
-    GameObject player;
-
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player");
-    }
+    Player player;
 
     private void Update()
     {
@@ -26,6 +21,9 @@ public class RandomNoiseGenerator : MonoBehaviour
 
     private void TrackTime()
     {
+        if (!player)
+            player = FindObjectOfType<Player>();
+
         currentTime += Time.deltaTime;
         if(currentTime >= timeBetweenNoise)
         {

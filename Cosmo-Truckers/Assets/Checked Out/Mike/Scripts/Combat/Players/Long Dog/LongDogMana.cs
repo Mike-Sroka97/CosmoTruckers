@@ -59,6 +59,10 @@ public class LongDogMana : Mana
     {
         if(attack.AttackName == "Dogged & Loaded")
         {
+            if (ReserveBullets.Count <= 0)
+            {
+                return; 
+            }
             if (ReserveBullets[0] == 2)
             {
                 attack.FriendlyPositiveEffect = true;

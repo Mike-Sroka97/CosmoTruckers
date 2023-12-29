@@ -72,7 +72,7 @@ public class CombatManager : MonoBehaviour
     {
         attackable = new List<PlayerCharacter>();
         foreach (PlayerCharacter character in EnemyManager.Instance.PlayerCombatSpots)
-            if (character != null)
+            if (character != null && !character.Dead)
                 attackable.Add(character);
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
@@ -192,8 +192,16 @@ public class CombatManager : MonoBehaviour
         //enemy is not taunted
         else
         {
-            System.Random singleRand = new System.Random();
-            PlayerCharacter[] attackableCharacters = attackable.OrderBy(x => singleRand.Next()).ToArray();
+            System.Random random = new System.Random();
+
+            for (int i = 0; i < attackable.Count - 1; i++)
+            {
+                int j = random.Next(i, attackable.Count);
+                PlayerCharacter temp = attackable[i];
+                attackable[i] = attackable[j];
+                attackable[j] = temp;
+            }
+
             foreach (PlayerCharacter obj in attackable)
             {
                 if (!obj.Dead)
@@ -230,8 +238,6 @@ public class CombatManager : MonoBehaviour
                 ActivePlayers.Add(obj);
             }
         }
-
-        Debug.Log($"Doing Combat Stuff for {attack.AttackName}, against all alive players. . .");
     }
 
     IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
@@ -247,6 +253,27 @@ public class CombatManager : MonoBehaviour
         miniGame = Instantiate(attack.CombatPrefab, INA.transform);
         StartCoroutine(INA.MoveINA(true));
 
+        if (ActivePlayers.Count > 0)
+        {
+            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
+            {
+                for (int i = 0; i < character.GetAUGS.Count; i++)
+                {
+                    if (character.GetAUGS[i].InCombat)
+                        character.GetAUGS[i].DebuffEffect();
+                }
+            }
+        }
+
+        if (CurrentCharacter.GetComponent<Enemy>())
+        {
+            foreach (DebuffStackSO augment in CurrentCharacter.GetAUGS)
+            {
+                if (augment.InCombat)
+                    augment.DebuffEffect();
+            }
+        }
+
         while (INAmoving)
             yield return null;
 
@@ -259,21 +286,6 @@ public class CombatManager : MonoBehaviour
         }
 
         attack.StartCombat();
-
-        if (ActivePlayers.Count > 0)
-        {
-            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
-            {
-                for(int i = 0; i < character.GetAUGS.Count; i++)
-                {
-                    if (character.GetAUGS[i].InCombat)
-                        character.GetAUGS[i].DebuffEffect();
-                }
-                //foreach (var aug in character.GetAUGS)
-                //    if (aug.InCombat)
-                //        aug.DebuffEffect();
-            }
-        }
 
         while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
         {
@@ -328,15 +340,9 @@ public class CombatManager : MonoBehaviour
         foreach (DebuffStackSO augment in allAugments)
         {
             if (augment.EveryTurnEnd)
-                augment.StopEffect();
-        }
-
-        Augment[] augments = FindObjectsOfType<Augment>();
-
-        foreach (Augment augment in augments)
-        {
-            if(augment.DebuffSO.InCombat)
-                Destroy(augment.gameObject);
+                augment.DebuffEffect();
+            if (augment.InCombat && augment.GetAugment() != null)
+                augment.GetAugment().StopEffect();
         }
 
         foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)

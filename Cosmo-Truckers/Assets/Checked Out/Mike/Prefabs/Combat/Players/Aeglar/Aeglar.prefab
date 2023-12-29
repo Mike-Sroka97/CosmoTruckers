@@ -78,9 +78,9 @@ SpriteRenderer:
   m_SortingLayerID: -793516377
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 9a8426e7ac852274da3a308cc81632d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85773947f0bc4ba46b878bdd833ef2e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 3.75, y: 3.6}
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
+  passiveAugments: []
   AUGS: []
   AugmentsToRemove: []
   maxShield: 60
@@ -112,6 +113,9 @@ MonoBehaviour:
   CombatSpot: 0
   FlatDamageAdjustment: 0
   FlatHealingAdjustment: 0
+  HealthChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Shield: 0
   Dead: 0
   spaceTaken: 1

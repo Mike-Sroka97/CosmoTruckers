@@ -12,15 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Shocked
   m_EditorClassIdentifier: 
+  InCombat: 0
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 1
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Shocked
-  Type: 4
   DebuffDescription: Flowing electricity is slowing this character a modest amount.
   MyCharacter: {fileID: 0}
   IsBuff: 0
-  IsDebuff: 0
+  IsDebuff: 1
+  Removable: 1
   Stackable: 1
   MaxStacks: 10
-  CurrentStacks: 5
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 10, y: 2}
   fadePerTurn: 0
   AugSpawner: {fileID: 5808072551299500262, guid: 13e875ad9ff5bf74faf802a9360752c9, type: 3}

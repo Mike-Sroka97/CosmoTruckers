@@ -21,9 +21,9 @@ public class LongDogButt : MonoBehaviour
     {
         if(isStretching && points.Count > 0)
         {
-            if((Vector2)transform.localPosition != points[0])
+            if((Vector2)transform.position != points[0])
             {
-                transform.localPosition = Vector2.MoveTowards(transform.localPosition, points[0], speed * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, points[0], speed * Time.deltaTime);
                 if(points.Count > 1)
                     transform.right = -(new Vector3(points[1].x, points[1].y, 0) - transform.position);
             }
@@ -56,7 +56,7 @@ public class LongDogButt : MonoBehaviour
             {
                 dogINA.SetCanMove(false);
                 isStretching = true;
-                transform.localPosition = points[0];
+                transform.position = points[0];
             }
             else if(!isStretching)
             {

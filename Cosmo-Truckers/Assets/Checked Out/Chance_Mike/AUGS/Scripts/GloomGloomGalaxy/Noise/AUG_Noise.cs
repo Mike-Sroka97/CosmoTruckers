@@ -8,20 +8,16 @@ public class AUG_Noise : Augment
 
     GameObject tempAugment;
 
-    private void Start()
-    {
-        tempAugment = Instantiate(augment);
-        Activate();
-    }
-
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
+        tempAugment = Instantiate(augment, FindObjectOfType<INAcombat>().transform);
         tempAugment.GetComponent<SpriteRenderer>().material.SetFloat("_MainValue", StatusEffect);
     }
 
     public override void StopEffect()
     {
         Destroy(tempAugment);
+        Destroy(gameObject);
     }
 }

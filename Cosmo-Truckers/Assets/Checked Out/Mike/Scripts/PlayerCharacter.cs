@@ -85,12 +85,13 @@ public class PlayerCharacter : Character
         selectionUI.gameObject.SetActive(true);
 
         foreach (DebuffStackSO aug in AUGS)
-        {
             if (aug.TurnStart)
-            {
                 aug.DebuffEffect();
-            }
-        }
+
+        foreach (DebuffStackSO augment in AugmentsToRemove)
+            AUGS.Remove(augment);
+
+        AugmentsToRemove.Clear();
     }
 
     void ClosePages()

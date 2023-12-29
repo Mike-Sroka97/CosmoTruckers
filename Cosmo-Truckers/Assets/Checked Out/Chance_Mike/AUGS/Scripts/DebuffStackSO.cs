@@ -23,6 +23,7 @@ public class DebuffStackSO : ScriptableObject
     [HideInInspector] public Character MyCharacter;
     public bool IsBuff;
     public bool IsDebuff;
+    public bool Removable = true;
 
     [Header("Stacks")]
     public bool Stackable = false;
@@ -75,18 +76,11 @@ public class DebuffStackSO : ScriptableObject
         temp.GetComponent<Augment>().Activate(this);
     }
 
-    public virtual void StopEffect() 
-    {
-        if(temp != null)
-        {
-            temp.GetComponent<Augment>().StopEffect();
-
-            Destroy(temp);
-        }
-    }
-
     public Augment GetAugment()
     {
+        if (!temp)
+            return null;
+
         return temp.GetComponent<Augment>();
     }
 
@@ -97,11 +91,16 @@ public class DebuffStackSO : ScriptableObject
         
         temp.GetComponent<Augment>().AdjustStatusEffect(-fadePerTurn);
 
+        DestroyAugment();
+    }
+
+    public void DestroyAugment()
+    {
         //If the stacks are at or less than 0 then remove the GO from scene and stop the effect
-        if (temp.GetComponent<Augment>().Stacks <= 0)
+        if (CurrentStacks <= 0)
         {
             MyCharacter.AugmentsToRemove.Add(this);
-            StopEffect();
+            temp.GetComponent<Augment>().StopEffect();
             Destroy(temp);
         }
     }

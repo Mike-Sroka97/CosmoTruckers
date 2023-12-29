@@ -26,11 +26,7 @@ public class FullCourse : CombatMove
                 Score = maxScore;
 
             int currentHealing = 0;
-            //defending/attacking
-            if (!defending)
-                currentHealing = Score * Damage;
-            else
-                currentHealing = maxScore * Damage - Score * Damage;
+            currentHealing = Score * Damage;
 
             currentHealing += baseDamage;
 

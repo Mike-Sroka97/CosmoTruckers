@@ -7,7 +7,8 @@ public class PlayerPickup : MonoBehaviour
     [SerializeField] int score = 1;
     [SerializeField] float moveSpeed;
     [SerializeField] float moveDistance;
-    [SerializeField] bool endsMinigame;
+    [SerializeField] bool givesAugmentScore = false;
+    [SerializeField] bool givesScore = true;
 
     [Header("PS on Collect (can be empty)")]
     [SerializeField] ParticleSystem collectParticle; 
@@ -51,13 +52,10 @@ public class PlayerPickup : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            minigame.Score += score;
-            Debug.Log(minigame.Score);
-
-            if(endsMinigame)
-            {
-                minigame.EndMove();
-            }
+            if (givesScore)
+                minigame.Score += score;
+            if(givesAugmentScore)
+                minigame.AugmentScore += score;
 
             if (collectParticle != null)
             {

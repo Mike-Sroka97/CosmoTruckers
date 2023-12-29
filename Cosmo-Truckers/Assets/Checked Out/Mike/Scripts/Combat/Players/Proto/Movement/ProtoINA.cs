@@ -76,11 +76,6 @@ public class ProtoINA : Player
 
     public void SetCanTeleport(bool toggle) { canTeleport = toggle; }
 
-    public void ResetTeleportBoundaries()
-    {
-        SetTelportBoundaries(positiveXBoundary, positiveYBoundary, negativeXBoundary, negativeYBoundary);
-    }
-
     public override IEnumerator Damaged()
     {
         foreach(SpriteRenderer sprite in teleportSprites)
@@ -282,7 +277,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[0].enabled = true;
             }
-            if ((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary))
+            if (((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary)) || teleportSprites[0].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[0].color = invalidteleportColor;
             }
@@ -300,7 +295,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[1].enabled = true;
             }
-            if ((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary))
+            if (((transform.position.x - teleportDistance < negativeXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary)) || teleportSprites[1].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[1].color = invalidteleportColor;
             }
@@ -318,7 +313,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[2].enabled = true;
             }
-            if ((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary))
+            if (((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y - teleportDistance < negativeYBoundary)) || teleportSprites[2].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[2].color = invalidteleportColor;
             }
@@ -336,7 +331,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[3].enabled = true;
             }
-            if ((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary))
+            if (((transform.position.x + teleportDistance > positiveXBoundary) || (transform.position.y + teleportDistance > positiveYBoundary)) || teleportSprites[3].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[3].color = invalidteleportColor;
             }
@@ -354,7 +349,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[4].enabled = true;
             }
-            if ((transform.position.x - teleportDistance < negativeXBoundary))
+            if ((transform.position.x - teleportDistance < negativeXBoundary) || teleportSprites[4].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[4].color = invalidteleportColor;
             }
@@ -372,7 +367,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[5].enabled = true;
             }
-            if ((transform.position.y + teleportDistance > positiveYBoundary))
+            if ((transform.position.y + teleportDistance > positiveYBoundary) || teleportSprites[5].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[5].color = invalidteleportColor;
             }
@@ -390,7 +385,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[6].enabled = true; 
             }
-            if ((transform.position.y - teleportDistance < negativeYBoundary))
+            if ((transform.position.y - teleportDistance < negativeYBoundary) || teleportSprites[6].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[6].color = invalidteleportColor;
             }
@@ -408,7 +403,7 @@ public class ProtoINA : Player
                 ResetTeleportSprites();
                 teleportSprites[7].enabled = true;
             }
-            if ((transform.position.x + teleportDistance > positiveXBoundary))
+            if ((transform.position.x + teleportDistance > positiveXBoundary) || teleportSprites[7].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 teleportSprites[7].color = invalidteleportColor;
             }
@@ -444,7 +439,7 @@ public class ProtoINA : Player
     {
         if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 1)
         {
-            if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
+            if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[0].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, teleportDistance, 0);
@@ -453,7 +448,7 @@ public class ProtoINA : Player
         }
         else if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 2)
         {
-            if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
+            if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[1].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, -teleportDistance, 0);
@@ -462,7 +457,7 @@ public class ProtoINA : Player
         }
         else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 3)
         {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary))
+            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[2].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, -teleportDistance, 0);
@@ -471,7 +466,7 @@ public class ProtoINA : Player
         }
         else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 4)
         {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary))
+            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[3].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, teleportDistance, 0);
@@ -480,7 +475,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKey(KeyCode.A) || lastTeleportHeld == 5)
         {
-            if (!(transform.position.x - teleportDistance < negativeXBoundary))
+            if (!(transform.position.x - teleportDistance < negativeXBoundary) && !teleportSprites[4].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(-teleportDistance, 0, 0);
@@ -489,7 +484,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKey(KeyCode.W) || lastTeleportHeld == 6)
         {
-            if (!(transform.position.y + teleportDistance > positiveYBoundary))
+            if (!(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[5].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(0, teleportDistance, 0);
@@ -498,7 +493,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKey(KeyCode.S) || lastTeleportHeld == 7)
         {
-            if (!(transform.position.y - teleportDistance < negativeYBoundary))
+            if (!(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[6].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(0, -teleportDistance, 0);
@@ -507,7 +502,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKey(KeyCode.D) || lastTeleportHeld == 8)
         {
-            if (!(transform.position.x + teleportDistance > positiveXBoundary))
+            if (!(transform.position.x + teleportDistance > positiveXBoundary) && !teleportSprites[7].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
                 CreateDyingProto();
                 transform.position += new Vector3(teleportDistance, 0, 0);

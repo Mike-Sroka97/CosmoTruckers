@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8301633937098475578}
   - component: {fileID: 8301633937098475577}
+  - component: {fileID: 1826915912755864424}
+  - component: {fileID: 914515047153807058}
   m_Layer: 0
   m_Name: Layout (0)
   m_TagString: Untagged
@@ -58,8 +60,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a84ad5a3d06a4de4da6a3126cf0e1156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startDelay: 1
   moveSpeed: 0.4
+--- !u!114 &1826915912755864424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301633937098475579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22eb025d5c9f3a5439e6bd13fede4df9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myBody: {fileID: 914515047153807058}
+  permanentVelocityAdjustment: 0
+--- !u!50 &914515047153807058
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301633937098475579}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &6416633873190981681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126,6 +162,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1544449454347190415, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
   m_PrefabInstance: {fileID: 6416633873190981681}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5504113539991769279 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1544449454347190414, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+  m_PrefabInstance: {fileID: 6416633873190981681}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &732762627156183467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5504113539991769279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27de69043a5106246a66a63c647fab22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeXBounds: 0.05
+  shakeDuration: 1.4
+  shakeSpeed: 3
+  fallSpeed: 5
+  yLimit: -5
 --- !u!1001 &8301633935164138564
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -738,7 +796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shakeXBounds: 0.05
-  shakeDuration: 1.4
+  shakeDuration: 5
   shakeSpeed: 3
   fallSpeed: 5
   yLimit: -5

@@ -9,50 +9,68 @@ public class FPddrActivated : MonoBehaviour
     [SerializeField] bool trashZone = false;
     [SerializeField] GameObject dancePose;
     [SerializeField] Transform dancePoseSpawn;
-    [SerializeField] Sprite dancePoseSprite; 
+    [SerializeField] Sprite dancePoseSprite;
+    [SerializeField] GameObject fpText;
+    [SerializeField] float fpTextSpawnOffset = 1f;
 
+    List<string> collidedArrows = new List<string>();
+    Collider2D myCollider; 
     FunkyPersuasion miniGame;
 
     private void Start()
     {
         miniGame = FindObjectOfType<FunkyPersuasion>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(trashZone && collision.tag == "PlayerHurtable")
+        SixFPArrow arrow = collision.GetComponent<SixFPArrow>();
+
+        if (arrow != null)
         {
-            miniGame.Score--;
-            Debug.Log(miniGame.Score);
+            int score = 1;
 
-            SixFPTrashParticle particleSpawner = GetComponent<SixFPTrashParticle>();
-
-            if (particleSpawner != null)
+            if (trashZone)
             {
-                particleSpawner.SpawnDestroyParticle(collision.transform); 
+                score = 0;
+                arrow.ArrowDecreaseScore(miniGame);
+
+                SixFPTrashParticle particleSpawner = GetComponent<SixFPTrashParticle>();
+
+                if (particleSpawner != null)
+                {
+                    particleSpawner.SpawnDestroyParticle(collision.transform);
+                }
+            }
+            else
+            {
+                float distance = Vector2.Distance(collision.transform.position, transform.position);
+                myCollider.enabled = false;
+
+                if (distance <= twoPointDistance)
+                {
+                    score = 2;
+                    //Spawn dance pose on max success
+                    GameObject thisDancePose = Instantiate(dancePose, dancePoseSpawn.position, Quaternion.identity, miniGame.transform);
+                    thisDancePose.GetComponent<SixDancePose>().StartDancePose(dancePoseSprite);
+                }
+                else if (distance <= onePointDistance)
+                {
+                    score = 1;
+                }
+
+                Debug.Log(myCollider.gameObject.name); 
+                arrow.ArrowIncreaseScore(miniGame, score);
             }
 
-            Destroy(collision.gameObject);
+            Vector3 fpSpawnLocation = new Vector3(collision.transform.position.x, transform.position.y + fpTextSpawnOffset, transform.position.z); 
+            GameObject thisSuccessText = Instantiate(fpText, fpSpawnLocation, Quaternion.identity, miniGame.transform);
+            thisSuccessText.GetComponent<SixFPText>().StartText(score); 
         }
-        else if(collision.tag == "PlayerHurtable")
+        else if (arrow == null)
         {
-            float distance = Vector2.Distance(collision.transform.position, transform.position);
-            if(distance <= twoPointDistance)
-            {
-                Destroy(collision.gameObject);
-                miniGame.Score += 2;
-                //Debug.Log("Perfect! Score: " + miniGame.Score);
-
-                //Spawn dance pose on max success
-                GameObject thisDancePose = Instantiate(dancePose, dancePoseSpawn.position, Quaternion.identity, miniGame.transform);
-                thisDancePose.GetComponent<SixDancePose>().StartDancePose(dancePoseSprite);
-            }
-            else if(distance <= onePointDistance)
-            {
-                Destroy(collision.gameObject);
-                miniGame.Score += 1;
-                //Debug.Log("Good! Score: " + miniGame.Score);
-            }
+            Debug.Log("Error: arrow is null"); 
         }
     }
 }

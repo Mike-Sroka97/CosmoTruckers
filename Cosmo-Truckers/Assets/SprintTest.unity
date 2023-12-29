@@ -3957,7 +3957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemiesToSpawn:
-  - {fileID: 3105286010299706999, guid: 814e5df8984bf0647a7e0545d7f0cbcc, type: 3}
+  - {fileID: 3105286010299706999, guid: 46323a39d845135438c64ff0cf67cd57, type: 3}
   EnemySummonsToSpawn: []
   PlayersToSpawn:
   - {fileID: 2365435096106904471, guid: 8f9c10e30a8327d48a262e030b38f045, type: 3}
@@ -5499,12 +5499,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
+  passiveAugments: []
   AUGS: []
+  AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 0}
   Health: 0
   TargetingSprites: []
   CombatSpot: 0
+  FlatDamageAdjustment: 0
+  FlatHealingAdjustment: 0
   Shield: 0
   Dead: 0
   spaceTaken: 1
@@ -5516,7 +5520,9 @@ MonoBehaviour:
   IsTank: 0
   IsSupport: 0
   IsUtility: 0
+  selectionUI: {fileID: 0}
   wheel: {fileID: 0}
+  augList: {fileID: 0}
   attacks: []
   MiniGameControllerPrefab: {fileID: 0}
   MyVessel: {fileID: 0}
@@ -8028,9 +8034,12 @@ MonoBehaviour:
   currentBG: {fileID: 21300000, guid: 79d2ac83476694046a79bad8547c10fc, type: 3}
   MiniGameScreen: {fileID: 1469195334}
   Timer: {fileID: 962490996}
-  myTargeting: {fileID: 2131620935}
+  MyTargeting: {fileID: 2131620935}
   enemySpellHoldTime: 3
+  trashAttackDelay: 0.25
   CharactersSelected: []
+  ActivePlayers: []
+  CurrentAttack: {fileID: 0}
   INAmoving: 0
   TargetsSelected: 1
 --- !u!4 &2131620934
@@ -8067,6 +8076,8 @@ MonoBehaviour:
   enemyTargetingMaterial: {fileID: 2100000, guid: 7ed5b42c970595f409ea75761e23e9cf, type: 2}
   negativeSelectedMaterial: {fileID: 2100000, guid: 7227b65b0dbbd434088da09435cd2a6d, type: 2}
   positiveSelectedMaterial: {fileID: 2100000, guid: 24a0935c156799849b7180ebc29b9bb2, type: 2}
+  CurrentTargetingType: 0
+  InitialSetup: 0
 --- !u!1 &2133023330
 GameObject:
   m_ObjectHideFlags: 0

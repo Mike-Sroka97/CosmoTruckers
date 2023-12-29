@@ -10,14 +10,13 @@ public class AUG_Megawatt : Augment
 
         if(CombatManager.Instance.CurrentAttack.CombatPrefab.GetComponent<CombatMove>().GetIsDamaging())
         {
-            DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
-            DebuffSO.SetFade(DebuffSO.MaxStacks); //makes sure to get rid of aug at the end of the turn
+            AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
+            AugmentSO.SetFade(AugmentSO.MaxStacks); //makes sure to get rid of aug at the end of the turn
         }
     }
 
     public override void StopEffect()
     {
-        Debug.Log("here");
-        DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }

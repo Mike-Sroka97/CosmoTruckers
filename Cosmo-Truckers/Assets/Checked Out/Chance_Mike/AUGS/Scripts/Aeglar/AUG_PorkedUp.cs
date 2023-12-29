@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class AUG_PorkedUp : Augment
 {
-    [SerializeField] DebuffStackSO hogWild;
-
     public override void Activate(DebuffStackSO stack = null)
     {
-        if (stack.LastStacks != -1)
+        if (!firstGo)
         {
-            stack.MyCharacter.FlatDamageAdjustment -= stack.LastStacks;
-            stack.MyCharacter.FlatHealingAdjustment -= stack.LastStacks;
+            AugmentSO.MyCharacter.FlatDamageAdjustment -= AugmentSO.LastStacks;
+            AugmentSO.MyCharacter.FlatHealingAdjustment -= AugmentSO.LastStacks;
         }
+
+        firstGo = false;
 
         base.Activate(stack);
 
-        DebuffSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
-        DebuffSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatHealingAdjustment += (int)StatusEffect;
+
+        AugmentSO.LastStacks = AugmentSO.CurrentStacks;
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.FlatDamageAdjustment -= (int)StatusEffect;
-        DebuffSO.MyCharacter.FlatHealingAdjustment -= (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatDamageAdjustment -= (int)StatusEffect;
+        AugmentSO.MyCharacter.FlatHealingAdjustment -= (int)StatusEffect;
     }
 }

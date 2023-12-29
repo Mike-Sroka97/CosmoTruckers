@@ -165,5 +165,12 @@ public class PlayerVessel : MonoBehaviour
         shieldText.transform.localPosition = Vector3.zero;
     }
 
+    public void ManuallySetShield(int shield)
+    {
+        currentShield.text = myCharacter.Shield.ToString();
+        currentShieldBar.fillAmount = shield / 60;
+        TrackShield();
+    }
+
     public virtual void ManaTracking() { }
 }

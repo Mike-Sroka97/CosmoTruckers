@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6758639341873106094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -117,7 +117,6 @@ MonoBehaviour:
   Damage: 5
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
-  defending: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
@@ -131,6 +130,7 @@ MonoBehaviour:
   timeToEndMove: 1
   isDamaging: 0
   isHealing: 1
+  pierces: 0
   spawnTest: 0
   startMoveTest: 0
 --- !u!1 &6758639342092375248
@@ -274,6 +274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &6758639342998304229
 GameObject:
@@ -315,6 +317,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6758639342998304230}
     m_Modifications:
+    - target: {fileID: 1088512074140277692, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1088512074140277692, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c42b81bc004e20841a5f41d558c30d10, type: 3}
     - target: {fileID: 2473732224054565681, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_Name
       value: MG_ShakyBlock
@@ -325,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalPosition.x
@@ -370,6 +380,42 @@ PrefabInstance:
     - target: {fileID: 6933739474103169875, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: shakeDuration
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.w
+      value: 0.09615385
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.x
+      value: 0.09615385
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.y
+      value: 0.09615385
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.border.z
+      value: 0.09615385
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}

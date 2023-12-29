@@ -12,13 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Noise
   m_EditorClassIdentifier: 
+  InCombat: 1
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 0
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Noise
-  Type: 0
   DebuffDescription: A hardened exterior is increasing this characters defense a
     minor amount.
   MyCharacter: {fileID: 0}
+  IsBuff: 0
+  IsDebuff: 0
+  Removable: 1
   Stackable: 1
   MaxStacks: 6
-  CurrentStacks: 6
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 0.5, y: 0.1}
+  fadePerTurn: 0
   AugSpawner: {fileID: 5613612679873167699, guid: 0ab3106b0a7393640bac888cf3e2a2aa, type: 3}

@@ -7,18 +7,18 @@ public class AUG_Sharpen : Augment
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-        DebuffSO.MyCharacter.AdjustDamage((int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
     }
 
     public override void AdjustStatusEffect(int adjuster)
     {
         StopEffect();
         base.AdjustStatusEffect(adjuster);
-        Activate(DebuffSO);
+        Activate(AugmentSO);
     }
 
     public override void StopEffect()
     {
-        DebuffSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }

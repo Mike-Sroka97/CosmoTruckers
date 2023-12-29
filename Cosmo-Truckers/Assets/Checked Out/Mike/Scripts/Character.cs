@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Character : MonoBehaviour
 {
@@ -17,7 +18,8 @@ public abstract class Character : MonoBehaviour
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
-    [HideInInspector] public int CurrentHealth
+    public UnityEvent HealthChangeEvent = new UnityEvent();
+    public int CurrentHealth
     {
         get
         {
@@ -25,6 +27,8 @@ public abstract class Character : MonoBehaviour
         }
         set
         {
+            HealthChangeEvent.Invoke();
+
             if (currentHealth + value > Health)
                 currentHealth = Health;
             else if (currentHealth + value < 0)
@@ -87,7 +91,11 @@ public abstract class Character : MonoBehaviour
             }
 
             foreach (DebuffStackSO augment in AugmentsToRemove)
+            {
                 AUGS.Remove(augment);
+                Destroy(augment);
+            }
+
         }
     }
 
@@ -253,7 +261,8 @@ public abstract class Character : MonoBehaviour
 
         DebuffStackSO tempAUG = Instantiate(stack);
         tempAUG.CurrentStacks = stacksToAdd;
-        tempAUG.SetTemp();
+        if(!tempAUG.InCombat)
+            tempAUG.SetTemp();
         tempAUG.MyCharacter = this;
 
         AUGS.Add(tempAUG);
@@ -264,7 +273,7 @@ public abstract class Character : MonoBehaviour
 
     public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100)
     {
-        if (stack == null)
+        if (stack == null || !stack.Removable)
             return;
 
         foreach (DebuffStackSO aug in AUGS)
@@ -272,15 +281,95 @@ public abstract class Character : MonoBehaviour
             if (String.Equals(aug.DebuffName, stack.DebuffName))
             {
                 aug.CurrentStacks -= stackToRemove;
-
-                if (aug.CurrentStacks <= 0)
-                    aug.StopEffect();
-                    StartCoroutine(DelayedRemoval(aug));
+                aug.DestroyAugment();
+                    //StartCoroutine(DelayedRemoval(aug)); TODO fuck it we ball. If this breaks the game we will fix it another way
 
                 return;
             }
         }
     }
+
+    /// <summary>
+    /// type 0 = remove debuffs
+    /// type 1 = remove buffs
+    /// type 2 = remove any
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <param name="type"></param>
+    public void RemoveAmountOfAugments(int amount, int type)
+    {
+        int currentAmount = amount;
+
+        switch (type)
+        {
+            //remove debuffs
+            case 0:
+                foreach(DebuffStackSO debuff in AUGS)
+                    if(debuff.IsDebuff)
+                    {
+                        if (currentAmount >= debuff.CurrentStacks)
+                        {
+                            RemoveDebuffStack(debuff, currentAmount);
+                            debuff.DestroyAugment();
+                            currentAmount -= debuff.CurrentStacks;
+                        }
+                        else if(currentAmount > 0)
+                        {
+                            RemoveDebuffStack(debuff, currentAmount);
+                            currentAmount = 0;
+                        }                        
+                        else
+                        {
+                            break; //no more stacks to remove
+                        }
+                    }
+                break;
+            //remove buffs
+            case 1:
+                foreach (DebuffStackSO buff in AUGS)
+                    if (buff.IsBuff)
+                    {
+                        if (currentAmount >= buff.CurrentStacks)
+                        {
+                            RemoveDebuffStack(buff, currentAmount);
+                            buff.DestroyAugment();
+                            currentAmount -= buff.CurrentStacks;
+                        }
+                        else if (currentAmount > 0)
+                        {
+                            RemoveDebuffStack(buff, currentAmount);
+                            currentAmount = 0;
+                        }
+                        else
+                        {
+                            break; //no more stacks to remove
+                        }
+                    }
+                break;
+            //remove augments
+            case 2:
+                foreach (DebuffStackSO augment in AUGS)
+                    if (currentAmount >= augment.CurrentStacks)
+                    {
+                        RemoveDebuffStack(augment, currentAmount);
+                        augment.DestroyAugment();
+                        currentAmount -= augment.CurrentStacks;
+                    }
+                    else if (currentAmount > 0)
+                    {
+                        RemoveDebuffStack(augment, currentAmount);
+                        currentAmount = 0;
+                    }
+                    else
+                    {
+                        break; //no more stacks to remove
+                    }
+                break;
+            default:
+                break;
+        }
+    }
+
     //TODO
     //Removing on damage augs will cause errors, for now this is the solution
     //Will need to add a check every turn to see if AUG has 0 stacks and then remove them then

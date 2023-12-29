@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shockwave : MonoBehaviour
 {
-    [SerializeField] bool killPlayer = false;
     [SerializeField] float moveSpeed;
     [SerializeField] float shrinkSpeed;
     [SerializeField] float disableColliderScale = 0.2f;
@@ -66,14 +65,6 @@ public class Shockwave : MonoBehaviour
         if(transform.position.x > destroyClamp || transform.position.x < -destroyClamp)
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player" && killPlayer)
-        {
-            minigame.PlayerDead = true;
         }
     }
 }
