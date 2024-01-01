@@ -77,6 +77,12 @@ public class NebularCloudAI : Enemy
         //Melancholy Precipitation
         if (attackIndex == 0)
         {
+            if (TauntedBy)
+            {
+                CombatManager.Instance.DetermineTauntedTarget(this);
+                return;
+            }
+
             //target con 1 (targets random player without shocked)
             if (playersWithoutSlow.Count > 0)
             {
@@ -107,8 +113,14 @@ public class NebularCloudAI : Enemy
         //Shocking Shock
         else if(attackIndex == 1)
         {
+            if (TauntedBy)
+            {
+                CombatManager.Instance.DetermineTauntedTarget(this); 
+                return;
+            }
+
             //target con 1 (shocked players exist)
-            if(playersWithSlow.Count > 0)
+            if (playersWithSlow.Count > 0)
             {
                 int random = Random.Range(0, playersWithSlow.Count);
                 CombatManager.Instance.CharactersSelected.Add(playersWithSlow[random].myCharacter);

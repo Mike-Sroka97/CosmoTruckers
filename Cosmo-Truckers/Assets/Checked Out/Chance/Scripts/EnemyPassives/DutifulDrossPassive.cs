@@ -19,6 +19,9 @@ public class DutifulDrossPassive : EnemyPassiveBase
                     GetComponent<DutifulDrossAI>().ProtectedEnemy = enemy;
         }
 
+        if (!GetComponent<DutifulDrossAI>().ProtectedEnemy)
+            GetComponent<DutifulDrossAI>().ProtectedEnemy = GetComponent<DutifulDrossAI>();
+
         //TODO Draw line between dross and protected enemy
     }
 }

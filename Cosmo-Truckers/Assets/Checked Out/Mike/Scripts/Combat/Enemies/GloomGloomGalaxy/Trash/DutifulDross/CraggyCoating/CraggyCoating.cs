@@ -8,7 +8,6 @@ public class CraggyCoating : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 

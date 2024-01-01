@@ -12,13 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Crust
   m_EditorClassIdentifier: 
+  InCombat: 0
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 1
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Crust
-  Type: 4
   DebuffDescription: A hardened exterior is increasing this characters defense a
     minor amount.
   MyCharacter: {fileID: 0}
+  IsBuff: 0
+  IsDebuff: 0
+  Removable: 1
   Stackable: 1
   MaxStacks: 6
-  CurrentStacks: 0
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 10, y: 3}
+  fadePerTurn: 0
   AugSpawner: {fileID: 7011420796971601259, guid: 457fcd7190ea00e4ca01fdb3dcfc5642, type: 3}

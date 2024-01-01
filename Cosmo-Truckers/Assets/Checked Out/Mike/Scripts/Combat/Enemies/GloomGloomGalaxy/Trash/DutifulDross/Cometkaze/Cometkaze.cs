@@ -4,48 +4,51 @@ using UnityEngine;
 
 public class Cometkaze : CombatMove
 {
-    [SerializeField] float maxSuccessTime;
+    [SerializeField] float oneScoreTime;
+    [SerializeField] float maxScoreTime;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         TrackTime();
     }
 
-    private void TrackDeath()
+    public override void StartMove()
     {
-        if(PlayerDead)
-        {
-            EndMove();
-        }
-    }
+        CometkazeBall[] balls = GetComponentsInChildren<CometkazeBall>();
 
-    protected override void TrackTime()
-    {
-        currentTime += Time.deltaTime;
-        if(currentTime >= maxSuccessTime)
-        {
-            EndMove();
-        }
+        foreach (CometkazeBall ball in balls)
+            ball.Move = true;
+
+        trackTime = true;
     }
 
     public override void EndMove()
     {
-        if (MoveEnded)
-            return;
-
         MoveEnded = true;
 
-        if(currentTime > maxSuccessTime)
+        if(currentTime > maxScoreTime)
         {
-            currentTime = maxSuccessTime;
+            currentTime = maxScoreTime;
+            Score = 0;
+        }
+        else if (currentTime > oneScoreTime)
+        {
+            Score = 1;
+        }
+        else
+        {
+            Score = 2;
         }
 
-        Score = (int)currentTime;
+        int damage = CalculateScore();
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
     }
 }

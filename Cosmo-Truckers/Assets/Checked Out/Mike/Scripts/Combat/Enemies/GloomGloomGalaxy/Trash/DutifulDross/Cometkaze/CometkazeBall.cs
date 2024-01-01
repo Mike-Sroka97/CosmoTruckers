@@ -9,8 +9,13 @@ public class CometkazeBall : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float destroySize;
 
+    [HideInInspector] public bool Move = false;
+
     private void Update()
     {
+        if (!Move)
+            return;
+
         Shrink();
         MoveMe();        
     }

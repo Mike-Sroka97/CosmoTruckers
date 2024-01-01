@@ -19,7 +19,7 @@ public class DutifulDrossAI : Enemy
             if(maxCrust)
                 ChosenAttack = attacks[1];
             else
-                ChosenAttack = attacks[0];
+                ChosenAttack = attacks[1];
         }
         else
         {
@@ -45,13 +45,26 @@ public class DutifulDrossAI : Enemy
                 if (player.IsSupport)
                     supports.Add(player);
 
-            int random = Random.Range(0, supports.Count);
-            CombatManager.Instance.CharactersSelected.Add(supports[random]);
+            if(supports.Count > 0)
+            {
+                int random = Random.Range(0, supports.Count);
+                CombatManager.Instance.CharactersSelected.Add(supports[random]);
+            }
+            else
+            {
+                CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[Random.Range(0, EnemyManager.Instance.Players.Count)]);
+            }
         }
 
         //Cometkaze always targets randomly
         else
         {
+            if (TauntedBy)
+            {
+                CombatManager.Instance.DetermineTauntedTarget(this);
+                return;
+            }
+
             int random = Random.Range(0, players.Length);
             while (players[random].Dead)
             {

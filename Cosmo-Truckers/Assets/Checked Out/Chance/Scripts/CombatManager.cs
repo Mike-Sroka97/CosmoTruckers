@@ -240,6 +240,23 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void DetermineTauntedTarget(Enemy enemy)
+    {
+        //enemy is taunted
+        if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
+        {
+            if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+            {
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+            }
+            else
+            {
+                CharactersSelected.Add(enemy.TauntedBy);
+                ActivePlayers.Add(enemy.TauntedBy);
+            }
+        }
+    }
+
     IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
     {
         while (!TargetsSelected)
