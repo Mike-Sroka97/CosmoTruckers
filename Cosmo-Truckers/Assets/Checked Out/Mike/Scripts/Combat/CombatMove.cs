@@ -37,6 +37,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] bool startMoveTest = false; 
 
     protected float currentTime = 0;
+    protected bool trackTime = false;
 
     public bool GetIsDamaging() { return isDamaging; }
     public bool GetIsHealing() { return isHealing; }
