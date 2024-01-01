@@ -10,7 +10,16 @@ public class DutifulDrossAI : Enemy
     {
         if(!ProtectedEnemy.Dead)
         {
-            ChosenAttack = attacks[0];
+            bool maxCrust = false;
+
+            foreach (DebuffStackSO aug in ProtectedEnemy.GetAUGS)
+                if (aug.DebuffName == "Crust" && aug.CurrentStacks == aug.MaxStacks)
+                    maxCrust = true;
+
+            if(maxCrust)
+                ChosenAttack = attacks[1];
+            else
+                ChosenAttack = attacks[0];
         }
         else
         {

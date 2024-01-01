@@ -128,7 +128,9 @@ public class NebularCloudAI : Enemy
             //target con for friendlies
 
             Enemy[] enemies = FindObjectsOfType<Enemy>();
-            List<int> enemiesDebuffCounter = new List<int>(enemies.Length);
+            List<int> enemiesDebuffCounter = new List<int>();
+            for (int i = 0; i < enemies.Length; i++)
+                enemiesDebuffCounter.Add(0);
             Enemy mostDebuffedEnemy = null;
             int mostDebuffs = 0;
 

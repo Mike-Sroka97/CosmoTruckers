@@ -28,7 +28,7 @@ public class CraggyCoatingEnemy : MonoBehaviour
         }
         else if(collision.name == "GoodGuy")
         {
-            minigame.PlayerDead = true;
+            minigame.AugmentScore++;
             Destroy(gameObject);
         }
     }

@@ -169,6 +169,7 @@ public class EnemyManager : MonoBehaviour
                 newSummon.transform.position = EnemySummonLocations[i - 8].position;
                 newSummon.GetComponent<SpriteRenderer>().sortingOrder = i;
                 EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
+                EnemyCombatSpots[i].CombatSpot = i;
                 break;
             }
         }
