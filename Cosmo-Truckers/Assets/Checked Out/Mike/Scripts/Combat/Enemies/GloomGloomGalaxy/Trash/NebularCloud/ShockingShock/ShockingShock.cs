@@ -89,6 +89,25 @@ public class ShockingShock : CombatMove
 
     public override void EndMove()
     {
+        //Get needed info
+        PlayerCharacter player = null;
+        Enemy enemy = null;
+        foreach (Character character in CombatManager.Instance.GetCharactersSelected)
+        {
+            if (character.GetComponent<Enemy>())
+                enemy = character.GetComponent<Enemy>();
+            else if (character.GetComponent<PlayerCharacter>())
+                player = character.GetComponent<PlayerCharacter>();
+        }
+
+        int stacksToRemove = 0;
+        foreach(DebuffStackSO aug in player.GetAUGS)
+        {
+            if (aug.DebuffName == "Shocked")
+                stacksToRemove = aug.CurrentStacks;
+        }
+
+        //Run scores
         MoveEnded = true;
 
         int timeScore = (int)currentTime;
@@ -105,5 +124,7 @@ public class ShockingShock : CombatMove
         DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
 
         //Remove enemy augments
+        if (enemy)
+            enemy.RemoveAmountOfAugments(stacksToRemove, 0);
     }
 }
