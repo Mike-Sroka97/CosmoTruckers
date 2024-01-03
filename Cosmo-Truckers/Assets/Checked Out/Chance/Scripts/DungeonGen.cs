@@ -26,6 +26,7 @@ public class DungeonGen : MonoBehaviour
 
     [Header("Storage")]
     [SerializeField][Tooltip("Set to 0 for unseeded")] int RandomSeed = 0;
+    public int GetDungeonSeed { get => RandomSeed; }
     [SerializeField] List<DungeonData> CurrentLayout = new List<DungeonData>();
     #region Struct
     [System.Serializable]
@@ -52,8 +53,11 @@ public class DungeonGen : MonoBehaviour
     }
     #endregion
 
-    private void Awake()
+    private void Start()
     {
+        //Will set the seed if not first time in dungeon
+        RandomSeed = CombatData.Instance.dungeonSeed;
+
         //For now just all combat nodes
         ClearOldMap();
         ClearMapMemory();
@@ -70,7 +74,10 @@ public class DungeonGen : MonoBehaviour
 
         Random.InitState(RandomSeed != 0 ? RandomSeed : rand);
         if (RandomSeed == 0)
+        {
             Debug.LogWarning($"Dungeon Seed: {rand}");
+            CombatData.Instance.dungeonSeed = rand;
+        }
 
         int NodesToAdd = 1;
         int NodesToAddNext = 0;
@@ -187,11 +194,12 @@ public class DungeonGen : MonoBehaviour
             for(int j = 0; j < CurrentLayout[i].Nodes.Count; j++)
             {
                 GameObject newNode = Instantiate(DungeonNodePreFab, Levels[i].transform);
-                newNode.GetComponent<DungeonNode>().SetNode(CurrentLayout[i].Nodes[j]);
+                newNode.GetComponent<DungeonNode>().SetNode(CurrentLayout[i].Nodes[j], new Vector2(i + 1, j));
             }
         }
         StartCoroutine(ShowConnections());
     }
+
     IEnumerator ShowConnections()
     {
         yield return new WaitForEndOfFrame();
@@ -205,7 +213,6 @@ public class DungeonGen : MonoBehaviour
         {
             for (int j = 0; j < Levels[i].transform.childCount; j++)
             {
-
                 List<int> connections = new List<int>();
 
                 for (int k = 0; k < Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().GetConnections; k++)
@@ -223,12 +230,35 @@ public class DungeonGen : MonoBehaviour
                             Connection = Random.Range(0, Levels[i + 1].transform.childCount);
 
                     connections.Add(Connection);
+                    Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().connections.Add(Connection);
 
                     newLine.SetPositions(new Vector3[] { Levels[i].transform.GetChild(j).transform.position, Levels[i + 1].transform.GetChild(Connection).transform.position });
                     //newLine.SetPosition(1, Levels[i + 1].transform.GetChild(Random.Range(0, Levels[i + 1].transform.childCount)).transform.position);
+
+
+                    //Set what dungeon is activly selectable
+                    //Set the first node to active if first time in map
+                    if (CombatData.Instance.combatLocation == Vector2.zero)
+                    {
+                        if(new Vector2(i, j) == Vector2.zero)
+                            Levels[i].transform.GetChild(j).GetComponent<Button>().interactable = true;
+                    }
+                    else if (CombatData.Instance.combatLocation.x == i)
+                    {
+                        //If active location but no connection
+                        if (connections.Contains((int)CombatData.Instance.combatLocation.y))
+                            Levels[i].transform.GetChild(j).GetComponent<Button>().interactable = true;
+                    }
                 }
             }
         }
+
+        //Set if boss node is active
+        if(CombatData.Instance.combatLocation.x == Levels.Length - 1)
+        {
+            Levels[Levels.Length - 1].transform.GetChild(0).GetComponent<Button>().interactable = true;
+        }
+
         Random.InitState((int)System.DateTime.Now.Ticks);
     }
 
