@@ -14,9 +14,6 @@ public class LargeIronTrigger : MonoBehaviour
     {
         clock = FindObjectOfType<LargeIronClock>();
         myCollider = GetComponent<Collider2D>();
-
-        //We have to do this to prevent the colliders from not working when the player does not move
-        FindObjectOfType<PlayerBody>().transform.position -= new Vector3(-.01f, 0, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

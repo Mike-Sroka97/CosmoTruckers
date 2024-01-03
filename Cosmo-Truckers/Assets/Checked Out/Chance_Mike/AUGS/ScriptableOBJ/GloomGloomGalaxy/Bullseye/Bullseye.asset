@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Bullseye
   m_EditorClassIdentifier: 
+  InCombat: 0
+  StartUp: 0
+  TurnStart: 1
+  TurnEnd: 0
+  StatChange: 0
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Bullseye
-  Type: 1
   DebuffDescription: "Only one target can have Bullseye at a time in combat. \r\n\u2022
     Giving a target Bullseye causes the target to be targeted by every enemy unless
     their attention has been otherwise re-directed. \r\n\u2022 The Bullseye will
@@ -21,9 +29,11 @@ MonoBehaviour:
   MyCharacter: {fileID: 0}
   IsBuff: 0
   IsDebuff: 1
+  Removable: 1
   Stackable: 0
   MaxStacks: 1
-  CurrentStacks: 0
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 1, y: 0}
-  fadePerTurn: -1
+  fadePerTurn: 0
   AugSpawner: {fileID: 3893088860519081283, guid: 55ed53425e95a2746a0779b17ca22337, type: 3}

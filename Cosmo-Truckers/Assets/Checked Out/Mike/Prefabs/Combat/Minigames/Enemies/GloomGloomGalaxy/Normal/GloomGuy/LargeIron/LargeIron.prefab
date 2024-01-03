@@ -115,7 +115,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375653132041750
 BoxCollider2D:
@@ -374,7 +374,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375653912272000
 BoxCollider2D:
@@ -442,7 +442,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2168375653932784606}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e30958487cc680a42ab8bcc62fad45cf, type: 3}
   m_Name: 
@@ -452,6 +452,7 @@ MonoBehaviour:
   scoreWaitTime: 1
   bullet: {fileID: 8587796697069866048, guid: 269646f3831725f4f92438e454f2c03b, type: 3}
   barrel: {fileID: 2168375654434748771}
+  Activated: 0
 --- !u!1 &2168375654125538879
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,7 +536,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654125538877
 BoxCollider2D:
@@ -645,7 +646,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &2168375654434748770
 GameObject:
@@ -760,7 +761,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &2168375654621098364
 GameObject:
@@ -844,7 +845,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &2168375654655869179
 GameObject:
@@ -929,7 +930,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654655869177
 BoxCollider2D:
@@ -1075,7 +1076,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &2168375654848881207
 GameObject:
@@ -1160,7 +1161,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654848881205
 BoxCollider2D:
@@ -1271,7 +1272,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654852578466
 BoxCollider2D:
@@ -1382,7 +1383,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654872841081
 BoxCollider2D:
@@ -1435,7 +1436,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2168375654904332556}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1461,9 +1462,25 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 342432779}
   layouts: []
+  Damage: 1
+  DebuffToAdd: {fileID: 11400000, guid: 48f0c3064a0dea4459663c184750751b, type: 2}
+  playerEnemyTargetDifference: 0
+  MinigameDuration: 10
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
+  AugmentScore: 0
+  maxScore: 0
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 14
+  baseAugmentStacks: 1
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &2168375654985296021
 GameObject:
   m_ObjectHideFlags: 0
@@ -1548,7 +1565,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375654985296027
 BoxCollider2D:
@@ -1659,7 +1676,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2168375655017871245
 BoxCollider2D:
@@ -1771,5 +1788,5 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0

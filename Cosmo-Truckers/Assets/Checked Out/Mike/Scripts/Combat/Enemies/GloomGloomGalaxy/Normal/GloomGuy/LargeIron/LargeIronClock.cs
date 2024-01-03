@@ -13,14 +13,14 @@ public class LargeIronClock : MonoBehaviour
     float rotationSpeed; //randomize
     float currentDegreesRotated = 0;
     float currentTime = 0;
-    float scoreTime;
 
     bool spinning = true;
     bool trackTime = false;
+    public bool Activated = false;
 
     private void Start()
     {
-        rotationSpeed = UnityEngine.Random.Range(minRotationSpeed, maxRotationSpeed);
+        rotationSpeed = Random.Range(minRotationSpeed, maxRotationSpeed);
 
         //direction correction
         rotationSpeed = -rotationSpeed;
@@ -67,6 +67,8 @@ public class LargeIronClock : MonoBehaviour
 
     public void Fire()
     {
+        float scoreTime = 0;
+
         if(currentTime <= 0 || currentTime > scoreWaitTime)
         {
             scoreTime = 0;
@@ -75,6 +77,7 @@ public class LargeIronClock : MonoBehaviour
         {
             scoreTime = currentTime;
         }
-        Debug.Log(scoreTime);
+
+        //MATH
     }
 }
