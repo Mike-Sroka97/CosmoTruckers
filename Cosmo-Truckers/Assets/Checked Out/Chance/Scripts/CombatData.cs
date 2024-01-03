@@ -6,12 +6,15 @@ using UnityEngine.SceneManagement;
 public class CombatData : MonoBehaviour
 {
     public static CombatData Instance;
+    public Vector2 combatLocation = new Vector2(0, 0);
+    public int dungeonSeed = 0;
     public GameObject EnemysToSpawn = null;
     public List<GameObject> PlayersToSpawn = new();
 
-    private void OnEnable()
+
+    private void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
@@ -20,7 +23,9 @@ public class CombatData : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
+    }
+    private void OnEnable()
+    {
         SceneManager.activeSceneChanged += ChangeScene;
     }
 
@@ -35,8 +40,8 @@ public class CombatData : MonoBehaviour
         {
             if (next.name != "DungeonSelection")
             {
-                Destroy(this.gameObject);
                 CombatData.Instance = null;
+                Destroy(this.gameObject);
             }
         }
     }

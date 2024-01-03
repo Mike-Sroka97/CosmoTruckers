@@ -8,14 +8,18 @@ using UnityEngine.UI;
 public class DungeonNode : MonoBehaviour
 {
     Node.DungeonNodeBase Node;
+    public List<int> connections = new();
+    [SerializeField] Vector2 NodeLocation = Vector2.zero;
 
     public int GetConnections { get => Node.Connections; }
+    public Vector2 GetNodeLocation { get => NodeLocation; }
 
-    public void SetNode(Node.DungeonNodeBase node)
+    public void SetNode(Node.DungeonNodeBase node, Vector2 loc)
     {
         Node = node;
 
         //Set Everything here
+        NodeLocation = loc;
         GetComponent<Image>().sprite = node.NodeImage;
     }
 
@@ -29,9 +33,12 @@ public class DungeonNode : MonoBehaviour
 
     void OnDungeonClick()
     {
+        CombatData.Instance.combatLocation = NodeLocation;
         CombatData.Instance.EnemysToSpawn = Node.EnemyHolder;
 
-        foreach(var player in FindObjectsOfType<PlayerManager>())
+        CombatData.Instance.PlayersToSpawn.Clear();
+
+        foreach (var player in FindObjectsOfType<PlayerManager>())
         {
             CombatData.Instance.PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }

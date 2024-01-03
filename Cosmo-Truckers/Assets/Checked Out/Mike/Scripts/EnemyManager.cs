@@ -60,13 +60,21 @@ public class EnemyManager : MonoBehaviour
                 if (!enemy.GetComponent<EnemySummon>())
                     EnemiesToSpawn.Add(enemy.gameObject);
 
-            Destroy(mockUp);
-        }
+            PlayerCombatSpots = new Character[8];
+            EnemyCombatSpots = new Character[12];
 
-        PlayerCombatSpots = new Character[8];
-        EnemyCombatSpots = new Character[12];
-        
-        SetSpawns();
+            SetSpawns();
+
+            //Not great on overhead, but waiting till EOF will cause a null enemy to be in the list
+            DestroyImmediate(mockUp);
+        }
+        else
+        {
+            PlayerCombatSpots = new Character[8];
+            EnemyCombatSpots = new Character[12];
+
+            SetSpawns();
+        }
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in foundEnemies)

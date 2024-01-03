@@ -1,8 +1,10 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TurnOrder : MonoBehaviour
 {
@@ -48,7 +50,7 @@ public class TurnOrder : MonoBehaviour
         //Determine if the combat is won/lost
         DetermineCombatEnd();
 
-        if(!combatOver)
+        if (!combatOver)
         {
             //give player control if player
             //give ai control if AI
@@ -63,7 +65,7 @@ public class TurnOrder : MonoBehaviour
                 if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
                     livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
                 //Mob is not trash and has independent turns
-                else if(!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash)
+                else if (!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash)
                     livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
                 else
                     EndTurn();
@@ -71,6 +73,9 @@ public class TurnOrder : MonoBehaviour
 
             Debug.Log("It is " + livingCharacters[currentCharactersTurn].name + "'s turn");
         }
+        //Combat is over
+        else
+            EndCombat();
     }
 
     public void EndTurn()
@@ -175,9 +180,27 @@ public class TurnOrder : MonoBehaviour
         //EnemyManager.Instance.UpdateTrashMobList();
     }
 
+    //Every thing for end combat not on a delay
     public void EndCombat()
     {
+        StartCoroutine(EndCombatDelay());
+    }
+    //everything for combat that will be on a delay
+    IEnumerator EndCombatDelay()
+    {
+        //TODO replace with loot screen and other end combat options before moving forward to dungeon screen
+        yield return new WaitForSeconds(2.0f);
 
+        //If testing the game in real play mode
+        if (NetworkManager.singleton)
+        {
+            NetworkManager.singleton.ServerChangeScene("DungeonSelection");
+        }
+        //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     private void DetermineCombatEnd()
