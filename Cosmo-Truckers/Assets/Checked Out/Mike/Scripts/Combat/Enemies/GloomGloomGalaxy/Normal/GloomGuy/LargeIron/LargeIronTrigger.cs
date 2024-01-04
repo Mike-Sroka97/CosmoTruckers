@@ -21,6 +21,7 @@ public class LargeIronTrigger : MonoBehaviour
         if (collision.tag == "PlayerAttack")
         {
             clock.Fire();
+            clock.PlayerFired = true;
             myCollider.enabled = false;
             GameObject bulletTemp = Instantiate(bullet, barrel);
             bulletTemp.transform.parent = null;

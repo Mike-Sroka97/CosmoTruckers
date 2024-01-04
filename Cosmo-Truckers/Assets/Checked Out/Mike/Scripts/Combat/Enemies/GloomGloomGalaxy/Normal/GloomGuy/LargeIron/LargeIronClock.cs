@@ -16,7 +16,7 @@ public class LargeIronClock : MonoBehaviour
 
     bool spinning = true;
     bool trackTime = false;
-    public bool Activated = false;
+    public bool PlayerFired = false;
 
     private void Start()
     {
@@ -41,10 +41,14 @@ public class LargeIronClock : MonoBehaviour
 
         if(currentTime >= scoreWaitTime)
         {
-            GameObject bulletTemp = Instantiate(bullet, barrel);
-            bulletTemp.transform.parent = null;
-            bulletTemp.transform.localScale = new Vector3(1, 1, 1);
-            bulletTemp.transform.position = barrel.position;
+            if(!PlayerFired)
+            {
+                GameObject bulletTemp = Instantiate(bullet, barrel);
+                bulletTemp.transform.parent = null;
+                bulletTemp.transform.localScale = new Vector3(1, 1, 1);
+                bulletTemp.transform.position = barrel.position;
+            }
+
             trackTime = false;
         }
     }
@@ -78,6 +82,13 @@ public class LargeIronClock : MonoBehaviour
             scoreTime = currentTime;
         }
 
-        //MATH
+        CombatMove spell = FindObjectOfType<CombatMove>();
+
+        //max 6
+        while (scoreTime > 0)
+        {
+            spell.Score += 1;
+            scoreTime -= .1f;
+        }
     }
 }

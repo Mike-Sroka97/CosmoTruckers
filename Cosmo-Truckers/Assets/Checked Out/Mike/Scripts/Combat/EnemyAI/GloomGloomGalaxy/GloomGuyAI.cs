@@ -30,18 +30,10 @@ public class GloomGuyAI : Enemy
         //Large Iron
         if (attackIndex == 0)
         {
-            if(TauntedBy)
+            if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-                    return;
-                }
-                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
-                    return;
-                }
+                CombatManager.Instance.DetermineTauntedTarget(this);
+                return;
             }
 
             List<PlayerCharacter> nonTanks = new List<PlayerCharacter>();
@@ -91,9 +83,11 @@ public class GloomGuyAI : Enemy
                 int random = Random.Range(0, tanks.Count);
                 CombatManager.Instance.CharactersSelected.Add(tanks[random]);
             }
+
+            return;
         }
 
-        //FanTheHammer && HorsingAround (hits taunted character
+        //FanTheHammer && HorsingAround (hits taunted character)
         CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
     }
 }

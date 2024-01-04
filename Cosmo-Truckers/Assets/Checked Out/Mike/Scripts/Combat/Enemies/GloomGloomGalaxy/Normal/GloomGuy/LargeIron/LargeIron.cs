@@ -14,5 +14,10 @@ public class LargeIron : CombatMove
     public override void EndMove()
     {
         MoveEnded = true;
+
+        int damage = CalculateScore();
+
+        CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage(damage, 2, true);
+        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, baseAugmentStacks);
     }
 }
