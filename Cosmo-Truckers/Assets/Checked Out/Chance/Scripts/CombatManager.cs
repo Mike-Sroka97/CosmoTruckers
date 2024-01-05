@@ -217,7 +217,6 @@ public class CombatManager : MonoBehaviour
                     else
                     {
                         CharactersSelected.Add(obj);
-                        ActivePlayers.Add(obj);
 
                         break;
                     }

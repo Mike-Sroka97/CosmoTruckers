@@ -332,6 +332,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!114 &8190444398422271460
 MonoBehaviour:
@@ -340,7 +342,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8190444398422271464}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17039b2870aac4a43880e6268e4d885a, type: 3}
   m_Name: 
@@ -448,6 +450,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &8190444398793363377
 GameObject:
@@ -579,6 +583,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &8190444399411462672
 GameObject:
@@ -686,6 +692,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &8190444399500503624
 GameObject:
@@ -759,6 +767,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1 &8190444399547635664
 GameObject:
@@ -1096,7 +1106,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8190444399847288225}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1126,14 +1136,25 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 8190444399737903179}
   layouts: []
-  Damage: 0
+  Damage: 20
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
-  MinigameDuration: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 70
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &8190444400067434130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,6 +1228,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
   TrackingDamage: 1
 --- !u!1001 &74028908
 PrefabInstance:
@@ -1218,6 +1241,10 @@ PrefabInstance:
     - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_SortingOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4098711424816010938, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_RootOrder
@@ -1285,6 +1312,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4098711424816010938, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -1347,10 +1378,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8190444399847288158}
     m_Modifications:
-    - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4098711424816010938, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1416,6 +1443,10 @@ PrefabInstance:
     - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_SortingOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4098711424816010937, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4098711424816010938, guid: 9283c79922381ed43a87470d1d58f07c, type: 3}
       propertyPath: m_RootOrder

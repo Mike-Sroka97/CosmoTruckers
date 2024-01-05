@@ -8,11 +8,11 @@ public class GloomGuyAI : Enemy
     {
         if (!FindObjectOfType<AUG_BullsEye>())
         {
-            ChosenAttack = attacks[0];
+            ChosenAttack = attacks[2];
         }
         else if (FindObjectOfType<AUG_BullsEye>() && FindObjectOfType<AUG_BullsEye>().AugmentSO.MyCharacter != TauntedBy)
         {
-            ChosenAttack = attacks[1];
+            ChosenAttack = attacks[2];
         }
         else
         {
