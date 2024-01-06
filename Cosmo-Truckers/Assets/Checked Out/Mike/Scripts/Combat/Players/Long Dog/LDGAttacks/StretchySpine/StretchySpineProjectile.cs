@@ -45,13 +45,17 @@ public class StretchySpineProjectile : MonoBehaviour
         }
         else if(collision.tag == "LDGNoInteraction" && collision.gameObject.name != "SoftPlatform")
         {
+            AdvancedFrameAnimation frameAnimation = collision.gameObject.GetComponent<AdvancedFrameAnimation>();
+
             if(good)
             {
                 minigame.Score += 2;
+                frameAnimation.SwitchToHappyAnimation(); 
             }
             else
             {
                 minigame.Score -= 1;
+                frameAnimation.SwitchToHurtAnimation(); 
             }
             Destroy(gameObject);
         }

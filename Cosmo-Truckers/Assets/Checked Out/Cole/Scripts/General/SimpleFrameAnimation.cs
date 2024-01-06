@@ -5,11 +5,12 @@ using UnityEngine;
 //This will go through the sprites at all the same speeds
 public class SimpleFrameAnimation : MonoBehaviour
 {
-    [SerializeField] Sprite[] sprites;
-    [SerializeField] float timeBetweenEachSprite = 0.5f;
+    [Header("Simple Frame Variables")]
+    [SerializeField] protected Sprite[] sprites;
+    [SerializeField] protected float timeBetweenEachSprite = 0.5f;
 
-    SpriteRenderer mySpriteRenderer; 
-    int currentSprite = 0; 
+    protected SpriteRenderer mySpriteRenderer; 
+    protected int currentSprite = 0; 
 
     void Start()
     {
@@ -21,7 +22,7 @@ public class SimpleFrameAnimation : MonoBehaviour
         }
     }
     
-    IEnumerator ChangeSprites()
+    protected IEnumerator ChangeSprites()
     {
         if (currentSprite >= sprites.Length)
             currentSprite = 0;
