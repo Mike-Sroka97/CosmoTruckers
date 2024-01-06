@@ -113,7 +113,7 @@ MonoBehaviour:
   goodProjectile: {fileID: 2813054443293732768, guid: c1cf9ccc1a17cfd42911a8f2afefd8cb, type: 3}
   badProjectile: {fileID: 1214651453254267242, guid: a132eb71c3d5f6744b4bdd91d48d0efe, type: 3}
   projectileSpawnRate: 1.8
-  spawnRotationVariance: 12
+  spawnRotationVariance: 10
 --- !u!1 &6318842950590882811
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,8 +206,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6318842951293772166}
   - component: {fileID: 6318842951293772167}
-  - component: {fileID: 6318842951293772164}
   - component: {fileID: 5625446712497480317}
+  - component: {fileID: 539330427}
   m_Layer: 0
   m_Name: Big Fella
   m_TagString: LDGNoInteraction
@@ -282,22 +282,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!58 &6318842951293772164
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6318842951293772185}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.6, y: 0}
-  serializedVersion: 2
-  m_Radius: 1.75
 --- !u!114 &5625446712497480317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +308,22 @@ MonoBehaviour:
   - {fileID: 579296662, guid: e8e7745f610a12141b7aeaa93c00ac82, type: 3}
   timeBetweenHappySprites: 0.15
   happyTimeBeforeSwapping: 0.75
+--- !u!70 &539330427
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6318842951293772185}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.6031897, y: 0}
+  m_Size: {x: 1.7936206, y: 5}
+  m_Direction: 0
 --- !u!1001 &2158205147029143294
 PrefabInstance:
   m_ObjectHideFlags: 0

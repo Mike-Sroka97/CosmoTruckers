@@ -41,6 +41,7 @@ public class StretchySpineProjectile : MonoBehaviour
             myBody.gravityScale = 1;
             myBody.AddForce(new Vector2(-deadForceBoost, deadForceBoost), ForceMode2D.Impulse);
             myCollider.enabled = false;
+            gameObject.transform.GetChild(0).GetComponent<SimpleRotation>().enabled = true; 
             Invoke("SpecialDestroy", 2.5f);
         }
         else if(collision.tag == "LDGNoInteraction" && collision.gameObject.name != "SoftPlatform")

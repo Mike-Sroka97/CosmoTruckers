@@ -23,7 +23,7 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
         StopAllCoroutines();
         startHurt = true;
         startHappy = false;
-        currentFrame = 0; 
+        ResetValues();
     }
 
     public void SwitchToHappyAnimation()
@@ -31,60 +31,72 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
         StopAllCoroutines();
         startHappy = true;
         startHurt = false;
-        currentFrame = 0; 
+        ResetValues(); 
     }
 
     private void Update()
     {
-        Animation();    
-    }
-
-    void Animation()
-    {
         if (startHurt)
         {
-            timer += Time.deltaTime;
-            frameTimer += Time.deltaTime;
-
-            if (frameTimer >= timeBetweenHurtSprites)
-            {
-                if (currentFrame >= hurtSprites.Length)
-                    currentFrame = 0;
-
-                mySpriteRenderer.sprite = hurtSprites[currentFrame];
-                currentFrame++;
-                frameTimer = 0f;
-            }
-
-            if (timer > hurtTimeBeforeSwapping)
-            {
-                startHurt = false;
-                timer = 0;
-                StartCoroutine(ChangeSprites());
-            }
+            HurtAnimation(); 
         }
 
-        else if (startHappy)
+        if (startHappy)
         {
-            timer += Time.deltaTime; 
-            frameTimer += Time.deltaTime;
-
-            if (frameTimer >= timeBetweenHappySprites)
-            {
-                if (currentFrame >= happySprites.Length)
-                    currentFrame = 0;
-
-                mySpriteRenderer.sprite = happySprites[currentFrame];
-                currentFrame++;
-                frameTimer = 0f;
-            }
-
-            if (timer > happyTimeBeforeSwapping)
-            {
-                startHappy = false;
-                timer = 0;
-                StartCoroutine(ChangeSprites());
-            }
+            HappyAnimation(); 
         }
+    }
+
+    void HurtAnimation()
+    {
+        timer += Time.deltaTime;
+        frameTimer += Time.deltaTime;
+
+        if (frameTimer >= timeBetweenHurtSprites)
+        {
+            if (currentFrame >= hurtSprites.Length)
+                currentFrame = 0;
+
+            mySpriteRenderer.sprite = hurtSprites[currentFrame];
+            currentFrame++;
+            frameTimer = 0f;
+        }
+
+        if (timer > hurtTimeBeforeSwapping)
+        {
+            startHurt = false;
+            timer = 0;
+            StartCoroutine(ChangeSprites());
+        }
+    }
+
+    void HappyAnimation()
+    {
+        timer += Time.deltaTime;
+        frameTimer += Time.deltaTime;
+
+        if (frameTimer >= timeBetweenHappySprites)
+        {
+            if (currentFrame >= happySprites.Length)
+                currentFrame = 0;
+
+            mySpriteRenderer.sprite = happySprites[currentFrame];
+            currentFrame++;
+            frameTimer = 0f;
+        }
+
+        if (timer > happyTimeBeforeSwapping)
+        {
+            startHappy = false;
+            timer = 0;
+            StartCoroutine(ChangeSprites());
+        }
+    }
+
+    void ResetValues()
+    {
+        currentFrame = 0;
+        timer = 0;
+        frameTimer = 0;
     }
 }
