@@ -7,39 +7,19 @@ public class FanTheHammer : CombatMove
     [SerializeField] int startingScore;
     [SerializeField] float maxTime;
 
+    const int numberOfBulletsInARevolver = 6;
+
     private void Start()
     {
-        StartMove();
         GenerateLayout();
-        Score = startingScore;
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
-    }
+        FanTheHammerGloomGuy[] gloomGuys = GetComponentsInChildren<FanTheHammerGloomGuy>();
 
-    protected override void TrackTime()
-    {
-        currentTime += Time.deltaTime;
-
-        if((currentTime >= maxTime && !MoveEnded) || (PlayerDead && !MoveEnded))
-        {
-            EndMove();
-        }
-    }
-
-    public void CheckScore()
-    {
-        if(PlayerDead)
-        {
-            EndMove();
-        }
-
-        if(Score <= 0 && !MoveEnded)
-        {
-            EndMove();
-        }
+        foreach (FanTheHammerGloomGuy gloomGuy in gloomGuys)
+            gloomGuy.Initialize();
     }
 
     public override void EndMove()
@@ -47,8 +27,11 @@ public class FanTheHammer : CombatMove
         MoveEnded = true;
         if(PlayerDead)
         {
-            Score = 0;
+            Score = 1;
         }
-        Debug.Log(Score);
+
+        int damage = CalculateScore();
+
+        CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage(damage, numberOfBulletsInARevolver);
     }
 }

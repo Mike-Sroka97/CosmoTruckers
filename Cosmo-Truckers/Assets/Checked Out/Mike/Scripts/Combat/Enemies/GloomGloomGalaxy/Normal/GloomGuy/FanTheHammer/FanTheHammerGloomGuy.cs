@@ -33,17 +33,21 @@ public class FanTheHammerGloomGuy : MonoBehaviour
     bool moving = true;
     bool aiming = true;
     bool trackTime = true;
+    public bool Initialized = false;
 
     private void Start()
+    {
+        float random = UnityEngine.Random.Range(-xClamp, xClamp);
+        transform.position = new Vector3(random, transform.position.y, transform.position.z);
+    }
+
+    public void Initialize()
     {
         myBody = GetComponent<Rigidbody2D>();
         gun = transform.Find("Gun");
         player = FindObjectOfType<Player>();
 
         animatorGloomGuy = GetComponent<Animator>();
-
-        float random = UnityEngine.Random.Range(-xClamp, xClamp);
-        transform.position = new Vector3(random, transform.position.y, transform.position.z);
 
         if (transform.position.x <= 0)
         {
@@ -53,10 +57,15 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         {
             goingLeft = false;
         }
+
+        Initialized = true;
     }
 
     private void Update()
     {
+        if (!Initialized)
+            return;
+
         TrackTime();
         AimGun();
         MoveMe();

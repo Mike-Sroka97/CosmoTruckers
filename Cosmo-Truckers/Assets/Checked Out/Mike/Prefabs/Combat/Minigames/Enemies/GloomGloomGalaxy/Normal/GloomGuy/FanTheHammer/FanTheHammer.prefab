@@ -213,7 +213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555020125137126746}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -239,14 +239,25 @@ MonoBehaviour:
   - {fileID: 555020124870477155}
   layouts:
   - {fileID: 1239548245858551684, guid: d71614f3359881141bfa710033434c69, type: 3}
-  Damage: 0
+  Damage: 3
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
-  MinigameDuration: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 5
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
   startingScore: 3
   maxTime: 20
 --- !u!1001 &157339551
@@ -604,6 +615,10 @@ PrefabInstance:
       propertyPath: myTriggers.Array.data[1]
       value: 
       objectReference: {fileID: 555020123765769843}
+    - target: {fileID: 6492662065985965066, guid: d61133eac546ef447b0586855098f277, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6492662065985965070, guid: d61133eac546ef447b0586855098f277, type: 3}
       propertyPath: m_Name
       value: FTHGloomGuyStraight
@@ -748,6 +763,10 @@ PrefabInstance:
       propertyPath: myTriggers.Array.data[1]
       value: 
       objectReference: {fileID: 555020123765769843}
+    - target: {fileID: 6492662065985965066, guid: d61133eac546ef447b0586855098f277, type: 3}
+      propertyPath: m_MaskInteraction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6492662065985965070, guid: d61133eac546ef447b0586855098f277, type: 3}
       propertyPath: m_Name
       value: FTHGloomGuyFan

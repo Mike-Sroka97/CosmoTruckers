@@ -66,6 +66,7 @@ public class PlayerVessel : MonoBehaviour
 
     public void AdjustMultiHitHealthDisplay(int newHealth, int damageHealingAmount, int numberOfHits, bool damage = true)
     {
+        Debug.Log("the fuck?");
         if (newHealth < 0)
             newHealth = 0;
 
