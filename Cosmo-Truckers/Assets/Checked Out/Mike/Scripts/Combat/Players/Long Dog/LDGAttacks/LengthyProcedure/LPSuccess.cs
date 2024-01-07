@@ -6,6 +6,7 @@ public class LPSuccess : MonoBehaviour
 {
     LPPlatformMovement[] damagingPlatforms;
     LengthyProcedure minigame;
+    bool hasTriggered; 
 
     private void Start()
     {
@@ -15,15 +16,22 @@ public class LPSuccess : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.tag == "PlayerAttack")
+        if(collision.transform.tag == "PlayerAttack" || collision.transform.tag == "Player")
         {
-            foreach (LPPlatformMovement platform in damagingPlatforms)
+            if (!hasTriggered)
             {
-                platform.Move();
+                hasTriggered = true;
+                GetComponent<Collider2D>().enabled = false;
+
+                foreach (LPPlatformMovement platform in damagingPlatforms)
+                {
+                    platform.Move();
+                }
+                minigame.NextNode();
+                minigame.Score++;
+                //Debug.Log(gameObject.name + ": " + minigame.Score);
+                gameObject.SetActive(false);
             }
-            minigame.NextNode();
-            minigame.Score++;
-            gameObject.SetActive(false);
         }
     }
 }
