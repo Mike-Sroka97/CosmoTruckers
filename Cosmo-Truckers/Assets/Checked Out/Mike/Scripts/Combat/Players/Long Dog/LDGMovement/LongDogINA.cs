@@ -134,7 +134,7 @@ public class LongDogINA : Player
             yield return null;
 
             damagedTime += Time.deltaTime;
-            if(damagedTime >= damagedDuration)
+            if(damagedTime >= damagedDuration && !dead)
             {
                 playerAnimator.ChangeAnimation(headAnimator, idleHead);
                 playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
@@ -149,7 +149,8 @@ public class LongDogINA : Player
             damagedTime += Time.deltaTime;
         }
 
-        iFrames = false;
+        if(!dead)
+            iFrames = false;
     }
 
     public void SetCanMove(bool toggle) { canMove = toggle; }
@@ -470,7 +471,7 @@ public class LongDogINA : Player
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, .05f, layermask))
         {
 
-            if (!damaged && Input.GetKey("space") && canMove && !stretching)
+            if (!damaged && Input.GetKey("space") && canMove && !stretching && !dead)
             {
                 canJump = true;
             }
@@ -497,7 +498,7 @@ public class LongDogINA : Player
     /// </summary>
     public void SpecialMove()
     {
-        if(canBark && !stretching && !damaged && Input.GetKeyDown(KeyCode.Mouse1))
+        if(canBark && !stretching && !damaged && !dead && Input.GetKeyDown(KeyCode.Mouse1))
         {
             StartCoroutine(Bark());
         }

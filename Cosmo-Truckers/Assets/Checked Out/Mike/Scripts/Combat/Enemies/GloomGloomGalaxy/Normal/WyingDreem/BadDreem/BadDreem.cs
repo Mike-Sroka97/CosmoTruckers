@@ -4,22 +4,29 @@ using UnityEngine;
 
 public class BadDreem : CombatMove
 {
-    [SerializeField] int startingScore;
     [SerializeField] float maxTime;
 
-    float currentTime = 0;
     [HideInInspector] public float CurrentScore;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
+        CurrentScore = Score;
+        trackTime = false;
+    }
 
-        CurrentScore = startingScore;
+    public override void StartMove()
+    {
+        GetComponentInChildren<BadDreemLight>().enabled = true;
+        trackTime = true;
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
+        TrackTime();
         TrackScore();
     }
 
@@ -28,12 +35,8 @@ public class BadDreem : CombatMove
         if (MoveEnded)
             return;
 
-        currentTime += Time.deltaTime;
-
-        if(CurrentScore < 0.5f || currentTime >= maxTime)
-        {
-            EndMove();
-        }
+        if (CurrentScore > maxScore)
+            MoveEnded = true;
     }
 
     public override void EndMove()
@@ -41,5 +44,10 @@ public class BadDreem : CombatMove
         MoveEnded = true;
         CurrentScore += 0.5f;
         Score = (int)CurrentScore;
+
+        int damage = CalculateScore();
+
+        CombatManager.Instance.GetCharactersSelected[0].TakeDamage(damage);
+        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd);
     }
 }

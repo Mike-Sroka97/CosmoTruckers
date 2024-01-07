@@ -32,12 +32,19 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] protected bool pierces = false;
 
     [Space(20)]
+    [Header("Multiplayer Variables")]
+    public Dictionary<PlayerCharacter, int> PlayerScores;
+    public Dictionary<PlayerCharacter, int> PlayerAugmentScores;
+    public Dictionary<PlayerCharacter, bool> PlayersDead;
+
+    [Space(20)]
     [Header("Testing Variables")]
     [SerializeField] bool spawnTest = false;
     [SerializeField] bool startMoveTest = false; 
 
     protected float currentTime = 0;
     protected bool trackTime = false;
+    Player[] players;
 
     public bool GetIsDamaging() { return isDamaging; }
     public bool GetIsHealing() { return isHealing; }
@@ -74,22 +81,19 @@ public abstract class CombatMove : MonoBehaviour
 
     public void SetSpawns()
     {
-        if (spawnPoints.Length == 0) return; //TEMP
+        //TODO check if player controller is the same real world person
 
-        Player[] players = FindObjectsOfType<Player>();
+        players = FindObjectsOfType<Player>();
 
-        if (players.Length <= 1)
-        {
-            players[0].transform.position = spawnPoints[0].position;
-        }
-        else
-        {
-            //set each alive player to a different spawn
-        }
+        for (int i = 0; i < players.Length; i++)
+            players[i].transform.position = spawnPoints[i].position;
     }
 
     public virtual void EndMove()
     {
+        if (MoveEnded)
+            return;
+
         MoveEnded = true;
 
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)
@@ -160,6 +164,20 @@ public abstract class CombatMove : MonoBehaviour
         return augmentStacks;
     }
 
+    protected int CalculateMultiplayerScore(int playerScore)
+    {
+        return 0; //TODO (lol)
+    }
+
+    protected int CalculateMultiplayerAugmentScore(int playerAugScore)
+    {
+        int augmentStacks = playerAugScore * augmentStacksPerScore;
+        augmentStacks += baseAugmentStacks;
+        if (augmentStacks > maxAugmentStacks)
+            augmentStacks = maxAugmentStacks;
+        return augmentStacks;
+    }
+
     protected virtual void PlayerEnemyDifference(Character character)
     {
         //implement as needed
@@ -205,5 +223,19 @@ public abstract class CombatMove : MonoBehaviour
         endMoveCalled = true; 
         yield return new WaitForSeconds(timeToEndMove);
         MoveEnded = true;
+    }
+
+    protected void SetupMultiplayer()
+    {
+        PlayerScores = new Dictionary<PlayerCharacter, int>();
+        PlayerAugmentScores = new Dictionary<PlayerCharacter, int>();
+        PlayersDead = new Dictionary<PlayerCharacter, bool>();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            PlayerScores.Add(players[i].MyCharacter, 0);
+            PlayerAugmentScores.Add(players[i].MyCharacter, 0);
+            PlayersDead.Add(players[i].MyCharacter, false);
+        }
     }
 }

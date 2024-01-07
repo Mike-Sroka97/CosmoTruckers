@@ -89,7 +89,7 @@ public class SafeTINA : Player
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime + damageFlashSpeed;
-            if (damagedTime > damagedDuration && damaged)
+            if (damagedTime > damagedDuration && damaged && !dead)
             {
                 damaged = false;
                 playerAnimator.ChangeAnimation(myAnimator, idle);
@@ -99,7 +99,9 @@ public class SafeTINA : Player
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
-        iFrames = false;
+        if (!dead)
+            iFrames = false;
+
         damagedCoroutineRunning = false; 
     }
 
@@ -138,7 +140,7 @@ public class SafeTINA : Player
     /// </summary>
     public void Jump()
     {
-        if (IsGrounded(raycastHopHelper) && !damaged)
+        if (IsGrounded(raycastHopHelper) && !damaged && !dead)
             canJump = true;
 
         if (Input.GetKeyDown("space") && canJump && !isJumping)
@@ -227,7 +229,7 @@ public class SafeTINA : Player
     /// </summary>
     public void Movement()
     {
-        if (!canMove || damaged) return;
+        if (!canMove || damaged || dead) return;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {

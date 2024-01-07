@@ -7,7 +7,6 @@ public class QuestionableDeal : CombatMove
     [HideInInspector] public bool Moving = true;
     [SerializeField] float moveSpeed;
 
-    bool trackTime = false;
     Rigidbody2D myBody;
 
     const int SubductionDamage = 999;

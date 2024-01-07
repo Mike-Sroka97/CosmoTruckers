@@ -56,7 +56,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
 
     private void SetCanPlay()
     {
-        if (!aeglar.GetDamaged())
+        if (!aeglar.damaged)
         {
             canPlay = true;
         }

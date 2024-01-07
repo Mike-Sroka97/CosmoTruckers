@@ -7,7 +7,6 @@ public class RageBlast : CombatMove
     [SerializeField] RageBlastPlatform[] platforms;
     [SerializeField] float timeToDisablePlatform;
 
-    bool trackTime = false;
     int lastNumber = -1;
     int nonDuplicateRandom;
 

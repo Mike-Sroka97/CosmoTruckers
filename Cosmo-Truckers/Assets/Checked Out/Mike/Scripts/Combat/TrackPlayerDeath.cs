@@ -7,6 +7,7 @@ public class TrackPlayerDeath : MonoBehaviour
     [SerializeField] bool trackDeath = true;
     [SerializeField] int scoreIncrease = 0;
     [SerializeField] int augmentScoreIncrease = 0;
+    [SerializeField] bool multiplayer = false;
 
     [HideInInspector] public bool TrackingDamage = true;
 
@@ -17,11 +18,16 @@ public class TrackPlayerDeath : MonoBehaviour
         minigame = FindObjectOfType<CombatMove>();
     }
 
-    protected void Death()
+    protected void Death(Player player)
     {
         if (trackDeath && minigame)
         {
-            minigame.PlayerDead = true;
+            if (multiplayer)
+                minigame.PlayersDead[player.MyCharacter] = true;
+            else
+                minigame.PlayerDead = true;
+
+            player.dead = true;
         }
     }
 
@@ -32,14 +38,8 @@ public class TrackPlayerDeath : MonoBehaviour
 
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
-            Player player = collision.transform.GetComponent<PlayerBody>().Body;
-            if (!player.iFrames)
-            {
-                player.TakeDamage();
-                minigame.Score += scoreIncrease;
-                minigame.AugmentScore += augmentScoreIncrease;
-                Death();
-            }
+            Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+            AdjustMinigameScore(player);
         }
     }
 
@@ -50,14 +50,8 @@ public class TrackPlayerDeath : MonoBehaviour
 
         if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
-            Player player = collision.transform.GetComponent<PlayerBody>().Body;
-            if (!player.iFrames)
-            {
-                player.TakeDamage();
-                minigame.Score += scoreIncrease;
-                minigame.AugmentScore += augmentScoreIncrease;
-                Death();
-            }
+            Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+            AdjustMinigameScore(player);
         }
     }
 
@@ -70,13 +64,7 @@ public class TrackPlayerDeath : MonoBehaviour
         if (collision.transform.tag == "Player" && collision.transform.GetComponentInChildren<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
-            if (!player.iFrames)
-            {
-                player.TakeDamage();
-                minigame.Score += scoreIncrease;
-                minigame.AugmentScore += augmentScoreIncrease;
-                Death();
-            }
+            AdjustMinigameScore(player);
         }
     }
 
@@ -88,12 +76,30 @@ public class TrackPlayerDeath : MonoBehaviour
         if (collision.transform.tag == "Player" && collision.transform.GetComponentInChildren<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+            AdjustMinigameScore(player);
+        }
+    }
+
+    private void AdjustMinigameScore(Player player)
+    {
+        if (multiplayer)
+        {
             if (!player.iFrames)
             {
+                Death(player);
+                player.TakeDamage();
+                minigame.PlayerScores[player.MyCharacter] += scoreIncrease;
+                minigame.PlayerAugmentScores[player.MyCharacter] += augmentScoreIncrease;
+            }
+        }
+        else
+        {
+            if (!player.iFrames)
+            {
+                Death(player);
                 player.TakeDamage();
                 minigame.Score += scoreIncrease;
                 minigame.AugmentScore += augmentScoreIncrease;
-                Death();
             }
         }
     }

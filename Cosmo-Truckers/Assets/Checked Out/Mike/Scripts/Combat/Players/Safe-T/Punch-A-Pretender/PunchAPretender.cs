@@ -16,7 +16,6 @@ public class PunchAPretender : CombatMove
 
     float currentTimeBadNodes = 0;
     float currentTimeHittableNodes = 0;
-    bool trackTime = false;
 
     private void Start()
     {

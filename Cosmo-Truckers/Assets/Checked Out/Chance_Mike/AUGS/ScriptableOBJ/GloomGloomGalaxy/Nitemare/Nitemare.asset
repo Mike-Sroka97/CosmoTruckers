@@ -12,12 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Nitemare
   m_EditorClassIdentifier: 
+  InCombat: 1
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 0
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Nitemare
-  Type: 0
   DebuffDescription: NITEMARE NITEMARE NITEMARE.
   MyCharacter: {fileID: 0}
+  IsBuff: 0
+  IsDebuff: 1
+  Removable: 1
+  RemoveOnDeath: 0
   Stackable: 1
   MaxStacks: 50
-  CurrentStacks: 7
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 0.6, y: 0.04}
+  fadePerTurn: 0
   AugSpawner: {fileID: 2706756155594182949, guid: e16647c651171684f918699adb99757b, type: 3}

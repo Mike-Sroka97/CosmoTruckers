@@ -20,24 +20,18 @@ public class BadDreemScoreTracker : MonoBehaviour
     private void TrackTime()
     {
         if(trackTime)
-        {
-            minigame.CurrentScore -= Time.deltaTime;
-        }
+            minigame.CurrentScore += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
-        {
             trackTime = false;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")
-        {
             trackTime = true;
-        }
     }
 }

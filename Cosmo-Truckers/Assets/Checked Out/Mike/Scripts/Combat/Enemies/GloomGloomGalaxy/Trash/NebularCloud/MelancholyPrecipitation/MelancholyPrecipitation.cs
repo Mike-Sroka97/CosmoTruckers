@@ -8,8 +8,6 @@ public class MelancholyPrecipitation : CombatMove
     [SerializeField] float twoScoreTime = 12f;
     [SerializeField] float maxScoreTime = 15f;
 
-    bool trackTime = false;
-
     private void Start()
     {
         GenerateLayout();

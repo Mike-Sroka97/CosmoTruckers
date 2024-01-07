@@ -16,6 +16,7 @@ public abstract class Player : MonoBehaviour
     [SerializeField] protected float iFrameDuration;
     [HideInInspector] public bool iFrames = false;
     [HideInInspector] public bool damaged = false;
+    [HideInInspector] public bool dead = false;
 
     [Space(20)]
     [Header("Art")]
@@ -23,7 +24,8 @@ public abstract class Player : MonoBehaviour
     [SerializeField] Material iFrameMaterial; 
 
     protected Rigidbody2D myBody;
-    private Material startingMaterial; 
+    private Material startingMaterial;
+    public PlayerCharacter MyCharacter;
 
     //Things that can be affected by buffs / debuffs
     protected float initialGravityModifier;
@@ -71,6 +73,4 @@ public abstract class Player : MonoBehaviour
     }
 
     public abstract IEnumerator Damaged();
-
-    public bool GetDamaged() { return damaged; }
 }

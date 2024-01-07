@@ -94,7 +94,7 @@ public class ProtoINA : Player
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime + damageFlashSpeed;
-            if (damagedTime > damagedDuration && damaged)
+            if (damagedTime > damagedDuration && damaged && !dead)
             {
                 damaged = false;
                 canAttack = true;
@@ -105,7 +105,8 @@ public class ProtoINA : Player
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
-        iFrames = false;
+        if (!dead)
+            iFrames = false;
     }
 
     private void IsGrounded()
@@ -113,7 +114,7 @@ public class ProtoINA : Player
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
 
-            if(!damaged && Input.GetKey("space") && canMove)
+            if(!damaged && !dead && Input.GetKey("space") && canMove)
             {
                 canJump = true;
             }
@@ -534,7 +535,7 @@ public class ProtoINA : Player
         yield return new WaitForSeconds(teleportHoldTime);
 
         IsTeleporting = false;
-        if(!damaged)
+        if(!damaged && !dead)
         {
             canMove = true;
         }

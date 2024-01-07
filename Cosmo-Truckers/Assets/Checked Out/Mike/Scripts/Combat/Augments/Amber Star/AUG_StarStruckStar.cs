@@ -40,9 +40,9 @@ public class AUG_StarStruckStar : TrackPlayerDeath
 
             if (!player.iFrames)
             {
+                Death(player);
                 HealEnemy();
                 player.TakeDamage();
-                Death();
             }
         }
     }
@@ -58,9 +58,9 @@ public class AUG_StarStruckStar : TrackPlayerDeath
 
             if (!player.iFrames)
             {
+                Death(player);
                 HealEnemy();
                 player.TakeDamage();
-                Death();
             }
         }
     }

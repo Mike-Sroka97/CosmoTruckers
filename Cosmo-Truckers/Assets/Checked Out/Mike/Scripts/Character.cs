@@ -222,6 +222,15 @@ public abstract class Character : MonoBehaviour
             renderer.enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
+
+        //Remove AUGs
+        AugmentsToRemove.Clear();
+
+        foreach (DebuffStackSO aug in AUGS)
+            if (aug.RemoveOnDeath)
+                AugmentsToRemove.Add(aug);
+        foreach (DebuffStackSO aug in AugmentsToRemove)
+            AUGS.Remove(aug);
     }
 
     public virtual void Resurrect(int newHealth, bool ignoreVigor = false)

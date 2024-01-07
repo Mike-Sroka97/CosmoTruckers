@@ -47,17 +47,17 @@ public class WyingDreemAI : Enemy
             if(random <= moveOneWeight)
             {
                 //bad dreem
-                ChosenAttack = attacks[0];
+                ChosenAttack = attacks[1];
             }
             else if(random > moveOneWeight && random <= moveOneWeight + moveTwoWeight)
             {
                 //freak out
-                ChosenAttack = attacks[1];
+                ChosenAttack = attacks[1]; //1
             }
             else
             {
                 //split misery
-                ChosenAttack = attacks[3];
+                ChosenAttack = attacks[1]; //3
             }
         }
 
@@ -80,16 +80,8 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-                    return;
-                }
-                else if(!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
-                    return;
-                }
+                CombatManager.Instance.DetermineTauntedTarget(this);
+                return;
             }
             else if (fourNitemareCharacters.Count > 0)
             {
@@ -113,16 +105,7 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-                    return;
-                }
-                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
-                    return;
-                }
+                CombatManager.Instance.DetermineTauntedTarget(this);
             }
             else if (threeNitemareCharacters.Count > 0)
             {
@@ -134,6 +117,8 @@ public class WyingDreemAI : Enemy
                 int random = Random.Range(0, players.Length);
                 CombatManager.Instance.CharactersSelected.Add(players[random]);
             }
+
+            CombatManager.Instance.ConeTargetEnemy();
         }
         //Death Kill
         else if (attackIndex == 2)
@@ -146,16 +131,7 @@ public class WyingDreemAI : Enemy
             //Target
             if (TauntedBy)
             {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-                    return;
-                }
-                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
-                    return;
-                }
+                CombatManager.Instance.DetermineTauntedTarget(this);
             }
 
             //Target Con 1
@@ -182,6 +158,8 @@ public class WyingDreemAI : Enemy
             {
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
             }
+
+            CombatManager.Instance.ConeTargetEnemy();
         }
     }
 

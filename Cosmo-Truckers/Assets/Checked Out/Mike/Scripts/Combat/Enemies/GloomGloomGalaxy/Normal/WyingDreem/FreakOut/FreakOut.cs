@@ -11,17 +11,24 @@ public class FreakOut : CombatMove
 
     private void Start()
     {
-        StartMove();
         spawner = GetComponentInChildren<FreakOutSpikeSpawner>();
         Invoke("SpawnSpikes", startDelay);
     }
 
+    public override void StartMove()
+    {
+        GetComponentInChildren<FreakOutSpikeSpawner>().enabled = true;
+        trackTime = true;
+
+        SetupMultiplayer();
+    }
+
     private void Update()
     {
-        if(PlayerDead && !MoveEnded)
-        {
-            EndMove();
-        }
+        if (!trackTime)
+            return;
+
+        TrackTime();
     }
 
     public void SpawnSpikes()
@@ -52,7 +59,21 @@ public class FreakOut : CombatMove
 
     public override void EndMove()
     {
+        Debug.Log("lol");
+
         MoveEnded = true;
-        Debug.Log(Score);
+
+        int nitemareStacks = 0;
+
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            int tempAugScore = PlayerAugmentScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()];
+            nitemareStacks = CalculateMultiplayerAugmentScore(tempAugScore);
+
+            if (i == 0)
+                nitemareStacks++;
+
+                 CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(DebuffToAdd, nitemareStacks);
+        }
     }
 }

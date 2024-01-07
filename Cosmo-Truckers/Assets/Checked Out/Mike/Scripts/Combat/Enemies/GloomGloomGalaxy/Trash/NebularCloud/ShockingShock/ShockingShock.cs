@@ -11,10 +11,8 @@ public class ShockingShock : CombatMove
     [SerializeField] float maxScoreTime = 15f;
 
     ShockingShockLightning[] lightning;
-    float scoreTime = 0;
     int numberOfLightningToAssign;
     [HideInInspector] public int CurrentActivatedLightning = 0;
-    bool trackTime = false;
     float lightningTime = 0;
 
     private void Start()

@@ -82,7 +82,7 @@ public class AeglarINA : Player
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime;
-            if (damagedTime > damagedDuration)
+            if (damagedTime > damagedDuration && !dead)
             {
                 canDash = true;
                 canMove = true;
@@ -92,7 +92,8 @@ public class AeglarINA : Player
             yield return null;
         }
 
-        iFrames = false;
+        if(!dead)
+            iFrames = false;
     }
 
     #region Attack
@@ -122,7 +123,7 @@ public class AeglarINA : Player
     /// </summary>
     public void Jump()
     {
-        if (damaged)
+        if (damaged || dead)
             return;
 
         if (IsGrounded(0.05f) && canDash)
@@ -144,7 +145,7 @@ public class AeglarINA : Player
     /// </summary>
     public void Movement()
     {
-        if (!canMove || damaged) return;
+        if (!canMove || damaged || dead) return;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {

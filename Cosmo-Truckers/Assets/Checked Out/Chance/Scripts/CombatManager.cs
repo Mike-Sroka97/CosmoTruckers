@@ -225,6 +225,56 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void ConeTargetEnemy(Character character = null)
+    {
+        if (character == null)
+            character = CharactersSelected[0];
+
+        int minVal = 0;
+        int maxVal = 3;
+
+        if (character.GetComponent<PlayerCharacterSummon>())
+        {
+            minVal = 4;
+            maxVal = 7;
+
+            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
+            if (character.CombatSpot + 1 < maxVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
+        }
+        else if(character.GetComponent<EnemySummon>())
+        {
+            minVal = 8;
+            maxVal = 11;
+
+            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1]);
+            if (character.CombatSpot + 1 <= maxVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1]);
+        }
+        else if(character.GetComponent<PlayerCharacter>())
+        {
+            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1]);
+            if(character.CombatSpot + 1 <= maxVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1]);
+        }
+        else
+        {
+            if(character.CombatSpot > 3)
+            {
+                minVal += 4;
+                maxVal += 4;
+            }
+
+            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
+            if (character.CombatSpot + 1 < maxVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1].Dead)
+                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
+        }
+    }
+
     public void AllTargetEnemy(BaseAttackSO attack)
     {
         foreach (PlayerCharacter obj in attackable)
@@ -327,6 +377,7 @@ public class CombatManager : MonoBehaviour
             characters.Add(character);
             character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * player.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
             character.GetComponent<Player>().enabled = false;
+            character.GetComponent<Player>().MyCharacter = player;
         }
     }
 

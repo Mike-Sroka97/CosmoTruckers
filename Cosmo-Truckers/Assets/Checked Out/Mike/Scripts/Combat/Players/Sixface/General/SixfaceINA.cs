@@ -72,7 +72,7 @@ public class SixfaceINA : Player
     private void Update()
     {
         UpdateOutline();
-        if(!damaged)
+        if(!damaged && !dead)
         {
             Attack();
             Movement();
@@ -85,7 +85,7 @@ public class SixfaceINA : Player
     {
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
-            if(!damaged && !Input.GetKey("space"))
+            if(!damaged && !dead && !Input.GetKey("space"))
             {
                 canJump = true;
                 canDownAttack = true;
@@ -124,7 +124,7 @@ public class SixfaceINA : Player
         while(damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime + damageFlashSpeed;
-            if(damagedTime > damagedDuration && damaged)
+            if(damagedTime > damagedDuration && damaged && !dead)
             {
                 damaged = false;
                 canMove = true;
@@ -134,7 +134,8 @@ public class SixfaceINA : Player
             yield return new WaitForSeconds(damageFlashSpeed);
         }
 
-        iFrames = false;
+        if (!dead)
+            iFrames = false;
     }
 
     private void SetSixFacesFace(AnimationClip clip)

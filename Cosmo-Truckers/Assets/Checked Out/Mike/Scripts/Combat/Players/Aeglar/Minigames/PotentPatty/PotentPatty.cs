@@ -8,7 +8,6 @@ public class PotentPatty : CombatMove
 
     PotentPattyHand[] hands;
     float handTime = 0f;
-    bool trackTime = false;
 
     private void Start()
     {

@@ -91,7 +91,7 @@ public class FreakOutSpikeSpawner : MonoBehaviour
         }
         else if(!minigame.MoveEnded)
         {
-            minigame.EndMove();
+            minigame.MoveEnded = true;
         }
     }
 }
