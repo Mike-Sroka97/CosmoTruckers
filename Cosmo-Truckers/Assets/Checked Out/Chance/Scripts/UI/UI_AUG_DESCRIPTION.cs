@@ -35,7 +35,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     {
         currentChar = character;
 
-        charactersAUGS = currentChar.GetAUGS;
+        charactersAUGS = new(currentChar.GetAUGS);
 
         for(int i = 0; i < charactersAUGS.Count; i++)
         {
