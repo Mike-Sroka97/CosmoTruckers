@@ -194,7 +194,18 @@ public class TurnOrder : MonoBehaviour
         //If testing the game in real play mode
         if (NetworkManager.singleton)
         {
-            NetworkManager.singleton.ServerChangeScene("DungeonSelection");
+            if(CombatData.Instance.lastNode)
+            {
+                //Currently only dungeon map
+                //TODO
+                //Will need to change scene based on the last galaxy that the player was in
+                //Also need to mark this current dungeon as compleated if nessisarry
+                NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
+            }
+            else
+            {
+                NetworkManager.singleton.ServerChangeScene("DungeonSelection");
+            }
         }
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
         else

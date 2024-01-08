@@ -10,6 +10,7 @@ public class CombatData : MonoBehaviour
     public int dungeonSeed = 0;
     public GameObject EnemysToSpawn = null;
     public List<GameObject> PlayersToSpawn = new();
+    public bool lastNode = false;
 
 
     private void Awake()

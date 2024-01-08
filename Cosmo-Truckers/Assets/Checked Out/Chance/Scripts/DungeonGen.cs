@@ -194,7 +194,7 @@ public class DungeonGen : MonoBehaviour
             for(int j = 0; j < CurrentLayout[i].Nodes.Count; j++)
             {
                 GameObject newNode = Instantiate(DungeonNodePreFab, Levels[i].transform);
-                newNode.GetComponent<DungeonNode>().SetNode(CurrentLayout[i].Nodes[j], new Vector2(i + 1, j));
+                newNode.GetComponent<DungeonNode>().SetNode(CurrentLayout[i].Nodes[j], new Vector2(i + 1, j), i == Levels.Length - 1 ? true : false);
             }
         }
         StartCoroutine(ShowConnections());

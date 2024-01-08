@@ -10,13 +10,15 @@ public class DungeonNode : MonoBehaviour
     Node.DungeonNodeBase Node;
     public List<int> connections = new();
     [SerializeField] Vector2 NodeLocation = Vector2.zero;
+    bool lastNode;
 
     public int GetConnections { get => Node.Connections; }
     public Vector2 GetNodeLocation { get => NodeLocation; }
 
-    public void SetNode(Node.DungeonNodeBase node, Vector2 loc)
+    public void SetNode(Node.DungeonNodeBase node, Vector2 loc, bool last)
     {
         Node = node;
+        lastNode = last;
 
         //Set Everything here
         NodeLocation = loc;
@@ -35,6 +37,7 @@ public class DungeonNode : MonoBehaviour
     {
         CombatData.Instance.combatLocation = NodeLocation;
         CombatData.Instance.EnemysToSpawn = Node.EnemyHolder;
+        CombatData.Instance.lastNode = lastNode;
 
         CombatData.Instance.PlayersToSpawn.Clear();
 
