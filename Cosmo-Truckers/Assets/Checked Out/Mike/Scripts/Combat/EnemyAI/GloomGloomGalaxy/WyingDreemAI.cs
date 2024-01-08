@@ -23,7 +23,7 @@ public class WyingDreemAI : Enemy
         {
             foreach(DebuffStackSO augment in player.GetAUGS)
             {
-                if (augment.DebuffName == debuffName && augment.CurrentStacks >= 5 && !player.Dead)
+                if (augment.DebuffName == debuffName && augment.CurrentStacks >= nitemareStacksToKill && !player.Dead)
                 {
                     //Taunt check
                     if(TauntedBy && TauntedBy != player && !TauntedBy.Dead)
@@ -47,7 +47,7 @@ public class WyingDreemAI : Enemy
             if(random <= moveOneWeight)
             {
                 //bad dreem
-                ChosenAttack = attacks[1];
+                ChosenAttack = attacks[0];
             }
             else if(random > moveOneWeight && random <= moveOneWeight + moveTwoWeight)
             {
@@ -57,7 +57,7 @@ public class WyingDreemAI : Enemy
             else
             {
                 //split misery
-                ChosenAttack = attacks[1]; //3
+                ChosenAttack = attacks[3]; //3
             }
         }
 
@@ -123,7 +123,11 @@ public class WyingDreemAI : Enemy
         //Death Kill
         else if (attackIndex == 2)
         {
+            if (playerToKill == null)
+                playerToKill = EnemyManager.Instance.Players[0];
+
             CombatManager.Instance.CharactersSelected.Add(playerToKill);
+            CombatManager.Instance.CharactersSelected.Add(this);
         }
         //Split Misery
         else
@@ -150,16 +154,26 @@ public class WyingDreemAI : Enemy
                 }
             }
 
-            if(currentMostNitemare > 0)
+            if(CombatManager.Instance.CharactersSelected.Count == 0)
             {
-                CombatManager.Instance.CharactersSelected.Add(playerWithMostNitemare);
-            }
-            else
-            {
-                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+                if (currentMostNitemare > 0)
+                {
+                    CombatManager.Instance.CharactersSelected.Add(playerWithMostNitemare);
+                }
+                else
+                {
+                    CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+                }
             }
 
-            CombatManager.Instance.ConeTargetEnemy();
+            foreach (PlayerCharacter player in players)
+            {
+                if (!CombatManager.Instance.CharactersSelected.Contains(player))
+                {
+                    CombatManager.Instance.CharactersSelected.Add(player);
+                    break;
+                }
+            }
         }
     }
 

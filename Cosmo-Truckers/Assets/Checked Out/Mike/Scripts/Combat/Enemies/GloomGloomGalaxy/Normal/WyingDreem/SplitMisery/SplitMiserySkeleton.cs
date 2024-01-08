@@ -39,6 +39,12 @@ public class SplitMiserySkeleton : MonoBehaviour
         }
     }
 
+    public void Initialize(bool singlePlayer)
+    {
+        if (singlePlayer)
+            deadTime = 100;
+    }
+
     private void Update()
     {
         MoveMe();
@@ -77,16 +83,14 @@ public class SplitMiserySkeleton : MonoBehaviour
         myAnimator.Play(skeletonDeath.name); 
 
         if (!minigame.MoveEnded)
-            minigame.Score++;
-        Debug.Log("I'm Dead " + minigame.Score);
+            minigame.Score--;
         myCollider.enabled = false;
 
         yield return new WaitForSeconds(deadTime);
 
         dead = false;
         if (!minigame.MoveEnded)
-            minigame.Score--;
-        Debug.Log("I'm Alive " + minigame.Score);
+            minigame.Score++;
 
         myCollider.enabled = true;
         myRenderer.material = defaultMaterial;

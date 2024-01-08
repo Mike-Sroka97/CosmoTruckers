@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RageBlastPlatform : MonoBehaviour
 {
-    [HideInInspector] bool Disabled = false;
     [SerializeField] Color disablingColor;
     [SerializeField] float timeBeforeDisable;
     [SerializeField] float timeToStayDisabled;

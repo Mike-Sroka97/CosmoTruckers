@@ -336,14 +336,14 @@ public class MainMenu : MonoBehaviour
             value = true;
 
         //TODO find a better way
-        if (false)
-        {
-            if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
-                PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
-                value = true;
-            if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
-                value = true;
-        }
+        //if (false)
+        //{
+        //    if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
+        //        PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
+        //        value = true;
+        //    if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
+        //        value = true;
+        //}
         return value;
     }
 

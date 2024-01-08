@@ -12,15 +12,19 @@ public class SplitMiserySpike : MonoBehaviour
 
     private Vector3 initialPosition;
     Collider2D myCollider;
-
-    private void Start()
+    bool initialized = false;
+    public void Initialize()
     {
         initialPosition = transform.position;
         myCollider = GetComponentInChildren<Collider2D>();
+        initialized = true;
     }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         TrackPosition();
         MoveMe();
     }

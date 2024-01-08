@@ -5,8 +5,6 @@ using UnityEngine;
 public class ShockingShock : CombatMove
 {
     [SerializeField] float lightningDelay;
-    [SerializeField] float maxMinigameTime = 15f;
-    [SerializeField] float oneScoreTime = 9f;
     [SerializeField] float twoScoreTime = 12f;
     [SerializeField] float maxScoreTime = 15f;
 

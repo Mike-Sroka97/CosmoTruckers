@@ -87,7 +87,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760015498786612313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -114,11 +114,23 @@ MonoBehaviour:
   - {fileID: 1760015497226092958}
   layouts:
   - {fileID: 7071584627338083130, guid: 7a4e4a3987d36ec44b839446f0019479, type: 3}
-  Damage: 0
-  DebuffToAdd: {fileID: 0}
+  Damage: 3
+  DebuffToAdd: {fileID: 11400000, guid: 55390431225efd040a3f34254745ee02, type: 2}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
-  Score: 0
+  Score: 4
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 4
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 2
+  baseDamage: 18
+  baseAugmentStacks: 2
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
+  nitemareDamageModifier: 2

@@ -14,8 +14,6 @@ public class PorkanatorHurt : MonoBehaviour
     ParticleSpawner myParticleSpawner;
     Collider2D myCollider;
 
-    static int layermask = 11; //player no interaction
-
     private void Start()
     {
         minigame = FindObjectOfType<Porkanator>();

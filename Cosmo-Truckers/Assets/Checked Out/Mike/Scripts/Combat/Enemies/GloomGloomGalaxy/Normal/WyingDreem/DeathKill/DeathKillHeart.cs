@@ -46,8 +46,8 @@ public class DeathKillHeart : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
-            minigame.Score++;
-            Debug.Log(minigame.Score);
+            minigame.Score--;
+            minigame.AugmentScore--;
 
             myCollider.enabled = false;
             gameObject.GetComponent<SpriteRenderer>().material = iFrameMaterial;

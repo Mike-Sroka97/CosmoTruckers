@@ -44,7 +44,7 @@ public abstract class CombatMove : MonoBehaviour
 
     protected float currentTime = 0;
     protected bool trackTime = false;
-    Player[] players;
+    protected Player[] players;
 
     public bool GetIsDamaging() { return isDamaging; }
     public bool GetIsHealing() { return isHealing; }
