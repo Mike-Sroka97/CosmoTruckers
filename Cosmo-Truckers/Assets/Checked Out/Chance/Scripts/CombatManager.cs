@@ -223,7 +223,8 @@ public class CombatManager : MonoBehaviour
                     else
                     {
                         CharactersSelected.Add(obj);
-
+                        //Think this was the issue
+                        ActivePlayers.Add(obj);
                         break;
                     }
                 }
