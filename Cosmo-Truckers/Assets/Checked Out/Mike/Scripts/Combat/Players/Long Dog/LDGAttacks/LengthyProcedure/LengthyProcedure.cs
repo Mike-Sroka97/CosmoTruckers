@@ -41,6 +41,10 @@ public class LengthyProcedure : CombatMove
             successNodes[random].gameObject.SetActive(true);
             activatedNodes.Add(successNodes[random].gameObject);
         }
+        else
+        {
+            MoveEnded = true; 
+        }
     }
 
     public override void EndMove()

@@ -29,7 +29,6 @@ public class LPSuccess : MonoBehaviour
                 }
                 minigame.NextNode();
                 minigame.Score++;
-                //Debug.Log(gameObject.name + ": " + minigame.Score);
                 gameObject.SetActive(false);
             }
         }
