@@ -81,10 +81,16 @@ public class EnemyManager : MonoBehaviour
             if(!enemy.GetComponent<EnemySummon>())
                 Enemies.Add(enemy);
 
+        int currentPlayerNumber = 1;
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
         foreach (PlayerCharacter player in foundPlayers)
             if(!player.GetComponent<PlayerCharacterSummon>())
+            {
+                player.PlayerNumber = currentPlayerNumber;
+                currentPlayerNumber++;
                 Players.Add(player);
+            }
+
 
         PlayerVesselManager.Instance.Initialize();
 

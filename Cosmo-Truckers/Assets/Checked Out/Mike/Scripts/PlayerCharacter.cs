@@ -13,6 +13,7 @@ public class PlayerCharacter : Character
     public bool IsTank;
     public bool IsSupport;
     public bool IsUtility;
+    public int PlayerNumber;
     public string CharacterName { get => Name; private set => Name = value; }
 
     [Header("Start turn objects")]

@@ -21,6 +21,7 @@ public class LongDogNeck : MonoBehaviour
     private void Start()
     {
         dog = transform.parent.GetComponent<LongDogINA>();
+        myLineRenderer.material = dog.MyRenderers[0].material;
         myBody = GetComponent<PlayerBody>();
 
         if (dog.GetHead().transform.eulerAngles.y == 0)

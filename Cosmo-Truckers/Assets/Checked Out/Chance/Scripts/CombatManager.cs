@@ -7,6 +7,12 @@ using UnityEngine.UI;
 
 public class CombatManager : MonoBehaviour
 {
+    //Multiplayer Stuffs
+    public Material playerOneMaterial;
+    public Material playerTwoMaterial;
+    public Material playerThreeMaterial;
+    public Material playerFourMaterial;
+
     [HideInInspector] public static CombatManager Instance;
     [SerializeField] private Sprite blankBG;
     public Sprite currentBG;

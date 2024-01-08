@@ -20,11 +20,14 @@ public abstract class Player : MonoBehaviour
 
     [Space(20)]
     [Header("Art")]
-    [SerializeField] SpriteRenderer[] myRenderers;
-    [SerializeField] Material iFrameMaterial; 
+    [SerializeField] public SpriteRenderer[] MyRenderers;
+    [SerializeField] Material iFrameMaterial;
+
+    [Space(20)]
+    [Header("Multiplayer")]
+    public Material StartingMaterial;
 
     protected Rigidbody2D myBody;
-    private Material startingMaterial;
     public PlayerCharacter MyCharacter;
 
     //Things that can be affected by buffs / debuffs
@@ -38,7 +41,6 @@ public abstract class Player : MonoBehaviour
     public void PlayerInitialize()
     {
         myBody = GetComponent<Rigidbody2D>();
-        startingMaterial = myRenderers[0].material; 
     }
 
     public void TakeDamage()
@@ -57,7 +59,7 @@ public abstract class Player : MonoBehaviour
         //iFrame color outline
         if(iFrames)
         {
-            foreach (SpriteRenderer renderer in myRenderers)
+            foreach (SpriteRenderer renderer in MyRenderers)
             {
                 renderer.material = iFrameMaterial;
             }
@@ -65,9 +67,9 @@ public abstract class Player : MonoBehaviour
         //else normal color outline
         else 
         {
-            foreach (SpriteRenderer renderer in myRenderers)
+            foreach (SpriteRenderer renderer in MyRenderers)
             {
-                renderer.material = startingMaterial;
+                renderer.material = StartingMaterial;
             }
         }
     }
