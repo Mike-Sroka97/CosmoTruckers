@@ -5,11 +5,13 @@ using UnityEngine;
 public class AUG_StarStruckSpawner : Augment
 {
     [SerializeField] GameObject star;
+    [SerializeField] float firstStarDelay = 5f;
 
     public List<(Enemy, int)> AliveEnemies = new List<(Enemy, int)>();
     const float xClamp = 5.9f;
     const float minSpawn = 5.0f;
     float spawnSpeed;
+    bool firstStar;
 
     public override void Activate(DebuffStackSO stack = null)
     {
@@ -20,6 +22,8 @@ public class AUG_StarStruckSpawner : Augment
          foreach(Enemy enemy in EnemyManager.Instance.Enemies)
             if (!enemy.Dead)
                 AliveEnemies.Add((enemy, 0));
+
+        firstStar = true;
 
         StartCoroutine(SpawnStar());
     }
@@ -42,6 +46,12 @@ public class AUG_StarStruckSpawner : Augment
 
     IEnumerator SpawnStar()
     {
+        if(firstStar)
+        {
+            yield return new WaitForSeconds(firstStarDelay);
+            firstStar = false;
+        }
+
         yield return new WaitForSeconds(spawnSpeed);
         float randomX = Random.Range(-xClamp, xClamp);
         GameObject tempStar;
