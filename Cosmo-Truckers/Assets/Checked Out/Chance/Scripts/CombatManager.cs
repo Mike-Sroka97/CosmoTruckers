@@ -93,7 +93,7 @@ public class CombatManager : MonoBehaviour
             List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
 
             foreach (Character character in CharactersSelected)
-                if (character.GetComponent<PlayerCharacter>())
+                if (character.GetComponent<PlayerCharacter>() && !ActivePlayers.Contains(character))
                     ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
         }
         else
