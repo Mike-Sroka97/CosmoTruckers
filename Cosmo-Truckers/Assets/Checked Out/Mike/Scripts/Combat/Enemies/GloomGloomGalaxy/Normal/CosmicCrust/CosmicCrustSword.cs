@@ -16,7 +16,7 @@ public class CosmicCrustSword : MonoBehaviour
 
     GameObject target;
 
-    private void Start()
+    public void Initialize()
     {
         target = FindObjectOfType<Player>().gameObject;
         StartCoroutine(CCSword());

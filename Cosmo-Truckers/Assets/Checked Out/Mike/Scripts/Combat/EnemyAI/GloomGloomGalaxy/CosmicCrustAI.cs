@@ -76,6 +76,17 @@ public class CosmicCrustAI : Enemy
             {
                 CombatManager.Instance.CharactersSelected.Add(liveEnemies[0]);
             }
+
+            CombatManager.Instance.CharactersSelected.Add(this);
+
+            foreach (PlayerCharacter player in livePlayers)
+                if (player.IsUtility)
+                {
+                    CombatManager.Instance.ActivePlayers.Add(player); 
+                    return;
+                }
+
+            CombatManager.Instance.ActivePlayers.Add(livePlayers[Random.Range(0, livePlayers.Count)]);
         }
 
         //Starlight Fury

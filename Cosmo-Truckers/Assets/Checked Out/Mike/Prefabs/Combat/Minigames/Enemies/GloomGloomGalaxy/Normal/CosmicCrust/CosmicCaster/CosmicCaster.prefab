@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4105140441982350243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46,18 +46,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66038a2d0433bf842915eae6bedd2a80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeOfAttack: 0
+  TypeOfAttack: 5
   spawnPoints:
   - {fileID: 4105140442201767276}
   layouts:
-  - {fileID: 4105140441982350243}
-  Damage: 0
+  - {fileID: 7639414077027572305, guid: 05011a8b83440f64d96e09140b18a0c7, type: 3}
+  Damage: 2
   DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 5
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 1
+  baseDamage: 5
+  baseAugmentStacks: 1
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 1
+  spawnTest: 0
+  startMoveTest: 0
   maxScore: 5
 --- !u!1 &4105140442201767277
 GameObject:

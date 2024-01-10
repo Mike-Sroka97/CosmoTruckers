@@ -10,32 +10,25 @@ public class CosmicCaster : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
         collectables = FindObjectsOfType<CosmicCasterCollectable>();
 
         NextCollectable();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackScore();
-    }
+        CosmicCrustSword[] swords = GetComponentsInChildren<CosmicCrustSword>();
 
-    private void TrackScore()
-    {
-        if (Score >= maxScore && !MoveEnded)
-        {
-            Score = maxScore;
-            EndMove();
-        }
+        foreach (CosmicCrustSword sword in swords)
+            sword.Initialize();
     }
 
     public void NextCollectable()
     {
         if(Score < maxScore && !MoveEnded)
         {
-            int random = UnityEngine.Random.Range(0, collectables.Length);
+            int random = Random.Range(0, collectables.Length);
 
             bool allFull = true;
             foreach(CosmicCasterCollectable collectable in collectables)
@@ -48,7 +41,7 @@ public class CosmicCaster : CombatMove
 
             while (collectables[random].Activated)
             {
-                random = UnityEngine.Random.Range(0, collectables.Length);
+                random = Random.Range(0, collectables.Length);
             }
 
             collectables[random].ActivateMe();
@@ -57,7 +50,9 @@ public class CosmicCaster : CombatMove
 
     public override void EndMove()
     {
-        Debug.Log(Score);
         MoveEnded = true;
+
+        int damage = CalculateScore();
+        DealDamageOrHealing(CombatManager.Instance.CharactersSelected[2], damage); //2 is always Crust
     }
 }
