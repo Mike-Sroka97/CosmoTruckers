@@ -43,7 +43,7 @@ public class SplitMisery : CombatMove
         //Player 1 damage and augment
         int damage = CalculateScore();
 
-        CombatManager.Instance.GetCharactersSelected[0].TakeDamage(damage);
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
         CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, baseAugmentStacks);
 
         //Player Two Damage
@@ -58,6 +58,6 @@ public class SplitMisery : CombatMove
                 stacksOfNitemare = aug.CurrentStacks;
 
         int scaledDamage = damage + (nitemareDamageModifier * stacksOfNitemare);
-        CombatManager.Instance.GetCharactersSelected[1].TakeDamage(scaledDamage);
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[1], scaledDamage);
     }
 }

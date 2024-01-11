@@ -143,6 +143,35 @@ public abstract class CombatMove : MonoBehaviour
         }
     }
 
+    protected void DealMultiHitDamageOrHealing(Character character, int currentDamage, int numberOfHits)
+    {
+        if (currentDamage > 0 && isDamaging)
+        {
+            //1 being base damage
+            float DamageAdj = 1;
+
+            DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+            float newDamage = baseDamage * DamageAdj;
+            baseDamage = (int)newDamage;
+            int totalDamage = baseDamage * numberOfHits + character.FlatDamageAdjustment * numberOfHits;
+
+            character.GetComponent<Character>().TakeMultiHitDamage(totalDamage / numberOfHits, numberOfHits);
+        }
+
+        else if (currentDamage > 0 && isHealing)
+        {
+            //1 being base damage
+            float HealingAdj = 1;
+
+            HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+            float newHealing = baseDamage * HealingAdj;
+            baseDamage = (int)newHealing;
+            int totalHealing = baseDamage * numberOfHits + character.FlatHealingAdjustment * numberOfHits;
+
+            character.GetComponent<Character>().TakeMultiHitHealing(totalHealing / numberOfHits, numberOfHits);
+        }
+    }
+
     protected int CalculateScore()
     {
         if (Score < 0)

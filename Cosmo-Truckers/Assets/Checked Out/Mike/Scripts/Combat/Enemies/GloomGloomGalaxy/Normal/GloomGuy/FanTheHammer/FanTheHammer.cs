@@ -32,6 +32,6 @@ public class FanTheHammer : CombatMove
 
         int damage = CalculateScore();
 
-        CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage(damage, numberOfBulletsInARevolver);
+        DealMultiHitDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage, numberOfBulletsInARevolver);
     }
 }

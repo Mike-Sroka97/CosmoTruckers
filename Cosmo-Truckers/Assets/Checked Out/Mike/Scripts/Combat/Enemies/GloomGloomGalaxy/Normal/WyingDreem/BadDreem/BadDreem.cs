@@ -47,7 +47,7 @@ public class BadDreem : CombatMove
 
         int damage = CalculateScore();
 
-        CombatManager.Instance.GetCharactersSelected[0].TakeDamage(damage);
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
         CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd);
     }
 }
