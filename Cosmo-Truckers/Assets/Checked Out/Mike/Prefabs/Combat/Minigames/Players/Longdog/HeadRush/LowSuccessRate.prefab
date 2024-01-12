@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2067752096193635716}
   - component: {fileID: 2067752096193635718}
   - component: {fileID: 2067752096193635717}
-  - component: {fileID: 2067752096193635719}
+  - component: {fileID: 2373028632366153809}
+  - component: {fileID: 8107477115756755992}
   m_Layer: 0
   m_Name: LowSuccessRate
   m_TagString: LDGNoInteraction
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 2067752096193635715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -54,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: af97ccfd7a98a604c9b2ebaa736196e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.9333334, g: 0.4784314, b: 0.80392164, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a8ccb4c5e58a6b544be4d2239ed3dc5c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,8 +103,8 @@ MonoBehaviour:
   gateToEnable: {fileID: 0}
   successToGive: 2
   lowerSuccessRate: 1
---- !u!58 &2067752096193635719
-CircleCollider2D:
+--- !u!70 &2373028632366153809
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,9 +113,22 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 0.6, y: 0.45}
+  m_Direction: 1
+--- !u!114 &8107477115756755992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067752096193635715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RotateSpeed: 90
