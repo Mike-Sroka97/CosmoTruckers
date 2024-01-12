@@ -20,13 +20,13 @@ public class StarlightSword : MonoBehaviour
     GameObject target;
     bool moving;
 
-    private void Start()
+    public void Initialize()
     {
         target = FindObjectOfType<Player>().gameObject;
         minigame = FindObjectOfType<StarlightFury>();
 
         if (particleEffects != null)
-            SetParticleStates(false); 
+            SetParticleStates(false);
     }
 
     private void Update()
@@ -45,7 +45,6 @@ public class StarlightSword : MonoBehaviour
         {
             moving = false;
             minigame.Score++;
-            Debug.Log(minigame.Score);
         }
     }
 

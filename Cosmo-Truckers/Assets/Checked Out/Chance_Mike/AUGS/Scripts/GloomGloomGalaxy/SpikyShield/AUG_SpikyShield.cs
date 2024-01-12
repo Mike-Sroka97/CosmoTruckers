@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class AUG_SpikyShield : Augment
 {
-    public int ShieldAmount = 50;
-    public int ThornDamage = 10;
+    [SerializeField] int shieldAmount = 35;
 
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
+        if (!firstGo)
+            return;
 
-        AugmentSO.MyCharacter.Shield = ShieldAmount;
+        base.Activate(stack);
+        AugmentSO.MyCharacter.Shield += shieldAmount;
+        firstGo = false;
     }
 
     public override void StopEffect()
     {
-        //Remove all sheild
         AugmentSO.MyCharacter.Shield = 0;
     }
 
     public override void Trigger()
     {
-        CombatManager.Instance.GetCurrentPlayer.TakeDamage(ThornDamage);
+        CombatManager.Instance.GetCurrentPlayer.TakeDamage((int)StatusEffect);
+
+        if (AugmentSO.MyCharacter.Shield <= 0)
+            StopEffect();
     }
 }

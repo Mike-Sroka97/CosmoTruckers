@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4273270493587926240}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52,14 +52,25 @@ MonoBehaviour:
   - {fileID: 4273270494852178657}
   layouts:
   - {fileID: 7023524841051821739, guid: a7f8757fcf8f3e24a98f16228a660be1, type: 3}
-  Damage: 0
+  Damage: 10
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
   MinigameDuration: 20
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 35
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  spawnTest: 0
+  startMoveTest: 0
   timeBetweenSwords: 1
   maxSwords: 16
 --- !u!1 &4273270493814968540
@@ -145,7 +156,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270493814968542
 BoxCollider2D:
@@ -256,7 +267,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270494486011550
 BoxCollider2D:
@@ -368,7 +379,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270494502599981
 BoxCollider2D:
@@ -409,6 +420,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
   TrackingDamage: 1
 --- !u!1 &4273270494541963060
 GameObject:
@@ -494,7 +508,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270494541963057
 BoxCollider2D:
@@ -535,6 +549,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
   TrackingDamage: 1
 --- !u!1 &4273270494551003751
 GameObject:
@@ -722,7 +739,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270494889683378
 BoxCollider2D:
@@ -763,6 +780,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
   TrackingDamage: 1
 --- !u!1 &4273270495308315938
 GameObject:
@@ -847,7 +867,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270495308315964
 BoxCollider2D:
@@ -999,7 +1019,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270495427175250
 BoxCollider2D:
@@ -1040,6 +1060,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
   TrackingDamage: 1
 --- !u!1 &4273270495551538571
 GameObject:
@@ -1124,7 +1147,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &4273270495551538565
 BoxCollider2D:

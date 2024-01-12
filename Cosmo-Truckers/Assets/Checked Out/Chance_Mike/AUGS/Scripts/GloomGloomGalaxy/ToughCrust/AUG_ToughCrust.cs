@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AUG_ToughCrust : MonoBehaviour
+public class AUG_ToughCrust : Augment
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Activate(DebuffStackSO stack = null)
     {
-        
+        if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstGo)
+            StopEffect();
+
+        base.Activate(stack);
+        AugmentSO.MyCharacter.AdjustDefense((int)StatusEffect);
+        AugmentSO.LastStacks = AugmentSO.CurrentStacks;
+        firstGo = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void StopEffect()
     {
-        
+        AugmentSO.MyCharacter.AdjustDefense(-(int)StatusEffect);
     }
 }

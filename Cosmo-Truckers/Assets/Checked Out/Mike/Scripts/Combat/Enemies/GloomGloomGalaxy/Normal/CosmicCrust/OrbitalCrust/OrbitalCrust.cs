@@ -14,20 +14,30 @@ public class OrbitalCrust : CombatMove
 
     private void Start()
     {
-        StartMove();
         stalactiteSpawns = GetComponentsInChildren<OrbitalCrustStalatiteSpawner>();
+    }
+
+    public override void StartMove()
+    {
+        base.StartMove();
         StartCoroutine(SpawnStalactite());
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         TrackTime();
     }
 
     public override void EndMove()
     {
-        Score = (int)currentTime;
-        base.EndMove();
+        int damage = CalculateScore();
+        int stacks = CalculateAugmentScore();
+
+        DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
+        ApplyAugment(CombatManager.Instance.GetCurrentEnemy, stacks);
     }
 
     IEnumerator SpawnStalactite()

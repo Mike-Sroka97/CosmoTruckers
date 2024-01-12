@@ -76,7 +76,7 @@ public abstract class CombatMove : MonoBehaviour
         AllTarget
     }
 
-    public virtual void StartMove() { }
+    public virtual void StartMove() { trackTime = true; }
     public virtual List<Character> NoTargetTargeting() { Debug.LogError("You didn't setup the override you devilish cunt"); return null; }
 
     public void SetSpawns()
@@ -92,9 +92,6 @@ public abstract class CombatMove : MonoBehaviour
 
     public virtual void EndMove()
     {
-        if (MoveEnded)
-            return;
-
         MoveEnded = true;
 
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)
@@ -243,6 +240,9 @@ public abstract class CombatMove : MonoBehaviour
 
             if (timeRemaining > timeToEndMove)
             {
+                if (MoveEnded)
+                    return;
+
                 StartCoroutine(DelayedCallEndMove());
             }
         }

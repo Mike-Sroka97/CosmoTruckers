@@ -9,8 +9,11 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected DebuffStackSO[] passiveAugments;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
+    [SerializeField] Material defaultMaterial;
+    [SerializeField] Material shieldedMaterial;
     public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
     [SerializeField] protected int maxShield = 60;
+    private int shield = 0;
     public List<DebuffStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
@@ -19,6 +22,7 @@ public abstract class Character : MonoBehaviour
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
     public UnityEvent HealthChangeEvent = new UnityEvent();
+    public UnityEvent ShieldChangeEvent = new UnityEvent();
     public int CurrentHealth
     {
         get
@@ -39,7 +43,33 @@ public abstract class Character : MonoBehaviour
     }
 
     private int currentHealth;
-    public int Shield;
+    public int Shield
+    {
+        get
+        {
+            return shield;
+        }
+        set
+        {
+            ShieldChangeEvent.Invoke();
+
+            if (shield + value > maxShield)
+            {
+                shield = maxShield;
+                AdjustShieldMaterial(true);
+            }
+            else if (shield + value < 0)
+            {
+                shield = 0;
+                AdjustShieldMaterial(false);
+            }
+            else
+            {
+                shield += value;
+                AdjustShieldMaterial(true);
+            }
+        }
+    }
 
     public bool Dead;
 
@@ -211,6 +241,16 @@ public abstract class Character : MonoBehaviour
         newHealing = (int)Math.Floor(floatHealing);
 
         return newHealing;
+    }
+
+    private void AdjustShieldMaterial(bool shielded)
+    {
+        if(shielded)
+            foreach (SpriteRenderer renderer in TargetingSprites)
+                renderer.material = shieldedMaterial;
+        else
+            foreach (SpriteRenderer renderer in TargetingSprites)
+                renderer.material = defaultMaterial;
     }
 
     public virtual void Die()

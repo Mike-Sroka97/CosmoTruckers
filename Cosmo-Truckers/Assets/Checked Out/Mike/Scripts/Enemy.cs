@@ -54,17 +54,6 @@ public class Enemy : Character
 
         passiveMove.Activate(this);
     }
-
-    public void StartTarget()
-    {
-
-    }
-
-    public void EndTarget()
-    {
-
-    }
-
     public override void Resurrect(int newHealth,  bool ignoreVigor = false)
     {
         base.Resurrect(newHealth, ignoreVigor);

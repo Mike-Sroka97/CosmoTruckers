@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class AUG_NovaSword : Augment
 {
-    public int ShieldAmount = 35;
-    public DebuffStackSO DebuffToAdd;
+    [SerializeField] int shieldAmount = 35;
 
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
+        if (!firstGo)
+            return;
 
-        AugmentSO.MyCharacter.Shield = ShieldAmount;
+        base.Activate(stack);
+        AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
+        AugmentSO.MyCharacter.Shield += shieldAmount;
+        firstGo = false;
     }
 
     public override void StopEffect()
     {
-        //Remove all sheild
         AugmentSO.MyCharacter.Shield = 0;
+        AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 
     public override void Trigger()
     {
-        CombatManager.Instance.GetCurrentPlayer.AddDebuffStack(DebuffToAdd);
+        if (AugmentSO.MyCharacter.Shield <= 0)
+            StopEffect();
     }
 }

@@ -419,11 +419,6 @@ public class CombatManager : MonoBehaviour
                 augment.GetAugment().StopEffect();
         }
 
-        foreach (var obj in FindObjectOfType<EnemyManager>().Enemies)
-        {
-            obj.EndTarget();
-        }
-
         FindObjectOfType<TurnOrder>().EndTurn();
     }
 

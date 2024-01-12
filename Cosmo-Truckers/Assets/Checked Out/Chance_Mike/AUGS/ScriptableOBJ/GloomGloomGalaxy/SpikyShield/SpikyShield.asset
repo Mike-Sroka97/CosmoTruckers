@@ -12,17 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: SpikyShield
   m_EditorClassIdentifier: 
+  InCombat: 0
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 1
+  OnDamage: 1
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Spiky Shield
-  Type: 5
   DebuffDescription: "Acts as a \"Shield\" on its target. \r\n\u2022 Essentially
     an additional health bar. Shield HP is targeted first. \r\n\u2022 Takes up to
     X amount of damage, then disappears\r\n\r\nHitting this shield deals DMG to attacker"
   MyCharacter: {fileID: 0}
   IsBuff: 1
   IsDebuff: 0
+  Removable: 1
+  RemoveOnDeath: 1
   Stackable: 0
   MaxStacks: 1
-  CurrentStacks: 0
-  StackValue: {x: 1, y: 0}
+  LastStacks: -1
+  currentStacks: 0
+  StackValue: {x: 10, y: 0}
   fadePerTurn: 0
   AugSpawner: {fileID: 4393463899279447558, guid: 304e598046db0e74397f7c78ad40484c, type: 3}

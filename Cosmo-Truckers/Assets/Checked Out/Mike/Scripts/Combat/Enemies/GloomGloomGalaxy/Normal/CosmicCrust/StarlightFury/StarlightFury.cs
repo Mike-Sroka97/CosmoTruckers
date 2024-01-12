@@ -12,15 +12,25 @@ public class StarlightFury : CombatMove
 
     private void Start()
     {
-        StartMove();
+        trackTime = false;
         GenerateLayout();
-
         swords = GetComponentsInChildren<StarlightSword>();
+    }
+
+    public override void StartMove()
+    {
+        foreach (StarlightSword sword in swords)
+            sword.Initialize();
+
+        trackTime = true;
         StartCoroutine(NextSword());
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         TrackTime();
     }
 

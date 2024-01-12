@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class AUG_Crust : Augment
 {
-    bool firstRun = true;
     public override void Activate(DebuffStackSO stack = null)
     {
-        if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstRun)
+        if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstGo)
             StopEffect();
 
         base.Activate(stack);
         AugmentSO.MyCharacter.AdjustDefense((int)StatusEffect);
         AugmentSO.LastStacks = AugmentSO.CurrentStacks;
-        firstRun = false;
+        firstGo = false;
     }
 
     public override void StopEffect()

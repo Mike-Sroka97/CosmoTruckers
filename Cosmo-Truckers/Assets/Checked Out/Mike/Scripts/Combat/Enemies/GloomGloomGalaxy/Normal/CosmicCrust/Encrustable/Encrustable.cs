@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class Encrustable : CombatMove
 {
-    [SerializeField] int maxScore = 3;
-
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
     private void Update()
     {
+        if (!trackTime)
+            return;
+
         TrackTime();
-        if (Score >= maxScore && !MoveEnded)
-            EndMove();
+    }
+
+    public override void EndMove()
+    {
+        MoveEnded = true;
+
+        int stacks = CalculateAugmentScore();
+
+        ApplyAugment(CombatManager.Instance.CharactersSelected[0], stacks);
     }
 }

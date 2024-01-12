@@ -24,7 +24,7 @@ public class CosmicCrustAI : Enemy
 
         //Cosmic Caster
         if (!liveShield && !liveSword)
-            ChosenAttack = attacks[0];
+            ChosenAttack = attacks[3]; //0
 
         //Starlight Fury
         else if (liveShield && !liveSword)
@@ -92,9 +92,13 @@ public class CosmicCrustAI : Enemy
         //Starlight Fury
         else if(attackIndex == 1)
         {
-            //Pick random live enemy from above list
-            int random = Random.Range(0, liveEnemies.Count);
-            CombatManager.Instance.CharactersSelected.Add(liveEnemies[random]);
+            if(TauntedBy)
+            {
+                CombatManager.Instance.DetermineTauntedTarget(this);
+                return;
+            }
+
+            int random;
 
             //Find utlitiy
             List<PlayerCharacter> utilities = new List<PlayerCharacter>();

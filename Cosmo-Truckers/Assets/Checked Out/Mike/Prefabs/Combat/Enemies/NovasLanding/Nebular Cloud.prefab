@@ -410,10 +410,12 @@ MonoBehaviour:
   passiveMove: {fileID: 0}
   passiveAugments: []
   AUGS: []
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  shieldedMaterial: {fileID: 2100000, guid: 7af58324ccd6a024d84e187076198ea3, type: 2}
   AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 5094879767465362818}
-  Health: 0
+  Health: 50
   TargetingSprites:
   - {fileID: 2096696700430917977}
   CombatSpot: 0
@@ -422,7 +424,9 @@ MonoBehaviour:
   HealthChangeEvent:
     m_PersistentCalls:
       m_Calls: []
-  Shield: 0
+  ShieldChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
