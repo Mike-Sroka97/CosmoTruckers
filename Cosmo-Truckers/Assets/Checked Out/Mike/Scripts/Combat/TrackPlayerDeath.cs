@@ -20,14 +20,25 @@ public class TrackPlayerDeath : MonoBehaviour
 
     protected void Death(Player player)
     {
+        player.dead = true;
+
         if (trackDeath && minigame)
         {
             if (multiplayer)
+            {
                 minigame.PlayersDead[player.MyCharacter] = true;
+
+                bool allDead = true;
+                foreach(KeyValuePair<PlayerCharacter, bool> entry in minigame.PlayersDead)
+                    if (!entry.Value)
+                        allDead = false;
+
+                if(allDead)
+                    minigame.PlayerDead = true;
+            }
+
             else
                 minigame.PlayerDead = true;
-
-            player.dead = true;
         }
     }
 

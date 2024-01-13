@@ -88,7 +88,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &515555861758388908
 CircleCollider2D:
@@ -119,6 +119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!50 &515555861758388907
 Rigidbody2D:
@@ -148,7 +151,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 515555861758388897}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc6af9cbecbc9844f9efb91ed977b0cf, type: 3}
   m_Name: 
@@ -4948,7 +4951,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1233702457
-  m_SortingLayer: 3
+  m_SortingLayer: 7
   m_SortingOrder: -1
   m_RenderMode: 0
   m_MeshDistribution: 0

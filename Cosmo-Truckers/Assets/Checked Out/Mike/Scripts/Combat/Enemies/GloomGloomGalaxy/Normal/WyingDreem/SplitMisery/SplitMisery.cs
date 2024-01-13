@@ -9,11 +9,11 @@ public class SplitMisery : CombatMove
     private void Start()
     {
         GenerateLayout();
-        trackTime = false;
     }
 
     public override void StartMove()
     {
+        base.StartMove();
         bool singlePlayer = players.Length == 1;
 
         SplitMiserySpike[] spikes = GetComponentsInChildren<SplitMiserySpike>();
@@ -26,14 +26,6 @@ public class SplitMisery : CombatMove
             skeleton.Initialize(singlePlayer);
 
         trackTime = true;
-    }
-
-    private void Update()
-    {
-        if (!trackTime)
-            return;
-
-        TrackTime();
     }
 
     public override void EndMove()

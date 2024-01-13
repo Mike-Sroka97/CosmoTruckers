@@ -232,6 +232,41 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void IgnoreTauntSingleTarget()
+    {
+        System.Random random = new System.Random();
+
+        for (int i = 0; i < attackable.Count - 1; i++)
+        {
+            int j = random.Next(i, attackable.Count);
+            PlayerCharacter temp = attackable[i];
+            attackable[i] = attackable[j];
+            attackable[j] = temp;
+        }
+
+        foreach (PlayerCharacter obj in attackable)
+        {
+            if (!obj.Dead && !CharactersSelected.Contains(obj))
+            {
+                if (!obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+                {
+                    CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                    //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
+                    ActivePlayers.Add(obj);
+
+                    break;
+                }
+                else
+                {
+                    CharactersSelected.Add(obj);
+                    //Think this was the issue
+                    ActivePlayers.Add(obj);
+                    break;
+                }
+            }
+        }
+    }
+
     public void ConeTargetEnemy(Character character = null)
     {
         if (character == null)

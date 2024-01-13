@@ -35,7 +35,7 @@ public class MeatTonguerAI : Enemy
             ChosenAttack = attacks[3];
         }
 
-        ChosenAttack = attacks[1];
+        ChosenAttack = attacks[2];
         base.StartTurn();
     }
 
@@ -139,9 +139,10 @@ public class MeatTonguerAI : Enemy
         }
 
         //Spit Ball
-        else if (attackIndex == 1)
+        else if (attackIndex == 2)
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.IgnoreTauntSingleTarget();
         }
 
         //Cumulo-Lickus

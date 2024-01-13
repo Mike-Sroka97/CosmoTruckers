@@ -201,7 +201,15 @@ public abstract class CombatMove : MonoBehaviour
 
     protected int CalculateMultiplayerScore(int playerScore)
     {
-        return 0; //TODO (lol)
+        if (Score < 0)
+            Score = 0;
+        if (Score >= maxScore)
+            Score = maxScore;
+
+        int currentDamage;
+        currentDamage = playerScore * Damage;
+        currentDamage += baseDamage;
+        return currentDamage;
     }
 
     protected int CalculateMultiplayerAugmentScore(int playerAugScore)
