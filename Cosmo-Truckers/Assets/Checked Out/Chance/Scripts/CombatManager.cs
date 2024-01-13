@@ -93,7 +93,7 @@ public class CombatManager : MonoBehaviour
             List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
 
             foreach (Character character in CharactersSelected)
-                if (character.GetComponent<PlayerCharacter>() && !ActivePlayers.Contains(character))
+                if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character))
                     ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
         }
         else
@@ -319,15 +319,22 @@ public class CombatManager : MonoBehaviour
 
     public void AllTargetEnemy(BaseAttackSO attack)
     {
-        foreach (PlayerCharacter obj in attackable)
+        foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
         {
-            if (!obj.Dead)
-            {
-                //character = Instantiate(obj.GetCharacterController);
-                //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                CharactersSelected.Add(obj);
-                ActivePlayers.Add(obj);
-            }
+            CharactersSelected.Add(obj);
+            ActivePlayers.Add(obj);
+        }
+        foreach(PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
+        {
+            CharactersSelected.Add(obj);
+        }
+        foreach (Enemy obj in EnemyManager.Instance.GetAliveEnemies())
+        {
+            CharactersSelected.Add(obj);
+        }
+        foreach (EnemySummon obj in EnemyManager.Instance.GetAliveEnemySummons())
+        {
+            CharactersSelected.Add(obj);
         }
     }
 

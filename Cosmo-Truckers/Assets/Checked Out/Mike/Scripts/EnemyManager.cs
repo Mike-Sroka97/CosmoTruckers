@@ -78,8 +78,10 @@ public class EnemyManager : MonoBehaviour
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
         foreach (Enemy enemy in foundEnemies)
-            if(!enemy.GetComponent<EnemySummon>())
+            if (!enemy.GetComponent<EnemySummon>())
                 Enemies.Add(enemy);
+            else
+                EnemySummons.Add(enemy.GetComponent<EnemySummon>());
 
         int currentPlayerNumber = 1;
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
@@ -89,6 +91,10 @@ public class EnemyManager : MonoBehaviour
                 player.PlayerNumber = currentPlayerNumber;
                 currentPlayerNumber++;
                 Players.Add(player);
+            }
+            else
+            {
+                PlayerSummons.Add(player.GetComponent<PlayerCharacterSummon>());
             }
 
 
@@ -194,7 +200,7 @@ public class EnemyManager : MonoBehaviour
         List<PlayerCharacter> alivePlayers = new List<PlayerCharacter>();
 
         foreach (PlayerCharacter player in Players)
-            if (!player.Dead)
+            if (!player.Dead && !player.GetComponent<PlayerCharacterSummon>())
                 alivePlayers.Add(player);
 
         return alivePlayers;
@@ -205,10 +211,32 @@ public class EnemyManager : MonoBehaviour
         List<Enemy> aliveEnemies = new List<Enemy>();
 
         foreach (Enemy enemy in Enemies)
-            if (!enemy.Dead)
+            if (!enemy.Dead && !enemy.GetComponent<EnemySummon>())
                 aliveEnemies.Add(enemy);
 
         return aliveEnemies;
+    }
+
+    public List<PlayerCharacterSummon> GetAlivePlayerSummons()
+    {
+        List<PlayerCharacterSummon> aliveSummons = new List<PlayerCharacterSummon>();
+
+        foreach (PlayerCharacterSummon summon in PlayerSummons)
+            if (!summon.Dead)
+                aliveSummons.Add(summon.GetComponent<PlayerCharacterSummon>());
+
+        return aliveSummons;
+    }
+
+    public List<EnemySummon> GetAliveEnemySummons()
+    {
+        List<EnemySummon> aliveSummons = new List<EnemySummon>();
+
+        foreach (EnemySummon enemy in EnemySummons)
+            if (!enemy.Dead)
+                aliveSummons.Add(enemy.GetComponent<EnemySummon>());
+
+        return aliveSummons;
     }
 
     //Can be called to reset the trash collection if a mob dies or is added to collection
