@@ -18,13 +18,9 @@ public class CosmicCrustAI : Enemy
                 liveEnemies++;
         }
 
-        //Spike Storm
-        if (liveEnemies <= 1)
-            ChosenAttack = attacks[4];
-
         //Cosmic Caster
         if (!liveShield && !liveSword)
-            ChosenAttack = attacks[3]; //0
+            ChosenAttack = attacks[0]; //0
 
         //Starlight Fury
         else if (liveShield && !liveSword)
@@ -37,6 +33,10 @@ public class CosmicCrustAI : Enemy
         //Orbital Crust
         else if (liveShield && liveSword)
             ChosenAttack = attacks[3];
+
+        //Spike Storm
+        if (liveEnemies <= 1)
+            ChosenAttack = attacks[4];
 
         base.StartTurn();
     }
@@ -157,6 +157,7 @@ public class CosmicCrustAI : Enemy
         else
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.CharactersSelected.Add(this);
         }
     }
 }

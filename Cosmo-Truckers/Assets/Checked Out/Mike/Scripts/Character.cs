@@ -9,8 +9,6 @@ public abstract class Character : MonoBehaviour
     [SerializeField] protected EnemyPassiveBase passiveMove;
     [SerializeField] protected DebuffStackSO[] passiveAugments;
     [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
-    [SerializeField] Material defaultMaterial;
-    [SerializeField] Material shieldedMaterial;
     public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
     [SerializeField] protected int maxShield = 60;
     private int shield = 0;
@@ -18,6 +16,7 @@ public abstract class Character : MonoBehaviour
     public CharacterStats Stats;
     public int Health;
     public SpriteRenderer[] TargetingSprites;
+    [SerializeField] SpriteRenderer[] ShieldSprites;
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
@@ -245,12 +244,12 @@ public abstract class Character : MonoBehaviour
 
     private void AdjustShieldMaterial(bool shielded)
     {
-        if(shielded)
-            foreach (SpriteRenderer renderer in TargetingSprites)
-                renderer.material = shieldedMaterial;
+        if (shielded)
+            foreach (SpriteRenderer renderer in ShieldSprites)
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1);
         else
-            foreach (SpriteRenderer renderer in TargetingSprites)
-                renderer.material = defaultMaterial;
+            foreach (SpriteRenderer renderer in ShieldSprites)
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0);
     }
 
     public virtual void Die()

@@ -319,61 +319,71 @@ public class CombatManager : MonoBehaviour
             yield return null;
 
         INAcombat INA = MiniGameScreen.GetComponentInParent<INAcombat>();
-        float miniGameTime = attack.MiniGameTime;
-        Timer.text = miniGameTime.ToString();
 
-        INAmoving = true;
-        miniGame = Instantiate(attack.CombatPrefab, INA.transform);
-        StartCoroutine(INA.MoveINA(true));
-
-        if (ActivePlayers.Count > 0)
+        if (!attack.AutoCast)
         {
-            foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
+            float miniGameTime = attack.MiniGameTime;
+            Timer.text = miniGameTime.ToString();
+
+            INAmoving = true;
+            miniGame = Instantiate(attack.CombatPrefab, INA.transform);
+            StartCoroutine(INA.MoveINA(true));
+
+            if (ActivePlayers.Count > 0)
             {
-                for (int i = 0; i < character.GetAUGS.Count; i++)
+                foreach (PlayerCharacter character in ActivePlayers) //PlayerCharacter invalid cast
                 {
-                    if (character.GetAUGS[i].InCombat)
-                        character.GetAUGS[i].DebuffEffect();
+                    for (int i = 0; i < character.GetAUGS.Count; i++)
+                    {
+                        if (character.GetAUGS[i].InCombat)
+                            character.GetAUGS[i].DebuffEffect();
+                    }
                 }
             }
-        }
 
-        if (CurrentCharacter.GetComponent<Enemy>())
-        {
-            foreach (DebuffStackSO augment in CurrentCharacter.GetAUGS)
+            if (CurrentCharacter.GetComponent<Enemy>())
             {
-                if (augment.InCombat)
-                    augment.DebuffEffect();
+                foreach (DebuffStackSO augment in CurrentCharacter.GetAUGS)
+                {
+                    if (augment.InCombat)
+                        augment.DebuffEffect();
+                }
             }
+
+            while (INAmoving)
+                yield return null;
+
+            MiniGameScreen.GetComponent<SpriteRenderer>().sprite = currentBG;
+
+            //Attack SO Start
+            foreach (Player player in FindObjectsOfType<Player>())
+            {
+                player.enabled = true;
+            }
+
+            attack.StartCombat();
+
+            while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+            {
+                miniGameTime -= Time.deltaTime;
+                Timer.text = ((int)miniGameTime).ToString();
+
+                yield return null;
+            }
+
+
+            StopAllCoroutines();
+
+            INAmoving = true;
+
+            StartCoroutine(INA.MoveINA(false));
         }
-
-        while (INAmoving)
-            yield return null;
-
-        MiniGameScreen.GetComponent<SpriteRenderer>().sprite = currentBG;
-
-        //Attack SO Start
-        foreach (Player player in FindObjectsOfType<Player>())
+        else
         {
-            player.enabled = true;
+            miniGame = Instantiate(attack.CombatPrefab, INA.transform);
+            StartCoroutine(EndCombat());
         }
 
-        attack.StartCombat();
-
-        while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
-        {
-            miniGameTime -= Time.deltaTime;
-            Timer.text = ((int)miniGameTime).ToString();
-
-            yield return null;
-        }
-
-
-        StopAllCoroutines();
-
-        INAmoving = true;
-
-        StartCoroutine(INA.MoveINA(false));
     }
 
     public void SpawnPlayers()

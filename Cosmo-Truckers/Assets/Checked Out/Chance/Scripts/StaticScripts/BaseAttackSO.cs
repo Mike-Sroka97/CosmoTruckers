@@ -16,6 +16,7 @@ public class BaseAttackSO : ScriptableObject
     public bool EnemyPositiveEffect;
     public int NumberOfTargets;
     public bool TargetsDead;
+    public bool AutoCast;
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;
