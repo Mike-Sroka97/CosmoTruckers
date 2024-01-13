@@ -4,50 +4,35 @@ using UnityEngine;
 
 public class ToTongueOrNotToTongue : CombatMove
 {
-    [SerializeField] float maxTime;
-
     Rotator myRotator;
-    float currentTime = 0;
+    float rotatorSpeed;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
         myRotator = GetComponentInChildren<Rotator>();
+        rotatorSpeed = myRotator.RotateSpeed;
+        myRotator.RotateSpeed = 0;
+    }
+
+    public override void StartMove()
+    {
+        ToTongueOrNotToTongueSpitter[] spitters = GetComponentsInChildren<ToTongueOrNotToTongueSpitter>();
+
+        foreach (ToTongueOrNotToTongueSpitter spitter in spitters)
+            spitter.enabled = true;
+
+        myRotator.RotateSpeed = rotatorSpeed;
         int random = UnityEngine.Random.Range(0, 2);
-        if(random == 1)
+        if (random == 1)
         {
-             myRotator.RotateSpeed = -myRotator.RotateSpeed;
+            myRotator.RotateSpeed = -myRotator.RotateSpeed;
         }
+        base.StartMove();
     }
 
     private void Update()
     {
         TrackTime();
-    }
-
-    private void TrackTime()
-    {
-        if (MoveEnded)
-            return;
-
-        currentTime += Time.deltaTime;
-
-        if (currentTime >= maxTime)
-        {
-            currentTime = maxTime;
-            EndMove();
-        }
-        else if(PlayerDead)
-        {
-            EndMove();
-        }
-    }
-
-    public override void EndMove()
-    {
-        MoveEnded = true;
-        Score = (int)currentTime;
-        Debug.Log(Score);
     }
 }

@@ -19,7 +19,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
     bool isAggro = false;
     float currentShootTime = 0;
 
-    private void Start()
+    private void OnEnable()
     {
         player = FindObjectOfType<Player>();
         aggroRadius = GetComponent<Collider2D>();
@@ -52,10 +52,6 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
     {
         if (!isAggro)
             return;
-
-        //Vector3 tempEulerAngles = new Vector3(0, 0, spitter.transform.eulerAngles.z);
-        //Vector3 tempPlayerEulerAngles = new Vector3(0, 0, player.transform.eulerAngles.z);
-        //spitter.transform.eulerAngles = Vector3.RotateTowards(tempEulerAngles, tempPlayerEulerAngles, lookTowardsSpeed * Time.deltaTime, lookTowardsSpeed * Time.deltaTime);
 
         // Calculate the direction from the current object's position to the target's position
         Vector3 directionToTarget = player.transform.position - spitter.transform.position;

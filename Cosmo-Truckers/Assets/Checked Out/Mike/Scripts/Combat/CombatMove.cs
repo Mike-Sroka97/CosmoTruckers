@@ -221,7 +221,7 @@ public abstract class CombatMove : MonoBehaviour
 
     protected virtual void TrackTime()
     {
-        if (MoveEnded)
+        if (MoveEnded || !trackTime)
             return;
 
         currentTime += Time.deltaTime;
