@@ -14,44 +14,40 @@ public class SolidShlurping : CombatMove
     [SerializeField] float tongueMaxY;
     [SerializeField] float pause;
     [SerializeField] float maxTime;
+    [SerializeField] int damagePerAug;
 
     SolidShlurpingPlatforms[] platforms;
     Rigidbody2D tongueBody;
     float currentAlternateTime = 3; //sue me
     float currentScoreTime = 0;
-    bool trackTime = true;
     bool firstSide = true;
 
     private void Start()
     {
         tongueBody = tongue.GetComponent<Rigidbody2D>();
 
-        StartMove();
         GenerateLayout();
         platforms = FindObjectsOfType<SolidShlurpingPlatforms>();
         platforms[1].gameObject.SetActive(false);
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        if(!MoveEnded)
-        {
-            TrackDeath();
-            TrackTime();
-        }
+        base.StartMove();
+        GetComponentInChildren<SolidShlurpingFollow>().Initialize();
+
+        SolidShlurpingSalivaSpawn[] spawns = GetComponentsInChildren<SolidShlurpingSalivaSpawn>();
+        foreach (SolidShlurpingSalivaSpawn spawn in spawns)
+            spawn.enabled = true;
     }
 
-    private void TrackDeath()
+    protected override void Update()
     {
-        currentScoreTime += Time.deltaTime;
-
-        if(currentScoreTime >= maxTime || PlayerDead)
-        {
-            EndMove();
-        }
+        base.Update();
+        TrackTongueTime();
     }
 
-    private void TrackTime()
+    private void TrackTongueTime()
     {
         if (!trackTime)
             return;
@@ -115,7 +111,19 @@ public class SolidShlurping : CombatMove
     public override void EndMove()
     {
         MoveEnded = true;
-        Score = (int)currentScoreTime;
-        Debug.Log(Score);
+
+        int healing = CalculateScore();
+        int damage = CombatManager.Instance.CharactersSelected[0].GetAUGS.Count * damagePerAug;
+
+        DealDamageOrHealing(CombatManager.Instance.CharactersSelected[0], healing); //Heal target
+        CombatManager.Instance.CharactersSelected[0].RemoveAmountOfAugments(999, 0); //Remove Debuffs
+
+        //1 being base damage
+        float DamageAdj = 1;
+
+        //Damage on players must be divided by 100 to multiply the final
+        DamageAdj = (float)CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
+
+        CombatManager.Instance.CharactersSelected[1].TakeDamage((int)(damage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), pierces);
     }
 }

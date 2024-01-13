@@ -64,6 +64,14 @@ public abstract class CombatMove : MonoBehaviour
         }
     }
 
+    protected virtual void Update()
+    {
+        if (!trackTime)
+            return;
+
+        TrackTime();
+    }
+
     public enum TargetType
     {
         NoTarget,

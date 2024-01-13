@@ -41,19 +41,10 @@ public class MeatTonguerAI : Enemy
 
     protected override void SpecialTarget(int attackIndex)
     {
-        PlayerCharacter[] players = FindObjectsOfType<PlayerCharacter>();
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
+        List<PlayerCharacter> players = EnemyManager.Instance.GetAlivePlayerCharacters();
+        List<Enemy> enemies = EnemyManager.Instance.GetAliveEnemies();
         List<Enemy> debuffedEnemies = new List<Enemy>();
         List<Enemy> halfHealthEnemies = new List<Enemy>();
-
-        List<PlayerCharacter> alivePlayers = new List<PlayerCharacter>();
-        foreach (PlayerCharacter player in players)
-        {
-            if (!player.Dead)
-            {
-                alivePlayers.Add(player);
-            }
-        }
 
         //To Tongue or Not to Tongue
         if (attackIndex == 0)
@@ -64,7 +55,6 @@ public class MeatTonguerAI : Enemy
         //Solid Shlurping
         else if(attackIndex == 1)
         {
-
             foreach(Enemy enemy in enemies)
             {
                 foreach(DebuffStackSO augment in enemy.GetAUGS)
@@ -103,7 +93,7 @@ public class MeatTonguerAI : Enemy
             //Target Con 3
             if(!enemyFound)
             {
-                int random = Random.Range(0, enemies.Length);
+                int random = Random.Range(0, enemies.Count);
                 CombatManager.Instance.CharactersSelected.Add(enemies[random]);
             }
 
@@ -120,8 +110,8 @@ public class MeatTonguerAI : Enemy
 
             if (!supportFound)
             {
-                int randomPlayer = Random.Range(0, alivePlayers.Count);
-                CombatManager.Instance.CharactersSelected.Add(alivePlayers[randomPlayer]);
+                int randomPlayer = Random.Range(0, players.Count);
+                CombatManager.Instance.CharactersSelected.Add(players[randomPlayer]);
             }
 
             //Target
@@ -142,8 +132,8 @@ public class MeatTonguerAI : Enemy
             }
             else
             {
-                int randomPlayer = Random.Range(0, alivePlayers.Count);
-                if (!CombatManager.Instance.CharactersSelected.Contains(alivePlayers[randomPlayer]))
+                int randomPlayer = Random.Range(0, players.Count);
+                if (!CombatManager.Instance.CharactersSelected.Contains(players[randomPlayer]))
                     CombatManager.Instance.CharactersSelected.Add(debuffedEnemies[randomPlayer]);
             }
         }

@@ -12,12 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
   m_Name: Wet
   m_EditorClassIdentifier: 
+  InCombat: 1
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 0
+  OnDamage: 0
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
   DebuffName: Wet
-  Type: 0
   DebuffDescription: This character is sopping wet.
   MyCharacter: {fileID: 0}
+  IsBuff: 0
+  IsDebuff: 1
+  Removable: 1
+  RemoveOnDeath: 1
   Stackable: 1
   MaxStacks: 9
-  CurrentStacks: 0
+  LastStacks: -1
+  currentStacks: 0
   StackValue: {x: 0.1, y: 0.1}
+  fadePerTurn: 0
   AugSpawner: {fileID: 5343401770843168548, guid: 1c320b61780ace34eb723ffc42e6c58e, type: 3}

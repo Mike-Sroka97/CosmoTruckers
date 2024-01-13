@@ -189,6 +189,28 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+    public List<PlayerCharacter> GetAlivePlayerCharacters()
+    {
+        List<PlayerCharacter> alivePlayers = new List<PlayerCharacter>();
+
+        foreach (PlayerCharacter player in Players)
+            if (!player.Dead)
+                alivePlayers.Add(player);
+
+        return alivePlayers;
+    }
+
+    public List<Enemy> GetAliveEnemies()
+    {
+        List<Enemy> aliveEnemies = new List<Enemy>();
+
+        foreach (Enemy enemy in Enemies)
+            if (!enemy.Dead)
+                aliveEnemies.Add(enemy);
+
+        return aliveEnemies;
+    }
+
     //Can be called to reset the trash collection if a mob dies or is added to collection
     public void UpdateTrashMobList()
     {
