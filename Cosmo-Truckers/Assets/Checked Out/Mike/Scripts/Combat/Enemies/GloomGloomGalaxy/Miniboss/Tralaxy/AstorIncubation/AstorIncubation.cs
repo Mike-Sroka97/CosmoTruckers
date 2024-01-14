@@ -17,15 +17,13 @@ public class AstorIncubation : CombatMove
     private void Start()
     {
         platformsDisabled = false; 
-
-        StartMove();
         GenerateLayout();
-        Invoke("DisablePlatforms", ballDelayTime);
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();        
+        base.StartMove();
+        Invoke("DisablePlatforms", ballDelayTime);
     }
 
     private void DisablePlatforms()
@@ -67,13 +65,8 @@ public class AstorIncubation : CombatMove
         return defaultMaterial; 
     }
 
-    protected override void TrackTime()
-    {
-        base.TrackTime();
-    }
-
     public override void EndMove()
     {
-        base.EndMove();
+        MoveEnded = true;
     }
 }

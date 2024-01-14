@@ -180,6 +180,21 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
 
+    public void AddRandomActivePlayer()
+    {
+        System.Random multiRand = new System.Random();
+        PlayerCharacter[] attackableCharacters = attackable.OrderBy(x => multiRand.Next()).ToArray();
+
+        foreach (var obj in attackable)
+        {
+            if (!obj.Dead && !ActivePlayers.Contains(obj))
+            {
+                CharactersSelected.Add(obj);
+                return;
+            }
+        }
+    }
+
     public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy)
     {
         //enemy is taunted

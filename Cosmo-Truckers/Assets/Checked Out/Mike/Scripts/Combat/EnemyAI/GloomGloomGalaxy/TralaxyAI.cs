@@ -10,6 +10,8 @@ public class TralaxyAI : Enemy
     [SerializeField] int tallyYourSinWeight = 1;
     [SerializeField] int absolutionWeight = 3;
 
+    [SerializeField] int maxHealthPerTurn;
+
     bool phaseTwo = false;
     bool justEnteredPhaseTwo = false;
     bool phaseThree = false;
@@ -51,7 +53,7 @@ public class TralaxyAI : Enemy
 
             //absolution
             else
-                ChosenAttack = attacks[34];
+                ChosenAttack = attacks[3];
         }
 
         //phase three
@@ -69,7 +71,45 @@ public class TralaxyAI : Enemy
 
     protected override void SpecialTarget(int attackIndex)
     {
+        //Bubble Babies
+        if (attackIndex == 0)
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+        }
+        //Astor Incubation
+        else if (attackIndex == 1)
+        {
+            foreach(PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
+            {
+                if (player.IsUtility)
+                {
+                    CombatManager.Instance.CharactersSelected.Add(player);
+                    return;
+                }
+            }
 
+            CombatManager.Instance.AddRandomActivePlayer();
+        }
+        //Tall Your Sin
+        else if (attackIndex == 2)
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+        }
+        //Absolution
+        else if (attackIndex == 3)
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+        }
+        //Golden Fury
+        else if (attackIndex == 4)
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+        }
+        //Devastation
+        else
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+        }
     }
 
     private void PhaseCheck()
@@ -84,5 +124,12 @@ public class TralaxyAI : Enemy
             phaseTwo = false;
             phaseThree = true;
         }
+    }
+
+    public void IncreaseHealth()
+    {
+        Health += maxHealthPerTurn;
+        phaseTwoHealth += maxHealthPerTurn;
+        phaseThreeHealth += maxHealthPerTurn;
     }
 }

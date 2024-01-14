@@ -22,10 +22,10 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (trackDeath && minigame)
         {
-            player.dead = true;
-
             if (multiplayer)
             {
+                player.dead = true;
+
                 minigame.PlayersDead[player.MyCharacter] = true;
 
                 bool allDead = true;
