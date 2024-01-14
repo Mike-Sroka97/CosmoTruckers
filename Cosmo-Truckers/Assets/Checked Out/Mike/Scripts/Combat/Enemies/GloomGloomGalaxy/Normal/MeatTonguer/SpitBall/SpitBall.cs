@@ -6,41 +6,34 @@ public class SpitBall : CombatMove
 {
     [SerializeField] float maxTime;
 
-    float currentTime = 0;
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        if(!MoveEnded)
-        {
-            TrackTime();
-        }        
-    }
+        BallBounce[] balls = GetComponentsInChildren<BallBounce>();
 
-    private void TrackTime()
-    {
-        currentTime += Time.deltaTime;
+        foreach (BallBounce ball in balls)
+            ball.enabled = true;
 
-        if(currentTime >= maxTime)
-        {
-            currentTime = maxTime;
-            EndMove();
-        }
-        else if(PlayerDead)
-        {
-            EndMove();
-        }
+        base.StartMove();
+        SetupMultiplayer();
     }
 
     public override void EndMove()
     {
-        Score = (int)currentTime;
-        Debug.Log(Score);
         MoveEnded = true;
+
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            int tempScore = PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()];
+            tempScore = CalculateMultiplayerScore(tempScore);
+
+            DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], tempScore);
+            ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], baseAugmentStacks);
+        }
     }
 }

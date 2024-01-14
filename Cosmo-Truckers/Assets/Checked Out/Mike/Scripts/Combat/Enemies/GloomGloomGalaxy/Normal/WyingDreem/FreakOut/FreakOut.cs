@@ -17,18 +17,11 @@ public class FreakOut : CombatMove
 
     public override void StartMove()
     {
+        base.StartMove();
+
         GetComponentInChildren<FreakOutSpikeSpawner>().enabled = true;
-        trackTime = true;
 
         SetupMultiplayer();
-    }
-
-    private void Update()
-    {
-        if (!trackTime)
-            return;
-
-        TrackTime();
     }
 
     public void SpawnSpikes()
@@ -59,8 +52,6 @@ public class FreakOut : CombatMove
 
     public override void EndMove()
     {
-        Debug.Log("lol");
-
         MoveEnded = true;
 
         int nitemareStacks = 0;

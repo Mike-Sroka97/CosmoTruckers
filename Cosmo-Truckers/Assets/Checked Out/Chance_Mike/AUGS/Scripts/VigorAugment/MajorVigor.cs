@@ -8,16 +8,20 @@ public class MajorVigor : Augment
     const int majorBaseStatusEffect = 50;
     const int majorAdditionalStatusEffect = 10;
 
-    private void Start()
+    public override void Activate(DebuffStackSO stack = null)
     {
         baseStatusEffect = majorBaseStatusEffect;
         additionalStatusEffect = majorAdditionalStatusEffect;
 
-        if(!vigorIncrease)
+        if (!vigorIncrease)
         {
             baseStatusEffect = -baseStatusEffect;
             additionalStatusEffect = -additionalStatusEffect;
         }
+
+        base.Activate(stack);
+
+        AugmentSO.MyCharacter.AdjustVigor((int)StatusEffect);
     }
     public override void StopEffect()
     {

@@ -4,18 +4,36 @@ using UnityEngine;
 
 public class CumuloLickus : CombatMove
 {
+    [SerializeField] DebuffStackSO moistAug;
+
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        base.StartMove();
+        GetComponentInChildren<CumuloLickusShlop>().enabled = true;
+        SetupMultiplayer();
     }
     public override void EndMove()
     {
-        Score = (int)currentTime;
+        MoveEnded = true;
+
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            if (CombatManager.Instance.GetCharactersSelected[i].GetComponent<Enemy>())
+            {
+                CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(moistAug);
+                DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], baseDamage);
+            }
+            else if (!CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacterSummon>())
+            {
+                int tempScore = PlayerAugmentScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()];
+                tempScore = CalculateMultiplayerAugmentScore(tempScore);
+                ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], tempScore);
+            }
+        }
     }
 }

@@ -12,8 +12,8 @@ public class SpitBallBrick : MonoBehaviour
         if (collision.transform.GetComponent<BallBounce>())
         {
             Vector3 collisionPoint = collision.ClosestPoint(transform.position);
-            Instantiate(lingeringSpit, collisionPoint, Quaternion.identity);
-            Instantiate(burstParticle, collisionPoint, Quaternion.identity);
+            Instantiate(lingeringSpit, collisionPoint, Quaternion.identity, FindObjectOfType<SpitBall>().transform);
+            Instantiate(burstParticle, collisionPoint, Quaternion.identity, FindObjectOfType<SpitBall>().transform);
             Destroy(gameObject);
         }
     }

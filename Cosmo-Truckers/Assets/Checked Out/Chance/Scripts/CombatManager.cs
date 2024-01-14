@@ -93,7 +93,7 @@ public class CombatManager : MonoBehaviour
             List<PlayerCharacter> charactersToSpawn = new List<PlayerCharacter>();
 
             foreach (Character character in CharactersSelected)
-                if (character.GetComponent<PlayerCharacter>() && !ActivePlayers.Contains(character))
+                if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character))
                     ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
         }
         else
@@ -232,6 +232,41 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void IgnoreTauntSingleTarget()
+    {
+        System.Random random = new System.Random();
+
+        for (int i = 0; i < attackable.Count - 1; i++)
+        {
+            int j = random.Next(i, attackable.Count);
+            PlayerCharacter temp = attackable[i];
+            attackable[i] = attackable[j];
+            attackable[j] = temp;
+        }
+
+        foreach (PlayerCharacter obj in attackable)
+        {
+            if (!obj.Dead && !CharactersSelected.Contains(obj))
+            {
+                if (!obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+                {
+                    CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                    //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
+                    ActivePlayers.Add(obj);
+
+                    break;
+                }
+                else
+                {
+                    CharactersSelected.Add(obj);
+                    //Think this was the issue
+                    ActivePlayers.Add(obj);
+                    break;
+                }
+            }
+        }
+    }
+
     public void ConeTargetEnemy(Character character = null)
     {
         if (character == null)
@@ -284,15 +319,22 @@ public class CombatManager : MonoBehaviour
 
     public void AllTargetEnemy(BaseAttackSO attack)
     {
-        foreach (PlayerCharacter obj in attackable)
+        foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
         {
-            if (!obj.Dead)
-            {
-                //character = Instantiate(obj.GetCharacterController);
-                //character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * obj.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
-                CharactersSelected.Add(obj);
-                ActivePlayers.Add(obj);
-            }
+            CharactersSelected.Add(obj);
+            ActivePlayers.Add(obj);
+        }
+        foreach(PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
+        {
+            CharactersSelected.Add(obj);
+        }
+        foreach (Enemy obj in EnemyManager.Instance.GetAliveEnemies())
+        {
+            CharactersSelected.Add(obj);
+        }
+        foreach (EnemySummon obj in EnemyManager.Instance.GetAliveEnemySummons())
+        {
+            CharactersSelected.Add(obj);
         }
     }
 

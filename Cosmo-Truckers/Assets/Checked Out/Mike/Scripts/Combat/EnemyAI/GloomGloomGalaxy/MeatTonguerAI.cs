@@ -32,10 +32,13 @@ public class MeatTonguerAI : Enemy
         else
         {
             //Cumulo-Lickus
-            ChosenAttack = attacks[3];
+            if (EnemyManager.Instance.GetAliveEnemies().Count <= 1)
+                ChosenAttack = attacks[0];
+            else
+                ChosenAttack = attacks[3];
         }
 
-        ChosenAttack = attacks[1];
+        ChosenAttack = attacks[3];
         base.StartTurn();
     }
 
@@ -100,7 +103,7 @@ public class MeatTonguerAI : Enemy
             //Player target
             foreach (PlayerCharacter player in players)
             {
-                if (player.IsSupport && !player.Dead)
+                if (player.IsSupport)
                 {
                     CombatManager.Instance.CharactersSelected.Add(player);
                     supportFound = true;
@@ -139,9 +142,10 @@ public class MeatTonguerAI : Enemy
         }
 
         //Spit Ball
-        else if (attackIndex == 1)
+        else if (attackIndex == 2)
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.IgnoreTauntSingleTarget();
         }
 
         //Cumulo-Lickus
