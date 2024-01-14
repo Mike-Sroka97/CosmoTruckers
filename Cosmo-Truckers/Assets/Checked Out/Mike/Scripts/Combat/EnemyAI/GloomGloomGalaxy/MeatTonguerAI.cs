@@ -38,7 +38,6 @@ public class MeatTonguerAI : Enemy
                 ChosenAttack = attacks[3];
         }
 
-        ChosenAttack = attacks[3];
         base.StartTurn();
     }
 
