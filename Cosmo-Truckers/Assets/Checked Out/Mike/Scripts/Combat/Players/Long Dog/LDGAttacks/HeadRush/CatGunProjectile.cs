@@ -13,6 +13,9 @@ public class CatGunProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(gameObject);
+        if (collision.gameObject.name != "CatGun")
+        {
+            Destroy(gameObject);
+        }
     }
 }

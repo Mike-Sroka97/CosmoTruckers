@@ -27,17 +27,17 @@ public class CatGun : MonoBehaviour
     {
         if(currentTime >= fireCD)
         {
-            Instantiate(projectile, projectileSpawn.transform);
-            StartCoroutine(SwitchSprite()); 
+            StartCoroutine(Fire()); 
             currentTime = 0;
 
         }
         currentTime += Time.deltaTime;
     }
 
-    IEnumerator SwitchSprite()
+    IEnumerator Fire()
     {
         myRenderer.sprite = fireMouth;
+        Instantiate(projectile, projectileSpawn.transform);
         yield return new WaitForSeconds(spriteWaitTime);
         myRenderer.sprite = startingSprite; 
     }  

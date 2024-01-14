@@ -9,6 +9,8 @@ public class HeadRushSuccess : MonoBehaviour
     [SerializeField] int successToGive = 3;
     [SerializeField] bool lowerSuccessRate = false;
 
+    bool hasInteracted = false; 
+
     HeadRush myMinigame;
 
     private void Start()
@@ -18,7 +20,22 @@ public class HeadRushSuccess : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        myMinigame.Score += successToGive;
-        Destroy(gameObject);
+        if (!hasInteracted)
+        {
+            hasInteracted = true; 
+            myMinigame.Score += successToGive;
+            Destroy(gameObject);
+        }
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" && !hasInteracted)
+        {
+            hasInteracted = true;
+            myMinigame.Score += successToGive;
+            Destroy(gameObject);
+        }
     }
 }
