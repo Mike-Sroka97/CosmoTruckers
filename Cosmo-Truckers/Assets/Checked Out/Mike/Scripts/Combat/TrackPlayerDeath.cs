@@ -20,10 +20,10 @@ public class TrackPlayerDeath : MonoBehaviour
 
     protected void Death(Player player)
     {
-        player.dead = true;
-
         if (trackDeath && minigame)
         {
+            player.dead = true;
+
             if (multiplayer)
             {
                 minigame.PlayersDead[player.MyCharacter] = true;
