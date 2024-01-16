@@ -18,6 +18,12 @@ public class TurnOrder : MonoBehaviour
     CharacterStats[] livingCharacters;
     int currentCharactersTurn = 0;
     bool combatOver = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         StartCoroutine(StartWait());
@@ -41,7 +47,7 @@ public class TurnOrder : MonoBehaviour
     }
 
     public void DetermineTurnOrder()
-    {        
+    {       
         Array.Sort(livingCharacters, new SpeedComparer());
     }
 
@@ -143,7 +149,6 @@ public class TurnOrder : MonoBehaviour
         {
             if(speed.gameObject.name == characterSpeed.name)
             {
-                Debug.Log("here");
                 speed.Reflex = characterSpeed.Reflex;
             }
         }
@@ -161,6 +166,7 @@ public class TurnOrder : MonoBehaviour
             }
         }
         livingCharacters = speedList.ToArray();
+        DetermineTurnOrder();
 
         //EnemyManager.Instance.UpdateTrashMobList();
     }
@@ -176,6 +182,7 @@ public class TurnOrder : MonoBehaviour
         }
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
+        DetermineTurnOrder();
 
         //EnemyManager.Instance.UpdateTrashMobList();
     }
@@ -226,7 +233,6 @@ public class TurnOrder : MonoBehaviour
                 allEnemiesDead = false;
                 break;
             }
-
         }
 
         if (allEnemiesDead)

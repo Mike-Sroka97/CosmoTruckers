@@ -9,6 +9,7 @@ public class AstorIncubation : CombatMove
     [SerializeField] SpriteRenderer[] ballRenderers;
     [SerializeField] Material defaultMaterial, selectedMaterial;
     [SerializeField] Material defaultButtonMaterial, buttonToggleMaterial;
+    [SerializeField] GameObject astron;
 
     int currentSelection = -1;
     SpriteRenderer currentButtonRenderer = null;
@@ -41,7 +42,7 @@ public class AstorIncubation : CombatMove
         if (!platformsDisabled)
         {
             //Set the score here instead of in choice button, so player can't set again after the balls have been dropped
-            Score = score;
+            Score = 4 - score; // 4 - score because we want the higher score to be more beneficial for the player
 
             if (currentSelection != ballNumber)
             {
@@ -68,5 +69,19 @@ public class AstorIncubation : CombatMove
     public override void EndMove()
     {
         MoveEnded = true;
+
+        int currentNumberOfAstorToSpawn = Score;
+
+        for(int i = 8; i <= 11; i++)
+        {
+            if(EnemyManager.Instance.EnemyCombatSpots[i] == null)
+            {
+                currentNumberOfAstorToSpawn--;
+                EnemyManager.Instance.UpdateEnemySummons(astron);
+            }
+
+            if (currentNumberOfAstorToSpawn <= 0)
+                return;
+        }
     }
 }

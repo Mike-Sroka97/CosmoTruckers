@@ -187,9 +187,12 @@ public class EnemyManager : MonoBehaviour
                 GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
                 EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
                 newSummon.transform.position = EnemySummonLocations[i - 8].position;
-                newSummon.GetComponent<SpriteRenderer>().sortingOrder = i;
+                foreach(SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
+                    spriteRenderer.sortingOrder = i;
                 EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
                 EnemyCombatSpots[i].CombatSpot = i;
+                CharacterStats stats = newSummon.GetComponent<CharacterStats>();
+                TurnOrder.Instance.AddToSpeedList(stats);
                 break;
             }
         }
