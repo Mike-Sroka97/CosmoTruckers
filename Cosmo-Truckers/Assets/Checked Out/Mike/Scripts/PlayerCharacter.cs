@@ -150,6 +150,11 @@ public class PlayerCharacter : Character
 
     public override void TakeDamage(int damage, bool defensePiercing = false)
     {
+        bool bubble = false;
+
+        if (BubbleShielded)
+            bubble = true;
+
         base.TakeDamage(damage, defensePiercing);
 
         if (GetComponent<PlayerCharacterSummon>())
@@ -157,12 +162,19 @@ public class PlayerCharacter : Character
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
+        if (bubble)
+            damage = 0;
 
         MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, damage);
     }
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
+        bool bubble = false;
+
+        if (BubbleShielded)
+            bubble = true;
+
         base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
 
         if (GetComponent<PlayerCharacterSummon>())
@@ -170,6 +182,9 @@ public class PlayerCharacter : Character
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
+
+        if (bubble)
+            numberOfHits--;
 
         MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits);
     }

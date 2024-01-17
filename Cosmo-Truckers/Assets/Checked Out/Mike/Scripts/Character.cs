@@ -17,6 +17,8 @@ public abstract class Character : MonoBehaviour
     public int Health;
     public SpriteRenderer[] TargetingSprites;
     [SerializeField] SpriteRenderer[] ShieldSprites;
+    [SerializeField] Material shieldedMaterial;
+    [SerializeField] Material bubbleShieldMaterial;
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
@@ -70,6 +72,8 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    public bool BubbleShielded = false;
+
     public bool Dead;
 
     protected TurnOrder turnOrder;
@@ -89,7 +93,11 @@ public abstract class Character : MonoBehaviour
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
             passiveMove.Activate(CurrentHealth);
 
-        if (Shield > 0)
+        if(BubbleShielded)
+        {
+            AdjustBubbleShield();
+        }
+        else if (Shield > 0)
         {
             //calculate overrage damage
             int overageDamage = damage - Shield;
@@ -141,7 +149,11 @@ public abstract class Character : MonoBehaviour
             if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
                 passiveMove.Activate(CurrentHealth);
 
-            if (Shield > 0)
+            if(BubbleShielded)
+            {
+                AdjustBubbleShield();
+            }
+            else if (Shield > 0)
             {
                 //calculate overrage damage
                 int overageDamage = damage - Shield;
@@ -212,6 +224,12 @@ public abstract class Character : MonoBehaviour
             Shield += shieldAmount;
     }
 
+    public void AdjustBubbleShield(bool active = false)
+    {
+        BubbleShielded = active;
+        AdjustShieldMaterial(Shield > 0);
+    }
+
     protected int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
@@ -244,12 +262,29 @@ public abstract class Character : MonoBehaviour
 
     private void AdjustShieldMaterial(bool shielded)
     {
-        if (shielded)
+        if(BubbleShielded)
+        {
             foreach (SpriteRenderer renderer in ShieldSprites)
+            {
                 renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1);
+                renderer.material = bubbleShieldMaterial;
+            }
+        }
         else
-            foreach (SpriteRenderer renderer in ShieldSprites)
-                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0);
+        {
+            if (shielded)
+                foreach (SpriteRenderer renderer in ShieldSprites)
+                {
+                    renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1);
+                    renderer.material = shieldedMaterial;
+                }
+            else
+                foreach (SpriteRenderer renderer in ShieldSprites)
+                {
+                    renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 0);
+                    renderer.material = shieldedMaterial;
+                }
+        }
     }
 
     public virtual void Die()

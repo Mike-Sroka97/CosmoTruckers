@@ -24,7 +24,7 @@ public class TralaxyAI : Enemy
         if(!phaseTwo && !phaseThree)
         {
             //bubble babies
-            if(EnemyManager.Instance.Enemies.Count >= 4)
+            if(EnemyManager.Instance.GetAliveEnemySummons().Count >= 2)
             {
                 ChosenAttack = attacks[0];
             }

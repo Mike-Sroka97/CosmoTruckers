@@ -11,28 +11,39 @@ public class BubbleBabies : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
 
         numberOfBubbles = FindObjectsOfType<BubbleBabiesBubble>().Length;
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        base.StartMove();
+
+        BubbleBabiesNeedle[] needles = GetComponentsInChildren<BubbleBabiesNeedle>();
+
+        foreach (BubbleBabiesNeedle needle in needles)
+            needle.Initialize();
     }
 
     public override void EndMove()
     {
-        int excessScore = 0;
-        while(numberOfBubbles > scoreDiff)
+        MoveEnded = true;
+
+        Score = numberOfBubbles / 2;
+        Score++;
+
+        int currentBubbles = 0;
+
+        for(int i = 8; i <= 11; i++)
         {
-            excessScore++;
-            numberOfBubbles--;
+            if(EnemyManager.Instance.EnemyCombatSpots[i] != null && !EnemyManager.Instance.EnemyCombatSpots[i].Dead)
+            {
+                EnemyManager.Instance.EnemyCombatSpots[i].AdjustBubbleShield(true);
+                currentBubbles++;
+                if (currentBubbles > Score)
+                    return;
+            }
         }
-
-        Score -= excessScore;
-
-        base.EndMove();
     }
 }

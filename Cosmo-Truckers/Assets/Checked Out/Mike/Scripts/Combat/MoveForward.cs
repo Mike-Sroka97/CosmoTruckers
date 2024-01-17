@@ -64,4 +64,9 @@ public class MoveForward : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void ToggleClamps()
+    {
+        checkClamps = true;
+    }
 }

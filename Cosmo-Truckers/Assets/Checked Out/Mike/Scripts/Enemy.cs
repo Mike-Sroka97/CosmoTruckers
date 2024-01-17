@@ -106,20 +106,35 @@ public class Enemy : Character
 
     public override void TakeDamage(int damage, bool defensePiercing = false)
     {
+        bool bubble = false;
+
+        if (BubbleShielded)
+            bubble = true;
+
         base.TakeDamage(damage, defensePiercing);
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
+        if (bubble)
+            damage = 0;
 
         StartCoroutine(DamageHealingEffect(true, damage.ToString()));
     }
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
+        bool bubble = false;
+
+        if (BubbleShielded)
+            bubble = true;
+
         base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
+
+        if (bubble)
+            numberOfHits--;
 
         StartCoroutine(DamageHealingEffect(true, damage.ToString(), numberOfHits));
     }

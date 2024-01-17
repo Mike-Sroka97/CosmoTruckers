@@ -56,7 +56,11 @@ public class LongDogCharacter : PlayerCharacter
             if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnDamage)
                 passiveMove.Activate(CurrentHealth);
 
-            if (Shield > 0)
+            if(BubbleShielded)
+            {
+                AdjustBubbleShield();
+            }
+            else if (Shield > 0)
             {
                 //calculate overrage damage
                 int overageDamage = damage - Shield;
@@ -128,7 +132,9 @@ public class LongDogCharacter : PlayerCharacter
 
     private int AdjustDamageHealingBasedOnBodyParts(int amount, bool damage)
     {
-        //TODO add 1 turn 0 vigor AUG if any of these trigger
+        if (BubbleShielded)
+            return 0;
+
         int currentHealth = CurrentHealth;
 
         if (damage)

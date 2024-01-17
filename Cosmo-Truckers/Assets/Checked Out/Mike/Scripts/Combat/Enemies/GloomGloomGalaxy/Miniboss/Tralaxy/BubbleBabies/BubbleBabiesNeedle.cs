@@ -14,11 +14,12 @@ public class BubbleBabiesNeedle : MonoBehaviour
     BubbleBabies minigame;
     MoveForward myMoveForward;
 
-    private void Start()
+    public void Initialize()
     {
         minigame = FindObjectOfType<BubbleBabies>();
         myMoveForward = GetComponent<MoveForward>();
         Invoke("Fire", minigame.FireDelay);
+        GetComponent<MoveForward>().ToggleClamps();
     }
 
     private void Fire()
