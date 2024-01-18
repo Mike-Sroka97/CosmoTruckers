@@ -101,7 +101,7 @@ public class DungeonNode : MonoBehaviour
             {
                 if (aug.Stackable && aug.CurrentStacks < aug.MaxStacks)
                 {
-                    aug.CurrentStacks += (int)aug.StackValue.y;
+                    aug.CurrentStacks += 1;
                     Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} added stack of {Node.AugToAdd[0].DebuffName}");
                 }
                 else
