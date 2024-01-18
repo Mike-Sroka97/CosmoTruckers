@@ -23,14 +23,42 @@ public class DungeonNode : MonoBehaviour
         //Set Everything here
         NodeLocation = loc;
         GetComponent<Image>().sprite = node.NodeImage;
+
+        EnableButtonClick();
     }
 
-    private void OnEnable()
+    private void EnableButtonClick()
     {
-        GetComponent<Button>().onClick.AddListener(delegate
+        switch(Node.Type)
         {
-            OnDungeonClick();
-        });
+            case EnumManager.NodeType.CombatNode:
+                GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    OnDungeonClick();
+                });
+                break;
+            case EnumManager.NodeType.NCNode_SingleRandomPlayerAug:
+                GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    OnNCSingleRandomClick();
+                });
+                break;
+            case EnumManager.NodeType.NCNode_PlayerOrderChoiceAug:
+                //TODO
+                break;
+            case EnumManager.NodeType.RestNode:
+                //TODO
+                break;
+            case EnumManager.NodeType.BossNode:
+                //TODO
+                break;
+
+            default: GetComponent<Button>().interactable = false; break;
+        }
+    }
+    private void OnDisable()
+    {
+        GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
     void OnDungeonClick()
@@ -54,5 +82,32 @@ public class DungeonNode : MonoBehaviour
         {
             SceneManager.LoadScene("Combat Test");
         }
+    }
+
+    void OnNCSingleRandomClick()
+    {
+        CombatData.Instance.combatLocation = NodeLocation;
+        CombatData.Instance.lastNode = lastNode;
+
+        //Get random player
+        PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
+        int index = Random.Range(0, allPlayers.Length - 1);
+        allPlayers[index].GetPlayerData.PlayerCurrentDebuffs.Add(Node.AugToAdd[0]);
+
+        SaveManager.Save(allPlayers[index].GetPlayerData, allPlayers[index].GetPlayer.PlayerID);
+
+        Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} has been given {Node.AugToAdd[0].DebuffName}");
+
+        GetComponent<Button>().interactable = false;
+
+        StartCoroutine(RedrawMapDelay());
+    }
+
+
+    IEnumerator RedrawMapDelay()
+    {
+        yield return new WaitForSeconds(.5f);
+
+        FindObjectOfType<DungeonGen>().RegenMap();
     }
 }

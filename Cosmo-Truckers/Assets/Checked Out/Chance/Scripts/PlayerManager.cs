@@ -13,6 +13,10 @@ public class PlayerManager : NetworkBehaviour
     public SaveData GetPlayerData { get => PlayerData; }
     public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
 
+    /// <summary>
+    /// Load in the player data for this character and set it for online play
+    /// </summary>
+    /// <param name="id">ID number of current character</param>
     public void SetPlayerCharacter(int id)
     {
         PlayerData = SaveManager.Load(id);
@@ -79,4 +83,14 @@ public class PlayerManager : NetworkBehaviour
         item.AssignClientAuthority(connectionToClient);
     }
 
+    public void Start()
+    {
+        if(!NetworkManager.singleton)
+        {
+            PlayerData = SaveManager.Load(PlayerID);
+            if (PlayerData == null)
+                PlayerData = new SaveData();
+
+        }
+    }
 }

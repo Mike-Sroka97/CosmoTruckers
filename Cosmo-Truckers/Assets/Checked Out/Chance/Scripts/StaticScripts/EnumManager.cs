@@ -14,4 +14,13 @@ public class EnumManager
         AOE,
         All_Target
     }
+
+    public enum NodeType
+    {
+        CombatNode,
+        NCNode_SingleRandomPlayerAug,
+        NCNode_PlayerOrderChoiceAug,
+        RestNode,
+        BossNode,
+    }
 }

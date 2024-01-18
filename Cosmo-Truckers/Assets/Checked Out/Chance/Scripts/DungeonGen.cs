@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class DungeonGen : MonoBehaviour
 {
+    [Header("Node Data")]
     [SerializeField] GameObject[] Levels;
     [SerializeField] Node.DungeonNodeBase RestNode;
     [SerializeField] List<Node.DungeonNodeBase> CombatNodes;
     [SerializeField] List<Node.DungeonNodeBase> MiddleNodes;
     [SerializeField] List<Node.DungeonNodeBase> BossNode;
     [SerializeField] bool rest = true;
+    [SerializeField][Range(0,2)] int spaceBetweenCombat = 2;
 
     [Header("Line Options")]
     [SerializeField] Color LineStartColor;
@@ -54,6 +56,11 @@ public class DungeonGen : MonoBehaviour
     #endregion
 
     private void Start()
+    {
+        RegenMap();
+    }
+
+    public void RegenMap()
     {
         //Will set the seed if not first time in dungeon
         RandomSeed = CombatData.Instance.dungeonSeed;
@@ -127,8 +134,9 @@ public class DungeonGen : MonoBehaviour
                 CurrentLayout[i].Add(BossNode[Random.Range(0, BossNode.Count)]);
                 NodesToAddNext = 0;
             }
-            //Combat Nodes
-            else if(i % 3 == 0)
+            //Combat Nodes 
+            //+1 for easy to enter on serialized feild
+            else if(i % (spaceBetweenCombat + 1) == 0)
             {
                 int choice = Random.Range(0, CombatNodes.Count);
                 CurrentLayout[i].Add(CombatNodes[choice]);

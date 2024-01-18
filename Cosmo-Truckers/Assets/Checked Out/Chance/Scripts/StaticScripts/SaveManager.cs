@@ -55,10 +55,19 @@ public class SaveData
 {
     public SaveData()
     {
-        PlayersLoot = new List<Loot>();
+        PlayerCurrentHP = -1;
+        PlayerCurrentDebuffs = new();
+        PlayersLoot = new();
         TutorialFinished = false;
     }
 
+    [Header("Combat data")]
+    public int PlayerCurrentHP;
+    public List<DebuffStackSO> PlayerCurrentDebuffs;
+
+    [Header("Player inventory")]
     public List<Loot> PlayersLoot;
+
+    [Header("Other vars")]
     public bool TutorialFinished;
 }
