@@ -44,7 +44,11 @@ public class DungeonNode : MonoBehaviour
                 });
                 break;
             case EnumManager.NodeType.NCNode_PlayerOrderChoiceAug:
-                //TODO
+                GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    OnNCAllCharacterClick();
+                });
+                break;
                 break;
             case EnumManager.NodeType.RestNode:
                 //TODO
@@ -127,6 +131,16 @@ public class DungeonNode : MonoBehaviour
         StartCoroutine(RedrawMapDelay());
     }
 
+    void OnNCAllCharacterClick()
+    {
+        CombatData.Instance.combatLocation = NodeLocation;
+        CombatData.Instance.lastNode = lastNode;
+
+        GameObject page = Instantiate(Node.EnemyHolder);
+        page.GetComponent<DungeonNodeAllPlayerAUG>().SetUpPlayerOptions(Node.AugToAdd);
+
+        StartCoroutine(RedrawMapDelay());
+    }
 
     IEnumerator RedrawMapDelay()
     {

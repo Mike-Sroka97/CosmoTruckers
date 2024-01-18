@@ -138,9 +138,16 @@ public class DungeonGen : MonoBehaviour
             //+1 for easy to enter on serialized feild
             else if(i % (spaceBetweenCombat + 1) == 0)
             {
-                int choice = Random.Range(0, CombatNodes.Count);
-                CurrentLayout[i].Add(CombatNodes[choice]);
-                NodesToAddNext = CombatNodes[choice].Connections;
+                while (NodesToAdd > 0)
+                {
+                    int choice = Random.Range(0, CombatNodes.Count);
+                    CurrentLayout[i].Add(CombatNodes[choice]);
+
+                    if (CombatNodes[choice].Connections > NodesToAddNext)
+                        NodesToAddNext = CombatNodes[choice].Connections;
+
+                    NodesToAdd--;
+                }
             }
             //Random Middle Nodes
             else
