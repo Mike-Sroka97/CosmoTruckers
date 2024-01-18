@@ -21,7 +21,7 @@ public class TallyYourSinSin : MonoBehaviour
     bool lerpToColor = false; 
     Player player;
 
-    private void Start()
+    public void Initialize()
     {
         player = FindObjectOfType<Player>();
     }

@@ -12,12 +12,13 @@ public class TallyYourSinCircle : MonoBehaviour
     Player player;
     int sinCount;
 
+    bool initialized = false;
+
     private void Start()
     {
         firedSins = new bool[sins.Length];
-        player = FindObjectOfType<Player>();
+
         sinCount = sins.Length;
-        StartCoroutine(FireSin());
 
         float angleIncrement = 360 / sins.Length;
 
@@ -29,12 +30,22 @@ public class TallyYourSinCircle : MonoBehaviour
             float x = radius * Mathf.Cos(angleRadians);
             float y = radius * Mathf.Sin(angleRadians);
 
-            sins[i].transform.position = new Vector3(x, y, 0);
+            sins[i].transform.localPosition = new Vector3(x, y, 0);
         }
+    }
+
+    public void Initialize()
+    {
+        player = FindObjectOfType<Player>();
+        StartCoroutine(FireSin());
+        initialized = true;
     }
 
     private void Update()
     {
+        if (!initialized)
+            return;
+
         transform.position = player.transform.position;
     }
 

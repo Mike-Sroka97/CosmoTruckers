@@ -195,7 +195,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy)
+    public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy, PlayerCharacter player = null)
     {
         //enemy is taunted
         if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
@@ -208,6 +208,21 @@ public class CombatManager : MonoBehaviour
             {
                 CharactersSelected.Add(enemy.TauntedBy);
                 ActivePlayers.Add(enemy.TauntedBy);
+            }
+        }
+        //player selected already
+        else if(player != null)
+        {
+            if (!player.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+            {
+                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
+                ActivePlayers.Add(player);
+            }
+            else
+            {
+                CharactersSelected.Add(player);
+                ActivePlayers.Add(player);
             }
         }
         //enemy is not taunted
@@ -238,7 +253,6 @@ public class CombatManager : MonoBehaviour
                     else
                     {
                         CharactersSelected.Add(obj);
-                        //Think this was the issue
                         ActivePlayers.Add(obj);
                         break;
                     }

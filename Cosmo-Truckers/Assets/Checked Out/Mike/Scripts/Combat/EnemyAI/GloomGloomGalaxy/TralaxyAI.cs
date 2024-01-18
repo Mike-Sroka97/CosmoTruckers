@@ -31,7 +31,7 @@ public class TralaxyAI : Enemy
             //astor incubation
             else
             {
-                ChosenAttack = attacks[1];
+                ChosenAttack = attacks[2]; //1
             }
         }
 
@@ -98,7 +98,27 @@ public class TralaxyAI : Enemy
         //Absolution
         else if (attackIndex == 3)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            List<DebuffStackSO> sinfulCharacters = new List<DebuffStackSO>();
+
+            foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.GetAlivePlayerCharacters())
+                foreach (DebuffStackSO aug in playerCharacter.GetAUGS)
+                    if (aug.DebuffName == "Sin")
+                        sinfulCharacters.Add(aug);
+
+            if(sinfulCharacters.Count > 0)
+            {
+                DebuffStackSO mostSin = sinfulCharacters[0];
+
+                foreach (DebuffStackSO sinMan in sinfulCharacters)
+                    if (sinMan.CurrentStacks > mostSin.CurrentStacks)
+                        mostSin = sinMan;
+
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, mostSin.MyCharacter.GetComponent<PlayerCharacter>());
+            }
+            else
+            {
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            }
         }
         //Golden Fury
         else if (attackIndex == 4)

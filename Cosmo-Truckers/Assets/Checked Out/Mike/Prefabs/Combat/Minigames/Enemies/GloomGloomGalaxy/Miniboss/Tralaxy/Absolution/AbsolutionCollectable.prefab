@@ -47,10 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 1
+  score: -1
   moveSpeed: 0.25
   moveDistance: 0.05
-  endsMinigame: 0
+  givesAugmentScore: 0
+  givesScore: 1
   collectParticle: {fileID: 397175137435282232, guid: acf1de25ffc42cb4889b3a378670a185, type: 3}
 --- !u!212 &1996778964385536381
 SpriteRenderer:
@@ -102,7 +103,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!70 &7821102671776991451
 CapsuleCollider2D:

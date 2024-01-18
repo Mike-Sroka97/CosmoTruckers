@@ -848,6 +848,8 @@ MonoBehaviour:
   - {fileID: 6285712697655734952}
   - {fileID: 3689949409974340216}
   - {fileID: 8976429658924998687}
+  shieldedMaterial: {fileID: 2100000, guid: 7809aebb8e9db6d48931d0d9107ecb35, type: 2}
+  bubbleShieldMaterial: {fileID: 2100000, guid: e34991fa16a21184daa339aa953927bf, type: 2}
   CombatSpot: 0
   FlatDamageAdjustment: 0
   FlatHealingAdjustment: 0
@@ -857,6 +859,7 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
@@ -881,7 +884,8 @@ MonoBehaviour:
   phaseTwoHealth: 110
   phaseThreeHealth: 50
   tallyYourSinWeight: 1
-  absolutionWeight: 3
+  absolutionWeight: 1
+  maxHealthPerTurn: 0
 --- !u!114 &7687281437807658107
 MonoBehaviour:
   m_ObjectHideFlags: 0

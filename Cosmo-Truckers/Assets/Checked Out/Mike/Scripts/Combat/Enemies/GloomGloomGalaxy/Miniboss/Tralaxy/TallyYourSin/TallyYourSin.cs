@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class TallyYourSin : CombatMove
 {
+    [SerializeField] Animator mickeysDickMasher;
+
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        base.StartMove();
+
+        foreach (TallyYourSinCircle sin in GetComponentsInChildren<TallyYourSinCircle>())
+            sin.Initialize();
+
+        foreach (TallyYourSinSin sin in GetComponentsInChildren<TallyYourSinSin>())
+            sin.Initialize();
+
+        mickeysDickMasher.enabled = true;
     }
 }
