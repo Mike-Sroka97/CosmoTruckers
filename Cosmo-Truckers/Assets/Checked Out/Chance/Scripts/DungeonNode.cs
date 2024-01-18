@@ -71,7 +71,7 @@ public class DungeonNode : MonoBehaviour
 
         foreach (var player in FindObjectsOfType<PlayerManager>())
         {
-            CombatData.Instance.PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
+            CombatData.Instance.PlayersToSpawn.Add(player);
         }
 
         if(NetworkManager.singleton)
@@ -92,11 +92,35 @@ public class DungeonNode : MonoBehaviour
         //Get random player
         PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
         int index = Random.Range(0, allPlayers.Length - 1);
-        allPlayers[index].GetPlayerData.PlayerCurrentDebuffs.Add(Node.AugToAdd[0]);
+        DebuffStackSO stackToAdd = Instantiate(Node.AugToAdd[0]);
+        bool added = false;
+
+        foreach (DebuffStackSO aug in allPlayers[index].GetPlayerData.PlayerCurrentDebuffs)
+        {
+            if (string.Equals(aug.DebuffName, stackToAdd.DebuffName))
+            {
+                if (aug.Stackable && aug.CurrentStacks < aug.MaxStacks)
+                {
+                    aug.CurrentStacks += (int)aug.StackValue.y;
+                    Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} added stack of {Node.AugToAdd[0].DebuffName}");
+                }
+                else
+                {
+                    Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} has max stacks of {Node.AugToAdd[0].DebuffName}");
+                }
+
+                added = true;
+                break;
+            }
+        }
+
+        if (!added)
+        {
+            allPlayers[index].GetPlayerData.PlayerCurrentDebuffs.Add(stackToAdd);
+            Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} has been given {Node.AugToAdd[0].DebuffName}");
+        }
 
         SaveManager.Save(allPlayers[index].GetPlayerData, allPlayers[index].GetPlayer.PlayerID);
-
-        Debug.Log($"{allPlayers[index].GetPlayer.CharacterName} has been given {Node.AugToAdd[0].DebuffName}");
 
         GetComponent<Button>().interactable = false;
 

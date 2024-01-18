@@ -211,6 +211,10 @@ public class TurnOrder : MonoBehaviour
             }
             else
             {
+                foreach(var character in FindObjectsOfType<PlayerCharacter>())
+                {
+                    EnemyManager.Instance.SavePlayerData(character);
+                }
                 NetworkManager.singleton.ServerChangeScene("DungeonSelection");
             }
         }

@@ -45,7 +45,8 @@ public class EnemyManager : MonoBehaviour
             testMockup = CombatData.Instance.EnemysToSpawn;
 
             PlayersToSpawn.Clear();
-            PlayersToSpawn = CombatData.Instance.PlayersToSpawn;
+            foreach (var player in CombatData.Instance.PlayersToSpawn)
+                PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }
     }
 
@@ -159,6 +160,8 @@ public class EnemyManager : MonoBehaviour
                 PlayerCombatSpots[playerCount] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerCount;
                 playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
+
+                SetPlayerSaveData(prefab.GetComponent<PlayerCharacter>());
             }
         }
 
@@ -255,6 +258,53 @@ public class EnemyManager : MonoBehaviour
                     TrashMobCollection.Add(mob.CharacterName, new List<Enemy>());
 
                 TrashMobCollection[mob.CharacterName].Add(mob);
+            }
+        }
+    }
+
+    void SetPlayerSaveData(PlayerCharacter character)
+    {
+        if (!CombatData.Instance) return;
+
+        foreach(var player in CombatData.Instance.PlayersToSpawn)
+        {
+            if(player.GetPlayer.CombatPlayerSpawn.GetComponent<PlayerCharacter>().CharacterName == character.CharacterName)
+            {
+                SaveData playerData = SaveManager.Load(player.GetPlayer.PlayerID);
+
+                //If some how you made it here with out the manager saving any data
+                if (playerData == null) break;
+
+                foreach (var aug in playerData.PlayerCurrentDebuffs)
+                {
+                    character.AddDebuffStack(aug);
+                }
+
+                //If the players health has changed from last combat
+                character.Health = playerData.PlayerCurrentHP == -1 ? character.Health : playerData.PlayerCurrentHP;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Save the current players combat data
+    /// </summary>
+    /// <param name="character">The character to save</param>
+    public void SavePlayerData(PlayerCharacter character)
+    {
+        if (!CombatData.Instance) return;
+
+        foreach (var player in CombatData.Instance.PlayersToSpawn)
+        {
+            if (player.GetPlayer.CombatPlayerSpawn.GetComponent<PlayerCharacter>().CharacterName == character.CharacterName)
+            {
+                player.GetPlayerData.PlayerCurrentHP = character.CurrentHealth;
+                player.GetPlayerData.PlayerCurrentDebuffs.Clear();
+
+                foreach (var aug in character.GetAUGS)
+                    player.GetPlayerData.PlayerCurrentDebuffs.Add(aug);
+
+                SaveManager.Save(player.GetPlayerData, player.GetPlayer.PlayerID);
             }
         }
     }
