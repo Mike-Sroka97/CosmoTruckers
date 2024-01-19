@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2713139540245638570}
-  - component: {fileID: 3537036167719838286}
+  - component: {fileID: -3057938855314128611}
   m_Layer: 0
   m_Name: Wet
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3537036167719838286
+--- !u!114 &-3057938855314128611
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5343401770843168548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e82f6d3efac99484ba181f7789ccacf0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e9976679209225488fb9127a2b0faa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseStatusEffect: 0.1
-  additionalStatusEffect: 0.1
-  DebuffSO: {fileID: 11400000, guid: 7b97e0b340e2e424f81e43946007891d, type: 2}
-  augment: {fileID: 3468284610549268553, guid: 73c0e877a145c344099ff6587694b51b, type: 3}
+  baseStatusEffect: 0.6
+  additionalStatusEffect: 0.05
+  AugmentSO: {fileID: 0}
+  augment: {fileID: 5343401770843168548}
   maxVisualStacks: 9
-  vigorModifier: 10

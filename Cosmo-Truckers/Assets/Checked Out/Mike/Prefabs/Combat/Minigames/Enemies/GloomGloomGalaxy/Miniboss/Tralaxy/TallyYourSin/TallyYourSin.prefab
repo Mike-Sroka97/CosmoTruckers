@@ -304,7 +304,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackDeath: 1
   scoreIncrease: 0
-  augmentScoreIncrease: 0
+  augmentScoreIncrease: 1
   multiplayer: 0
   TrackingDamage: 1
 --- !u!1 &8172564508408339352
@@ -511,7 +511,7 @@ MonoBehaviour:
   layouts:
   - {fileID: 1154623996041869737, guid: 0f48f13f7e27d5f459c21cd53beda617, type: 3}
   Damage: 0
-  DebuffToAdd: {fileID: 0}
+  DebuffToAdd: {fileID: 11400000, guid: a3a94385658912d46b1c9e58382652a3, type: 2}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
   Score: 0
@@ -519,10 +519,10 @@ MonoBehaviour:
   MoveEnded: 0
   AugmentScore: 0
   maxScore: 0
-  augmentStacksPerScore: 0
-  maxAugmentStacks: 0
+  augmentStacksPerScore: 1
+  maxAugmentStacks: 3
   baseDamage: 0
-  baseAugmentStacks: 0
+  baseAugmentStacks: 2
   timeToEndMove: 1
   isDamaging: 0
   isHealing: 0
@@ -530,6 +530,7 @@ MonoBehaviour:
   spawnTest: 0
   startMoveTest: 0
   mickeysDickMasher: {fileID: 8722845710342537082}
+  sorrow: {fileID: 11400000, guid: 93df0e178fd9067439f0c775b826cf7c, type: 2}
 --- !u!1 &9151602808683999582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1134,6 +1135,10 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name
       value: DeathZone (0)
@@ -1203,6 +1208,10 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Size.x
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name

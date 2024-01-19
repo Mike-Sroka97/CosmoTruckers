@@ -93,11 +93,6 @@ public class TralaxyAI : Enemy
         //Tall Your Sin
         else if (attackIndex == 2)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
-        }
-        //Absolution
-        else if (attackIndex == 3)
-        {
             List<DebuffStackSO> sinfulCharacters = new List<DebuffStackSO>();
 
             foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.GetAlivePlayerCharacters())
@@ -105,7 +100,7 @@ public class TralaxyAI : Enemy
                     if (aug.DebuffName == "Sin")
                         sinfulCharacters.Add(aug);
 
-            if(sinfulCharacters.Count > 0)
+            if (sinfulCharacters.Count > 0)
             {
                 DebuffStackSO mostSin = sinfulCharacters[0];
 
@@ -119,6 +114,11 @@ public class TralaxyAI : Enemy
             {
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
             }
+        }
+        //Absolution
+        else if (attackIndex == 3)
+        {
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
         //Golden Fury
         else if (attackIndex == 4)

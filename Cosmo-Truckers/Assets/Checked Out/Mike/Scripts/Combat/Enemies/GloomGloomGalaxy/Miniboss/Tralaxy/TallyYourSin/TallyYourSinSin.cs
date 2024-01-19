@@ -33,7 +33,7 @@ public class TallyYourSinSin : MonoBehaviour
 
     public void FireMe()
     {
-        transform.parent = null;
+        transform.parent = transform.parent.parent;
         transform.right = player.transform.position - transform.position;
         StartCoroutine(FireCo());
     }

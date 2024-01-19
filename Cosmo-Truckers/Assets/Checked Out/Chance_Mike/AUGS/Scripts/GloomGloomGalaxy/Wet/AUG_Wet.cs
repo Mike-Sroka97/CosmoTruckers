@@ -4,28 +4,20 @@ using UnityEngine;
 
 public class AUG_Wet : VisualAugment
 {
-    [SerializeField] int vigorModifier = 5;
+    [SerializeField] GameObject augment;
 
-    int vigorAdjustment;
+    GameObject tempAugment;
 
     public override void Activate(DebuffStackSO stack = null)
     {
         base.Activate(stack);
-
-        vigorAdjustment = -(AugmentSO.CurrentStacks * vigorModifier);
-        AugmentSO.MyCharacter.AdjustVigor(vigorAdjustment);
+        tempAugment = Instantiate(augment, FindObjectOfType<INAcombat>().transform);
+        tempAugment.GetComponent<SpriteRenderer>().material.SetFloat("_MainValue", StatusEffect);
     }
 
-    public override void AdjustStatusEffect(int adjuster)
+    public override void StopEffect()
     {
-        AdjustVigor();
-        base.AdjustStatusEffect(adjuster);
-        vigorAdjustment = -(AugmentSO.CurrentStacks * vigorModifier);
-        AugmentSO.MyCharacter.AdjustVigor(vigorAdjustment);
-    }
-
-    private void AdjustVigor()
-    {
-        AugmentSO.MyCharacter.AdjustVigor(-(int)vigorAdjustment);
+        Destroy(tempAugment);
+        Destroy(gameObject);
     }
 }

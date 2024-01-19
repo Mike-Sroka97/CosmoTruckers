@@ -5,6 +5,7 @@ using UnityEngine;
 public class TallyYourSin : CombatMove
 {
     [SerializeField] Animator mickeysDickMasher;
+    [SerializeField] DebuffStackSO sorrow;
 
     private void Start()
     {
@@ -22,5 +23,17 @@ public class TallyYourSin : CombatMove
             sin.Initialize();
 
         mickeysDickMasher.enabled = true;
+    }
+
+    public override void EndMove()
+    {
+        base.EndMove();
+        int sorrowStacks = CalculateAugmentScore();
+
+        foreach (DebuffStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
+            if (aug.DebuffName == "Sin")
+                sorrowStacks += aug.CurrentStacks;
+
+        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(sorrow, sorrowStacks);
     }
 }
