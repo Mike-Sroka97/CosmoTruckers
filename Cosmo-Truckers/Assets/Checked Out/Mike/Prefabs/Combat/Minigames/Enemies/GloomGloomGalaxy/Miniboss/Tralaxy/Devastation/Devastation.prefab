@@ -340,6 +340,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!50 &2273927187305533715
 Rigidbody2D:
@@ -349,7 +352,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2273927187305533713}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -369,7 +372,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2273927187305533713}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed832aa09bf5e374ab296faf88aee34b, type: 3}
   m_Name: 
@@ -432,7 +435,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2273927187448832409}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -467,20 +470,25 @@ MonoBehaviour:
   - {fileID: 2273927187310360536}
   layouts:
   - {fileID: 121930344523613219, guid: f26aa3c57fcc9144ca270c6373d53272, type: 3}
-  Damage: 0
+  Damage: 10
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
-  maxScore: 0
-  augmentStacksPerHit: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
   maxAugmentStacks: 0
-  baseDamage: 0
+  baseDamage: 25
   baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
   spawnTest: 0
+  startMoveTest: 0
   balls:
   - {fileID: 2273927188675244405}
   - {fileID: 7246273556589608471}
@@ -718,6 +726,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!114 &2273927188675244405
 MonoBehaviour:
@@ -1050,6 +1061,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!114 &7246273556589608471
 MonoBehaviour:
@@ -1509,6 +1523,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!114 &477278898051072756
 MonoBehaviour:
@@ -1772,6 +1789,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 0
+  multiplayer: 1
   TrackingDamage: 1
 --- !u!114 &359147819220509563
 MonoBehaviour:
@@ -1816,6 +1836,14 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_SortingOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: multiplayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name

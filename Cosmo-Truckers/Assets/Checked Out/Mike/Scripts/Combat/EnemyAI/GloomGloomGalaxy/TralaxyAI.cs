@@ -6,6 +6,7 @@ public class TralaxyAI : Enemy
 {
     [SerializeField] int phaseTwoHealth;
     [SerializeField] int phaseThreeHealth;
+    [SerializeField] DebuffStackSO wrath;
 
     [SerializeField] int tallyYourSinWeight = 1;
     [SerializeField] int absolutionWeight = 3;
@@ -15,13 +16,14 @@ public class TralaxyAI : Enemy
     bool phaseTwo = false;
     bool justEnteredPhaseTwo = false;
     bool phaseThree = false;
+    DebuffStackSO wrathReference;
 
     public override void StartTurn()
     {
         PhaseCheck();
 
         //phase one
-        if(!phaseTwo && !phaseThree)
+        if (!phaseTwo && !phaseThree)
         {
             //bubble babies
             if(EnemyManager.Instance.GetAliveEnemySummons().Count >= 2)
@@ -31,7 +33,7 @@ public class TralaxyAI : Enemy
             //astor incubation
             else
             {
-                ChosenAttack = attacks[2]; //1
+                ChosenAttack = attacks[4]; //1
             }
         }
 
@@ -59,11 +61,18 @@ public class TralaxyAI : Enemy
         //phase three
         else
         {
+            if (wrathReference == null)
+            {
+               wrathReference = AddDebuffStackAndReturnReference(wrath);
+            }
+
             //golden fury
-            //TODO NEEDS WRATH AUG
+            if (wrathReference.CurrentStacks < wrathReference.MaxStacks)
+                ChosenAttack = attacks[4];
 
             //devastation
-            //TODO NEEDS WRATH AUG
+            else
+                ChosenAttack = attacks[5];
         }
 
         base.StartTurn();
@@ -124,11 +133,12 @@ public class TralaxyAI : Enemy
         else if (attackIndex == 4)
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
         //Devastation
         else
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
         }
     }
 
@@ -148,7 +158,7 @@ public class TralaxyAI : Enemy
 
     public void IncreaseHealth()
     {
-        Health += maxHealthPerTurn;
+        AdjustMaxHealth(maxHealthPerTurn);
         phaseTwoHealth += maxHealthPerTurn;
         phaseThreeHealth += maxHealthPerTurn;
     }

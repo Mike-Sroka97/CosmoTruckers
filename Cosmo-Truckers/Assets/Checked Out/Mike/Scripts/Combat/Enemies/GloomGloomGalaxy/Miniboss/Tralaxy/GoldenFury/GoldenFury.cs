@@ -4,20 +4,32 @@ using UnityEngine;
 
 public class GoldenFury : CombatMove
 {
+    [SerializeField] int maxHealthReduction = -10;
+
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        SetupMultiplayer();
+        base.StartMove();
+
+        foreach (GoldenFuryBall ball in GetComponentsInChildren<GoldenFuryBall>())
+            ball.enabled = true;
     }
 
     public override void EndMove()
     {
-        Score = (int)currentTime;
-        base.EndMove();
+        MoveEnded = true;
+
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            CombatManager.Instance.GetCharactersSelected[i].AdjustMaxHealth(maxHealthReduction);
+
+            int damage = CalculateMultiplayerScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);
+            DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], damage);
+        }
     }
 }

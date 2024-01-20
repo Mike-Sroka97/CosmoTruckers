@@ -49,6 +49,17 @@ public class PlayerVessel : MonoBehaviour
         MyMana.SetVessel(this);
     }
 
+    public void AdjustFill()
+    {
+        maxHealth.text = myCharacter.Health.ToString();
+        currentHealth.text = myCharacter.CurrentHealth.ToString();
+
+        float newMaxHealth = myCharacter.Health;
+        float healthRatio = myCharacter.CurrentHealth / newMaxHealth;
+
+        currentHealthBar.fillAmount = healthRatio;
+    }
+
     public void AdjustCurrentHealthDisplay(int newHealth, int damageHealingAmount, bool damage = true)
     {
         if (newHealth < 0)

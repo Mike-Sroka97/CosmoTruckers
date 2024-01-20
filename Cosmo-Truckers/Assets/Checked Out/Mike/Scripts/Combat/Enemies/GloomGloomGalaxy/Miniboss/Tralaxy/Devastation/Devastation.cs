@@ -8,12 +8,17 @@ public class Devastation : CombatMove
 
     private void Start()
     {
+        GenerateLayout();
+    }
+
+    public override void StartMove()
+    {
         Player[] players = FindObjectsOfType<Player>();
         int numberOfPlayers = players.Length - 1;
 
-        for(int i = 0; i < balls.Length; i++)
+        for (int i = 0; i < balls.Length; i++)
         {
-            if(i <= numberOfPlayers)
+            if (i <= numberOfPlayers)
             {
                 balls[i].Active = true;
                 balls[i].SetPlayer(players[i]);
@@ -24,18 +29,21 @@ public class Devastation : CombatMove
             }
         }
 
-        StartMove();
-        GenerateLayout();
-    }
+        GetComponentInChildren<DevastationCentralBall>().enabled = true;
+        GetComponentInChildren<DevastationCentralBall>().GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
-    private void Update()
-    {
-        TrackTime();
+        base.StartMove();
+        SetupMultiplayer();
     }
 
     public override void EndMove()
     {
-        Score = (int)currentTime;
-        base.EndMove();
+        MoveEnded = true;
+
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            int damage = CalculateMultiplayerScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);
+            DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], damage);
+        }
     }
 }

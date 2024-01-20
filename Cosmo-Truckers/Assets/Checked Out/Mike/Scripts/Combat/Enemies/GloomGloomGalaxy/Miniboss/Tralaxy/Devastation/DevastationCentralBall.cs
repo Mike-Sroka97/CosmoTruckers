@@ -13,7 +13,7 @@ public class DevastationCentralBall : MonoBehaviour
 
     private void Start()
     {
-        startPos = transform.position;
+        startPos = transform.localPosition;
         myBody = GetComponent<Rigidbody2D>();
     }
 
@@ -24,10 +24,10 @@ public class DevastationCentralBall : MonoBehaviour
 
     private void TrackClamp()
     {
-        if(transform.position.y <= yClamp)
+        if(transform.localPosition.y <= yClamp)
         {
             myBody.velocity = Vector2.zero;
-            transform.position = startPos;
+            transform.localPosition = startPos;
             myBody.AddForce(new Vector2(0, upForce), ForceMode2D.Impulse);
         }
     }

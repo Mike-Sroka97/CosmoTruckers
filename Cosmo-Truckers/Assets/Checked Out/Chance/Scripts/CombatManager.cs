@@ -198,7 +198,7 @@ public class CombatManager : MonoBehaviour
     public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy, PlayerCharacter player = null)
     {
         //enemy is taunted
-        if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
+        if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead && !CharactersSelected.Contains(enemy.TauntedBy))
         {
             if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
             {
@@ -250,7 +250,7 @@ public class CombatManager : MonoBehaviour
 
                         break;
                     }
-                    else
+                    else if(!CharactersSelected.Contains(obj))
                     {
                         CharactersSelected.Add(obj);
                         ActivePlayers.Add(obj);
@@ -343,6 +343,33 @@ public class CombatManager : MonoBehaviour
                 CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
             if (character.CombatSpot + 1 < maxVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1].Dead)
                 CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
+        }
+    }
+
+    public void AOETargetPlayers(BaseAttackSO attack)
+    {
+        foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
+        {
+            CharactersSelected.Add(obj);
+            ActivePlayers.Add(obj);
+        }
+        foreach (PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
+        {
+            CharactersSelected.Add(obj);
+        }
+    }
+    public void AOETargetEnemies(BaseAttackSO attack, List<PlayerCharacter> activePlayers)
+    {
+        foreach (PlayerCharacter player in activePlayers)
+            ActivePlayers.Add(player);
+
+        foreach (Enemy obj in EnemyManager.Instance.GetAliveEnemies())
+        {
+            CharactersSelected.Add(obj);
+        }
+        foreach (EnemySummon obj in EnemyManager.Instance.GetAliveEnemySummons())
+        {
+            CharactersSelected.Add(obj);
         }
     }
 

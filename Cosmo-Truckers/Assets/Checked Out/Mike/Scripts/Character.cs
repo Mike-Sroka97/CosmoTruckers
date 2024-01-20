@@ -352,6 +352,26 @@ public abstract class Character : MonoBehaviour
             tempAUG.DebuffEffect();
     }
 
+    /// <summary>
+    /// ONLY USE IF THIS AUGMENT IS NOT ON CHARACTER
+    /// </summary>
+    /// <param name="stack"></param>
+    /// <param name="stacksToAdd"></param>
+    /// <param name="test"></param>
+    /// <returns></returns>
+    public DebuffStackSO AddDebuffStackAndReturnReference(DebuffStackSO stack, int stacksToAdd = 1, bool test = false)
+    {
+        DebuffStackSO tempAUG = Instantiate(stack);
+        tempAUG.CurrentStacks = stacksToAdd;
+        tempAUG.MyCharacter = this;
+
+        AUGS.Add(tempAUG);
+
+        tempAUG.DebuffEffect();
+
+        return tempAUG;
+    }
+
     public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100)
     {
         if (stack == null || !stack.Removable)
@@ -458,6 +478,13 @@ public abstract class Character : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         AUGS.Remove(aug);
+    }
+
+    public virtual void AdjustMaxHealth(int adjuster)
+    {
+        Health += adjuster;
+        if (CurrentHealth > Health)
+            CurrentHealth = Health;
     }
 
     public abstract void AdjustDefense(int defense);

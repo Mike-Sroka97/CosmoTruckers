@@ -128,6 +128,12 @@ public class PlayerCharacter : Character
         selectionUI.gameObject.SetActive(false);
     }
 
+    public override void AdjustMaxHealth(int adjuster)
+    {
+        base.AdjustMaxHealth(adjuster);
+
+        MyVessel.AdjustFill();
+    }
     public override void AdjustDefense(int defense)
     {
         Stats.Defense += defense;
