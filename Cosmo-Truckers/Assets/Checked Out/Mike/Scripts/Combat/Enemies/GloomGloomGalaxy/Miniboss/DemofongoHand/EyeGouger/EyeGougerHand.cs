@@ -20,7 +20,7 @@ public class EyeGougerHand : MonoBehaviour
     private void Start()
     {
         myMoveForward = GetComponent<MoveForward>();
-        startPos = transform.position;
+        startPos = transform.localPosition;
     }
 
     public void ActivateMe()
@@ -43,9 +43,9 @@ public class EyeGougerHand : MonoBehaviour
         myMoveForward.MoveSpeed = 0;
         yield return new WaitForSeconds(holdDuration);
 
-        while(transform.position != startPos)
+        while(transform.localPosition != startPos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, startPos, retractSpeed * Time.deltaTime);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, startPos, retractSpeed * Time.deltaTime);
             yield return null;
         }
 

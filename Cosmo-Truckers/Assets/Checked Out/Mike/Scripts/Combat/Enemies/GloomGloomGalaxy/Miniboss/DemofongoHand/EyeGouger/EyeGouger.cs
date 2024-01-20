@@ -17,15 +17,15 @@ public class EyeGouger : CombatMove
     bool delay = true;
     bool firstGem = true;
 
-    private void Start()
+    public override void StartMove()
     {
-        StartMove();
+        base.StartMove();
         Invoke("StartCycle", initialDelay);
     }
 
-    private void Update()
+    protected override void Update()
     {
-        TrackTime();
+        base.Update();
         TrackCycle();
     }
 
@@ -80,8 +80,7 @@ public class EyeGouger : CombatMove
 
         firstGem = false;
 
-        GameObject newGem = Instantiate(gem, gemspawns[random]);
-        newGem.transform.parent = null;
+        Instantiate(gem, gemspawns[random]);
     }
 
     private void SetHands()

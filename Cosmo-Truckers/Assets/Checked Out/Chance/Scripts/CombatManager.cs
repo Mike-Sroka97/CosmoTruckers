@@ -527,7 +527,7 @@ public class CombatManager : MonoBehaviour
                 augment.GetAugment().StopEffect();
         }
 
-        FindObjectOfType<TurnOrder>().EndTurn();
+        TurnOrder.Instance.EndTurn();
     }
 
     IEnumerator DelayEndMove()

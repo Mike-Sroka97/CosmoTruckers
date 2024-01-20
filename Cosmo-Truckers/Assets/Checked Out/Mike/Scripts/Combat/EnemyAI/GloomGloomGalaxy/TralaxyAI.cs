@@ -33,7 +33,7 @@ public class TralaxyAI : Enemy
             //astor incubation
             else
             {
-                ChosenAttack = attacks[4]; //1
+                ChosenAttack = attacks[1];
             }
         }
 
