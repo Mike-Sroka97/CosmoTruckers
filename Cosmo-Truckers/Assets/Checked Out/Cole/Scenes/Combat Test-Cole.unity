@@ -5851,6 +5851,8 @@ MonoBehaviour:
   Health: 0
   TargetingSprites: []
   ShieldSprites: []
+  shieldedMaterial: {fileID: 0}
+  bubbleShieldMaterial: {fileID: 0}
   CombatSpot: 0
   FlatDamageAdjustment: 0
   FlatHealingAdjustment: 0
@@ -5860,6 +5862,7 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
@@ -9107,6 +9110,10 @@ PrefabInstance:
     - target: {fileID: 8678053633578395738, guid: a7ccbe0e957ef9e48b9bcf1a43b03370, type: 3}
       propertyPath: m_Name
       value: Dutiful Dross
+      objectReference: {fileID: 0}
+    - target: {fileID: 8678053633578395738, guid: a7ccbe0e957ef9e48b9bcf1a43b03370, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8678053633578396068, guid: a7ccbe0e957ef9e48b9bcf1a43b03370, type: 3}
       propertyPath: m_Pivot.x
