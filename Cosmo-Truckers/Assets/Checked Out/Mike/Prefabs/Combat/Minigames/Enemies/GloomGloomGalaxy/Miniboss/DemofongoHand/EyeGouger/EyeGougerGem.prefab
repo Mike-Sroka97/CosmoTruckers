@@ -85,7 +85,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &4836630019230075675
 MonoBehaviour:
@@ -99,10 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 1
+  score: -1
   moveSpeed: 0.15
   moveDistance: 0.05
-  endsMinigame: 0
+  givesAugmentScore: 1
+  givesScore: 1
+  collectParticle: {fileID: 0}
 --- !u!114 &4836630019230075668
 MonoBehaviour:
   m_ObjectHideFlags: 0

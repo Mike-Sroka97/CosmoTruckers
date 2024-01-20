@@ -497,9 +497,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6490733932633425517}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6490733932535693851}
@@ -507,7 +507,7 @@ Transform:
   - {fileID: 6490733932248358224}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6490733932633425515
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -549,7 +549,7 @@ SpriteRenderer:
   m_SortingLayerID: -793516377
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 28aa3a1c644f477449cd90842ee3f446, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2d1f38c93746be445a67b1ed13b81d99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -573,14 +573,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   passiveMove: {fileID: 0}
+  passiveAugments: []
   AUGS: []
+  AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 6490733932633425513}
   Health: 10
   TargetingSprites:
   - {fileID: 6490733932633425515}
+  ShieldSprites: []
+  shieldedMaterial: {fileID: 0}
+  bubbleShieldMaterial: {fileID: 0}
   CombatSpot: 0
-  Shield: 0
+  FlatDamageAdjustment: 0
+  FlatHealingAdjustment: 0
+  HealthChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ShieldChangeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
@@ -591,6 +604,7 @@ MonoBehaviour:
   healingColor: {r: 0, g: 1, b: 0, a: 1}
   fadeSpeed: 2
   moveSpeed: 0.5
+  IsBoss: 0
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 0
   IsTrash: 0
@@ -613,3 +627,4 @@ MonoBehaviour:
   Vigor: 100
   Speed: 0
   Damage: 100
+  Restoration: 100

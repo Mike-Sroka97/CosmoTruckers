@@ -9,6 +9,11 @@ public class AeglarManaSummon : EnemySummon
 
     const int manaToGive = 1;
 
+    public override void StartTurn()
+    {
+        TurnOrder.Instance.EndTurn();
+    }
+
     public override void Die()
     {
         FindObjectOfType<AeglarMana>().AdjustMana(manaToGive, manaType);

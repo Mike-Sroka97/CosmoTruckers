@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class VisualAugment : Augment
 {
-    [SerializeField] GameObject augment;
+    [SerializeField] protected GameObject augment;
     [SerializeField] int maxVisualStacks = 0;
 
-    GameObject tempAugment;
+    protected GameObject tempAugment;
 
     public override void Activate(DebuffStackSO stack = null)
     {
