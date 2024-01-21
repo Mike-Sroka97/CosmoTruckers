@@ -14,12 +14,12 @@ public class DemopawAI : EnemySummon
         //eye gouger
         if (EnemyManager.Instance.GetAliveEnemySummons().Count >= 2 || random < eyeGougerWeight)
         {
-            ChosenAttack = attacks[1];
+            ChosenAttack = attacks[0];
         }
         //black out
         else
         {
-            ChosenAttack = attacks[1]; //1
+            ChosenAttack = attacks[1];
         }
 
         base.StartTurn();
