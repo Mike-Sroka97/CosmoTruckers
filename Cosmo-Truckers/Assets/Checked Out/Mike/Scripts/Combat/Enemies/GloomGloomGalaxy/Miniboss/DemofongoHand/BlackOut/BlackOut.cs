@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class BlackOut : CombatMove
 {
+    [SerializeField] GameObject fauxPaw;
+
     public int MaxNumberOfCycles = 3;
     [HideInInspector] public int NumberOfCycles = 0;
 
     BlackOutBall[] hands;
 
     int lastRandom = -1;
-
-    private void Start()
+    public override void StartMove()
     {
-        StartMove();
+        base.StartMove();
 
         hands = GetComponentsInChildren<BlackOutBall>();
 
@@ -41,6 +42,23 @@ public class BlackOut : CombatMove
             {
                 hands[i].ActivateMe(true);
             }
+        }
+    }
+
+    public override void EndMove()
+    {
+        MoveEnded = true;
+
+        if (Score > maxScore)
+            Score = maxScore;
+        else if (Score < 0)
+            Score = 0;
+
+        int pawsToSummon = 4 - Score; 
+
+        for(int i = 0; i < pawsToSummon; i++)
+        {
+            EnemyManager.Instance.UpdateEnemySummons(fauxPaw);
         }
     }
 }

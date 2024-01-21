@@ -14,12 +14,12 @@ public class DemopawAI : EnemySummon
         //eye gouger
         if (EnemyManager.Instance.GetAliveEnemySummons().Count >= 2 || random < eyeGougerWeight)
         {
-            ChosenAttack = attacks[0];
+            ChosenAttack = attacks[1];
         }
         //black out
         else
         {
-            ChosenAttack = attacks[0]; //1
+            ChosenAttack = attacks[1]; //1
         }
 
         base.StartTurn();
@@ -35,7 +35,10 @@ public class DemopawAI : EnemySummon
         //black out
         else
         {
-            //add utility to active players
+            if (CombatManager.Instance.FindUtilityCharacter() != null)
+                CombatManager.Instance.CharactersSelected.Add(CombatManager.Instance.FindUtilityCharacter());
+            else
+                CombatManager.Instance.IgnoreTauntSingleTarget(true);
         }
     }
 }

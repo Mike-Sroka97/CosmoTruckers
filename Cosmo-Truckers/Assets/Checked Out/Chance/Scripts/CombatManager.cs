@@ -180,6 +180,40 @@ public class CombatManager : MonoBehaviour
         StartCoroutine(StartMiniGame(attack, ActivePlayers));
     }
 
+    public PlayerCharacter FindDPSCharacter()
+    {
+        foreach (PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
+            if (player.IsDPS)
+                return player;
+
+        return null;
+    }
+
+    public PlayerCharacter FindUtilityCharacter()
+    {
+        foreach (PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
+            if (player.IsUtility)
+                return player;
+
+        return null;
+    }
+    public PlayerCharacter FindTankCharacter()
+    {
+        foreach (PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
+            if (player.IsTank)
+                return player;
+
+        return null;
+    }
+    public PlayerCharacter FindSupportCharacter()
+    {
+        foreach (PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
+            if (player.IsSupport)
+                return player;
+
+        return null;
+    }
+
     public void AddRandomActivePlayer()
     {
         System.Random multiRand = new System.Random();
@@ -261,7 +295,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void IgnoreTauntSingleTarget()
+    public void IgnoreTauntSingleTarget(bool ignoreSummons = false)
     {
         System.Random random = new System.Random();
 
@@ -277,7 +311,7 @@ public class CombatManager : MonoBehaviour
         {
             if (!obj.Dead && !CharactersSelected.Contains(obj))
             {
-                if (!obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+                if (!obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]) && !ignoreSummons)
                 {
                     CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                     //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS

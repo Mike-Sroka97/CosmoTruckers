@@ -62,7 +62,6 @@ public class BlackOutBall : MonoBehaviour
         if(!deathTracker.TrackingDamage)
         {
             minigame.Score++;
-            Debug.Log(minigame.Score);
             myRenderer.material = successMaterial;
             myCollider.enabled = false;
             GameObject particle = Instantiate(successParticles, transform.position, successParticles.transform.rotation, null);
