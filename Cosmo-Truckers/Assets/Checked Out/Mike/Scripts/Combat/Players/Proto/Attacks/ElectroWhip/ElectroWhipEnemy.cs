@@ -22,6 +22,12 @@ public class ElectroWhipEnemy : MonoBehaviour
     [SerializeField] float releashSpeed;
     [SerializeField] float threshold;
 
+    [Space(20)]
+    [Header("Material Attributes")]
+    [SerializeField] Material selectedMaterial;
+    SpriteRenderer mySpriteRenderer; 
+    Material defaultMaterial;
+
     ElectroWhipCenterBox box;
     ElectroWhip minigame;
     Vector3 startingRotation;
@@ -66,6 +72,8 @@ public class ElectroWhipEnemy : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         box = FindObjectOfType<ElectroWhipCenterBox>();
         startingPos = transform.localPosition;
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        defaultMaterial = mySpriteRenderer.material; 
 
         UpdateLeash();
     }
@@ -74,6 +82,7 @@ public class ElectroWhipEnemy : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack" && !releashing)
         {
+            mySpriteRenderer.material = selectedMaterial; 
             box.ActivateMe(this);
         }
     }
@@ -148,21 +157,24 @@ public class ElectroWhipEnemy : MonoBehaviour
             return;
         }
 
-        if (GroundCheck(Vector2.up, false))
+        else if (!isLeashed)
         {
-            myBody.velocity = new Vector2(myBody.velocity.x, -unleashedSpeed);
-        }
-        if (GroundCheck(Vector2.down, false))
-        {
-            myBody.velocity = new Vector2(myBody.velocity.x, unleashedSpeed);
-        }
-        if (GroundCheck(Vector2.right, true))
-        {
-            myBody.velocity = new Vector2(-unleashedSpeed, myBody.velocity.y);
-        }
-        if (GroundCheck(Vector2.left, true))
-        {
-            myBody.velocity = new Vector2(unleashedSpeed, myBody.velocity.y);
+            if (GroundCheck(Vector2.up, false))
+            {
+                myBody.velocity = new Vector2(myBody.velocity.x, -unleashedSpeed);
+            }
+            if (GroundCheck(Vector2.down, false))
+            {
+                myBody.velocity = new Vector2(myBody.velocity.x, unleashedSpeed);
+            }
+            if (GroundCheck(Vector2.right, true))
+            {
+                myBody.velocity = new Vector2(-unleashedSpeed, myBody.velocity.y);
+            }
+            if (GroundCheck(Vector2.left, true))
+            {
+                myBody.velocity = new Vector2(unleashedSpeed, myBody.velocity.y);
+            }
         }
     }
 
@@ -247,5 +259,11 @@ public class ElectroWhipEnemy : MonoBehaviour
         releashing = false;
         isLeashed = true;
         leash.enabled = true;
+        ResetThisEnemy();
+    }
+
+    public void ResetThisEnemy()
+    {
+        mySpriteRenderer.material = defaultMaterial; 
     }
 }

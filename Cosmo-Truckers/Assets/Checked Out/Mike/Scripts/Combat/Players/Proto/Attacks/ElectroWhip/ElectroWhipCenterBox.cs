@@ -4,34 +4,47 @@ using UnityEngine;
 
 public class ElectroWhipCenterBox : MonoBehaviour
 {
-    [SerializeField] Color OnColor;
+    [SerializeField] Material onMaterial;
+    Material defaultMaterial; 
 
     ElectroWhipEnemy currentEnemy;
-    SpriteRenderer myChildSprite;
-    Color startingColor;
+    SpriteRenderer mySpriteRenderer;
+    bool active = false; 
 
     private void Start()
     {
-        myChildSprite = GetComponentsInChildren<SpriteRenderer>()[1];
-        startingColor = myChildSprite.color;
+        mySpriteRenderer = GetComponent<SpriteRenderer>();
+        defaultMaterial = mySpriteRenderer.material;
     }
 
     public void ActivateMe(ElectroWhipEnemy enemy)
     {
+        if (currentEnemy != null)
+        {
+            currentEnemy.ResetThisEnemy(); 
+        }
+
         currentEnemy = enemy;
-        myChildSprite.color = OnColor;
+        mySpriteRenderer.material = onMaterial;
+        active = true; 
     }
 
     private void DeactivateMe()
     {
-        currentEnemy.Recenter();
-        myChildSprite.color = startingColor;
+        if (currentEnemy != null)
+        {
+            currentEnemy.Recenter();
+            currentEnemy = null;
+        }
+
+        mySpriteRenderer.material = defaultMaterial;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack" && myChildSprite.color == OnColor)
+        if (collision.tag == "PlayerAttack" && active)
         {
+            active = false; 
             DeactivateMe();
         }
     }
