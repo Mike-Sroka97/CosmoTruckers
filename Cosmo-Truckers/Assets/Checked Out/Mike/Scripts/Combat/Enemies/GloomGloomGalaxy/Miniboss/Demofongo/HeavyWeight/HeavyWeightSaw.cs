@@ -21,9 +21,9 @@ public class HeavyWeightSaw : MonoBehaviour
 
     private void TrackClamp()
     {
-        if (Mathf.Abs(transform.position.x) > Mathf.Abs(resetClamp))
+        if (Mathf.Abs(transform.localPosition.x) > Mathf.Abs(resetClamp))
         {
-            transform.position = resetPoint.position;
+            transform.localPosition = resetPoint.localPosition;
         }
     }
 }

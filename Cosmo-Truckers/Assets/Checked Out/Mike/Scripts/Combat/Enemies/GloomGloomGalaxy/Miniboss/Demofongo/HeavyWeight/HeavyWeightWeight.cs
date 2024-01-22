@@ -17,17 +17,15 @@ public class HeavyWeightWeight : MonoBehaviour
 
     bool goingLeft = true;
     float startingX;
-    float startingGravity;
+    [SerializeField] float startingGravity = 10f;
     Rigidbody2D myBody;
     Vector3 startingPosition;
 
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
-        startingGravity = myBody.gravityScale;
-        myBody.gravityScale = 0;
-        startingX = transform.position.x;
-        startingPosition = transform.position;
+        startingX = transform.localPosition.x;
+        startingPosition = transform.localPosition;
 
         if (startingWeight)
             StartCoroutine(Shake());
@@ -45,26 +43,26 @@ public class HeavyWeightWeight : MonoBehaviour
             yield return null;
         }
 
-        transform.position = new Vector3(startingX, transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(startingX, transform.localPosition.y, transform.localPosition.z);
         myBody.gravityScale = startingGravity;
 
-        while(transform.position.y > stopHeight)
+        while(transform.localPosition.y > stopHeight)
         {
             yield return null;
         }
 
         myBody.velocity = Vector2.zero;
-        transform.position = new Vector3(transform.position.x, stopHeight, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, stopHeight, transform.localPosition.z);
         myBody.gravityScale = 0;
-        GameObject newShockwave = Instantiate(shockwave, shockwaveSpawn.position, shockwaveSpawn.rotation);
+        GameObject newShockwave = Instantiate(shockwave, shockwaveSpawn.position, shockwaveSpawn.rotation, transform.parent);
 
         yield return new WaitForSeconds(groundWaitTime);
 
         StartCoroutine(otherWeight.Shake());
 
-        while (transform.position != startingPosition)
+        while (transform.localPosition != startingPosition)
         {
-            transform.position = Vector3.MoveTowards(transform.position, startingPosition, retractSpeed * Time.deltaTime);
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, startingPosition, retractSpeed * Time.deltaTime);
             yield return null;
         }
     }
@@ -73,18 +71,18 @@ public class HeavyWeightWeight : MonoBehaviour
     {
         if(goingLeft)
         {
-            transform.position -= new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
+            transform.localPosition -= new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
 
-            if(transform.position.x < startingX - shakeClamp)
+            if(transform.localPosition.x < startingX - shakeClamp)
             {
                 goingLeft = !goingLeft;
             }
         }
         else
         {
-            transform.position += new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
+            transform.localPosition += new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
 
-            if (transform.position.x > startingX + shakeClamp)
+            if (transform.localPosition.x > startingX + shakeClamp)
             {
                 goingLeft = !goingLeft;
             }

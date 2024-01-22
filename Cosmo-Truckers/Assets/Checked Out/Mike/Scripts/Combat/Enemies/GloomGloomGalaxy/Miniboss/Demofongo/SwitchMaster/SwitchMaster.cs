@@ -9,9 +9,9 @@ public class SwitchMaster : CombatMove
     public int MaxNumberOfCycles;
     [HideInInspector] public int CurrentNumberOfCycles;
 
-    private void Start()
+    public override void StartMove()
     {
-        StartMove();
         masterItem.ActivateMe();
+        base.StartMove();
     }
 }

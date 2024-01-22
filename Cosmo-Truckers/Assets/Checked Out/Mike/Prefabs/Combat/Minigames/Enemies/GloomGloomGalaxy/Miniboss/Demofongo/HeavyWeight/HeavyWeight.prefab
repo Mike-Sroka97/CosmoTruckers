@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6443416405649085898}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -89,20 +89,25 @@ MonoBehaviour:
   - {fileID: 6443416407432396832}
   - {fileID: 6443416406927364636}
   layouts: []
-  Damage: 0
-  DebuffToAdd: {fileID: 0}
+  Damage: 5
+  DebuffToAdd: {fileID: 11400000, guid: 6418dfb7a869aa54b9faa596634d2655, type: 2}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
-  maxScore: 0
-  augmentStacksPerHit: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
   maxAugmentStacks: 0
-  baseDamage: 0
+  baseDamage: 25
   baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
   spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &6443416406308689289
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,7 +388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6459071721454703399, guid: 4d7b9091c02fa1240a9edc914a7e8bee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.75
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6459071721454703399, guid: 4d7b9091c02fa1240a9edc914a7e8bee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -425,7 +430,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 234018705}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 566f8652e70d22b4ab02afb55dc8fd39, type: 3}
   m_Name: 
@@ -480,7 +485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6459071721454703399, guid: 4d7b9091c02fa1240a9edc914a7e8bee, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.75
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 6459071721454703399, guid: 4d7b9091c02fa1240a9edc914a7e8bee, type: 3}
       propertyPath: m_LocalPosition.z
@@ -522,7 +527,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1437203751}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 566f8652e70d22b4ab02afb55dc8fd39, type: 3}
   m_Name: 

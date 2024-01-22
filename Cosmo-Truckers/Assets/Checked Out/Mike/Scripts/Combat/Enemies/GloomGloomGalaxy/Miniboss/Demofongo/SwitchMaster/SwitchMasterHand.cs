@@ -55,13 +55,13 @@ public class SwitchMasterHand : MonoBehaviour
         if(currentValue == masterItem.CurrentValue)
         {
             //Success
-            minigame.Score++;
             StartCoroutine(ChangeDemofongoSprite(true)); 
             masterItem.IncrementToNextRenderer(true); 
         }
         else
         {
             //failure
+            minigame.Score++;
             StartCoroutine(ChangeDemofongoSprite(false));
             masterItem.IncrementToNextRenderer(false);
         }
@@ -69,10 +69,6 @@ public class SwitchMasterHand : MonoBehaviour
         if(minigame.CurrentNumberOfCycles < minigame.MaxNumberOfCycles)
         {
             masterItem.ActivateMe();
-        }
-        else
-        {
-            minigame.EndMove();
         }
     }
 
@@ -101,7 +97,6 @@ public class SwitchMasterHand : MonoBehaviour
         {
             collision.GetComponent<SpriteRenderer>().enabled = false;
             currentValue = collision.GetComponent<SwitchMasterItem>().CurrentValue;
-            Debug.Log("I caught a " + currentValue);
         }
     }
 }
