@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 2893641203094335413}
   - component: {fileID: 2893641203094335415}
   - component: {fileID: 265213355}
+  - component: {fileID: 3158664168744736876}
   m_Layer: 0
   m_Name: ElectroWhipEnemy
   m_TagString: EnemyDamaging
@@ -180,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   centerLinePoint: {x: 0, y: 0, z: 0}
-  leashedSpeed: 0.35
+  leashedSpeed: 0.3
   rotationLimit: 75
   rotationSpeed: 240
   breakDistance: 3.25
@@ -188,6 +189,7 @@ MonoBehaviour:
   unleashedDirection: 2
   releashSpeed: 3.2
   threshold: 0.25
+  selectedMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
 --- !u!212 &2893641203094335413
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -208,7 +210,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -229,8 +231,8 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 2
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.7014866, a: 1}
+  m_Sprite: {fileID: -905691676, guid: 4413e4a101c56d442be69549ed416de2, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -277,3 +279,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3158664168744736876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2893641203094335419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -905691676, guid: 4413e4a101c56d442be69549ed416de2, type: 3}
+  - {fileID: 1946479580, guid: 4413e4a101c56d442be69549ed416de2, type: 3}
+  - {fileID: 995193485, guid: 4413e4a101c56d442be69549ed416de2, type: 3}
+  - {fileID: 476741656, guid: 4413e4a101c56d442be69549ed416de2, type: 3}
+  timeBetweenEachSprite: 0.25
