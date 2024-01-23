@@ -71,7 +71,7 @@ public class GunOfTheMawGun : MonoBehaviour
         yield return new WaitForSeconds(animationDelay);
 
         GameObject newBullet = Instantiate(bullet, barrel);
-        newBullet.transform.parent = null;
+        newBullet.transform.parent = transform.parent;
 
         yield return new WaitForSeconds(startSpinDelay);
 

@@ -6,7 +6,7 @@ public class GunOfTheMawHead : MonoBehaviour
 {
     [SerializeField] float dashDelay;
     [SerializeField] float dashSpeed;
-    [SerializeField] AnimationClip idle, attack; 
+    //[SerializeField] AnimationClip idle, attack; 
 
     Animator myAnimator; 
     Player player;
@@ -21,7 +21,7 @@ public class GunOfTheMawHead : MonoBehaviour
 
     IEnumerator Dash()
     {
-        myAnimator.Play(idle.name); 
+        //myAnimator.Play(idle.name); 
 
         yield return new WaitForSeconds(dashDelay);
 
@@ -38,7 +38,7 @@ public class GunOfTheMawHead : MonoBehaviour
         }
 
 
-        myAnimator.Play(attack.name);
+        //myAnimator.Play(attack.name);
 
         while(transform.position != target)
         {
@@ -48,5 +48,15 @@ public class GunOfTheMawHead : MonoBehaviour
         }
 
         StartCoroutine(Dash());
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.name.Contains("GunOfTheMawBullet"))
+        {
+            Destroy(collision.gameObject);
+            GetComponentInParent<CombatMove>().Score--;
+            //Hurt head
+        }
     }
 }

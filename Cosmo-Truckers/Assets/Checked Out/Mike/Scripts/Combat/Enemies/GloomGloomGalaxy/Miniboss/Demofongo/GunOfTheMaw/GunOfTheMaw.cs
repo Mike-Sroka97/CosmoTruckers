@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GunOfTheMaw : CombatMove
 {
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        GetComponentInChildren<GunOfTheMawHead>().enabled = true;
+        GetComponentInChildren<GunOfTheMawGun>().enabled = true;
+
+        base.StartMove();
     }
 }

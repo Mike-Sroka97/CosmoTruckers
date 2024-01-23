@@ -8,7 +8,7 @@ public class DemofongoAI : Enemy
     {
         int random = Random.Range(0, attacks.Length);
 
-        ChosenAttack = attacks[1];
+        ChosenAttack = attacks[2];
         //ChosenAttack = attacks[random];
 
         base.StartTurn();
@@ -35,8 +35,10 @@ public class DemofongoAI : Enemy
         //Gun of the maw
         else
         {
-            //IDK lol!
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            if (CombatManager.Instance.FindSupportCharacter() != null)
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
+            else
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
     }
 }
