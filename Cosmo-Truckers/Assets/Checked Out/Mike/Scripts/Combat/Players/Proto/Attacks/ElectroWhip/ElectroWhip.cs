@@ -13,6 +13,7 @@ public class ElectroWhip : CombatMove
 
     public override void StartMove()
     {
+        base.StartMove(); 
         enemies = FindObjectsOfType<ElectroWhipEnemy>();
         Score = enemies.Length;
 

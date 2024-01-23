@@ -47,15 +47,35 @@ public class INAcombat : MonoBehaviour
 
         if (moveUp)
         {
+            //Wait a frame to fix renderer threading issues
+            yield return null; 
+
+            CombatMove minigame = GetComponentInChildren<CombatMove>(); 
+
+            //Disable Line/Trail Renderers
+            foreach (LineRenderer line in minigame.GetComponentsInChildren<LineRenderer>())
+                line.enabled = false;
+
+            foreach (TrailRenderer trail in minigame.GetComponentsInChildren<TrailRenderer>())
+                trail.enabled = false;
+
             //Move up
-            while(transform.position.y < goalPosition.y)
+            while (transform.position.y < goalPosition.y)
             {
                 transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
                 yield return null;
             }
+
+            //Enable Line/Trail Renderers
+            foreach (LineRenderer line in GetComponentsInChildren<LineRenderer>())
+                line.enabled = true;
+
+            foreach (TrailRenderer trail in GetComponentsInChildren<TrailRenderer>())
+                trail.enabled = true;
+
             transform.localPosition = goalPosition;
             CombatManager.Instance.SpawnPlayers();
-            FindObjectOfType<CombatMove>().SetSpawns();
+            GetComponentInChildren<CombatMove>().SetSpawns();
 
             //OpenScreen
             while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
