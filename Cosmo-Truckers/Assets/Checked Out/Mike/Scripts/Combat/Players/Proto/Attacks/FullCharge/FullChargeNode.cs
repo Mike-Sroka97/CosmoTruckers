@@ -10,9 +10,12 @@ public class FullChargeNode : MonoBehaviour
     [SerializeField] float snapCooldown;
     [SerializeField] LineRenderer pairLine;
     [SerializeField] Color pairLineColor;
+    [SerializeField] Sprite completedSprite; 
     [SerializeField] GameObject gate;
 
+
     FullCharge minigame;
+    SpriteRenderer myRenderer; 
     bool connectionMade = false;
     bool nodeFull = false;
     bool trackTime = false;
@@ -21,6 +24,7 @@ public class FullChargeNode : MonoBehaviour
     private void Start()
     {
         minigame = FindObjectOfType<FullCharge>();
+        myRenderer = GetComponent<SpriteRenderer>(); 
         currentTime = snapCooldown;
     }
 
@@ -40,6 +44,8 @@ public class FullChargeNode : MonoBehaviour
 
             pairLine.startColor = pairLineColor;
             pairLine.endColor = pairLineColor;
+
+            myRenderer.sprite = completedSprite; 
 
             if(gate != null)
             {
