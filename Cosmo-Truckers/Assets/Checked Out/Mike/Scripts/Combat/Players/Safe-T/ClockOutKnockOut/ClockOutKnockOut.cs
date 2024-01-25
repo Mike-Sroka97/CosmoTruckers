@@ -17,6 +17,8 @@ public class ClockOutKnockOut : CombatMove
         {
             hand.SetVelocity();
         }
+
+        base.StartMove();
     }
 
     public override void EndMove()

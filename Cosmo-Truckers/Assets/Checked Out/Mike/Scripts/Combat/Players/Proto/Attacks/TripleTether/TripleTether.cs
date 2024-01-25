@@ -14,6 +14,8 @@ public class TripleTether : CombatMove
         TripleTetherEnemy[] enemies = FindObjectsOfType<TripleTetherEnemy>();
         foreach (TripleTetherEnemy enemy in enemies)
             enemy.Intialize();
+
+        base.StartMove();
     }
 
     public override void EndMove()

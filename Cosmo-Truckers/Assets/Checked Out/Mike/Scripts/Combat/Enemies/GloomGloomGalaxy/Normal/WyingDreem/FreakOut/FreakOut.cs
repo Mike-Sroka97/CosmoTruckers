@@ -22,6 +22,8 @@ public class FreakOut : CombatMove
         GetComponentInChildren<FreakOutSpikeSpawner>().enabled = true;
 
         SetupMultiplayer();
+
+        base.StartMove();
     }
 
     public void SpawnSpikes()

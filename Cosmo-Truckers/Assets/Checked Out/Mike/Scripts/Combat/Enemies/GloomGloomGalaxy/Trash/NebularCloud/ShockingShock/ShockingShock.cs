@@ -25,6 +25,8 @@ public class ShockingShock : CombatMove
         trackTime = true;
         GetComponentInChildren<PlayerBasedParabolaMovement>().SetPlayer(FindObjectOfType<Player>());
         GetComponentInChildren<PlayerBasedParabolaMovement>().Active = true;
+
+        base.StartMove();
     }
 
     private void Update()

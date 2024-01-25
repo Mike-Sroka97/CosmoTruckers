@@ -20,6 +20,8 @@ public class PowerPummel : CombatMove
 
         foreach (PPspikeBall spikeball in spikeBalls)
             spikeball.DetermineStartingMovement();
+
+        base.StartMove();
     }
 
     public override void EndMove()

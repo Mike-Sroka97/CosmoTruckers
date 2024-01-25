@@ -7,6 +7,9 @@ public class HorsingAround : CombatMove
     public override void StartMove()
     {
         GetComponentInChildren<HorsingAroundHorse>().enabled = true;
+
+
+        base.StartMove();
     }
     public override void EndMove()
     {

@@ -69,13 +69,11 @@ public class Bribery : CombatMove
         DisabledRows = new bool[rows.Length];
     }
 
-    private void Update()
-    {
-        TrackTime();
-    }
-
     protected override void TrackTime()
     {
+        if (!trackTime)
+            return;
+
         base.TrackTime();
 
         if(currentTime >= moneySpawnDelay)

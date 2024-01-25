@@ -11,6 +11,8 @@ public class FullCourse : CombatMove
     public override void StartMove()
     {
         FindObjectOfType<FullCoursePlatformMovement>().StartMove();
+
+        base.StartMove();
     }
 
     public override void EndMove()

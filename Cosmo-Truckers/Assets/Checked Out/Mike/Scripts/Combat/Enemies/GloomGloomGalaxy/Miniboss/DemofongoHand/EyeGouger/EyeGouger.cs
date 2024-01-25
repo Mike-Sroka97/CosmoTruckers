@@ -21,6 +21,8 @@ public class EyeGouger : CombatMove
     {
         base.StartMove();
         Invoke("StartCycle", initialDelay);
+
+        base.StartMove();
     }
 
     protected override void Update()

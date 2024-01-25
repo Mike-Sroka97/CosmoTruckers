@@ -39,6 +39,8 @@ public class SolidShlurping : CombatMove
         SolidShlurpingSalivaSpawn[] spawns = GetComponentsInChildren<SolidShlurpingSalivaSpawn>();
         foreach (SolidShlurpingSalivaSpawn spawn in spawns)
             spawn.enabled = true;
+
+        base.StartMove();
     }
 
     protected override void Update()

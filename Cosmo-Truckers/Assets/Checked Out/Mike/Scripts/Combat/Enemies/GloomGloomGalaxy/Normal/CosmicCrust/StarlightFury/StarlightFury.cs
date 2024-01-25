@@ -24,6 +24,9 @@ public class StarlightFury : CombatMove
 
         trackTime = true;
         StartCoroutine(NextSword());
+
+
+        base.StartMove();
     }
 
     private void Update()

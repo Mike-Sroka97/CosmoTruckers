@@ -19,6 +19,8 @@ public class BadDreem : CombatMove
     {
         GetComponentInChildren<BadDreemLight>().enabled = true;
         trackTime = true;
+
+        base.StartMove();
     }
 
     private void Update()

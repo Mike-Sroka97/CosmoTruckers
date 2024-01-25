@@ -28,6 +28,8 @@ public class LengthyProcedure : CombatMove
         LPPlatformMovement[] platforms = GetComponentsInChildren<LPPlatformMovement>();
         foreach (LPPlatformMovement platform in platforms)
             platform.StartMove();
+
+        base.StartMove();
     }
 
     public void NextNode()

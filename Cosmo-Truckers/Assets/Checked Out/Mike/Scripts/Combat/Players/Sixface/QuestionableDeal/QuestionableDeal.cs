@@ -24,11 +24,6 @@ public class QuestionableDeal : CombatMove
         trackTime = true;
     }
 
-    private void Update()
-    {
-        TrackTime();
-    }
-
     protected override void TrackTime()
     {
         if (!trackTime)

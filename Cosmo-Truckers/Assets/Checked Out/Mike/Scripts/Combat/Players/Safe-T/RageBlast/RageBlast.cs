@@ -19,6 +19,8 @@ public class RageBlast : CombatMove
     {
         GenerateLayout();
         trackTime = true;
+
+        base.StartMove();
     }
 
     private void Update()

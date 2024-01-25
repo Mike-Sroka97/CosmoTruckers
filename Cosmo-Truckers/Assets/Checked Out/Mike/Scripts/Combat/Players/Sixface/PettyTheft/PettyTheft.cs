@@ -17,6 +17,8 @@ public class PettyTheft : CombatMove
         PettyTheftEnemy[] enemies = FindObjectsOfType<PettyTheftEnemy>();
         foreach (PettyTheftEnemy enemy in enemies)
             enemy.ActivateLights();
+
+        base.StartMove();
     }
 
     public void ActivateMoney()

@@ -34,6 +34,8 @@ public class Devastation : CombatMove
 
         base.StartMove();
         SetupMultiplayer();
+
+        base.StartMove();
     }
 
     public override void EndMove()

@@ -25,6 +25,8 @@ public class PunchAPretender : CombatMove
     public override void StartMove()
     {
         trackTime = true;
+
+        base.StartMove();
     }
 
     private void Update()

@@ -34,6 +34,8 @@ public class SystemShock : CombatMove
         FindObjectOfType<Rotator>().RotateSpeed = 10;
 
         initialized = true;
+
+        base.StartMove();
     }
 
     private void Update()

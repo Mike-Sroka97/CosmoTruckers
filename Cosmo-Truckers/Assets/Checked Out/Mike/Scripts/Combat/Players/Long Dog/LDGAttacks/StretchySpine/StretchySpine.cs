@@ -49,6 +49,8 @@ public class StretchySpine : CombatMove
     public override void StartMove()
     {
         GetComponentInChildren<StretchySpineSpawner>().enabled = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

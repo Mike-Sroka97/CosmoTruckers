@@ -25,6 +25,8 @@ public class AstorIncubation : CombatMove
     {
         base.StartMove();
         Invoke("DisablePlatforms", ballDelayTime);
+
+        base.StartMove();
     }
 
     private void DisablePlatforms()

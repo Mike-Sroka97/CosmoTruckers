@@ -23,6 +23,8 @@ public class CosmicCaster : CombatMove
 
         foreach (CosmicCrustSword sword in swords)
             sword.Initialize();
+
+        base.StartMove();
     }
 
     public void NextCollectable()

@@ -20,6 +20,9 @@ public class FanTheHammer : CombatMove
 
         foreach (FanTheHammerGloomGuy gloomGuy in gloomGuys)
             gloomGuy.Initialize();
+
+
+        base.StartMove();
     }
 
     public override void EndMove()

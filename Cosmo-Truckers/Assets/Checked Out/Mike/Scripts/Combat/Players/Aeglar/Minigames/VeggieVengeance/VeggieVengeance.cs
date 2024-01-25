@@ -9,6 +9,8 @@ public class VeggieVengeance : CombatMove
     {
         GenerateLayout();
         FindObjectOfType<VeggieVengeanceCannon>().StartMove();
+
+        base.StartMove();
     }
 
     public override void EndMove()
