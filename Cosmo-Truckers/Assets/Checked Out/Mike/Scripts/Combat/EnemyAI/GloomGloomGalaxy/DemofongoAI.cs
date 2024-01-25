@@ -8,8 +8,7 @@ public class DemofongoAI : Enemy
     {
         int random = Random.Range(0, attacks.Length);
 
-        ChosenAttack = attacks[2];
-        //ChosenAttack = attacks[random];
+        ChosenAttack = attacks[random];
 
         base.StartTurn();
     }

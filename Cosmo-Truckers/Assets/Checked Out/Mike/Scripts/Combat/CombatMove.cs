@@ -123,8 +123,23 @@ public abstract class CombatMove : MonoBehaviour
         character.AddDebuffStack(DebuffToAdd, augmentStacks);
     }
 
-    protected void DealDamageOrHealing(Character character, int currentDamage)
+    protected void DealDamageOrHealing(Character character, int currentDamage, int damage = 0)
     {
+        //can be used to set if the move is damaging or healing end move
+        if(damage != 0)
+        {
+            if (damage == 1)
+            {
+                isHealing = false;
+                isDamaging = true;
+            }
+            else
+            {
+                isHealing = true;
+                isDamaging = false;
+            }
+        }
+
         if (currentDamage > 0 && isDamaging)
         {
             //1 being base damage
@@ -318,8 +333,16 @@ public abstract class CombatMove : MonoBehaviour
         for (int i = 0; i < players.Length; i++)
         {
             PlayerScores.Add(players[i].MyCharacter, 0);
+            PlayerScores[players[i].MyCharacter] = Score; 
             PlayerAugmentScores.Add(players[i].MyCharacter, 0);
+            PlayerAugmentScores[players[i].MyCharacter] = AugmentScore;
             PlayersDead.Add(players[i].MyCharacter, false);
         }
+
+        foreach (PlayerPickup pickup in GetComponentsInChildren<PlayerPickup>())
+            pickup.multiplayer = true;
+
+        foreach (TrackPlayerDeath deathSource in GetComponentsInChildren<TrackPlayerDeath>())
+            deathSource.multiplayer = true;
     }
 }

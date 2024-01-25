@@ -15,7 +15,6 @@ public class PainfulPresentsPresent : MonoBehaviour
     [SerializeField] Sprite goodSprite, badSprite, healSprite; 
 
     SpriteRenderer myRenderer;
-    bool isHeal = false;
     bool movingInward = true;
     Vector3 startingPosition;
 
@@ -69,23 +68,17 @@ public class PainfulPresentsPresent : MonoBehaviour
             case 1:
                 myRenderer.material = goodMaterial;
                 myRenderer.sprite = goodSprite;
+                GetComponent<PlayerPickup>().SetScoringTypes(true, false);
+                GetComponent<PlayerPickup>().SetScore(-1);
                 Destroy(GetComponent<TrackPlayerDeath>());
                 break;
             //heal  case
             case 2:
                 myRenderer.material = goodMaterial;
                 myRenderer.sprite = healSprite; 
-                isHeal = true;
+                GetComponent<PlayerPickup>().SetScoringTypes(false, true);
                 Destroy(GetComponent<TrackPlayerDeath>());
                 break;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(isHeal)
-        {
-            //TODO give player health
         }
     }
 }

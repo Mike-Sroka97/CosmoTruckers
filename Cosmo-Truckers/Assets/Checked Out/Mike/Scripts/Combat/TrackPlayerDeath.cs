@@ -7,8 +7,7 @@ public class TrackPlayerDeath : MonoBehaviour
     [SerializeField] bool trackDeath = true;
     [SerializeField] int scoreIncrease = 0;
     [SerializeField] int augmentScoreIncrease = 0;
-    [SerializeField] bool multiplayer = false;
-
+    [HideInInspector] public bool multiplayer = false;
     [HideInInspector] public bool TrackingDamage = true;
 
     CombatMove minigame;

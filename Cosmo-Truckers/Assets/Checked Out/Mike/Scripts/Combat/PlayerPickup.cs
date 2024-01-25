@@ -9,6 +9,7 @@ public class PlayerPickup : MonoBehaviour
     [SerializeField] float moveDistance;
     [SerializeField] bool givesAugmentScore = false;
     [SerializeField] bool givesScore = true;
+    [HideInInspector] public bool multiplayer;
 
     [Header("PS on Collect (can be empty)")]
     [SerializeField] ParticleSystem collectParticle; 
@@ -52,10 +53,21 @@ public class PlayerPickup : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            if (givesScore)
-                minigame.Score += score;
-            if(givesAugmentScore)
-                minigame.AugmentScore += score;
+            if(multiplayer)
+            {
+                Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+                if (givesScore)
+                    minigame.PlayerScores[player.MyCharacter] += score;
+                if (givesAugmentScore)
+                    minigame.PlayerAugmentScores[player.MyCharacter] += score;
+            }
+            else
+            {
+                if (givesScore)
+                    minigame.Score += score;
+                if (givesAugmentScore)
+                    minigame.AugmentScore += score;
+            }
 
             if (collectParticle != null)
             {
@@ -65,4 +77,12 @@ public class PlayerPickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-}
+
+    public void SetScoringTypes(bool score, bool augScore)
+    {
+        givesScore = score;
+        givesAugmentScore = augScore;
+    }
+
+    public void SetScore(int newScore) { score = newScore; }
+} 
