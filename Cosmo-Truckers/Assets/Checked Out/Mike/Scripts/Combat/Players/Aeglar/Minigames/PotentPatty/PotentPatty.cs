@@ -19,6 +19,8 @@ public class PotentPatty : CombatMove
     {
         trackTime = true;
         FindObjectOfType<PotentPattyMech>().StartMove();
+
+        base.StartMove();
     }
 
     private void Update()

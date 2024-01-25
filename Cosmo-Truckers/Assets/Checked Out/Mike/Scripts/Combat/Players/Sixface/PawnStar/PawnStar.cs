@@ -13,6 +13,8 @@ public class PawnStar : CombatMove
     public override void StartMove()
     {
         projectile.SetActive(true);
+
+        base.StartMove();
     }
 
     public override List<Character> NoTargetTargeting()

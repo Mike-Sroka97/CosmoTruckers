@@ -16,6 +16,8 @@ public class CumuloLickus : CombatMove
         base.StartMove();
         GetComponentInChildren<CumuloLickusShlop>().enabled = true;
         SetupMultiplayer();
+
+        base.StartMove();
     }
     public override void EndMove()
     {

@@ -28,6 +28,8 @@ public class Cometkaze : CombatMove
             ball.Move = true;
 
         trackTime = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

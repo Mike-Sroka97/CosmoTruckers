@@ -18,6 +18,8 @@ public class GoldenFury : CombatMove
 
         foreach (GoldenFuryBall ball in GetComponentsInChildren<GoldenFuryBall>())
             ball.enabled = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

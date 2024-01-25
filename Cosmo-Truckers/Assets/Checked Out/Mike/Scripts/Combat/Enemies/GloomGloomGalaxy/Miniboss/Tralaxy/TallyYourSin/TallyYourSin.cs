@@ -23,6 +23,8 @@ public class TallyYourSin : CombatMove
             sin.Initialize();
 
         mickeysDickMasher.enabled = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

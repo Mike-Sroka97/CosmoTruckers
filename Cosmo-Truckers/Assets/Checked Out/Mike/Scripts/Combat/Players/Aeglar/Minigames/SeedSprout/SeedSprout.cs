@@ -19,6 +19,8 @@ public class SeedSprout : CombatMove
         SeedSproutMovingPlatform[] platforms = FindObjectsOfType<SeedSproutMovingPlatform>();
         foreach (SeedSproutMovingPlatform platform in platforms)
             platform.StartMove();
+
+        base.StartMove();
     }
 
     public void NextFlower()

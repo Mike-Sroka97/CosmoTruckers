@@ -18,6 +18,8 @@ public class SparkShield : CombatMove
 
         foreach (SparkShieldCollectable collectable in collectables)
             collectable.Initialize();
+
+        base.StartMove();
     }
 
     public override void EndMove()

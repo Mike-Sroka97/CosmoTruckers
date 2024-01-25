@@ -8,6 +8,8 @@ public class FunkyPersuasion : CombatMove
     {
         StartMove();
         GenerateLayout();
+
+        base.StartMove();
     }
 
     public override void EndMove()

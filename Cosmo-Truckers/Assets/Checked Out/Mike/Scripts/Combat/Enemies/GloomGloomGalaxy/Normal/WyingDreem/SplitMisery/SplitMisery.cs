@@ -26,6 +26,8 @@ public class SplitMisery : CombatMove
             skeleton.Initialize(singlePlayer);
 
         trackTime = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

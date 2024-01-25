@@ -24,6 +24,8 @@ public class BubbleBabies : CombatMove
 
         foreach (BubbleBabiesNeedle needle in needles)
             needle.Initialize();
+
+        base.StartMove();
     }
 
     public override void EndMove()

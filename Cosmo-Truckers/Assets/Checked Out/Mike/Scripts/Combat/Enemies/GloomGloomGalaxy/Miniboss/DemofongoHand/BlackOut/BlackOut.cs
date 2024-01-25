@@ -19,6 +19,8 @@ public class BlackOut : CombatMove
         hands = GetComponentsInChildren<BlackOutBall>();
 
         SelectHand();
+
+        base.StartMove();
     }
 
     public void SelectHand()

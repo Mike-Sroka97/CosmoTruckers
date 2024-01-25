@@ -21,6 +21,8 @@ public class MelancholyPrecipitation : CombatMove
         
         GetComponentInChildren<MelancholyPrecipitationLayoutMovement>().Initialize();
         trackTime = true;
+
+        base.StartMove();
     }
 
     private void Update()

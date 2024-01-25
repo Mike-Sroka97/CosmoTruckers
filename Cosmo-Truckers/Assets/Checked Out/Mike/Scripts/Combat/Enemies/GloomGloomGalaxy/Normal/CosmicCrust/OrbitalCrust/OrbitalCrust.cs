@@ -21,6 +21,8 @@ public class OrbitalCrust : CombatMove
     {
         base.StartMove();
         StartCoroutine(SpawnStalactite());
+
+        base.StartMove();
     }
 
     private void Update()

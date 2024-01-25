@@ -9,7 +9,6 @@ public class EnergonJab : CombatMove
     EnergonJabShockArea[] shockAreas;
     int lastRandom = -1;
     int lastlastRandom = -1;
-    bool trackShockZones = false;
 
     private void Start()
     {
@@ -18,19 +17,9 @@ public class EnergonJab : CombatMove
         shockAreas = FindObjectsOfType<EnergonJabShockArea>();
     }
 
-    public override void StartMove()
-    {
-        trackShockZones = true;
-    }
-
-    private void Update()
-    {
-        TrackTime();
-    }
-
     protected override void TrackTime()
     {
-        if (!trackShockZones)
+        if (!trackTime)
             return;
 
         base.TrackTime();

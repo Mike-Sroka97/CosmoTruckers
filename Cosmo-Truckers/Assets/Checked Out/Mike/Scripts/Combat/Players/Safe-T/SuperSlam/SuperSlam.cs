@@ -16,6 +16,8 @@ public class SuperSlam : CombatMove
         SSGun[] ssGuns = FindObjectsOfType<SSGun>();
         foreach (SSGun ssGun in ssGuns)
             ssGun.trackTime = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

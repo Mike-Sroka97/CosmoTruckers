@@ -24,6 +24,8 @@ public class StarStorm : CombatMove
                 stars[i].gameObject.SetActive(true);
             }
         }
+
+        base.StartMove();
     }
 
     protected void BuildLayout()

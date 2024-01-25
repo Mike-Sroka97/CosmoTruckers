@@ -19,5 +19,8 @@ public class WhiteNoise : CombatMove
             noise.enabled = true;
         foreach (RandomNoise noise in randomNoise)
             noise.enabled = true;
+
+        base.StartMove();
     }
+    
 }

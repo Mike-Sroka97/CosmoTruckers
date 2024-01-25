@@ -21,6 +21,8 @@ public class CounterBop : CombatMove
             straightEnemy.enabled = true;
         foreach (CBWaveEnemy waveEnemy in waveEnemies)
             waveEnemy.enabled = true;
+
+        base.StartMove();
     }
 
     public override void EndMove()

@@ -24,6 +24,8 @@ public class FunGun : CombatMove
 
         currentActiveGun = UnityEngine.Random.Range(0, guns.Length);
         guns[currentActiveGun].TrackingTime = true;
+
+        base.StartMove();
     }
 
     public void NextGun()
