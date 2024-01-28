@@ -6,6 +6,7 @@ public class SlorbnusAI : Enemy
 {
     public override void Die()
     {
+        FindObjectOfType<OrbnusAI>().ShredArmor();
         base.Die();
     }
 }
