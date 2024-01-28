@@ -25,7 +25,7 @@ public class Crusher : MonoBehaviour
 
     private void Start()
     {
-        startingY = transform.position.y;
+        startingY = transform.localPosition.y;
 
         if(startCrush)
             StartCoroutine(Crush());

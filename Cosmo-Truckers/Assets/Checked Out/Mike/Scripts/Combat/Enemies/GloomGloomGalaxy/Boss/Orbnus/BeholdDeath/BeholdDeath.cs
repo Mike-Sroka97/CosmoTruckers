@@ -8,21 +8,23 @@ public class BeholdDeath : CombatMove
     [SerializeField] float meteoriteDelay;
     [SerializeField] GameObject meteorite;
 
-    Player[] players;
-
     private void Start()
     {
-        StartMove();
         GenerateLayout();
-
-        players = FindObjectsOfType<Player>();
-
-        StartCoroutine(SpawnMeteorites());
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        GetComponentInChildren<BeholdDeathDross>().enabled = true;
+        GetComponentInChildren<BeholdDeathDross>().transform.GetComponent<MoveForward>().enabled = true;
+        foreach (EyeFollower eye in GetComponentsInChildren<EyeFollower>())
+            eye.enabled = true;
+        foreach (Follower follower in GetComponentsInChildren<Follower>())
+            follower.enabled = true;
+
+        SetupMultiplayer();
+        StartCoroutine(SpawnMeteorites());
+        base.StartMove();
     }
 
     IEnumerator SpawnMeteorites()

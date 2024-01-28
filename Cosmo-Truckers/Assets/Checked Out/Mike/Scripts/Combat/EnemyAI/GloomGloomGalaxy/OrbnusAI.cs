@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class OrbnusAI : Enemy
 {
-    [SerializeField] int phaseTwoHealth;
-    [SerializeField] int phaseThreeHealth;
     [SerializeField] int baseDefense = 25;
 
     [HideInInspector] public bool EyeOneKilled = false;
     [HideInInspector] public bool EyeTwoKilled = false;
     [HideInInspector] public bool EyeThreeKilled = false;
 
-    int phase = 1;
+    bool turnOne = false;
+
+    public int Phase = 1;
     public override void StartTurn()
     {
-        PhaseCheck();
-        ChosenAttack = attacks[phase - 1];
+        //TODO funny turn one haha
+
+        ChosenAttack = attacks[Phase - 1];
         base.StartTurn();
     }
 
@@ -39,20 +40,15 @@ public class OrbnusAI : Enemy
         }
     }
 
-    private void PhaseCheck()
-    {
-        {
-            if (Health <= phaseThreeHealth && phase < 3)
-                phase = 3;
-            else if (Health <= phaseTwoHealth && phase < 2)
-                phase = 2;
-            else if (phase < 1)
-                phase = 1;
-        }
-    }
-
     public void ShredArmor()
     {
+        TakeDamage(1000, true);
+        Phase = 2;
         Stats.Defense = baseDefense;
+    }
+
+    public override void Die()
+    {
+        Phase = 3;
     }
 }

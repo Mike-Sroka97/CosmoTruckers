@@ -28,7 +28,11 @@ public class TrailRendererCollider : MonoBehaviour
         }
 
         for (int i = 0; i < colliderBuffer; i++)
-            points.RemoveAt(0); 
+        {
+            if (points.Count <= 0)
+                break;
+            points.RemoveAt(0);
+        }
 
         collider.SetPoints(points);
     }

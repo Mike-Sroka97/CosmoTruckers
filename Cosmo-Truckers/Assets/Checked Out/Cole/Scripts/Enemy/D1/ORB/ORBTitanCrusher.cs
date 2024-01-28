@@ -24,7 +24,7 @@ public class ORBTitanCrusher : Crusher
 
     void SetParticleState()
     {
-        if (base.retracting)
+        if (retracting)
         {
             speedLines.gameObject.SetActive(false);
         }
@@ -36,7 +36,7 @@ public class ORBTitanCrusher : Crusher
 
     void SetShakeState()
     {
-        if (base.engaging)
+        if (engaging)
         {
             armShaker.SetShakeState(true); 
         }
