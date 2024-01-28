@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class TitanTerror : CombatMove
 {
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        foreach (EyeFollower eye in GetComponentsInChildren<EyeFollower>())
+            eye.enabled = true;
+        foreach (ORBTitanCrusher crusher in GetComponentsInChildren<ORBTitanCrusher>())
+            crusher.enabled = true;
+
+        base.StartMove();
     }
 }

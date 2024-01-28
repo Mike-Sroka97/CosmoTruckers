@@ -441,8 +441,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 0.015
   timeBetweenResets: 0.2
-  delayBetweenShakes: 0.01
   childShaker: 1
+  shakeState: 1
 --- !u!1 &1178523419
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,8 +542,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 0.015
   timeBetweenResets: 0.2
-  delayBetweenShakes: 0.01
   childShaker: 1
+  shakeState: 1
 --- !u!1 &1536350454
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,8 +643,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 0.015
   timeBetweenResets: 0.2
-  delayBetweenShakes: 0.01
   childShaker: 1
+  shakeState: 1
 --- !u!1 &1564924390
 GameObject:
   m_ObjectHideFlags: 0
@@ -918,7 +918,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2193783060789226836}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb50a083fc75bed449f64f9d878cd521, type: 3}
   m_Name: 
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3086913372566543725}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb50a083fc75bed449f64f9d878cd521, type: 3}
   m_Name: 
@@ -1010,7 +1010,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3903049180934036690}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb50a083fc75bed449f64f9d878cd521, type: 3}
   m_Name: 
@@ -1227,7 +1227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5200019350671767790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1264,20 +1264,25 @@ MonoBehaviour:
   - {fileID: 5200019350022650075}
   - {fileID: 5200019349067017262}
   layouts: []
-  Damage: 0
+  Damage: 15
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
-  maxScore: 0
-  augmentStacksPerHit: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
   maxAugmentStacks: 0
-  baseDamage: 0
+  baseDamage: 35
   baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
   spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &5200019350892263437
 GameObject:
   m_ObjectHideFlags: 0

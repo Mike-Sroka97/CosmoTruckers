@@ -27,15 +27,15 @@ public class TitanTerrorHand : MonoBehaviour
 
     private void CheckTriggerDistance()
     {
-        if(transform.position.y < triggerY && canTrigger)
+        if(transform.localPosition.y < triggerY && canTrigger)
         {
             canTrigger = false;
             otherHand.canTrigger = true;
             StartCoroutine(otherHandCrusher.Crush());
-            Instantiate(shockWave, shockWaveSpawn.position, shockWaveSpawn.rotation);
-            Instantiate(rockParticle, rockParticleSpawn.position, Quaternion.identity); 
+            Instantiate(shockWave, shockWaveSpawn.position, shockWaveSpawn.rotation, transform.parent);
+            Instantiate(rockParticle, rockParticleSpawn.position, Quaternion.identity, transform.parent); 
             int random = Random.Range(0, SpitfireLayouts.Length);
-            Instantiate(SpitfireLayouts[random], shockWaveSpawn.position, shockWaveSpawn.rotation);
+            Instantiate(SpitfireLayouts[random], shockWaveSpawn.position, shockWaveSpawn.rotation, transform.parent);
         }
     }
 }
