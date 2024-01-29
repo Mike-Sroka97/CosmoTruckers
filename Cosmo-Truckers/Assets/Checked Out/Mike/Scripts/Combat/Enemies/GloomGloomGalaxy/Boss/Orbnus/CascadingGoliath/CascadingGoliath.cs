@@ -12,11 +12,18 @@ public class CascadingGoliath : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
 
         mySpawner = GetComponent<CascadingGoliathChunkSpawner>();
         allNodes = FindObjectsOfType<CascadingGoliathNodes>();
+    }
+
+    public override void StartMove()
+    {
+        foreach (CascadingGoliathChunkSpawner chunkSpawner in GetComponentsInChildren<CascadingGoliathChunkSpawner>())
+            chunkSpawner.enabled = true;
+        foreach (CascadingGoliathHand hand in GetComponentsInChildren<CascadingGoliathHand>())
+            hand.enabled = true;
     }
 
     public void CheckPhase()

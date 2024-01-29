@@ -99,6 +99,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1252637048123073527}
   - component: {fileID: 5963423889304528323}
+  - component: {fileID: 1965983220273353559}
   m_Layer: 0
   m_Name: HandCollider
   m_TagString: Untagged
@@ -169,6 +170,23 @@ PolygonCollider2D:
       - {x: 0.083333336, y: -0.8541667}
       - {x: 0.3541667, y: -0.6458334}
       - {x: 0.6666667, y: -0.39583334}
+--- !u!114 &1965983220273353559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3114972727923715352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
+  TrackingDamage: 1
 --- !u!1 &4254312246739486922
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +229,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.15, y: -0.05}
@@ -229,7 +247,6 @@ GameObject:
   - component: {fileID: 2656155633272772648}
   - component: {fileID: 7259166778353556809}
   - component: {fileID: 3219731815240214842}
-  - component: {fileID: 7051449283588410191}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -319,6 +336,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
   TrackingDamage: 1
 --- !u!114 &3219731815240214842
 MonoBehaviour:
@@ -332,31 +352,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7051449283588410191
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5997256236945732831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d94948aa4499a34db529f65388b8a70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fistSpriteRenderer: {fileID: 7668957042987875161}
-  FistSprites:
-  - {fileID: 21300000, guid: 03ac127254fe31c418f32fc63a7b4fb9, type: 3}
-  - {fileID: 21300000, guid: 51bd2e4dcc91499468756d0df1f99e2d, type: 3}
-  handCollider: {fileID: 0}
-  fistCollider: {fileID: 0}
-  fistPositions:
-  - {x: -0.5, y: 0.76, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  fistRotations:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 30}
-  fistCloseTime: 1.25
 --- !u!1 &6174884057393429145
 GameObject:
   m_ObjectHideFlags: 0
@@ -397,12 +392,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6174884057393429145}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a331d7f23f2c8f446a8ff3991c6e85fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startHand: 0
+  startHand: 1
   stretchDelay: 3
   stretchSpeed: 4
   retractDelay: 3
@@ -422,6 +417,7 @@ GameObject:
   - component: {fileID: 8739118830777710714}
   - component: {fileID: 9052759819241010052}
   - component: {fileID: 5438784560474402240}
+  - component: {fileID: 4058560432840238821}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -454,7 +450,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -483,6 +479,23 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   fistRotations: []
   fistCloseTime: 1.25
+--- !u!114 &4058560432840238821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059765888137206222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  multiplayer: 0
+  TrackingDamage: 1
 --- !u!1 &7226056533569386014
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +936,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HurtNode (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7823611461552185488, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Vertices.Array.size
       value: 21
@@ -1208,6 +1225,10 @@ PrefabInstance:
     - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Name
       value: HurtNode (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7823611461552185488, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Vertices.Array.size
@@ -1495,6 +1516,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HurtNode (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7823611461552185488, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Vertices.Array.size
       value: 21
@@ -1780,6 +1805,10 @@ PrefabInstance:
     - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Name
       value: HurtNode (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5946514210204823032, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7823611461552185488, guid: 070be1c2884500b48bdb6595224156d7, type: 3}
       propertyPath: m_Vertices.Array.size

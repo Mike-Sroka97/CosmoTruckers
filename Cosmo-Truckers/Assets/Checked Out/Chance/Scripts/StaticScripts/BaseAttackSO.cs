@@ -17,6 +17,7 @@ public class BaseAttackSO : ScriptableObject
     public int NumberOfTargets;
     public bool TargetsDead;
     public bool AutoCast;
+    public bool BossMove;
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;

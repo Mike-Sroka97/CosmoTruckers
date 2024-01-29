@@ -57,7 +57,7 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
         {
             finalNodeSpawned = true;
             yield return new WaitForSeconds(noseWaitTime);
-            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation);
+            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation, transform);
         }
     }
 

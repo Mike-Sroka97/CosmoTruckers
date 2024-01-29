@@ -454,7 +454,11 @@ public class CombatManager : MonoBehaviour
 
         if (!attack.AutoCast)
         {
-            float miniGameTime = attack.MiniGameTime;
+            float miniGameTime = 99;
+
+            if (!attack.BossMove)
+                miniGameTime = attack.MiniGameTime;
+
             Timer.text = miniGameTime.ToString();
 
             INAmoving = true;

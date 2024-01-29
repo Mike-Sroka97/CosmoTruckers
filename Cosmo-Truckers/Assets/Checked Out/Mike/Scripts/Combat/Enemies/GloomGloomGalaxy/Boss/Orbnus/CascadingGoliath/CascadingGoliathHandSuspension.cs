@@ -52,7 +52,7 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
             //Change the sprites
             fistSpriteRenderer.sprite = FistSprites[1];
             fistTransform.localPosition = fistPositions[1];
-            fistTransform.localEulerAngles = new Vector3(fistTransform.localRotation.x, fistTransform.localRotation.y, fistRotations[1]); 
+            //fistTransform.localEulerAngles = new Vector3(fistTransform.localRotation.x, fistTransform.localRotation.y, fistRotations[1]); 
             //Change the active collider
             handCollider.enabled = false;
             fistCollider.enabled = true;
@@ -64,7 +64,7 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
             //Change the sprites
             fistSpriteRenderer.sprite = FistSprites[0];
             fistTransform.localPosition = fistPositions[0];
-            fistTransform.localEulerAngles = new Vector3(fistTransform.localRotation.x, fistTransform.localRotation.y, fistRotations[0]);
+            //fistTransform.localEulerAngles = new Vector3(fistTransform.localRotation.x, fistTransform.localRotation.y, fistRotations[0]);
             //Change the active collider
             handCollider.enabled = true;
             fistCollider.enabled = false;
