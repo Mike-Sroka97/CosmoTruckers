@@ -23,4 +23,11 @@ public class EnumManager
         RestNode,
         BossNode,
     }
+    public enum NCNodeValue
+    {
+        NA,
+        Positive,
+        Negative,
+        Neutral,
+    }
 }

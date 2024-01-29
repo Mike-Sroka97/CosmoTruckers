@@ -32,6 +32,7 @@ public class DungeonNode : MonoBehaviour
         switch(Node.Type)
         {
             case EnumManager.NodeType.CombatNode:
+            case EnumManager.NodeType.BossNode:
                 GetComponent<Button>().onClick.AddListener(delegate
                 {
                     OnDungeonClick();
@@ -49,12 +50,11 @@ public class DungeonNode : MonoBehaviour
                     OnNCAllCharacterClick();
                 });
                 break;
-                break;
             case EnumManager.NodeType.RestNode:
-                //TODO
-                break;
-            case EnumManager.NodeType.BossNode:
-                //TODO
+                GetComponent<Button>().onClick.AddListener(delegate
+                {
+                    OnRestClick();
+                });
                 break;
 
             default: GetComponent<Button>().interactable = false; break;
@@ -139,6 +139,29 @@ public class DungeonNode : MonoBehaviour
         GameObject page = Instantiate(Node.EnemyHolder);
         page.GetComponent<DungeonNodeAllPlayerAUG>().SetUpPlayerOptions(Node.AugToAdd);
 
+        StartCoroutine(RedrawMapDelay());
+    }
+
+    void OnRestClick()
+    {
+        //Set the next and last node
+        CombatData.Instance.combatLocation = NodeLocation;
+        CombatData.Instance.lastNode = lastNode;
+
+        //Heal all players
+        PlayerManager[] allPlayers = FindObjectsOfType<PlayerManager>();
+        foreach(var player in allPlayers)
+        {
+            ////Set amount of health to add
+            //int healthToAdd = 50;
+            //int maxHealth = player.GetPlayer.CombatPlayerSpawn.GetComponent<PlayerCharacter>().Health;
+            //player.GetPlayerData.PlayerCurrentHP = player.GetPlayerData.PlayerCurrentHP + healthToAdd > maxHealth ? -1 : player.GetPlayerData.PlayerCurrentHP + healthToAdd;
+
+            //Give max health for now
+            player.GetPlayerData.PlayerCurrentHP = -1;
+        }
+
+        //Redraw the map
         StartCoroutine(RedrawMapDelay());
     }
 

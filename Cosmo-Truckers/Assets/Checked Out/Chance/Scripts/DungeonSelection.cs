@@ -12,15 +12,23 @@ public class DungeonSelection : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        GetComponent<Button>().onClick.AddListener(delegate 
+        if (PlayerPrefs.GetInt("CurrentDungeon", 0) >= DungeonData.CurrentDungeon)
         {
-            DungeonPage.SetActive(true);
-            DungeonPage.GetComponent<DungeonDisplay>().DungeonScreenSetUp
-            (
-                DungeonData.DungonSprite, 
-                DungeonData.DungeonName, 
-                DungeonData.DungeonDescription
-            );
-        });
+            GetComponent<Button>().onClick.AddListener(delegate
+            {
+                DungeonPage.SetActive(true);
+                DungeonPage.GetComponent<DungeonDisplay>().DungeonScreenSetUp
+                (
+                    DungeonData.DungonSprite,
+                    DungeonData.DungeonName,
+                    DungeonData.DungeonDescription,
+                    DungeonData.CurrentDungeon
+                );
+            });
+        }
+        else
+        {
+            GetComponent<Button>().interactable = false;
+        }
     }
 }

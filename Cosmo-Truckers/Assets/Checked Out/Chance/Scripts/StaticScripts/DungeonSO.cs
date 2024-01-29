@@ -8,4 +8,5 @@ public class DungeonSO : ScriptableObject
     public Sprite DungonSprite;
     [Tooltip("Same name as the scene for this dungeon")]public string DungeonName;
     [TextArea(5,10)]public string DungeonDescription;
+    public int CurrentDungeon = 0;
 }
