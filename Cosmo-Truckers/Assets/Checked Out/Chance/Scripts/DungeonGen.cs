@@ -30,7 +30,7 @@ public class DungeonGen : MonoBehaviour
     [Header("Storage")]
     [SerializeField] [Tooltip("Set to 0 for unseeded")] int RandomSeed = 0;
     public int GetDungeonSeed { get => RandomSeed; }
-    [SerializeField] List<DungeonData> CurrentLayout = new List<DungeonData>();
+    [SerializeField]public List<DungeonData> CurrentLayout = new List<DungeonData>();
     #region Struct
     [System.Serializable]
     public struct DungeonData
@@ -100,29 +100,7 @@ public class DungeonGen : MonoBehaviour
                 (TextAnchor)Random.Range(0, 9),
                 RandomSeed != 0 ? RandomSeed : rand)
                 );
-
-            #region Based on weights (Obsolete)
-            //List<int> weights = new List<int>();
-            //while (NodesToAdd > 0)
-            //{
-            //    //Add node weights to new list
-            //    for (int j = 0; j < tempNodes.Count; j++)
-            //        weights.Add(tempNodes[j].Weight);
-
-
-            //    int choice = MathCC.GetRandomWeightedIndex(weights);
-            //    CurrentLayout[i].Add(tempNodes[choice]);
-
-            //    if (tempNodes[choice].Connections > NodesToAddNext)
-            //        NodesToAddNext = tempNodes[choice].Connections;
-
-            //    tempNodes.RemoveAt(choice);
-            //    weights.Clear();
-
-            //    NodesToAdd--;
-            //}
-            #endregion
-            #region Pure chaos mode
+            #region Node Gen
             //The Rest Node
             if (i == Levels.Length - 2 && rest)
             {
@@ -132,7 +110,13 @@ public class DungeonGen : MonoBehaviour
             //The Boss Node
             else if (i == Levels.Length - 1)
             {
-                CurrentLayout[i].Add(BossNode[Random.Range(0, BossNode.Count)]);
+                for (int j = 0; j < BossNode.Count; j++)
+                    if (BossNode[j].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0))
+                    {
+                        CurrentLayout[i].Add(BossNode[j]);
+                        break;
+                    }
+
                 NodesToAddNext = 0;
             }
             //Combat Nodes 
@@ -143,9 +127,10 @@ public class DungeonGen : MonoBehaviour
                 CurrentLayout[i].Add(CombatNodes[choice]);
                 NodesToAddNext = CombatNodes[choice].Connections;
             }
-            //Random Middle Nodes
+            //Random NC Nodes
             else
             {
+                List<int> weights = new List<int>();
                 while (NodesToAdd > 0)
                 {
                     //Temparary while there are not a ton of test nodes to keep from cycling tho them all
@@ -153,7 +138,15 @@ public class DungeonGen : MonoBehaviour
                     //Remove
                     if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
 
-                    int choice = Random.Range(0, tempNodes.Count);
+                    //Add node weights to new list
+                    for (int j = 0; j < tempNodes.Count; j++)
+                        weights.Add(tempNodes[j].Weight);
+
+                    int choice = MathCC.GetRandomWeightedIndex(weights);
+
+                    //Loop tho nodes to find non exlude node
+                    while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1)
+                        choice = MathCC.GetRandomWeightedIndex(weights);
 
                     CurrentLayout[i].Add(tempNodes[choice]);
 
@@ -161,6 +154,7 @@ public class DungeonGen : MonoBehaviour
                         NodesToAddNext = tempNodes[choice].Connections;
 
                     tempNodes.RemoveAt(choice);
+                    weights.Clear();
 
                     NodesToAdd--;
                 }
@@ -171,9 +165,99 @@ public class DungeonGen : MonoBehaviour
             NodesToAddNext = 0;
         }
 
+        ManualNodeCorrection(tempNodes);
         tempNodes.Clear();
 
         Random.InitState((int)System.DateTime.Now.Ticks);
+    }
+
+    /// <summary>
+    /// A manual override to keep the positive and negative nodes equal
+    /// </summary>
+    /// <param name="tempNodes">temporary hold for middle nodes</param>
+    private void ManualNodeCorrection(List<Node.DungeonNodeBase> tempNodes)
+    {
+#if UNITY_EDITOR
+        var speed = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
+#endif
+        int[] layouts = new int[2] { 0, 0 };
+        List<Vector2Int> neutralLocations = new();
+
+        for (int i = 0; i < CurrentLayout.Count; i++)
+        {
+            for (int j = 0; j < CurrentLayout[i].Nodes.Count; j++)
+            {
+                switch (CurrentLayout[i].Nodes[j].NCNodeValue)
+                {
+                    case EnumManager.NCNodeValue.Positive:
+                        layouts[0]++;
+                        break;
+                    case EnumManager.NCNodeValue.Negative:
+                        layouts[1]++;
+                        break;
+                    case EnumManager.NCNodeValue.Neutral:
+                        neutralLocations.Add(new Vector2Int(i, j));
+                        break;
+                    case EnumManager.NCNodeValue.NA:
+                    default: break;
+                }
+            }
+        }
+
+
+        while (layouts[0] > layouts[1])
+        {
+            if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+
+            int choice = Random.Range(0, tempNodes.Count);
+
+            //Loop tho nodes to find non exlude node
+            while ((tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Negative)
+            {
+                tempNodes.RemoveAt(choice);
+                if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+
+                choice = Random.Range(0, tempNodes.Count);
+            }
+
+            int neutralToRemove = Random.Range(0, neutralLocations.Count);
+
+            CurrentLayout[neutralLocations[neutralToRemove].x].Nodes[neutralLocations[neutralToRemove].y] = tempNodes[choice];
+
+            tempNodes.RemoveAt(choice);
+            neutralLocations.RemoveAt(neutralToRemove);
+
+            layouts[1]++;
+        }
+        while (layouts[0] < layouts[1])
+        {
+            if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+
+            int choice = Random.Range(0, tempNodes.Count);
+
+            //Loop tho nodes to find non exlude node
+            while ((tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Positive)
+            {
+                tempNodes.RemoveAt(choice);
+                if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+
+                choice = Random.Range(0, tempNodes.Count);
+            }
+
+            int neutralToRemove = Random.Range(0, neutralLocations.Count);
+
+            CurrentLayout[neutralLocations[neutralToRemove].x].Nodes[neutralLocations[neutralToRemove].y] = tempNodes[choice];
+
+            tempNodes.RemoveAt(choice);
+            neutralLocations.RemoveAt(neutralToRemove);
+
+            layouts[0]++;
+        }
+
+#if UNITY_EDITOR
+        speed -= System.DateTime.Now.TimeOfDay.TotalMilliseconds;
+        print(speed);
+#endif
     }
 
     /// <summary>
@@ -349,14 +433,43 @@ public class DungeonGenEditor : Editor
             myScript.ShowMap();
         }
 
-        if(GUILayout.Button("ReDraw Map"))
+        if(GUILayout.Button("Test weights"))
         {
-            myScript.ShowMap();
-        }
+            int amount = 1000;
 
-        if (GUILayout.Button("Clear Screen"))
-        {
-            myScript.ClearOldMap();
+            int[] layouts = new int[3] { 0, 0, 0 };
+            for (int repeat = 0; repeat < amount; repeat++)
+            {
+                myScript.ClearOldMap();
+                myScript.ClearMapMemory();
+                myScript.GenerateMap();
+
+                for (int i = 0; i < myScript.CurrentLayout.Count; i++)
+                {
+                    for (int j = 0; j < myScript.CurrentLayout[i].Nodes.Count; j++)
+                    {
+                        switch (myScript.CurrentLayout[i].Nodes[j].NCNodeValue)
+                        {
+                            case EnumManager.NCNodeValue.Positive:
+                                layouts[0]++;
+                                break;
+                            case EnumManager.NCNodeValue.Negative:
+                                layouts[1]++;
+                                break;
+                            case EnumManager.NCNodeValue.Neutral:
+                                layouts[2]++;
+                                break;
+
+                            case EnumManager.NCNodeValue.NA:
+                            default: break;
+                        }
+                    }
+                }
+            }
+
+            float totalUsed = layouts[0] + layouts[1] + layouts[2];
+
+            Debug.LogError($"Neg: {(((float)layouts[1] / totalUsed) * 100)}% Pos: {(((float)layouts[0] / totalUsed) * 100)}% Neut: {(((float)layouts[2] / totalUsed) * 100)}%");
         }
     }
 }
