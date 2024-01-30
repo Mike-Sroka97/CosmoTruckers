@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2167138549714726335}
   - component: {fileID: 8338868470121127358}
   m_Layer: 0
-  m_Name: RestDugeonNode
+  m_Name: Base Single Random AUG 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,11 +49,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db30df8fcaf5314eb8c9bfa786e3dd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weight: 0
-  Type: 3
-  NCNodeValue: 0
-  Connections: 1
-  NodeImage: {fileID: 1942252397, guid: cd5f172e91408894696be45d8257dc23, type: 3}
+  Type: 1
+  NCNodeValue: 1
+  Weight: 1
+  Connections: 2
+  NodeImage: {fileID: 21300000, guid: 3494dc956dfd7174abc07060940a2848, type: 3}
   ExcludeFromDungeon: -1
   EnemyHolder: {fileID: 0}
-  AugToAdd: []
+  AugToAdd:
+  - {fileID: 11400000, guid: 7b97e0b340e2e424f81e43946007891d, type: 2}

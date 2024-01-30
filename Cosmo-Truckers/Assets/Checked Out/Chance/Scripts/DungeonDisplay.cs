@@ -10,13 +10,14 @@ public class DungeonDisplay : NetworkBehaviour
     [SerializeField] Image DungonSprite;
     [SerializeField] TMP_Text DungeonName;
     [SerializeField] TMP_Text DungeonDescription;
+    public int CurrentDungeon;
 
     public override void OnStartClient()
     {
         gameObject.SetActive(false);
     }
 
-    public void DungeonScreenSetUp(Sprite sprite, string name, string description)
+    public void DungeonScreenSetUp(Sprite sprite, string name, string description, int currentDungeon)
     {
         DungonSprite.sprite = sprite;
         if(isServer)
@@ -24,6 +25,7 @@ public class DungeonDisplay : NetworkBehaviour
             DungeonName.GetComponent<Button>().onClick.RemoveAllListeners();
             DungeonName.GetComponent<Button>().onClick.AddListener(delegate { EnterDungeon(name); });
             DungeonName.text = $"Enter {name}";
+            PlayerPrefs.SetInt("CurrentDungeon", currentDungeon);
         }
         else
         {

@@ -201,17 +201,18 @@ public class TurnOrder : MonoBehaviour
         //If testing the game in real play mode
         if (NetworkManager.singleton)
         {
-            if(CombatData.Instance.lastNode)
+            if (CombatData.Instance.lastNode)
             {
                 //Currently only dungeon map
                 //TODO
                 //Will need to change scene based on the last galaxy that the player was in
                 //Also need to mark this current dungeon as compleated if nessisarry
+                PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
                 NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
             }
             else
             {
-                foreach(var character in FindObjectsOfType<PlayerCharacter>())
+                foreach (var character in FindObjectsOfType<PlayerCharacter>())
                 {
                     EnemyManager.Instance.SavePlayerData(character);
                 }
@@ -219,6 +220,26 @@ public class TurnOrder : MonoBehaviour
             }
         }
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
+        else if (CombatData.Instance)
+        {
+            if (CombatData.Instance.lastNode)
+            { 
+                //Currently only dungeon map
+                //TODO
+                //Will need to change scene based on the last galaxy that the player was in
+                //Also need to mark this current dungeon as compleated if nessisarry
+                PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
+                SceneManager.LoadScene("GloomGloomGalaxyOW");
+            }
+            else
+            {
+                foreach (var character in FindObjectsOfType<PlayerCharacter>())
+                {
+                    EnemyManager.Instance.SavePlayerData(character);
+                }
+                SceneManager.LoadScene("DungeonSelection");
+            }
+        }
         else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

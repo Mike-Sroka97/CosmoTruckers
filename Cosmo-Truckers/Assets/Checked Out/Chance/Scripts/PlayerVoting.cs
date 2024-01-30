@@ -65,6 +65,7 @@ public class PlayerVoting : NetworkBehaviour
                 trackTime = false;
                 RpcTrackTime("0");
 
+                PlayerPrefs.SetInt("CurrentDungeon", 0);
                 NetworkManager.singleton.ServerChangeScene(Getlocation());
             }
         }
