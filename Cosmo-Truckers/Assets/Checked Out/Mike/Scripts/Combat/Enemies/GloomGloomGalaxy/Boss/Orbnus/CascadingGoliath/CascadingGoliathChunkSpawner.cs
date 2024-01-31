@@ -78,7 +78,7 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
     private void RotateChunks()
     {
         int chunkToSpawn = Random.Range(0, orbnusChunk.Length);
-        Rotator rotator = Instantiate(orbnusChunk[chunkToSpawn], chunkSpawns[random].position, Quaternion.identity).GetComponent<Rotator>();
+        Rotator rotator = Instantiate(orbnusChunk[chunkToSpawn], chunkSpawns[random].position, Quaternion.identity, transform).GetComponent<Rotator>();
 
         rotator.RotateSpeed = Random.Range(minChunkRotation, maxChunkRotation);
 

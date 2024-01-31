@@ -454,12 +454,12 @@ public class CombatManager : MonoBehaviour
 
         if (!attack.AutoCast)
         {
-            float miniGameTime = 99;
+            float miniGameTime = attack.MiniGameTime;
 
-            if (!attack.BossMove)
-                miniGameTime = attack.MiniGameTime;
-
-            Timer.text = miniGameTime.ToString();
+            if (attack.BossMove)
+                Timer.text = "";
+            else
+                Timer.text = miniGameTime.ToString();
 
             INAmoving = true;
             miniGame = Instantiate(attack.CombatPrefab, INA.transform);
@@ -499,14 +499,26 @@ public class CombatManager : MonoBehaviour
 
             attack.StartCombat();
 
-            while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+            //Boss move handler. Does not track time. Tracks Fight won and players dead
+            if(attack.BossMove)
             {
-                miniGameTime -= Time.deltaTime;
-                Timer.text = ((int)miniGameTime).ToString();
-
-                yield return null;
+                while (!miniGame.GetComponentInChildren<CombatMove>().FightWon && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+                {
+                    yield return null;
+                }
             }
 
+            //Timer and end move handler for non-boss moves
+            else
+            {
+                while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+                {
+                    miniGameTime -= Time.deltaTime;
+                    Timer.text = ((int)miniGameTime).ToString();
+
+                    yield return null;
+                }
+            }
 
             StopAllCoroutines();
 

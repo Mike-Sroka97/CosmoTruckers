@@ -51,4 +51,9 @@ public class OrbnusAI : Enemy
     {
         Phase = 3;
     }
+
+    public void DieForReal()
+    {
+        base.Die();
+    }
 }

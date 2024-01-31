@@ -99,7 +99,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5441957616501015625}
   - component: {fileID: 2763524151759926001}
-  - component: {fileID: 3325984106622616547}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -176,18 +175,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &3325984106622616547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5889588114038054406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5927640606107084338
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,8 +326,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8414062741202234286}
   - component: {fileID: 4590118012958553047}
-  - component: {fileID: 2001227978}
-  - component: {fileID: 2001227979}
   m_Layer: 0
   m_Name: FistCollider
   m_TagString: Untagged
@@ -379,35 +364,6 @@ CircleCollider2D:
   m_Offset: {x: -0.15, y: -0.05}
   serializedVersion: 2
   m_Radius: 1.25
---- !u!114 &2001227978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7355466322667627401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2001227979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7355466322667627401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackDeath: 0
-  scoreIncrease: 0
-  augmentScoreIncrease: 0
-  multiplayer: 0
-  TrackingDamage: 1
 --- !u!1 &8231244907852751553
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +375,7 @@ GameObject:
   - component: {fileID: 1242456217689609952}
   - component: {fileID: 5243092681623572144}
   - component: {fileID: 3313176719553887653}
+  - component: {fileID: 1712412395930348385}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -480,6 +437,24 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   fistRotations: []
   fistCloseTime: 1.25
+--- !u!114 &1712412395930348385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8231244907852751553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  Multiplayer: 0
+  Boss: 0
+  TrackingDamage: 1
 --- !u!1 &8511873012830229778
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,10 +561,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackDeath: 0
+  trackDeath: 1
   scoreIncrease: 0
   augmentScoreIncrease: 0
-  multiplayer: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1001 &32205304065527789
 PrefabInstance:

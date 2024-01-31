@@ -9,6 +9,7 @@ public class CascadingGoliath : CombatMove
     [SerializeField] GameObject[] eyeBrows;
     [SerializeField] GameObject hairParticleEffect;
     [SerializeField] float phase2EyebrowWaitTime = 1f;
+    [SerializeField] Material offMaterial;
 
     private void Start()
     {
@@ -24,6 +25,8 @@ public class CascadingGoliath : CombatMove
             chunkSpawner.enabled = true;
         foreach (CascadingGoliathHand hand in GetComponentsInChildren<CascadingGoliathHand>())
             hand.enabled = true;
+
+        SetupMultiplayer();
     }
 
     public void CheckPhase()
@@ -46,6 +49,10 @@ public class CascadingGoliath : CombatMove
 
             foreach(CascadingGoliathHand hand in hands)
             {
+                foreach (TrackPlayerDeath tpd in hand.GetComponentsInChildren<TrackPlayerDeath>())
+                    tpd.enabled = false;
+                foreach (SpriteRenderer renderer in hand.GetComponentsInChildren<SpriteRenderer>())
+                    renderer.material = offMaterial;
                 hand.enabled = false;
                 hand.StopAllCoroutines(); 
                 hand.StartCoroutine(hand.MoveOffScreen());
@@ -67,5 +74,11 @@ public class CascadingGoliath : CombatMove
                 Destroy(eyebrow);
             }
         }
+    }
+
+    public override void EndMove()
+    {
+        if (FightWon)
+            FindObjectOfType<OrbnusAI>().DieForReal();
     }
 }

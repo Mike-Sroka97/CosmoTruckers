@@ -85,7 +85,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &5911447149803115347
 MonoBehaviour:
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minY: -2.25
   fallSpeed: 10
+  endCallWait: 3
 --- !u!114 &1306586462587892108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +114,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackDeath: 0
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 999
+  Multiplayer: 1
+  Boss: 1
   TrackingDamage: 1
 --- !u!60 &6322671832245379099
 PolygonCollider2D:

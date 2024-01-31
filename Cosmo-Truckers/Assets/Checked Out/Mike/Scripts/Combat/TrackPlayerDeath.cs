@@ -7,22 +7,32 @@ public class TrackPlayerDeath : MonoBehaviour
     [SerializeField] bool trackDeath = true;
     [SerializeField] int scoreIncrease = 0;
     [SerializeField] int augmentScoreIncrease = 0;
-    [HideInInspector] public bool multiplayer = false;
+    [SerializeField] int overrideDamage = 0;
+    public bool Multiplayer = false;
+    public bool Boss = false;
     [HideInInspector] public bool TrackingDamage = true;
 
     CombatMove minigame;
+    int damage;
 
     private void Start()
     {
         minigame = FindObjectOfType<CombatMove>();
+        if (overrideDamage != 0)
+            damage = overrideDamage;
+        else
+            damage = minigame.Damage;
     }
 
     protected void Death(Player player)
     {
         if (trackDeath && minigame)
         {
-            if (multiplayer)
+            if (Multiplayer)
             {
+                if (Boss && player.MyCharacter.CurrentHealth > 0)
+                    return;
+
                 player.dead = true;
 
                 minigame.PlayersDead[player.MyCharacter] = true;
@@ -92,7 +102,17 @@ public class TrackPlayerDeath : MonoBehaviour
 
     private void AdjustMinigameScore(Player player)
     {
-        if (multiplayer)
+
+        if(Boss)
+        {
+            if (!player.iFrames)
+            {
+                minigame.DealDamageOrHealing(player.MyCharacter, damage);
+                Death(player);
+                player.TakeDamage();
+            }
+        }
+        else if (Multiplayer)
         {
             if (!player.iFrames)
             {

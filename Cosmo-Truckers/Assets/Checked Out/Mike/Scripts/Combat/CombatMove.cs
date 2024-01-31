@@ -9,7 +9,7 @@ public abstract class CombatMove : MonoBehaviour
     [SerializeField] Transform[] spawnPoints;
     [SerializeField] protected GameObject[] layouts;
     //For games that can deal player damage
-    [SerializeField] protected int Damage;
+    [SerializeField] public int Damage;
     [SerializeField] protected DebuffStackSO DebuffToAdd;
     [SerializeField] protected bool playerEnemyTargetDifference = false;
     public float MinigameDuration;
@@ -36,6 +36,11 @@ public abstract class CombatMove : MonoBehaviour
     public Dictionary<PlayerCharacter, int> PlayerScores;
     public Dictionary<PlayerCharacter, int> PlayerAugmentScores;
     public Dictionary<PlayerCharacter, bool> PlayersDead;
+
+    [Space(20)]
+    [Header("Boss Variables")]
+    [SerializeField] bool bossMove = false;
+    public bool FightWon = false;
 
     [Space(20)]
     [Header("Testing Variables")]
@@ -87,7 +92,7 @@ public abstract class CombatMove : MonoBehaviour
     public virtual void StartMove() { trackTime = true; }
     public virtual List<Character> NoTargetTargeting() { Debug.LogError("You didn't setup the override you devilish cunt"); return null; }
 
-    public void SetSpawns()
+    public void SetSpawns() //Rename because this is quickly becoming an INIT for the combatMove class
     {
         //TODO check if player controller is the same real world person
 
@@ -96,6 +101,9 @@ public abstract class CombatMove : MonoBehaviour
 
         for (int i = 0; i < players.Length; i++)
             players[i].transform.position = spawnPoints[i].position;
+
+        if (bossMove)
+            SetupBossFight();
     }
 
     public virtual void EndMove()
@@ -123,7 +131,7 @@ public abstract class CombatMove : MonoBehaviour
         character.AddDebuffStack(DebuffToAdd, augmentStacks);
     }
 
-    protected void DealDamageOrHealing(Character character, int currentDamage, int damage = 0)
+    public void DealDamageOrHealing(Character character, int currentDamage, int damage = 0)
     {
         //can be used to set if the move is damaging or healing end move
         if(damage != 0)
@@ -343,6 +351,12 @@ public abstract class CombatMove : MonoBehaviour
             pickup.multiplayer = true;
 
         foreach (TrackPlayerDeath deathSource in GetComponentsInChildren<TrackPlayerDeath>())
-            deathSource.multiplayer = true;
+            deathSource.Multiplayer = true;
+    }
+
+    private void SetupBossFight()
+    {
+        foreach (TrackPlayerDeath deathSource in GetComponentsInChildren<TrackPlayerDeath>())
+            deathSource.Boss = true;
     }
 }

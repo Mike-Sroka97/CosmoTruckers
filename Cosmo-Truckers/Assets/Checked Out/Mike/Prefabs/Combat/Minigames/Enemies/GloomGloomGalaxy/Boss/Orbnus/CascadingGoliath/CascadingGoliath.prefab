@@ -1911,6 +1911,8 @@ MonoBehaviour:
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  bossMove: 1
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   eyeBrows:
@@ -1918,6 +1920,7 @@ MonoBehaviour:
   - {fileID: 336121137}
   hairParticleEffect: {fileID: 4236235787131767706, guid: 065b5f2a433dcb245bcdc803e051564f, type: 3}
   phase2EyebrowWaitTime: 1
+  offMaterial: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
 --- !u!114 &8798700109304321031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5088,7 +5091,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -9.5
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3219731815240214842, guid: ed78d138a6bd22849aa35fbc782eb110, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ed78d138a6bd22849aa35fbc782eb110, type: 3}
 --- !u!4 &3356982210789827126 stripped
 Transform:

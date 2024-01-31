@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2824093573539734978}
   - component: {fileID: 2824093573539734981}
   - component: {fileID: 2824093573539734980}
-  - component: {fileID: 2824093573539734983}
   - component: {fileID: 2022672970946927198}
   - component: {fileID: -3626115491741786839}
   m_Layer: 0
@@ -87,7 +86,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!114 &2824093573539734981
 MonoBehaviour:
@@ -101,7 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackDeath: 0
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  Multiplayer: 1
+  Boss: 1
   TrackingDamage: 1
 --- !u!58 &2824093573539734980
 CircleCollider2D:
@@ -119,18 +122,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
   m_Radius: 0.6
---- !u!114 &2824093573539734983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2824093573539734985}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2022672970946927198
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7331227956993395257}
   - component: {fileID: 8081456530779104705}
   - component: {fileID: 3704465809120193680}
+  - component: {fileID: 9156897817800482363}
   m_Layer: 0
   m_Name: Eye_L
   m_TagString: Untagged
@@ -53,7 +54,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!70 &3704465809120193680
 CapsuleCollider2D:
@@ -101,3 +102,22 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.05}
   m_Size: {x: 1.8, y: 0.93}
   m_Direction: 1
+--- !u!114 &9156897817800482363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53494649873069300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 1
+  Boss: 1
+  TrackingDamage: 1
