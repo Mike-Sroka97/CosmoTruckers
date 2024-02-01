@@ -35,12 +35,14 @@ public abstract class Player : MonoBehaviour
 
     protected void DebuffInit()
     {
-        initialGravityModifier = myBody.gravityScale; // * grav modifier debuff
+        initialGravityModifier = myBody.gravityScale * MyCharacter.Stats.Gravity; // * grav modifier debuff
+        myBody.gravityScale = initialGravityModifier;
     }
 
     public void PlayerInitialize()
     {
         myBody = GetComponent<Rigidbody2D>();
+        DebuffInit();
     }
 
     public void TakeDamage()

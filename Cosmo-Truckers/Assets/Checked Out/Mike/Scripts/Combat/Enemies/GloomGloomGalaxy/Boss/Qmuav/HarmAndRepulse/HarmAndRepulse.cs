@@ -6,12 +6,14 @@ public class HarmAndRepulse : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
+            graviton.enabled = true;
+
+        base.StartMove();
     }
 }

@@ -62,7 +62,6 @@ public class ProtoINA : Player
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
-        DebuffInit();
     }
 
     private void Update()

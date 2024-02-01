@@ -11,6 +11,7 @@ public class CharacterStats : MonoBehaviour
     public int Speed = 100;
     public int Damage = 100;
     public int Restoration = 100;
+    public float Gravity = 1;
 
     TurnOrder turnOrder;
 

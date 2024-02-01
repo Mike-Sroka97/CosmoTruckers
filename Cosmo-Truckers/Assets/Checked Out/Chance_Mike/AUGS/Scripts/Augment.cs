@@ -40,6 +40,8 @@ public abstract class Augment : MonoBehaviour
             StatusEffect = 0;
         }
 
+        firstGo = true;
+
         AdjustMaxStatusEffect();
     }
 

@@ -19,7 +19,7 @@ public class QmuavProjectile : MonoBehaviour
     {
         myGraviton = GetComponent<Graviton>();
         myBody = GetComponent<Rigidbody2D>();
-        startPosition = transform.position;
+        startPosition = transform.localPosition;
     }
 
     private void Update()
@@ -33,10 +33,10 @@ public class QmuavProjectile : MonoBehaviour
         if (!checkClamps)
             return;
 
-        if (transform.position.x > xClamp
-            || transform.position.x < -xClamp
-            || transform.position.y > yClamp
-            || transform.position.y < -yClamp)
+        if (transform.localPosition.x > xClamp
+            || transform.localPosition.x < -xClamp
+            || transform.localPosition.y > yClamp
+            || transform.localPosition.y < -yClamp)
         {
             ResetPosition();
         }
@@ -59,7 +59,7 @@ public class QmuavProjectile : MonoBehaviour
         if (!repeat)
             Destroy(gameObject);
 
-        transform.position = startPosition;
+        transform.localPosition = startPosition;
         myBody.velocity = Vector2.zero;
         myBody.AddForce(myGraviton.GetInitialVelocity(), ForceMode2D.Impulse);
     }

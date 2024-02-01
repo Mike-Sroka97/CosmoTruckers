@@ -34,6 +34,7 @@ public class QmuavBlackHole : MonoBehaviour
         }
 
         player.transform.localScale = new Vector3(minScale, minScale, minScale);
-        //TODO KILL PLAYER IN REAL LIFE
+        foreach (SpriteRenderer spriteRenderer in player.MyRenderers)
+            spriteRenderer.enabled = false;
     }
 }

@@ -53,7 +53,6 @@ public class SixfaceINA : Player
     PlayerAnimator playerAnimator;
     Collider2D myCollider;
     int layermask = 1 << 9;
-    float startingGravity;
 
     const float distance = 0.05f;
 
@@ -65,7 +64,7 @@ public class SixfaceINA : Player
         bodyAnimator = transform.Find("SixFaceBody").GetComponent<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
         myBody = GetComponent<Rigidbody2D>();
-        startingGravity = myBody.gravityScale;
+        initialGravityModifier = myBody.gravityScale;
         myCollider = transform.Find("HoverCollider").GetComponent<Collider2D>(); //ignores parent
     }
 
@@ -315,7 +314,7 @@ public class SixfaceINA : Player
         else
         {
             IsHovering = false;
-            myBody.gravityScale = startingGravity;
+            myBody.gravityScale = initialGravityModifier;
         }
     }
     #endregion

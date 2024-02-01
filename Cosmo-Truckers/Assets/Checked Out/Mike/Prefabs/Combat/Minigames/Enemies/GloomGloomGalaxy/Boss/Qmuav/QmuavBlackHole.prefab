@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 3562066757029724545}
   - component: {fileID: 3562066757029724544}
   - component: {fileID: 3562066757029724572}
+  - component: {fileID: 2226993039645232664}
   m_Layer: 0
   m_Name: QmuavBlackHole
   m_TagString: Untagged
@@ -250,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b987a87932196fe4191fdceba28847d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAttractor: 1
+  isAttractor: 0
   isAttractee: 0
   initialVelocity: {x: 0, y: 0, z: 0}
   applyInitialVelocityOnStart: 0
@@ -269,3 +270,22 @@ MonoBehaviour:
   rotateSpeed: -50
   shrinkSpeed: 0.5
   minScale: 0.1
+--- !u!114 &2226993039645232664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3562066757029724548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 1
+  augmentScoreIncrease: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
+  TrackingDamage: 1

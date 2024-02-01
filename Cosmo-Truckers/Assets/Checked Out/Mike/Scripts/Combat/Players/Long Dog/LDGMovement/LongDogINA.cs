@@ -61,7 +61,6 @@ public class LongDogINA : Player
     bool postSpin = false;
 
     Vector3 buttStartingLocation;
-    float startingGravityScale;
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
     int layermask = 1 << 9;
@@ -76,7 +75,7 @@ public class LongDogINA : Player
         myCollider = head.GetComponent<Collider2D>();
         playerAnimator = GetComponent<PlayerAnimator>();
         buttStartingLocation = body.transform.localPosition;
-        startingGravityScale = myBody.gravityScale;
+        initialGravityModifier = myBody.gravityScale;
     }
 
     private void Update()
@@ -221,7 +220,7 @@ public class LongDogINA : Player
     {
         body.transform.parent = head.transform;
         body.transform.localPosition = buttStartingLocation;
-        myBody.gravityScale = startingGravityScale;
+        myBody.gravityScale = initialGravityModifier;
 
         LongDogNeck[] longDogNecks = FindObjectsOfType<LongDogNeck>();
         foreach(LongDogNeck neck in longDogNecks)
