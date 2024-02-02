@@ -119,7 +119,7 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = EnemyLocations[enemyCount].position;
                 SpriteRenderer[] spriteRenderers = prefab.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer renderer in spriteRenderers)
-                    renderer.sortingOrder = enemyCount;
+                    renderer.sortingOrder += enemyCount;
 
                 //TODO Figure out enemy spacing
                 for (int i = enemyCount; i < prefab.GetComponent<Character>().GetSpaceTaken + enemyCount; i++)
@@ -141,7 +141,7 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = EnemySummonLocations[enemySummonCount].position;
                 SpriteRenderer[] spriteRenderers = prefab.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer renderer in spriteRenderers)
-                    renderer.sortingOrder = enemySummonCount + 8;
+                    renderer.sortingOrder += enemySummonCount + 8;
                 EnemyCombatSpots[enemySummonCount + enemySummonIndexAdder] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = enemySummonCount + enemySummonIndexAdder;
                 enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
@@ -156,7 +156,7 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = PlayerLocations[playerCount].position;
                 SpriteRenderer[] spriteRenderers = prefab.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer renderer in spriteRenderers)
-                    renderer.sortingOrder = playerCount;
+                    renderer.sortingOrder += playerCount;
                 PlayerCombatSpots[playerCount] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerCount;
                 playerCount += prefab.GetComponent<Character>().GetSpaceTaken;
@@ -173,7 +173,7 @@ public class EnemyManager : MonoBehaviour
                 prefab.transform.position = PlayerSummonLocations[playerSummonCount].position;
                 SpriteRenderer[] spriteRenderers = prefab.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer renderer in spriteRenderers)
-                    renderer.sortingOrder = playerSummonCount + 4;
+                    renderer.sortingOrder += playerSummonCount + 4;
                 PlayerCombatSpots[playerSummonCount + playerSummonIndexAdder] = prefab.GetComponent<Character>();
                 prefab.GetComponent<Character>().CombatSpot = playerSummonCount + playerSummonIndexAdder;
                 playerSummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
@@ -191,7 +191,7 @@ public class EnemyManager : MonoBehaviour
                 EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
                 newSummon.transform.position = EnemySummonLocations[i - 8].position;
                 foreach(SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
-                    spriteRenderer.sortingOrder = i;
+                    spriteRenderer.sortingOrder += i;
                 EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
                 EnemyCombatSpots[i].CombatSpot = i;
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
