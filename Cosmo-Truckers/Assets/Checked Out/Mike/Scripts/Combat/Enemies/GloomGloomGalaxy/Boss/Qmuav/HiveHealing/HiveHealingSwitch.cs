@@ -7,6 +7,7 @@ public class HiveHealingSwitch : Switch
     [SerializeField] HiveHealingBlackHoles[] blackHoles;
 
     HiveHealing minigame;
+    bool stopItGetSomeHelp = false;
 
     private void Start()
     {
@@ -16,10 +17,16 @@ public class HiveHealingSwitch : Switch
 
     protected override void ToggleMe()
     {
-        foreach(HiveHealingBlackHoles blackHole in blackHoles)
+        if (stopItGetSomeHelp)
+            return;
+
+        stopItGetSomeHelp = true;
+
+        foreach (HiveHealingBlackHoles blackHole in blackHoles)
         {
             blackHole.ToggleMe();
-            minigame.Score++;
         }
+
+        minigame.Score--;
     }
 }

@@ -6,7 +6,7 @@ public class QmuavAI : Enemy
 {
     public override void StartTurn()
     {
-        ChosenAttack = attacks[0];
+        ChosenAttack = attacks[1];
         base.StartTurn();
     }
 
@@ -17,10 +17,18 @@ public class QmuavAI : Enemy
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
-        //Titan's Terror
+        //Hive Healing
         else if (attackIndex == 1)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.GetCharactersSelected.Add(this);
+            if(CombatManager.Instance.FindSupportCharacter())
+            {
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
+            }
+            else
+            {
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            }
         }
         //Titan's Terror
         else if (attackIndex == 1)
