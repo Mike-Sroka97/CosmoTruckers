@@ -6,16 +6,19 @@ public class EnergonJabDVD : DVDlogoMovement
 {
     [SerializeField] float disableTime;
     [SerializeField] float alpha;
+    [SerializeField] Material disabledMaterial; 
 
     float currentTime = 0;
     bool trackTime = false;
-    SpriteRenderer[] myRenderers;
+    SpriteRenderer myRenderer;
+    Material startMaterial;  
     EnergonJab minigame;
 
     private void Start()
     {
         minigame = GetComponentInParent<EnergonJab>();
-        myRenderers = GetComponentsInChildren<SpriteRenderer>();
+        myRenderer = GetComponent<SpriteRenderer>();
+        startMaterial = myRenderer.material;
         Initialize();
         RandomStartVelocity();
     }
@@ -37,10 +40,8 @@ public class EnergonJabDVD : DVDlogoMovement
         {
             currentTime = 0;
             trackTime = false;
-            foreach (SpriteRenderer sprite in myRenderers)
-            {
-                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, 1);
-            }
+            myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 1);
+            myRenderer.material = startMaterial;
         }
     }
 
@@ -50,10 +51,8 @@ public class EnergonJabDVD : DVDlogoMovement
         {
             trackTime = true;
             minigame.Score++;
-            foreach (SpriteRenderer sprite in myRenderers)
-            {
-                sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
-            }
+            myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, alpha);
+            myRenderer.material = disabledMaterial;
         }
     }
 }
