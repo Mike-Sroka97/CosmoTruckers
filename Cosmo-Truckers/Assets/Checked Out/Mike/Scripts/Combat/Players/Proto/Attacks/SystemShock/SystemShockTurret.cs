@@ -9,7 +9,10 @@ public class SystemShockTurret : MonoBehaviour
     [SerializeField] float fireDelay;
     [SerializeField] Transform barrel;
     [SerializeField] GameObject zap;
+    [SerializeField] AnimationClip fireAnimation;
 
+    CombatMove minigame; 
+    Animator myAnimator; 
     bool initialized = false;
     float currentTime = 0;
     ProtoINA proto;
@@ -17,6 +20,8 @@ public class SystemShockTurret : MonoBehaviour
     {
         proto = FindObjectOfType<ProtoINA>();
         initialized = true;
+        myAnimator = GetComponentInChildren<Animator>();
+        minigame = FindObjectOfType<CombatMove>();
     }
 
     private void Update()
@@ -43,7 +48,9 @@ public class SystemShockTurret : MonoBehaviour
         {
             currentTime = 0;
             GameObject zapTemp = Instantiate(zap, barrel);
-            zapTemp.transform.parent = null;
+            myAnimator.Play(fireAnimation.name);
+            zapTemp.gameObject.transform.parent = minigame.transform;
+            zapTemp.transform.localScale = new Vector3(1f, 1f, 1f); 
         }
     }
 }

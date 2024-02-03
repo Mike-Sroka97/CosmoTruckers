@@ -5,9 +5,11 @@ using UnityEngine;
 public class GeneralProjectile : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] bool destroyOnPlayer = false;
 
     const int xBound = 14;
     const int yBound = 12;
+    const float gracePeriod = 0.05f;
 
     private void Update()
     {
@@ -26,5 +28,19 @@ public class GeneralProjectile : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && destroyOnPlayer)
+        {
+            StartCoroutine(DestroyProjectile()); 
+        }
+    }
+
+    IEnumerator DestroyProjectile()
+    {
+        yield return new WaitForSeconds(gracePeriod);
+        Destroy(gameObject);
     }
 }

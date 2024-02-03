@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3819122699065789282
+--- !u!1 &5202180413517451531
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3819122699065789283}
-  - component: {fileID: 3819122699065789286}
-  - component: {fileID: 3819122699065789285}
-  - component: {fileID: 3819122699065789284}
-  - component: {fileID: -5898176548451035990}
-  m_Layer: 0
-  m_Name: SystemShockCannoProjectile
+  - component: {fileID: 180153703302586907}
+  - component: {fileID: 8428893781768101409}
+  - component: {fileID: 9010910889719552182}
+  - component: {fileID: 7149791604800506757}
+  - component: {fileID: -1551962609365389383}
+  m_Layer: 9
+  m_Name: Blade (0)
   m_TagString: EnemyDamaging
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3819122699065789283
+--- !u!4 &180153703302586907
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3819122699065789282}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.25, z: 0.5}
+  m_GameObject: {fileID: 5202180413517451531}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.365, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
---- !u!212 &3819122699065789286
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &8428893781768101409
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3819122699065789282}
+  m_GameObject: {fileID: 5202180413517451531}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -75,25 +75,25 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
-  m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: eeb28cc80206c9741b324978aaaa4c2b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_SortingOrder: 5
+  m_Sprite: {fileID: 1830620171, guid: fecfa34fa2ef22c409335d153f3c60ef, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.9, y: 2.7}
+  m_Size: {x: 1, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!60 &3819122699065789285
-PolygonCollider2D:
+--- !u!61 &9010910889719552182
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3819122699065789282}
+  m_GameObject: {fileID: 5202180413517451531}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -104,58 +104,49 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.9, y: 2.7}
-    newSize: {x: 2.9, y: 2.7}
+    oldSize: {x: 1, y: 3}
+    newSize: {x: 1, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.57, y: 0.14999999}
-      - {x: 0.48, y: 0.22999999}
-      - {x: 0.56, y: 0.31}
-      - {x: 0.66999996, y: 0.45}
-      - {x: 0.66999996, y: 0.65}
-      - {x: 0.65, y: 0.66999996}
-      - {x: -0.14999999, y: 0.66999996}
-      - {x: -0.17, y: 0.65}
-      - {x: -0.26999998, y: 0.45999998}
-      - {x: -0.47, y: 0.06}
-      - {x: -0.47, y: -0.14999999}
-      - {x: -0.45, y: -0.17}
-      - {x: -0.26999998, y: -0.24}
-      - {x: -0.47, y: -0.64}
-      - {x: -0.47, y: -0.84999996}
-      - {x: -0.45, y: -0.87}
-      - {x: -0.22, y: -0.87}
-      - {x: -0.14, y: -0.78}
-      - {x: 0.08, y: -0.59}
-      - {x: 0.57, y: -0.049999997}
---- !u!114 &3819122699065789284
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 2.75}
+  m_EdgeRadius: 0
+--- !u!114 &7149791604800506757
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3819122699065789282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0c3de2a9e82ef849b24b2b53df5eae8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: -2.8
---- !u!114 &-5898176548451035990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3819122699065789282}
+  m_GameObject: {fileID: 5202180413517451531}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
+--- !u!114 &-1551962609365389383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5202180413517451531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 1830620171, guid: fecfa34fa2ef22c409335d153f3c60ef, type: 3}
+  - {fileID: -244039837, guid: fecfa34fa2ef22c409335d153f3c60ef, type: 3}
+  - {fileID: -158275937, guid: fecfa34fa2ef22c409335d153f3c60ef, type: 3}
+  - {fileID: -2046419428, guid: fecfa34fa2ef22c409335d153f3c60ef, type: 3}
+  timeBetweenEachSprite: 0.25

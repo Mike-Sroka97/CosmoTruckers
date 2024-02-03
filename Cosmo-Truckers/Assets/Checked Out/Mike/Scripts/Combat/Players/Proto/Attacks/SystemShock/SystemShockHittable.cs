@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class SystemShockHittable : MonoBehaviour
 {
-    [SerializeField] Color disabledColor;
-    [SerializeField] Color enabledColor;
-    [SerializeField] Color hitColor;
+    [SerializeField] Sprite disabledSprite;
+    [SerializeField] Sprite enabledSprite;
+    [SerializeField] Sprite hitSprite;
+    [SerializeField] Material enabledMaterial;
+    [SerializeField] Material disabledMaterial;
     [SerializeField] SpriteRenderer myRenderer;
-    [HideInInspector] public bool Hit { get; private set; }
 
+    [HideInInspector] public bool Hit { get; private set; }
 
     Collider2D myCollider;
     SystemShock minigame;
@@ -21,14 +23,15 @@ public class SystemShockHittable : MonoBehaviour
 
     public void DeactivateMe()
     {
-        myRenderer.color = disabledColor;
+        myRenderer.sprite = disabledSprite;
         Hit = false;
     }
 
     public void ActivateMe()
     {
         myCollider = GetComponent<Collider2D>();
-        myRenderer.color = enabledColor;
+        myRenderer.sprite = enabledSprite;
+        myRenderer.material = enabledMaterial;
         myCollider.enabled = true;
     }
 
@@ -41,8 +44,9 @@ public class SystemShockHittable : MonoBehaviour
             minigame.AugmentScore++;
             minigame.GetComponent<SystemShock>().HittablesHit++;
             Hit = true;
-            myRenderer.color = hitColor;
+            myRenderer.sprite = hitSprite;
             myCollider.enabled = false;
+            myRenderer.material = disabledMaterial; 
         }
     }
 }
