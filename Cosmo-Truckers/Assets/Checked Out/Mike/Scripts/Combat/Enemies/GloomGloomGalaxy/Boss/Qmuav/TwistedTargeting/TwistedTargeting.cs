@@ -25,7 +25,7 @@ public class TwistedTargeting : CombatMove
     public override void EndMove()
     {
         //swap positions
-        List<Character> playerHealths = CombatManager.Instance.GetCharactersSelected.OrderBy(character => character.Health).ToList();
+        List<Character> playerHealths = CombatManager.Instance.GetCharactersSelected.OrderBy(character => character.CurrentHealth).ToList();
 
         for (int i = 0; i < playerHealths.Count; i++)
             playerHealths[i].FlipCharacter(i, true);
