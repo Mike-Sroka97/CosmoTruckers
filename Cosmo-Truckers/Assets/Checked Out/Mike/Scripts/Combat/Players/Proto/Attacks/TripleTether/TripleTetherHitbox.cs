@@ -5,30 +5,31 @@ using UnityEngine;
 public class TripleTetherHitbox : MonoBehaviour
 {
     [SerializeField] float disabledTime;
-    [SerializeField] Color disabledColor;
+    [SerializeField] Material enabledMaterial;
 
     TripleTetherEnemy parent;
     Collider2D myCollider;
     SpriteRenderer myRenderer;
-    Color startingColor;
+    Material disabledMaterial; 
 
     private void Start()
     {
         parent = GetComponentInParent<TripleTetherEnemy>();
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
-        startingColor = myRenderer.color;
+        disabledMaterial = myRenderer.material;
+        myRenderer.material = enabledMaterial; 
     }
 
     IEnumerator DisableMe()
     {
         myCollider.enabled = false;
-        myRenderer.color = disabledColor;
+        myRenderer.material = disabledMaterial;
 
         yield return new WaitForSeconds(disabledTime);
 
         myCollider.enabled = true;
-        myRenderer.color = startingColor;
+        myRenderer.material = enabledMaterial;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
