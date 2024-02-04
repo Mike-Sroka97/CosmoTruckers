@@ -76,7 +76,7 @@ public class TripleTetherEnemy : MonoBehaviour
         Attack();
         MoveTowardsPlayer();
         TrackJump();
-        currentTime += Time.deltaTime;
+        SetCurrentTime(); 
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -192,5 +192,13 @@ public class TripleTetherEnemy : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void SetCurrentTime()
+    {
+        if (Aggro)
+            currentTime += Time.deltaTime;
+        else
+            currentTime = 0;
     }
 }
