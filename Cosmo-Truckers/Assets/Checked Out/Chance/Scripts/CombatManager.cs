@@ -538,7 +538,7 @@ public class CombatManager : MonoBehaviour
     {
         foreach (PlayerCharacter player in ActivePlayers)
         {
-            GameObject character = Instantiate(player.GetCharacterController);
+            GameObject character = Instantiate(player.GetCharacterController, FindObjectOfType<CombatMove>().transform);
             characters.Add(character);
             character.GetComponent<Player>().MoveSpeed += character.GetComponent<Player>().MoveSpeed * player.GetComponent<CharacterStats>().Speed * .01f; //adjusts speed
             character.GetComponent<Player>().enabled = false;
