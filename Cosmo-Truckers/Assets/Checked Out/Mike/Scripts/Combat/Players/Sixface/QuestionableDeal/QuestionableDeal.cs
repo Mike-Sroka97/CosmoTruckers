@@ -21,7 +21,7 @@ public class QuestionableDeal : CombatMove
     {
         myBody.velocity = new Vector2(-moveSpeed, 0);
         GetComponent<ParentPlayer>().AdjustPlayerVelocity(myBody.velocity.x, myBody.velocity.y);
-        trackTime = true;
+        base.StartMove();
     }
 
     protected override void TrackTime()

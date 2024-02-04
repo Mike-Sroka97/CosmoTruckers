@@ -49,6 +49,7 @@ public abstract class CombatMove : MonoBehaviour
 
     protected float currentTime = 0;
     protected bool trackTime = false;
+    private bool multiplayer = false;
     protected Player[] players;
 
     public bool GetIsDamaging() { return isDamaging; }
@@ -110,6 +111,14 @@ public abstract class CombatMove : MonoBehaviour
     {
         MoveEnded = true;
 
+        if(multiplayer)
+            MultiplayerEndMove();
+        else
+            SinglePlayerEndMove();
+    }
+
+    private void SinglePlayerEndMove()
+    {
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)
         {
             //Calculate Damage
@@ -123,6 +132,20 @@ public abstract class CombatMove : MonoBehaviour
 
             //Apply augment
             ApplyAugment(character, augmentStacks);
+        }
+    }
+    private void MultiplayerEndMove()
+    {
+        //Calculate the score seperately for each player who was in the minigame
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            //Calculate this players score
+            int currentScore = CalculateMultiplayerScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);
+            DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], currentScore);
+
+            //Calculate this players augment Score
+            int currentAugmentScore = CalculateMultiplayerAugmentScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);
+            ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], currentAugmentScore);
         }
     }
 
@@ -244,11 +267,6 @@ public abstract class CombatMove : MonoBehaviour
         return augmentStacks;
     }
 
-    protected virtual void PlayerEnemyDifference(Character character)
-    {
-        //implement as needed
-    }
-
     protected void GenerateLayout()
     {
         if(layouts.Length > 0)
@@ -334,6 +352,8 @@ public abstract class CombatMove : MonoBehaviour
 
     protected void SetupMultiplayer()
     {
+        multiplayer = true;
+
         PlayerScores = new Dictionary<PlayerCharacter, int>();
         PlayerAugmentScores = new Dictionary<PlayerCharacter, int>();
         PlayersDead = new Dictionary<PlayerCharacter, bool>();

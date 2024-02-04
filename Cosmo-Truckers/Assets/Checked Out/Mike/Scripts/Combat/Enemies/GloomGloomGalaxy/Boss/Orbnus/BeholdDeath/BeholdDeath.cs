@@ -41,4 +41,13 @@ public class BeholdDeath : CombatMove
 
         StartCoroutine(SpawnMeteorites());
     }
+
+    public override void EndMove()
+    {
+        for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
+        {
+            int damage = CalculateMultiplayerScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);
+            DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], damage);
+        }
+    }
 }

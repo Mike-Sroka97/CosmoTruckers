@@ -9,12 +9,7 @@ public class QmuavProjectileDelay : MonoBehaviour
 
     int currentIndex = 0;
 
-    private void Start()
-    {
-        StartCoroutine(SpawnWave());
-    }
-
-    IEnumerator SpawnWave()
+    public IEnumerator SpawnWave()
     {
         yield return new WaitForSeconds(timeBetweenWaves);
 

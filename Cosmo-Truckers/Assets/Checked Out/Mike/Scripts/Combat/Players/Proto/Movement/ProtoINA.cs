@@ -254,6 +254,9 @@ public class ProtoINA : Player
     /// </summary>
     public void SpecialMove()
     {
+        if (damaged)
+            return;
+
         if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
         {
             TeleportSprites();

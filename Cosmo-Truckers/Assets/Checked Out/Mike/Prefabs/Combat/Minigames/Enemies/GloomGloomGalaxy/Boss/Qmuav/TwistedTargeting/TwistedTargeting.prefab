@@ -92,8 +92,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2905444887175410859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -3.75, z: 0}
-  m_LocalScale: {x: 28, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0, y: -5.3748, z: 0}
+  m_LocalScale: {x: 28, y: 6.96996, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2905444887489431895}
@@ -149,7 +149,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2905444887175410857
 BoxCollider2D:
@@ -164,7 +164,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.009771258}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -175,7 +175,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.48, y: 0.48}
+  m_Size: {x: 0.48, y: 0.4604575}
   m_EdgeRadius: 0
 --- !u!1 &2905444887190747932
 GameObject:
@@ -202,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2905444887190747932}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b55c1a9bdd4ca34d98b0a3e600ce8b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TypeOfAttack: 0
+  TypeOfAttack: 6
   spawnPoints:
   - {fileID: 2905444886936304153}
   - {fileID: 2905444887223139916}
@@ -231,13 +231,27 @@ MonoBehaviour:
   - {fileID: 2905444887500480926}
   layouts:
   - {fileID: 6404246376960216133, guid: f8807ef7b51b0634180f528064d87e26, type: 3}
-  Damage: 0
-  DebuffToAdd: {fileID: 0}
-  MinigameDuration: 10
+  Damage: 12
+  DebuffToAdd: {fileID: 11400000, guid: 6cd4a18651d7e874889872820c24d25f, type: 2}
+  playerEnemyTargetDifference: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 1
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 1
+  baseDamage: 18
+  baseAugmentStacks: 1
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  bossMove: 0
+  FightWon: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1 &2905444887223139917
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,8 +407,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2905444887936271599}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.75, z: 0}
-  m_LocalScale: {x: 28, y: 0.2, z: 1}
+  m_LocalPosition: {x: 0, y: 5.4721, z: 0}
+  m_LocalScale: {x: 28, y: 7.37536, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2905444887489431895}
@@ -450,7 +464,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!61 &2905444887936271597
 BoxCollider2D:
@@ -596,6 +610,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2905444887489431895}
     m_Modifications:
+    - target: {fileID: 3666173300942268338, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666173300942268343, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: Multiplayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666173300942268343, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268344, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_Name
       value: QmuavGravitySource (1)
@@ -606,7 +632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -614,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.75
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -663,6 +689,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2905444887489431895}
     m_Modifications:
+    - target: {fileID: 3666173300942268338, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666173300942268343, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: Multiplayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666173300942268343, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268344, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_Name
       value: QmuavGravitySource
@@ -673,7 +711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_LocalPosition.x

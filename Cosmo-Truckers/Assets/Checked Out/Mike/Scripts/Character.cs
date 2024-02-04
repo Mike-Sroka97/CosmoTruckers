@@ -19,6 +19,7 @@ public abstract class Character : MonoBehaviour
     [SerializeField] SpriteRenderer[] ShieldSprites;
     [SerializeField] Material shieldedMaterial;
     [SerializeField] Material bubbleShieldMaterial;
+    const float spriteRotationSpeed = -500f;
     public int CombatSpot;
     public int FlatDamageAdjustment = 0;
     public int FlatHealingAdjustment = 0;
@@ -478,6 +479,62 @@ public abstract class Character : MonoBehaviour
     {
         yield return new WaitForSeconds(.5f);
         AUGS.Remove(aug);
+    }
+
+    public void FlipCharacter(int position, bool player)
+    {
+        StartCoroutine(AdjustSpritePosition(position, player));
+    }
+
+    IEnumerator AdjustSpritePosition(int position, bool player)
+    {
+        int oldSpot = CombatSpot;
+        CombatSpot = position;
+        
+        //Adjust enemy manager
+        if (player)
+            EnemyManager.Instance.PlayerCombatSpots[CombatSpot] = this;
+        else
+            EnemyManager.Instance.EnemyCombatSpots[CombatSpot] = this;
+
+        //Flip than swap position
+        while (TargetingSprites[0].transform.eulerAngles.y < 180)
+        {
+            transform.Rotate(new Vector3(0, spriteRotationSpeed * Time.deltaTime, 0));
+            yield return null;
+        }
+        while (TargetingSprites[0].transform.eulerAngles.y > 90)
+        {
+            transform.Rotate(new Vector3(0, spriteRotationSpeed * Time.deltaTime, 0));
+            yield return null;
+        }
+
+        //Set exact rotation then move position
+        transform.eulerAngles = new Vector3(0, 90, 0);
+
+        //Rest order then add new combat spot
+        foreach (SpriteRenderer renderer in TargetingSprites)
+            renderer.sortingOrder -= oldSpot;
+        foreach (SpriteRenderer renderer in ShieldSprites)
+            renderer.sortingOrder -= oldSpot;
+        foreach (SpriteRenderer renderer in TargetingSprites)
+            renderer.sortingOrder += CombatSpot;
+        foreach (SpriteRenderer renderer in ShieldSprites)
+            renderer.sortingOrder += CombatSpot;
+
+        yield return null;
+
+        transform.position = EnemyManager.Instance.PlayerLocations[CombatSpot].position;
+
+        //Finish flip
+        while (transform.eulerAngles.y <= 90)
+        {
+            transform.Rotate(new Vector3(0, spriteRotationSpeed * Time.deltaTime, 0));
+            yield return null;
+        }
+
+        //Set exact rotation then move position
+        transform.eulerAngles = Vector3.zero;
     }
 
     public virtual void AdjustMaxHealth(int adjuster)

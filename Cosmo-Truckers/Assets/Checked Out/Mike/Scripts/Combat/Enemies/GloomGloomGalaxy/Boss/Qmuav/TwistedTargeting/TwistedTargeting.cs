@@ -1,17 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TwistedTargeting : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        SetupMultiplayer();
+
+        foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
+            graviton.enabled = true;
+
+        StartCoroutine(GetComponentInChildren<QmuavProjectileDelay>().SpawnWave());
+
+        base.StartMove();
+    }
+
+    public override void EndMove()
+    {
+        //swap positions
+        List<Character> playerHealths = CombatManager.Instance.GetCharactersSelected.OrderBy(character => character.Health).ToList();
+
+        for (int i = 0; i < playerHealths.Count; i++)
+            playerHealths[i].FlipCharacter(i, true);
+
+        base.EndMove();
     }
 }

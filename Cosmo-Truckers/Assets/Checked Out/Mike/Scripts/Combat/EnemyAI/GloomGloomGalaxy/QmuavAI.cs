@@ -6,7 +6,7 @@ public class QmuavAI : Enemy
 {
     public override void StartTurn()
     {
-        ChosenAttack = attacks[1];
+        ChosenAttack = attacks[2];
         base.StartTurn();
     }
 
@@ -30,10 +30,10 @@ public class QmuavAI : Enemy
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
             }
         }
-        //Titan's Terror
-        else if (attackIndex == 1)
+        //Twisted Targeting
+        else if (attackIndex == 2)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
         }
         //Titan's Terror
         else if (attackIndex == 1)
