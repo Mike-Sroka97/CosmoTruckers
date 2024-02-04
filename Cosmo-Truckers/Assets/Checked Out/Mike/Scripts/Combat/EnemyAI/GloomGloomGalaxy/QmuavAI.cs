@@ -6,6 +6,7 @@ public class QmuavAI : Enemy
 {
     int lastAttack = -1;
     int random = 0;
+    public int NumberOfTimesHitLastRound = 0;
 
     public override void StartTurn()
     {
@@ -17,7 +18,7 @@ public class QmuavAI : Enemy
         //        random = Random.Range(0, attacks.Length - 1); //minus 1 to avoid casting boss move prematurely 
         //}
 
-        ChosenAttack = attacks[3];
+        ChosenAttack = attacks[4];
         lastAttack = random;
         base.StartTurn();
     }
@@ -60,8 +61,11 @@ public class QmuavAI : Enemy
         //Gravitic Siphon
         else if (attackIndex == 4)
         {
-            //AOE targeting
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            //Random single target
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+
+            //Add Qmuav
+            CombatManager.Instance.GetCharactersSelected.Add(this);
         }
         //Galaxy Burst
         else if (attackIndex == 5)
@@ -102,5 +106,26 @@ public class QmuavAI : Enemy
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
+    }
+
+    public override void EndTurn()
+    {
+        //Resets hit counter (used for gravitic siphon)
+        NumberOfTimesHitLastRound = 0;
+        base.EndTurn();
+    }
+
+    public override void TakeDamage(int damage, bool defensePiercing = false)
+    {
+        //Adds single hit to hit counter (used for gravitic siphon)
+        NumberOfTimesHitLastRound++;
+        base.TakeDamage(damage, defensePiercing);
+    }
+
+    public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
+    {
+        //Adds each hit to hit counter (used for gravitic siphon)
+        NumberOfTimesHitLastRound += numberOfHits;
+        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
     }
 }

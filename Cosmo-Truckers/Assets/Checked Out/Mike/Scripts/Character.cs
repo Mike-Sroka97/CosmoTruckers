@@ -231,7 +231,7 @@ public abstract class Character : MonoBehaviour
         AdjustShieldMaterial(Shield > 0);
     }
 
-    protected int AdjustAttackDamage(int damage)
+    public int AdjustAttackDamage(int damage)
     {
         int newDamage = damage;
 
