@@ -16,7 +16,7 @@ public class TripleTetherEnemy : MonoBehaviour
     [SerializeField] float attackDistance;
     [SerializeField] Sprite notAttackingSprite;
     [SerializeField] Sprite attackingSprite;
-    [SerializeField] SpriteRenderer face;
+    [SerializeField] Color attackingColor; 
 
     //coroutine stuff
     [SerializeField] float attackDelay;
@@ -33,9 +33,11 @@ public class TripleTetherEnemy : MonoBehaviour
 
 
     TripleTether minigame;
+    SpriteRenderer myRenderer; 
     ProtoINA proto;
     Rigidbody2D myBody;
     Collider2D myCollider;
+    Color notAttackingColor; 
     float currentTime = 0;
     float currentJumpTime = 0;
     const float distance = 0.05f;
@@ -54,6 +56,8 @@ public class TripleTetherEnemy : MonoBehaviour
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        myRenderer = GetComponent<SpriteRenderer>();
+        notAttackingColor = myRenderer.color; 
         minigame = FindObjectOfType<TripleTether>();
     }
 
@@ -133,7 +137,8 @@ public class TripleTetherEnemy : MonoBehaviour
     IEnumerator AttackCo()
     {
         isAttacking = true;
-        face.sprite = attackingSprite;
+        myRenderer.sprite = attackingSprite;
+        myRenderer.color = attackingColor; 
         myBody.velocity = new Vector2(0, myBody.velocity.y);
 
         yield return new WaitForSeconds(attackDelay);
@@ -154,7 +159,8 @@ public class TripleTetherEnemy : MonoBehaviour
         yield return new WaitForSeconds(attackEndDelay);
 
         isAttacking = false;
-        face.sprite = notAttackingSprite;
+        myRenderer.sprite = notAttackingSprite;
+        myRenderer.color = notAttackingColor; 
         currentTime = 0;
     }
 
