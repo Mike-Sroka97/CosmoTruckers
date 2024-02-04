@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class AtomicImpact : CombatMove
 {
-    private void Start()
-    {
-        StartMove();
-        GenerateLayout();
-    }
+    [SerializeField] int numberOfHits = 3;
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        GenerateNextWave();
+        base.StartMove();
     }
 
     public void GenerateNextWave()
     {
         GenerateLayout();
+    }
+
+    public override void EndMove()
+    {
+        DealMultiHitDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], CalculateScore(), numberOfHits); 
     }
 }

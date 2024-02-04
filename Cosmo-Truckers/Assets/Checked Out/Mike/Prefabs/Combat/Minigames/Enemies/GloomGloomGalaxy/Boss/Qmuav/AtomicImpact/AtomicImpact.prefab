@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1718706856633009676}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -53,14 +53,28 @@ MonoBehaviour:
   - {fileID: 1718706856903112248}
   layouts:
   - {fileID: 705722563191404738, guid: 78f14a8bc16613a43952be887478123f, type: 3}
-  Damage: 0
+  Damage: 3
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
-  MinigameDuration: 0
+  MinigameDuration: 15
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 2
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 15
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 1
+  isHealing: 0
+  pierces: 0
+  bossMove: 0
+  FightWon: 0
+  spawnTest: 0
+  startMoveTest: 0
+  numberOfHits: 3
 --- !u!1 &1718706856644528107
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +183,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1718706857218420313}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724548, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Name
       value: QmuavBlackHole (3)
@@ -231,6 +249,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1718706857218420313}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724548, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Name
       value: QmuavBlackHole (1)
@@ -293,6 +315,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1718706857218420313}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724548, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Name
       value: QmuavBlackHole
@@ -355,6 +381,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1718706857218420313}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724548, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Name
       value: QmuavBlackHole (2)
@@ -429,6 +459,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -2
       objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name
       value: MG_D1_BlockGloom (1)
@@ -502,6 +536,10 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_SortingOrder
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name
@@ -584,6 +622,10 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_SortingOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name
@@ -736,6 +778,10 @@ PrefabInstance:
     - target: {fileID: 1097353337188712035, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_SortingOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3357528316878016672, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
+      propertyPath: scoreIncrease
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8628373338441865849, guid: 4a835b76447addf40b9a9868bca95b65, type: 3}
       propertyPath: m_Name

@@ -217,7 +217,7 @@ public class ProtoINA : Player
     /// </summary>
     public void Movement()
     {
-        if (!canMove) return;
+        if (!canMove || dead || damaged) return;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
@@ -254,10 +254,18 @@ public class ProtoINA : Player
     /// </summary>
     public void SpecialMove()
     {
-        if (damaged)
+        if (damaged || dead)
             return;
 
-        if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
+        if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            canMove = false;
+            canJump = false;
+            myBody.velocity = new Vector2(0, myBody.velocity.y);
+
+            playerAnimator.ChangeAnimation(myAnimator, idle);
+        }
+        else if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
         {
             TeleportSprites();
         }
@@ -511,6 +519,12 @@ public class ProtoINA : Player
                 transform.position += new Vector3(teleportDistance, 0, 0);
                 StartCoroutine(TeleportCooldown());
             }
+        }
+        //Case for no teleport
+        else
+        {
+            canMove = true;
+            canJump = true;
         }
 
         lastTeleportHeld = 0;

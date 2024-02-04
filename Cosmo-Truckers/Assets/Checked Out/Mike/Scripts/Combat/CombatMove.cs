@@ -202,9 +202,9 @@ public abstract class CombatMove : MonoBehaviour
             float DamageAdj = 1;
 
             DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
-            float newDamage = baseDamage * DamageAdj;
+            float newDamage = currentDamage * DamageAdj;
             baseDamage = (int)newDamage;
-            int totalDamage = baseDamage * numberOfHits + character.FlatDamageAdjustment * numberOfHits;
+            int totalDamage = currentDamage * numberOfHits + character.FlatDamageAdjustment * numberOfHits;
 
             character.GetComponent<Character>().TakeMultiHitDamage(totalDamage / numberOfHits, numberOfHits);
         }
@@ -215,9 +215,9 @@ public abstract class CombatMove : MonoBehaviour
             float HealingAdj = 1;
 
             HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
-            float newHealing = baseDamage * HealingAdj;
+            float newHealing = currentDamage * HealingAdj;
             baseDamage = (int)newHealing;
-            int totalHealing = baseDamage * numberOfHits + character.FlatHealingAdjustment * numberOfHits;
+            int totalHealing = currentDamage * numberOfHits + character.FlatHealingAdjustment * numberOfHits;
 
             character.GetComponent<Character>().TakeMultiHitHealing(totalHealing / numberOfHits, numberOfHits);
         }
