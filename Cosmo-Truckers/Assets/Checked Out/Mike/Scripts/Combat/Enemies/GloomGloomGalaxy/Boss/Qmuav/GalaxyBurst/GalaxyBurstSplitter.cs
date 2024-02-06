@@ -36,7 +36,7 @@ public class GalaxyBurstSplitter : MonoBehaviour
                 xRandom = -xRandom;
             }
 
-            GameObject newSplitee = Instantiate(splitee, transform.position, transform.rotation);
+            GameObject newSplitee = Instantiate(splitee, transform.position, transform.rotation, transform.parent);
             newSplitee.GetComponent<Rigidbody2D>().velocity = new Vector2(xRandom, yRandom);
         }
 

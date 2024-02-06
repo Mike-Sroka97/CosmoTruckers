@@ -18,7 +18,7 @@ public class QmuavAI : Enemy
         //        random = Random.Range(0, attacks.Length - 1); //minus 1 to avoid casting boss move prematurely 
         //}
 
-        ChosenAttack = attacks[4];
+        ChosenAttack = attacks[5];
         lastAttack = random;
         base.StartTurn();
     }
@@ -75,6 +75,9 @@ public class QmuavAI : Enemy
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
             else
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+
+            //Add Qmuav
+            CombatManager.Instance.GetCharactersSelected.Add(this);
         }
         //Task Master
         else if (attackIndex == 6)
