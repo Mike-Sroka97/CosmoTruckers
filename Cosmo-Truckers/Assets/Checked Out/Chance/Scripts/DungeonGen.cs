@@ -9,6 +9,7 @@ public class DungeonGen : MonoBehaviour
     [Header("Node Data")]
     [SerializeField] GameObject[] Levels;
     [SerializeField] Node.DungeonNodeBase RestNode;
+    [SerializeField] bool RandomCombat = false;
     [SerializeField] List<Node.DungeonNodeBase> CombatNodes;
     [SerializeField] List<Node.DungeonNodeBase> MiddleNodes;
     [SerializeField] List<Node.DungeonNodeBase> BossNode;
@@ -91,6 +92,7 @@ public class DungeonGen : MonoBehaviour
         int NodesToAddNext = 0;
 
         List<Node.DungeonNodeBase> tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+        int currentCombat = 0;
 
         for (int i = 0; i < Levels.Length; i++)
         {
@@ -123,9 +125,26 @@ public class DungeonGen : MonoBehaviour
             //+1 for easy to enter on serialized feild
             else if (i % (spaceBetweenCombat + 1) == 0)
             {
-                int choice = Random.Range(0, CombatNodes.Count);
+                int choice = 0;
+                if(RandomCombat)
+                    choice = Random.Range(0, CombatNodes.Count);
+
+                //The current combat is based on what dungeon your in and what location of combat you are at
+                else
+                {
+                    int currentDungeon = PlayerPrefs.GetInt("CurrentDungeon", 0);
+                    choice = currentCombat + currentDungeon;
+
+                    //Just a small safty valve in case I fuck up something
+                    if (choice > CombatNodes.Count)
+                        choice = CombatNodes.Count - 1;
+                }
+
+                CombatNodes[choice].Connections = Random.Range(1, 4);
                 CurrentLayout[i].Add(CombatNodes[choice]);
                 NodesToAddNext = CombatNodes[choice].Connections;
+
+                currentCombat++;
             }
             //Random NC Nodes
             else
