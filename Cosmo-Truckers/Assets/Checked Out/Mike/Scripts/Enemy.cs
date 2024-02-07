@@ -57,8 +57,8 @@ public class Enemy : Character
     }
     public override void Resurrect(int newHealth,  bool ignoreVigor = false)
     {
-        base.Resurrect(newHealth, ignoreVigor);
-        //if an enemy is in this spot do not
+        if(EnemyManager.Instance.EnemyCombatSpots[CombatSpot] == this || !TakesCombatSpot)
+            base.Resurrect(newHealth, ignoreVigor);
     }
 
     public override void StartTurn()
