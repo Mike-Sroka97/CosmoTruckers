@@ -8,13 +8,13 @@ public class NegativeGravityModifier : Augment
     public override void Activate(DebuffStackSO stack = null)
     {
         if(!firstGo)
-            AugmentSO.MyCharacter.Stats.Gravity += StatusEffect;
+            AugmentSO.MyCharacter.AdjustGravity(StatusEffect);
 
         base.Activate(stack);
-        AugmentSO.MyCharacter.Stats.Gravity -= StatusEffect;
+        AugmentSO.MyCharacter.AdjustGravity(-StatusEffect);
     }
     public override void StopEffect()
     {
-        AugmentSO.MyCharacter.Stats.Gravity += StatusEffect;
+        AugmentSO.MyCharacter.AdjustGravity(StatusEffect);
     }
 }

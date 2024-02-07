@@ -589,6 +589,16 @@ public abstract class Character : MonoBehaviour
         else if (Stats.Restoration < 40)
             Stats.Restoration = 40;
     }
+    
+    public void AdjustGravity(float gravityModifier)
+    {
+        Stats.Gravity += gravityModifier;
+
+        if (Stats.Gravity > 2)
+            Stats.Gravity = 2;
+        else if (Stats.Gravity <= 0)
+            Stats.Gravity = .01f;
+    }
 
     public abstract void StartTurn();
     public abstract void EndTurn();

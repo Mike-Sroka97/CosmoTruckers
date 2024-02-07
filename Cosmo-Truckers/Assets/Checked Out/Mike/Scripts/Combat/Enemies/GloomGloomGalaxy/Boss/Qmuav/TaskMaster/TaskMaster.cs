@@ -6,27 +6,17 @@ public class TaskMaster : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
-    }
+        SetupMultiplayer();
 
-    protected override void TrackTime()
-    {
-        if (MoveEnded)
-            return;
+        foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
+            graviton.enabled = true;
 
-        currentTime += Time.deltaTime;
-
-        if ((currentTime >= MinigameDuration || PlayerDead) && !MoveEnded)
-        {
-            Score = 0;
-            EndMove();
-        }
+        base.StartMove();
     }
 
     public void SetScore()

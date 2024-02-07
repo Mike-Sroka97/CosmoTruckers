@@ -6,7 +6,13 @@ public class GloomGuarded : CombatMove
 {
     void Start()
     {
-        StartMove();
         GenerateLayout();
+    }
+
+    public override void EndMove()
+    {
+        MoveEnded = true;
+
+        CombatManager.Instance.GetCharactersSelected[0].TakeShielding(CalculateScore());
     }
 }

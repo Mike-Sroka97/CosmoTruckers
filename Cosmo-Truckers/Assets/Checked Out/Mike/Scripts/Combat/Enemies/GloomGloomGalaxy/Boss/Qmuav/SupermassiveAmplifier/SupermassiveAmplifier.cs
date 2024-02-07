@@ -6,12 +6,16 @@ public class SupermassiveAmplifier : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
-    private void Update()
+    public override void StartMove()
     {
-        TrackTime();
+        foreach (SupermassiveAmplifierEye eye in GetComponentsInChildren<SupermassiveAmplifierEye>())
+            eye.enabled = true;
+
+        SetupMultiplayer();
+
+        base.StartMove();
     }
 }

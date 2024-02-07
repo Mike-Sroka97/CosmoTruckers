@@ -19,8 +19,6 @@ public class AeglarINA : Player
     [SerializeField] int numberOfAttacks = 2;
     [SerializeField] int numberOfJumps = 2;
 
-    [SerializeField] float jumpSpeed;
-
     [Space(20)]
     [Header("Animations")]
     [SerializeField] AnimationClip idle;

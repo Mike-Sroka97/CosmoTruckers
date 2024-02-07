@@ -18,7 +18,7 @@ public class QmuavAI : Enemy
         //        random = Random.Range(0, attacks.Length - 1); //minus 1 to avoid casting boss move prematurely 
         //}
 
-        ChosenAttack = attacks[5];
+        ChosenAttack = attacks[8];
         lastAttack = random;
         base.StartTurn();
     }
@@ -75,24 +75,30 @@ public class QmuavAI : Enemy
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
             else
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
-
-            //Add Qmuav
-            CombatManager.Instance.GetCharactersSelected.Add(this);
         }
         //Task Master
         else if (attackIndex == 6)
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
-        //Gloom Guard
+        //Gloom Guarded
         else if (attackIndex == 7)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            //Add Qmuav
+            CombatManager.Instance.GetCharactersSelected.Add(this);
+
+            //Add Support or Random
+            if (CombatManager.Instance.FindSupportCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
+            else
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
         //Supermassive Amplifier
         else if (attackIndex == 8)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            //AOE targeting
+            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
         }
         //Titan's Terror
         else if (attackIndex == 9)

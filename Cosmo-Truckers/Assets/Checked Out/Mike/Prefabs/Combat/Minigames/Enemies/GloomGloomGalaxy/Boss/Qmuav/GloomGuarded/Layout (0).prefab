@@ -31,7 +31,6 @@ Transform:
   - {fileID: 6627773428801361989}
   - {fileID: 6752468141266390482}
   - {fileID: 6752468140914627528}
-  - {fileID: 6752468142141335386}
   m_Father: {fileID: 1897533811938234995}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -904,7 +903,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1897533810751565361}
+    m_TransformParent: {fileID: 6752468140914627528}
     m_Modifications:
     - target: {fileID: 4334713668205843304, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: canBeToggled
@@ -912,15 +911,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.25
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -932,15 +931,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -975,11 +974,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c457b0814b9c9b04c9673952fba29622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6752468142141335386 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5179404610737303640, guid: ea8aaa9a13a0cca4cbcd878086dfd60e, type: 3}
-  m_PrefabInstance: {fileID: 1897533810874881794}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1897533810897188144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -989,7 +983,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5958336399041046040, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: activateDelay
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7695177957590727077, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: m_Name
@@ -1061,9 +1055,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1897533811954676972}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: isAttractor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724547, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Color.a
@@ -1220,7 +1226,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5958336399041046040, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: activateDelay
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7695177957590727077, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: m_Name
@@ -1350,9 +1356,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1897533811954676972}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: isAttractor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724547, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Color.a
@@ -1819,7 +1837,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5958336399041046040, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: activateDelay
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7695177957590727077, guid: 696682751597ef741b2a6e301efbf8d6, type: 3}
       propertyPath: m_Name
@@ -1891,9 +1909,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1897533811954676972}
     m_Modifications:
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: scoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2226993039645232664, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3562066757029724544, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
+      propertyPath: isAttractor
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3562066757029724547, guid: eda0da435536ee044ba88c6d15fe2eee, type: 3}
       propertyPath: m_Color.a

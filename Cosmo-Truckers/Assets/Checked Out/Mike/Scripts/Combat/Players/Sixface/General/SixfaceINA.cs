@@ -13,7 +13,6 @@ public class SixfaceINA : Player
     [SerializeField] GameObject upAttackArea;
 
     //Jump variables
-    [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
     [SerializeField] float pogoStrength;
     [SerializeField] float coyoteTime;

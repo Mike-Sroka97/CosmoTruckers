@@ -86,7 +86,7 @@ public class SupermassiveAmplifierEye : MonoBehaviour
             float startingXvelocity = DetermineVelocity(true);
             float startingYvelocity = DetermineVelocity(false);
 
-            Graviton newGraviton = Instantiate(eyeProjectile, pupil.position, Quaternion.identity).GetComponent<Graviton>();
+            Graviton newGraviton = Instantiate(eyeProjectile, pupil.position, Quaternion.identity, transform.parent).GetComponent<Graviton>();
             newGraviton.SetInitialVelocity(new Vector3(startingXvelocity, startingYvelocity, 0));
             newGraviton.enabled = true;
 
