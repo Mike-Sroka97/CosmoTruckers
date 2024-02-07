@@ -193,6 +193,18 @@ public class QmuavAI : Enemy
             myGalaster.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
     }
 
+    public override void TakeHealing(int healing, bool ignoreVigor = false)
+    {
+        if(!myGalaster.Dead)
+            myGalaster.TakeHealing(healing, ignoreVigor);
+    }
+
+    public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
+    {
+        if (!myGalaster.Dead)
+            myGalaster.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+    }
+
     public override void Die()
     {
         castBossMove = true;
@@ -200,6 +212,9 @@ public class QmuavAI : Enemy
 
     public void DieForReal()
     {
+        if (!myGalaster.Dead)
+            myGalaster.TakeDamage(999, true);
+
         base.Die();
     }
 }
