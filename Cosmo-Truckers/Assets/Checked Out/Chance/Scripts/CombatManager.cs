@@ -566,18 +566,7 @@ public class CombatManager : MonoBehaviour
         Destroy(miniGame);
         CharactersSelected.Clear();
 
-        //Handle EoT augments (store this data and display visuals in EndCombat()?
-        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
-
-        foreach (DebuffStackSO augment in allAugments)
-        {
-            if (augment.EveryTurnEnd)
-                augment.DebuffEffect();
-            if (augment.InCombat && augment.GetAugment() != null)
-                augment.GetAugment().StopEffect();
-        }
-
-        TurnOrder.Instance.EndTurn();
+        HandleEndOfTurn();
     }
 
     IEnumerator DelayEndMove()
@@ -594,13 +583,32 @@ public class CombatManager : MonoBehaviour
                 {
                     CurrentEnemy = enemy.Value[i];
 
-                    miniGame.GetComponentInChildren<CombatMove>().EndMove();
+                    if (!CurrentEnemy.Stunned)
+                        miniGame.GetComponentInChildren<CombatMove>().EndMove();
+                    else
+                        CurrentEnemy.Stun(false);
                     yield return new WaitForSeconds(trashAttackDelay);
                 }
             }
         }
 
         inTrashEndMove = false;
+    }
+
+    public void HandleEndOfTurn()
+    {
+        //Handle EoT augments (store this data and display visuals in EndCombat()?
+        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+
+        foreach (DebuffStackSO augment in allAugments)
+        {
+            if (augment.EveryTurnEnd)
+                augment.DebuffEffect();
+            if (augment.InCombat && augment.GetAugment() != null)
+                augment.GetAugment().StopEffect();
+        }
+
+        TurnOrder.Instance.EndTurn();
     }
 
     public void CleanupMinigame()

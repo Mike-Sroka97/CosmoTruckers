@@ -25,6 +25,8 @@ public abstract class Character : MonoBehaviour
     public int FlatHealingAdjustment = 0;
     public UnityEvent HealthChangeEvent = new UnityEvent();
     public UnityEvent ShieldChangeEvent = new UnityEvent();
+    public bool Stunned = false;
+    private SpriteRenderer stunnedRenderer;
 
     public int CurrentHealth
     {
@@ -287,6 +289,15 @@ public abstract class Character : MonoBehaviour
                     renderer.material = shieldedMaterial;
                 }
         }
+    }
+
+    public void Stun(bool stunned)
+    {
+        if (stunnedRenderer == null)
+            stunnedRenderer = transform.Find("StunSprite").GetComponent<SpriteRenderer>();
+
+        stunnedRenderer.enabled = stunned;
+        Stunned = stunned;
     }
 
     public virtual void Die()

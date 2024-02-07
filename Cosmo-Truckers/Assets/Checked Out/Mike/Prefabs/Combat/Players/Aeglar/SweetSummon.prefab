@@ -590,6 +590,7 @@ Transform:
   - {fileID: 2358050457995429154}
   - {fileID: 188083180269907484}
   - {fileID: 308864343154529497}
+  - {fileID: 6185967293470230360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -627,6 +628,7 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  Stunned: 0
   BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
@@ -641,6 +643,7 @@ MonoBehaviour:
   IsBoss: 0
   TauntedBy: {fileID: 0}
   SpecialTargetConditions: 0
+  TakesCombatSpot: 1
   IsTrash: 0
   characterName: Sweet Golem
   manaType: 2
@@ -662,6 +665,7 @@ MonoBehaviour:
   Speed: 0
   Damage: 100
   Restoration: 100
+  Gravity: 1
 --- !u!1 &3959837035698708474
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,3 +750,65 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &5977044800696933314
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2358050458137765480}
+    m_Modifications:
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996889408674539819, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+      propertyPath: m_Name
+      value: StunSprite
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+--- !u!4 &6185967293470230360 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
+  m_PrefabInstance: {fileID: 5977044800696933314}
+  m_PrefabAsset: {fileID: 0}

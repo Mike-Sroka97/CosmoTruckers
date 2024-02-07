@@ -62,13 +62,26 @@ public class TurnOrder : MonoBehaviour
             //give ai control if AI
             if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
             {
-                livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().StartTurn();
+                if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().Stunned)
+                {
+                    livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().Stun(false);
+                    livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();
+                    CombatManager.Instance.HandleEndOfTurn();
+                }
+                else
+                    livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().StartTurn();
             }
             else
             {
                 //This is really ugly
                 //Need to get if the enemy is trash and then get the first (boss trash) mob
-                if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
+                if(livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash && livingCharacters[currentCharactersTurn].GetComponent<Enemy>().Stunned && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName].Count == 1)
+                {
+                    livingCharacters[currentCharactersTurn].GetComponent<Enemy>().Stun(false);
+                    livingCharacters[currentCharactersTurn].GetComponent<Enemy>().EndTurn();
+                    CombatManager.Instance.HandleEndOfTurn();
+                }
+                else if (livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash && EnemyManager.Instance.TrashMobCollection[livingCharacters[currentCharactersTurn].GetComponent<Enemy>().CharacterName][0] == livingCharacters[currentCharactersTurn].GetComponent<Enemy>())
                     livingCharacters[currentCharactersTurn].GetComponent<Enemy>().StartTurn();
                 //Mob is not trash and has independent turns
                 else if (!livingCharacters[currentCharactersTurn].GetComponent<Enemy>().IsTrash)
