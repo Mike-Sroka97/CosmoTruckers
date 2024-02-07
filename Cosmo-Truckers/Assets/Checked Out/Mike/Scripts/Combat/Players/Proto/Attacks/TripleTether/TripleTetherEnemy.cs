@@ -6,6 +6,7 @@ using UnityEngine;
 public class TripleTetherEnemy : MonoBehaviour
 {
     [SerializeField] int health;
+    [SerializeField] GameObject deathParticles; 
 
     //Movement
     [SerializeField] float followSpeed;
@@ -33,7 +34,8 @@ public class TripleTetherEnemy : MonoBehaviour
 
 
     TripleTether minigame;
-    SpriteRenderer myRenderer; 
+    SpriteRenderer myRenderer;
+    ParticleUpdater myParticleUpdater; 
     ProtoINA proto;
     Rigidbody2D myBody;
     Collider2D myCollider;
@@ -57,6 +59,8 @@ public class TripleTetherEnemy : MonoBehaviour
     {
         myBody = GetComponent<Rigidbody2D>();
         myRenderer = GetComponent<SpriteRenderer>();
+        myParticleUpdater = GetComponentInChildren<ParticleUpdater>();
+        myParticleUpdater.SetParticleState(false); 
         notAttackingColor = myRenderer.color; 
         minigame = FindObjectOfType<TripleTether>();
     }
@@ -143,7 +147,9 @@ public class TripleTetherEnemy : MonoBehaviour
 
         yield return new WaitForSeconds(attackDelay);
 
-        if(movingLeft)
+        myParticleUpdater.SetParticleState(true);
+
+        if (movingLeft)
         {
             myBody.velocity = new Vector2(-dashSpeed, myBody.velocity.y);
         }
@@ -159,6 +165,7 @@ public class TripleTetherEnemy : MonoBehaviour
         yield return new WaitForSeconds(attackEndDelay);
 
         isAttacking = false;
+        myParticleUpdater.SetParticleState(false);
         myRenderer.sprite = notAttackingSprite;
         myRenderer.color = notAttackingColor; 
         currentTime = 0;
@@ -190,6 +197,7 @@ public class TripleTetherEnemy : MonoBehaviour
 
         if(health <= 0)
         {
+            Instantiate(deathParticles, transform.position, deathParticles.transform.rotation, minigame.transform); 
             Destroy(gameObject);
         }
     }

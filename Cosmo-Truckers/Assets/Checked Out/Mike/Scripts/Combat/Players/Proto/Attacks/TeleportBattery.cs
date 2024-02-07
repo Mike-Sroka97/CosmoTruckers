@@ -12,7 +12,10 @@ public class TeleportBattery : MonoBehaviour
     [SerializeField] float floatSpeed;
     [SerializeField] float clamp;
 
+    [SerializeField] GameObject regenParticle; 
+
     ProtoINA proto;
+    CombatMove minigame;
     bool movingUp;
     Vector3 startingPosition;
     Collider2D myCollider;
@@ -23,6 +26,7 @@ public class TeleportBattery : MonoBehaviour
     {
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
+        minigame = FindObjectOfType<CombatMove>();
         startColor = myRenderer.color;
         startingPosition = transform.localPosition;
 
@@ -67,6 +71,7 @@ public class TeleportBattery : MonoBehaviour
 
     IEnumerator DisableMe()
     {
+        GameObject particle = Instantiate(regenParticle, transform.position, Quaternion.identity, minigame.transform);
         myCollider.enabled = false;
         myRenderer.color = disabledColor;
 
