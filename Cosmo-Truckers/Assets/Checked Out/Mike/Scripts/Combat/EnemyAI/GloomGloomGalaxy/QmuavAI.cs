@@ -7,18 +7,62 @@ public class QmuavAI : Enemy
     int lastAttack = -1;
     int random = 0;
     public int NumberOfTimesHitLastRound = 0;
+    bool castBossMove = false;
+    bool shiddedAndFardded = false;
+    GalasterHordeAI myGalaster;
+
+    private void Start()
+    {
+        myGalaster = FindObjectOfType<GalasterHordeAI>();
+        myGalaster.transform.position = transform.position;
+
+        //Add targeting sprites
+        List<SpriteRenderer> tempSpriteList = new List<SpriteRenderer>();
+
+        //Non shield
+        foreach (SpriteRenderer spriteRenderer in TargetingSprites)
+            tempSpriteList.Add(spriteRenderer);
+        foreach (SpriteRenderer spriteRenderer in myGalaster.TargetingSprites)
+            tempSpriteList.Add(spriteRenderer);
+        TargetingSprites = tempSpriteList.ToArray();
+
+        //Shield
+        tempSpriteList.Clear();
+        foreach (SpriteRenderer spriteRenderer in ShieldSprites)
+            tempSpriteList.Add(spriteRenderer);
+        foreach (SpriteRenderer spriteRenderer in myGalaster.ShieldSprites)
+            tempSpriteList.Add(spriteRenderer);
+        ShieldSprites = tempSpriteList.ToArray();
+    }
 
     public override void StartTurn()
     {
-        //TODO add boss move check
+        //Cast Final Spell
+        if (castBossMove)
+            random = 11;
+        //Shid and Fard
+        else if(myGalaster.Dead && !shiddedAndFardded)
+        {
+            shiddedAndFardded = true;
+            random = 9;
+        }
+        //Rez galaster ball
+        else if(myGalaster.Dead && shiddedAndFardded)
+        {
+            shiddedAndFardded = false;
+            random = 10;
+        }
         //Prevents the same spell from being cast twice in a row
-        //if(lastAttack != -1)
-        //{
-        //    while (lastAttack == random)
-        //        random = Random.Range(0, attacks.Length - 1); //minus 1 to avoid casting boss move prematurely 
-        //}
+        else if (lastAttack != -1)
+        {
+            while (lastAttack == random)
+                random = Random.Range(0, attacks.Length - 3); //minus 1 to avoid casting non random spells
+        }
+        else
+            random = Random.Range(0, attacks.Length - 3); //minus 1 to avoid casting non random spells
 
-        ChosenAttack = attacks[8];
+        //Basic turn start stuff
+        ChosenAttack = attacks[random];
         lastAttack = random;
         base.StartTurn();
     }
@@ -100,20 +144,21 @@ public class QmuavAI : Enemy
             //AOE targeting
             CombatManager.Instance.AOETargetPlayers(ChosenAttack);
         }
-        //Titan's Terror
+        //Cry Baby
         else if (attackIndex == 9)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            //Just shidding and fardding
         }
-        //Titan's Terror
+        //Galaster Recall
         else if (attackIndex == 10)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            //Just rezzing galaster ball
         }
-        //Cum of Frustration (BOSS MOVE)
+        //Cry of Frustration (BOSS MOVE)
         else if (attackIndex == 11)
         {
-            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            //AOE targeting
+            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
         }
     }
 
@@ -128,13 +173,33 @@ public class QmuavAI : Enemy
     {
         //Adds single hit to hit counter (used for gravitic siphon)
         NumberOfTimesHitLastRound++;
-        base.TakeDamage(damage, defensePiercing);
+
+        //Galaster horde will jump in front of the president
+        if (myGalaster.Dead)
+            base.TakeDamage(damage, defensePiercing);
+        else
+            myGalaster.TakeDamage(damage, defensePiercing);
     }
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
         //Adds each hit to hit counter (used for gravitic siphon)
         NumberOfTimesHitLastRound += numberOfHits;
-        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+
+        //Galaster horde will jump in front of the president
+        if (myGalaster.Dead)
+            base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+        else
+            myGalaster.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+    }
+
+    public override void Die()
+    {
+        castBossMove = true;
+    }
+
+    public void DieForReal()
+    {
+        base.Die();
     }
 }

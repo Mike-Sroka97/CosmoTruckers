@@ -27,6 +27,7 @@ public class Enemy : Character
     [HideInInspector] public PlayerCharacter TauntedBy;
     public bool SpecialTargetConditions = false;
     protected BaseAttackSO ChosenAttack;
+    public bool TakesCombatSpot = true;
 
     [Header("Trash mob collector")]
     public bool IsTrash = false;

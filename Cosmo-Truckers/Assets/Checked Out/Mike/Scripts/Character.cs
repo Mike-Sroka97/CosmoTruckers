@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour
     public CharacterStats Stats;
     public int Health;
     public SpriteRenderer[] TargetingSprites;
-    [SerializeField] SpriteRenderer[] ShieldSprites;
+    public SpriteRenderer[] ShieldSprites;
     [SerializeField] Material shieldedMaterial;
     [SerializeField] Material bubbleShieldMaterial;
     const float spriteRotationSpeed = -500f;
@@ -25,6 +25,7 @@ public abstract class Character : MonoBehaviour
     public int FlatHealingAdjustment = 0;
     public UnityEvent HealthChangeEvent = new UnityEvent();
     public UnityEvent ShieldChangeEvent = new UnityEvent();
+
     public int CurrentHealth
     {
         get
