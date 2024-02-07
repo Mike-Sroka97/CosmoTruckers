@@ -390,16 +390,21 @@ public abstract class Character : MonoBehaviour
         if (stack == null || !stack.Removable)
             return;
 
+        //Remove stacks
         foreach (DebuffStackSO aug in AUGS)
         {
             if (String.Equals(aug.DebuffName, stack.DebuffName))
             {
                 aug.CurrentStacks -= stackToRemove;
                 aug.DestroyAugment();
-                    //StartCoroutine(DelayedRemoval(aug)); TODO fuck it we ball. If this breaks the game we will fix it another way
-
-                return;
             }
+        }
+
+        //Clean up augs if they need to be removed
+        foreach (DebuffStackSO augment in AugmentsToRemove)
+        {
+            AUGS.Remove(augment);
+            Destroy(augment);
         }
     }
 

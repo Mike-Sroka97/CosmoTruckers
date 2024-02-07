@@ -203,8 +203,22 @@ public class TurnOrder : MonoBehaviour
     //Every thing for end combat not on a delay
     public void EndCombat()
     {
+        HandleEOCaugments();
         StartCoroutine(EndCombatDelay());
     }
+
+    private void HandleEOCaugments()
+    {
+        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+
+        //Remove all end of combat augs
+        foreach (DebuffStackSO augment in allAugments)
+        {
+            if (augment.RemoveOnEndCombat)
+                augment.MyCharacter.RemoveDebuffStack(augment);
+        }
+    }
+
     //everything for combat that will be on a delay
     IEnumerator EndCombatDelay()
     {
