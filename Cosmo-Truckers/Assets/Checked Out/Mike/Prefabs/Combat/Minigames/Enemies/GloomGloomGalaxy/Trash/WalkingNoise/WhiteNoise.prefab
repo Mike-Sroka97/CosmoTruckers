@@ -308,7 +308,6 @@ MonoBehaviour:
   Damage: 5
   DebuffToAdd: {fileID: 11400000, guid: 816227394289cea4fad13b9f8806cd01, type: 2}
   playerEnemyTargetDifference: 0
-  defending: 1
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
@@ -317,12 +316,14 @@ MonoBehaviour:
   maxScore: 1
   augmentStacksPerScore: 1
   maxAugmentStacks: 2
-  baseDamage: 0
+  baseDamage: 5
   baseAugmentStacks: 1
   timeToEndMove: 1
-  isDamaging: 0
+  isDamaging: 1
   isHealing: 0
   pierces: 0
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
 --- !u!1 &6936618049627811992
@@ -432,8 +433,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
-  scoreIncrease: 0
-  augmentScoreIncrease: 0
+  scoreIncrease: 1
+  augmentScoreIncrease: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &6936618050408371193
 GameObject:
@@ -600,6 +604,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6936618050408371192}
     m_Modifications:
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: scoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6399533186686591204, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -673,6 +685,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6936618050408371192}
     m_Modifications:
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: scoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6399533186686591204, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -746,6 +766,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6936618050408371192}
     m_Modifications:
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: scoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1631529015352526083, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
+      propertyPath: augmentScoreIncrease
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6399533186686591204, guid: d26a0c0767225384f9c1b049643744d3, type: 3}
       propertyPath: m_RootOrder
       value: 1
