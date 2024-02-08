@@ -296,15 +296,7 @@ public class TurnOrder : MonoBehaviour
             }
         }
 
-        if (allEnemiesDead)
-        {
-            //kill all enemy summons?
-            endCombatText.text = victoryText;
-            combatOver = true;
-            return;
-        }   
-
-        foreach(PlayerCharacter character in EnemyManager.Instance.Players)
+        foreach (PlayerCharacter character in EnemyManager.Instance.Players)
         {
             if (!character.Dead)
             {
@@ -313,12 +305,19 @@ public class TurnOrder : MonoBehaviour
             }
         }
 
-        if(allPlayersDead)
+        if (allPlayersDead)
         {
             //kill all player summons?
             endCombatText.text = lossText;
             combatOver = true;
             return;
         }
+        else if (allEnemiesDead)
+        {
+            //kill all enemy summons?
+            endCombatText.text = victoryText;
+            combatOver = true;
+            return;
+        }   
     }
 }

@@ -21,6 +21,5 @@ public class WhiteNoise : CombatMove
             noise.enabled = true;
 
         base.StartMove();
-    }
-    
+    }    
 }

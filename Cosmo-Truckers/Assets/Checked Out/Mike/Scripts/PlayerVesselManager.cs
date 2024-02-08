@@ -13,10 +13,6 @@ public class PlayerVesselManager : MonoBehaviour
 
     public void Initialize()
     {
-        //playerVessels = GetComponentsInChildren<PlayerVessel>();
-        //foreach(PlayerVessel vessel in playerVessels)
-        //    vessel.gameObject.SetActive(false);
-
         for (int i = 0; i < EnemyManager.Instance.Players.Count; i++)
         {
             if(EnemyManager.Instance.Players[i].PlayerVessel != null)
