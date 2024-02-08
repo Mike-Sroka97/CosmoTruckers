@@ -112,7 +112,16 @@ public class TurnOrder : MonoBehaviour
             livingCharacters[currentCharactersTurn].GetComponent<Enemy>().EndTurn();
         }
 
-        currentCharactersTurn++;
+        //Handle characters with extra turns
+        if(livingCharacters[currentCharactersTurn].GetComponent<Character>().Tireless)
+        {
+            livingCharacters[currentCharactersTurn].GetComponent<Character>().Energize(false);
+        }
+        else
+        {
+            currentCharactersTurn++;
+        }
+
         if(currentCharactersTurn >= livingCharacters.Length)
         {
             currentCharactersTurn = 0;

@@ -160,6 +160,13 @@ public class Enemy : Character
         StartCoroutine(DamageHealingEffect(false, healing.ToString(), numberOfHeals));
     }
 
+    public override void Energize(bool energize)
+    {
+        //I am not figuring out how to make trash mobs work with this function
+        if(!IsTrash)
+            base.Energize(energize);
+    }
+
     IEnumerator DamageHealingEffect(bool damage, string text = null, int numberOfHits = 1)
     {
         for(int i = 0; i < numberOfHits; i++)

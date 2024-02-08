@@ -27,6 +27,8 @@ public abstract class Character : MonoBehaviour
     public UnityEvent ShieldChangeEvent = new UnityEvent();
     public bool Stunned = false;
     private SpriteRenderer stunnedRenderer;
+    public bool Tireless = false;
+    private SpriteRenderer tirelessRenderer;
 
     public int CurrentHealth
     {
@@ -298,6 +300,15 @@ public abstract class Character : MonoBehaviour
 
         stunnedRenderer.enabled = stunned;
         Stunned = stunned;
+    }
+
+    public virtual void Energize(bool energize)
+    {
+        if (tirelessRenderer == null)
+            tirelessRenderer = transform.Find("TirelessSprite").GetComponent<SpriteRenderer>();
+
+        tirelessRenderer.enabled = energize;
+        Tireless = energize;
     }
 
     public virtual void Die()
