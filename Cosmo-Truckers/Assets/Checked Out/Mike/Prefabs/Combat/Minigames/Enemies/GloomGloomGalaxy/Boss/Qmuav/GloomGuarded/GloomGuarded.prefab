@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4629685143602173125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -82,13 +82,27 @@ MonoBehaviour:
   - {fileID: 4629685143193767277}
   layouts:
   - {fileID: 1897533811938234992, guid: 829ad630991f3c048bb19414cf9aa1ba, type: 3}
-  Damage: 0
+  Damage: 5
   DebuffToAdd: {fileID: 0}
+  playerEnemyTargetDifference: 0
   MinigameDuration: 20
-  Score: 0
+  Score: 4
   PlayerDead: 0
   MoveEnded: 0
-  Hits: 0
+  AugmentScore: 0
+  maxScore: 4
+  augmentStacksPerScore: 0
+  maxAugmentStacks: 0
+  baseDamage: 10
+  baseAugmentStacks: 0
+  timeToEndMove: 1
+  isDamaging: 0
+  isHealing: 0
+  pierces: 0
+  bossMove: 0
+  FightWon: 0
+  spawnTest: 0
+  startMoveTest: 0
 --- !u!1001 &4629685142570286081
 PrefabInstance:
   m_ObjectHideFlags: 0

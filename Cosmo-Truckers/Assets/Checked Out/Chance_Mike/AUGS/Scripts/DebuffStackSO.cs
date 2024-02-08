@@ -25,6 +25,7 @@ public class DebuffStackSO : ScriptableObject
     public bool IsDebuff;
     public bool Removable = true;
     public bool RemoveOnDeath = true;
+    public bool RemoveOnEndCombat = false;
 
     [Header("Stacks")]
     public bool Stackable = false;

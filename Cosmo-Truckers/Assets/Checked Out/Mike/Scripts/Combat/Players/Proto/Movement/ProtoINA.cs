@@ -9,7 +9,6 @@ public class ProtoINA : Player
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject verticalAttackArea;
 
-    [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
     [SerializeField] float coyoteTime;
 

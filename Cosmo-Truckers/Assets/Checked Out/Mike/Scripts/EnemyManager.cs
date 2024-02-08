@@ -124,7 +124,8 @@ public class EnemyManager : MonoBehaviour
                 //TODO Figure out enemy spacing
                 for (int i = enemyCount; i < prefab.GetComponent<Character>().GetSpaceTaken + enemyCount; i++)
                 {
-                    EnemyCombatSpots[i] = prefab.GetComponent<Character>();
+                    if (prefab.GetComponent<Enemy>().TakesCombatSpot)
+                        EnemyCombatSpots[i] = prefab.GetComponent<Character>();
                     prefab.GetComponent<Character>().CombatSpot = i;
                     prefab.name = $"{prefab.name}{i}";
                 }

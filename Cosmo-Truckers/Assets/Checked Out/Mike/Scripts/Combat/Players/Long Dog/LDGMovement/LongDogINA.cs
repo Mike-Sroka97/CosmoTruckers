@@ -42,7 +42,6 @@ public class LongDogINA : Player
 
     [Space(20)]
     [Header("Jump")]
-    [SerializeField] float jumpSpeed;
     [SerializeField] float jumpMaxHoldTime;
     [SerializeField] float coyoteTime;
 

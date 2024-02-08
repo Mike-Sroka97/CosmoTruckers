@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
+  m_Name: NovaSpikes
+  m_EditorClassIdentifier: 
+  InCombat: 0
+  StartUp: 0
+  TurnStart: 0
+  TurnEnd: 0
+  StatChange: 0
+  OnDamage: 1
+  EveryTurnEnd: 0
+  EveryTurnStart: 0
+  OnSpellCast: 0
+  DebuffName: Nova Spikes
+  DebuffDescription: "Acts as a \"Shield\" on its target. \r\n\u2022 Essentially
+    an additional health bar. Shield HP is targeted first. \r\n\u2022 Takes up to
+    X amount of damage, then disappears\r\n\r\nHitting this shield deals DMG to attacker"
+  MyCharacter: {fileID: 0}
+  IsBuff: 1
+  IsDebuff: 0
+  Removable: 1
+  RemoveOnDeath: 1
+  RemoveOnEndCombat: 1
+  Stackable: 0
+  MaxStacks: 1
+  LastStacks: -1
+  currentStacks: 0
+  StackValue: {x: 10, y: 0}
+  fadePerTurn: 0
+  AugSpawner: {fileID: 4393463899279447558, guid: 539a7466c84e4b44e9370fa95a47cab6, type: 3}

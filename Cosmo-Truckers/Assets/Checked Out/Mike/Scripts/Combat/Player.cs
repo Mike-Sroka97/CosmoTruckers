@@ -6,6 +6,7 @@ public abstract class Player : MonoBehaviour
 {
     [Header("Movement")]
     public float MoveSpeed = 2.4f;
+    [SerializeField] protected float jumpSpeed;
     [HideInInspector] public float xVelocityAdjuster;
     [HideInInspector] public float yVelocityAdjuster;
 
@@ -35,8 +36,12 @@ public abstract class Player : MonoBehaviour
 
     protected void DebuffInit()
     {
+        float startingGravity = myBody.gravityScale;
         initialGravityModifier = myBody.gravityScale * MyCharacter.Stats.Gravity; // * grav modifier debuff
         myBody.gravityScale = initialGravityModifier;
+
+        if(myBody.gravityScale != startingGravity)
+            jumpSpeed /= myBody.gravityScale - startingGravity;
     }
 
     public void PlayerInitialize()

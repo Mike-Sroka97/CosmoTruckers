@@ -10,28 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
-  m_Name: GraviticDistortion
+  m_Name: MagneticReversal
   m_EditorClassIdentifier: 
   InCombat: 0
   StartUp: 0
   TurnStart: 0
   TurnEnd: 0
-  StatChange: 0
+  StatChange: 1
   OnDamage: 0
   EveryTurnEnd: 0
   EveryTurnStart: 0
-  OnSpellCast: 1
-  DebuffName: Gravitic Distortion
-  DebuffDescription: This characters gravity is lightened.
+  OnSpellCast: 0
+  DebuffName: Magnetic Reversal
+  DebuffDescription: The magnetism is warping your defense a minor amount.
   MyCharacter: {fileID: 0}
   IsBuff: 0
   IsDebuff: 1
   Removable: 1
   RemoveOnDeath: 1
+  RemoveOnEndCombat: 1
   Stackable: 1
-  MaxStacks: 6
+  MaxStacks: 1
   LastStacks: -1
   currentStacks: 0
-  StackValue: {x: 0.15, y: 0.05}
+  StackValue: {x: 20, y: 0}
   fadePerTurn: 0
-  AugSpawner: {fileID: 7011420796971601259, guid: 67a1fdfc785f5c547a5377cce4152128, type: 3}
+  AugSpawner: {fileID: 7011420796971601259, guid: 0b2e13bc62fdcc74eabea5ad62e5e51f, type: 3}

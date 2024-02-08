@@ -27,6 +27,7 @@ public class Enemy : Character
     [HideInInspector] public PlayerCharacter TauntedBy;
     public bool SpecialTargetConditions = false;
     protected BaseAttackSO ChosenAttack;
+    public bool TakesCombatSpot = true;
 
     [Header("Trash mob collector")]
     public bool IsTrash = false;
@@ -56,8 +57,8 @@ public class Enemy : Character
     }
     public override void Resurrect(int newHealth,  bool ignoreVigor = false)
     {
-        base.Resurrect(newHealth, ignoreVigor);
-        //if an enemy is in this spot do not
+        if(EnemyManager.Instance.EnemyCombatSpots[CombatSpot] == this || !TakesCombatSpot)
+            base.Resurrect(newHealth, ignoreVigor);
     }
 
     public override void StartTurn()
@@ -157,6 +158,13 @@ public class Enemy : Character
             healing = AdjustAttackHealing(healing);
 
         StartCoroutine(DamageHealingEffect(false, healing.ToString(), numberOfHeals));
+    }
+
+    public override void Energize(bool energize)
+    {
+        //I am not figuring out how to make trash mobs work with this function
+        if(!IsTrash)
+            base.Energize(energize);
     }
 
     IEnumerator DamageHealingEffect(bool damage, string text = null, int numberOfHits = 1)

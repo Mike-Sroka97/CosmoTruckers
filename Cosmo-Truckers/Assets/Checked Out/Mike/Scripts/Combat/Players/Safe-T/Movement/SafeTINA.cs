@@ -174,6 +174,10 @@ public class SafeTINA : Player
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
+
+            if (currentJumpStrength > jumpSpeed)
+                currentJumpStrength = jumpSpeed;
+
             myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
             myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;

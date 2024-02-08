@@ -16,7 +16,7 @@ public abstract class Character : MonoBehaviour
     public CharacterStats Stats;
     public int Health;
     public SpriteRenderer[] TargetingSprites;
-    [SerializeField] SpriteRenderer[] ShieldSprites;
+    public SpriteRenderer[] ShieldSprites;
     [SerializeField] Material shieldedMaterial;
     [SerializeField] Material bubbleShieldMaterial;
     const float spriteRotationSpeed = -500f;
@@ -25,6 +25,11 @@ public abstract class Character : MonoBehaviour
     public int FlatHealingAdjustment = 0;
     public UnityEvent HealthChangeEvent = new UnityEvent();
     public UnityEvent ShieldChangeEvent = new UnityEvent();
+    public bool Stunned = false;
+    private SpriteRenderer stunnedRenderer;
+    public bool Tireless = false;
+    private SpriteRenderer tirelessRenderer;
+
     public int CurrentHealth
     {
         get
@@ -288,6 +293,24 @@ public abstract class Character : MonoBehaviour
         }
     }
 
+    public void Stun(bool stunned)
+    {
+        if (stunnedRenderer == null)
+            stunnedRenderer = transform.Find("StunSprite").GetComponent<SpriteRenderer>();
+
+        stunnedRenderer.enabled = stunned;
+        Stunned = stunned;
+    }
+
+    public virtual void Energize(bool energize)
+    {
+        if (tirelessRenderer == null)
+            tirelessRenderer = transform.Find("TirelessSprite").GetComponent<SpriteRenderer>();
+
+        tirelessRenderer.enabled = energize;
+        Tireless = energize;
+    }
+
     public virtual void Die()
     {
         //play death animation
@@ -378,16 +401,21 @@ public abstract class Character : MonoBehaviour
         if (stack == null || !stack.Removable)
             return;
 
+        //Remove stacks
         foreach (DebuffStackSO aug in AUGS)
         {
             if (String.Equals(aug.DebuffName, stack.DebuffName))
             {
                 aug.CurrentStacks -= stackToRemove;
                 aug.DestroyAugment();
-                    //StartCoroutine(DelayedRemoval(aug)); TODO fuck it we ball. If this breaks the game we will fix it another way
-
-                return;
             }
+        }
+
+        //Clean up augs if they need to be removed
+        foreach (DebuffStackSO augment in AugmentsToRemove)
+        {
+            AUGS.Remove(augment);
+            Destroy(augment);
         }
     }
 
@@ -588,6 +616,16 @@ public abstract class Character : MonoBehaviour
             Stats.Damage = 200;
         else if (Stats.Restoration < 40)
             Stats.Restoration = 40;
+    }
+    
+    public void AdjustGravity(float gravityModifier)
+    {
+        Stats.Gravity += gravityModifier;
+
+        if (Stats.Gravity > 2)
+            Stats.Gravity = 2;
+        else if (Stats.Gravity <= 0)
+            Stats.Gravity = .01f;
     }
 
     public abstract void StartTurn();

@@ -13,9 +13,12 @@ public class TaskMasterFlag : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
         {
-            minigame.SetScore();
+            Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+            minigame.PlayerScores[player.MyCharacter]--;
+            minigame.PlayerAugmentScores[player.MyCharacter]--;
+            player.enabled = false;
         }
     }
 }
