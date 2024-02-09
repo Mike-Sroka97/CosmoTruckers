@@ -70,8 +70,8 @@ public class EyeGouger : CombatMove
 
     private void SpawnGem()
     {
-        if (FindObjectOfType<EyeGougerGem>())
-            Destroy(FindObjectOfType<EyeGougerGem>());
+        if (FindObjectOfType<PlayerPickup>())
+            Destroy(FindObjectOfType<PlayerPickup>());
 
         int random = UnityEngine.Random.Range(0, gemspawns.Length);
 
