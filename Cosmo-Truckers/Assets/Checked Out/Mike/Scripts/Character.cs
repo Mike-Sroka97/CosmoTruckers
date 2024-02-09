@@ -579,8 +579,8 @@ public abstract class Character : MonoBehaviour
         Stats.Speed += speed;
 
         //max double speed and min 40% reduction
-        if (Stats.Speed > 200)
-            Stats.Speed = 200;
+        if (Stats.Speed > 100)
+            Stats.Speed = 100;
         else if (Stats.Speed < -40)
             Stats.Speed = -40;
     }
@@ -626,6 +626,54 @@ public abstract class Character : MonoBehaviour
             Stats.Gravity = 2;
         else if (Stats.Gravity <= 0)
             Stats.Gravity = .01f;
+    }
+
+    public void RandomizeStats(int amount, int positiveStatNumber, int negativeStatNumber)
+    {
+        List<int> randomNumbers = new List<int>();
+        int totalRandom = positiveStatNumber + negativeStatNumber;
+        int random = -1;
+
+        for(int i = 0; i < totalRandom; i++)
+        {
+            while(randomNumbers.Contains(random) || random == -1)
+                random = UnityEngine.Random.Range(0, totalRandom);
+
+            randomNumbers.Add(random);
+        }
+
+        for(int i = 0; i < positiveStatNumber; i++)
+        {
+            UpdateStat(randomNumbers[i], amount);
+        }
+        for(int i = 0; i < negativeStatNumber; i++)
+        {
+            UpdateStat(randomNumbers[i], -amount);
+        }
+    }
+
+    public void UpdateStat(int statIndex, int amount)
+    {
+        switch(statIndex)
+        {
+            case 0:
+                AdjustDefense(amount);
+                break;
+            case 1:
+                AdjustVigor(amount);
+                break;
+            case 2:
+                AdjustSpeed(amount);
+                break;
+            case 3:
+                AdjustDamage(amount);
+                break;
+            case 4:
+                AdjustRestoration(amount);
+                break;
+            default:
+                break;
+        }
     }
 
     public abstract void StartTurn();
