@@ -40,6 +40,7 @@ public class ProtoINA : Player
     bool canMove = true;
     bool canJump = true;
     bool isJumping = false;
+    bool isTeleporting = false;
     bool canAttack = true;
     bool canTeleport = true;
 
@@ -146,6 +147,9 @@ public class ProtoINA : Player
     /// </summary>
     public void Attack()
     {
+        if (isTeleporting)
+            return;
+
         if(Input.GetKeyDown(KeyCode.Mouse0) && canAttack && Input.GetKey(KeyCode.W))
         {
             StartCoroutine(ProtoAttack(false));
@@ -188,6 +192,9 @@ public class ProtoINA : Player
     /// </summary>
     public void Jump()
     {
+        if (isTeleporting)
+            return;
+
         IsGrounded();
 
         if (Input.GetKeyDown("space") && canJump && !isJumping)
@@ -216,7 +223,7 @@ public class ProtoINA : Player
     /// </summary>
     public void Movement()
     {
-        if (!canMove || dead || damaged) return;
+        if (!canMove || dead || damaged || isTeleporting) return;
 
         if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
         {
@@ -258,8 +265,7 @@ public class ProtoINA : Player
 
         if(Input.GetKeyDown(KeyCode.Mouse1))
         {
-            canMove = false;
-            canJump = false;
+            isTeleporting = true;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
 
             playerAnimator.ChangeAnimation(myAnimator, idle);
@@ -270,6 +276,7 @@ public class ProtoINA : Player
         }
         else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport)
         {
+            isTeleporting = false;
             foreach (SpriteRenderer sprite in teleportSprites)
             {
                 sprite.enabled = false;
