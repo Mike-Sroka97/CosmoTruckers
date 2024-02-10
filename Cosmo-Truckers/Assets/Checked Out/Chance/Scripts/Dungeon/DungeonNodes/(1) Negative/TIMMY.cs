@@ -20,6 +20,8 @@ public class TIMMY : NCNodePopUpOptions
         button.GetComponentInChildren<TMP_Text>().text = "NO";
 
         button.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(); Destroy(button); });
+
+        button.transform.localScale = Vector3.one;
     }
 
     void OnButtonClick()

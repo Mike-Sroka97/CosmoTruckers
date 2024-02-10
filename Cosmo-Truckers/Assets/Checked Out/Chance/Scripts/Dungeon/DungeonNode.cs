@@ -145,7 +145,7 @@ public class DungeonNode : MonoBehaviour
         CombatData.Instance.combatLocation = NodeLocation;
         CombatData.Instance.lastNode = lastNode;
 
-        Instantiate(Node.EnemyHolder).GetComponent<NCNodePopUpOptions>().SetUp(Node.AugToAdd);
+        Instantiate(Node.EnemyHolder, FindObjectOfType<DungeonGen>().GetBG.transform).GetComponent<NCNodePopUpOptions>().SetUp(Node.AugToAdd);
 
         StartCoroutine(RedrawMapDelay());
     }

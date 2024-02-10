@@ -27,6 +27,9 @@ public class DungeonGen : MonoBehaviour
     [SerializeField] GameObject DungeonNodePreFab;
     [SerializeField] LineRenderer line;
     [SerializeField] GameObject ConnectionHolder;
+    [Space(5)]
+    [SerializeField] GameObject BG;
+    public GameObject GetBG { get => BG; }
 
     [Header("Storage")]
     [SerializeField] [Tooltip("Set to 0 for unseeded")] int RandomSeed = 0;
@@ -167,7 +170,7 @@ public class DungeonGen : MonoBehaviour
                     while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) && tempNodes[choice].ExcludeFromDungeon != -1)
                         choice = MathCC.GetRandomWeightedIndex(weights);
 
-                    tempNodes[choice].Connections = Random.Range(1, 4);
+                    //tempNodes[choice].Connections = Random.Range(1, 4);
                     CurrentLayout[i].Add(tempNodes[choice]);
 
                     if (tempNodes[choice].Connections > NodesToAddNext)

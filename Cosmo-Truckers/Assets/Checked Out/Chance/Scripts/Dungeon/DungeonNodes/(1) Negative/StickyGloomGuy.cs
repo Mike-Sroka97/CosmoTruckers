@@ -24,6 +24,9 @@ public class StickyGloomGuy : NCNodePopUpOptions
 
         buttonHP.GetComponentInChildren<TMP_Text>().text = $"Just a little damage\n-{HealthDeduction}";
         buttonHP.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(); });
+
+        buttonHP.transform.localScale = Vector3.one;
+        buttonAUG.transform.localScale = Vector3.one;
     }
 
     void OnButtonClick()
