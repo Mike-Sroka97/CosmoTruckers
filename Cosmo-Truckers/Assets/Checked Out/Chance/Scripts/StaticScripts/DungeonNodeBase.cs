@@ -6,7 +6,10 @@ namespace Node
 {
     public class DungeonNodeBase : MonoBehaviour
     {
-
+        [Header("Node Info")]
+        public string NodeName;
+        [TextArea(5, 10)]
+        public string NodeDescription;
         [Header("Node typing")]
         //What kind of node type this node is
         public EnumManager.NodeType Type;
