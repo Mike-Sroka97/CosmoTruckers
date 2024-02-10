@@ -40,7 +40,15 @@ public class INAcombat : MonoBehaviour
         topMaskStartingY = topMask.localPosition.y;
         bottomMaskStartingY = bottomMask.localPosition.y;
 
-        StartCoroutine(MoveINADungeon(true));
+        if (CombatData.Instance.TESTING)
+        {
+            DungeonGen.SetActive(false);
+            EnemyManager.Instance.InitilizeEnemys();
+        }
+        else
+        {
+            StartCoroutine(MoveINADungeon(true));
+        }
     }
 
     public void CloseDungeonPage()
