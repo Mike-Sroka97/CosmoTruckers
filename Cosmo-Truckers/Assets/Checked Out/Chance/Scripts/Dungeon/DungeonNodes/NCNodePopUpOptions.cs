@@ -5,42 +5,41 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DungeonNodeAllPlayerAUG : MonoBehaviour
+public class NCNodePopUpOptions : MonoBehaviour
 {
-    [SerializeField] TMP_Text currentPlayer;
-    [SerializeField] GameObject buttonLocation;
-    [SerializeField] GameObject buttonToAdd;
+    [SerializeField] protected TMP_Text currentPlayer;
+    [SerializeField] protected GameObject buttonLocation;
+    [SerializeField] protected GameObject buttonToAdd;
 
-    List<PlayerCharacter> allPlayersSorted = new();
+    protected List<PlayerCharacter> allPlayersSorted = new();
 
-    public void SetUpPlayerOptions(DebuffStackSO[] augs)
+    public virtual void SetUp(DebuffStackSO[] augs)
     {
-        int augIndex = 0;
+        //int augIndex = 0;
 
         foreach(var player in EnemyManager.Instance.Players)
         {
             allPlayersSorted.Add(player);
-            GameObject button = Instantiate(buttonToAdd);
-            button.transform.SetParent(buttonLocation.transform);
+            //GameObject button = Instantiate(buttonToAdd);
+            //button.transform.SetParent(buttonLocation.transform);
 
-            button.GetComponentInChildren<TMP_Text>().text = augs[augIndex].DebuffName + " " + augIndex;
-            button.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(augs[augIndex]); Destroy(button); });
+            //button.GetComponentInChildren<TMP_Text>().text = augs[augIndex].DebuffName + " " + augIndex;
+            //button.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(augs[augIndex]); Destroy(button); });
 
-            augIndex = augIndex + 1 > augs.Length - 1 ? 0 : augIndex + 1;
+            //augIndex = augIndex + 1 > augs.Length - 1 ? 0 : augIndex + 1;
         }
 
         //Sort players by reflex stat
         allPlayersSorted = allPlayersSorted.OrderBy(x => x.Stats.Reflex).ToList();
 
-        ShowPlayerName();
+        ShowPlayerName(allPlayersSorted[0].CharacterName);
     }
 
-    void ShowPlayerName()
-    {
-        currentPlayer.text = $"{allPlayersSorted[0].CharacterName}'s choice";
-    }
-
-    void OnButtonClick(DebuffStackSO augToAdd)
+    /// <summary>
+    /// Will add AUG to current player and go to next player
+    /// </summary>
+    /// <param name="augToAdd">The AUG to add</param>
+    protected virtual void OnButtonClick(DebuffStackSO augToAdd)
     {
         DebuffStackSO stackToAdd = Instantiate(augToAdd);
         bool added = false;
@@ -66,7 +65,7 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
 
         if (!added)
         {
-            allPlayersSorted[0].GetAUGS.Add(stackToAdd);
+            allPlayersSorted[0].AddDebuffStack(stackToAdd);
             Debug.Log($"{allPlayersSorted[0].CharacterName} has been given {stackToAdd.DebuffName}");
         }
 
@@ -74,8 +73,13 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
 
 
         if (allPlayersSorted.Count > 0)
-            ShowPlayerName();
+            ShowPlayerName(allPlayersSorted[0].CharacterName);
         else
             Destroy(this.gameObject);
+    }
+
+    protected void ShowPlayerName(string playerName)
+    {
+        currentPlayer.text = $"{playerName}'s choice";
     }
 }

@@ -155,7 +155,7 @@ public class DungeonGen : MonoBehaviour
                     //Temparary while there are not a ton of test nodes to keep from cycling tho them all
                     //TODO 
                     //Remove
-                    if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
+                    if (tempNodes.Count <= 1) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
 
                     //Add node weights to new list
                     for (int j = 0; j < tempNodes.Count; j++)
@@ -164,9 +164,10 @@ public class DungeonGen : MonoBehaviour
                     int choice = MathCC.GetRandomWeightedIndex(weights);
 
                     //Loop tho nodes to find non exlude node
-                    while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1)
+                    while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) && tempNodes[choice].ExcludeFromDungeon != -1)
                         choice = MathCC.GetRandomWeightedIndex(weights);
 
+                    tempNodes[choice].Connections = Random.Range(1, 4);
                     CurrentLayout[i].Add(tempNodes[choice]);
 
                     if (tempNodes[choice].Connections > NodesToAddNext)

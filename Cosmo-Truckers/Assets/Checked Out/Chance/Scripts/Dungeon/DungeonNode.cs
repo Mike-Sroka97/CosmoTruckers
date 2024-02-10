@@ -56,6 +56,9 @@ public class DungeonNode : MonoBehaviour
                 });
                 break;
             case EnumManager.NodeType.NCNode_PlayerOrderChoiceAug:
+            case EnumManager.NodeType.NCNode_PlayerDependent:
+            case EnumManager.NodeType.NCNode_PartyVoting:
+            case EnumManager.NodeType.NCNode_PartyDistribution:
                 GetComponent<Button>().onClick.AddListener(delegate
                 {
                     OnNCAllCharacterClick();
@@ -128,7 +131,7 @@ public class DungeonNode : MonoBehaviour
 
         if (!added)
         {
-            allPlayers[index].GetAUGS.Add(stackToAdd);
+            allPlayers[index].AddDebuffStack(stackToAdd);
             Debug.Log($"{allPlayers[index].CharacterName} has been given {Node.AugToAdd[0].DebuffName}");
         }
 
@@ -142,8 +145,7 @@ public class DungeonNode : MonoBehaviour
         CombatData.Instance.combatLocation = NodeLocation;
         CombatData.Instance.lastNode = lastNode;
 
-        GameObject page = Instantiate(Node.EnemyHolder);
-        page.GetComponent<DungeonNodeAllPlayerAUG>().SetUpPlayerOptions(Node.AugToAdd);
+        Instantiate(Node.EnemyHolder).GetComponent<NCNodePopUpOptions>().SetUp(Node.AugToAdd);
 
         StartCoroutine(RedrawMapDelay());
     }

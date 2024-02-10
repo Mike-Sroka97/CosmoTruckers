@@ -25,7 +25,7 @@ public class EnumManager
 
         //TODO
         NCNode_PlayerDependent,
-        NcNode_PartyVoting,
+        NCNode_PartyVoting,
         NCNode_PartyDistribution,
 
     }

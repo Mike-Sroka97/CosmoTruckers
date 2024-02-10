@@ -257,6 +257,9 @@ public class TurnOrder : MonoBehaviour
                 //Bring up INA and redraw the dungeon
                 combatOver = false;
                 FindObjectOfType<INAcombat>().OpenDungeonPage();
+
+                //TODO
+                //Reset sheild and Mana
             }
         }
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
@@ -282,6 +285,9 @@ public class TurnOrder : MonoBehaviour
                 //Bring up INA and redraw the dungeon
                 combatOver = false;
                 FindObjectOfType<INAcombat>().OpenDungeonPage();
+
+                //TODO
+                //Reset sheild and Mana
             }
         }
         else
