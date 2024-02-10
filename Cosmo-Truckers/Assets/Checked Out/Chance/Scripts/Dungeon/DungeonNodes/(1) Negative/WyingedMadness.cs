@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class WyingedMadness : NCNodePopUpOptions
 {
+    [SerializeField] bool topVote = false;
+
     int[] votes;
     List<PlayerCharacter> players;
 
@@ -47,13 +49,15 @@ public class WyingedMadness : NCNodePopUpOptions
 
     void VotingOver(DebuffStackSO aug)
     {
-        int highVote = votes[0];
-        for (int i = 0; i < votes.Length; i++)
-            highVote = Math.Max(highVote, votes[i]);
+        int highVote = 1;
 
-        for(int i = 0; i < players.Count; i++)
+        if(topVote)
+            for (int i = 0; i < votes.Length; i++)
+                highVote = Math.Max(highVote, votes[i]);
+
+        for (int i = 0; i < players.Count; i++)
         {
-            if(votes[i] == highVote)
+            if (votes[i] >= highVote)
             {
                 players[i].AddDebuffStack(aug);
             }
