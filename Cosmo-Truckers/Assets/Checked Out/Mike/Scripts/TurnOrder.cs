@@ -260,6 +260,7 @@ public class TurnOrder : MonoBehaviour
 
                 //TODO
                 //Reset sheild and Mana
+                CombatData.Instance.EnemySummonsToSpawn.Clear();
             }
         }
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
@@ -288,6 +289,7 @@ public class TurnOrder : MonoBehaviour
 
                 //TODO
                 //Reset sheild and Mana
+                CombatData.Instance.EnemySummonsToSpawn.Clear();
             }
         }
         else

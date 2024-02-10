@@ -11,6 +11,7 @@ public class CombatData : MonoBehaviour
     public Vector2 combatLocation = new Vector2(0, 0);
     public int dungeonSeed = 0;
     public GameObject EnemysToSpawn = null;
+    public List<GameObject> EnemySummonsToSpawn = new();
     public List<PlayerManager> PlayersToSpawn = new();
     public bool lastNode = false;
 

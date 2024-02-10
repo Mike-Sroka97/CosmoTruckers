@@ -31,6 +31,7 @@ namespace Node
         [Header("Combat Nodes")]
         //Enemys to spawn in combat
         public GameObject EnemyHolder;
+        public List<GameObject> EnemySummons = new();
 
         [Header("NC Nodes")]
         public DebuffStackSO[] AugToAdd;

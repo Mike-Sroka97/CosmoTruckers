@@ -44,6 +44,8 @@ public class EnemyManager : MonoBehaviour
         {
             EnemiesToSpawn.Clear();
             EnemySummonsToSpawn.Clear();
+            EnemySummonsToSpawn = CombatData.Instance.EnemySummonsToSpawn;
+
             testMockup = CombatData.Instance.EnemysToSpawn;
         }
 
