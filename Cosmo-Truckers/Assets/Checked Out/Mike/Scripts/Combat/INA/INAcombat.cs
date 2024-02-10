@@ -10,6 +10,7 @@ public class INAcombat : MonoBehaviour
 
     [Space(20)]
     [Header("Screen Variables")]
+    [SerializeField] GameObject DungeonGen;
     [SerializeField] float screenOpenSpeed;
     [SerializeField] float screenGoalDistance;
     [SerializeField] Transform topMask;
@@ -38,9 +39,83 @@ public class INAcombat : MonoBehaviour
         startingPosition = transform.position;
         topMaskStartingY = topMask.localPosition.y;
         bottomMaskStartingY = bottomMask.localPosition.y;
+
+        StartCoroutine(MoveINADungeon(true));
     }
 
-    public IEnumerator MoveINA(bool moveUp)
+    public void CloseDungeonPage()
+    {
+        StartCoroutine(MoveINADungeon(false));
+    }
+
+    public void OpenDungeonPage()
+    {
+        StartCoroutine(MoveINADungeon(true));
+    }
+
+    IEnumerator MoveINADungeon(bool moveUp)
+    {
+        countDownTimer.enabled = false;
+        timer.enabled = false;
+
+        if (moveUp)
+        {
+            //Wait a frame to fix renderer threading issues
+            yield return null;
+
+            //Move up
+            while (transform.position.y < goalPosition.y)
+            {
+                transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                yield return null;
+            }
+
+            transform.localPosition = goalPosition;
+
+            //OpenScreen
+            while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
+            {
+                topMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+                bottomMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+                yield return null;
+            }
+
+            topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+            bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+            DungeonGen.SetActive(true);
+            FindObjectOfType<DungeonGen>().RegenMap();
+        }
+        else
+        {
+            DungeonGen.SetActive(false);
+
+            //CloseScreen
+            while (topMask.localPosition.y > topMaskStartingY)
+            {
+                topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+                bottomMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+                yield return null;
+            }
+
+            topMask.localPosition = new Vector3(0, topMaskStartingY, 0);
+            bottomMask.localPosition = new Vector3(0, bottomMaskStartingY, 0);
+
+            //Move Down
+            while (transform.position.y > startingPosition.y)
+            {
+                transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                yield return null;
+            }
+            transform.localPosition = startingPosition;
+        }
+
+        countDownTimer.enabled = false;
+    }
+
+    public IEnumerator MoveINACombat(bool moveUp)
     {
         countDownTimer.enabled = false;
         timer.enabled = false;

@@ -36,22 +36,17 @@ public class EnemyManager : MonoBehaviour
     const int enemySummonIndexAdder = 8;
     public int playerSummonIndexAdder = 4;
 
-    private void Awake() 
-    { 
-        Instance = this; 
-        if(CombatData.Instance != null)
+    private void Awake() => Instance = this;
+
+    public void InitilizeEnemys()
+    {
+        if (CombatData.Instance.EnemysToSpawn != null)
         {
             EnemiesToSpawn.Clear();
+            EnemySummonsToSpawn.Clear();
             testMockup = CombatData.Instance.EnemysToSpawn;
-
-            PlayersToSpawn.Clear();
-            foreach (var player in CombatData.Instance.PlayersToSpawn)
-                PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }
-    }
 
-    void Start()
-    {
         if (testMockup != null)
         {
             GameObject mockUp = Instantiate(testMockup);
@@ -61,20 +56,18 @@ public class EnemyManager : MonoBehaviour
                 if (!enemy.GetComponent<EnemySummon>())
                     EnemiesToSpawn.Add(enemy.gameObject);
 
-            PlayerCombatSpots = new Character[8];
             EnemyCombatSpots = new Character[12];
 
-            SetSpawns();
+            SetEnemySpawns();
 
             //Not great on overhead, but waiting till EOF will cause a null enemy to be in the list
             DestroyImmediate(mockUp);
         }
         else
         {
-            PlayerCombatSpots = new Character[8];
             EnemyCombatSpots = new Character[12];
 
-            SetSpawns();
+            SetEnemySpawns();
         }
 
         Enemy[] foundEnemies = FindObjectsOfType<Enemy>();
@@ -83,6 +76,26 @@ public class EnemyManager : MonoBehaviour
                 Enemies.Add(enemy);
             else
                 EnemySummons.Add(enemy.GetComponent<EnemySummon>());
+
+        UpdateTrashMobList();
+
+        TurnOrder.Instance.StartTurnOrder();
+    }
+
+    void Start()
+    {
+        if (CombatData.Instance.PlayersToSpawn.Count > 0)
+        {
+            PlayersToSpawn.Clear();
+            PlayerSummonsToSpawn.Clear();
+            foreach (var player in CombatData.Instance.PlayersToSpawn)
+                PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
+        }
+
+
+        PlayerCombatSpots = new Character[8];
+
+        SetPlayerSpawns();
 
         int currentPlayerNumber = 1;
         PlayerCharacter[] foundPlayers = FindObjectsOfType<PlayerCharacter>();
@@ -100,16 +113,12 @@ public class EnemyManager : MonoBehaviour
 
 
         PlayerVesselManager.Instance.Initialize();
-
-        UpdateTrashMobList();
     }
 
-    private void SetSpawns()
+    private void SetEnemySpawns()
     {
         int enemyCount = 0;
         int enemySummonCount = 0;
-        int playerCount = 0;
-        int playerSummonCount = 0;
 
         foreach (GameObject enemy in EnemiesToSpawn)
         {
@@ -148,6 +157,13 @@ public class EnemyManager : MonoBehaviour
                 enemySummonCount += prefab.GetComponent<Character>().GetSpaceTaken;
             }
         }
+
+    }
+
+    private void SetPlayerSpawns()
+    {
+        int playerCount = 0;
+        int playerSummonCount = 0;
 
         foreach (GameObject player in PlayersToSpawn)
         {

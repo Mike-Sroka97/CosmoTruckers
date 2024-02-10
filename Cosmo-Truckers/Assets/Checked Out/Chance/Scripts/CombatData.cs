@@ -1,7 +1,9 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class CombatData : MonoBehaviour
 {
@@ -15,35 +17,13 @@ public class CombatData : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
-    private void OnEnable()
-    {
-        SceneManager.activeSceneChanged += ChangeScene;
-    }
+        Instance = this;
 
-    private void OnDisable()
-    {
-        SceneManager.activeSceneChanged -= ChangeScene;
-    }
-
-    private void ChangeScene(Scene current, Scene next)
-    {
-        if (next.name != "Combat Test")
+        //If Network is active will get the current players
+        //Other wise needs to be set manually
+        if(NetworkManager.singleton)
         {
-            if (next.name != "DungeonSelection")
-            {
-                CombatData.Instance = null;
-                Destroy(this.gameObject);
-            }
+            PlayersToSpawn = FindObjectsOfType<PlayerManager>().ToList();
         }
     }
 }

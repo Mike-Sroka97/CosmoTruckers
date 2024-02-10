@@ -24,7 +24,7 @@ public class TurnOrder : MonoBehaviour
         Instance = this;
     }
 
-    private void Start()
+    public void StartTurnOrder()
     {
         StartCoroutine(StartWait());
     }
@@ -252,7 +252,11 @@ public class TurnOrder : MonoBehaviour
                 {
                     EnemyManager.Instance.SavePlayerData(character);
                 }
-                NetworkManager.singleton.ServerChangeScene("DungeonSelection");
+
+                //No change scene
+                //Bring up INA and redraw the dungeon
+                combatOver = false;
+                FindObjectOfType<INAcombat>().OpenDungeonPage();
             }
         }
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
@@ -273,13 +277,19 @@ public class TurnOrder : MonoBehaviour
                 {
                     EnemyManager.Instance.SavePlayerData(character);
                 }
-                SceneManager.LoadScene("DungeonSelection");
+
+                //No change scene
+                //Bring up INA and redraw the dungeon
+                combatOver = false;
+                FindObjectOfType<INAcombat>().OpenDungeonPage();
             }
         }
         else
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        endCombatText.text = "";
     }
 
     private void DetermineCombatEnd()

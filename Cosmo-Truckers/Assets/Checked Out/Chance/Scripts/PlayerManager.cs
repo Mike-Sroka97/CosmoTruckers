@@ -90,7 +90,6 @@ public class PlayerManager : NetworkBehaviour
             PlayerData = SaveManager.Load(PlayerID);
             if (PlayerData == null)
                 PlayerData = new SaveData();
-
         }
     }
 }

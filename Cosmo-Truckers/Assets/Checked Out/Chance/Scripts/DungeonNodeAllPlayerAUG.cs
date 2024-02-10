@@ -11,13 +11,13 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
     [SerializeField] GameObject buttonLocation;
     [SerializeField] GameObject buttonToAdd;
 
-    List<PlayerManager> allPlayersSorted = new();
+    List<PlayerCharacter> allPlayersSorted = new();
 
     public void SetUpPlayerOptions(DebuffStackSO[] augs)
     {
         int augIndex = 0;
 
-        foreach(var player in FindObjectsOfType<PlayerManager>())
+        foreach(var player in EnemyManager.Instance.Players)
         {
             allPlayersSorted.Add(player);
             GameObject button = Instantiate(buttonToAdd);
@@ -30,14 +30,14 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
         }
 
         //Sort players by reflex stat
-        allPlayersSorted = allPlayersSorted.OrderBy(x => x.GetPlayer.CombatPlayerSpawn.GetComponent<Character>().Stats.Reflex).ToList();
+        allPlayersSorted = allPlayersSorted.OrderBy(x => x.Stats.Reflex).ToList();
 
         ShowPlayerName();
     }
 
     void ShowPlayerName()
     {
-        currentPlayer.text = $"{allPlayersSorted[0].GetPlayer.CharacterName}'s choice";
+        currentPlayer.text = $"{allPlayersSorted[0].CharacterName}'s choice";
     }
 
     void OnButtonClick(DebuffStackSO augToAdd)
@@ -45,18 +45,18 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
         DebuffStackSO stackToAdd = Instantiate(augToAdd);
         bool added = false;
 
-        foreach (DebuffStackSO aug in allPlayersSorted[0].GetPlayerData.PlayerCurrentDebuffs)
+        foreach (DebuffStackSO aug in allPlayersSorted[0].GetAUGS)
         {
             if (string.Equals(aug.DebuffName, stackToAdd.DebuffName))
             {
                 if (aug.Stackable && aug.CurrentStacks < aug.MaxStacks)
                 {
                     aug.CurrentStacks += 1;
-                    Debug.Log($"{allPlayersSorted[0].GetPlayer.CharacterName} added stack of {stackToAdd.DebuffName}");
+                    Debug.Log($"{allPlayersSorted[0].CharacterName} added stack of {stackToAdd.DebuffName}");
                 }
                 else
                 {
-                    Debug.Log($"{allPlayersSorted[0].GetPlayer.CharacterName} has max stacks of {stackToAdd.DebuffName}");
+                    Debug.Log($"{allPlayersSorted[0].CharacterName} has max stacks of {stackToAdd.DebuffName}");
                 }
 
                 added = true;
@@ -66,11 +66,9 @@ public class DungeonNodeAllPlayerAUG : MonoBehaviour
 
         if (!added)
         {
-            allPlayersSorted[0].GetPlayerData.PlayerCurrentDebuffs.Add(stackToAdd);
-            Debug.Log($"{allPlayersSorted[0].GetPlayer.CharacterName} has been given {stackToAdd.DebuffName}");
+            allPlayersSorted[0].GetAUGS.Add(stackToAdd);
+            Debug.Log($"{allPlayersSorted[0].CharacterName} has been given {stackToAdd.DebuffName}");
         }
-
-        SaveManager.Save(allPlayersSorted[0].GetPlayerData, allPlayersSorted[0].GetPlayer.PlayerID);
 
         allPlayersSorted.RemoveAt(0);
 

@@ -59,7 +59,7 @@ public class DungeonGen : MonoBehaviour
 
     private void Start()
     {
-        RegenMap();
+        //RegenMap();
     }
 
     public void RegenMap()
@@ -196,9 +196,6 @@ public class DungeonGen : MonoBehaviour
     /// <param name="tempNodes">temporary hold for middle nodes</param>
     private void ManualNodeCorrection(List<Node.DungeonNodeBase> tempNodes)
     {
-#if UNITY_EDITOR
-        var speed = System.DateTime.Now.TimeOfDay.TotalMilliseconds;
-#endif
         int[] layouts = new int[2] { 0, 0 };
         List<Vector2Int> neutralLocations = new();
 
@@ -272,11 +269,6 @@ public class DungeonGen : MonoBehaviour
 
             layouts[0]++;
         }
-
-#if UNITY_EDITOR
-        speed -= System.DateTime.Now.TimeOfDay.TotalMilliseconds;
-        print(speed);
-#endif
     }
 
     /// <summary>
@@ -415,11 +407,13 @@ public class DungeonGen : MonoBehaviour
 
         for (int i = 0; i < ConnectionHolder.transform.childCount; i++)
             Destroy(ConnectionHolder.transform.GetChild(i).gameObject);
+
+        ClearMapMemory();
     }
     /// <summary>
     /// Removes the old Dungeon layout from the loaded memory
     /// </summary>
-    public void ClearMapMemory() => CurrentLayout.Clear();
+    void ClearMapMemory() => CurrentLayout.Clear();
 
     public static bool lineSegmentsIntersect(Vector2 lineOneStart, Vector2 lineOneEnd, Vector2 lineTwoStart, Vector2 lineTwoEnd) 
     {
@@ -447,7 +441,6 @@ public class DungeonGenEditor : Editor
         if (GUILayout.Button("Generate new layout"))
         {
             myScript.ClearOldMap();
-            myScript.ClearMapMemory();
             myScript.GenerateMap();
             myScript.ShowMap();
         }
@@ -460,7 +453,6 @@ public class DungeonGenEditor : Editor
             for (int repeat = 0; repeat < amount; repeat++)
             {
                 myScript.ClearOldMap();
-                myScript.ClearMapMemory();
                 myScript.GenerateMap();
 
                 for (int i = 0; i < myScript.CurrentLayout.Count; i++)

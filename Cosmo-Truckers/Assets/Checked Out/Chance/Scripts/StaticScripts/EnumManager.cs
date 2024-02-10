@@ -17,12 +17,19 @@ public class EnumManager
 
     public enum NodeType
     {
-        CombatNode,
-        NCNode_SingleRandomPlayerAug,
-        NCNode_PlayerOrderChoiceAug,
-        RestNode,
-        BossNode,
+        CombatNode, //Easy just combat
+        NCNode_SingleRandomPlayerAug, //Adds aug to a single random player
+        NCNode_PlayerOrderChoiceAug, //Each player choices and AUG based on turn order
+        RestNode, //Reset players HP
+        BossNode, //Same as combat node
+
+        //TODO
+        NCNode_PlayerDependent,
+        NcNode_PartyVoting,
+        NCNode_PartyDistribution,
+
     }
+
     public enum NCNodeValue
     {
         NA,

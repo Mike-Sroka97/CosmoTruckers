@@ -4,6 +4,7 @@ using UnityEngine;
 
 //Base class for all debuffs
 [CreateAssetMenu(fileName = "Debuff", menuName = "ScriptableObjects/Debuff/EmptyBase")]
+[System.Serializable]
 public class DebuffStackSO : ScriptableObject
 {
     [Header("Types")]

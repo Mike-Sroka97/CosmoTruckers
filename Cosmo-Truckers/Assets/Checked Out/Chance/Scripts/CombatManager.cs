@@ -463,7 +463,7 @@ public class CombatManager : MonoBehaviour
 
             INAmoving = true;
             miniGame = Instantiate(attack.CombatPrefab, INA.transform);
-            StartCoroutine(INA.MoveINA(true));
+            StartCoroutine(INA.MoveINACombat(true));
 
             if (ActivePlayers.Count > 0)
             {
@@ -524,7 +524,7 @@ public class CombatManager : MonoBehaviour
 
             INAmoving = true;
 
-            StartCoroutine(INA.MoveINA(false));
+            StartCoroutine(INA.MoveINACombat(false));
         }
         else
         {
