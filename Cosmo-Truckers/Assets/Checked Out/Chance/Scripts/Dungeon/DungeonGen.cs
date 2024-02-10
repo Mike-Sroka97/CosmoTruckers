@@ -324,6 +324,8 @@ public class DungeonGen : MonoBehaviour
                 for (int k = 0; k < Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().GetConnections; k++) //Connections for this node
                 {
                     int Connection = j > Levels[i + 1].transform.childCount -1 ? Levels[i + 1].transform.childCount -1 : j;// Random.Range(0, Levels[i + 1].transform.childCount);
+                    if (connections.Contains(j))
+                        Connection = Levels[i + 1].transform.childCount - 1;
 
                     if (Levels[i + 1].transform.childCount > 1)
                     {
@@ -364,7 +366,22 @@ public class DungeonGen : MonoBehaviour
                     }
                 }
 
-                foreach(var rem in connectionsToRemove)
+                //We Removed all conections
+                if (connectionsToRemove.Count == connections.Count)
+                {
+                    int Connection = Levels[i + 1].transform.childCount - 1;
+                    Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().connections.Add(Connection);
+
+                    LineRenderer newLine = Instantiate(line, ConnectionHolder.transform);
+                    newLine.startColor = LineStartColor;
+                    newLine.endColor = LineEndColor;
+                    newLine.endWidth = LineEndWidth;
+                    newLine.startWidth = LineStartWidth;
+
+                    newLine.SetPositions(new Vector3[] { Levels[i].transform.GetChild(j).transform.position + (Vector3.right / 4f), Levels[i + 1].transform.GetChild(Connection).transform.position + (Vector3.left / 4f) });
+                }
+
+                foreach (var rem in connectionsToRemove)
                 {
                     Levels[i].transform.GetChild(j).GetComponent<DungeonNode>().connections.Remove(rem);
                 }
