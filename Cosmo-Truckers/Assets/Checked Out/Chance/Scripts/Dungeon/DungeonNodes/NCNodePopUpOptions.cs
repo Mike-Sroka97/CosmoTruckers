@@ -43,33 +43,9 @@ public class NCNodePopUpOptions : MonoBehaviour
     /// <param name="augToAdd">The AUG to add</param>
     protected virtual void OnButtonClick(DebuffStackSO augToAdd)
     {
-        DebuffStackSO stackToAdd = Instantiate(augToAdd);
-        bool added = false;
 
-        foreach (DebuffStackSO aug in allPlayersSorted[0].GetAUGS)
-        {
-            if (string.Equals(aug.DebuffName, stackToAdd.DebuffName))
-            {
-                if (aug.Stackable && aug.CurrentStacks < aug.MaxStacks)
-                {
-                    aug.CurrentStacks += 1;
-                    Debug.Log($"{allPlayersSorted[0].CharacterName} added stack of {stackToAdd.DebuffName}");
-                }
-                else
-                {
-                    Debug.Log($"{allPlayersSorted[0].CharacterName} has max stacks of {stackToAdd.DebuffName}");
-                }
-
-                added = true;
-                break;
-            }
-        }
-
-        if (!added)
-        {
-            allPlayersSorted[0].AddDebuffStack(stackToAdd);
-            Debug.Log($"{allPlayersSorted[0].CharacterName} has been given {stackToAdd.DebuffName}");
-        }
+        allPlayersSorted[0].AddDebuffStack(augToAdd);
+        Debug.Log($"{allPlayersSorted[0].CharacterName} has been given {augToAdd.DebuffName}");
 
         allPlayersSorted.RemoveAt(0);
 
