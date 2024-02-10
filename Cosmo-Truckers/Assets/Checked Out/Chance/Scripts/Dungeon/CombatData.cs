@@ -7,6 +7,8 @@ using System.Linq;
 
 public class CombatData : MonoBehaviour
 {
+    public bool TESTING = true;
+
     public static CombatData Instance;
     public Vector2 combatLocation = new Vector2(0, 0);
     public int dungeonSeed = 0;

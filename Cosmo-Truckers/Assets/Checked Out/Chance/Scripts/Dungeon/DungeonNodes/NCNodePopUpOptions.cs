@@ -27,6 +27,8 @@ public class NCNodePopUpOptions : MonoBehaviour
             //button.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(augs[augIndex]); Destroy(button); });
 
             //augIndex = augIndex + 1 > augs.Length - 1 ? 0 : augIndex + 1;
+
+            //button.transform.scale = Vector3.one;
         }
 
         //Sort players by reflex stat
