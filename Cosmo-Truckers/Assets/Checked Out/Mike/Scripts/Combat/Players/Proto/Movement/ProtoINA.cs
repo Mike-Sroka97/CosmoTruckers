@@ -268,6 +268,7 @@ public class ProtoINA : Player
             isTeleporting = true;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
 
+            transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             playerAnimator.ChangeAnimation(myAnimator, idle);
         }
         else if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
