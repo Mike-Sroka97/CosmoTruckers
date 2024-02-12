@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -29,6 +30,13 @@ public abstract class Character : MonoBehaviour
     private SpriteRenderer stunnedRenderer;
     public bool Tireless = false;
     private SpriteRenderer tirelessRenderer;
+
+    protected const float fadeSpeed = 2;
+    protected const float moveSpeed = 0.5f;
+
+    //Augment stuffs
+    TextMeshProUGUI augmentText;
+    bool augmenting = false;
 
     public int CurrentHealth
     {
@@ -351,6 +359,8 @@ public abstract class Character : MonoBehaviour
     {
         if (stacksToAdd == 0) return;
 
+        StartCoroutine(DisplayAugment(stack));
+
         foreach (DebuffStackSO aug in AUGS)
         {
             if (string.Equals(aug.DebuffName, stack.DebuffName))
@@ -385,6 +395,8 @@ public abstract class Character : MonoBehaviour
     /// <returns></returns>
     public DebuffStackSO AddDebuffStackAndReturnReference(DebuffStackSO stack, int stacksToAdd = 1, bool test = false)
     {
+        StartCoroutine(DisplayAugment(stack));
+
         DebuffStackSO tempAUG = Instantiate(stack);
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
@@ -396,8 +408,48 @@ public abstract class Character : MonoBehaviour
         return tempAUG;
     }
 
+    //Since SOs can't start the coroutine
+    public void CallDisplayAugment(DebuffStackSO aug, bool removed = false)
+    {
+        StartCoroutine(DisplayAugment(aug, removed));
+    }
+
+    IEnumerator DisplayAugment(DebuffStackSO aug, bool removed = false)
+    {
+        //wait until the last augment finished
+        while (augmenting)
+            yield return null;
+
+        augmenting = true;
+
+        //grab augmentText if it doesn't exist
+        if (!augmentText)
+            augmentText = transform.Find("TertiaryText").GetComponent<TextMeshProUGUI>();
+
+        //setup text
+        augmentText.text = aug.DebuffName;
+        if (removed)
+            augmentText.text = "-" + augmentText.text;
+        augmentText.color = Color.white;
+
+        //do fade
+        while (augmentText.color.a > 0)
+        {
+            augmentText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
+            augmentText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+
+            yield return null;
+        }
+
+        //cue next augment
+        augmentText.text = "";
+        augmenting = false;
+    }
+
     public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100)
     {
+        StartCoroutine(DisplayAugment(stack, true));
+
         if (stack == null || !stack.Removable)
             return;
 
@@ -439,12 +491,15 @@ public abstract class Character : MonoBehaviour
                     {
                         if (currentAmount >= debuff.CurrentStacks)
                         {
+                            StartCoroutine(DisplayAugment(debuff, true));
                             RemoveDebuffStack(debuff, currentAmount);
                             debuff.DestroyAugment();
                             currentAmount -= debuff.CurrentStacks;
                         }
                         else if(currentAmount > 0)
                         {
+                            StartCoroutine(DisplayAugment(debuff, true));
+                            DisplayAugment(debuff, true);
                             RemoveDebuffStack(debuff, currentAmount);
                             currentAmount = 0;
                         }                        
@@ -461,12 +516,14 @@ public abstract class Character : MonoBehaviour
                     {
                         if (currentAmount >= buff.CurrentStacks)
                         {
+                            StartCoroutine(DisplayAugment(buff, true));
                             RemoveDebuffStack(buff, currentAmount);
                             buff.DestroyAugment();
                             currentAmount -= buff.CurrentStacks;
                         }
                         else if (currentAmount > 0)
                         {
+                            StartCoroutine(DisplayAugment(buff, true));
                             RemoveDebuffStack(buff, currentAmount);
                             currentAmount = 0;
                         }
@@ -481,12 +538,16 @@ public abstract class Character : MonoBehaviour
                 foreach (DebuffStackSO augment in AUGS)
                     if (currentAmount >= augment.CurrentStacks)
                     {
+                        StartCoroutine(DisplayAugment(augment, true));
+
                         RemoveDebuffStack(augment, currentAmount);
                         augment.DestroyAugment();
                         currentAmount -= augment.CurrentStacks;
                     }
                     else if (currentAmount > 0)
                     {
+                        StartCoroutine(DisplayAugment(augment, true));
+
                         RemoveDebuffStack(augment, currentAmount);
                         currentAmount = 0;
                     }
@@ -514,7 +575,7 @@ public abstract class Character : MonoBehaviour
         StartCoroutine(AdjustSpritePosition(position, player));
     }
 
-    IEnumerator AdjustSpritePosition(int position, bool player)
+    public IEnumerator AdjustSpritePosition(int position, bool player)
     {
         int oldSpot = CombatSpot;
         CombatSpot = position;

@@ -91,7 +91,11 @@ public class DebuffStackSO : ScriptableObject
     {
         if (temp == null)
             return;
-        
+
+        //Display fade
+        if (fadePerTurn > 0)
+            MyCharacter.CallDisplayAugment(this, true);
+
         temp.GetComponent<Augment>().AdjustStatusEffect(-fadePerTurn);
 
         DestroyAugment();

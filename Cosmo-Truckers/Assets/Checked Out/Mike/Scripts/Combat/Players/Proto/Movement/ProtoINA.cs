@@ -263,7 +263,7 @@ public class ProtoINA : Player
         if (damaged || dead)
             return;
 
-        if(Input.GetKeyDown(KeyCode.Mouse1))
+        if(Input.GetKeyDown(KeyCode.Mouse1) && canTeleport)
         {
             isTeleporting = true;
             myBody.velocity = new Vector2(0, myBody.velocity.y);

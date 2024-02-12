@@ -21,8 +21,9 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] protected Color damageColor;
     [SerializeField] protected Color healingColor;
     [SerializeField] protected Color shieldColor;
-    [SerializeField] protected float fadeSpeed;
-    [SerializeField] protected float moveSpeed;
+
+    protected const float fadeSpeed = 2f;
+    protected const float moveSpeed = 0.5f;
 
     protected PlayerCharacter myCharacter;
     [HideInInspector] public Mana MyMana;
