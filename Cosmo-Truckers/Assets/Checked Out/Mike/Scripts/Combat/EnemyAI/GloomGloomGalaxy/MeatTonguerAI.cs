@@ -100,51 +100,18 @@ public class MeatTonguerAI : Enemy
             }
 
             //Player target
-            foreach (PlayerCharacter player in players)
-            {
-                if (player.IsSupport)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(player);
-                    supportFound = true;
-                    break;
-                }
-            }
-
-            if (!supportFound)
-            {
-                int randomPlayer = Random.Range(0, players.Count);
-                CombatManager.Instance.CharactersSelected.Add(players[randomPlayer]);
-            }
-
-            //Target
-            if (TauntedBy)
-            {
-                if (CombatManager.Instance.CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-                {
-                    if (!CombatManager.Instance.CharactersSelected.Contains(TauntedBy))
-                        CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-                    return;
-                }
-                else if (!EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot].Dead)
-                {
-                    if (!CombatManager.Instance.CharactersSelected.Contains(TauntedBy))
-                        CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[TauntedBy.CombatSpot]);
-                    return;
-                }
-            }
+            //Add Support or Random
+            if (CombatManager.Instance.FindSupportCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
             else
-            {
-                int randomPlayer = Random.Range(0, players.Count);
-                if (!CombatManager.Instance.CharactersSelected.Contains(players[randomPlayer]))
-                    CombatManager.Instance.CharactersSelected.Add(debuffedEnemies[randomPlayer]);
-            }
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Spit Ball
         else if (attackIndex == 2)
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
-            CombatManager.Instance.IgnoreTauntSingleTarget();
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Cumulo-Lickus

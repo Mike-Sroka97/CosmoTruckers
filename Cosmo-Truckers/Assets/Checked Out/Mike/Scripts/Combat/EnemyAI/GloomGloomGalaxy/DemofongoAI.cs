@@ -26,7 +26,8 @@ public class DemofongoAI : Enemy
         //Switch Master
         else if(attackIndex == 1)
         {
-            if (CombatManager.Instance.FindDPSCharacter() != null)
+            //Find DPS or random
+            if (CombatManager.Instance.FindDPSCharacter())
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindDPSCharacter());
             else
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
@@ -34,7 +35,8 @@ public class DemofongoAI : Enemy
         //Gun of the maw
         else
         {
-            if (CombatManager.Instance.FindSupportCharacter() != null)
+            //Add Support or Random
+            if (CombatManager.Instance.FindSupportCharacter())
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
             else
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);

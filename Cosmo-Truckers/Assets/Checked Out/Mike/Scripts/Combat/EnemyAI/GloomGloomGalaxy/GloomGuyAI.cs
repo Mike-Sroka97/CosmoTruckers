@@ -65,7 +65,7 @@ public class GloomGuyAI : Enemy
             if(!allDead)
             {
                 int random = Random.Range(0, nonTanks.Count);
-                CombatManager.Instance.CharactersSelected.Add(nonTanks[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, nonTanks[random]);
             }
 
             //Target Con 2 tank
@@ -81,7 +81,7 @@ public class GloomGuyAI : Enemy
                 }
 
                 int random = Random.Range(0, tanks.Count);
-                CombatManager.Instance.CharactersSelected.Add(tanks[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, tanks[random]);
             }
 
             return;

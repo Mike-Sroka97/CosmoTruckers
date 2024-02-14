@@ -88,18 +88,13 @@ public class TralaxyAI : Enemy
         //Astor Incubation
         else if (attackIndex == 1)
         {
-            foreach(PlayerCharacter player in EnemyManager.Instance.GetAlivePlayerCharacters())
-            {
-                if (player.IsUtility)
-                {
-                    CombatManager.Instance.CharactersSelected.Add(player);
-                    return;
-                }
-            }
-
-            CombatManager.Instance.AddRandomActivePlayer();
+            //Find Utility or random
+            if (CombatManager.Instance.FindUtilityCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
+            else
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
-        //Tall Your Sin
+        //Tally Your Sin
         else if (attackIndex == 2)
         {
             List<DebuffStackSO> sinfulCharacters = new List<DebuffStackSO>();

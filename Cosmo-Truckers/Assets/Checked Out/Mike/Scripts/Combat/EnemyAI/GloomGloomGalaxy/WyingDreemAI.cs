@@ -86,12 +86,12 @@ public class WyingDreemAI : Enemy
             else if (fourNitemareCharacters.Count > 0)
             {
                 int random = Random.Range(0, fourNitemareCharacters.Count);
-                CombatManager.Instance.CharactersSelected.Add(fourNitemareCharacters[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, fourNitemareCharacters[random]);
             }
             else
             {
                 int random = Random.Range(0, players.Length);
-                CombatManager.Instance.CharactersSelected.Add(players[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, players[random]);
             }
         }
         //Freak Out
@@ -110,12 +110,11 @@ public class WyingDreemAI : Enemy
             else if (threeNitemareCharacters.Count > 0)
             {
                 int random = Random.Range(0, threeNitemareCharacters.Count);
-                CombatManager.Instance.CharactersSelected.Add(threeNitemareCharacters[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, threeNitemareCharacters[random]);
             }
             else
             {
-                int random = Random.Range(0, players.Length);
-                CombatManager.Instance.CharactersSelected.Add(players[random]);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
             }
 
             CombatManager.Instance.ConeTargetEnemy();
@@ -132,12 +131,6 @@ public class WyingDreemAI : Enemy
         //Split Misery
         else
         {
-            //Target
-            if (TauntedBy)
-            {
-                CombatManager.Instance.DetermineTauntedTarget(this);
-            }
-
             //Target Con 1
             PlayerCharacter playerWithMostNitemare = null;
             int currentMostNitemare = -1;
@@ -158,7 +151,7 @@ public class WyingDreemAI : Enemy
             {
                 if (currentMostNitemare > 0)
                 {
-                    CombatManager.Instance.CharactersSelected.Add(playerWithMostNitemare);
+                    CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, playerWithMostNitemare);
                 }
                 else
                 {
@@ -170,7 +163,7 @@ public class WyingDreemAI : Enemy
             {
                 if (!CombatManager.Instance.CharactersSelected.Contains(player))
                 {
-                    CombatManager.Instance.CharactersSelected.Add(player);
+                    CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, player);
                     break;
                 }
             }

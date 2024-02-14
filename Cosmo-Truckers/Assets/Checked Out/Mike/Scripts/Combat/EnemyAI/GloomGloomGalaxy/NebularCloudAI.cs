@@ -77,17 +77,11 @@ public class NebularCloudAI : Enemy
         //Melancholy Precipitation
         if (attackIndex == 0)
         {
-            if (TauntedBy)
-            {
-                CombatManager.Instance.DetermineTauntedTarget(this);
-                return;
-            }
-
             //target con 1 (targets random player without shocked)
             if (playersWithoutSlow.Count > 0)
             {
                 int random = Random.Range(0, playersWithoutSlow.Count);
-                CombatManager.Instance.CharactersSelected.Add(playersWithoutSlow[random]);
+                CombatManager.Instance.SingleTargetEnemy(attacks[attackIndex], this, playersWithoutSlow[random]);
             }
 
             //target con 2 (player with least shocked)
@@ -106,24 +100,18 @@ public class NebularCloudAI : Enemy
                 }
 
                 if(leastShocked)
-                    CombatManager.Instance.CharactersSelected.Add(leastShocked);
+                    CombatManager.Instance.SingleTargetEnemy(attacks[attackIndex], this, leastShocked.GetComponent<PlayerCharacter>());
             }
         }
 
         //Shocking Shock
         else if(attackIndex == 1)
         {
-            if (TauntedBy)
-            {
-                CombatManager.Instance.DetermineTauntedTarget(this); 
-                return;
-            }
-
             //target con 1 (shocked players exist)
             if (playersWithSlow.Count > 0)
             {
                 int random = Random.Range(0, playersWithSlow.Count);
-                CombatManager.Instance.CharactersSelected.Add(playersWithSlow[random].myCharacter);
+                CombatManager.Instance.SingleTargetEnemy(attacks[attackIndex], this, playersWithSlow[random].myCharacter);
             }
 
             //target con 2 (no shocked players)
@@ -134,7 +122,7 @@ public class NebularCloudAI : Enemy
                 {
                     random = Random.Range(0, players.Count);
                 }
-                CombatManager.Instance.CharactersSelected.Add(players[random]);
+                CombatManager.Instance.SingleTargetEnemy(attacks[attackIndex], this, players[random]);
             }
 
             //target con for friendlies

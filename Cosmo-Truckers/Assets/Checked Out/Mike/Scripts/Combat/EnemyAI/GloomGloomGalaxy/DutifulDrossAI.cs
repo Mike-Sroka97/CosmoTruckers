@@ -31,46 +31,21 @@ public class DutifulDrossAI : Enemy
 
     protected override void SpecialTarget(int attackIndex)
     {
-        //Get Players
-        PlayerCharacter[] players = FindObjectsOfType<PlayerCharacter>();
-
         if (attackIndex == 0)
         {
             CombatManager.Instance.CharactersSelected.Add(ProtectedEnemy);
 
-            //Find Supports
-            List<PlayerCharacter> supports = new List<PlayerCharacter>();
-
-            foreach (PlayerCharacter player in players)
-                if (player.IsSupport)
-                    supports.Add(player);
-
-            if(supports.Count > 0)
-            {
-                int random = Random.Range(0, supports.Count);
-                CombatManager.Instance.CharactersSelected.Add(supports[random]);
-            }
+            //Add Support or Random
+            if (CombatManager.Instance.FindSupportCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
             else
-            {
-                CombatManager.Instance.CharactersSelected.Add(EnemyManager.Instance.Players[Random.Range(0, EnemyManager.Instance.Players.Count)]);
-            }
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Cometkaze always targets randomly
         else
         {
-            if (TauntedBy)
-            {
-                CombatManager.Instance.DetermineTauntedTarget(this);
-                return;
-            }
-
-            int random = Random.Range(0, players.Length);
-            while (players[random].Dead)
-            {
-                random = Random.Range(0, players.Length);
-            }
-            CombatManager.Instance.CharactersSelected.Add(players[random]);
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
     }
 }

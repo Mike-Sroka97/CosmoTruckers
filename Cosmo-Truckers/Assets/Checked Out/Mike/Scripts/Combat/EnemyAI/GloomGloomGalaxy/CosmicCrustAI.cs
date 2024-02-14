@@ -51,14 +51,6 @@ public class CosmicCrustAI : Enemy
                 liveEnemies.Add(enemy);
         }
 
-        //Live player count
-        List<PlayerCharacter> livePlayers = new List<PlayerCharacter>();
-        foreach(PlayerCharacter player in EnemyManager.Instance.Players)
-        {
-            if (!player.Dead)
-                livePlayers.Add(player);
-        }
-
         //Cosmic Caster
         if(attackIndex == 0)
         {
@@ -79,45 +71,21 @@ public class CosmicCrustAI : Enemy
 
             CombatManager.Instance.CharactersSelected.Add(this);
 
-            foreach (PlayerCharacter player in livePlayers)
-                if (player.IsUtility)
-                {
-                    CombatManager.Instance.ActivePlayers.Add(player); 
-                    return;
-                }
-
-            CombatManager.Instance.ActivePlayers.Add(livePlayers[Random.Range(0, livePlayers.Count)]);
+            //Find Utility or random
+            if (CombatManager.Instance.FindUtilityCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
+            else
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Starlight Fury
         else if(attackIndex == 1)
         {
-            if(TauntedBy)
-            {
-                CombatManager.Instance.DetermineTauntedTarget(this);
-                return;
-            }
-
-            int random;
-
-            //Find utlitiy
-            List<PlayerCharacter> utilities = new List<PlayerCharacter>();
-            foreach (PlayerCharacter player in livePlayers)
-            {
-                if (player.IsUtility)
-                    utilities.Add(player);
-            }
-
-            if (utilities.Count > 0)
-            {
-                random = Random.Range(0, utilities.Count);
-                CombatManager.Instance.CharactersSelected.Add(utilities[random]);
-            }
+            //Find Utility or random
+            if (CombatManager.Instance.FindUtilityCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
             else
-            {
-                random = Random.Range(0, livePlayers.Count);
-                CombatManager.Instance.CharactersSelected.Add(livePlayers[random]);
-            }
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Encrustable
@@ -127,24 +95,11 @@ public class CosmicCrustAI : Enemy
             int random = Random.Range(0, liveEnemies.Count);
             CombatManager.Instance.CharactersSelected.Add(liveEnemies[random]);
 
-            //Find support
-            List<PlayerCharacter> supports = new List<PlayerCharacter>();
-            foreach(PlayerCharacter player in livePlayers)
-            {
-                if (player.IsSupport)
-                    supports.Add(player);
-            }
-
-            if(supports.Count > 0)
-            {
-                random = Random.Range(0, supports.Count);
-                CombatManager.Instance.CharactersSelected.Add(supports[random]);
-            }
+            //Add Support or Random
+            if (CombatManager.Instance.FindSupportCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindSupportCharacter());
             else
-            {
-                random = Random.Range(0, livePlayers.Count);
-                CombatManager.Instance.CharactersSelected.Add(livePlayers[random]);
-            }
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
 
         //Orbital Crust

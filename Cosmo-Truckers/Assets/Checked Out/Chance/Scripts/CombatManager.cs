@@ -245,7 +245,7 @@ public class CombatManager : MonoBehaviour
             }
         }
         //player selected already
-        else if(player != null)
+        else if(player != null && !player.Dead)
         {
             if (!player.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
             {

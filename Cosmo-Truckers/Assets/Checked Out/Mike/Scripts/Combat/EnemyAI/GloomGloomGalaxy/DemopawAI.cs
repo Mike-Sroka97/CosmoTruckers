@@ -35,10 +35,11 @@ public class DemopawAI : EnemySummon
         //black out
         else
         {
-            if (CombatManager.Instance.FindUtilityCharacter() != null)
-                CombatManager.Instance.CharactersSelected.Add(CombatManager.Instance.FindUtilityCharacter());
+            //Find Utility or random
+            if (CombatManager.Instance.FindUtilityCharacter())
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, CombatManager.Instance.FindUtilityCharacter());
             else
-                CombatManager.Instance.IgnoreTauntSingleTarget(true);
+                CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
     }
 }
