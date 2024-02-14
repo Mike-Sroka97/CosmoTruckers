@@ -107,7 +107,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
             }
             else
             {
-                GameObject tempBullet = Instantiate(bullet, barrel);
+                GameObject tempBullet = Instantiate(bullet, barrel, transform.parent);
                 tempBullet.transform.parent = null;
                 tempBullet.transform.localScale = new Vector3(1, 1, 1);
             }

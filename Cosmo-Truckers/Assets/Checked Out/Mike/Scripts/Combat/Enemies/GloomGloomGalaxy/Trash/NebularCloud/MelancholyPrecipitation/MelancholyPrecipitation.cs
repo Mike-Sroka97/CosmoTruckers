@@ -25,11 +25,6 @@ public class MelancholyPrecipitation : CombatMove
         base.StartMove();
     }
 
-    private void Update()
-    {
-        TrackTime();
-    }
-
     protected override void TrackTime()
     {
         if (MoveEnded || !trackTime)

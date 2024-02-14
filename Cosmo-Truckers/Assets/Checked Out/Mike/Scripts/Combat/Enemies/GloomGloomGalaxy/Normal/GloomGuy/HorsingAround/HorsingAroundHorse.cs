@@ -166,8 +166,8 @@ public class HorsingAroundHorse : MonoBehaviour
                 sparks.Play(); 
             }
 
-            Instantiate(leftShock, shockwaveSpawns[0].position, Quaternion.identity);
-            Instantiate(rightShock, shockwaveSpawns[1].position, Quaternion.identity);
+            Instantiate(leftShock, shockwaveSpawns[0].position, Quaternion.identity, transform.parent);
+            Instantiate(rightShock, shockwaveSpawns[1].position, Quaternion.identity, transform.parent);
         }
         else
         {

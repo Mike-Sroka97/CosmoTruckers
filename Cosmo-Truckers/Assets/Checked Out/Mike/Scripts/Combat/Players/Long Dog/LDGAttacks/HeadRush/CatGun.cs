@@ -37,7 +37,7 @@ public class CatGun : MonoBehaviour
     IEnumerator Fire()
     {
         myRenderer.sprite = fireMouth;
-        Instantiate(projectile, projectileSpawn.transform);
+        Instantiate(projectile, projectileSpawn.transform, transform.parent);
         yield return new WaitForSeconds(spriteWaitTime);
         myRenderer.sprite = startingSprite; 
     }  
