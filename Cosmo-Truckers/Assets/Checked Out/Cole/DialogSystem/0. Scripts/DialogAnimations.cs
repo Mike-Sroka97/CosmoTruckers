@@ -1,0 +1,485 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class DialogAnimations
+{
+    public bool isTextAnimating = false; 
+    private bool stopAnimating = false;
+
+    private readonly TMP_Text textBox;
+    private readonly float textAnimationScale; 
+
+    // Initializer
+    public DialogAnimations(TMP_Text _textBox)
+    {
+        textBox = _textBox;
+        textAnimationScale = textBox.fontSize; 
+    }
+
+    private static readonly Color32 clear = new Color32(0, 0, 0, 0);
+    private const float CHAR_ANIM_TIME = 0.07f;
+    private float secondsPerCharStartValue = 150f;
+    private float secondsPerCharacterValue_1 = 1f;
+    private float secondsPerCharacterValue_2 = 150f;
+    private float secondsPerCharacter;
+
+    private static readonly Vector3 vectorZero = Vector3.zero; 
+
+    // Begin to animate the text in using a coroutine
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, Action onFinish)
+    {
+        secondsPerCharacterValue_1 = 1f;
+        secondsPerCharacterValue_2 = secondsPerCharStartValue;
+
+        // set the isTextAnimating to true and get Seconds Per Character
+        isTextAnimating = true; 
+        secondsPerCharacter = secondsPerCharacterValue_1 / secondsPerCharacterValue_2;
+        float timeOfLastCharacter = 0;
+
+        // Get the start and ending index for text anims, colors, and sizes
+        TextAnimInfo[] textAnimInfo = SeparateOutTextAnimInfo(commands);
+        TextColorInfo[] textColorInfo = SeparateOutTextColorInfo(commands);
+        TextSizeInfo[] textSizeInfo = SeparateOutTextSizeInfo(commands);
+
+        // Get the text info
+        TMP_TextInfo textInfo = textBox.textInfo;
+
+        // Clear the mesh
+        for (int i = 0; i < textInfo.meshInfo.Length; i++) 
+        {
+            TMP_MeshInfo meshInform = textInfo.meshInfo[i];
+            if (meshInform.vertices != null)
+            {
+                for (int j = 0; j < meshInform.vertices.Length; j++)
+                {
+                    meshInform.vertices[j] = vectorZero; 
+                }
+            }
+        }
+
+        // Set the text of the textBox to the processed message and update the meshes
+        textBox.text = processedMessage; 
+        textBox.ForceMeshUpdate();
+
+        // Get the original colors of the meshes
+        TMP_MeshInfo[] cachedMeshInfo = textInfo.CopyMeshInfoVertexData();
+        Color32[][] originalColors = new Color32[textInfo.meshInfo.Length][];
+
+        // Get all the original colors
+        for (int i = 0; i < originalColors.Length; i++)
+        {
+            // Get colors of current mesh, create an array the length of the colors we just got, and copy them over to keep track before modifying. 
+            Color32[] theColors = textInfo.meshInfo[i].colors32;
+            originalColors[i] = new Color32[theColors.Length];
+            Array.Copy(theColors, originalColors[i], theColors.Length);
+        }
+
+        // Get the number of characters and create an array for the start times of each
+        int characterCount = textInfo.characterCount;
+        float[] characterAnimStartTimes = new float[characterCount];
+
+        for (int i = 0; i < characterCount; i++)
+        {
+            // this indicates the character hasn't started animating yet
+            characterAnimStartTimes[i] = -1; 
+        }
+
+        int visibleCharacterIndex = 0; 
+
+        // Begin to actually animate
+        while (true)
+        {
+            if (stopAnimating)
+            {
+                // If stopAnimating is true, set all character anim start times to right now and finish animating
+                for (int i = visibleCharacterIndex; i < characterCount; i++)
+                {
+                    characterAnimStartTimes[i] = Time.unscaledTime; 
+                }
+                // set the visible character count to the text info character count
+                visibleCharacterIndex = characterCount;
+                FinishAnimating(onFinish); 
+            }
+            if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
+            {
+                // If we're not at the end of the characterCount 
+                if (visibleCharacterIndex <= characterCount)
+                {
+                    ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                    // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
+                    if (visibleCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
+                    {
+                        // set the animation start time to now
+                        characterAnimStartTimes[visibleCharacterIndex] = Time.unscaledTime;
+                        visibleCharacterIndex++; // progress visible character index
+                        timeOfLastCharacter = Time.unscaledTime; // set time of last character to now
+                        
+                        // If we're at the characterCount, finish animating
+                        if (visibleCharacterIndex == characterCount)
+                        {
+                            FinishAnimating(onFinish); 
+                        }
+                    }
+                }
+            }
+
+            // Go through all of the characters and set the colors and the animation adjustments
+            for (int j = 0; j < characterCount; j++)
+            {
+                // Character Info has a lot of stuff, but we'll mostly be using vertex info from here
+                TMP_CharacterInfo characterInfo = textInfo.characterInfo[j];
+                
+                //Invisible characters have a vertexIndex of 0 because they have no vertices
+                //They should be ignored to avoid messing up the first character in the string which also has a vertexIndex of 0
+                if (characterInfo.isVisible)
+                {
+                    int vertexIndex = characterInfo.vertexIndex;
+                    int materialIndex = characterInfo.materialReferenceIndex;
+                    Color32[] destinationColors = textInfo.meshInfo[materialIndex].colors32;
+
+                    // Set the text to clear by default so we can show one character at a time
+                    Color32 thisColor = clear; 
+
+                    // If we're not up to the current visible character index, set the colors
+                    if (j < visibleCharacterIndex)
+                    {
+                        bool insideBrackets = false;
+
+                        if (textColorInfo.Length > 0)
+                        {
+                            for (int c = 0; c < textColorInfo.Length; c++)
+                            {
+                                if (textColorInfo[c].startIndex == visibleCharacterIndex) { insideBrackets = true; }
+                                else if (textColorInfo[c].endIndex == visibleCharacterIndex) { insideBrackets = false; }
+
+                                if (insideBrackets) { thisColor = textColorInfo[c].color; }
+                                else { thisColor = originalColors[materialIndex][vertexIndex]; }
+                            }
+                        }
+                        else
+                        {
+                            thisColor = originalColors[materialIndex][vertexIndex];
+                        }
+                    }
+
+                    //Set the vertex index colors
+                    destinationColors[vertexIndex] = thisColor;
+                    destinationColors[vertexIndex + 1] = thisColor; 
+                    destinationColors[vertexIndex + 2] = thisColor; 
+                    destinationColors[vertexIndex + 3] = thisColor;
+
+                    // Get the stored verticies and the current verticies
+                    Vector3[] sourceVertices = cachedMeshInfo[materialIndex].vertices;
+                    Vector3[] destinationVertices = textInfo.meshInfo[materialIndex].vertices;
+
+                    float characterTime = 0;
+                    float characterAnimStartTime = characterAnimStartTimes[j]; 
+
+                    // Wait between each character. Max 1 second
+                    if (characterAnimStartTime >= 0)
+                    {
+                        float timeSinceAnimStart = Time.unscaledTime - characterAnimStartTime;
+                        characterTime = Mathf.Min(1, timeSinceAnimStart / CHAR_ANIM_TIME); 
+                    }
+
+                    // May need to get text font size of each character here, check back later
+                    Vector3 animPositionAdjust = GetAnimPositionAdjustment(textAnimInfo, j, textBox.fontSize, Time.unscaledTime);
+                    Vector3 offset = (sourceVertices[vertexIndex] + sourceVertices[vertexIndex + 2]) / 2;
+
+                    for (int i = 0; i < 4; i++)
+                        destinationVertices[vertexIndex + i] = ((sourceVertices[vertexIndex + i] - offset) * characterTime) + offset + animPositionAdjust; 
+                }
+            }
+
+            // Update the vertex data
+            textBox.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32); 
+
+            for (int i = 0; i < textInfo.meshInfo.Length; i++)
+            {
+                // Get index mesh and update its Geometry
+                TMP_MeshInfo info = textInfo.meshInfo[i];
+                info.mesh.vertices = info.vertices;
+                textBox.UpdateGeometry(info.mesh, i); 
+            }
+            yield return null; 
+        }
+    } 
+
+    private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter)
+    {
+        // If the difference in the unscaled time and the time the last character played is greater than seconds per character, show next character
+        return (Time.unscaledTime - timeOfLastCharacter) > secondsPerCharacter;         
+    }
+
+    private void ExecuteRemainingCommandsAtIndex(List<DialogCommand> commands, int visibleCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
+    {
+        // At the current index, go through the remaining DialogCommands and apply the effects if they are at the current index
+        for (int i = 0; i < commands.Count; i++)
+        {
+            DialogCommand currentCommand = commands[i];
+            if (currentCommand.position == visibleCharacterIndex)
+            {
+                switch (currentCommand.type)
+                {
+                    // Add a pause between characters using timeOfLastCharacter
+                    case TextCommandType.Pause:
+                        timeOfLastCharacter = Time.unscaledTime + currentCommand.floatValue;
+                        break;
+                    // Set the text speed with seconds per character
+                    case TextCommandType.TextSpeedChange: 
+                        secondsPerCharacter = 1f / currentCommand.floatValue;
+                        break; 
+                }
+                // Remove the DialogCommand from this list once it is executed
+                commands.RemoveAt(i);
+                i--; 
+            }
+        }
+    }
+
+    #region ANIMATION ADJUSTMENT VARIABLES
+    const float SHAKE_MAGNITUDE = 0.06f;
+    const float SHAKE_FREQUENCY = 15f;
+    const float WAVE_MAGNITUDE = 0.06f;
+    const float shakeAdjuster = 0.5f; //Makes it feel better
+    const float waveAdjuster = 1.5f;
+    const float crestCharCount = 6; 
+    #endregion
+
+    /// <summary>
+    /// Animate all of the different text anim infos
+    /// </summary>
+    /// <param name="textAnimInfo"></param>
+    /// <param name="characterIndex"></param>
+    /// <param name="fontSize"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
+    private Vector3 GetAnimPositionAdjustment(TextAnimInfo[] textAnimInfo, int characterIndex, float fontSize, float time)
+    {
+        float x = 0, y = 0; 
+
+        // Loop through all of the text anim infos and apply time to their animations
+        for (int i = 0; i < textAnimInfo.Length; i++)
+        {
+            TextAnimInfo currentInfo = textAnimInfo[i];
+
+            // Check if this character is inside of the indexes for the animation type
+            if (characterIndex >= currentInfo.startIndex && characterIndex < currentInfo.endIndex)
+            {
+                // Shake
+                if (currentInfo.type == TextAnimationType.shake)
+                {
+                    float scaleAdjustment = fontSize * SHAKE_MAGNITUDE;
+                    x += (Mathf.PerlinNoise((characterIndex + time) * SHAKE_FREQUENCY, 0) - shakeAdjuster) * scaleAdjustment; 
+                    y += (Mathf.PerlinNoise((characterIndex + time) * SHAKE_FREQUENCY, 1000) - shakeAdjuster) * scaleAdjustment;
+                }
+                // Wave
+                else if (currentInfo.type == TextAnimationType.wave)
+                {
+                    y += Mathf.Sin((characterIndex * waveAdjuster) + (time * crestCharCount)) * fontSize * WAVE_MAGNITUDE; 
+                }
+            }
+        }
+        return new Vector3(x, y, 0);
+    }
+
+    private void FinishAnimating(Action onFinish)
+    {
+        // Call this when the animation is finished. 
+        isTextAnimating = false;
+        stopAnimating = false;
+        onFinish?.Invoke(); //If there is an onFinish action, call it here
+    }
+    
+    public void FinishCurrentAnimation()
+    {
+        secondsPerCharacter = 0;
+
+        if (isTextAnimating)
+            stopAnimating = true;
+    }
+
+    private TextAnimInfo[] SeparateOutTextAnimInfo(List<DialogCommand> commands)
+    {
+        List<TextAnimInfo> tempResult = new List<TextAnimInfo>();
+        List<DialogCommand> animStartCommands = new List<DialogCommand>();
+        List<DialogCommand> animEndCommands = new List<DialogCommand>();
+
+        // Go through all of the commands being sent in (this list comes from DialogueUtility)
+        // Remove anims from the commands list as you go and add them to a local list
+        for (int i = 0; i < commands.Count; i++)
+        {
+            DialogCommand currentCommand = commands[i];
+
+            bool isValidType = true; 
+            switch (currentCommand.type)
+            {
+                case TextCommandType.AnimStart:
+                    animStartCommands.Add(currentCommand);
+                    break; 
+                case TextCommandType.AnimEnd:
+                    animEndCommands.Add(currentCommand);
+                    break; 
+                default:
+                    isValidType = false; 
+                    break;
+            }
+            if (isValidType)
+            {
+                commands.RemoveAt(i);
+                i--;
+            }
+        }
+
+        if (animStartCommands.Count != animEndCommands.Count)
+            Debug.LogError("Unequal number of start and end animation commands. Start Commands: " + animStartCommands.Count + " End Commands: " + animEndCommands.Count);
+        // Create a textAnimInfo struct for the animations 
+        else
+        {
+            for (int i = 0; i < animStartCommands.Count; i++)
+            {
+                DialogCommand startCommand = animStartCommands[i];
+                DialogCommand endCommand = animEndCommands[i];
+
+                tempResult.Add(new TextAnimInfo
+                {
+                    startIndex = startCommand.position,
+                    endIndex = endCommand.position,
+                    type = startCommand.textAnimValue
+                });
+            }
+        }
+
+        return tempResult.ToArray(); 
+    }
+    private TextColorInfo[] SeparateOutTextColorInfo(List<DialogCommand> commands)
+    {
+        List<TextColorInfo> tempResult = new List<TextColorInfo>();
+        List<DialogCommand> colorStartCommands = new List<DialogCommand>();
+        List<DialogCommand> colorEndCommands = new List<DialogCommand>();
+
+        // Go through all of the commands being sent in (this list comes from DialogueUtility)
+        // Remove colors from the commands list as you go and add them to a local list
+        for (int i = 0; i < commands.Count; i++)
+        {
+            DialogCommand currentCommand = commands[i];
+
+            bool isValidType = true;
+            switch (currentCommand.type)
+            {
+                case TextCommandType.ColorStart:
+                    colorStartCommands.Add(currentCommand);
+                    break;
+                case TextCommandType.ColorEnd:
+                    colorEndCommands.Add(currentCommand);
+                    break;
+                default:
+                    isValidType = false;
+                    break;
+            }
+            if (isValidType)
+            {
+                commands.RemoveAt(i);
+                i--;
+            }
+        }
+
+        if (colorStartCommands.Count != colorEndCommands.Count)
+            Debug.LogError("Unequal number of start and end color commands. Start Commands: " + colorStartCommands.Count + " End Commands: " + colorEndCommands.Count);
+        // Create a textAnimInfo struct for the animations 
+        else
+        {
+            for (int i = 0; i < colorStartCommands.Count; i++)
+            {
+                DialogCommand startCommand = colorStartCommands[i];
+                DialogCommand endCommand = colorEndCommands[i];
+
+                tempResult.Add(new TextColorInfo
+                {
+                    startIndex = startCommand.position,
+                    endIndex = endCommand.position,
+                    color = startCommand.color
+                });
+            }
+        }
+
+        return tempResult.ToArray();
+    }
+    private TextSizeInfo[] SeparateOutTextSizeInfo(List<DialogCommand> commands)
+    {
+        List<TextSizeInfo> tempResult = new List<TextSizeInfo>();
+        List<DialogCommand> sizeStartCommands = new List<DialogCommand>();
+        List<DialogCommand> sizeEndCommands = new List<DialogCommand>();
+
+        // Go through all of the commands being sent in (this list comes from DialogueUtility)
+        // Remove colors from the commands list as you go and add them to a local list
+        for (int i = 0; i < commands.Count; i++)
+        {
+            DialogCommand currentCommand = commands[i];
+
+            bool isValidType = true;
+            switch (currentCommand.type)
+            {
+                case TextCommandType.SizeStart:
+                    sizeStartCommands.Add(currentCommand);
+                    break;
+                case TextCommandType.SizeEnd:
+                    sizeEndCommands.Add(currentCommand);
+                    break;
+                default:
+                    isValidType = false;
+                    break;
+            }
+            if (isValidType)
+            {
+                commands.RemoveAt(i);
+                i--;
+            }
+        }
+
+        if (sizeStartCommands.Count != sizeEndCommands.Count)
+            Debug.LogError("Unequal number of start and end size commands. Start Commands: " + sizeStartCommands.Count + " End Commands: " + sizeEndCommands.Count);
+        // Create a textAnimInfo struct for the animations 
+        else
+        {
+            for (int i = 0; i < sizeStartCommands.Count; i++)
+            {
+                DialogCommand startCommand = sizeStartCommands[i];
+                DialogCommand endCommand = sizeStartCommands[i];
+
+                tempResult.Add(new TextSizeInfo
+                {
+                    startIndex = startCommand.position,
+                    endIndex = endCommand.position,
+                    size = startCommand.floatValue
+                });
+            }
+        }
+
+        return tempResult.ToArray();
+    }
+}
+
+public struct TextAnimInfo
+{
+    public int startIndex;
+    public int endIndex;
+    public TextAnimationType type;
+}
+
+public struct TextColorInfo
+{
+    public int startIndex;
+    public int endIndex;
+    public Color color;
+}
+
+public struct TextSizeInfo
+{
+    public int startIndex;
+    public int endIndex;
+    public float size;
+}
