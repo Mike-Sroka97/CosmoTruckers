@@ -190,7 +190,10 @@ public class TurnOrder : MonoBehaviour
         livingCharacters = speedList.ToArray();
         DetermineTurnOrder();
 
-        //EnemyManager.Instance.UpdateTrashMobList();
+        if (characterSpeed.GetComponent<EnemySummon>())
+            EnemyManager.Instance.EnemySummons.Remove(characterSpeed.GetComponent<EnemySummon>());
+        else if (characterSpeed.GetComponent<PlayerCharacterSummon>())
+            EnemyManager.Instance.PlayerSummons.Remove(characterSpeed.GetComponent<PlayerCharacterSummon>());
     }
 
     public void AddToSpeedList(CharacterStats characterSpeed)
@@ -206,7 +209,8 @@ public class TurnOrder : MonoBehaviour
         livingCharacters = speedList.ToArray();
         DetermineTurnOrder();
 
-        //EnemyManager.Instance.UpdateTrashMobList();
+        if (characterSpeed.GetComponent<EnemySummon>() || characterSpeed.GetComponent<PlayerCharacterSummon>())
+            currentCharactersTurn++;
     }
 
     //Every thing for end combat not on a delay

@@ -13,13 +13,6 @@ public class CharacterStats : MonoBehaviour
     public int Restoration = 100;
     public float Gravity = 1;
 
-    TurnOrder turnOrder;
-
-    private void Start()
-    {
-        turnOrder = FindObjectOfType<TurnOrder>();
-    }
-
     public void ReflexChange(int speedMod)
     {
         bool turnOrderAdjusted;
@@ -27,15 +20,15 @@ public class CharacterStats : MonoBehaviour
         Reflex += speedMod;
         if(tempSpeed > Reflex)
         {
-            turnOrderAdjusted = turnOrder.AdjustSpeed(this, false);
+            turnOrderAdjusted = TurnOrder.Instance.AdjustSpeed(this, false);
         }
         else
         {
-            turnOrderAdjusted = turnOrder.AdjustSpeed(this, true);
+            turnOrderAdjusted = TurnOrder.Instance.AdjustSpeed(this, true);
         }
         if(turnOrderAdjusted)
         {
-            turnOrder.DetermineTurnOrder();
+            TurnOrder.Instance.DetermineTurnOrder();
         }
         else
         {

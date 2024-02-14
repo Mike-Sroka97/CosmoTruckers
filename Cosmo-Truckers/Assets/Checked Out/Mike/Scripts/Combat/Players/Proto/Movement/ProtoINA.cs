@@ -541,7 +541,7 @@ public class ProtoINA : Player
     private void CreateDyingProto()
     {
         GameObject remnant = Instantiate(dyingProto, transform);
-        remnant.transform.parent = null;
+        remnant.transform.parent = transform.parent;
     }
 
     IEnumerator TeleportCooldown()

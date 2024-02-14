@@ -207,6 +207,8 @@ public class EnemyManager : MonoBehaviour
             if(EnemyCombatSpots[i] == null)
             {
                 GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
+                EnemySummons.Add(newSummon.GetComponent<EnemySummon>());
+                newSummon.name += GetAliveEnemySummons().Count;
                 EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
                 newSummon.transform.position = EnemySummonLocations[i - 8].position;
                 foreach(SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
