@@ -167,7 +167,7 @@ public class DungeonGen : MonoBehaviour
                     int choice = MathCC.GetRandomWeightedIndex(weights);
 
                     //Loop tho nodes to find non exlude node
-                    while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) && tempNodes[choice].ExcludeFromDungeon != -1)
+                    while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0))
                         choice = MathCC.GetRandomWeightedIndex(weights);
 
                     //tempNodes[choice].Connections = Random.Range(1, 4);
@@ -232,7 +232,7 @@ public class DungeonGen : MonoBehaviour
             int choice = Random.Range(0, tempNodes.Count);
 
             //Loop tho nodes to find non exlude node
-            while ((tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Negative)
+            while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Negative)
             {
                 tempNodes.RemoveAt(choice);
                 if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);
@@ -256,7 +256,7 @@ public class DungeonGen : MonoBehaviour
             int choice = Random.Range(0, tempNodes.Count);
 
             //Loop tho nodes to find non exlude node
-            while ((tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].ExcludeFromDungeon != -1) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Positive)
+            while (tempNodes[choice].ExcludeFromDungeon == PlayerPrefs.GetInt("CurrentDungeon", 0) || tempNodes[choice].NCNodeValue != EnumManager.NCNodeValue.Positive)
             {
                 tempNodes.RemoveAt(choice);
                 if (tempNodes.Count == 0) tempNodes = new List<Node.DungeonNodeBase>(MiddleNodes);

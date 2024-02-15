@@ -59,6 +59,7 @@ public class DungeonNode : MonoBehaviour
             case EnumManager.NodeType.NCNode_PlayerDependent:
             case EnumManager.NodeType.NCNode_PartyVoting:
             case EnumManager.NodeType.NCNode_PartyDistribution:
+            case EnumManager.NodeType.NCNode_Auto:
                 GetComponent<Button>().onClick.AddListener(delegate
                 {
                     OnNCAllCharacterClick();

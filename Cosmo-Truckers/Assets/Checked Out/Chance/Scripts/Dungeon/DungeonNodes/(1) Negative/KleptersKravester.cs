@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class KleptersKravester : NCNodePopUpOptions
 {
     [SerializeField] Sprite[] AllFruitImages;
+    [SerializeField] bool Possitive = false;
 
     public override void SetUp(DebuffStackSO[] augs)
     {
@@ -31,7 +32,10 @@ public class KleptersKravester : NCNodePopUpOptions
 
     void OnButtonClick()
     {
-        allPlayersSorted[0].TakeDamage(1, true);
+        if(Possitive)
+            allPlayersSorted[0].TakeHealing(1, true);
+        else
+            allPlayersSorted[0].TakeDamage(1, true);
 
         allPlayersSorted.RemoveAt(0);
 
@@ -44,7 +48,10 @@ public class KleptersKravester : NCNodePopUpOptions
 
     void OnButtonClickBad()
     {
-        allPlayersSorted[0].Stun(true);
+        if(Possitive)
+            allPlayersSorted[0].Energize(true);
+        else
+            allPlayersSorted[0].Stun(true);
 
         allPlayersSorted.RemoveAt(0);
 

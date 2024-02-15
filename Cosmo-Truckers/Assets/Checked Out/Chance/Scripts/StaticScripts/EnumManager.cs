@@ -27,6 +27,7 @@ public class EnumManager
         NCNode_PlayerDependent,
         NCNode_PartyVoting,
         NCNode_PartyDistribution,
+        NCNode_Auto
 
     }
 
