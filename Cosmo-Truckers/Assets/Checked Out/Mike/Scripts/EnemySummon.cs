@@ -6,7 +6,9 @@ public class EnemySummon : Enemy
 {
     public override void Die()
     {
+        EnemyManager.Instance.EnemyCombatSpots[CombatSpot] = null;
         TurnOrder.Instance.RemoveFromSpeedList(Stats);
         base.Die();
+        Destroy(gameObject);
     }
 }

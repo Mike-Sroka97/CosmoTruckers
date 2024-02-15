@@ -21,6 +21,7 @@ public class PlayerCharacterSummon : PlayerCharacter
     {
         base.Die();
         EnemyManager.Instance.PlayerCombatSpots[CombatSpot] = null;
+        TurnOrder.Instance.RemoveFromSpeedList(Stats);
         //TODO ANIMATIONS AND SFX??
         Destroy(gameObject);
     }

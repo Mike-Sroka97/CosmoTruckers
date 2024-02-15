@@ -316,37 +316,12 @@ public abstract class CombatMove : MonoBehaviour
     {
         foreach(Player player in players)
         {
-            if (player.MyCharacter.PlayerNumber == 1)
-                foreach (SpriteRenderer sprite in player.MyRenderers)
-                {
-                    player.StartingMaterial = CombatManager.Instance.playerOneMaterial;
-                    sprite.material = CombatManager.Instance.playerOneMaterial;
-                    sprite.sortingOrder += 0;
-                }
-
-            else if (player.MyCharacter.PlayerNumber == 2)
-                foreach (SpriteRenderer sprite in player.MyRenderers)
-                {
-                    player.StartingMaterial = CombatManager.Instance.playerTwoMaterial;
-                    sprite.material = CombatManager.Instance.playerTwoMaterial;
-                    sprite.sortingOrder += 1;
-                }
-
-            else if (player.MyCharacter.PlayerNumber == 3)
-                foreach (SpriteRenderer sprite in player.MyRenderers)
-                {
-                    player.StartingMaterial = CombatManager.Instance.playerThreeMaterial;
-                    sprite.material = CombatManager.Instance.playerThreeMaterial;
-                    sprite.sortingOrder += 2;
-                }
-
-            else
-                foreach (SpriteRenderer sprite in player.MyRenderers)
-                {
-                    player.StartingMaterial = CombatManager.Instance.playerFourMaterial;
-                    sprite.material = CombatManager.Instance.playerFourMaterial;
-                    sprite.sortingOrder += 3;
-                }
+            foreach (SpriteRenderer sprite in player.MyRenderers)
+            {
+                player.StartingMaterial = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
+                sprite.material = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
+                sprite.sortingOrder += player.MyCharacter.PlayerNumber - 1;
+            }
         }
     }
 
