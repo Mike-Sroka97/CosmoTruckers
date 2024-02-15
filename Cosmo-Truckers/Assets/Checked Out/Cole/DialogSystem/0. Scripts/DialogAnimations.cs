@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class DialogAnimations
     private float secondsPerCharacterValue_2 = 150f;
     private float secondsPerCharacter;
 
-    private static readonly Vector3 vectorZero = Vector3.zero; 
+    private static readonly Vector3 vectorZero = Vector3.zero;
 
     // Begin to animate the text in using a coroutine
     public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, Action onFinish)
@@ -66,16 +67,6 @@ public class DialogAnimations
 
         // Get the original colors of the meshes
         TMP_MeshInfo[] cachedMeshInfo = textInfo.CopyMeshInfoVertexData();
-        Color32[][] originalColors = new Color32[textInfo.meshInfo.Length][];
-
-        // Get all the original colors
-        for (int i = 0; i < originalColors.Length; i++)
-        {
-            // Get colors of current mesh, create an array the length of the colors we just got, and copy them over to keep track before modifying. 
-            Color32[] theColors = textInfo.meshInfo[i].colors32;
-            originalColors[i] = new Color32[theColors.Length];
-            Array.Copy(theColors, originalColors[i], theColors.Length);
-        }
 
         // Get the number of characters and create an array for the start times of each
         int characterCount = textInfo.characterCount;
@@ -87,7 +78,10 @@ public class DialogAnimations
             characterAnimStartTimes[i] = -1; 
         }
 
-        int visibleCharacterIndex = 0; 
+        int visibleCharacterIndex = 0;
+
+        // Get the colors for this dialog
+        Color32[] destinationColors = RetrieveDestinationColors(characterCount, textInfo, textColorInfo, cachedMeshInfo);
 
         // Begin to actually animate
         while (true)
@@ -138,38 +132,9 @@ public class DialogAnimations
                 {
                     int vertexIndex = characterInfo.vertexIndex;
                     int materialIndex = characterInfo.materialReferenceIndex;
-                    Color32[] destinationColors = textInfo.meshInfo[materialIndex].colors32;
+                    destinationColors = textInfo.meshInfo[materialIndex].colors32;
 
-                    // Set the text to clear by default so we can show one character at a time
-                    Color32 thisColor = clear; 
-
-                    // If we're not up to the current visible character index, set the colors
-                    if (j < visibleCharacterIndex)
-                    {
-                        bool insideBrackets = false;
-
-                        if (textColorInfo.Length > 0)
-                        {
-                            for (int c = 0; c < textColorInfo.Length; c++)
-                            {
-                                if (textColorInfo[c].startIndex == visibleCharacterIndex) { insideBrackets = true; }
-                                else if (textColorInfo[c].endIndex == visibleCharacterIndex) { insideBrackets = false; }
-
-                                if (insideBrackets) { thisColor = textColorInfo[c].color; }
-                                else { thisColor = originalColors[materialIndex][vertexIndex]; }
-                            }
-                        }
-                        else
-                        {
-                            thisColor = originalColors[materialIndex][vertexIndex];
-                        }
-                    }
-
-                    //Set the vertex index colors
-                    destinationColors[vertexIndex] = thisColor;
-                    destinationColors[vertexIndex + 1] = thisColor; 
-                    destinationColors[vertexIndex + 2] = thisColor; 
-                    destinationColors[vertexIndex + 3] = thisColor;
+                    textBox.mesh.colors32 = destinationColors;
 
                     // Get the stored verticies and the current verticies
                     Vector3[] sourceVertices = cachedMeshInfo[materialIndex].vertices;
@@ -238,6 +203,83 @@ public class DialogAnimations
                 i--; 
             }
         }
+    }
+
+    private Color32[] RetrieveDestinationColors(int characterCount, TMP_TextInfo textInfo, TextColorInfo[] textColorInfo, TMP_MeshInfo[] cachedMeshInfo)
+    {
+        Color32[][] originalColors = new Color32[textInfo.meshInfo.Length][];
+        Color32[] newDestinationColors = null; 
+
+        // Get all the original colors
+        for (int i = 0; i < originalColors.Length; i++)
+        {
+            // Get colors of current mesh, create an array the length of the colors we just got, and copy them over to keep track before modifying. 
+            Color32[] theColors = textInfo.meshInfo[i].colors32;
+            originalColors[i] = new Color32[theColors.Length];
+            Array.Copy(theColors, originalColors[i], theColors.Length);
+        }
+
+        int vertexIndex = 0; 
+        List<Color32> vertexColors = new List<Color32>();
+
+        // Go through all of the characters and set the colors and the animation adjustments
+        for (int i = 0; i < characterCount; i++)
+        {
+            // Character Info has a lot of stuff, but we'll mostly be using vertex info from here
+            TMP_CharacterInfo characterInfo = textInfo.characterInfo[i];
+
+            int materialIndex = characterInfo.materialReferenceIndex;
+            newDestinationColors = textInfo.meshInfo[materialIndex].colors32;
+
+            // Set the text to clear by default so we can show one character at a time
+            Color32 thisColor = clear;
+
+            //Invisible characters have a vertexIndex of 0 because they have no vertices
+            //They should be ignored to avoid messing up the first character in the string which also has a vertexIndex of 0
+            if (characterInfo.isVisible)
+            {
+                bool insideBrackets = false;
+
+                if (textColorInfo.Length > 0)
+                {
+                    for (int c = 0; c < textColorInfo.Length; c++)
+                    {
+                        if ((i >= textColorInfo[c].startIndex) && (i < textColorInfo[c].endIndex))
+                        {
+                            insideBrackets = true;
+                            //thisColor = textColorInfo[c].color;
+                            vertexColors.Add(textColorInfo[c].color);
+                            break;
+                        }
+                        else if (i >= textColorInfo[c].endIndex)
+                        {
+                            insideBrackets = false;
+                        }
+                    }
+                    if (!insideBrackets)
+                    {
+                        //thisColor = originalColors[materialIndex][vertexIndex]; 
+                        vertexColors.Add(originalColors[materialIndex][vertexIndex]);
+                    }
+                }
+                else
+                {
+                    //thisColor = originalColors[materialIndex][vertexIndex];
+                    vertexColors.Add(originalColors[materialIndex][vertexIndex]);
+                }
+            }
+        }
+
+        for (int j = 0; j < vertexColors.Count; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                newDestinationColors[vertexIndex] = vertexColors[j];
+                vertexIndex++;
+            }
+        }
+
+        return newDestinationColors;
     }
 
     #region ANIMATION ADJUSTMENT VARIABLES
@@ -474,7 +516,7 @@ public struct TextColorInfo
 {
     public int startIndex;
     public int endIndex;
-    public Color color;
+    public Color32 color;
 }
 
 public struct TextSizeInfo

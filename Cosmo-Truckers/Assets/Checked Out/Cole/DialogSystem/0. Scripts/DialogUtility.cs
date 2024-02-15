@@ -345,7 +345,7 @@ public class DialogUtility : MonoBehaviour
         return result; 
     }
 
-    private static Color GetColor(string stringVal)
+    private static Color32 GetColor(string stringVal)
     {
         // split the string up based on commas
         string[] valueList = stringVal.Split(',');
@@ -357,9 +357,9 @@ public class DialogUtility : MonoBehaviour
             if (i < 3)
             { 
                 if (float.TryParse(valueList[i], out float currentValue))
-                    numbers[i] = currentValue;
+                    numbers[i] = (currentValue / 255);
                 else
-                    numbers[i] = 255f;
+                    numbers[i] = 1f;
             }
             // Alpha of color
             else
@@ -374,7 +374,10 @@ public class DialogUtility : MonoBehaviour
             }
         }
 
-        return new Color(numbers[0], numbers[1], numbers[2], numbers[3]);
+        Color newColor = new Color(numbers[0], numbers[1], numbers[2], numbers[3]);
+        Color32 newColor32 = (Color32)newColor;
+
+        return newColor32;
     }
 }
 
@@ -383,7 +386,7 @@ public struct DialogCommand
     public int position;
     public float floatValue;
     public string stringValue;
-    public Color color;  
+    public Color32 color;  
     public TextCommandType type;
     public TextAnimationType textAnimValue;
     public TextEmotionType textEmotionType;
