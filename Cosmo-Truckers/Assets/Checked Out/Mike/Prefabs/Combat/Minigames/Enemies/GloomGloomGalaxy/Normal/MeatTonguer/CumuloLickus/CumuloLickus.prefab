@@ -107,9 +107,12 @@ MonoBehaviour:
   isDamaging: 0
   isHealing: 1
   pierces: 0
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   moistAug: {fileID: 11400000, guid: b8b3eb03e8cfbc74c9ba6a27b3fd8388, type: 2}
+  shloppedAug: {fileID: 11400000, guid: 36a80b2b3b3d12e4e87606cfd7eb2001, type: 2}
 --- !u!1 &201967352954731634
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +200,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 0
   augmentScoreIncrease: 1
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!61 &201967353502996872
 BoxCollider2D:

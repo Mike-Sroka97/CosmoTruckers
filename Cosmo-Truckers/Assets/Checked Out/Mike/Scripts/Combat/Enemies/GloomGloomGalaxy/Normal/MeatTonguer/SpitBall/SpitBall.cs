@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpitBall : CombatMove
 {
+    [SerializeField] DebuffStackSO shloppedAug;
     [SerializeField] float maxTime;
 
 
@@ -34,6 +35,7 @@ public class SpitBall : CombatMove
 
             DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], tempScore);
             ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], baseAugmentStacks);
+            CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(shloppedAug, baseAugmentStacks);
         }
     }
 }

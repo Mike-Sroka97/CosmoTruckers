@@ -5,6 +5,7 @@ using UnityEngine;
 public class CumuloLickus : CombatMove
 {
     [SerializeField] DebuffStackSO moistAug;
+    [SerializeField] DebuffStackSO shloppedAug;
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class CumuloLickus : CombatMove
                 int tempScore = PlayerAugmentScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()];
                 tempScore = CalculateMultiplayerAugmentScore(tempScore);
                 ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], tempScore);
+                CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(shloppedAug, tempScore);
             }
         }
     }
