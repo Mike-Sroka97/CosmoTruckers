@@ -169,9 +169,7 @@ public class Targeting : MonoBehaviour
 
     IEnumerator TargetingWait()
     {
-        CombatManager.Instance.PauseManager = true;
-
-        while (CombatManager.Instance.PauseManager)
+        while (CombatManager.Instance.PauseAttack)
             yield return null;
 
         ReactivateCombatManager(true);
@@ -1047,6 +1045,13 @@ public class Targeting : MonoBehaviour
                 currentlySelectedTargets.Add(tempCharacter);
                 Target(currentlySelectedTargets[currentNumberOfTargets]);
             }
+            else if (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4]))
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[currentNumberOfTargets].CombatSpot - 4];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[currentNumberOfTargets]);
+            }
             else
             {
                 int tempColumn = column;
@@ -1246,6 +1251,13 @@ public class Targeting : MonoBehaviour
                 currentlySelectedTargets.Add(tempCharacter);
                 Target(currentlySelectedTargets[0]);
             }
+            else if(column == 2 && EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8] != null && ((!EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8].Dead && !targetingDead) || (EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8].Dead && targetingDead)) && !currentlySelectedTargets.Contains(EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8]))
+            {
+                Character tempCharacter = EnemyManager.Instance.EnemyCombatSpots[currentlySelectedTargets[0].CombatSpot - 8];
+                ClearTargets();
+                currentlySelectedTargets.Add(tempCharacter);
+                Target(currentlySelectedTargets[0]);
+            }
             else
             {
                 int tempColumn = column;
@@ -1264,7 +1276,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn++;
+                        tempColumn--;
                     }
                     else if (tempColumn == 1)
                     {
@@ -1278,7 +1290,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn++;
+                        tempColumn--;
                     }
                     else
                     {
@@ -1292,7 +1304,7 @@ public class Targeting : MonoBehaviour
                                 return;
                             }
                         }
-                        tempColumn -= 2;
+                        tempColumn += 2;
                     }
                 }
             }

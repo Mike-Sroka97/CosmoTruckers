@@ -68,6 +68,8 @@ public class AttackDisplay : MonoBehaviour
             }
 
             transform.eulerAngles = new Vector3(270, 0, 0);
+
+            CombatManager.Instance.PauseAttack = false;
         }
     }
 
@@ -84,8 +86,6 @@ public class AttackDisplay : MonoBehaviour
 
             currentFlashes++;
         }
-
-        CombatManager.Instance.PauseAttack = false;
 
         StartCoroutine(RotateMe(false));
     }
