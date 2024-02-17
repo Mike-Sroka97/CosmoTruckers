@@ -236,6 +236,6 @@ public class INAcombat : MonoBehaviour
         }
 
         countDownTimer.enabled = false;
-        CombatManager.Instance.INAmoving = false;
+        CombatManager.Instance.PauseManager = false;
     }
 }

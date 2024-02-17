@@ -373,7 +373,7 @@ public abstract class Character : MonoBehaviour
             }
         }
 
-        DebuffStackSO tempAUG = Instantiate(stack);
+        DebuffStackSO tempAUG = Instantiate(stack, transform);
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 

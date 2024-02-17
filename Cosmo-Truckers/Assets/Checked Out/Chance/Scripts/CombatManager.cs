@@ -21,7 +21,6 @@ public class CombatManager : MonoBehaviour
                             //Needs to be made into list for enemy multi target skills
     [SerializeField] TMP_Text Timer;
     public Targeting MyTargeting;
-    [SerializeField] float enemySpellHoldTime;
     [SerializeField] float trashAttackDelay = .25f;
 
     [SerializeField] public List<Character> CharactersSelected;
@@ -36,11 +35,12 @@ public class CombatManager : MonoBehaviour
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
 
     public BaseAttackSO CurrentAttack;
+    private AttackDisplay attackDisplay;
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     public Character GetCurrentCharacter { get => CurrentCharacter; }
 
-    public bool INAmoving = false;
+    public bool PauseManager = false;
 
     bool inTrashEndMove = false;
 
@@ -172,9 +172,8 @@ public class CombatManager : MonoBehaviour
             }
         }
 
-        MyTargeting.EnemyTargeting(attack, enemySpellHoldTime);
-
-        StartCoroutine(StartMiniGame(attack, ActivePlayers));
+        StartCoroutine(DisplayAttack(attack, ActivePlayers));
+        MyTargeting.EnemyTargeting(attack);
     }
 
     public PlayerCharacter FindDPSCharacter()
@@ -442,6 +441,20 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    IEnumerator DisplayAttack(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
+    {
+        PauseManager = true;
+
+        if (!attackDisplay)
+            attackDisplay = GetComponentInChildren<AttackDisplay>();
+        attackDisplay.SetAttack(attack.AttackName, ActivePlayers);
+
+        while(PauseManager)
+            yield return null;
+
+        StartCoroutine(StartMiniGame(attack, ActivePlayers));
+    }
+
     IEnumerator StartMiniGame(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
     {
         while (!TargetsSelected)
@@ -458,7 +471,7 @@ public class CombatManager : MonoBehaviour
             else
                 Timer.text = miniGameTime.ToString();
 
-            INAmoving = true;
+            PauseManager = true;
             miniGame = Instantiate(attack.CombatPrefab, INA.transform);
             StartCoroutine(INA.MoveINACombat(true));
 
@@ -483,7 +496,7 @@ public class CombatManager : MonoBehaviour
                 }
             }
 
-            while (INAmoving)
+            while (PauseManager)
                 yield return null;
 
             MiniGameScreen.GetComponent<SpriteRenderer>().sprite = currentBG;
@@ -519,7 +532,7 @@ public class CombatManager : MonoBehaviour
 
             StopAllCoroutines();
 
-            INAmoving = true;
+            PauseManager = true;
 
             StartCoroutine(INA.MoveINACombat(false));
         }

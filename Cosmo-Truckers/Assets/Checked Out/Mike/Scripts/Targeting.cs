@@ -130,7 +130,7 @@ public class Targeting : MonoBehaviour
         return maxTargetableCharacters;
     }
 
-    public void EnemyTargeting(BaseAttackSO attack, float waitTime)
+    public void EnemyTargeting(BaseAttackSO attack)
     {
         CombatManager.Instance.TargetsSelected = false;
         enemyAttacking = true;
@@ -164,12 +164,15 @@ public class Targeting : MonoBehaviour
             }
         }
 
-        StartCoroutine(TargetingWait(waitTime));
+        StartCoroutine(TargetingWait());
     }
 
-    IEnumerator TargetingWait(float waitTime)
+    IEnumerator TargetingWait()
     {
-        yield return new WaitForSeconds(waitTime);
+        CombatManager.Instance.PauseManager = true;
+
+        while (CombatManager.Instance.PauseManager)
+            yield return null;
 
         ReactivateCombatManager(true);
 
