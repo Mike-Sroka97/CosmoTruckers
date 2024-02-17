@@ -68,7 +68,7 @@ public class DebuffStackSO : ScriptableObject
     {
         if (temp == null)
         {
-            temp = Instantiate(AugSpawner);
+            temp = Instantiate(AugSpawner, MyCharacter.transform);
             temp.GetComponent<Augment>().InitializeAugment(this);
         }
     }

@@ -394,7 +394,7 @@ public abstract class Character : MonoBehaviour
     {
         StartCoroutine(DisplayAugment(stack));
 
-        DebuffStackSO tempAUG = Instantiate(stack);
+        DebuffStackSO tempAUG = Instantiate(stack, transform);
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
@@ -427,6 +427,8 @@ public abstract class Character : MonoBehaviour
         augmentText.text = aug.DebuffName;
         if (removed)
             augmentText.text = "-" + augmentText.text;
+        else
+            augmentText.text = "+" + augmentText.text;
         augmentText.color = Color.white;
 
         //do fade

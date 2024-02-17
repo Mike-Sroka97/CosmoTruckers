@@ -41,6 +41,7 @@ public class CombatManager : MonoBehaviour
     public Character GetCurrentCharacter { get => CurrentCharacter; }
 
     public bool PauseManager = false;
+    public bool PauseAttack = false;
 
     bool inTrashEndMove = false;
 
@@ -443,13 +444,13 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator DisplayAttack(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)
     {
-        PauseManager = true;
+        PauseAttack = true;
 
         if (!attackDisplay)
             attackDisplay = GetComponentInChildren<AttackDisplay>();
         attackDisplay.SetAttack(attack.AttackName, ActivePlayers);
 
-        while(PauseManager)
+        while(PauseAttack)
             yield return null;
 
         StartCoroutine(StartMiniGame(attack, ActivePlayers));

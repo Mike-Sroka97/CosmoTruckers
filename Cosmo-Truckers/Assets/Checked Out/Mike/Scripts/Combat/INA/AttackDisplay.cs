@@ -85,7 +85,7 @@ public class AttackDisplay : MonoBehaviour
             currentFlashes++;
         }
 
-        CombatManager.Instance.PauseManager = false;
+        CombatManager.Instance.PauseAttack = false;
 
         StartCoroutine(RotateMe(false));
     }
