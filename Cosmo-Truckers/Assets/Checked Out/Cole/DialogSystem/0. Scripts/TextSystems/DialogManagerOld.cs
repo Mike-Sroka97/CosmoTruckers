@@ -6,9 +6,9 @@ using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 
-public class DialogManager : MonoBehaviour
+public class DialogManagerOld : MonoBehaviour
 {
-    public static DialogManager instance;
+    public static DialogManagerOld instance;
 
     [Header("Main Text Components")]
     [SerializeField] private TMP_Text textBox;
