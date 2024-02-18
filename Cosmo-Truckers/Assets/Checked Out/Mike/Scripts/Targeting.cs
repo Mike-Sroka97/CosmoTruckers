@@ -145,7 +145,7 @@ public class Targeting : MonoBehaviour
         }
 
         //handles trash targeting
-        if(CombatManager.Instance.GetCurrentEnemy.IsTrash)
+        if(CombatManager.Instance.GetCurrentEnemy != null && CombatManager.Instance.GetCurrentEnemy.IsTrash)
         {
             foreach(Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
             {
@@ -158,7 +158,7 @@ public class Targeting : MonoBehaviour
         //handles nontrash targeting
         else
         {
-            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentCharacter.TargetingSprites)
             {
                 renderer.material = enemyTargetingMaterial;
             }
@@ -174,7 +174,7 @@ public class Targeting : MonoBehaviour
 
         ReactivateCombatManager(true);
 
-        if (CombatManager.Instance.GetCurrentEnemy.IsTrash)
+        if (CombatManager.Instance.GetCurrentEnemy != null && CombatManager.Instance.GetCurrentEnemy.IsTrash)
         {
             foreach (Enemy trashEnemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentEnemy.CharacterName])
             {
@@ -186,7 +186,7 @@ public class Targeting : MonoBehaviour
         }
         else
         {
-            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentEnemy.TargetingSprites)
+            foreach (SpriteRenderer renderer in CombatManager.Instance.GetCurrentCharacter.TargetingSprites)
             {
                 renderer.material = notTargetedMaterial;
             }
@@ -257,7 +257,7 @@ public class Targeting : MonoBehaviour
                 }
             }
 
-            if(enemyTargeting && CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().IsTrash)
+            if(enemyTargeting && CombatManager.Instance.GetCurrentEnemy != null && CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().IsTrash)
             {
                 foreach(Enemy enemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().CharacterName])
                 {

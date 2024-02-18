@@ -43,7 +43,7 @@ public class INAcombat : MonoBehaviour
         if (CombatData.Instance.TESTING)
         {
             DungeonGen.SetActive(false);
-            EnemyManager.Instance.InitilizeEnemys();
+            EnemyManager.Instance.InitializeEnemys();
         }
         else
         {

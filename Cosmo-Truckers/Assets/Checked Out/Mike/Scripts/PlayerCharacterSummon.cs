@@ -10,13 +10,47 @@ public class PlayerCharacterSummon : PlayerCharacter
     [SerializeField] TextMeshProUGUI healingText;
     [SerializeField] Color damageColor;
     [SerializeField] Color healingColor;
-    [SerializeField] float fadeSpeed;
-    [SerializeField] float moveSpeed;
     Vector3 damageTextStartPosition;
     Vector3 healingTextStartPosition;
     public PlayerCharacter Summoner;
+    protected BaseAttackSO ChosenAttack;
+    public bool SpecialTargetConditions;
 
-    //TODO ADD SUMMON CREATION (ADD SUMMONER AS PARENT!!)
+    public override void StartTurn()
+    {
+        foreach (DebuffStackSO aug in AUGS)
+        {
+            if (aug.TurnStart)
+            {
+                aug.DebuffEffect();
+            }
+        }
+
+        if (ChosenAttack == null)
+            ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Count)];
+
+        CombatManager.Instance.StartTurnPlayerSummon(ChosenAttack, this);
+    }
+
+    protected virtual void SpecialTarget(int attackIndex) { }
+
+    //Method to override for adding target cons to a move
+    public void TargetConditions(BaseAttackSO currentAttack)
+    {
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            if (attacks[i] == currentAttack)
+            {
+                SpecialTarget(i);
+                return;
+            }
+        }
+    }
+
+    public override void EndTurn()
+    {
+
+    }
     public override void Die()
     {
         base.Die();

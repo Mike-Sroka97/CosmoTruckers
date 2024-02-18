@@ -21,7 +21,7 @@ public class PlayerCharacter : Character
     [SerializeField] GameObject wheel;
     [SerializeField] GameObject augList;
 
-    [SerializeField] List<BaseAttackSO> attacks;
+    [SerializeField] protected List<BaseAttackSO> attacks;
     protected List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
 
     [Space(10)]

@@ -38,7 +38,7 @@ public class EnemyManager : MonoBehaviour
 
     private void Awake() => Instance = this;
 
-    public void InitilizeEnemys()
+    public void InitializeEnemys()
     {
         if (CombatData.Instance.EnemysToSpawn != null)
         {
@@ -89,7 +89,7 @@ public class EnemyManager : MonoBehaviour
         if (CombatData.Instance.PlayersToSpawn.Count > 0)
         {
             PlayersToSpawn.Clear();
-            PlayerSummonsToSpawn.Clear();
+            //TODO ?? PlayerSummonsToSpawn.Clear();
             foreach (var player in CombatData.Instance.PlayersToSpawn)
                 PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }
@@ -217,6 +217,31 @@ public class EnemyManager : MonoBehaviour
                 EnemyCombatSpots[i].CombatSpot = i;
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
                 TurnOrder.Instance.AddToSpeedList(stats);
+                break;
+            }
+        }
+
+        TurnOrder.Instance.DetermineTurnOrder();
+    }
+
+    public void UpdatePlayerSummons(GameObject summon, PlayerCharacter summonParent)
+    {
+        for (int i = 4; i < 8; i++)
+        {
+            if (PlayerCombatSpots[i] == null)
+            {
+                GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
+                PlayerSummons.Add(newSummon.GetComponent<PlayerCharacterSummon>());
+                newSummon.name += GetAliveEnemySummons().Count; //helps turn order
+                PlayerCombatSpots[i] = newSummon.GetComponent<PlayerCharacterSummon>();
+                newSummon.transform.position = EnemySummonLocations[i - 4].position;
+                foreach (SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
+                    spriteRenderer.sortingOrder += i;
+                PlayerCombatSpots[i] = newSummon.GetComponent<Character>();
+                PlayerCombatSpots[i].CombatSpot = i;
+                CharacterStats stats = newSummon.GetComponent<CharacterStats>();
+                TurnOrder.Instance.AddToSpeedList(stats);
+                newSummon.GetComponent<PlayerCharacterSummon>().Summoner = summonParent;
                 break;
             }
         }

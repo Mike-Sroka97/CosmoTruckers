@@ -93,7 +93,7 @@ public class DungeonNode : MonoBehaviour
 
 
         //Call to load in enemys
-        EnemyManager.Instance.InitilizeEnemys();
+        EnemyManager.Instance.InitializeEnemys();
 
         //Close INA
         FindObjectOfType<INAcombat>().CloseDungeonPage();
