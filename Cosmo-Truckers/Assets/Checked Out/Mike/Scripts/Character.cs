@@ -481,11 +481,13 @@ public abstract class Character : MonoBehaviour
     {
         int currentAmount = amount;
 
+        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+
         switch (type)
         {
             //remove debuffs
             case 0:
-                foreach(DebuffStackSO debuff in AUGS)
+                foreach(DebuffStackSO debuff in tempAUGS)
                     if(debuff.IsDebuff)
                     {
                         if (currentAmount >= debuff.CurrentStacks)
@@ -504,13 +506,13 @@ public abstract class Character : MonoBehaviour
                         }                        
                         else
                         {
-                            break; //no more stacks to remove
+                            return; //no more stacks to remove
                         }
                     }
                 break;
             //remove buffs
             case 1:
-                foreach (DebuffStackSO buff in AUGS)
+                foreach (DebuffStackSO buff in tempAUGS)
                     if (buff.IsBuff)
                     {
                         if (currentAmount >= buff.CurrentStacks)
@@ -528,13 +530,13 @@ public abstract class Character : MonoBehaviour
                         }
                         else
                         {
-                            break; //no more stacks to remove
+                            return; //no more stacks to remove
                         }
                     }
                 break;
             //remove augments
             case 2:
-                foreach (DebuffStackSO augment in AUGS)
+                foreach (DebuffStackSO augment in tempAUGS)
                     if (currentAmount >= augment.CurrentStacks)
                     {
                         StartCoroutine(DisplayAugment(augment, true));
@@ -552,8 +554,169 @@ public abstract class Character : MonoBehaviour
                     }
                     else
                     {
-                        break; //no more stacks to remove
+                        return; //no more stacks to remove
                     }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// type 0 = proliferate debuffs
+    /// type 1 = proliferate buffs
+    /// type 2 = proliferate any
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <param name="type"></param>
+    public void ProliferateAugment(int amount, int type)
+    {
+        int currentAmount = amount;
+
+        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+
+        switch (type)
+        {
+            //proliferate debuffs
+            case 0:
+                foreach (DebuffStackSO debuff in tempAUGS)
+                    if (debuff.IsDebuff && debuff.CurrentStacks < debuff.MaxStacks)
+                    {
+                        int amountToProliferate = debuff.MaxStacks - debuff.CurrentStacks;
+
+                        if (currentAmount >= amountToProliferate)
+                        {
+                            StartCoroutine(DisplayAugment(debuff, false));
+                            AddDebuffStack(debuff, amountToProliferate);
+                            currentAmount -= amountToProliferate;
+                        }
+                        else if (currentAmount > 0)
+                        {
+                            StartCoroutine(DisplayAugment(debuff, false));
+                            AddDebuffStack(debuff, currentAmount);
+                            currentAmount -= currentAmount;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                break;
+            //proliferate buffs
+            case 1:
+                foreach (DebuffStackSO buff in tempAUGS)
+                    if (buff.IsBuff && buff.CurrentStacks < buff.MaxStacks)
+                    {
+                        int amountToProliferate = buff.MaxStacks - buff.CurrentStacks;
+
+                        if (currentAmount >= amountToProliferate)
+                        {
+                            StartCoroutine(DisplayAugment(buff, false));
+                            AddDebuffStack(buff, amountToProliferate);
+                            currentAmount -= amountToProliferate;
+                        }
+                        else if (currentAmount > 0)
+                        {
+                            StartCoroutine(DisplayAugment(buff, false));
+                            AddDebuffStack(buff, currentAmount);
+                            currentAmount -= currentAmount;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                break;
+            //proliferate augments
+            case 2:
+                foreach (DebuffStackSO augment in tempAUGS)
+                {
+                    if (augment.CurrentStacks < augment.MaxStacks)
+                    {
+                        int amountToProliferate = augment.MaxStacks - augment.CurrentStacks;
+
+                        if (currentAmount >= amountToProliferate)
+                        {
+                            StartCoroutine(DisplayAugment(augment, false));
+                            AddDebuffStack(augment, amountToProliferate);
+                            currentAmount -= amountToProliferate;
+                        }
+                        else if (currentAmount > 0)
+                        {
+                            StartCoroutine(DisplayAugment(augment, false));
+                            AddDebuffStack(augment, currentAmount);
+                            currentAmount -= currentAmount;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private List<DebuffStackSO> RandomizeAugments()
+    {
+        //Randomize AUGS
+        System.Random random = new System.Random();
+        List<DebuffStackSO> tempAUGS = AUGS;
+
+        for (int i = 0; i < tempAUGS.Count - 1; i++)
+        {
+            int j = random.Next(i, tempAUGS.Count);
+            DebuffStackSO temp = tempAUGS[i];
+            tempAUGS[i] = tempAUGS[j];
+            tempAUGS[j] = temp;
+        }
+
+        return tempAUGS;
+    }
+
+    /// <summary>
+    /// type 0 = double debuffs
+    /// type 1 = double buffs
+    /// type 2 = double any
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <param name="type"></param>
+    public void DoubleAugment(int type)
+    {
+        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+
+        switch (type)
+        {
+            //double debuffs
+            case 0:
+                foreach (DebuffStackSO debuff in tempAUGS)
+                    if (debuff.IsDebuff && debuff.CurrentStacks < debuff.MaxStacks)
+                    {
+                        AddDebuffStack(debuff, debuff.CurrentStacks);
+                        return;
+                    }
+                break;
+            //double buffs
+            case 1:
+                foreach (DebuffStackSO buff in tempAUGS)
+                    if (buff.IsBuff && buff.CurrentStacks < buff.MaxStacks)
+                    {
+                        AddDebuffStack(buff, buff.CurrentStacks);
+                        return;
+                    }
+                break;
+            //double augments
+            case 2:
+                foreach (DebuffStackSO augment in tempAUGS)
+                {
+                    if(augment.CurrentStacks < augment.MaxStacks)
+                    {
+                        AddDebuffStack(augment, augment.CurrentStacks);
+                        return;
+                    }
+                }
                 break;
             default:
                 break;
