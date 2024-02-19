@@ -47,7 +47,7 @@ public class AstroDog : NCNodePopUpOptions
         switch(loc)
         {
             case 0:
-                allPlayersSorted[0].RemoveAmountOfAugments(-1, 1);
+                allPlayersSorted[0].ProliferateAugment(1, 1);
                 break;
             case 1:
                 allPlayersSorted[0].RemoveAmountOfAugments(1, 0);
