@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI; 
 
 public class DialogAnimations
 {
@@ -11,12 +12,14 @@ public class DialogAnimations
     private bool stopAnimating = false;
 
     private readonly TMP_Text textBox;
-    private readonly float textAnimationScale; 
+    private readonly float textAnimationScale;
+    private Image nextLineIndicator; 
 
     // Initializer
-    public DialogAnimations(TMP_Text _textBox)
+    public DialogAnimations(TMP_Text _textBox, Image _nextLineIndicator)
     {
         textBox = _textBox;
+        nextLineIndicator = _nextLineIndicator;
         textAnimationScale = textBox.fontSize; 
     }
 

@@ -6,36 +6,20 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-    public static DialogManager instance;
-
     [Header("Main Text Components")]
+    Transform dialogBox; 
     [SerializeField] private TMP_Text textBox;
     [SerializeField] private TextMeshProUGUI dialogText;
     [SerializeField] private TextMeshProUGUI displayNameText;
 
     [Header("Dialog UI")]
-    [SerializeField] private Image mainPortrait;
+    [SerializeField] private Image nextLineIndicator; 
     [SerializeField] private float disableUITime = 1f;
 
     private DialogAnimations dialogAnimations;
     private string currentLine; 
 
     public bool dialogIsPlaying { get; private set; }
-
-    //Set instance or remove object
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-    }
     
     public bool CheckDialogCompletion()
     {
@@ -49,9 +33,12 @@ public class DialogManager : MonoBehaviour
 
     // We're going to use a single coroutine so keep track of it
     private Coroutine typeRoutine = null;
-    public void SpeakNextLine(string nextLine, TMP_Text _textBox, TextMeshProUGUI _dialogText, TextMeshProUGUI _displayNameText)
+    public void SpeakNextLine(string nextLine, string actorName, Material borderMaterial, Transform textBoxPosition)
     {
-        SetUIVariables(_textBox, _dialogText, _displayNameText); 
+        SetActorUI(textBoxPosition, actorName);
+        SetDialogAnimator();
+
+        TEST(); 
 
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref typeRoutine);
@@ -69,12 +56,26 @@ public class DialogManager : MonoBehaviour
         dialogText.text = string.Empty;
     }
 
-    private void SetUIVariables(TMP_Text _textBox, TextMeshProUGUI _dialogText, TextMeshProUGUI _displayNameText)
+    // Set Actor specific UI elements here
+    private void SetActorUI(Transform textBoxPosition, string actorName)
     {
-        textBox = _textBox;
-        dialogText = _dialogText;
-        displayNameText = _displayNameText;
+        if (dialogBox == null)
+        {
+            dialogBox = textBox.transform.parent; 
+        }
 
-        dialogAnimations = new DialogAnimations(textBox);
+        dialogBox.position = textBoxPosition.position;
+        displayNameText.text = actorName; 
+    }
+
+    // Set the new Dialog Animatior here
+    private void SetDialogAnimator()
+    {
+        dialogAnimations = new DialogAnimations(textBox, nextLineIndicator);
+    }
+
+    private void TEST()
+    {
+        textBox.gameObject.transform.parent.gameObject.SetActive(true);
     }
 }
