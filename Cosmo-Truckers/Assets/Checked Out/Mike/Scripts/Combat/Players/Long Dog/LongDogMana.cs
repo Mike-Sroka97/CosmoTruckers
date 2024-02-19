@@ -126,4 +126,18 @@ public class LongDogMana : Mana
         damage = (int)tempDamage;
         return damage;
     }
+
+    public override void SetMaxMana()
+    {
+        ReserveBullets.Clear();
+        LoadedBullets.Clear();
+
+        for(int i = 0; i < 5; i++)
+        {
+            ReserveBullets.Add(0);
+            LoadedBullets.Add(0);
+        }
+
+        MyVessel.GetComponent<LongDogVessel>().DisplayBullets();
+    }
 }

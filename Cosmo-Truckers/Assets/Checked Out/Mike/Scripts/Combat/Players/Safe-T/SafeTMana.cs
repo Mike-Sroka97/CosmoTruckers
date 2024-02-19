@@ -93,4 +93,11 @@ public class SafeTMana : Mana
 
     public int GetCurrentAnger() { return currentAnger; }
     public int GetCurrentRage() { return currentRage; }
+
+    public override void SetMaxMana()
+    {
+        currentAnger = 9;
+        currentRage = 3;
+        MyVessel.ManaTracking();
+    }
 }

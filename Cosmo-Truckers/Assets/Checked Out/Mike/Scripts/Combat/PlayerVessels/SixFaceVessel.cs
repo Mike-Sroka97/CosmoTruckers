@@ -20,8 +20,6 @@ public class SixFaceVessel : PlayerVessel
     {
         ClearFaces();
 
-        //TODO mego track here
-
         Image[] faceRenderers;
 
         switch (faceType)

@@ -56,4 +56,18 @@ public class SixFaceMana : Mana
                 FaceType = FaceTypes.Megalomanic;
         }
     }
+
+    public override void SetMaxMana()
+    {
+        SixFaceVessel vessel = MyVessel.GetComponent<SixFaceVessel>();
+
+        vessel.UpdateFace(FaceTypes.Smug);
+        vessel.UpdateFace(FaceTypes.Sad);
+        vessel.UpdateFace(FaceTypes.Hype);
+        vessel.UpdateFace(FaceTypes.Dizzy);
+        vessel.UpdateFace(FaceTypes.Money);
+
+        if (vessel.CheckMegalomanicMode())
+            FaceType = FaceTypes.Megalomanic;
+    }
 }

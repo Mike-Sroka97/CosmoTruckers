@@ -97,4 +97,10 @@ public class ProtoMana : Mana
 
         MyVessel.ManaTracking();
     }
+
+    public override void SetMaxMana()
+    {
+        CurrentBattery = maxBattery;
+        MyVessel.ManaTracking();
+    }
 }

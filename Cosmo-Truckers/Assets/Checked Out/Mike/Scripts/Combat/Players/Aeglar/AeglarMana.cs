@@ -80,4 +80,13 @@ public class AeglarMana : Mana
 
         MyVessel.ManaTracking();
     }
+
+    public override void SetMaxMana()
+    {
+        VeggieMana = maxMana;
+        MeatMana = maxMana;
+        SweetMana = maxMana;
+
+        MyVessel.ManaTracking();
+    }
 }

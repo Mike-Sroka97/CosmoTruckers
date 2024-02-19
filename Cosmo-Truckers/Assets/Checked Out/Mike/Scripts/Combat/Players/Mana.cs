@@ -23,4 +23,6 @@ public abstract class Mana : MonoBehaviour
     }
 
     public abstract void CheckCastableSpells();
+
+    public abstract void SetMaxMana();
 }
