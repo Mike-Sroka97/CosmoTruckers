@@ -1,11 +1,15 @@
 using Ink.Parsed;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class TextParser : MonoBehaviour
 {
+    private const string betweenDialogs = "\r\n\r\n"; 
+
     public string GetActorDialog(TextAsset textFile, string actorName)
     {
         string[] allDialogs = GetAllDialogs(textFile);
@@ -29,14 +33,16 @@ public class TextParser : MonoBehaviour
     //Write all of the dialog options on one text document
     public string[] GetAllDialogs(TextAsset textFile)
     {
-        string[] dialogs = textFile.text.Split(new string[] {"/*/", "/*/"}, System.StringSplitOptions.RemoveEmptyEntries); 
+        List<string> dialogs = textFile.text.Split(new string[] {"/*/", "/*/"}, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+
+        dialogs = dialogs.Where(dialog => dialog.Trim() != betweenDialogs.Trim()).ToList();
 
         foreach (string dialog in dialogs)
         {
-            dialog.Trim(); 
+            dialog.Trim();
         }
 
-        return dialogs;
+        return dialogs.ToArray();
     }
 
     public string[] GetTagsAtCurrentLine(string dialog, int currentLine)
@@ -50,9 +56,10 @@ public class TextParser : MonoBehaviour
     public string GetTextAtCurrentLine(string dialog, int currentLine)
     {
         string[] lines = GetAllLinesInThisDialog(dialog);
-        lines[currentLine].Replace(GetRawTagList(lines[currentLine]), string.Empty);
+        // Replace tags and {} with ""
+        string noTagsLine = Regex.Replace(lines[currentLine], @"\{.*?\}", "");
 
-        return lines[currentLine]; 
+        return noTagsLine; 
     }
 
     private string[] GetAllLinesInThisDialog(string dialog)
@@ -64,7 +71,7 @@ public class TextParser : MonoBehaviour
         //The first line will always be a descriptor of who is talking. We can skip it.
         for (int i = 1; i < lines.Length; i++)
         {
-            if (lines[i] != "\\n\r")
+            if (lines[i] != "\\n\r" && lines[i] != "")
                 realLines.Add(lines[i]);
         }
 

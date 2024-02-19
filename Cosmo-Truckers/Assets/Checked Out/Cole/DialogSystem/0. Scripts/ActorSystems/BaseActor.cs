@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class BaseActor : MonoBehaviour
 {
@@ -12,6 +13,19 @@ public class BaseActor : MonoBehaviour
     public string actorName;
     public int actorID;
 
+    private DialogManager myDialogManager; 
+
+    public void Initialize(DialogManager dialogManager, int sortingLayerOrder, bool isFacingRight = true)
+    {
+        myDialogManager = dialogManager;
+        SetSpriteSorting(sortingLayerOrder); 
+
+        if (!isFacingRight)
+        {
+            transform.eulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z); 
+        }
+    }
+
     //Methods
     public void SetAnimation(int actorType)
     {
@@ -21,6 +35,25 @@ public class BaseActor : MonoBehaviour
     //set text box active and material 
     public void DeliverLine(string actorsLine)
     {
-
+        myDialogManager.SpeakNextLine(actorsLine, actorName, actorTextMaterial, textBoxPosition); 
     } 
+
+    private void SetSpriteSorting(int sortingLayer)
+    {
+        SortingGroup sortingGroup = GetComponentInChildren<SortingGroup>();
+        if (sortingGroup != null )
+        {
+            sortingGroup.sortingOrder = sortingLayer; 
+        }
+
+        else
+        {
+            SpriteRenderer[] sprites = GetComponentsInChildren<SpriteRenderer>();
+
+            foreach (SpriteRenderer sprite in sprites)
+            {
+                sprite.sortingOrder = sortingLayer; 
+            }
+        }
+    }
 }

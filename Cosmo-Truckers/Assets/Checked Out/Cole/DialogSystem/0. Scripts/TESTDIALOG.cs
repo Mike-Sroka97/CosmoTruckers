@@ -1,40 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TESTDIALOG : MonoBehaviour
 {
-    [Header("Ink JSON")]
-    [SerializeField] private TextAsset inkJSON;
     [SerializeField] private TextAsset textFile;
+    [SerializeField] private BaseActor[] playerActors;
 
-    [SerializeField] string[] allTags; 
-    [SerializeField] string[] allDialogs; 
-    [SerializeField] string[] allLinesInDialog; 
-    [SerializeField] int currentLine = 0; 
-    [SerializeField] string currentText; 
+    private DialogDirector myDirector; 
 
-    TextParser textParser;
 
     private void Start()
     {
-        textParser = GetComponent<TextParser>();
+        myDirector = FindObjectOfType<DialogDirector>();
+
+        SetUpDialog();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SetUpDialog()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            allDialogs = textParser.GetAllDialogs(textFile);
-            //allLinesInDialog = textParser.GetAllLinesInThisDialog(allDialogs[currentLine]);
-            //allTags = textParser.GetTagsAtCurrentLine(allLinesInDialog, currentLine); 
-            //currentText = textParser.GetTextAtCurrentLine(allLinesInDialog, currentLine); 
-        }
+        /*
+        List<GameObject> actors = new List<GameObject>();
 
-        if (Input.GetKeyDown(KeyCode.R))
+        foreach (GameObject actor in playerActors)
         {
-            currentLine++; 
+            actors.Add(actor); 
         }
+        foreach(GameObject actor in otherActors)
+        {
+            actors.Add(actor);
+        }
+        */ 
+
+        myDirector.SetScene(textFile, playerActors.ToList());
     }
 }

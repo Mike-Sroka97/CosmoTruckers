@@ -17,7 +17,8 @@ public class DialogManagerOld : MonoBehaviour
 
     [Header("Dialog UI")]
     [SerializeField] private Image mainPortrait;
-    [SerializeField] private float disableUITime = 1f; 
+    [SerializeField] private float disableUITime = 1f;
+    [SerializeField] private Image nextLineIndicator;
 
     public bool dialogIsPlaying { get; private set; }
 
@@ -155,7 +156,7 @@ public class DialogManagerOld : MonoBehaviour
 
     void SetDialogAnimations(TMP_Text _textBox)
     {
-        dialogAnimations = new DialogAnimations(textBox);
+        dialogAnimations = new DialogAnimations(textBox, nextLineIndicator);
     }
 }
 
