@@ -4031,10 +4031,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DungeonMap(test)
       objectReference: {fileID: 0}
-    - target: {fileID: 3724628978922699875, guid: 2268a66de760e984894dbedbb4be9c85, type: 3}
-      propertyPath: CombatNodes.Array.data[0]
-      value: 
-      objectReference: {fileID: 8338868470121127358, guid: 67517696b540c954d8407b7977de819c, type: 3}
     - target: {fileID: 3724628978922699876, guid: 2268a66de760e984894dbedbb4be9c85, type: 3}
       propertyPath: m_Camera
       value: 
@@ -4683,7 +4679,8 @@ MonoBehaviour:
   EnemySummonsToSpawn: []
   PlayersToSpawn:
   - {fileID: 3450167628942748652, guid: 9d2ac8f461c3cd748b4d1c7c77648a30, type: 3}
-  PlayerSummonsToSpawn: []
+  PlayerSummonsToSpawn:
+  - {fileID: 6551245299957235571, guid: 5b016ee2da104c74bb78818067a62676, type: 3}
   EnemyLocations:
   - {fileID: 890590576}
   - {fileID: 1871555065}
@@ -6564,7 +6561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303554b5cd8813e458e7da818b5b349e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TESTING: 0
+  TESTING: 1
   combatLocation: {x: 0, y: 0}
   dungeonSeed: 0
   EnemysToSpawn: {fileID: 0}
@@ -9030,12 +9027,12 @@ MonoBehaviour:
   MiniGameScreen: {fileID: 1469195334}
   Timer: {fileID: 962490996}
   MyTargeting: {fileID: 2131620935}
-  enemySpellHoldTime: 3
   trashAttackDelay: 0.25
   CharactersSelected: []
   ActivePlayers: []
   CurrentAttack: {fileID: 0}
-  INAmoving: 0
+  PauseManager: 0
+  PauseAttack: 0
   TargetsSelected: 1
 --- !u!4 &2131620934
 Transform:
