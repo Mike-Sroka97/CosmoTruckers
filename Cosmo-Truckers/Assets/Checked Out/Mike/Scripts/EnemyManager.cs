@@ -318,18 +318,25 @@ public class EnemyManager : MonoBehaviour
         {
             if(player.GetPlayer.CombatPlayerSpawn.GetComponent<PlayerCharacter>().CharacterName == character.CharacterName)
             {
-                SaveData playerData = SaveManager.Load(player.GetPlayer.PlayerID);
-
-                //If some how you made it here with out the manager saving any data
-                if (playerData == null) break;
-
-                foreach (var aug in playerData.PlayerCurrentDebuffs)
+                if(!CombatData.Instance.TESTING)
                 {
-                    character.AddDebuffStack(aug);
-                }
+                    SaveData playerData = SaveManager.Load(player.GetPlayer.PlayerID);
 
-                //If the players health has changed from last combat
-                character.Health = playerData.PlayerCurrentHP == -1 ? character.Health : playerData.PlayerCurrentHP;
+                    //If some how you made it here with out the manager saving any data
+                    if (playerData == null) break;
+
+                    foreach (var aug in playerData.PlayerCurrentDebuffs)
+                    {
+                        character.AddDebuffStack(aug);
+                    }
+
+                    //If the players health has changed from last combat
+                    character.Health = playerData.PlayerCurrentHP == -1 ? character.Health : playerData.PlayerCurrentHP;
+                }
+                else
+                {
+                    SaveManager.DeleteSave(player.GetPlayer.PlayerID);
+                }
             }
         }
     }
