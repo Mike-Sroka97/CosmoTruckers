@@ -58,25 +58,62 @@ public class PlayerCharacter : Character
         myRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
+    private int playerIntent = 0;
+    private int maxPlayerIntent = 2;
+
     private void Update()
     {
         if (!isTurn) return;
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if(wheel.activeInHierarchy || augList.activeInHierarchy)
         {
-            ClosePages();
-            SetupAttackWheel();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ClosePages();
+
+                SetPlayerCurrentOption();
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else
         {
-            //Just this character for now to test out
-            //TODO will take in any character based on targeting
-            ClosePages();
-            SetUpAUGDescription(this);
-        }
-        else if(Input.GetKeyDown(KeyCode.Escape) && (wheel.activeInHierarchy || augList.activeInHierarchy))
-        {
-            ClosePages();
+            if(Input.GetKeyDown(KeyCode.D))
+            {
+                if (playerIntent >= maxPlayerIntent)
+                    playerIntent = 0;
+                else
+                    playerIntent++;
+
+                SetPlayerCurrentOption();
+            }
+            else if(Input.GetKeyDown(KeyCode.A))
+            {
+                if (playerIntent == 0)
+                    playerIntent = maxPlayerIntent;
+                else
+                    playerIntent--;
+
+                SetPlayerCurrentOption();
+            }
+            else if(Input.GetKeyDown(KeyCode.Space))
+            {
+                switch(playerIntent)
+                {
+                    //Attack
+                    case 0:
+                        SetupAttackWheel();
+                        break;
+                    //Augs
+                    case 1:
+                        SetUpAUGDescription(this);
+                        break;
+                    //TODO
+                    //Intentions
+                    case 2:
+                        
+                        break;
+                    default: break;
+                }
+            }
         }
     }
 
@@ -84,6 +121,7 @@ public class PlayerCharacter : Character
     {
         isTurn = true;
         selectionUI.gameObject.SetActive(true);
+        SetPlayerCurrentOption();
 
         foreach (DebuffStackSO aug in AUGS)
             if (aug.TurnStart)
@@ -103,11 +141,29 @@ public class PlayerCharacter : Character
         selectionUI.ResetColor();
     }
 
+    void SetPlayerCurrentOption()
+    {
+        switch(playerIntent)
+        {
+            //Attack
+            case 0:
+                selectionUI.StartAttack();
+                break;
+            //Augs
+            case 1:
+                selectionUI.StartAUG();
+                break;
+            //Intentions
+            case 2:
+                selectionUI.StartIntent();
+                break;
+            default: break;
+        }
+    }
     public void SetupAttackWheel()
     {
         isTurn = true;
         wheel.SetActive(true);
-        selectionUI.StartAttack();
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
     }
     public void SetUpAUGDescription(Character character)
@@ -116,9 +172,9 @@ public class PlayerCharacter : Character
         if (augList == null) return;
 
         augList.SetActive(true);
-        selectionUI.StartAUG();
         augList.GetComponent<UI_AUG_DESCRIPTION>().InitList(character);
     }
+
     public override void EndTurn()
     {
         wheel.SetActive(false);

@@ -21,17 +21,17 @@ public class UI_PlayerTurnStart : MonoBehaviour
 
     public void StartAttack()
     {
-        attack.color = new Color(1, 1, 1, .4f);
+        attack.color = new Color(0, 0, 0, .7f);
         aug.color = intent.color = Color.white;
     }
     public void StartAUG()
     {
-        aug.color = new Color(1, 1, 1, .4f);
+        aug.color = new Color(0, 0, 0, .7f);
         attack.color = intent.color = Color.white;
     }
     public void StartIntent()
     {
-        intent.color = new Color(1, 1, 1, .4f);
+        intent.color = new Color(0, 0, 0, .7f);
         attack.color = aug.color = Color.white;
     }
 }
