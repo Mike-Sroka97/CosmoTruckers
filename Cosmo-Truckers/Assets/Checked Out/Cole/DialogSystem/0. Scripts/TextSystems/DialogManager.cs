@@ -13,8 +13,10 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogText;
     [SerializeField] private TextMeshProUGUI displayNameText;
 
-    [Header("Dialog Box")]
-    [SerializeField] private Image dialogBoxImage, dialogBoxImageBorder; 
+    [Header("Dialog Box UI")]
+    [SerializeField] private Image dialogBoxImage; 
+    [SerializeField] private Image dialogBoxImageBorder; 
+    [SerializeField] private Image actorDirection; 
     [SerializeField] private Image nextLineIndicator; 
     [SerializeField] private float disableUITime = 1f;
 
@@ -22,15 +24,16 @@ public class DialogManager : MonoBehaviour
     private string currentLine; 
 
     public bool dialogIsPlaying { get; private set; }
+    private bool animatingDialogBox; 
 
     #region Setup
-    // Set the new Dialog Animatior here
-    private void SetDialogAnimator()
+
+    private void SetDialogAnimator() // Set the new Dialog Animatior here
     {
         dialogAnimations = new DialogAnimations(textBox, nextLineIndicator);
     }
-    // Set Actor specific UI elements here
-    private void SetActorUI(Transform textBoxPosition, string actorName)
+
+    private void SetActorUI(Transform textBoxPosition, string actorName) // Set Actor specific UI elements here
     {
         if (dialogBox == null)
         {
@@ -50,33 +53,55 @@ public class DialogManager : MonoBehaviour
         float timer = 0; 
 
         // Probably rewrite this weird conditional
-        while ((grow && dialogBox.localScale.x < endSize) || (!grow && dialogBox.localScale.x > endSize))
+        if (grow)
         {
-            timer += Time.deltaTime;
-            dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToGrow);
-            yield return null;
+            while (dialogBox.localScale.x < endSize)
+            {
+                timer += Time.deltaTime;
+                dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToGrow);
+                yield return null;
+            }
+        }
+        else
+        {
+            while (dialogBox.localScale.x < endSize)
+            {
+
+            }
         }
 
+
         dialogBox.localScale = endScale;
+        animatingDialogBox = false; 
     }
 
     #endregion
 
     #region Dialog Mode
-    // We're going to use a single coroutine so keep track of it
-    private Coroutine typeRoutine = null;
-    public void SpeakNextLine(string nextLine, string actorName, Material borderMaterial, Transform textBoxPosition)
+    
+    public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, Transform textBoxPosition)
     {
         SetDialogAnimator();
         SetActorUI(textBoxPosition, actorName);
 
-        //TEST(); 
+        animatingDialogBox = true;
+        StartCoroutine(AnimateUIToSize());
 
+        while (animatingDialogBox)
+            return null;
+
+        SpeakNextLine(nextLine);
+
+        return null; 
+    }
+    
+
+    private Coroutine typeRoutine = null; // We're going to use a single coroutine so keep track of it
+    private void SpeakNextLine(string nextLine)
+    {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref typeRoutine);
         dialogAnimations.isTextAnimating = false;
-
-        AnimateUIToSize();
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
         typeRoutine = StartCoroutine(dialogAnimations.AnimateTextIn(commands, processedMessage, null));
@@ -94,9 +119,6 @@ public class DialogManager : MonoBehaviour
         dialogText.text = string.Empty;
     }
     #endregion
-
-
-
 
     public bool CheckIfDialogAnimating()
     {

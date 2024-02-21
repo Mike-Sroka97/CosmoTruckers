@@ -263,10 +263,12 @@ public class DialogDirector : MonoBehaviour
 
         int allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]); 
 
+        // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
         {
-
+            dialogManager.EndDialog(); 
         }
+        // Continue the dialog
         else
         {
             // At the current line in the base dialog, get the tags

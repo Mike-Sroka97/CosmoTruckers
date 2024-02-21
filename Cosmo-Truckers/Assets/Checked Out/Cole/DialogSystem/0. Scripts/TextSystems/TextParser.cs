@@ -78,6 +78,12 @@ public class TextParser : MonoBehaviour
         return realLines.ToArray();
     }
 
+    public int GetAllLinesInThisDialogCount(string dialog)
+    {
+        string[] allLines = GetAllLinesInThisDialog(dialog);
+        return allLines.Length;
+    }
+
     private string GetRawTagList(string line)
     {
         return Regex.Match(line, @"\{([^}]*)\}").Groups[1].Value;

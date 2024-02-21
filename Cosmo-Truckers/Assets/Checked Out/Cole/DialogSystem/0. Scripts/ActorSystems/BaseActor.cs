@@ -35,7 +35,7 @@ public class BaseActor : MonoBehaviour
     //set text box active and material 
     public void DeliverLine(string actorsLine)
     {
-        myDialogManager.SpeakNextLine(actorsLine, actorName, actorTextMaterial, textBoxPosition); 
+        StartCoroutine(myDialogManager.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition)); 
     } 
 
     private void SetSpriteSorting(int sortingLayer)
