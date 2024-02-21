@@ -26,6 +26,7 @@ public abstract class Character : MonoBehaviour
     public int FlatHealingAdjustment = 0;
     public UnityEvent HealthChangeEvent = new UnityEvent();
     public UnityEvent ShieldChangeEvent = new UnityEvent();
+    public UnityEvent BubbleShieldBrokenEvent = new UnityEvent();
     public bool Stunned = false;
     private SpriteRenderer stunnedRenderer;
     public bool Tireless = false;
@@ -33,6 +34,7 @@ public abstract class Character : MonoBehaviour
 
     protected const float fadeSpeed = 2;
     protected const float moveSpeed = 0.5f;
+    protected const int maxAugs = 6;
 
     //Augment stuffs
     TextMeshProUGUI augmentText;
@@ -240,6 +242,12 @@ public abstract class Character : MonoBehaviour
 
     public void AdjustBubbleShield(bool active = false)
     {
+        if(active == false)
+        {
+            BubbleShieldBrokenEvent.Invoke();
+            BubbleShieldBrokenEvent.RemoveAllListeners();
+        }
+
         BubbleShielded = active;
         AdjustShieldMaterial(Shield > 0);
     }
