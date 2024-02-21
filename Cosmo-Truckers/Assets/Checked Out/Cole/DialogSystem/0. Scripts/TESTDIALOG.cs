@@ -20,19 +20,6 @@ public class TESTDIALOG : MonoBehaviour
 
     private void SetUpDialog()
     {
-        /*
-        List<GameObject> actors = new List<GameObject>();
-
-        foreach (GameObject actor in playerActors)
-        {
-            actors.Add(actor); 
-        }
-        foreach(GameObject actor in otherActors)
-        {
-            actors.Add(actor);
-        }
-        */ 
-
         myDirector.SetScene(textFile, playerActors.ToList());
     }
 }

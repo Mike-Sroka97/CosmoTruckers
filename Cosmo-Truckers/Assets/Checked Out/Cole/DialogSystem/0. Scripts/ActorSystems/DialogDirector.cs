@@ -245,9 +245,9 @@ public class DialogDirector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            bool doneAnimating = dialogManager.CheckDialogCompletion(); 
+            bool stillAnimating = dialogManager.CheckIfDialogAnimating(); 
 
-            if (!doneAnimating) { dialogManager.StopAnimating(); }
+            if (stillAnimating) { dialogManager.StopAnimating(); }
 
             else
             {
@@ -261,26 +261,35 @@ public class DialogDirector : MonoBehaviour
         // Increment the current line
         currentLineIndex++;
 
-        // At the current line in the base dialog, get the tags
-        string[] tags = textParser.GetTagsAtCurrentLine(baseDialog, currentLineIndex);
-        string speakerDialog = null;
+        int allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]); 
 
-        // Get the actor ID for this line and the dialog associated with that actor
-        if (int.TryParse(tags[0], out currentID))
+        if (currentLineIndex >= allLinesCount)
         {
-            speakerDialog = dialogs[currentID - 1]; // ID's in text will be on a starting scale of 1
+
         }
         else
         {
-            Debug.LogError("Unable to parse int out of first tag!");
-            speakerDialog = baseDialog; 
+            // At the current line in the base dialog, get the tags
+            string[] tags = textParser.GetTagsAtCurrentLine(baseDialog, currentLineIndex);
+            string speakerDialog = null;
+
+            // Get the actor ID for this line and the dialog associated with that actor
+            if (int.TryParse(tags[0], out currentID))
+            {
+                speakerDialog = dialogs[currentID - 1]; // ID's in text will be on a starting scale of 1
+            }
+            else
+            {
+                Debug.LogError("Unable to parse int out of first tag!");
+                speakerDialog = baseDialog;
+            }
+
+            // Get the line associated with this actor and their dialog
+            string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
+
+            // Tell the actor to deliver the line
+            actors[currentID - 1].DeliverLine(currentLine);
         }
-
-        // Get the line associated with this actor and their dialog
-        string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
-
-        // Tell the actor to deliver the line
-        actors[currentID - 1].DeliverLine(currentLine); 
     }
 
     private void GetScripts()
@@ -288,8 +297,8 @@ public class DialogDirector : MonoBehaviour
         if (textParser == null)
         {
             textParser = GetComponent<TextParser>();
-            dialogManager = GetComponent<DialogManager>();
             actorList = GetComponent<ActorList>();
+            dialogManager = FindObjectOfType<DialogManager>();
         }
     }
 
