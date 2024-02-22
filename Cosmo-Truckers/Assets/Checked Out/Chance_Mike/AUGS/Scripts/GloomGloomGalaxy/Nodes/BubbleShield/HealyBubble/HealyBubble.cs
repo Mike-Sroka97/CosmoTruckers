@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class HealyBubble : Augment
 {
-    bool startup = true;
 
     public override void Activate(DebuffStackSO stack = null)
     {
-        if(startup)
+        if(firstGo)
         {
             base.Activate(stack);
             AugmentSO.MyCharacter.BubbleShieldBrokenEvent.AddListener(StopEffect);
+            firstGo = false;
         }
         else
         {

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e9de5c2fc5217443a1f8a27df192180, type: 3}
-  m_Name: ToxicBubble
+  m_Name: TitanicPressure
   m_EditorClassIdentifier: 
   InCombat: 0
   StartUp: 1
@@ -20,20 +20,20 @@ MonoBehaviour:
   OnDamage: 0
   EveryTurnEnd: 0
   EveryTurnStart: 0
-  OnSpellCast: 0
-  DebuffName: Toxic Bubble
-  DebuffDescription: While this bubble is active, you receive a moderate amount less
-    healing
+  OnSpellCast: 1
+  DebuffName: TitanicPressure
+  DebuffDescription: You swell with titanic pressure increasing your damage a major
+    amount. With each spell cast you take damage.
   MyCharacter: {fileID: 0}
   IsBuff: 0
   IsDebuff: 0
   Removable: 1
   RemoveOnDeath: 1
-  RemoveOnEndCombat: 0
+  RemoveOnEndCombat: 1
   Stackable: 1
   MaxStacks: 1
   LastStacks: -1
   currentStacks: 0
-  StackValue: {x: 35, y: 0}
+  StackValue: {x: 50, y: 0}
   fadePerTurn: 0
-  AugSpawner: {fileID: 5343401770843168548, guid: b7593b5e392f59e41a2c911125279dd1, type: 3}
+  AugSpawner: {fileID: 7011420796971601259, guid: 3dd7a020c2615fc409026784c8d46867, type: 3}

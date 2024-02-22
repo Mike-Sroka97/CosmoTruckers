@@ -206,6 +206,7 @@ public class CombatManager : MonoBehaviour
                 #endregion
                 #region Single Target
                 case EnumManager.TargetingType.Single_Target:
+                    SingleTargetPlayer(CurrentAttack, summon);
                     break;
                 #endregion
                 #region Multi Target Cone
@@ -314,6 +315,29 @@ public class CombatManager : MonoBehaviour
         else
         {
             SelectRandomPlayerCharacter();
+        }
+    }
+
+    public void SingleTargetPlayer(BaseAttackSO attack, PlayerCharacterSummon summon)
+    {
+        //Get Alive Enemies
+        System.Random random = new System.Random();
+        List<Enemy> aliveEnemies = EnemyManager.Instance.GetAliveEnemies();
+        foreach(Enemy enemySummon in EnemyManager.Instance.GetAliveEnemySummons())
+            aliveEnemies.Add(enemySummon);
+
+        for (int i = 0; i < aliveEnemies.Count - 1; i++)
+        {
+            int j = random.Next(i, aliveEnemies.Count);
+            Enemy temp = aliveEnemies[i];
+            aliveEnemies[i] = aliveEnemies[j];
+            aliveEnemies[j] = temp;
+        }
+
+        foreach (Enemy obj in aliveEnemies)
+        {
+            CharactersSelected.Add(obj);
+            break;
         }
     }
 
