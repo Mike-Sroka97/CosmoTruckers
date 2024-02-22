@@ -1,19 +1,21 @@
+using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
     [Header("Main Text Components")]
-    Transform dialogBox; 
     [SerializeField] private TMP_Text textBox;
     [SerializeField] private TextMeshProUGUI dialogText;
     [SerializeField] private TextMeshProUGUI displayNameText;
 
     [Header("Dialog Box UI")]
+    [SerializeField] private Transform dialogBox;
     [SerializeField] private Image dialogBoxImage; 
     [SerializeField] private Image dialogBoxImageBorder; 
     [SerializeField] private Image actorDirection; 
@@ -24,102 +26,164 @@ public class DialogManager : MonoBehaviour
     private string currentLine; 
 
     public bool dialogIsPlaying { get; private set; }
-    private bool animatingDialogBox; 
+    private bool animatingDialogBox;
+    private bool boxIsActive = false; 
 
     #region Setup
-
     private void SetDialogAnimator() // Set the new Dialog Animatior here
     {
         dialogAnimations = new DialogAnimations(textBox, nextLineIndicator);
     }
 
-    private void SetActorUI(Transform textBoxPosition, string actorName) // Set Actor specific UI elements here
+    private void SetDialogPosition(Transform newPosition)
     {
-        if (dialogBox == null)
-        {
-            dialogBox = textBox.transform.parent;
-        }
-
-        dialogBox.position = textBoxPosition.position;
-        displayNameText.text = actorName;
+        dialogBox.position = newPosition.position;
     }
 
-    private IEnumerator AnimateUIToSize(float timeToGrow = 1f, float startSize = 0.1f, float endSize = 1f, bool grow = true)
+    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.5f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
-        Vector3 startScale = new Vector3(startSize, startSize, startSize);
-        Vector3 endScale = new Vector3(endSize, endSize, endSize);
+        if (!boxIsActive && grow)
+        {
+            boxIsActive = true; 
+            SetUIBoxActiveStates(true);
+        }
+
+        if (!grow)
+        {
+            float tempVal = minVal;
+            minVal = maxVal; 
+            maxVal = tempVal;
+        }
+
+        Vector3 startScale = new Vector3(minVal, minVal, minVal);
+        Vector3 endScale = new Vector3(maxVal, maxVal, maxVal);
+        float newAlpha = 1f; 
 
         dialogBox.localScale = startScale;
-        float timer = 0; 
+        float timer = 0;
 
-        // Probably rewrite this weird conditional
-        if (grow)
+        // Maybe rewrite this weird conditional
+        while ((grow && dialogBox.localScale.x < maxVal) || (!grow && dialogBox.localScale.x > maxVal))
         {
-            while (dialogBox.localScale.x < endSize)
-            {
-                timer += Time.deltaTime;
-                dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToGrow);
-                yield return null;
-            }
+            timer += Time.deltaTime;
+            dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
+            newAlpha = Mathf.Lerp(minVal, maxVal, timer / timeToAnimate);
+            UpdateUIBoxColors(newAlpha);
+            yield return null;
         }
-        else
-        {
-            while (dialogBox.localScale.x < endSize)
-            {
-
-            }
-        }
-
 
         dialogBox.localScale = endScale;
-        animatingDialogBox = false; 
+        animatingDialogBox = false;
+
+        if (boxIsActive && !grow)
+        {
+            boxIsActive = false;
+            SetUIBoxActiveStates(false);
+        }
+    }
+
+    private void SetUIBoxActiveStates(bool state)
+    {
+        dialogBoxImage.gameObject.SetActive(state);
+        dialogBoxImageBorder.gameObject.SetActive(state);
+        actorDirection.gameObject.SetActive(state);
+    }
+
+    private void UpdateUIBoxColors(float alpha)
+    {
+        dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, alpha); 
+        dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, alpha); 
+        actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, alpha);
     }
 
     #endregion
 
     #region Dialog Mode
-    
-    public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, Transform textBoxPosition)
+    public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, 
+        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, float waitTimeBetweenDialogs = 0.5f)
     {
+        // If it's the first time dialog, don't animate out and in, just in
+        if (firstDialog)
+        {
+            SetDialogPosition(textBoxPosition);
+            ClearDialogText(); 
+
+            animatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize());
+
+            while (animatingDialogBox)
+                yield return null;
+        }
+        //If it's not the same speaker, animate out and in to new speaker
+        else if (!sameSpeaker)
+        {
+            animatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize(grow:false));
+
+            while (animatingDialogBox)
+                yield return null;
+
+            // Wait until text box is shrunk before moving positions
+            SetDialogPosition(textBoxPosition);
+            ClearDialogText();
+
+            animatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize());
+        }
+        else { animatingDialogBox = false; }
+
+        // We can use tags to alter this
+        yield return new WaitForSeconds(waitTimeBetweenDialogs); 
+
         SetDialogAnimator();
-        SetActorUI(textBoxPosition, actorName);
-
-        animatingDialogBox = true;
-        StartCoroutine(AnimateUIToSize());
-
-        while (animatingDialogBox)
-            return null;
-
+        displayNameText.text = actorName;
         SpeakNextLine(nextLine);
 
-        return null; 
+        yield return null; 
     }
-    
 
-    private Coroutine typeRoutine = null; // We're going to use a single coroutine so keep track of it
+    private Coroutine lineRoutine = null;
     private void SpeakNextLine(string nextLine)
     {
         // Stop the Coroutine
-        this.EnsureCoroutineStopped(ref typeRoutine);
+        this.EnsureCoroutineStopped(ref lineRoutine);
         dialogAnimations.isTextAnimating = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        typeRoutine = StartCoroutine(dialogAnimations.AnimateTextIn(commands, processedMessage, null));
+        lineRoutine = StartCoroutine(dialogAnimations.AnimateTextIn(commands, processedMessage, null));
     }
     
-    public void EndDialog()
+    public IEnumerator EndDialog()
     {
+        if (boxIsActive)
+        {
+            animatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize(grow:false));
+        }
+        else { animatingDialogBox = false; }
 
-    }
-    private IEnumerator ExitDialogMode()
-    {
+        while (animatingDialogBox)
+            yield return null;
+
+        ClearDialogText();
+        SetUIBoxActiveStates(false); 
+
         yield return new WaitForSeconds(disableUITime);
 
         dialogIsPlaying = false;
-        dialogText.text = string.Empty;
     }
     #endregion
 
+    private void ClearDialogText()
+    {
+        dialogText.text = string.Empty;
+        displayNameText.text = string.Empty;
+        
+        if (dialogAnimations != null)
+        {
+            dialogAnimations.ClearText();
+        }
+    }
     public bool CheckIfDialogAnimating()
     {
         return dialogAnimations.isTextAnimating;

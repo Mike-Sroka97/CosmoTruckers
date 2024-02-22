@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
 public class DialogAnimations
 {
@@ -13,7 +13,8 @@ public class DialogAnimations
 
     private readonly TMP_Text textBox;
     private readonly float textAnimationScale;
-    private Image nextLineIndicator; 
+    private Image nextLineIndicator;
+    private float previousCharacterCount;
 
     // Initializer
     public DialogAnimations(TMP_Text _textBox, Image _nextLineIndicator)
@@ -73,6 +74,8 @@ public class DialogAnimations
 
         // Get the number of characters and create an array for the start times of each
         int characterCount = textInfo.characterCount;
+        previousCharacterCount = characterCount; 
+
         float[] characterAnimStartTimes = new float[characterCount];
 
         for (int i = 0; i < characterCount; i++)
@@ -174,7 +177,30 @@ public class DialogAnimations
             }
             yield return null; 
         }
-    } 
+    }
+
+    public void ClearText()
+    {
+        for (int i = 0; i < previousCharacterCount; i++)
+        {
+            TMP_CharacterInfo characterInfo = textBox.textInfo.characterInfo[i];
+            TMP_TextInfo textInfo = textBox.textInfo;
+
+            if (characterInfo.isVisible)
+            {
+                int vertexIndex = characterInfo.vertexIndex;
+                int materialIndex = characterInfo.materialReferenceIndex;
+                Color32[] currentColors = textInfo.meshInfo[materialIndex].colors32;
+
+                for (int j = 0; j < currentColors.Length; j++)
+                {
+                    currentColors[j] = (Color32)Color.clear;
+                }
+
+                textBox.mesh.colors32 = currentColors;
+            }
+        }
+    }
 
     private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter)
     {

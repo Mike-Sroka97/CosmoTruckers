@@ -18,6 +18,7 @@ public class DialogDirector : MonoBehaviour
     private string baseDialog; 
     private int currentLineIndex = 0; 
     private int currentID = 1;
+    private int lastID = -1; 
 
     private static readonly string[] basePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
 
@@ -206,20 +207,6 @@ public class DialogDirector : MonoBehaviour
         return actors; 
     }
 
-    /*
-    private List<BaseActor> SpawnActorsInScene()
-    {
-        // Get all the actor spots
-        ActorSpot[] actorSpots = FindObjectsOfType<ActorSpot>();
-
-
-        for (int i = 0; i < actorSpots; i++)
-        {
-
-        }
-    }
-    */ 
-
     #region Actor Commands
     public void MoveActor(BaseActor actor, Vector3 actorDestination, float speed = 1)
     {
@@ -266,9 +253,9 @@ public class DialogDirector : MonoBehaviour
         // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
         {
-            dialogManager.EndDialog(); 
+            StartCoroutine(dialogManager.EndDialog()); 
         }
-        // Continue the dialog
+        // Otherwise, continue the dialog
         else
         {
             // At the current line in the base dialog, get the tags
@@ -289,8 +276,16 @@ public class DialogDirector : MonoBehaviour
             // Get the line associated with this actor and their dialog
             string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
 
+            // Check if it's the first line in the dialog
+            bool firstDialog = false;
+            if (currentLineIndex == 0)
+                firstDialog = true; 
+
             // Tell the actor to deliver the line
-            actors[currentID - 1].DeliverLine(currentLine);
+            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog);
+
+            // Set last id after delivering
+            lastID = currentID;
         }
     }
 

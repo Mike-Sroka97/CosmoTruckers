@@ -33,9 +33,14 @@ public class BaseActor : MonoBehaviour
     }
 
     //set text box active and material 
-    public void DeliverLine(string actorsLine)
+    public void DeliverLine(string actorsLine, int lastID, bool firstDialog)
     {
-        StartCoroutine(myDialogManager.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition)); 
+        bool sameSpeaker = false;
+
+        if (actorID == lastID)
+            sameSpeaker = true; 
+
+        StartCoroutine(myDialogManager.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition, sameSpeaker, firstDialog)); 
     } 
 
     private void SetSpriteSorting(int sortingLayer)
