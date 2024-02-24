@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogAnimations
+public class DialogTextAnimations
 {
     public bool isTextAnimating = false; 
     private bool stopAnimating = false;
@@ -17,7 +17,7 @@ public class DialogAnimations
     private float previousCharacterCount;
 
     // Initializer
-    public DialogAnimations(TMP_Text _textBox, Image _nextLineIndicator)
+    public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator)
     {
         textBox = _textBox;
         nextLineIndicator = _nextLineIndicator;

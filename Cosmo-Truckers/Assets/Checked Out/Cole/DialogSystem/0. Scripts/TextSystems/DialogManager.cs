@@ -1,4 +1,3 @@
-using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -22,7 +21,7 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Image nextLineIndicator; 
     [SerializeField] private float disableUITime = 1f;
 
-    private DialogAnimations dialogAnimations;
+    private DialogTextAnimations dialogTextAnimations;
     private string currentLine; 
 
     public bool DialogIsPlaying { get; private set; }
@@ -34,7 +33,7 @@ public class DialogManager : MonoBehaviour
     #region Setup
     private void SetDialogAnimator() // Set the new Dialog Animatior here
     {
-        dialogAnimations = new DialogAnimations(textBox, nextLineIndicator);
+        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator);
     }
 
     private void SetDialogPosition(Transform newPosition)
@@ -165,10 +164,10 @@ public class DialogManager : MonoBehaviour
     {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
-        dialogAnimations.isTextAnimating = false;
+        dialogTextAnimations.isTextAnimating = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogAnimations.AnimateTextIn(commands, processedMessage, null));
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, null));
     }
     
     public IEnumerator EndDialog()
@@ -197,17 +196,17 @@ public class DialogManager : MonoBehaviour
         dialogText.text = string.Empty;
         displayNameText.text = string.Empty;
         
-        if (dialogAnimations != null)
+        if (dialogTextAnimations != null)
         {
-            dialogAnimations.ClearText();
+            dialogTextAnimations.ClearText();
         }
     }
     public bool CheckIfDialogAnimating()
     {
-        return dialogAnimations.isTextAnimating;
+        return dialogTextAnimations.isTextAnimating;
     }
     public void StopAnimating()
     {
-        dialogAnimations.FinishCurrentAnimation();
+        dialogTextAnimations.FinishCurrentAnimation();
     }
 }
