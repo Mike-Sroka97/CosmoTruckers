@@ -49,8 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a0c8f7dc8983264abd02b917c583c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 0.9
-  sendBackDistance: 2.2
   totalDistance: 8
   row: 2
   moneyLine: {fileID: 1479705398060662481}
@@ -93,6 +91,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!61 &5732570807336780940
 BoxCollider2D:
@@ -250,7 +253,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5691719109452259052, guid: 06c02a42c5f50a446ad416c188ef2e12, type: 3}
       propertyPath: m_Size.x
-      value: 10.5
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691719109452259052, guid: 06c02a42c5f50a446ad416c188ef2e12, type: 3}
+      propertyPath: m_Size.y
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 7134617690183695456, guid: 06c02a42c5f50a446ad416c188ef2e12, type: 3}
       propertyPath: m_RootOrder
@@ -258,7 +265,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7134617690183695456, guid: 06c02a42c5f50a446ad416c188ef2e12, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4.17
       objectReference: {fileID: 0}
     - target: {fileID: 7134617690183695456, guid: 06c02a42c5f50a446ad416c188ef2e12, type: 3}
       propertyPath: m_LocalPosition.y

@@ -18,7 +18,8 @@ public class DialogDirector : MonoBehaviour
     private string baseDialog; 
     private int currentLineIndex = 0; 
     private int currentID = 1;
-    private int lastID = -1; 
+    private int lastID = -1;
+    private int allLinesCount = 0; 
 
     private static readonly string[] basePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
 
@@ -27,7 +28,8 @@ public class DialogDirector : MonoBehaviour
         GetScripts(); 
     }
 
-    // Methods
+    #region Setup
+
     public void SetScene(TextAsset _textFile, List<BaseActor> playerActors)
     {
         GetScripts(); 
@@ -44,7 +46,6 @@ public class DialogDirector : MonoBehaviour
         StartCoroutine(StartScene(2f)); 
 
     }
-
     IEnumerator StartScene(float startSceneWaitTime)
     {
         yield return new WaitForSeconds(startSceneWaitTime); 
@@ -206,6 +207,7 @@ public class DialogDirector : MonoBehaviour
 
         return actors; 
     }
+    #endregion
 
     #region Actor Commands
     public void MoveActor(BaseActor actor, Vector3 actorDestination, float speed = 1)
@@ -222,23 +224,36 @@ public class DialogDirector : MonoBehaviour
     }
     #endregion
 
-    // Update is called once per frame
-    void Update()
+    #region Values 
+    private bool CanAdvance()
     {
-        CheckPlayerInput(); 
+        bool canAdvance = true;
+
+        if (currentLineIndex >= allLinesCount)
+            canAdvance = false; 
+
+        return canAdvance && !dialogManager.UpdatingDialogBox; 
     }
+    private void GetScripts()
+    {
+        if (textParser == null)
+        {
+            textParser = GetComponent<TextParser>();
+            actorList = GetComponent<ActorList>();
+            dialogManager = FindObjectOfType<DialogManager>();
+        }
+    }
+
+    #endregion
 
     private void CheckPlayerInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            bool stillAnimating = dialogManager.CheckIfDialogAnimating(); 
-
-            if (stillAnimating) { dialogManager.StopAnimating(); }
-
-            else
+            if (CanAdvance())
             {
-                AdvanceScene(); 
+                if (dialogManager.CheckIfDialogAnimating()) { dialogManager.StopAnimating(); }
+                else { AdvanceScene(); }
             }
         }
     }
@@ -248,7 +263,7 @@ public class DialogDirector : MonoBehaviour
         // Increment the current line
         currentLineIndex++;
 
-        int allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]); 
+        allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]); 
 
         // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
@@ -265,7 +280,13 @@ public class DialogDirector : MonoBehaviour
             // Get the actor ID for this line and the dialog associated with that actor
             if (int.TryParse(tags[0], out currentID))
             {
-                speakerDialog = dialogs[currentID - 1]; // ID's in text will be on a starting scale of 1
+                int dialogToGrab = currentID - 1;
+
+                // Non-players don't need to worry about this. Grab the base dialog
+                if (dialogToGrab > 3)
+                    dialogToGrab = 0; 
+
+                speakerDialog = dialogs[dialogToGrab]; // ID's in text will be on a starting scale of 1
             }
             else
             {
@@ -289,18 +310,14 @@ public class DialogDirector : MonoBehaviour
         }
     }
 
-    private void GetScripts()
-    {
-        if (textParser == null)
-        {
-            textParser = GetComponent<TextParser>();
-            actorList = GetComponent<ActorList>();
-            dialogManager = FindObjectOfType<DialogManager>();
-        }
-    }
-
     private void EndScene()
     {
 
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        CheckPlayerInput();
     }
 }
