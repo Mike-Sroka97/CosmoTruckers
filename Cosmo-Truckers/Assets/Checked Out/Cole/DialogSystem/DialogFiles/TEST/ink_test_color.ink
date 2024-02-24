@@ -1,3 +1,0 @@
-<sp:25><color:150,150,150,1>Hello. It is my </color><color:255,150,255,1><anim:wave>distinct priviledge</anim></color><color:50,50,50,1> to give to you this </color> wide range of color options, sire. Let's not get <i>too</i> <color:255,0,0,1><anim:shake><b>CRAZY</b></anim></color> in here.#speaker:Color
-
-<sp:25><color:19,214,198,1>Now let's test to see if multiple lines work. </color> This one will only have two colors.#speaker:Color2
