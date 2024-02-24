@@ -25,7 +25,9 @@ public class DialogManager : MonoBehaviour
     private DialogAnimations dialogAnimations;
     private string currentLine; 
 
-    public bool dialogIsPlaying { get; private set; }
+    public bool DialogIsPlaying { get; private set; }
+    public bool UpdatingDialogBox { get; private set; }
+
     private bool animatingDialogBox;
     private bool boxIsActive = false; 
 
@@ -105,6 +107,8 @@ public class DialogManager : MonoBehaviour
         // If it's the first time dialog, don't animate out and in, just in
         if (firstDialog)
         {
+            UpdatingDialogBox = true;
+
             SetDialogPosition(textBoxPosition);
             ClearDialogText(); 
 
@@ -113,10 +117,17 @@ public class DialogManager : MonoBehaviour
 
             while (animatingDialogBox)
                 yield return null;
+
+            UpdatingDialogBox = false;
+
+            // We can use tags to alter this
+            yield return new WaitForSeconds(waitTimeBetweenDialogs);
         }
         //If it's not the same speaker, animate out and in to new speaker
         else if (!sameSpeaker)
         {
+            UpdatingDialogBox = true; 
+
             animatingDialogBox = true;
             StartCoroutine(AnimateUIToSize(grow:false));
 
@@ -129,17 +140,24 @@ public class DialogManager : MonoBehaviour
 
             animatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
-        }
-        else { animatingDialogBox = false; }
 
-        // We can use tags to alter this
-        yield return new WaitForSeconds(waitTimeBetweenDialogs); 
+            while (animatingDialogBox)
+                yield return null;
+
+            UpdatingDialogBox = false;
+
+            // We can use tags to alter this
+            yield return new WaitForSeconds(waitTimeBetweenDialogs);
+        }
+        else 
+        { 
+            animatingDialogBox = false;
+            UpdatingDialogBox = false;
+        }
 
         SetDialogAnimator();
         displayNameText.text = actorName;
         SpeakNextLine(nextLine);
-
-        yield return null; 
     }
 
     private Coroutine lineRoutine = null;
@@ -170,7 +188,7 @@ public class DialogManager : MonoBehaviour
 
         yield return new WaitForSeconds(disableUITime);
 
-        dialogIsPlaying = false;
+        DialogIsPlaying = false;
     }
     #endregion
 

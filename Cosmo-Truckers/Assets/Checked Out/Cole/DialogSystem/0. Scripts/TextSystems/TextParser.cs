@@ -65,12 +65,14 @@ public class TextParser : MonoBehaviour
     private string[] GetAllLinesInThisDialog(string dialog)
     {
         string[] lines = dialog.Split('\n');
-
         List<string> realLines = new List<string>();
+        int startPosition = 1;
 
-        //The first line will always be a descriptor of who is talking. We can skip it.
-        for (int i = 1; i < lines.Length; i++)
+        for (int i = startPosition; i < lines.Length; i++)
         {
+            //Remove \r from lines
+            lines[i] = Regex.Replace(lines[i], "\r", ""); 
+
             if (lines[i] != "\\n\r" && lines[i] != "")
                 realLines.Add(lines[i]);
         }
