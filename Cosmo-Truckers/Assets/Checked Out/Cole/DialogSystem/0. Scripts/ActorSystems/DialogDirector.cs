@@ -1,17 +1,17 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DialogDirector : MonoBehaviour
 {
+    // Scene Setup Variables
     private TextAsset textFile;
-    private TextParser textParser;
-    private DialogManager dialogManager;
-    private ActorList actorList; 
+    private GameObject sceneLayout;
+
     private BaseActor[] actors;
+    private TextParser textParser;
+    private ActorList actorList; 
 
     private string[] dialogs;
     private string baseDialog; 
@@ -24,22 +24,31 @@ public class DialogDirector : MonoBehaviour
 
     private void Start()
     {
-        GetScripts(); 
+        StartCoroutine(SetScene()); 
     }
 
-    #region Setup
-
-    public void SetScene(TextAsset _textFile, List<BaseActor> playerActors)
+    #region Scene Setup
+    public IEnumerator SetScene()
     {
         GetScripts(); 
 
-        textFile = _textFile;
+        List<BaseActor> playerActors = new List<BaseActor>();
+        DialogManager.Instance.GetSceneInformation(ref sceneLayout, ref textFile, ref playerActors);
+
+        Instantiate(sceneLayout); 
+
         dialogs = new string[playerActors.Count];
         baseDialog = textParser.GetAllDialogs(textFile)[0];
 
         BaseActor[] sortedActors = SortBasePlayerActors(playerActors);
         List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
         actors = SpawnActorsIn(actorPrefabs);
+
+        DialogManager.Instance.SetFading(true); 
+        StartCoroutine(DialogManager.Instance.FadeFader(fadeIn: false));
+
+        while (DialogManager.Instance.CheckIfFading())
+            yield return null; 
 
         // Delay wait time before starting dialog
         StartCoroutine(StartScene(2f)); 
@@ -194,7 +203,7 @@ public class DialogDirector : MonoBehaviour
             {
                 GameObject spawnedActor = Instantiate(prefabToSpawn, actorSpots[i].transform);
                 BaseActor actor = spawnedActor.GetComponent<BaseActor>();
-                actor.Initialize(dialogManager, actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
+                actor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
 
                 // Set the actor in the correct spot in the array
                 actors[actorSpots[i].GetActorNumber() - 1] = actor;
@@ -231,7 +240,7 @@ public class DialogDirector : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false; 
 
-        return canAdvance && !dialogManager.UpdatingDialogBox; 
+        return canAdvance && !DialogManager.Instance.UpdatingDialogBox; 
     }
     private void GetScripts()
     {
@@ -239,7 +248,6 @@ public class DialogDirector : MonoBehaviour
         {
             textParser = GetComponent<TextParser>();
             actorList = GetComponent<ActorList>();
-            dialogManager = FindObjectOfType<DialogManager>();
         }
     }
 
@@ -251,12 +259,11 @@ public class DialogDirector : MonoBehaviour
         {
             if (CanAdvance())
             {
-                if (dialogManager.CheckIfDialogAnimating()) { dialogManager.StopAnimating(); }
+                if (DialogManager.Instance.CheckIfDialogAnimating()) { DialogManager.Instance.StopAnimating(); }
                 else { AdvanceScene(); }
             }
         }
     }
-
     private void AdvanceScene()
     {
         // Increment the current line
@@ -267,7 +274,7 @@ public class DialogDirector : MonoBehaviour
         // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
         {
-            StartCoroutine(dialogManager.EndDialog()); 
+            StartCoroutine(DialogManager.Instance.EndDialog()); 
         }
         // Otherwise, continue the dialog
         else
@@ -293,6 +300,10 @@ public class DialogDirector : MonoBehaviour
                 speakerDialog = baseDialog;
             }
 
+            // Handle the Pre Text Tags, and return any variables needed to pass into actors
+            string speakerDirection = string.Empty; 
+            HandlePreTextTags(tags, ref speakerDirection); 
+
             // Get the line associated with this actor and their dialog
             string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
 
@@ -302,10 +313,43 @@ public class DialogDirector : MonoBehaviour
                 firstDialog = true; 
 
             // Tell the actor to deliver the line
-            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog);
+            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection);
 
             // Set last id after delivering
             lastID = currentID;
+        }
+    }
+    private void HandlePreTextTags(string[] tags, ref string speakerDirection)
+    {
+        // Start at 1, first tag is actorID
+        for (int i = 1; i < tags.Length; i++)
+        {
+            string[] tagValues = tags[i].Split(":"); 
+            string tagKey = tagValues[0];
+            string tagValue = tagValues[1];
+
+            switch (tagKey)
+            {
+                case "animID":
+                    int animID; 
+                    if(int.TryParse(tagValue, out animID))
+                    {
+                        // Grab the animator
+                    }
+                    else
+                    {
+                        Debug.LogError("Can't parse value out of animID. Using default character!");
+                        animID = 1; 
+                    }
+                    break;
+                case "direction":
+                    speakerDirection = tagValue;
+                    break; 
+                default:
+                    Debug.Log("No additional Pre-Text tag found!");
+                    break; 
+            }
+
         }
     }
 

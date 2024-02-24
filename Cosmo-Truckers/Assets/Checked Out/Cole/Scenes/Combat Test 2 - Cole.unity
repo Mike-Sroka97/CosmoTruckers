@@ -3500,6 +3500,57 @@ RectTransform:
   m_AnchoredPosition: {x: 1026, y: -324}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &925000610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 925000612}
+  - component: {fileID: 925000611}
+  m_Layer: 0
+  m_Name: TestDialog
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &925000611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925000610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e77a5a3707c214a82245d7e179bc5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textFile: {fileID: 4900000, guid: 4ee7c79cc7f238c4fa6be5eb8ec69875, type: 3}
+  playerActors:
+  - {fileID: 8641470639108231972, guid: 5e3c884c2872f0d4aa5e24d65c67364e, type: 3}
+  - {fileID: 2374824764462717432, guid: b17f40443411786428b7fadde83d5ec8, type: 3}
+  - {fileID: 620980628652551681, guid: 925d242fbf640f84dae8a938dbecb1cf, type: 3}
+  - {fileID: 4757662514951821972, guid: 6f678429cd37863439e699cdb0870a67, type: 3}
+  sceneLayout: {fileID: 942208066569605325, guid: db6afd85cba28f64889dd283dd2be086, type: 3}
+--- !u!4 &925000612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925000610}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &955282318
 GameObject:
   m_ObjectHideFlags: 0
@@ -7708,21 +7759,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b1797dbf57d0914f9fa2cce2e3be78c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOneMaterial: {fileID: 2100000, guid: f22b3e93394f319488925998d6cd972e, type: 2}
-  playerTwoMaterial: {fileID: 2100000, guid: 4eef9288bdedb024a95c29c5b9de050d, type: 2}
-  playerThreeMaterial: {fileID: 2100000, guid: c0fcd15553b73ae4591e7c19074f59d8, type: 2}
-  playerFourMaterial: {fileID: 2100000, guid: ecb6ecc7b3197714785a60352556e2d2, type: 2}
+  playerMaterials: []
   blankBG: {fileID: 21300000, guid: 181b14c363c59a247a15d5059f488001, type: 3}
   currentBG: {fileID: 21300000, guid: 79d2ac83476694046a79bad8547c10fc, type: 3}
   MiniGameScreen: {fileID: 1469195334}
   Timer: {fileID: 962490996}
   MyTargeting: {fileID: 2131620935}
-  enemySpellHoldTime: 3
   trashAttackDelay: 0.25
   CharactersSelected: []
   ActivePlayers: []
   CurrentAttack: {fileID: 0}
-  INAmoving: 0
+  PauseManager: 0
+  PauseAttack: 0
   TargetsSelected: 1
 --- !u!4 &2131620934
 Transform:

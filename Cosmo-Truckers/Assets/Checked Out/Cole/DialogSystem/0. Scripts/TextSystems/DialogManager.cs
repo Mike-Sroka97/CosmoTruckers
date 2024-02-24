@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
+    public static DialogManager Instance;
+
     [Header("Main Text Components")]
     [SerializeField] private TMP_Text textBox;
     [SerializeField] private TextMeshProUGUI dialogText;
@@ -21,26 +22,117 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Image nextLineIndicator; 
     [SerializeField] private float disableUITime = 1f;
 
-    private DialogTextAnimations dialogTextAnimations;
-    private string currentLine; 
+    [Header("Dialog Scene Loading")]
+    [SerializeField] private Image fader; 
+    private const float FadeTime = 2f;
+    private bool fading = false; 
 
+    // Dialog Scene Variables
+    private GameObject sceneLayout;
+    TextAsset textFile;
+    List<BaseActor> playerActors; 
+
+    private DialogTextAnimations dialogTextAnimations;
+    private string currentLine;
+    private bool animatingDialogBox;
+    private bool boxIsActive = false;
+
+    // Public bools
     public bool DialogIsPlaying { get; private set; }
     public bool UpdatingDialogBox { get; private set; }
 
-    private bool animatingDialogBox;
-    private bool boxIsActive = false; 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
-    #region Setup
+    #region New Dialog Scene
+    public IEnumerator LoadDialogScene(GameObject _sceneLayout, TextAsset _textFile, List<BaseActor> _playerActors)
+    {
+        sceneLayout = _sceneLayout;
+        textFile = _textFile;
+        playerActors = _playerActors;
+
+        SetFading(true); 
+        StartCoroutine(FadeFader()); 
+
+        while (fading)
+            yield return null;
+
+        // Load into new scene after fading
+        SceneManager.LoadScene(7);
+    }
+    public void GetSceneInformation(ref GameObject _sceneLayout, ref TextAsset _textFile, ref List<BaseActor> _playerActors)
+    {
+        _sceneLayout = sceneLayout;
+        _textFile = textFile;
+        _playerActors = playerActors;
+    }
+    public IEnumerator FadeFader(float fadeTime = FadeTime, bool fadeIn = true)
+    {
+        float timer = 0;
+        float newAlpha = fader.color.a;
+        float startAlpha = 0.05f;
+        float endAlpha = 1f; 
+
+        if (!fadeIn)
+        {
+            startAlpha = 1f; 
+            endAlpha = 0.05f; 
+        }
+
+        while ((fadeIn && newAlpha < endAlpha) || (!fadeIn && newAlpha > endAlpha))
+        {
+            timer += Time.deltaTime;
+            newAlpha = Mathf.Lerp(startAlpha, endAlpha, timer / fadeTime);
+            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, newAlpha); 
+            yield return null;
+        }
+
+        // Make sure the fader alpha is correct
+        if (!fadeIn)
+            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, 0f);
+        else
+            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, 1f);
+
+        SetFading(false); 
+    } 
+    #endregion
+
+    #region Next Dialog Setup
     private void SetDialogAnimator() // Set the new Dialog Animatior here
     {
         dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator);
     }
-
-    private void SetDialogPosition(Transform newPosition)
+    private void SetDialogUI(Transform newPosition, string direction)
     {
         dialogBox.position = newPosition.position;
-    }
 
+        switch (direction)
+        {
+            case "right":
+                actorDirection.enabled = true; 
+                actorDirection.rectTransform.eulerAngles = new Vector3(0, 180f, 0);
+                break;
+            case "none": 
+                actorDirection.enabled = false;
+                break;
+            default:
+                actorDirection.enabled = true;
+                actorDirection.rectTransform.eulerAngles = new Vector3(0, 0f, 0);
+                break; 
+        }
+
+    }
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.5f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
         if (!boxIsActive && grow)
@@ -82,33 +174,30 @@ public class DialogManager : MonoBehaviour
             SetUIBoxActiveStates(false);
         }
     }
-
     private void SetUIBoxActiveStates(bool state)
     {
         dialogBoxImage.gameObject.SetActive(state);
         dialogBoxImageBorder.gameObject.SetActive(state);
         actorDirection.gameObject.SetActive(state);
     }
-
     private void UpdateUIBoxColors(float alpha)
     {
         dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, alpha); 
         dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, alpha); 
         actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, alpha);
     }
-
     #endregion
 
     #region Dialog Mode
     public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, 
-        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, float waitTimeBetweenDialogs = 0.5f)
+        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
         // If it's the first time dialog, don't animate out and in, just in
         if (firstDialog)
         {
             UpdatingDialogBox = true;
 
-            SetDialogPosition(textBoxPosition);
+            SetDialogUI(textBoxPosition, actorDirection);
             ClearDialogText(); 
 
             animatingDialogBox = true;
@@ -134,7 +223,7 @@ public class DialogManager : MonoBehaviour
                 yield return null;
 
             // Wait until text box is shrunk before moving positions
-            SetDialogPosition(textBoxPosition);
+            SetDialogUI(textBoxPosition, actorDirection);
             ClearDialogText();
 
             animatingDialogBox = true;
@@ -191,11 +280,16 @@ public class DialogManager : MonoBehaviour
     }
     #endregion
 
+    #region Methods and Checks
+    public void SetFading(bool state)
+    {
+        fading = state; 
+    }
     private void ClearDialogText()
     {
         dialogText.text = string.Empty;
         displayNameText.text = string.Empty;
-        
+
         if (dialogTextAnimations != null)
         {
             dialogTextAnimations.ClearText();
@@ -209,4 +303,9 @@ public class DialogManager : MonoBehaviour
     {
         dialogTextAnimations.FinishCurrentAnimation();
     }
+    public bool CheckIfFading()
+    {
+        return fading; 
+    }
+    #endregion
 }

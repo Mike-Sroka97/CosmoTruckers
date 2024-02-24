@@ -7,19 +7,28 @@ public class TESTDIALOG : MonoBehaviour
 {
     [SerializeField] private TextAsset textFile;
     [SerializeField] private BaseActor[] playerActors;
+    [SerializeField] GameObject sceneLayout;
 
-    private DialogDirector myDirector; 
+    private bool startedSceneLoad; 
+    private DialogManager myDialogManager; 
 
 
     private void Start()
     {
-        myDirector = FindObjectOfType<DialogDirector>();
+        myDialogManager = FindObjectOfType<DialogManager>();
+    }
 
-        SetUpDialog();
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Space) && !startedSceneLoad)
+        {
+            startedSceneLoad= true;
+            SetUpDialog();
+        }
     }
 
     private void SetUpDialog()
     {
-        myDirector.SetScene(textFile, playerActors.ToList());
+        StartCoroutine(myDialogManager.LoadDialogScene(sceneLayout, textFile, playerActors.ToList()));
     }
 }
