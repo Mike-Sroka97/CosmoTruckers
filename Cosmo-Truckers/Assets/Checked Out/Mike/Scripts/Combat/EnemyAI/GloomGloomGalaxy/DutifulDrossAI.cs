@@ -6,9 +6,9 @@ public class DutifulDrossAI : Enemy
 {
     [HideInInspector] public Enemy ProtectedEnemy;
 
-    public override void StartTurn()
+    protected override int SelectAttack()
     {
-        if(!ProtectedEnemy.Dead)
+        if (ProtectedEnemy && !ProtectedEnemy.Dead)
         {
             bool maxCrust = false;
 
@@ -16,7 +16,7 @@ public class DutifulDrossAI : Enemy
                 if (aug.DebuffName == "Crust" && aug.CurrentStacks == aug.MaxStacks)
                     maxCrust = true;
 
-            if(maxCrust)
+            if (maxCrust)
                 ChosenAttack = attacks[1];
             else
                 ChosenAttack = attacks[1];
@@ -26,7 +26,7 @@ public class DutifulDrossAI : Enemy
             ChosenAttack = attacks[1];
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)
@@ -46,6 +46,7 @@ public class DutifulDrossAI : Enemy
         else
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+            CurrentTargets.Add(this);
         }
     }
 }

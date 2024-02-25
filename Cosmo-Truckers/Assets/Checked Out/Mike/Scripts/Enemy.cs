@@ -24,7 +24,8 @@ public class Enemy : Character
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
     [HideInInspector] public PlayerCharacter TauntedBy;
     public bool SpecialTargetConditions = false;
-    protected BaseAttackSO ChosenAttack;
+    [HideInInspector] public List<Character> CurrentTargets;
+    [HideInInspector] public BaseAttackSO ChosenAttack;
     public bool TakesCombatSpot = true;
 
     [Header("Trash mob collector")]
@@ -45,6 +46,8 @@ public class Enemy : Character
     {
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnStartBattle)
             StartCoroutine(StartWait());
+
+        QueueNextMove();
     }
 
     IEnumerator StartWait()
@@ -77,6 +80,7 @@ public class Enemy : Character
 
     public override void EndTurn()
     {
+        QueueNextMove();
         TauntedBy = null;
     }
 
@@ -101,6 +105,15 @@ public class Enemy : Character
                 return;
             }
         }
+    }
+
+    protected int GetAttackIndex()
+    {
+        for (int i = 0; i < attacks.Length; i++)
+            if (attacks[i] == ChosenAttack)
+                return i;
+
+        return 0;
     }
 
     public override void TakeDamage(int damage, bool defensePiercing = false)
@@ -219,6 +232,17 @@ public class Enemy : Character
         }
     }
 
+    public void QueueNextMove()
+    {
+        SpecialTarget(SelectAttack());
+    }
+
+    //Reserved for enemies with no special AI
+    protected virtual int SelectAttack()
+    {
+        ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
+        return GetAttackIndex();
+    }
 
     protected virtual void SpecialTarget(int attackIndex) { }
 }

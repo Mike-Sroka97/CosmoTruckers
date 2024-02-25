@@ -91,7 +91,7 @@ public class QmuavAI : Enemy
         else if (attackIndex == 2)
         {
             //AOE targeting
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
         }
         //Atomic Impact
         else if (attackIndex == 3)
@@ -142,7 +142,7 @@ public class QmuavAI : Enemy
         else if (attackIndex == 8)
         {
             //AOE targeting
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
         }
         //Cry Baby
         else if (attackIndex == 9)
@@ -158,7 +158,7 @@ public class QmuavAI : Enemy
         else if (attackIndex == 11)
         {
             //AOE targeting
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this,ChosenAttack);
         }
     }
 

@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GloomGuyAI : Enemy
 {
-    public override void StartTurn()
+    UnityEvent changeMove;
+
+    protected override int SelectAttack()
     {
         if (!FindObjectOfType<AUG_BullsEye>())
         {
@@ -19,7 +22,7 @@ public class GloomGuyAI : Enemy
             ChosenAttack = attacks[2];
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)

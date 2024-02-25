@@ -117,7 +117,7 @@ public class MeatTonguerAI : Enemy
         //Cumulo-Lickus
         else
         {
-            CombatManager.Instance.AllTargetEnemy(ChosenAttack);
+            CombatManager.Instance.AllTargetEnemy(this, ChosenAttack);
         }
     }
 }

@@ -11,4 +11,9 @@ public class EnemySummon : Enemy
         base.Die();
         Destroy(gameObject);
     }
+
+    protected override int SelectAttack()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -12,14 +12,6 @@ public class Cometkaze : CombatMove
         GenerateLayout();
     }
 
-    private void Update()
-    {
-        if (!trackTime)
-            return;
-
-        TrackTime();
-    }
-
     public override void StartMove()
     {
         CometkazeBall[] balls = GetComponentsInChildren<CometkazeBall>();
@@ -52,5 +44,6 @@ public class Cometkaze : CombatMove
 
         int damage = CalculateScore();
         DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
+        CombatManager.Instance.GetCharactersSelected[1].TakeDamage(999, true);
     }
 }

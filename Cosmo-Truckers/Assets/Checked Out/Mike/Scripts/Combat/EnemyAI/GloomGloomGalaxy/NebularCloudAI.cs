@@ -18,9 +18,9 @@ public class NebularCloudAI : Enemy
         public int numberOfShocked;
     }
 
-    public override void StartTurn()
+    protected override int SelectAttack()
     {
-        if(usingMelancholyPrecipitation)
+        if (usingMelancholyPrecipitation)
         {
             usingMelancholyPrecipitation = !usingMelancholyPrecipitation;
             ChosenAttack = attacks[0];
@@ -31,7 +31,7 @@ public class NebularCloudAI : Enemy
             ChosenAttack = attacks[1];
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)
@@ -157,7 +157,7 @@ public class NebularCloudAI : Enemy
             }
 
             //add enemy to the targeting
-            CombatManager.Instance.CharactersSelected.Add(mostDebuffedEnemy);
+            CurrentTargets.Add(mostDebuffedEnemy);
         }
     }
 }

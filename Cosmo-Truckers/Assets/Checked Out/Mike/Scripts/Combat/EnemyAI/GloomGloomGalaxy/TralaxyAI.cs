@@ -133,7 +133,7 @@ public class TralaxyAI : Enemy
         //Devastation
         else
         {
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
         }
     }
 

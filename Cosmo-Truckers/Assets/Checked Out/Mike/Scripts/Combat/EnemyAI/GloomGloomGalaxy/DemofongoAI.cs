@@ -18,7 +18,7 @@ public class DemofongoAI : Enemy
         //Painful Presents and Heavy Weight
         if(attackIndex == 0 || attackIndex == 3)
         {
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
 
             if (attackIndex == 3)
                 CombatManager.Instance.GetCharactersSelected.Add(this);

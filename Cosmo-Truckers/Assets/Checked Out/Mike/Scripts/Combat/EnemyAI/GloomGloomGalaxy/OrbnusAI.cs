@@ -26,7 +26,7 @@ public class OrbnusAI : Enemy
         //Behold, Death!
         if (attackIndex == 0)
         {
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
         }
         //Titan's Terror
         else if (attackIndex == 1)
@@ -36,7 +36,7 @@ public class OrbnusAI : Enemy
         //Last Resort
         else
         {
-            CombatManager.Instance.AOETargetPlayers(ChosenAttack);
+            CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
         }
     }
 

@@ -68,103 +68,74 @@ public class CombatManager : MonoBehaviour
     {
         CurrentAttack = attack;
         CurrentEnemy = enemy;
-        EnemyTarget(attack, enemy);
-    }
-
-    private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
-    {
+        //EnemyTarget(attack, enemy);
         CharactersSelected.Clear();
         ActivePlayers = new List<PlayerCharacter>();
         characters = new List<GameObject>();
         CurrentPlayer = null;
         CurrentCharacter = enemy;
 
-        if(enemy.SpecialTargetConditions)
+        if (!enemy.SpecialTargetConditions)
+            EnemyTarget(attack, enemy);
+
+        foreach (Character character in enemy.CurrentTargets)
         {
-            enemy.TargetConditions(attack);
-
-            foreach (Character character in CharactersSelected)
-                if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character))
-                    ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
-        }
-        else
-        {
-            switch (attack.TargetingType)
-            {
-                #region No Target
-                case EnumManager.TargetingType.No_Target:
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
-                    break;
-                #endregion
-                #region Self Target
-                case EnumManager.TargetingType.Self_Target:
-                    CharactersSelected.Add(enemy);
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
-                    break;
-                #endregion
-                #region Single Target
-                case EnumManager.TargetingType.Single_Target:
-                    SingleTargetEnemy(attack, enemy);
-                    break;
-                #endregion
-                #region Multi Target Cone
-                case EnumManager.TargetingType.Multi_Target_Cone:
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
-                    break;
-                #endregion
-                #region Multi Target Choice
-                case EnumManager.TargetingType.Multi_Target_Choice:
-                    System.Random multiRand = new System.Random();
-                    PlayerCharacter[] attackableCharacters = EnemyManager.Instance.GetAlivePlayerCharacters().OrderBy(x => multiRand.Next()).ToArray();
-
-                    //taunted
-                    if (enemy.TauntedBy != null && !CharactersSelected.Contains(enemy.TauntedBy))
-                    {
-                        CharactersSelected.Add(enemy.TauntedBy);
-                        ActivePlayers.Add(enemy.TauntedBy);
-                    }
-
-                    foreach (var obj in attackableCharacters)
-                    {
-                        if (!obj.Dead && !CharactersSelected.Contains(obj))
-                        {
-                            CharactersSelected.Add(obj);
-                            ActivePlayers.Add(obj);
-                        }
-                        if (CharactersSelected.Count == attack.NumberOfTargets)
-                        {
-                            string text = $"Doing Combat Stuff for {attack.AttackName} against";
-                            for (int i = 0; i < CharactersSelected.Count; i++)
-                                text += $" { CharactersSelected[i].name } & ";
-
-                            text.Remove(text.Length - 2, 2);
-                            text += ". . .";
-                            Debug.Log(text);
-                            break;
-                        }
-                    }
-                    break;
-                #endregion
-                #region AOE
-                case EnumManager.TargetingType.AOE:
-                    foreach (var obj in EnemyManager.Instance.GetAlivePlayerCharacters())
-                    {
-                        CharactersSelected.Add(obj);
-                        ActivePlayers.Add(obj);
-                    }
-                    Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
-                    break;
-                #endregion
-                #region All Target
-                case EnumManager.TargetingType.All_Target:
-                    AllTargetEnemy(attack);
-                    break;
-                #endregion
-            }
+            if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character))
+                ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
+            else if (character.GetComponent<PlayerCharacterSummon>())
+                ActivePlayers.Add(character.GetComponent<PlayerCharacterSummon>().Summoner);
+            CharactersSelected.Add(character);
         }
 
         StartCoroutine(DisplayAttack(attack, ActivePlayers));
         MyTargeting.EnemyTargeting(attack);
+    }
+
+    private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
+    {
+        switch (attack.TargetingType)
+        {
+            #region No Target
+            case EnumManager.TargetingType.No_Target:
+                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, no target. . .");
+                break;
+            #endregion
+            #region Self Target
+            case EnumManager.TargetingType.Self_Target:
+                enemy.CurrentTargets.Add(enemy);
+                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, self target. . .");
+                break;
+            #endregion
+            #region Single Target
+            case EnumManager.TargetingType.Single_Target:
+                SingleTargetEnemy(attack, enemy);
+                break;
+            #endregion
+            #region Multi Target Cone
+            case EnumManager.TargetingType.Multi_Target_Cone:
+                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
+                break;
+            #endregion
+            #region Multi Target Choice
+            case EnumManager.TargetingType.Multi_Target_Choice:
+                MultiTargetChoiceEnemy(attack, enemy);
+                break;
+            #endregion
+            #region AOE
+            case EnumManager.TargetingType.AOE:
+                foreach (var obj in EnemyManager.Instance.GetAlivePlayerCharacters())
+                {
+                    enemy.CurrentTargets.Add(obj);
+                }
+                Debug.Log($"Doing Combat Stuff for {attack.AttackName}, AOE. . .");
+                break;
+            #endregion
+            #region All Target
+            case EnumManager.TargetingType.All_Target:
+                AllTargetEnemy(enemy, attack);
+                break;
+                #endregion
+        }
     }
 
     public void StartTurnPlayerSummon(BaseAttackSO attack, PlayerCharacterSummon summon)
@@ -266,34 +237,20 @@ public class CombatManager : MonoBehaviour
         return null;
     }
 
-    public void AddRandomActivePlayer()
-    {
-        System.Random multiRand = new System.Random();
-        PlayerCharacter[] attackableCharacters = EnemyManager.Instance.GetAlivePlayerCharacters().OrderBy(x => multiRand.Next()).ToArray();
-
-        foreach (var obj in attackableCharacters)
-        {
-            if (!obj.Dead && !ActivePlayers.Contains(obj))
-            {
-                CharactersSelected.Add(obj);
-                return;
-            }
-        }
-    }
-
     public void SingleTargetEnemy(BaseAttackSO attack, Enemy enemy, PlayerCharacter player = null)
     {
         //enemy is taunted
-        if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead && !CharactersSelected.Contains(enemy.TauntedBy))
+        if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead && !enemy.CurrentTargets.Contains(enemy.TauntedBy))
         {
             if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
             {
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                //CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
             }
             else
             {
-                CharactersSelected.Add(enemy.TauntedBy);
-                ActivePlayers.Add(enemy.TauntedBy);
+                enemy.CurrentTargets.Add(enemy.TauntedBy);
+                //ActivePlayers.Add(enemy.TauntedBy);
             }
         }
         //player selected already
@@ -301,20 +258,20 @@ public class CombatManager : MonoBehaviour
         {
             if (!player.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
             {
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                 //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
-                ActivePlayers.Add(player);
+                //ActivePlayers.Add(player);
             }
             else
             {
-                CharactersSelected.Add(player);
-                ActivePlayers.Add(player);
+                enemy.CurrentTargets.Add(player);
+                //ActivePlayers.Add(player);
             }
         }
         //enemy is not taunted
         else
         {
-            SelectRandomPlayerCharacter();
+            SelectRandomPlayerCharacterEnemy(enemy);
         }
     }
 
@@ -338,6 +295,34 @@ public class CombatManager : MonoBehaviour
         {
             CharactersSelected.Add(obj);
             break;
+        }
+    }
+
+    private void SelectRandomPlayerCharacterEnemy(Enemy enemy, bool ignoreSummons = false)
+    {
+        System.Random random = new System.Random();
+        List<PlayerCharacter> alivePlayers = EnemyManager.Instance.GetAlivePlayerCharacters();
+
+        for (int i = 0; i < alivePlayers.Count - 1; i++)
+        {
+            int j = random.Next(i, alivePlayers.Count);
+            PlayerCharacter temp = alivePlayers[i];
+            alivePlayers[i] = alivePlayers[j];
+            alivePlayers[j] = temp;
+        }
+
+        foreach (PlayerCharacter obj in alivePlayers)
+        {
+            if (!ignoreSummons && !obj.GetComponent<PlayerCharacterSummon>() && CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
+            {
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[obj.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
+                break;
+            }
+            else if (!enemy.CurrentTargets.Contains(obj))
+            {
+                enemy.CurrentTargets.Add(obj);
+                break;
+            }
         }
     }
 
@@ -457,51 +442,61 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void AOETargetPlayers(BaseAttackSO attack)
+    private void MultiTargetChoiceEnemy(BaseAttackSO attack, Enemy enemy)
+    {
+        int tempNumberOfTargets = attack.NumberOfTargets;
+
+        if (tempNumberOfTargets > EnemyManager.Instance.GetAlivePlayerCharacters().Count)
+            tempNumberOfTargets = EnemyManager.Instance.GetAlivePlayerCharacters().Count;
+
+        for(int i = 0; i < tempNumberOfTargets; i++)
+            SingleTargetEnemy(attack, enemy);
+    }
+
+    public void AOETargetPlayers(Enemy enemy, BaseAttackSO attack)
     {
         foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
         {
-            CharactersSelected.Add(obj);
-            ActivePlayers.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
         foreach (PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
         {
             CharactersSelected.Add(obj);
         }
     }
-    public void AOETargetEnemies(BaseAttackSO attack, List<PlayerCharacter> activePlayers)
+    public void AOETargetEnemies(Enemy enemy, BaseAttackSO attack)
     {
-        foreach (PlayerCharacter player in activePlayers)
-            ActivePlayers.Add(player);
+        //foreach (PlayerCharacter player in activePlayers)
+        //    ActivePlayers.Add(player);
 
         foreach (Enemy obj in EnemyManager.Instance.GetAliveEnemies())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
         foreach (EnemySummon obj in EnemyManager.Instance.GetAliveEnemySummons())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
     }
 
-    public void AllTargetEnemy(BaseAttackSO attack)
+    public void AllTargetEnemy(Enemy enemy, BaseAttackSO attack)
     {
         foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
         {
-            CharactersSelected.Add(obj);
-            ActivePlayers.Add(obj);
+            enemy.CurrentTargets.Add(obj);
+            //ActivePlayers.Add(obj);
         }
         foreach(PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
         foreach (Enemy obj in EnemyManager.Instance.GetAliveEnemies())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
         foreach (EnemySummon obj in EnemyManager.Instance.GetAliveEnemySummons())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
     }
 
