@@ -13,7 +13,8 @@ public class WyingDreemAI : Enemy
     const string debuffName = "Nitemare";
     PlayerCharacter[] players;
     PlayerCharacter playerToKill;
-    public override void StartTurn()
+
+    protected override int SelectAttack()
     {
         PlayerCharacter[] players = FindObjectsOfType<PlayerCharacter>();
         bool attackChosen = false;
@@ -21,12 +22,12 @@ public class WyingDreemAI : Enemy
         //kill a player if they have too much nitemare
         foreach (PlayerCharacter player in players)
         {
-            foreach(DebuffStackSO augment in player.GetAUGS)
+            foreach (DebuffStackSO augment in player.GetAUGS)
             {
                 if (augment.DebuffName == debuffName && augment.CurrentStacks >= nitemareStacksToKill && !player.Dead)
                 {
                     //Taunt check
-                    if(TauntedBy && TauntedBy != player && !TauntedBy.Dead)
+                    if (TauntedBy && TauntedBy != player && !TauntedBy.Dead)
                     {
                         break;
                     }
@@ -39,17 +40,17 @@ public class WyingDreemAI : Enemy
         }
 
         //weighted attacks
-        if(!attackChosen)
+        if (!attackChosen)
         {
             int maxWeight = moveOneWeight + moveTwoWeight + moveFourWeight;
             int random = Random.Range(0, maxWeight);
 
-            if(random <= moveOneWeight)
+            if (random <= moveOneWeight)
             {
                 //bad dreem
                 ChosenAttack = attacks[0];
             }
-            else if(random > moveOneWeight && random <= moveOneWeight + moveTwoWeight)
+            else if (random > moveOneWeight && random <= moveOneWeight + moveTwoWeight)
             {
                 //freak out
                 ChosenAttack = attacks[1]; //1
@@ -61,9 +62,8 @@ public class WyingDreemAI : Enemy
             }
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
-
     protected override void SpecialTarget(int attackIndex)
     {
         //Get Players
@@ -117,7 +117,7 @@ public class WyingDreemAI : Enemy
                 CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
             }
 
-            CombatManager.Instance.ConeTargetEnemy();
+            CombatManager.Instance.ConeTargetEnemy(ChosenAttack, this, CurrentTargets[0]);
         }
         //Death Kill
         else if (attackIndex == 2)
@@ -125,8 +125,8 @@ public class WyingDreemAI : Enemy
             if (playerToKill == null)
                 playerToKill = EnemyManager.Instance.Players[0];
 
-            CombatManager.Instance.CharactersSelected.Add(playerToKill);
-            CombatManager.Instance.CharactersSelected.Add(this);
+            CurrentTargets.Add(playerToKill);
+            CurrentTargets.Add(this);
         }
         //Split Misery
         else

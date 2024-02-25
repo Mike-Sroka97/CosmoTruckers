@@ -9,7 +9,7 @@ public class MeatTonguerAI : Enemy
     [SerializeField] int moveThreeWeight;
     [SerializeField] int moveFourWeight;
 
-    public override void StartTurn()
+    protected override int SelectAttack()
     {
         int maxWeight = moveOneWeight + moveTwoWeight + moveThreeWeight + moveFourWeight;
         int random = Random.Range(0, maxWeight);
@@ -38,9 +38,8 @@ public class MeatTonguerAI : Enemy
                 ChosenAttack = attacks[3];
         }
 
-        base.StartTurn();
+        return base.GetAttackIndex();
     }
-
     protected override void SpecialTarget(int attackIndex)
     {
         List<PlayerCharacter> players = EnemyManager.Instance.GetAlivePlayerCharacters();
@@ -74,13 +73,12 @@ public class MeatTonguerAI : Enemy
             }
 
             //Target Con 1
-            bool supportFound = false;
             bool enemyFound = false;
 
             if(debuffedEnemies.Count > 0)
             {
                 int random = Random.Range(0, debuffedEnemies.Count);
-                CombatManager.Instance.CharactersSelected.Add(debuffedEnemies[random]);
+                CurrentTargets.Add(debuffedEnemies[random]);
                 enemyFound = true;
             }
 
@@ -88,7 +86,7 @@ public class MeatTonguerAI : Enemy
            if(halfHealthEnemies.Count > 0 && !enemyFound)
             {
                 int random = Random.Range(0, halfHealthEnemies.Count);
-                CombatManager.Instance.CharactersSelected.Add(halfHealthEnemies[random]);
+                CurrentTargets.Add(halfHealthEnemies[random]);
                 enemyFound = true;
             }
 
@@ -96,7 +94,7 @@ public class MeatTonguerAI : Enemy
             if(!enemyFound)
             {
                 int random = Random.Range(0, enemies.Count);
-                CombatManager.Instance.CharactersSelected.Add(enemies[random]);
+                CurrentTargets.Add(enemies[random]);
             }
 
             //Player target

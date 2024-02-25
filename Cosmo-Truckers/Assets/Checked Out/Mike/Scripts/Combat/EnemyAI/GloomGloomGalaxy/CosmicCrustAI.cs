@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CosmicCrustAI : Enemy
 {
-    public override void StartTurn()
+
+    protected override int SelectAttack()
     {
         //null checks
         AUG_SpikyShield liveShield = FindObjectOfType<AUG_SpikyShield>();
@@ -12,7 +13,7 @@ public class CosmicCrustAI : Enemy
 
         //Live enemy count
         int liveEnemies = 0;
-        foreach(Enemy enemy in EnemyManager.Instance.Enemies)
+        foreach (Enemy enemy in EnemyManager.Instance.Enemies)
         {
             if (!enemy.Dead)
                 liveEnemies++;
@@ -38,7 +39,7 @@ public class CosmicCrustAI : Enemy
         if (liveEnemies <= 1)
             ChosenAttack = attacks[4];
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)

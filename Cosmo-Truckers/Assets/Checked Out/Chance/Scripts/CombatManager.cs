@@ -87,8 +87,23 @@ public class CombatManager : MonoBehaviour
             CharactersSelected.Add(character);
         }
 
-        StartCoroutine(DisplayAttack(attack, ActivePlayers));
-        MyTargeting.EnemyTargeting(attack);
+        bool allTargetsDead = true;
+
+        foreach (Character character in CharactersSelected)
+            if (!character.Dead)
+                allTargetsDead = false;
+
+        //Plays minigame if there is a reason to
+        if(attack.TargetsDead || !allTargetsDead)
+        {
+            StartCoroutine(DisplayAttack(attack, ActivePlayers));
+            MyTargeting.EnemyTargeting(attack);
+        }
+        //if all targets are dead and this minigame doesn't target dead characters, trigger end of turn
+        else
+        {
+            HandleEndOfTurn();
+        }
     }
 
     private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
@@ -113,6 +128,7 @@ public class CombatManager : MonoBehaviour
             #endregion
             #region Multi Target Cone
             case EnumManager.TargetingType.Multi_Target_Cone:
+                ConeTargetEnemy(attack, enemy);
                 Debug.Log($"Doing Combat Stuff for {attack.AttackName}, Cone attack. . .");
                 break;
             #endregion
@@ -392,10 +408,13 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void ConeTargetEnemy(Character character = null)
+    public void ConeTargetEnemy(BaseAttackSO attack, Enemy enemy, Character character = null)
     {
         if (character == null)
-            character = CharactersSelected[0];
+        {
+            SingleTargetEnemy(attack, enemy);
+            character = enemy.CurrentTargets[0];
+        }
 
         int minVal = 0;
         int maxVal = 3;
@@ -406,39 +425,16 @@ public class CombatManager : MonoBehaviour
             maxVal = 7;
 
             if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
             if (character.CombatSpot + 1 < maxVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
-        }
-        else if(character.GetComponent<EnemySummon>())
-        {
-            minVal = 8;
-            maxVal = 11;
-
-            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1]);
-            if (character.CombatSpot + 1 <= maxVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
         }
         else if(character.GetComponent<PlayerCharacter>())
         {
             if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - 1]);
             if(character.CombatSpot + 1 <= maxVal && EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1]);
-        }
-        else
-        {
-            if(character.CombatSpot > 3)
-            {
-                minVal += 4;
-                maxVal += 4;
-            }
-
-            if (character.CombatSpot - 1 >= minVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot - 1]);
-            if (character.CombatSpot + 1 < maxVal && EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1] != null && !EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1].Dead)
-                CharactersSelected.Add(EnemyManager.Instance.EnemyCombatSpots[character.CombatSpot + 1]);
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot + 1]);
         }
     }
 
@@ -461,7 +457,7 @@ public class CombatManager : MonoBehaviour
         }
         foreach (PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
         {
-            CharactersSelected.Add(obj);
+            enemy.CurrentTargets.Add(obj);
         }
     }
     public void AOETargetEnemies(Enemy enemy, BaseAttackSO attack)
@@ -484,7 +480,6 @@ public class CombatManager : MonoBehaviour
         foreach (PlayerCharacter obj in EnemyManager.Instance.GetAlivePlayerCharacters())
         {
             enemy.CurrentTargets.Add(obj);
-            //ActivePlayers.Add(obj);
         }
         foreach(PlayerCharacterSummon obj in EnemyManager.Instance.GetAlivePlayerSummons())
         {
@@ -650,8 +645,6 @@ public class CombatManager : MonoBehaviour
 
         miniGame.gameObject.SetActive(true);
         Destroy(miniGame);
-        CharactersSelected.Clear();
-
         HandleEndOfTurn();
     }
 
@@ -683,6 +676,8 @@ public class CombatManager : MonoBehaviour
 
     public void HandleEndOfTurn()
     {
+        CharactersSelected.Clear();
+
         //Handle EoT augments (store this data and display visuals in EndCombat()?
         DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
 

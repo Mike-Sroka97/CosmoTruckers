@@ -43,7 +43,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
             currentShootTime = 0;
             tongueAnimator.Play(tongueShoot.name);
             GameObject tempBullet = Instantiate(bullet, barrel);
-            tempBullet.transform.parent = null;
+            tempBullet.transform.parent = transform.parent;
             tempBullet.transform.localScale = new Vector3(1, 1, 1);
         }
     }
