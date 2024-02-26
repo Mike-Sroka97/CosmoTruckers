@@ -7,6 +7,8 @@ public class CosmicCrustAI : Enemy
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         //null checks
         AUG_SpikyShield liveShield = FindObjectOfType<AUG_SpikyShield>();
         AUG_NovaSword liveSword = FindObjectOfType<AUG_NovaSword>();
@@ -62,15 +64,15 @@ public class CosmicCrustAI : Enemy
                 while(randomTwo == randomOne)
                     randomTwo = Random.Range(0, liveEnemies.Count);
 
-                CombatManager.Instance.CharactersSelected.Add(liveEnemies[randomOne]);
-                CombatManager.Instance.CharactersSelected.Add(liveEnemies[randomTwo]);
+                CurrentTargets.Add(liveEnemies[randomOne]);
+                CurrentTargets.Add(liveEnemies[randomTwo]);
             }
             else
             {
-                CombatManager.Instance.CharactersSelected.Add(liveEnemies[0]);
+                CurrentTargets.Add(liveEnemies[0]);
             }
 
-            CombatManager.Instance.CharactersSelected.Add(this);
+            CurrentTargets.Add(this);
 
             //Find Utility or random
             if (CombatManager.Instance.FindUtilityCharacter())
@@ -94,7 +96,7 @@ public class CosmicCrustAI : Enemy
         {
             //Pick random live enemy from above list
             int random = Random.Range(0, liveEnemies.Count);
-            CombatManager.Instance.CharactersSelected.Add(liveEnemies[random]);
+            CurrentTargets.Add(liveEnemies[random]);
 
             //Add Support or Random
             if (CombatManager.Instance.FindSupportCharacter())
@@ -113,7 +115,7 @@ public class CosmicCrustAI : Enemy
         else
         {
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
-            CombatManager.Instance.CharactersSelected.Add(this);
+            CurrentTargets.Add(this);
         }
     }
 }

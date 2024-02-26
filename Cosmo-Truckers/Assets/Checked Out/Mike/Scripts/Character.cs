@@ -98,6 +98,13 @@ public abstract class Character : MonoBehaviour
     [SerializeField] int spaceTaken = 1;
     public int GetSpaceTaken { get => spaceTaken; }
 
+    protected virtual void OnDisable()
+    {
+        HealthChangeEvent.RemoveAllListeners();
+        ShieldChangeEvent.RemoveAllListeners();
+        BubbleShieldBrokenEvent.RemoveAllListeners();
+    }
+
     public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
         if (Dead)

@@ -8,6 +8,8 @@ public class DutifulDrossAI : Enemy
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         if (ProtectedEnemy && !ProtectedEnemy.Dead)
         {
             bool maxCrust = false;

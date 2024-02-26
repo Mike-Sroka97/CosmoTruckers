@@ -501,14 +501,9 @@ public class CombatManager : MonoBehaviour
         if (enemy.TauntedBy != null && !enemy.TauntedBy.Dead)
         {
             if (CheckPlayerSummonLayer(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]))
-            {
-                CharactersSelected.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
-            }
+                enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[enemy.TauntedBy.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
             else
-            {
-                CharactersSelected.Add(enemy.TauntedBy);
-                ActivePlayers.Add(enemy.TauntedBy);
-            }
+                enemy.CurrentTargets.Add(enemy.TauntedBy);
         }
     }
 

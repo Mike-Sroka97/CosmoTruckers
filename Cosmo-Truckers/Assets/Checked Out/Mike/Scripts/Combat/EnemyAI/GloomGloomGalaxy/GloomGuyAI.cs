@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class GloomGuyAI : Enemy
 {
-    UnityEvent changeMove;
+    protected override void Start()
+    {
+        tauntedByChanged.AddListener(QueueNextMove);
+        base.Start();
+    }
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         if (!FindObjectOfType<AUG_BullsEye>())
         {
             ChosenAttack = attacks[0];
@@ -58,6 +63,7 @@ public class GloomGuyAI : Enemy
                 if (!nonTank.Dead)
                 {
                     allDead = false;
+                    break;
                 }
                 else
                 {

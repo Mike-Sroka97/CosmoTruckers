@@ -18,6 +18,9 @@ public class AUG_SpikyShield : Augment
 
     public override void StopEffect()
     {
+        foreach (CosmicCrustAI cc in FindObjectsOfType<CosmicCrustAI>())
+            cc.QueueNextMove();
+
         AugmentSO.MyCharacter.Shield = 0;
     }
 

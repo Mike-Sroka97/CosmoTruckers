@@ -11,6 +11,8 @@ public class MeatTonguerAI : Enemy
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         int maxWeight = moveOneWeight + moveTwoWeight + moveThreeWeight + moveFourWeight;
         int random = Random.Range(0, maxWeight);
 

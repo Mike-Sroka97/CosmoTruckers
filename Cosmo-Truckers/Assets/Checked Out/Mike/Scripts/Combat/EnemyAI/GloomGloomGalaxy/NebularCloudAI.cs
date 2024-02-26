@@ -20,6 +20,8 @@ public class NebularCloudAI : Enemy
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         if (usingMelancholyPrecipitation)
         {
             usingMelancholyPrecipitation = !usingMelancholyPrecipitation;

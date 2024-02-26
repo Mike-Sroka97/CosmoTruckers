@@ -19,6 +19,9 @@ public class AUG_NovaSword : Augment
 
     public override void StopEffect()
     {
+        foreach (CosmicCrustAI cc in FindObjectsOfType<CosmicCrustAI>())
+            cc.QueueNextMove();
+
         AugmentSO.MyCharacter.Shield = 0;
         AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }

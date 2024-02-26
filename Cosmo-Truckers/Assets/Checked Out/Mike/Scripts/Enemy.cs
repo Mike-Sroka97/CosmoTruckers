@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Enemy : Character
@@ -22,7 +23,6 @@ public class Enemy : Character
     Vector3 healingTextStartPosition;
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
-    [HideInInspector] public PlayerCharacter TauntedBy;
     public bool SpecialTargetConditions = false;
     [HideInInspector] public List<Character> CurrentTargets;
     [HideInInspector] public BaseAttackSO ChosenAttack;
@@ -34,6 +34,24 @@ public class Enemy : Character
 
     Animator enemyAnimation;
 
+    private PlayerCharacter tauntedBy;
+    protected UnityEvent tauntedByChanged = new UnityEvent();
+    public PlayerCharacter TauntedBy
+    {
+        get
+        {
+            return tauntedBy;
+        }
+
+        set
+        {
+            tauntedBy = TauntedBy;
+
+            if(tauntedBy != null)
+                tauntedByChanged.Invoke();
+        }
+    }
+
     private void Awake()
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -41,8 +59,13 @@ public class Enemy : Character
         enemyAnimation = GetComponent<Animator>();
         CurrentHealth = Health;
     }
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+        tauntedByChanged.RemoveAllListeners();
+    }
 
-    private void Start()
+    protected virtual void Start()
     {
         if (passiveMove && passiveMove.GetPassiveType == EnemyPassiveBase.PassiveType.OnStartBattle)
             StartCoroutine(StartWait());
@@ -240,6 +263,7 @@ public class Enemy : Character
     //Reserved for enemies with no special AI
     protected virtual int SelectAttack()
     {
+        CurrentTargets.Clear();
         ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
         return GetAttackIndex();
     }

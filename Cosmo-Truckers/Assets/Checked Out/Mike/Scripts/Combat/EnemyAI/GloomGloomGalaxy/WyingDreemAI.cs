@@ -16,6 +16,8 @@ public class WyingDreemAI : Enemy
 
     protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         PlayerCharacter[] players = FindObjectsOfType<PlayerCharacter>();
         bool attackChosen = false;
 
