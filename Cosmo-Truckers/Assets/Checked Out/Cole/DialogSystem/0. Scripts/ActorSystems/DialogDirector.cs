@@ -302,6 +302,7 @@ public class DialogDirector : MonoBehaviour
 
             // Handle the Pre Text Tags, and return any variables needed to pass into actors
             string speakerDirection = string.Empty; 
+
             HandlePreTextTags(tags, ref speakerDirection); 
 
             // Get the line associated with this actor and their dialog
@@ -325,22 +326,21 @@ public class DialogDirector : MonoBehaviour
         for (int i = 1; i < tags.Length; i++)
         {
             string[] tagValues = tags[i].Split(":"); 
-            string tagKey = tagValues[0];
-            string tagValue = tagValues[1];
+            string tagKey = tagValues[0].Trim();
+            string tagValue = tagValues[1].Trim();
 
             switch (tagKey)
             {
                 case "animID":
                     int animID; 
-                    if(int.TryParse(tagValue, out animID))
-                    {
-                        // Grab the animator
-                    }
-                    else
+                    if(!int.TryParse(tagValue, out animID))
                     {
                         Debug.LogError("Can't parse value out of animID. Using default character!");
-                        animID = 1; 
+                        animID = 1;
                     }
+
+                    //actors[animID - 1]; 
+
                     break;
                 case "direction":
                     speakerDirection = tagValue;

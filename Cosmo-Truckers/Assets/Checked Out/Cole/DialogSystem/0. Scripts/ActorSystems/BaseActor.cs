@@ -13,7 +13,8 @@ public class BaseActor : MonoBehaviour
     public string actorName;
     public int actorID;
 
-    private DialogManager myDialogManager; 
+    private Animator myAnimator;
+    private bool isAnimating = false; 
 
     public void Initialize(int sortingLayerOrder, bool isFacingRight = true)
     {
@@ -23,12 +24,8 @@ public class BaseActor : MonoBehaviour
         {
             transform.eulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z); 
         }
-    }
 
-    //Methods
-    public void SetAnimation(int actorType)
-    {
-
+        myAnimator = GetComponentInChildren<Animator>();
     }
 
     //set text box active and material 
@@ -42,7 +39,7 @@ public class BaseActor : MonoBehaviour
         else
         {
             // If direciton isn't one of the base directions, set it to this direction
-            if (direction != "left" || direction != "right" || direction != "none")
+            if (direction != "left" && direction != "right" && direction != "none")
                 direction = myDirection.ToString();
         }
 
@@ -71,6 +68,23 @@ public class BaseActor : MonoBehaviour
             }
         }
     }
+
+    #region Animation
+    public void StartAnimation(string animationName)
+    {
+        string animationToPlay = ActorAnimationFinder.ReturnAnimationName(animationName);
+
+        isAnimating = true; 
+    }
+    IEnumerator AnimateActor()
+    {
+        yield return null; 
+    }
+    public void SetAnimation(int actorType)
+    {
+
+    }
+    #endregion
 }
 
 public enum SpeakingDirection
