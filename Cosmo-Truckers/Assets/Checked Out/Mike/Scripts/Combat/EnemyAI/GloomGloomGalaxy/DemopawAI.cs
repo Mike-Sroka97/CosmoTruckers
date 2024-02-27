@@ -5,10 +5,11 @@ using UnityEngine;
 public class DemopawAI : EnemySummon
 {
     [SerializeField] int eyeGougerWeight = 2;
-    [SerializeField] int blackOutWeight = 1;
 
-    public override void StartTurn()
+    protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         int random = Random.Range(0, 3);
 
         //eye gouger
@@ -22,7 +23,7 @@ public class DemopawAI : EnemySummon
             ChosenAttack = attacks[1];
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)

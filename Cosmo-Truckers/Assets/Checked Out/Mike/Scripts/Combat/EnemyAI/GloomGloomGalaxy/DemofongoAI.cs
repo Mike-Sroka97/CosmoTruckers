@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class DemofongoAI : Enemy
 {
-    public override void StartTurn()
+
+    protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         int random = Random.Range(0, attacks.Length);
 
         ChosenAttack = attacks[random];
 
-        base.StartTurn();
+        return base.SelectAttack();
     }
 
     protected override void SpecialTarget(int attackIndex)
@@ -21,7 +24,7 @@ public class DemofongoAI : Enemy
             CombatManager.Instance.AOETargetPlayers(this, ChosenAttack);
 
             if (attackIndex == 3)
-                CombatManager.Instance.GetCharactersSelected.Add(this);
+                CurrentTargets.Add(this);
         }
         //Switch Master
         else if(attackIndex == 1)

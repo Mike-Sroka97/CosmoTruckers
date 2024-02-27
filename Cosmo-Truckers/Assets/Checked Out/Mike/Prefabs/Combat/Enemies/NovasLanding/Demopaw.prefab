@@ -483,6 +483,9 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShieldBrokenEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Stunned: 0
   Tireless: 0
   BubbleShielded: 0
@@ -496,16 +499,14 @@ MonoBehaviour:
   healingText: {fileID: 5544424637856249510}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   healingColor: {r: 0, g: 1, b: 0, a: 1}
-  fadeSpeed: 2
-  moveSpeed: 0.5
   IsBoss: 0
-  TauntedBy: {fileID: 0}
   SpecialTargetConditions: 1
+  CurrentTargets: []
+  ChosenAttack: {fileID: 0}
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: Demopaw
   eyeGougerWeight: 2
-  blackOutWeight: 1
 --- !u!114 &7316460762334349619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,7 +519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 89
+  Reflex: 8
   Defense: 0
   Vigor: 100
   Speed: 100

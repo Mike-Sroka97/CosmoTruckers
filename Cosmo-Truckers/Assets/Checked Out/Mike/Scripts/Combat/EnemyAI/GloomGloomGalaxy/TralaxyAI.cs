@@ -18,15 +18,23 @@ public class TralaxyAI : Enemy
     bool phaseThree = false;
     DebuffStackSO wrathReference;
 
-    public override void StartTurn()
+    protected override void Start()
     {
+        HealthChangeEvent.AddListener(PhaseCheck);
+        base.Start();
+    }
+
+    protected override int SelectAttack()
+    {
+        CurrentTargets.Clear();
+
         PhaseCheck();
 
         //phase one
         if (!phaseTwo && !phaseThree)
         {
             //bubble babies
-            if(EnemyManager.Instance.GetAliveEnemySummons().Count >= 2)
+            if (EnemyManager.Instance.GetAliveEnemySummons().Count >= 2)
             {
                 ChosenAttack = attacks[0];
             }
@@ -38,9 +46,9 @@ public class TralaxyAI : Enemy
         }
 
         //phase two
-        else if(phaseTwo)
+        else if (phaseTwo)
         {
-            if(justEnteredPhaseTwo)
+            if (justEnteredPhaseTwo)
             {
                 justEnteredPhaseTwo = false;
                 ChosenAttack = attacks[2];
@@ -63,7 +71,7 @@ public class TralaxyAI : Enemy
         {
             if (wrathReference == null)
             {
-               wrathReference = AddDebuffStackAndReturnReference(wrath);
+                wrathReference = AddDebuffStackAndReturnReference(wrath);
             }
 
             //golden fury
@@ -75,7 +83,7 @@ public class TralaxyAI : Enemy
                 ChosenAttack = attacks[5];
         }
 
-        base.StartTurn();
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)
