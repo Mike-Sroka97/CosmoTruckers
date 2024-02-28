@@ -192,12 +192,14 @@ public class PlayerCharacter : Character
     }
     public override void AdjustDefense(int defense)
     {
-        Stats.Defense += defense;
+        Stats.TrueDefense += defense;
 
-        if (Stats.Defense > 50)
+        if (Stats.TrueDefense > 50)
             Stats.Defense = 50;
-        else if (Stats.Defense < -100)
+        else if (Stats.TrueDefense < -100)
             Stats.Defense = -100;
+        else
+            Stats.Defense = Stats.TrueDefense;
     }
 
     public override void Resurrect(int newHealth, bool ignoreVigor = false)

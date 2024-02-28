@@ -7,11 +7,26 @@ public class CharacterStats : MonoBehaviour
 {
     public int Reflex = 1;
     public int Defense = 0;
+    [HideInInspector] public int TrueDefense;
     public int Vigor = 100;
+    [HideInInspector] public int TrueVigor;
     public int Speed = 100;
+    [HideInInspector] public int TrueSpeed;
     public int Damage = 100;
+    [HideInInspector] public int TrueDamage;
     public int Restoration = 100;
+    [HideInInspector] public int TrueRestoration;
     public float Gravity = 1;
+    [HideInInspector] public float TrueGravity;
+
+    private void Start()
+    {
+        TrueDefense = Defense;
+        TrueVigor = Vigor;
+        TrueDamage = Damage;
+        TrueRestoration = Restoration;
+        TrueGravity = Gravity;
+    }
 
     public void ReflexChange(int speedMod)
     {

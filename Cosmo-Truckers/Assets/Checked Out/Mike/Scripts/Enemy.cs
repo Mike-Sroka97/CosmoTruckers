@@ -109,12 +109,14 @@ public class Enemy : Character
 
     public override void AdjustDefense(int defense)
     {
-        Stats.Defense += defense;
+        Stats.TrueDefense += defense;
 
-        if (Stats.Defense > 100)
+        if (Stats.TrueDefense > 100)
             Stats.Defense = 100;
-        else if (Stats.Defense < -200)
+        else if (Stats.TrueDefense < -200)
             Stats.Defense = -200;
+        else
+            Stats.Defense = Stats.TrueDefense;
     }
 
     //Method to override for adding target cons to a move

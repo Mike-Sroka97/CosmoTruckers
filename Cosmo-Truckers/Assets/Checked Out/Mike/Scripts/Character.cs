@@ -808,62 +808,74 @@ public abstract class Character : MonoBehaviour
         Health += adjuster;
         if (CurrentHealth > Health)
             CurrentHealth = Health;
+        else if(Health <= 0)
+                Health = 1;
     }
 
     public abstract void AdjustDefense(int defense);
 
     public void AdjustSpeed(int speed)
     {
-        Stats.Speed += speed;
+        Stats.TrueSpeed += speed;
 
         //max double speed and min 40% reduction
-        if (Stats.Speed > 100)
+        if (Stats.TrueSpeed > 100)
             Stats.Speed = 100;
-        else if (Stats.Speed < -40)
+        else if (Stats.TrueSpeed < -40)
             Stats.Speed = -40;
+        else
+            Stats.Speed = Stats.TrueSpeed;
     }
 
     public void AdjustVigor(int vigor)
     {
-        Stats.Vigor += vigor;
+        Stats.TrueVigor += vigor;
 
         //max double vigor and min 0% healing
-        if (Stats.Vigor > 200)
+        if (Stats.TrueVigor > 200)
             Stats.Vigor = 200;
-        else if (Stats.Vigor < 0)
+        else if (Stats.TrueVigor < 0)
             Stats.Vigor = 0;
+        else
+            Stats.Vigor = Stats.TrueVigor;
     }
 
     public void AdjustDamage(int damage)
     {
-        Stats.Damage += damage;
+        Stats.TrueDamage += damage;
 
         //max x3 damage min 60% damage
-        if (Stats.Damage > 300)
+        if (Stats.TrueDamage > 300)
             Stats.Damage = 300;
-        else if (Stats.Damage < 60)
+        else if (Stats.TrueDamage < 60)
             Stats.Damage = 60;
+        else
+            Stats.Damage = Stats.TrueDamage;
     }
 
     public void AdjustRestoration(int restoration)
     {
-        Stats.Restoration += restoration;
+        Stats.TrueRestoration += restoration;
 
         //max double healing and min 40%
-        if (Stats.Restoration > 200)
+        if (Stats.TrueRestoration > 200)
             Stats.Damage = 200;
-        else if (Stats.Restoration < 40)
+        else if (Stats.TrueRestoration < 40)
             Stats.Restoration = 40;
+        else
+            Stats.Restoration = Stats.TrueRestoration;
     }
     
     public void AdjustGravity(float gravityModifier)
     {
-        Stats.Gravity += gravityModifier;
+        Stats.TrueGravity += gravityModifier;
 
-        if (Stats.Gravity > 2)
+        if (Stats.TrueGravity > 2)
             Stats.Gravity = 2;
-        else if (Stats.Gravity <= 0)
+        else if (Stats.TrueGravity <= 0)
             Stats.Gravity = .01f;
+        else
+            Stats.Gravity = Stats.TrueGravity;
     }
 
     public void RandomizeStats(int amount, int positiveStatNumber, int negativeStatNumber)
