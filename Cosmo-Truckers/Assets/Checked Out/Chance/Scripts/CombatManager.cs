@@ -276,12 +276,10 @@ public class CombatManager : MonoBehaviour
             {
                 enemy.CurrentTargets.Add(EnemyManager.Instance.PlayerCombatSpots[player.CombatSpot + EnemyManager.Instance.playerSummonIndexAdder]);
                 //TODO CHECK IF COMBAT SPOT IS OF TYPE PLAYERCHARACTERSUMMON THEN ADD SUMMONER REFERENCE TO ACTIVEPLAYERS
-                //ActivePlayers.Add(player);
             }
             else
             {
                 enemy.CurrentTargets.Add(player);
-                //ActivePlayers.Add(player);
             }
         }
         //enemy is not taunted

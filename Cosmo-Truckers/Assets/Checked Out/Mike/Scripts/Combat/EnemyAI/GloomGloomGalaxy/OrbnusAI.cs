@@ -13,12 +13,14 @@ public class OrbnusAI : Enemy
     bool turnOne = false;
 
     public int Phase = 1;
-    public override void StartTurn()
+
+    protected override int SelectAttack()
     {
-        //TODO funny turn one haha
+        CurrentTargets.Clear();
 
         ChosenAttack = attacks[Phase - 1];
-        base.StartTurn();
+
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)

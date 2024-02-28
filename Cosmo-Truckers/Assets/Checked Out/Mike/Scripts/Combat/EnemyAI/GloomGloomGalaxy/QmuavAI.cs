@@ -11,7 +11,7 @@ public class QmuavAI : Enemy
     bool shiddedAndFardded = false;
     GalasterHordeAI myGalaster;
 
-    private void Start()
+    protected override void Start()
     {
         myGalaster = FindObjectOfType<GalasterHordeAI>();
         myGalaster.transform.position = transform.position;
@@ -33,21 +33,25 @@ public class QmuavAI : Enemy
         foreach (SpriteRenderer spriteRenderer in myGalaster.ShieldSprites)
             tempSpriteList.Add(spriteRenderer);
         ShieldSprites = tempSpriteList.ToArray();
+
+        base.Start();
     }
 
-    public override void StartTurn()
+    protected override int SelectAttack()
     {
+        CurrentTargets.Clear();
+
         //Cast Final Spell
         if (castBossMove)
             random = 11;
         //Shid and Fard
-        else if(myGalaster.Dead && !shiddedAndFardded)
+        else if (myGalaster.Dead && !shiddedAndFardded)
         {
             shiddedAndFardded = true;
             random = 9;
         }
         //Rez galaster ball
-        else if(myGalaster.Dead && shiddedAndFardded)
+        else if (myGalaster.Dead && shiddedAndFardded)
         {
             shiddedAndFardded = false;
             random = 10;
@@ -64,7 +68,8 @@ public class QmuavAI : Enemy
         //Basic turn start stuff
         ChosenAttack = attacks[random];
         lastAttack = random;
-        base.StartTurn();
+
+        return GetAttackIndex();
     }
 
     protected override void SpecialTarget(int attackIndex)
@@ -109,7 +114,7 @@ public class QmuavAI : Enemy
             CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
 
             //Add Qmuav
-            CombatManager.Instance.GetCharactersSelected.Add(this);
+            CurrentTargets.Add(this);
         }
         //Galaxy Burst
         else if (attackIndex == 5)

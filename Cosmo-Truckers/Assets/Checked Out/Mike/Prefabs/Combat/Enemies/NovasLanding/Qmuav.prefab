@@ -588,6 +588,9 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShieldBrokenEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Stunned: 0
   Tireless: 0
   BubbleShielded: 0
@@ -611,11 +614,10 @@ MonoBehaviour:
   healingText: {fileID: 1948646570762032832}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   healingColor: {r: 0, g: 1, b: 0, a: 1}
-  fadeSpeed: 2
-  moveSpeed: 0.5
   IsBoss: 0
-  TauntedBy: {fileID: 0}
   SpecialTargetConditions: 1
+  CurrentTargets: []
+  ChosenAttack: {fileID: 0}
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: Qmuav
@@ -1158,7 +1160,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7979433012586180690, guid: ba4a679f1c7ae634f9dd1542f137135d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7979433012586180694, guid: ba4a679f1c7ae634f9dd1542f137135d, type: 3}
       propertyPath: m_Pivot.x

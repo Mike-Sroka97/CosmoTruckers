@@ -263,6 +263,9 @@ public class Enemy : Character
     //Reserved for enemies with no special AI
     protected virtual int SelectAttack()
     {
+        if (attacks.Length <= 0)
+            return -1;
+
         CurrentTargets.Clear();
         ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
         return GetAttackIndex();
