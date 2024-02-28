@@ -94,8 +94,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -237,6 +237,9 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShieldBrokenEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Stunned: 0
   Tireless: 0
   BubbleShielded: 0
@@ -249,11 +252,10 @@ MonoBehaviour:
   healingText: {fileID: 2833919850129632455}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   healingColor: {r: 0, g: 1, b: 0, a: 1}
-  fadeSpeed: 2
-  moveSpeed: 0.5
   IsBoss: 0
-  TauntedBy: {fileID: 0}
   SpecialTargetConditions: 0
+  CurrentTargets: []
+  ChosenAttack: {fileID: 0}
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: Demopaw
@@ -479,8 +481,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -636,8 +638,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
