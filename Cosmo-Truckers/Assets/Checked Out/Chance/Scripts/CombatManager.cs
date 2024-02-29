@@ -704,4 +704,20 @@ public class CombatManager : MonoBehaviour
             return true;
         return false;
     }
+
+    [ContextMenu("Combat start effects")]
+    public void StartCharacterCombatEffects()
+    {
+        //Call Start combat effect for all characters in scene
+        foreach (Character character in FindObjectsOfType<Character>())
+            character.StartCombatEffect();
+    }
+
+    [ContextMenu("Combat end effects")]
+    public void EndCharacterCombatEffects()
+    {
+        //Call Start combat effect for all characters in scene
+        foreach (Character character in FindObjectsOfType<Character>())
+            character.EndCombatEffect();
+    }
 }

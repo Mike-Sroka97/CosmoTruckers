@@ -250,42 +250,17 @@ public class TurnOrder : MonoBehaviour
                 PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
                 NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
             }
-            else
-            {
-                foreach (var character in FindObjectsOfType<PlayerCharacter>())
-                {
-                    EnemyManager.Instance.SavePlayerData(character);
-                }
-
-                //No change scene
-                //Bring up INA and redraw the dungeon
-                combatOver = false;
-                FindObjectOfType<INAcombat>().OpenDungeonPage();
-
-                //TODO
-                //Reset sheild and Mana
-                CombatData.Instance.EnemySummonsToSpawn.Clear();
-            }
         }
+
         //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
-        else if (CombatData.Instance)
+        if (CombatData.Instance)
         {
-            if (CombatData.Instance.lastNode)
-            { 
-                //Currently only dungeon map
-                //TODO
-                //Will need to change scene based on the last galaxy that the player was in
-                //Also need to mark this current dungeon as compleated if nessisarry
-                PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
-                SceneManager.LoadScene("GloomGloomGalaxyOW");
-            }
-            else
-            {
                 foreach (var character in FindObjectsOfType<PlayerCharacter>())
                 {
                     EnemyManager.Instance.SavePlayerData(character);
                 }
 
+                CombatManager.Instance.EndCharacterCombatEffects();
                 //No change scene
                 //Bring up INA and redraw the dungeon
                 combatOver = false;
@@ -294,7 +269,6 @@ public class TurnOrder : MonoBehaviour
                 //TODO
                 //Reset sheild and Mana
                 CombatData.Instance.EnemySummonsToSpawn.Clear();
-            }
         }
         else
         {
