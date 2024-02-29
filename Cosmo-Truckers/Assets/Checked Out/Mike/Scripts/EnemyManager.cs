@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector] public List<PlayerCharacter> Players;
     [HideInInspector] public List<PlayerCharacterSummon> PlayerSummons;
     [HideInInspector] public List<EnemySummon> EnemySummons;
+    [HideInInspector] public UnityEvent SummonSpawnedEvent = new UnityEvent();
 
     const int charactersPerColumn = 4;
     const int enemySummonIndexAdder = 8;
@@ -217,6 +219,7 @@ public class EnemyManager : MonoBehaviour
                 EnemyCombatSpots[i].CombatSpot = i;
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
                 TurnOrder.Instance.AddToSpeedList(stats);
+                SummonSpawnedEvent.Invoke();
                 break;
             }
         }
@@ -242,6 +245,7 @@ public class EnemyManager : MonoBehaviour
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
                 TurnOrder.Instance.AddToSpeedList(stats);
                 newSummon.GetComponent<PlayerCharacterSummon>().Summoner = summonParent;
+                SummonSpawnedEvent.Invoke();
                 break;
             }
         }

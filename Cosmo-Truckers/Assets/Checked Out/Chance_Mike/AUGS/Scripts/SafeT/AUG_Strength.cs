@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AUG_Strength : Augment
+{
+    public override void Activate(DebuffStackSO stack = null)
+    {
+        if (!firstGo)
+            StopEffect();
+        else
+            firstGo = false;
+
+        base.Activate(stack);
+
+        AugmentSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;
+    }
+
+    public override void StopEffect()
+    {
+        AugmentSO.MyCharacter.FlatDamageAdjustment -= (int)StatusEffect;
+    }
+}

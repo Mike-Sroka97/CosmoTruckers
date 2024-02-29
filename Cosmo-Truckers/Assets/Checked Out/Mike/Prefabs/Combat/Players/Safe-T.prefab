@@ -265,6 +265,12 @@ MonoBehaviour:
   ShieldChangeEvent:
     m_PersistentCalls:
       m_Calls: []
+  BubbleShieldBrokenEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Stunned: 0
   Tireless: 0
   BubbleShielded: 0
@@ -293,6 +299,7 @@ MonoBehaviour:
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 5074453809647073394, guid: f32e662a776e4d04eabf8daf6906cff3, type: 3}
   PlayerAttackUI: {fileID: 9043002408878162581}
+  strength: {fileID: 11400000, guid: adac8bf9a49209041969596bc627bc18, type: 2}
 --- !u!114 &2365435096106904468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,11 +314,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reflex: 8
   Defense: 0
+  TrueDefense: 0
   Vigor: 100
+  TrueVigor: 0
   Speed: 0
+  TrueSpeed: 0
   Damage: 100
+  TrueDamage: 0
   Restoration: 100
+  TrueRestoration: 0
   Gravity: 1
+  TrueGravity: 0
 --- !u!114 &5534074537951545954
 MonoBehaviour:
   m_ObjectHideFlags: 0

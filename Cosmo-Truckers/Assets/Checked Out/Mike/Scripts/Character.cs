@@ -27,6 +27,7 @@ public abstract class Character : MonoBehaviour
     public UnityEvent HealthChangeEvent = new UnityEvent();
     public UnityEvent ShieldChangeEvent = new UnityEvent();
     public UnityEvent BubbleShieldBrokenEvent = new UnityEvent();
+    public UnityEvent DieEvent = new UnityEvent();
     public bool Stunned = false;
     private SpriteRenderer stunnedRenderer;
     public bool Tireless = false;
@@ -103,7 +104,11 @@ public abstract class Character : MonoBehaviour
         HealthChangeEvent.RemoveAllListeners();
         ShieldChangeEvent.RemoveAllListeners();
         BubbleShieldBrokenEvent.RemoveAllListeners();
+        DieEvent.RemoveAllListeners();
     }
+
+    public virtual void StartCombatEffect() { }
+    public virtual void EndCombatEffect() { }
 
     public virtual void TakeDamage(int damage, bool defensePiercing = false)
     {
@@ -336,6 +341,7 @@ public abstract class Character : MonoBehaviour
 
     public virtual void Die()
     {
+        DieEvent.Invoke();
         //play death animation
         Dead = true;
         GetComponent<CharacterStats>().enabled = false;

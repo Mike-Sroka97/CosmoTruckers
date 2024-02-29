@@ -16,7 +16,8 @@ public class AeglarManaSummon : EnemySummon
 
     public override void Die()
     {
-        FindObjectOfType<AeglarMana>().AdjustMana(manaToGive, manaType);
+        if(FindObjectOfType<AeglarMana>())
+            FindObjectOfType<AeglarMana>().AdjustMana(manaToGive, manaType);
         base.Die();
     }
 }
