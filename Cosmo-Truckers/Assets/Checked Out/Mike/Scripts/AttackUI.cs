@@ -10,9 +10,9 @@ public abstract class AttackUI : MonoBehaviour
     public int GetCurrentAttack { get => currentAttack; }
 
     float speed = 500f;
-    [SerializeField] float speedIncrease = 100f;
-    [SerializeField] float baseSpeed = 50;
-    [SerializeField] protected PlayerCharacter myCharacter;
+    const float speedIncrease = 200;
+    const float baseSpeed = 200;
+    protected PlayerCharacter myCharacter;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
@@ -20,11 +20,14 @@ public abstract class AttackUI : MonoBehaviour
     protected float rotationDistance;
 
     protected bool spinning = false;
-    [SerializeField] List<RectTransform> children;
     protected PlayerCharacter currentPlayer;
+    Transform heheHahaCircle;
 
     public void StartTurn(PlayerCharacter player)
     {
+        heheHahaCircle = transform.parent.Find("heheHahaCircle");
+        myCharacter = player;
+
         currentAttack = 0;
         transform.eulerAngles = Vector3.zero;
 
@@ -40,16 +43,16 @@ public abstract class AttackUI : MonoBehaviour
 
         angle += rotationDistance;
 
-        for (int i = 0; i < myCharacter.GetAllAttacks.Count; i++)
+        for (int i = 0; i < player.GetAllAttacks.Count; i++)
         {
-            children[i].gameObject.SetActive(true);
-            children[i].rotation = Quaternion.identity;
+            transform.GetChild(i).gameObject.SetActive(true);
+            transform.GetChild(i).rotation = Quaternion.identity;
             if (i < numberOfAttacks)
-                children[i].gameObject.GetComponent<TMP_Text>().text = player.GetAllAttacks[i].AttackName;
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().text = player.GetAllAttacks[i].AttackName;
 
             x = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
             y = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-            children[i].transform.localPosition = new Vector3(x, y, 0);
+            transform.GetChild(i).transform.localPosition = new Vector3(x, y, 0);
             angle -= rotationDistance;
         }
 
@@ -60,8 +63,8 @@ public abstract class AttackUI : MonoBehaviour
 
     private void OnDisable()
     {
-        for (int i = 0; i < children.Count; i++)
-            children[i].gameObject.SetActive(false);
+        for (int i = 0; i < transform.childCount; i++)
+            transform.GetChild(i).gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -82,7 +85,7 @@ public abstract class AttackUI : MonoBehaviour
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                if(children[currentAttack].gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
+                if(transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
                     StartAttack();
             }
         }
@@ -112,13 +115,15 @@ public abstract class AttackUI : MonoBehaviour
             if(negative)
             {
                 transform.Rotate(0, 0, -Time.deltaTime * speed);
+                heheHahaCircle.Rotate(0, 0, -Time.deltaTime * speed);
             }
             else
             {
                 transform.Rotate(0, 0, Time.deltaTime * speed);
+                heheHahaCircle.Rotate(0, 0, Time.deltaTime * speed);
             }
 
-            foreach (RectTransform child in children)
+            foreach (RectTransform child in transform)
             {
                 if (!child.GetComponent<AttackUI>())
                 {
@@ -131,7 +136,7 @@ public abstract class AttackUI : MonoBehaviour
         }
 
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, currentRotation.z + rotationValue);
-        foreach (RectTransform child in children)
+        foreach (RectTransform child in transform)
         {
             if (!child.GetComponent<AttackUI>())
             {
@@ -143,7 +148,7 @@ public abstract class AttackUI : MonoBehaviour
 
         SetOpacity(currentAttack);
 
-        if (!children[currentAttack].gameObject.activeSelf)
+        if (!transform.GetChild(currentAttack).gameObject.activeSelf)
         {
             speed = speedIncrease;
             RotateWheel(rotationValue);
@@ -157,23 +162,23 @@ public abstract class AttackUI : MonoBehaviour
 
     void SetOpacity(int attack)
     {
-        for(int i = 0; i < children.Count; i++)
+        for(int i = 0; i < transform.childCount; i++)
         {
             if(i == attack)
             {
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 1);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 1);
             }
-            else if((attack == 0 && i == children.Count - 1) || (attack == children.Count - 1 && i == 0))
+            else if((attack == 0 && i == transform.childCount - 1) || (attack == transform.childCount - 1 && i == 0))
             {
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
             }
             else if(i == attack - 1 || i == attack + 1)
             {
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
             }
             else
             {
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .25f);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
             }
         }
 
@@ -184,8 +189,8 @@ public abstract class AttackUI : MonoBehaviour
     {
         for (int i = 0; i < numberOfAttacks; i++)
             if (currentPlayer.GetAllAttacks[i].CanUse)
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, children[i].gameObject.GetComponent<TMP_Text>().color.a);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(1, 1, 1, transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color.a);
             else
-                children[i].gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, children[i].gameObject.GetComponent<TMP_Text>().color.a);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(1, 0, 0, transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color.a);
     }
 }

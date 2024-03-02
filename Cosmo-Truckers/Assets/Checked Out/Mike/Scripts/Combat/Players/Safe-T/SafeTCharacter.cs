@@ -6,6 +6,13 @@ public class SafeTCharacter : PlayerCharacter
 {
     [SerializeField] DebuffStackSO strength;
 
+    private void OnEnable()
+    {
+        EnemyManager.Instance.SummonSpawnedEvent.AddListener(AddCharacterToListener);
+
+        foreach (Character character in FindObjectsOfType<Character>())
+            character.DieEvent.AddListener(HandleStrengthGainPassive);
+    }
     public override void StartCombatEffect()
     {
         EnemyManager.Instance.SummonSpawnedEvent.AddListener(AddCharacterToListener);

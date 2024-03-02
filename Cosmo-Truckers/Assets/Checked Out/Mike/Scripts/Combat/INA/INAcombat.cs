@@ -130,6 +130,8 @@ public class INAcombat : MonoBehaviour
 
         if (moveUp)
         {
+            topMask.gameObject.SetActive(true);
+
             //Wait a frame to fix renderer threading issues
             yield return null; 
 
@@ -209,6 +211,8 @@ public class INAcombat : MonoBehaviour
         }
         else
         {
+            topMask.gameObject.SetActive(false);
+
             //CloseScreen
 
             while (topMask.localPosition.y > topMaskStartingY)

@@ -198,6 +198,8 @@ public class TurnOrder : MonoBehaviour
 
     public void AddToSpeedList(CharacterStats characterSpeed)
     {
+
+
         foreach (CharacterStats speed in speedList)
         {
             if (speed.gameObject.name == characterSpeed.name)
