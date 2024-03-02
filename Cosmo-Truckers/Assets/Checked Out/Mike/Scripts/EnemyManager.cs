@@ -81,9 +81,12 @@ public class EnemyManager : MonoBehaviour
             else
                 EnemySummons.Add(enemy.GetComponent<EnemySummon>());
 
+        CombatManager.Instance.StartCharacterCombatEffects();
+
         UpdateTrashMobList();
 
         TurnOrder.Instance.StartTurnOrder();
+
     }
 
     void Start()
