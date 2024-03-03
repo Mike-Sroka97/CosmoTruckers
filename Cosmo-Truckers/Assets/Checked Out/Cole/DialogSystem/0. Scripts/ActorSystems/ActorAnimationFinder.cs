@@ -5,21 +5,37 @@ using UnityEngine;
 
 public static class ActorAnimationFinder
 {
-   public static string ReturnAnimationName(string input, bool isPlayer)
+   public static AnimationClip ReturnAnimationName(string input, string actorName, Animator anim, bool isPlayer = true)
     {
+        string animationName = null;
+        input = input.ToUpper(); 
+
+        if (isPlayer)
+        {
+            foreach (PlayerAnimations enumValue in Enum.GetValues(typeof(PlayerAnimations)))
+            {
+                if (string.Equals(enumValue.ToString(), input, StringComparison.OrdinalIgnoreCase))
+                {
+                    animationName = actorName + "_" + enumValue.ToString().ToUpper(); 
+                }
+            }
+        }
+
         foreach (GeneralAnimations enumValue in Enum.GetValues(typeof(GeneralAnimations)))
         {
             if (string.Equals(enumValue.ToString(), input, StringComparison.OrdinalIgnoreCase))
             {
-                return enumValue.ToString().ToUpper();
+                animationName = "ACT_" + enumValue.ToString().ToUpper();
             }
         }
 
-        foreach (PlayerAnimations enumValue in Enum.GetValues(typeof(PlayerAnimations)))
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips; 
+
+        foreach (AnimationClip clip in clips)
         {
-            if (string.Equals(enumValue.ToString(), input, StringComparison.OrdinalIgnoreCase))
+            if (animationName == clip.name)
             {
-                return enumValue.ToString().ToUpper();
+                return clip;
             }
         }
 
@@ -37,5 +53,4 @@ public enum GeneralAnimations
 public enum PlayerAnimations
 {
     IDLE, 
-
 }

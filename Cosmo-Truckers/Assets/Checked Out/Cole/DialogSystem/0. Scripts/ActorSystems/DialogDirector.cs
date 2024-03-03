@@ -1,6 +1,8 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DialogDirector : MonoBehaviour
@@ -57,7 +59,7 @@ public class DialogDirector : MonoBehaviour
     IEnumerator StartScene(float startSceneWaitTime)
     {
         yield return new WaitForSeconds(startSceneWaitTime); 
-        AdvanceScene();
+        StartCoroutine(AdvanceScene());
     }
 
     /// <summary>
@@ -259,12 +261,12 @@ public class DialogDirector : MonoBehaviour
         {
             if (CanAdvance())
             {
-                if (DialogManager.Instance.CheckIfDialogAnimating()) { DialogManager.Instance.StopAnimating(); }
-                else { AdvanceScene(); }
+                if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
+                else { StartCoroutine(AdvanceScene()); }
             }
         }
     }
-    private void AdvanceScene()
+    private IEnumerator AdvanceScene()
     {
         // Increment the current line
         currentLineIndex++;
@@ -301,26 +303,73 @@ public class DialogDirector : MonoBehaviour
             }
 
             // Handle the Pre Text Tags, and return any variables needed to pass into actors
-            string speakerDirection = string.Empty; 
+            string speakerDirection = string.Empty;
+            float pBefore = 0f;
+            List<int> actorsToAnim = new List<int> { };
+            string animToPlay = string.Empty; 
+            bool waitForAnim = false;
+            float waitTime = 0f; 
 
-            HandlePreTextTags(tags, ref speakerDirection); 
+            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, ref waitForAnim);
+
+            // Set wait time to pause before value.
+            // This will get overwritten if waitForAnim is true
+            if (pBefore > 0f)
+                waitTime = pBefore; 
+
+            // Animate actors or clear their animation
+            List<BaseActor> actorsToAnimate = new List<BaseActor>();
+            if (actorsToAnim != null)
+            { 
+                float animationTime = 0; 
+
+                for (int i = 0; i < actorsToAnim.Count; i++)
+                {
+                    foreach (BaseActor actor in actors)
+                    {
+                        if (actor.actorID == actorsToAnim[i])
+                        {
+                            actor.GetAnimationInfo(animToPlay, ref animationTime);
+                            actorsToAnimate.Add(actor); 
+                            break; 
+                        }
+                    }
+                }
+
+                DialogManager.Instance.ActorsToAnimate(actorsToAnimate); 
+
+                if (waitForAnim)
+                    waitTime = animationTime; 
+            }
+            else
+            {
+                foreach (BaseActor actor in actors)
+                {
+                    actor.ClearAnimationInfo(); 
+                }
+
+                DialogManager.Instance.ActorsToAnimate(null); 
+            }
 
             // Get the line associated with this actor and their dialog
             string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
 
             // Check if it's the first line in the dialog
             bool firstDialog = false;
-            if (currentLineIndex == 0)
+            if (currentLineIndex == 1)
                 firstDialog = true; 
 
             // Tell the actor to deliver the line
-            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection);
+            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
 
             // Set last id after delivering
             lastID = currentID;
+
+            yield return null; 
         }
     }
-    private void HandlePreTextTags(string[] tags, ref string speakerDirection)
+    private void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate, 
+        ref string animToPlay, ref bool waitForAnim)
     {
         // Start at 1, first tag is actorID
         for (int i = 1; i < tags.Length; i++)
@@ -329,27 +378,42 @@ public class DialogDirector : MonoBehaviour
             string tagKey = tagValues[0].Trim();
             string tagValue = tagValues[1].Trim();
 
-            switch (tagKey)
+            if (tagKey == "direction")
             {
-                case "animID":
-                    int animID; 
-                    if(!int.TryParse(tagValue, out animID))
-                    {
-                        Debug.LogError("Can't parse value out of animID. Using default character!");
-                        animID = 1;
-                    }
-
-                    //actors[animID - 1]; 
-
-                    break;
-                case "direction":
-                    speakerDirection = tagValue;
-                    break; 
-                default:
-                    Debug.Log("No additional Pre-Text tag found!");
-                    break; 
+                speakerDirection = tagValue;
             }
+            else if (tagKey == "pBefore")
+            {
+                pBefore = float.Parse(tagValue);
+            }
+            else if (tagKey == "animWait" || tagKey == "animDefault")
+            {
+                if (tagKey == "animWait")
+                    waitForAnim = true;
 
+                List<string> allValues = tagValue.Split(",").ToList();
+                animToPlay = allValues[allValues.Count - 1];
+                allValues.RemoveAt(allValues.Count - 1);
+
+                foreach (string actorID in allValues)
+                {
+                    int thisID = 0; 
+                    if (int.TryParse(actorID, out thisID))
+                    {
+                        actorsToAnimate.Add(thisID);
+                    }
+                    else
+                    {
+                        Debug.LogError("Animation actor ID is not an integer!");
+                    }
+                }
+
+                //actorsToAnimate = allValues;
+            }
+            else
+            {
+                Debug.Log("No additional Pre-Text tag found!");
+            }
         }
     }
 

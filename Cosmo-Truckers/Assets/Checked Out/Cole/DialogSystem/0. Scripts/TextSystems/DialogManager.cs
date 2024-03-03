@@ -34,10 +34,11 @@ public class DialogManager : MonoBehaviour
 
     private DialogTextAnimations dialogTextAnimations;
     private string currentLine;
-    private bool animatingDialogBox;
+    private List<BaseActor> currentActorsToAnimate; 
     private bool boxIsActive = false;
 
     // Public bools
+    public bool AnimatingDialogBox { get; private set; }
     public bool DialogIsPlaying { get; private set; }
     public bool UpdatingDialogBox { get; private set; }
 
@@ -166,7 +167,7 @@ public class DialogManager : MonoBehaviour
         }
 
         dialogBox.localScale = endScale;
-        animatingDialogBox = false;
+        AnimatingDialogBox = false;
 
         if (boxIsActive && !grow)
         {
@@ -186,6 +187,13 @@ public class DialogManager : MonoBehaviour
         dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, alpha); 
         actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, alpha);
     }
+    public void ActorsToAnimate(List<BaseActor> actors)
+    {
+        if (actors == null)
+            currentActorsToAnimate.Clear();
+        else
+            currentActorsToAnimate = actors;
+    } //Set the actors to animate
     #endregion
 
     #region Dialog Mode
@@ -198,48 +206,55 @@ public class DialogManager : MonoBehaviour
             UpdatingDialogBox = true;
 
             SetDialogUI(textBoxPosition, actorDirection);
-            ClearDialogText(); 
+            ClearDialogText();
 
-            animatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize());
-
-            while (animatingDialogBox)
-                yield return null;
-
-            UpdatingDialogBox = false;
+            foreach (BaseActor actor in currentActorsToAnimate)
+                actor.StartAnimation(); 
 
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
+
+            AnimatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize());
+
+            while (AnimatingDialogBox)
+                yield return null;
+
+            UpdatingDialogBox = false;
         }
         //If it's not the same speaker, animate out and in to new speaker
         else if (!sameSpeaker)
         {
             UpdatingDialogBox = true; 
 
-            animatingDialogBox = true;
+            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize(grow:false));
 
-            while (animatingDialogBox)
+            while (AnimatingDialogBox)
                 yield return null;
 
             // Wait until text box is shrunk before moving positions
             SetDialogUI(textBoxPosition, actorDirection);
             ClearDialogText();
 
-            animatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize());
-
-            while (animatingDialogBox)
-                yield return null;
-
-            UpdatingDialogBox = false;
+            // Wait before shrinking Dialog Box to animate
+            foreach (BaseActor actor in currentActorsToAnimate)
+                actor.StartAnimation();
 
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
+
+            AnimatingDialogBox = true;
+            StartCoroutine(AnimateUIToSize());
+
+            while (AnimatingDialogBox)
+                yield return null;
+
+            UpdatingDialogBox = false;
         }
         else 
         { 
-            animatingDialogBox = false;
+            AnimatingDialogBox = false;
             UpdatingDialogBox = false;
         }
 
@@ -263,12 +278,12 @@ public class DialogManager : MonoBehaviour
     {
         if (boxIsActive)
         {
-            animatingDialogBox = true;
+            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize(grow:false));
         }
-        else { animatingDialogBox = false; }
+        else { AnimatingDialogBox = false; }
 
-        while (animatingDialogBox)
+        while (AnimatingDialogBox)
             yield return null;
 
         ClearDialogText();
@@ -295,7 +310,7 @@ public class DialogManager : MonoBehaviour
             dialogTextAnimations.ClearText();
         }
     }
-    public bool CheckIfDialogAnimating()
+    public bool CheckIfDialogTextAnimating()
     {
         return dialogTextAnimations.isTextAnimating;
     }

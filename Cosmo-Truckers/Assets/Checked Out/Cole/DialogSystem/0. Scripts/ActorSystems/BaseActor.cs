@@ -14,7 +14,7 @@ public class BaseActor : MonoBehaviour
     public int actorID;
 
     private Animator myAnimator;
-    private bool isAnimating = false; 
+    private AnimationClip animationToPlay;
 
     public void Initialize(int sortingLayerOrder, bool isFacingRight = true)
     {
@@ -29,7 +29,7 @@ public class BaseActor : MonoBehaviour
     }
 
     //set text box active and material 
-    public void DeliverLine(string actorsLine, int lastID, bool firstDialog, string direction)
+    public void DeliverLine(string actorsLine, int lastID, bool firstDialog, string direction, float waitTime = 0f)
     {
         bool sameSpeaker = false;
         
@@ -43,11 +43,16 @@ public class BaseActor : MonoBehaviour
                 direction = myDirection.ToString();
         }
 
-        if (actorID == lastID)
-            sameSpeaker = true; 
+        // If it's the same speaker, we don't want the box to just sit there if waiting 
+        if (actorID == lastID && waitTime == 0)
+            sameSpeaker = true;
+
+        float timeToWait = 0.5f;
+        if (waitTime > timeToWait)
+            timeToWait = waitTime; 
 
         StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition, 
-            sameSpeaker, firstDialog, actorDirection: direction)); 
+            sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 
     private void SetSpriteSorting(int sortingLayer)
@@ -70,20 +75,28 @@ public class BaseActor : MonoBehaviour
     }
 
     #region Animation
-    public void StartAnimation(string animationName)
+    public void GetAnimationInfo(string animationName, ref float animationTime)
     {
-        string animationToPlay = ActorAnimationFinder.ReturnAnimationName(animationName);
+        // Players will always be ID #'s 1 - 4
+        bool isPlayer = false; 
+        if (actorID < 5)
+            isPlayer = true;
 
-        isAnimating = true; 
+        // Pass in the gameobject name for player animations
+        animationToPlay = ActorAnimationFinder.ReturnAnimationName(animationName, gameObject.name, myAnimator, isPlayer);
+        animationTime = animationToPlay.length; 
     }
-    IEnumerator AnimateActor()
-    {
-        yield return null; 
-    }
-    public void SetAnimation(int actorType)
-    {
 
+    public void ClearAnimationInfo()
+    {
+        animationToPlay = null; 
     }
+
+    public void StartAnimation()
+    {
+        myAnimator.Play(animationToPlay.name);
+    }
+
     #endregion
 }
 
