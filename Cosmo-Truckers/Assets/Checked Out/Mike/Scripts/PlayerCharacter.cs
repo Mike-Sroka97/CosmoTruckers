@@ -35,6 +35,7 @@ public class PlayerCharacter : Character
     public AttackUI PlayerAttackUI;
 
     bool isTurn = false;
+    bool checkingEnemyIntentions = false;
 
     private void Awake()
     {
@@ -65,12 +66,12 @@ public class PlayerCharacter : Character
     {
         if (!isTurn) return;
 
-        if(wheel.activeInHierarchy || augList.activeInHierarchy)
+        if(wheel.activeInHierarchy || augList.activeInHierarchy || checkingEnemyIntentions)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ClosePages();
-
+                checkingEnemyIntentions = false;
                 SetPlayerCurrentOption();
             }
         }
@@ -106,10 +107,10 @@ public class PlayerCharacter : Character
                     case 1:
                         SetUpAUGDescription(this);
                         break;
-                    //TODO
                     //Intentions
                     case 2:
-                        
+                        checkingEnemyIntentions = true;
+                        CombatManager.Instance.MyTargeting.StartCheckingEnemyIntentions();
                         break;
                     default: break;
                 }
@@ -133,7 +134,7 @@ public class PlayerCharacter : Character
         AugmentsToRemove.Clear();
     }
 
-    void ClosePages()
+    public void ClosePages()
     {
         wheel.SetActive(false);
         augList.SetActive(false);

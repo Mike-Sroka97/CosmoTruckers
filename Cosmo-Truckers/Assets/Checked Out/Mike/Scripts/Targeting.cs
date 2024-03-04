@@ -19,6 +19,7 @@ public class Targeting : MonoBehaviour
     bool targetingEnemies = true;
     bool targetingDead = false;
     bool enemyAttacking = false;
+    bool checkingEnemyItentions = false;
     List<Character> currentlySelectedTargets;
     int column = 0;
     int currentNumberOfTargets;
@@ -47,6 +48,15 @@ public class Targeting : MonoBehaviour
              targets = MaxNumberOfTargets(attack);
         else
             targets = 0;
+    }
+
+    public void StartCheckingEnemyIntentions()
+    {
+        isTargeting = true;
+        checkingEnemyItentions = true;
+        InitialSetup = false;
+        currentlySelectedTargets.Clear();
+        CurrentTargetingType = EnumManager.TargetingType.Enemy_Intentions;
     }
 
     private static int MaxNumberOfTargets(BaseAttackSO attack)
@@ -224,7 +234,8 @@ public class Targeting : MonoBehaviour
             case EnumManager.TargetingType.All_Target:
                 TrackAllTargetInput();
                 break;
-
+            case EnumManager.TargetingType.Enemy_Intentions:
+                break;
             default: break;
         }
     }
@@ -291,7 +302,10 @@ public class Targeting : MonoBehaviour
 
     private void CancelAttack()
     {
-        CombatManager.Instance.GetCurrentPlayer.SetupAttackWheel();
+        if(checkingEnemyItentions)
+            checkingEnemyItentions = false;
+        else
+            CombatManager.Instance.GetCurrentPlayer.SetupAttackWheel();
         CombatManager.Instance.StopAllCoroutines();
         isTargeting = false;
         currentNumberOfTargets = 0;
@@ -432,7 +446,7 @@ public class Targeting : MonoBehaviour
                 renderer.material = notTargetedMaterial;
 
         //cone clearing since it doesn't target until selection
-        if (currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
+        if (currentAttack != null && currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
         {
             if (currentlySelectedTargets[0].CombatSpot != 3 && currentlySelectedTargets[0].CombatSpot != 7 && currentlySelectedTargets[0].CombatSpot != 11)
             {

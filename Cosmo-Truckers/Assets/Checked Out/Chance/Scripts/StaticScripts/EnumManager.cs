@@ -12,7 +12,8 @@ public class EnumManager
         Multi_Target_Cone,
         Multi_Target_Choice,
         AOE,
-        All_Target
+        All_Target,
+        Enemy_Intentions
     }
 
     public enum NodeType
