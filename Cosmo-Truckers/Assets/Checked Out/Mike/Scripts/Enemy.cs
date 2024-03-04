@@ -270,6 +270,7 @@ public class Enemy : Character
 
         CurrentTargets.Clear();
         ChosenAttack = attacks[UnityEngine.Random.Range(0, attacks.Length)];
+        CombatManager.Instance.EnemyTarget(ChosenAttack, this);
         return GetAttackIndex();
     }
 

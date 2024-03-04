@@ -106,7 +106,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    private void EnemyTarget(BaseAttackSO attack, Enemy enemy)
+    public void EnemyTarget(BaseAttackSO attack, Enemy enemy)
     {
         switch (attack.TargetingType)
         {
