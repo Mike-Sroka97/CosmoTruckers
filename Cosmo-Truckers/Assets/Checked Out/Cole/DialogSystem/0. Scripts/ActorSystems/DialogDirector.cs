@@ -308,12 +308,13 @@ public class DialogDirector : MonoBehaviour
             List<int> actorsToAnim = new List<int> { };
             string animToPlay = string.Empty; 
             bool waitForAnim = false;
-            float waitTime = 0f; 
+            float waitTime = 0f;
+            string vcType = string.Empty; 
+            int vcRate = -1; // If -1 is passed in, use default voice rate
 
-            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, ref waitForAnim);
+            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, ref waitForAnim, ref vcType, ref vcRate);
 
-            // Set wait time to pause before value.
-            // This will get overwritten if waitForAnim is true
+            // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
             if (pBefore > 0f)
                 waitTime = pBefore; 
 
@@ -351,6 +352,10 @@ public class DialogDirector : MonoBehaviour
                 DialogManager.Instance.ActorsToAnimate(null); 
             }
 
+            // Set actor's voice bark information
+            actors[currentID - 1].SetVoiceBarkRate(vcRate); 
+            actors[currentID - 1].SetVoiceBarkType(vcType); 
+
             // Get the line associated with this actor and their dialog
             string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
 
@@ -369,7 +374,7 @@ public class DialogDirector : MonoBehaviour
         }
     }
     private void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate, 
-        ref string animToPlay, ref bool waitForAnim)
+        ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate)
     {
         // Start at 1, first tag is actorID
         for (int i = 1; i < tags.Length; i++)
@@ -409,6 +414,22 @@ public class DialogDirector : MonoBehaviour
                 }
 
                 //actorsToAnimate = allValues;
+            }
+            else if (tagKey == "vc")
+            {
+                // VC Type is 0, VC Rate is 1 
+                List<string> allValues = tagValue.Split(",").ToList();
+                vcType = allValues[0]; 
+                
+                int rate = 0;
+                if (int.TryParse(allValues[1], out rate))
+                {
+                    vcRate = rate; 
+                }
+                else
+                {
+                    Debug.LogError("VC Rate is not an integer - going with default rate!"); 
+                }
             }
             else
             {

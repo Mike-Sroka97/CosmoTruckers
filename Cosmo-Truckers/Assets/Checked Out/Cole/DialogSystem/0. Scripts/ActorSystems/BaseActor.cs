@@ -1,17 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class BaseActor : MonoBehaviour
 {
     //Variables
+    [Header("Main Actor Variables")]
     [SerializeField] Material actorTextMaterial;
     [SerializeField] Animation[] actorStates;
     [SerializeField] Transform textBoxPosition;
-    [SerializeField] SpeakingDirection myDirection; 
+    [SerializeField] SpeakingDirection myDirection;
     public string actorName;
     public int actorID;
+
+    [Header("Standard Voice Barks")]
+    [SerializeField] private AudioClip[] normal; 
+    [SerializeField] private AudioClip[] low; 
+    [SerializeField] private AudioClip[] high; 
+    [SerializeField] private AudioClip[] nervous;
+    [SerializeField] private int defaultVoiceRate = 3;
+
+    [Header("Unique Voice Barks")]
+    [SerializeField] private AudioClip unique1;
+
+    private int voiceRate = 3; // 3 is the fallback as the default
+    private List<AudioClip> voiceBarks = new List<AudioClip>(); 
 
     private Animator myAnimator;
     private AnimationClip animationToPlay;
@@ -51,8 +66,8 @@ public class BaseActor : MonoBehaviour
         if (waitTime > timeToWait)
             timeToWait = waitTime; 
 
-        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition, 
-            sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
+        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition,
+            voiceBarks, voiceRate, sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 
     private void SetSpriteSorting(int sortingLayer)
@@ -74,6 +89,32 @@ public class BaseActor : MonoBehaviour
         }
     }
 
+    #region Voice
+    public void SetVoiceBarkType(string vcType)
+    {
+        // Swap between the types depending on what is passed in. Normal will be chosen last
+        if (vcType == "low")
+            voiceBarks = low.ToList<AudioClip>();
+        else if (vcType == "high")
+            voiceBarks = high.ToList<AudioClip>();
+        else if (vcType == "nervous")
+            voiceBarks = nervous.ToList<AudioClip>();
+        else if (vcType == "unique1")
+            voiceBarks.Add(unique1); 
+        else 
+            voiceBarks = normal.ToList<AudioClip>();
+    }
+    public void SetVoiceBarkRate(int vcRate)
+    {
+        if (vcRate == -1)
+            voiceRate = defaultVoiceRate;
+        else if (vcRate == -2)
+            voiceRate = 200; // Maybe change this, setting it so high that it'll never play again
+        else
+            voiceRate = vcRate; 
+    }
+    #endregion
+
     #region Animation
     public void GetAnimationInfo(string animationName, ref float animationTime)
     {
@@ -86,12 +127,10 @@ public class BaseActor : MonoBehaviour
         animationToPlay = ActorAnimationFinder.ReturnAnimationName(animationName, gameObject.name, myAnimator, isPlayer);
         animationTime = animationToPlay.length; 
     }
-
     public void ClearAnimationInfo()
     {
         animationToPlay = null; 
     }
-
     public void StartAnimation()
     {
         myAnimator.Play(animationToPlay.name);

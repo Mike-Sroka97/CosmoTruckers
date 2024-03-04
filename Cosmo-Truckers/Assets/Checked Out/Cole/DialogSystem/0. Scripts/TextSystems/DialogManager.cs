@@ -30,7 +30,10 @@ public class DialogManager : MonoBehaviour
     // Dialog Scene Variables
     private GameObject sceneLayout;
     TextAsset textFile;
-    List<BaseActor> playerActors; 
+    List<BaseActor> playerActors;
+
+    // Audio Variables
+    private AudioSource audioSource;
 
     private DialogTextAnimations dialogTextAnimations;
     private string currentLine;
@@ -46,6 +49,9 @@ public class DialogManager : MonoBehaviour
     {
         if (Instance == null)
         {
+            // Add the audio source
+            audioSource = this.gameObject.AddComponent<AudioSource>(); 
+
             Instance = this;
             DontDestroyOnLoad(this);
         }
@@ -112,7 +118,7 @@ public class DialogManager : MonoBehaviour
     #region Next Dialog Setup
     private void SetDialogAnimator() // Set the new Dialog Animatior here
     {
-        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator);
+        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
     }
     private void SetDialogUI(Transform newPosition, string direction)
     {
@@ -198,7 +204,8 @@ public class DialogManager : MonoBehaviour
 
     #region Dialog Mode
     public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, 
-        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
+        Transform textBoxPosition, List<AudioClip> voiceBarks, int voiceRate, bool sameSpeaker = false, bool firstDialog = false, 
+        float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
         // If it's the first time dialog, don't animate out and in, just in
         if (firstDialog)
@@ -260,18 +267,18 @@ public class DialogManager : MonoBehaviour
 
         SetDialogAnimator();
         displayNameText.text = actorName;
-        SpeakNextLine(nextLine);
+        SpeakNextLine(nextLine, voiceBarks, voiceRate);
     }
 
     private Coroutine lineRoutine = null;
-    private void SpeakNextLine(string nextLine)
+    private void SpeakNextLine(string nextLine, List<AudioClip> voiceBarks, int voiceRate)
     {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
         dialogTextAnimations.isTextAnimating = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, null));
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, voiceBarks, voiceRate));
     }
     
     public IEnumerator EndDialog()
