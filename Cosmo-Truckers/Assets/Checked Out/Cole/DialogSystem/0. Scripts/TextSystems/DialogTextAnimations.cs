@@ -1,7 +1,6 @@
-using System;
+using System; 
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,16 +13,22 @@ public class DialogTextAnimations
     private readonly TMP_Text textBox;
     private readonly float textAnimationScale;
     private Image nextLineIndicator;
-    private float previousCharacterCount;
+    private int previousCharacterCount;
+
+    private int countSinceLastBark = 0;
+    private int previousBarkPosition = -1;
+    private AudioSource audioSource; 
 
     // Initializer
-    public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator)
+    public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
     {
         textBox = _textBox;
         nextLineIndicator = _nextLineIndicator;
         textAnimationScale = textBox.fontSize; 
+        audioSource = _audioSource;
     }
 
+    #region DEFAULT ANIMATION VARIABLES
     private static readonly Color32 clear = new Color32(0, 0, 0, 0);
     private const float CHAR_ANIM_TIME = 0.07f;
     private float secondsPerCharStartValue = 150f;
@@ -32,9 +37,16 @@ public class DialogTextAnimations
     private float secondsPerCharacter;
 
     private static readonly Vector3 vectorZero = Vector3.zero;
+    #endregion
+
+    #region AUDIO VARIABLES
+    private List<AudioClip> dialogAudioClips = new List<AudioClip>();
+    private int currentRateCount = 0; 
+    private int previousClipValue;
+    #endregion
 
     // Begin to animate the text in using a coroutine
-    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, Action onFinish)
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, List<AudioClip> vcBarks, int vcRate)
     {
         secondsPerCharacterValue_1 = 1f;
         secondsPerCharacterValue_2 = secondsPerCharStartValue;
@@ -101,7 +113,7 @@ public class DialogTextAnimations
                 }
                 // set the visible character count to the text info character count
                 visibleCharacterIndex = characterCount;
-                FinishAnimating(onFinish); 
+                FinishAnimating(); 
             }
             if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
             {
@@ -109,18 +121,27 @@ public class DialogTextAnimations
                 if (visibleCharacterIndex <= characterCount)
                 {
                     ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                    
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
                     if (visibleCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
                     {
                         // set the animation start time to now
                         characterAnimStartTimes[visibleCharacterIndex] = Time.unscaledTime;
-                        visibleCharacterIndex++; // progress visible character index
+
+                        // progress visible character index
+                        visibleCharacterIndex++; 
                         timeOfLastCharacter = Time.unscaledTime; // set time of last character to now
-                        
+
+                        // progress last dialog bark count
+                        countSinceLastBark++; 
+
+                        // Play Audio
+                        PlayDialogSound(vcRate, vcBarks); 
+
                         // If we're at the characterCount, finish animating
                         if (visibleCharacterIndex == characterCount)
                         {
-                            FinishAnimating(onFinish); 
+                            FinishAnimating(); 
                         }
                     }
                 }
@@ -311,6 +332,33 @@ public class DialogTextAnimations
         return newDestinationColors;
     }
 
+    const float pitchVariability = 0.01f; 
+    private void PlayDialogSound(int vcRate, List<AudioClip> vcBarks)
+    {
+        if (vcBarks.Count > 0)
+        {
+            if (countSinceLastBark == vcRate)
+            {
+                // We don't want sounds to overlap
+                //audioSource.Stop();
+
+                int randomClip = UnityEngine.Random.Range(0, vcBarks.Count);
+
+                while (randomClip == previousBarkPosition)
+                {
+                    randomClip = UnityEngine.Random.Range(0, vcBarks.Count);
+                }
+
+                // Random pitch
+                audioSource.pitch = UnityEngine.Random.Range(1 - pitchVariability, 1 + pitchVariability); 
+                audioSource.PlayOneShot(vcBarks[randomClip]);
+
+                // Reset count
+                countSinceLastBark = 0;
+            }
+        }
+    }
+
     #region ANIMATION ADJUSTMENT VARIABLES
     const float SHAKE_MAGNITUDE = 0.06f;
     const float SHAKE_FREQUENCY = 15f;
@@ -357,14 +405,13 @@ public class DialogTextAnimations
         return new Vector3(x, y, 0);
     }
 
-    private void FinishAnimating(Action onFinish)
+    private void FinishAnimating()
     {
         // Call this when the animation is finished. 
         isTextAnimating = false;
         stopAnimating = false;
-        onFinish?.Invoke(); //If there is an onFinish action, call it here
+        //onFinish?.Invoke(); //If there is an onFinish action, call it here
     }
-    
     public void FinishCurrentAnimation()
     {
         secondsPerCharacter = 0;
@@ -373,6 +420,7 @@ public class DialogTextAnimations
             stopAnimating = true;
     }
 
+    #region SEPARATE OUT INFO 
     private TextAnimInfo[] SeparateOutTextAnimInfo(List<DialogCommand> commands)
     {
         List<TextAnimInfo> tempResult = new List<TextAnimInfo>();
@@ -532,6 +580,7 @@ public class DialogTextAnimations
 
         return tempResult.ToArray();
     }
+    #endregion
 }
 
 public struct TextAnimInfo

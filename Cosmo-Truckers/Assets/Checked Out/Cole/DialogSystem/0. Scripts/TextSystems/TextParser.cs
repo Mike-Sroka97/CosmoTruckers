@@ -46,9 +46,10 @@ public class TextParser : MonoBehaviour
 
     public string[] GetTagsAtCurrentLine(string dialog, int currentLine)
     {
-        string[] lines = GetAllLinesInThisDialog(dialog); 
-        string[] tags = GetRawTagList(lines[currentLine]).Split(',');
-
+        string[] lines = GetAllLinesInThisDialog(dialog);
+        // Split the characters to get what's inside of the brackets
+        string rawTagList = GetRawTagList(lines[currentLine]);
+        string[] tags = rawTagList.Trim('{', '}').Split(new[] {"}{"}, StringSplitOptions.None); 
         return tags; 
     }
     
@@ -56,7 +57,7 @@ public class TextParser : MonoBehaviour
     {
         string[] lines = GetAllLinesInThisDialog(dialog);
         // Replace tags and {} with ""
-        string noTagsLine = Regex.Replace(lines[currentLine], @"\{.*?\}", "");
+        string noTagsLine = Regex.Replace(lines[currentLine], @"\{{.*?\}}", "");
 
         return noTagsLine; 
     }
@@ -87,6 +88,10 @@ public class TextParser : MonoBehaviour
 
     private string GetRawTagList(string line)
     {
-        return Regex.Match(line, @"\{([^}]*)\}").Groups[1].Value;
+        // Search for {{ and }}. Return each bracketed item inside. 
+        // Then remove the first and last bracket
+        string entireLine = Regex.Match(line, @"\{\{(.*?)\}\}").Groups[0].Value;
+        string modifiedString = entireLine.Substring(1, entireLine.Length - 2);
+        return modifiedString;
     }
 }
