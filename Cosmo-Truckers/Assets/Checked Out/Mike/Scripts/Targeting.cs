@@ -346,7 +346,9 @@ public class Targeting : MonoBehaviour
 
     private void EnemyIntentionTargets(Character target)
     {
-        foreach(Character character in target.GetComponent<Enemy>().CurrentTargets)
+        CombatManager.Instance.AttackDisplay.SetEnemyIntentions(target.GetComponent<Enemy>().ChosenAttack.AttackName);
+
+        foreach (Character character in target.GetComponent<Enemy>().CurrentTargets)
         {
             currentlySelectedTargets.Add(character);
 
@@ -948,6 +950,9 @@ public class Targeting : MonoBehaviour
             {
                 if (enemy != null && ((!enemy.Dead && !targetingDead) || (enemy.Dead && targetingDead)) && !currentlySelectedTargets.Contains(enemy))
                 {
+                    if (!CombatManager.Instance.AttackDisplay)
+                        CombatManager.Instance.AttackDisplay = CombatManager.Instance.GetComponentInChildren<AttackDisplay>();
+
                     currentlySelectedTargets.Add(enemy);
                     EnemyIntentionTargets(enemy);
                     break;

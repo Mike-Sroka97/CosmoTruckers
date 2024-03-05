@@ -71,8 +71,13 @@ public class PlayerCharacter : Character
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ClosePages();
-                checkingEnemyIntentions = false;
                 SetPlayerCurrentOption();
+
+                if(checkingEnemyIntentions)
+                {
+                    checkingEnemyIntentions = false;
+                    CombatManager.Instance.AttackDisplay.StartClose();
+                }
             }
         }
         else

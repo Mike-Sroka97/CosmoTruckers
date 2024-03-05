@@ -17,7 +17,7 @@ public class AttackDisplay : MonoBehaviour
     [SerializeField] float onTime = 0.9f;
     [SerializeField] float offTime = 0.3f;
 
-    //TODO Lights
+    bool opened = false;
     TextMeshProUGUI attackText;
 
     private void Start()
@@ -32,6 +32,14 @@ public class AttackDisplay : MonoBehaviour
         StartCoroutine(RotateMe(true));
     }
 
+    public void SetEnemyIntentions(string attack)
+    {
+        attackText.text = attack;
+
+        if(!opened)
+            StartCoroutine(FlipOpen());
+    }
+
     private void SetLights(List<PlayerCharacter> activePlayers)
     {
         foreach (SpriteRenderer light in playerLights)
@@ -44,30 +52,30 @@ public class AttackDisplay : MonoBehaviour
     {
         if(activate)
         {
-            while (transform.eulerAngles.x < 359)
+            while (transform.localEulerAngles.x < 359)
             {
                 transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0, 0));
 
-                if (transform.eulerAngles.x < 100)
+                if (transform.localEulerAngles.x < 100)
                     break;
 
                 yield return null;
             }
 
-            transform.eulerAngles = Vector3.zero;
+            transform.localEulerAngles = Vector3.zero;
             StartCoroutine(FlashMove());
         }
         else
         {
-            transform.eulerAngles = new Vector3(359, 0, 0);
+            transform.localEulerAngles = new Vector3(359, 0, 0);
 
-            while (transform.eulerAngles.x > 270)
+            while (transform.localEulerAngles.x > 270)
             {
                 transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
                 yield return null;
             }
 
-            transform.eulerAngles = new Vector3(270, 0, 0);
+            transform.localEulerAngles = new Vector3(270, 0, 0);
 
             CombatManager.Instance.PauseAttack = false;
         }
@@ -88,5 +96,56 @@ public class AttackDisplay : MonoBehaviour
         }
 
         StartCoroutine(RotateMe(false));
+    }
+
+    private IEnumerator FlipOpen()
+    {
+        opened = true;
+
+        while (transform.localEulerAngles.x < 359)
+        {
+            transform.Rotate(new Vector3(rotateSpeed * Time.deltaTime, 0, 0));
+
+            if (transform.localEulerAngles.x < 100)
+                break;
+
+            yield return null;
+        }
+
+        transform.localEulerAngles = Vector3.zero;
+
+        StartCoroutine(FlashIndefinetly());
+    }
+
+    private IEnumerator FlashIndefinetly()
+    {
+        while (opened)
+        {
+            attackText.enabled = true;
+            yield return new WaitForSeconds(onTime);
+            attackText.enabled = false;
+            yield return new WaitForSeconds(offTime);
+        }
+    }
+
+    public void StartClose()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FlipClose());
+    }
+
+    private IEnumerator FlipClose()
+    {
+        opened = false;
+
+        transform.eulerAngles = new Vector3(359, 0, 0);
+
+        while (transform.localEulerAngles.x > 270)
+        {
+            transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
+            yield return null;
+        }
+
+        transform.localEulerAngles = new Vector3(270, 0, 0);
     }
 }

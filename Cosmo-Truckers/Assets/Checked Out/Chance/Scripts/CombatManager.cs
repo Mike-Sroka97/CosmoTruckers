@@ -34,7 +34,7 @@ public class CombatManager : MonoBehaviour
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
 
     public BaseAttackSO CurrentAttack;
-    private AttackDisplay attackDisplay;
+    public AttackDisplay AttackDisplay;
     public Enemy GetCurrentEnemy { get => CurrentEnemy; }
 
     public Character GetCurrentCharacter { get => CurrentCharacter; }
@@ -509,9 +509,9 @@ public class CombatManager : MonoBehaviour
     {
         PauseAttack = true;
 
-        if (!attackDisplay)
-            attackDisplay = GetComponentInChildren<AttackDisplay>();
-        attackDisplay.SetAttack(attack.AttackName, ActivePlayers);
+        if (!AttackDisplay)
+            AttackDisplay = GetComponentInChildren<AttackDisplay>();
+        AttackDisplay.SetAttack(attack.AttackName, ActivePlayers);
 
         while(PauseAttack)
             yield return null;
