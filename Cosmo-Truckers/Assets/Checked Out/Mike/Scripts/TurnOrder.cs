@@ -43,6 +43,18 @@ public class TurnOrder : MonoBehaviour
         }
 
         DetermineTurnOrder();
+
+        for(int i = 0; i < livingCharacters.Length; i++)
+        {
+            if(livingCharacters[i].GetComponent<Character>() == CombatManager.Instance.GetCurrentCharacter)
+            {
+                if (i + 1 >= livingCharacters.Length)
+                    currentCharactersTurn = 0;
+                else
+                    currentCharactersTurn = i + 1;
+            }
+        }
+
         StartTurn();
     }
 
@@ -198,8 +210,6 @@ public class TurnOrder : MonoBehaviour
 
     public void AddToSpeedList(CharacterStats characterSpeed)
     {
-
-
         foreach (CharacterStats speed in speedList)
         {
             if (speed.gameObject.name == characterSpeed.name)
