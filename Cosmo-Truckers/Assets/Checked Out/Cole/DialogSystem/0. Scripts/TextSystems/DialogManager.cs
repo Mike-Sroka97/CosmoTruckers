@@ -203,10 +203,12 @@ public class DialogManager : MonoBehaviour
     #endregion
 
     #region Dialog Mode
-    public IEnumerator StartNextDialog(string nextLine, string actorName, Material borderMaterial, 
-        Transform textBoxPosition, List<AudioClip> voiceBarks, int voiceRate, bool sameSpeaker = false, bool firstDialog = false, 
+    public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
+        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
+        string actorName = speaker.actorName; 
+
         // If it's the first time dialog, don't animate out and in, just in
         if (firstDialog)
         {
@@ -267,18 +269,18 @@ public class DialogManager : MonoBehaviour
 
         SetDialogAnimator();
         displayNameText.text = actorName;
-        SpeakNextLine(nextLine, voiceBarks, voiceRate);
+        SpeakNextLine(nextLine, speaker);
     }
 
     private Coroutine lineRoutine = null;
-    private void SpeakNextLine(string nextLine, List<AudioClip> voiceBarks, int voiceRate)
+    private void SpeakNextLine(string nextLine, BaseActor speaker)
     {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
         dialogTextAnimations.isTextAnimating = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, voiceBarks, voiceRate));
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker));
     }
     
     public IEnumerator EndDialog()

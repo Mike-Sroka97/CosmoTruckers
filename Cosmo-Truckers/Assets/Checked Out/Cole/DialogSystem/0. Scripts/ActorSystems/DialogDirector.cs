@@ -352,10 +352,6 @@ public class DialogDirector : MonoBehaviour
                 DialogManager.Instance.ActorsToAnimate(null); 
             }
 
-            // Set actor's voice bark information
-            actors[currentID - 1].SetVoiceBarkRate(vcRate); 
-            actors[currentID - 1].SetVoiceBarkType(vcType); 
-
             // Get the line associated with this actor and their dialog
             string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
 
