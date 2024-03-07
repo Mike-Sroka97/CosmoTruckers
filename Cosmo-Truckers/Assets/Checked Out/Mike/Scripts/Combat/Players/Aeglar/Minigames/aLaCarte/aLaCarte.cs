@@ -22,7 +22,6 @@ public class aLaCarte : CombatMove
 
     private void Start()
     {
-        StartMove();
         spotsTaken = new bool[collectibleSpawns.Length];
         GenerateCurrentLayout();
     }

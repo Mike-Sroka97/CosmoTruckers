@@ -43,18 +43,6 @@ public class TurnOrder : MonoBehaviour
         }
 
         DetermineTurnOrder();
-
-        for(int i = 0; i < livingCharacters.Length; i++)
-        {
-            if(livingCharacters[i].GetComponent<Character>() == CombatManager.Instance.GetCurrentCharacter)
-            {
-                if (i + 1 >= livingCharacters.Length)
-                    currentCharactersTurn = 0;
-                else
-                    currentCharactersTurn = i + 1;
-            }
-        }
-
         StartTurn();
     }
 
@@ -211,18 +199,16 @@ public class TurnOrder : MonoBehaviour
     public void AddToSpeedList(CharacterStats characterSpeed)
     {
         foreach (CharacterStats speed in speedList)
-        {
             if (speed.gameObject.name == characterSpeed.name)
-            {
                 return;
-            }
-        }
+
         speedList.Add(characterSpeed);
         livingCharacters = speedList.ToArray();
         DetermineTurnOrder();
 
-        if (characterSpeed.GetComponent<EnemySummon>() || characterSpeed.GetComponent<PlayerCharacterSummon>())
-            currentCharactersTurn++;
+        for (int i = 0; i < livingCharacters.Length; i++)
+            if (livingCharacters[i].GetComponent<Character>() == CombatManager.Instance.GetCurrentCharacter)
+                currentCharactersTurn = i;
     }
 
     //Every thing for end combat not on a delay
