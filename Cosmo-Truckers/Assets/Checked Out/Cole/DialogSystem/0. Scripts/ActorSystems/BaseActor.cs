@@ -66,8 +66,8 @@ public class BaseActor : MonoBehaviour
         if (waitTime > timeToWait)
             timeToWait = waitTime; 
 
-        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, actorName, actorTextMaterial, textBoxPosition,
-            voiceBarks, voiceRate, sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
+        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, this, actorTextMaterial, textBoxPosition,
+            sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 
     private void SetSpriteSorting(int sortingLayer)
@@ -90,7 +90,7 @@ public class BaseActor : MonoBehaviour
     }
 
     #region Voice
-    public void SetVoiceBarkType(string vcType)
+    public List<AudioClip> GetVoiceBarkType(string vcType)
     {
         // Swap between the types depending on what is passed in. Normal will be chosen last
         if (vcType == "low")
@@ -103,15 +103,19 @@ public class BaseActor : MonoBehaviour
             voiceBarks.Add(unique1); 
         else 
             voiceBarks = normal.ToList<AudioClip>();
+
+        return voiceBarks; 
     }
-    public void SetVoiceBarkRate(int vcRate)
+    public int UpdateVoiceBarkRate(int vcRate)
     {
         if (vcRate == -1)
             voiceRate = defaultVoiceRate;
         else if (vcRate == -2)
             voiceRate = 200; // Maybe change this, setting it so high that it'll never play again
         else
-            voiceRate = vcRate; 
+            voiceRate = vcRate;
+
+        return voiceRate; 
     }
     #endregion
 

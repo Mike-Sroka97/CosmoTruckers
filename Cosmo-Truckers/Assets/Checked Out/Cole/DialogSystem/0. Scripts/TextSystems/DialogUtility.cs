@@ -18,14 +18,12 @@ public class DialogUtility : MonoBehaviour
     private static readonly Regex pauseRegex = new Regex(PAUSE_REGEX_STRING);
     private const string SPEED_REGEX_STRING = "<sp:(?<speed>" + REMAINDER_REGEX + ")>";
     private static readonly Regex speedRegex = new Regex(SPEED_REGEX_STRING);
+    private const string VOICE_REGEX_STRING = "<vc:(?<voice>" + REMAINDER_REGEX + ")>";
+    private static readonly Regex voiceRegex = new Regex(VOICE_REGEX_STRING);
     private const string ANIM_START_REGEX_STRING = "<anim:(?<anim>" + REMAINDER_REGEX + ")>";
     private static readonly Regex animStartRegex = new Regex(ANIM_START_REGEX_STRING);
     private const string ANIM_END_REGEX_STRING = "</anim>";
     private static readonly Regex animEndRegex = new Regex(ANIM_END_REGEX_STRING);
-    private const string SIZE_START_REGEX_STRING = "<size:(?<size>" + REMAINDER_REGEX + ")>";
-    private static readonly Regex sizeStartRegex = new Regex(SIZE_START_REGEX_STRING);
-    private const string SIZE_END_REGEX_STRING = "</size>";
-    private static readonly Regex sizeEndRegex = new Regex(SIZE_END_REGEX_STRING);
     private const string COLOR_START_REGEX_STRING = "<color:(?<color>" + REMAINDER_REGEX + ")>";
     private static readonly Regex colorStartRegex = new Regex(COLOR_START_REGEX_STRING);
     private const string COLOR_END_REGEX_STRING = "</color>";
@@ -66,6 +64,7 @@ public class DialogUtility : MonoBehaviour
 
         processedMessage = HandlePauseTags(processedMessage, result);
         processedMessage = HandleSpeedTags(processedMessage, result);
+        processedMessage = HandleVoiceTags(processedMessage, result);
         processedMessage = HandleAnimStartTags(processedMessage, result);
         processedMessage = HandleAnimEndTags(processedMessage, result); 
         processedMessage = HandleColorStartTags(processedMessage, result);
@@ -106,7 +105,7 @@ public class DialogUtility : MonoBehaviour
 
     /// <summary>
     /// Go through all of the Speed Tags and add them to the list of Dialog Commands
-    /// After doing so, remove the SPeed Tags text from the message
+    /// After doing so, remove the Speed Tags text from the message
     /// </summary>
     /// <param name="processedMessage"></param>
     /// <param name="result"></param>
@@ -134,6 +133,34 @@ public class DialogUtility : MonoBehaviour
         }
 
         processedMessage = Regex.Replace(processedMessage, SPEED_REGEX_STRING, ""); 
+        return processedMessage;
+    }
+
+    /// <summary>
+    /// Go through all of the Voice Bark Tags and add them to the list of Dialog Commands
+    /// After doing so, remove the Voice Bark Tags text from the message
+    /// </summary>
+    /// <param name="processedMessage"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    private static string HandleVoiceTags(string processedMessage, List<DialogCommand> result)
+    {
+        MatchCollection voiceMatches = voiceRegex.Matches(processedMessage);
+
+        foreach (Match match in voiceMatches)
+        {
+            string stringValue = match.Groups["voice"].Value;
+
+            result.Add(new DialogCommand
+            {
+                position = VisibleCharactersUpToIndex(processedMessage, match.Index),
+                type = TextCommandType.VoiceBark,
+                stringValue = GetVoiceType(stringValue), 
+                floatValue = GetVoiceRate(stringValue)
+            });
+        }
+
+        processedMessage = Regex.Replace(processedMessage, VOICE_REGEX_STRING, "");
         return processedMessage;
     }
 
@@ -184,56 +211,6 @@ public class DialogUtility : MonoBehaviour
         }
 
         processedMessage = Regex.Replace(processedMessage, ANIM_END_REGEX_STRING, ""); 
-        return processedMessage;
-    }
-
-    /// <summary>
-    /// Go through all of the Size Tags (the start of them) and add them to the list of Dialog Commands
-    /// After doing so, remove the Size Tags text from the message
-    /// </summary>
-    /// <param name="processedMessage"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    private static string HandleSizeStartTags(string processedMessage, List<DialogCommand> result)
-    {
-        MatchCollection sizeStartMatches = sizeStartRegex.Matches(processedMessage);
-
-        foreach (Match match in sizeStartMatches)
-        {
-            string stringValue = match.Groups["size"].Value;
-            result.Add(new DialogCommand
-            {
-                position = VisibleCharactersUpToIndex(processedMessage, match.Index),
-                type = TextCommandType.SizeStart,
-                floatValue = sizeDictionary[stringValue]
-            });
-        }
-
-        processedMessage = Regex.Replace(processedMessage, SIZE_START_REGEX_STRING, "");
-        return processedMessage;
-    }
-
-    /// <summary>
-    /// Go through all of the Size Tags (the end of them) and add them to the list of Dialog Commands
-    /// After doing so, remove the Size Tags text from the message
-    /// </summary>
-    /// <param name="processedMessage"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    private static string HandleSizeEndTags(string processedMessage, List<DialogCommand> result)
-    {
-        MatchCollection sizeEndMatches = sizeEndRegex.Matches(processedMessage);
-
-        foreach (Match match in sizeEndMatches)
-        {
-            result.Add(new DialogCommand
-            {
-                position = VisibleCharactersUpToIndex(processedMessage, match.Index),
-                type = TextCommandType.SizeEnd
-            });
-        }
-
-        processedMessage = Regex.Replace(processedMessage, SIZE_END_REGEX_STRING, "");
         return processedMessage;
     }
     
@@ -344,7 +321,6 @@ public class DialogUtility : MonoBehaviour
 
         return result; 
     }
-
     private static Color32 GetColor(string stringVal)
     {
         // split the string up based on commas
@@ -379,6 +355,25 @@ public class DialogUtility : MonoBehaviour
 
         return newColor32;
     }
+    private static float GetVoiceRate(string stringVal)
+    {
+        const int defaultVoiceRate = 3; 
+
+        // split the string up based on commas
+        string[] valueList = stringVal.Split(',');
+
+        if (float.TryParse(valueList[1], out float currentValue))
+            return currentValue; 
+
+        else { return (float)defaultVoiceRate;}
+    }
+    private static string GetVoiceType(string stringVal)
+    {
+        // split the string up based on commas
+        string[] valueList = stringVal.Split(',');
+
+        return valueList[0]; 
+    }
 }
 
 public struct DialogCommand
@@ -395,6 +390,7 @@ public enum TextCommandType
 {
     Pause, 
     TextSpeedChange,
+    VoiceBark, 
     AnimStart,
     AnimEnd,
     SizeStart,

@@ -17,7 +17,10 @@ public class DialogTextAnimations
 
     private int countSinceLastBark = 0;
     private int previousBarkPosition = -1;
-    private AudioSource audioSource; 
+    private AudioSource audioSource;
+    private BaseActor speaker;
+    int vcRate = 3;
+    List<AudioClip> vcBarks = new List<AudioClip>(); 
 
     // Initializer
     public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
@@ -46,8 +49,10 @@ public class DialogTextAnimations
     #endregion
 
     // Begin to animate the text in using a coroutine
-    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, List<AudioClip> vcBarks, int vcRate)
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker)
     {
+        speaker = _speaker; 
+
         secondsPerCharacterValue_1 = 1f;
         secondsPerCharacterValue_2 = secondsPerCharStartValue;
 
@@ -59,7 +64,6 @@ public class DialogTextAnimations
         // Get the start and ending index for text anims, colors, and sizes
         TextAnimInfo[] textAnimInfo = SeparateOutTextAnimInfo(commands);
         TextColorInfo[] textColorInfo = SeparateOutTextColorInfo(commands);
-        TextSizeInfo[] textSizeInfo = SeparateOutTextSizeInfo(commands);
 
         // Get the text info
         TMP_TextInfo textInfo = textBox.textInfo;
@@ -136,7 +140,7 @@ public class DialogTextAnimations
                         countSinceLastBark++; 
 
                         // Play Audio
-                        PlayDialogSound(vcRate, vcBarks); 
+                        PlayDialogSound(); 
 
                         // If we're at the characterCount, finish animating
                         if (visibleCharacterIndex == characterCount)
@@ -246,6 +250,9 @@ public class DialogTextAnimations
                     // Set the text speed with seconds per character
                     case TextCommandType.TextSpeedChange: 
                         secondsPerCharacter = 1f / currentCommand.floatValue;
+                        break;
+                    case TextCommandType.VoiceBark:
+                        UpdateDialogSound(currentCommand.stringValue, currentCommand.floatValue);
                         break; 
                 }
                 // Remove the DialogCommand from this list once it is executed
@@ -332,8 +339,18 @@ public class DialogTextAnimations
         return newDestinationColors;
     }
 
+    #region AUDIO 
     const float pitchVariability = 0.01f; 
-    private void PlayDialogSound(int vcRate, List<AudioClip> vcBarks)
+
+    private void UpdateDialogSound(string _vcType, float _vcRate)
+    {
+        vcRate = speaker.UpdateVoiceBarkRate((int)_vcRate);
+        vcBarks = speaker.GetVoiceBarkType(_vcType);
+
+        // Set first character to equal vcRate (minus 1 because count will be added +1 after this call) so that it always plays on first character
+        countSinceLastBark = vcRate - 1; 
+    }
+    private void PlayDialogSound()
     {
         if (vcBarks.Count > 0)
         {
@@ -358,6 +375,7 @@ public class DialogTextAnimations
             }
         }
     }
+    #endregion
 
     #region ANIMATION ADJUSTMENT VARIABLES
     const float SHAKE_MAGNITUDE = 0.06f;
@@ -527,59 +545,6 @@ public class DialogTextAnimations
 
         return tempResult.ToArray();
     }
-    private TextSizeInfo[] SeparateOutTextSizeInfo(List<DialogCommand> commands)
-    {
-        List<TextSizeInfo> tempResult = new List<TextSizeInfo>();
-        List<DialogCommand> sizeStartCommands = new List<DialogCommand>();
-        List<DialogCommand> sizeEndCommands = new List<DialogCommand>();
-
-        // Go through all of the commands being sent in (this list comes from DialogueUtility)
-        // Remove colors from the commands list as you go and add them to a local list
-        for (int i = 0; i < commands.Count; i++)
-        {
-            DialogCommand currentCommand = commands[i];
-
-            bool isValidType = true;
-            switch (currentCommand.type)
-            {
-                case TextCommandType.SizeStart:
-                    sizeStartCommands.Add(currentCommand);
-                    break;
-                case TextCommandType.SizeEnd:
-                    sizeEndCommands.Add(currentCommand);
-                    break;
-                default:
-                    isValidType = false;
-                    break;
-            }
-            if (isValidType)
-            {
-                commands.RemoveAt(i);
-                i--;
-            }
-        }
-
-        if (sizeStartCommands.Count != sizeEndCommands.Count)
-            Debug.LogError("Unequal number of start and end size commands. Start Commands: " + sizeStartCommands.Count + " End Commands: " + sizeEndCommands.Count);
-        // Create a textAnimInfo struct for the animations 
-        else
-        {
-            for (int i = 0; i < sizeStartCommands.Count; i++)
-            {
-                DialogCommand startCommand = sizeStartCommands[i];
-                DialogCommand endCommand = sizeStartCommands[i];
-
-                tempResult.Add(new TextSizeInfo
-                {
-                    startIndex = startCommand.position,
-                    endIndex = endCommand.position,
-                    size = startCommand.floatValue
-                });
-            }
-        }
-
-        return tempResult.ToArray();
-    }
     #endregion
 }
 
@@ -595,11 +560,4 @@ public struct TextColorInfo
     public int startIndex;
     public int endIndex;
     public Color32 color;
-}
-
-public struct TextSizeInfo
-{
-    public int startIndex;
-    public int endIndex;
-    public float size;
 }
