@@ -9,7 +9,6 @@ public class Porkanator : CombatMove
 
     private void Start()
     {
-        StartMove();
         GenerateLayout();
     }
 
