@@ -19,9 +19,14 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Image dialogBoxImage; 
     [SerializeField] private Image dialogBoxImageBorder; 
     [SerializeField] private Image actorDirection; 
-    [SerializeField] private Image nextLineIndicator; 
+    [SerializeField] private Image nextLineIndicator;
+    private Animator indicatorAnimator; 
     [SerializeField] private float disableUITime = 1f;
-
+    // 0:normal 1:box 2:spiky 3:happy
+    [SerializeField] private Sprite[] dialogBoxBases; 
+    [SerializeField] private Sprite[] dialogBoxBorders;
+    private int boxNumber = 0; 
+    
     [Header("Dialog Scene Loading")]
     [SerializeField] private Image fader; 
     private const float FadeTime = 2f;
@@ -120,6 +125,15 @@ public class DialogManager : MonoBehaviour
     {
         dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
     }
+    public void SetDialogBoxNumber(int dialogBoxNumber)
+    {
+        boxNumber = dialogBoxNumber; 
+    }
+    private void SetDialogBox()
+    {
+        dialogBoxImage.sprite = dialogBoxBases[boxNumber]; 
+        dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber]; 
+    }
     private void SetDialogUI(Transform newPosition, string direction)
     {
         dialogBox.position = newPosition.position;
@@ -200,6 +214,16 @@ public class DialogManager : MonoBehaviour
         else
             currentActorsToAnimate = actors;
     } //Set the actors to animate
+    public void SetNextLineIndicatorState(bool state)
+    {
+        if (indicatorAnimator == null)
+            indicatorAnimator = nextLineIndicator.GetComponent<Animator>();
+
+        if (state == true)
+            indicatorAnimator.Play("DM_NextLineIndicator_Grow"); 
+
+        nextLineIndicator.enabled = state; 
+    }
     #endregion
 
     #region Dialog Mode
@@ -223,6 +247,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
+            SetDialogBox();
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 
@@ -253,6 +278,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
+            SetDialogBox();
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 
