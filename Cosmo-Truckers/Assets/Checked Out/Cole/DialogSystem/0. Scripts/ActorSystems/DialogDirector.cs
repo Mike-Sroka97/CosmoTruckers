@@ -271,7 +271,9 @@ public class DialogDirector : MonoBehaviour
         // Increment the current line
         currentLineIndex++;
 
-        allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]); 
+        allLinesCount = textParser.GetAllLinesInThisDialogCount(dialogs[0]);
+
+        DialogManager.Instance.SetNextLineIndicatorState(false);
 
         // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
@@ -311,8 +313,10 @@ public class DialogDirector : MonoBehaviour
             float waitTime = 0f;
             string vcType = string.Empty; 
             int vcRate = -1; // If -1 is passed in, use default voice rate
+            int boxNumber = 0;
 
-            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, ref waitForAnim, ref vcType, ref vcRate);
+            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, 
+                ref waitForAnim, ref vcType, ref vcRate, ref boxNumber);
 
             // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
             if (pBefore > 0f)
@@ -370,7 +374,7 @@ public class DialogDirector : MonoBehaviour
         }
     }
     private void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate, 
-        ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate)
+        ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate, ref int boxNumber)
     {
         // Start at 1, first tag is actorID
         for (int i = 1; i < tags.Length; i++)
@@ -427,16 +431,25 @@ public class DialogDirector : MonoBehaviour
                     Debug.LogError("VC Rate is not an integer - going with default rate!"); 
                 }
             }
+            else if (tagKey == "bub")
+            {
+                if (int.TryParse(tagValue, out int parsedNumber))
+                {
+                    boxNumber = parsedNumber; 
+                }
+            }
             else
             {
                 Debug.Log("No additional Pre-Text tag found!");
             }
         }
+
+        DialogManager.Instance.SetDialogBoxNumber(boxNumber);
     }
 
     private void EndScene()
     {
-
+        DialogManager.Instance.SetNextLineIndicatorState(false);
     }
 
     // Update is called once per frame

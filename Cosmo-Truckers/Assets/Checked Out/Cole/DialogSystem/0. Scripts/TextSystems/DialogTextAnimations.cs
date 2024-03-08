@@ -203,7 +203,6 @@ public class DialogTextAnimations
             yield return null; 
         }
     }
-
     public void ClearText()
     {
         for (int i = 0; i < previousCharacterCount; i++)
@@ -226,7 +225,6 @@ public class DialogTextAnimations
             }
         }
     }
-
     private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter)
     {
         // If the difference in the unscaled time and the time the last character played is greater than seconds per character, show next character
@@ -428,7 +426,7 @@ public class DialogTextAnimations
         // Call this when the animation is finished. 
         isTextAnimating = false;
         stopAnimating = false;
-        //onFinish?.Invoke(); //If there is an onFinish action, call it here
+        DialogManager.Instance.SetNextLineIndicatorState(true); 
     }
     public void FinishCurrentAnimation()
     {
