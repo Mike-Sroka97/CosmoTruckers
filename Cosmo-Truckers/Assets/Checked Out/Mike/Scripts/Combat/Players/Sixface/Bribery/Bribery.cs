@@ -101,18 +101,11 @@ public class Bribery : CombatMove
 
         if(!allFull)
         {
-
-            //Keeping around in case we want to use again
-            //int random = UnityEngine.Random.Range(0, ActivatedRows.Length);
-            //while (ActivatedRows[random] == true || DisabledRows[random] == true)
-            //{
-            //    random = UnityEngine.Random.Range(0, ActivatedRows.Length);
-            //}
             for(int i = 0; i < ActivatedRows.Length; i++)
             {
                 if(ActivatedRows[i] == false && DisabledRows[i] == false)
                 {
-                    int random2 = UnityEngine.Random.Range(0, 2); //two per row
+                    int random2 = UnityEngine.Random.Range(0, 4); //four per row
 
                     if (random2 != lastRandomValue[i])
                     {

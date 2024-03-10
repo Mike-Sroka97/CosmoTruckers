@@ -11,7 +11,8 @@ public class BriberyEnemy : MonoBehaviour
     [SerializeField] float suckedInSpeed = 2f;
     [SerializeField] float rotationSpeed = 360f;
     [SerializeField] float shrinkScale = 0.5f;
-    [SerializeField] float shrinkSpeed = 0.5f; 
+    [SerializeField] float shrinkSpeed = 0.5f;
+    [SerializeField] float lowestThreshold = 0.36f; 
 
     [HideInInspector] public float StartDelay;
 
@@ -115,7 +116,7 @@ public class BriberyEnemy : MonoBehaviour
         moneyMaterial.SetFloat("_MainVal", movePercentage);
         moneyLine.size = new Vector2(spriteSizeUpdater, moneyLine.size.y);
 
-        if (spriteSizeUpdater < 0.05)
+        if (spriteSizeUpdater < lowestThreshold)
         {
             moneyLine.enabled = false; 
         }
