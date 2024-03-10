@@ -70,6 +70,9 @@ public class PlayerCharacter : Character
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                    return;
+
                 ClosePages();
                 SetPlayerCurrentOption();
 
@@ -145,6 +148,7 @@ public class PlayerCharacter : Character
         augList.SetActive(false);
 
         selectionUI.ResetColor();
+        CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
     }
 
     void SetPlayerCurrentOption()

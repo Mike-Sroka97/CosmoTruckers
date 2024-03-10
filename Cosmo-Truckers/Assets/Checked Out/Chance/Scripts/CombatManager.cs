@@ -16,6 +16,7 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] GameObject MiniGameScreen;
     GameObject miniGame;
+    public AttackDescription AttackDescription;
     public GameObject GetMiniGame { get => miniGame; }
     List<GameObject> characters;   //Currently only one 
                             //Needs to be made into list for enemy multi target skills

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 
 [CreateAssetMenu(fileName = "BaseAttack", menuName = "ScriptableObjects/Attacks/BaseAttack")]
 public class BaseAttackSO : ScriptableObject
@@ -21,6 +22,9 @@ public class BaseAttackSO : ScriptableObject
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;
+    [TextAreaAttribute]
+    public string AttackDescription;
+    public VideoClip MinigameDemo;
 
     public virtual void StartCombat() { }
     public virtual void EndCombat() { }

@@ -13,6 +13,7 @@ public abstract class AttackUI : MonoBehaviour
     const float speedIncrease = 200;
     const float baseSpeed = 200;
     protected PlayerCharacter myCharacter;
+    private bool attackDescriptionActive = false;
 
     //All these variables will need to pull from save data at some point to see how many attacks the player has
     const float radius = 40f;
@@ -61,6 +62,11 @@ public abstract class AttackUI : MonoBehaviour
 
     public abstract void HandleMana();
 
+    private void OnEnable()
+    {
+        attackDescriptionActive = false;
+    }
+
     private void OnDisable()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -75,20 +81,44 @@ public abstract class AttackUI : MonoBehaviour
     {
         if (!spinning)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if(Input.GetKeyDown(KeyCode.T) && !attackDescriptionActive)
+            {
+                attackDescriptionActive = true;
+                CombatManager.Instance.AttackDescription.gameObject.SetActive(true);
+                UpdateAttackDescription();
+            }
+            else if(Input.GetKeyDown(KeyCode.T) && attackDescriptionActive)
+            {
+                attackDescriptionActive = false;
+                CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
             {
                 RotateWheel(-rotationDistance);
+                if (attackDescriptionActive)
+                    UpdateAttackDescription();
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 RotateWheel(rotationDistance);
+                if (attackDescriptionActive)
+                    UpdateAttackDescription();
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                if(transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
+                attackDescriptionActive = false;
+                CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
+                if (transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
                     StartAttack();
             }
         }
+    }
+
+    private void UpdateAttackDescription()
+    {
+        CombatManager.Instance.AttackDescription.MyAttackDescription.text = currentPlayer.GetAllAttacks[currentAttack].AttackDescription;
+        CombatManager.Instance.AttackDescription.MyAttackName.text = currentPlayer.GetAllAttacks[currentAttack].AttackName;
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentPlayer.GetAllAttacks[currentAttack].MinigameDemo;
     }
 
     protected virtual void StartAttack()
@@ -100,7 +130,31 @@ public abstract class AttackUI : MonoBehaviour
 
     protected void RotateWheel(float rotationValue)
     {
-        StartCoroutine(SpinWheel(rotationValue));
+        CombatManager.Instance.AttackDescription.Static.SetActive(true);
+        CombatManager.Instance.AttackDescription.Screen.SetActive(false);
+
+        float tempRotation = rotationValue;
+
+        currentAttack = (int)(Mathf.Round(transform.eulerAngles.z + rotationValue) / (360 / 10));
+
+        if (currentAttack == -1)
+            currentAttack = transform.childCount - 1;
+        else if (currentAttack == transform.childCount)
+            currentAttack = 0;
+
+        while (!transform.GetChild(currentAttack).gameObject.activeSelf)
+        {
+            speed = speedIncrease;
+            tempRotation += rotationValue;
+            currentAttack = (int)(Mathf.Round(transform.eulerAngles.z + tempRotation) / (360 / 10));
+
+            if (currentAttack < 0)
+                currentAttack = transform.childCount + currentAttack;
+            else if (currentAttack == transform.childCount)
+                currentAttack = 0;
+        }
+
+        StartCoroutine(SpinWheel(tempRotation));
     }
     IEnumerator SpinWheel(float rotationValue)
     {
@@ -144,20 +198,13 @@ public abstract class AttackUI : MonoBehaviour
             }
         }
 
-        currentAttack = (int)(Mathf.Round(transform.eulerAngles.z) / (360 / 10));
-
         SetOpacity(currentAttack);
 
-        if (!transform.GetChild(currentAttack).gameObject.activeSelf)
-        {
-            speed = speedIncrease;
-            RotateWheel(rotationValue);
-        }
-        else
-        {
-            speed = baseSpeed;
-            spinning = false;
-        }
+        speed = baseSpeed;
+        spinning = false;
+
+        CombatManager.Instance.AttackDescription.Static.SetActive(false);
+        CombatManager.Instance.AttackDescription.Screen.SetActive(true);
     }
 
     void SetOpacity(int attack)
