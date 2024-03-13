@@ -124,6 +124,10 @@ public class DialogTextAnimations
                 // If we're not at the end of the characterCount 
                 if (visibleCharacterIndex <= characterCount)
                 {
+                    // Make sure every character talks
+                    if (visibleCharacterIndex == 0)
+                        UpdateDialogSound("normal", -1); 
+
                     ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
                     
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter

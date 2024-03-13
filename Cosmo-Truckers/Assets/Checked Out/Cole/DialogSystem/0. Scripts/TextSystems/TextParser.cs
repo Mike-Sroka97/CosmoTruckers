@@ -16,7 +16,7 @@ public class TextParser : MonoBehaviour
         foreach (string dialog in allDialogs)
         {
             string[] lines = dialog.Split('\n');
-            string name = lines[0].Trim();
+            string name = lines[1].Trim();
             name.Replace("\r", ""); 
 
             if (actorName == name)
