@@ -19,8 +19,11 @@ public class DialogTextAnimations
     private int previousBarkPosition = -1;
     private AudioSource audioSource;
     private BaseActor speaker;
+    
+    // Voice Bark Values
     int vcRate = 3;
-    List<AudioClip> vcBarks = new List<AudioClip>(); 
+    List<AudioClip> vcBarks = new List<AudioClip>();
+    bool vcFluctuate = true; 
 
     // Initializer
     public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
@@ -124,6 +127,10 @@ public class DialogTextAnimations
                 // If we're not at the end of the characterCount 
                 if (visibleCharacterIndex <= characterCount)
                 {
+                    // Make sure every character talks
+                    if (visibleCharacterIndex == 0)
+                        UpdateDialogSound("normal", -1); 
+
                     ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
                     
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
@@ -250,7 +257,7 @@ public class DialogTextAnimations
                         secondsPerCharacter = 1f / currentCommand.floatValue;
                         break;
                     case TextCommandType.VoiceBark:
-                        UpdateDialogSound(currentCommand.stringValue, currentCommand.floatValue);
+                        UpdateDialogSound(currentCommand.stringValue, currentCommand.floatValue, currentCommand.boolValue);
                         break; 
                 }
                 // Remove the DialogCommand from this list once it is executed
@@ -338,12 +345,13 @@ public class DialogTextAnimations
     }
 
     #region AUDIO 
-    const float pitchVariability = 0.01f; 
+    const float pitchVariability = 0.02f; 
 
-    private void UpdateDialogSound(string _vcType, float _vcRate)
+    private void UpdateDialogSound(string _vcType, float _vcRate, bool _vcFluctuate = true)
     {
-        vcRate = speaker.UpdateVoiceBarkRate((int)_vcRate);
+        vcRate = speaker.GetVoiceBarkRate((int)_vcRate);
         vcBarks = speaker.GetVoiceBarkType(_vcType);
+        vcFluctuate = _vcFluctuate; 
 
         // Set first character to equal vcRate (minus 1 because count will be added +1 after this call) so that it always plays on first character
         countSinceLastBark = vcRate - 1; 
@@ -364,8 +372,10 @@ public class DialogTextAnimations
                     randomClip = UnityEngine.Random.Range(0, vcBarks.Count);
                 }
 
-                // Random pitch
-                audioSource.pitch = UnityEngine.Random.Range(1 - pitchVariability, 1 + pitchVariability); 
+                // Play random pitch if fluctuate is true
+                if (vcFluctuate)
+                    audioSource.pitch = UnityEngine.Random.Range(1 - pitchVariability, 1 + pitchVariability);
+
                 audioSource.PlayOneShot(vcBarks[randomClip]);
 
                 // Reset count

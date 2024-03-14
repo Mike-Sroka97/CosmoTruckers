@@ -156,7 +156,8 @@ public class DialogUtility : MonoBehaviour
                 position = VisibleCharactersUpToIndex(processedMessage, match.Index),
                 type = TextCommandType.VoiceBark,
                 stringValue = GetVoiceType(stringValue), 
-                floatValue = GetVoiceRate(stringValue)
+                floatValue = GetVoiceRate(stringValue),
+                boolValue = GetVoiceFluctuate(stringValue)
             });
         }
 
@@ -374,6 +375,28 @@ public class DialogUtility : MonoBehaviour
 
         return valueList[0]; 
     }
+
+    private static bool GetVoiceFluctuate(string stringVal)
+    {
+        string[] valueList = stringVal.Split(',');
+
+        // In case I add more to VoiceBarks, but first two are type and rate. Third would be fluctuate bool
+        if (valueList.Length > 2)
+        {
+            if (bool.TryParse(valueList[2], out bool result))
+            {
+                return result;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
 }
 
 public struct DialogCommand
@@ -381,6 +404,7 @@ public struct DialogCommand
     public int position;
     public float floatValue;
     public string stringValue;
+    public bool boolValue; 
     public Color32 color;  
     public TextCommandType type;
     public TextAnimationType textAnimValue;

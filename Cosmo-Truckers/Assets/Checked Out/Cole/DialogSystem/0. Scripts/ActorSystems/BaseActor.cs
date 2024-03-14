@@ -106,7 +106,7 @@ public class BaseActor : MonoBehaviour
 
         return voiceBarks; 
     }
-    public int UpdateVoiceBarkRate(int vcRate)
+    public int GetVoiceBarkRate(int vcRate)
     {
         if (vcRate == -1)
             voiceRate = defaultVoiceRate;

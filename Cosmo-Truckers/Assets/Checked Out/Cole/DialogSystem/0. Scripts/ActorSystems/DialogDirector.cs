@@ -114,9 +114,9 @@ public class DialogDirector : MonoBehaviour
                 if (finalPlayerActors[j] == null)
                 {
                     // Set the null spots to the remaining player actors
-                    finalPlayerActors[j] = playerActors[i];
+                    finalPlayerActors[j] = remainingPlayerActors[i];
                     // Set the dialog for this player slot to be a specific actor dialog
-                    dialogs[j] = textParser.GetActorDialog(textFile, finalPlayerActors[j].actorName);
+                    dialogs[j] = textParser.GetActorDialog(textFile, remainingPlayerActors[i].actorName);
                     finalPlayerActors[j].actorID = j + 1;
                     break;
                 }
