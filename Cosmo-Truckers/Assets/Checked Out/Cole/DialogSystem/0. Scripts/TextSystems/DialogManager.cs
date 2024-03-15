@@ -129,10 +129,11 @@ public class DialogManager : MonoBehaviour
     {
         boxNumber = dialogBoxNumber; 
     }
-    private void SetDialogBox()
+    private void SetDialogBox(BaseActor speaker)
     {
         dialogBoxImage.sprite = dialogBoxBases[boxNumber]; 
-        dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber]; 
+        dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber];
+        dialogBoxImageBorder.material = speaker.actorTextMaterial; 
     }
     private void SetDialogUI(Transform newPosition, string direction)
     {
@@ -247,7 +248,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
-            SetDialogBox();
+            SetDialogBox(speaker);
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 
@@ -278,7 +279,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
-            SetDialogBox();
+            SetDialogBox(speaker);
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 

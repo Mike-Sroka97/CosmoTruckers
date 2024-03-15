@@ -8,12 +8,12 @@ public class BaseActor : MonoBehaviour
 {
     //Variables
     [Header("Main Actor Variables")]
-    [SerializeField] Material actorTextMaterial;
     [SerializeField] Animation[] actorStates;
     [SerializeField] Transform textBoxPosition;
     [SerializeField] SpeakingDirection myDirection;
     public string actorName;
     public int actorID;
+    public Material actorTextMaterial; 
 
     [Header("Standard Voice Barks")]
     [SerializeField] private AudioClip[] normal; 
