@@ -25,6 +25,7 @@ public class DialogManager : MonoBehaviour
     // 0:normal 1:box 2:spiky 3:happy
     [SerializeField] private Sprite[] dialogBoxBases; 
     [SerializeField] private Sprite[] dialogBoxBorders;
+    [SerializeField] private Sprite defaultNextIndicator; 
     private int boxNumber = 0; 
     
     [Header("Dialog Scene Loading")]
@@ -133,7 +134,12 @@ public class DialogManager : MonoBehaviour
     {
         dialogBoxImage.sprite = dialogBoxBases[boxNumber]; 
         dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber];
-        dialogBoxImageBorder.material = speaker.actorTextMaterial; 
+        dialogBoxImageBorder.material = speaker.actorTextMaterial;
+
+        if (speaker.actorNextIndicator != null)
+            nextLineIndicator.sprite = speaker.actorNextIndicator;
+        else
+            nextLineIndicator.sprite = defaultNextIndicator; 
     }
     private void SetDialogUI(Transform newPosition, string direction)
     {

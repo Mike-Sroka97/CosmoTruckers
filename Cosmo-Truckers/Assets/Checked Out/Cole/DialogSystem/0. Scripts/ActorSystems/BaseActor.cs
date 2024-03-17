@@ -13,7 +13,10 @@ public class BaseActor : MonoBehaviour
     [SerializeField] SpeakingDirection myDirection;
     public string actorName;
     public int actorID;
-    public Material actorTextMaterial; 
+
+    [Header("Visual Variables")]
+    public Material actorTextMaterial;
+    public Sprite actorNextIndicator; 
 
     [Header("Standard Voice Barks")]
     [SerializeField] private AudioClip[] normal; 
