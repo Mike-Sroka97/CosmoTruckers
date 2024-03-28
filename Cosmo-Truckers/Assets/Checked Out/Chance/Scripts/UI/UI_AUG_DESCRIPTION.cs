@@ -14,6 +14,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] Color selectedColor;
     [SerializeField] Color baseColor;
     [SerializeField] TMP_Text AUGDescription;
+    [SerializeField] Sprite[] bgs;
     int currentLocation = 0;
 
     private void OnDisable()
@@ -40,6 +41,11 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         for(int i = 0; i < charactersAUGS.Count; i++)
         {
             selectable[i].GetComponentInChildren<TMP_Text>().text = charactersAUGS[i].CurrentStacks.ToString();
+            selectable[i].GetComponentsInChildren<Image>()[1].sprite = charactersAUGS[i].AugmentSprite;
+        }
+        for(int i = 0; i < 6; i++)
+        {
+            DetermineBG(i);
         }
 
         ShowSelection(0);
@@ -96,13 +102,13 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     {
         int newLocation = 0;
 
-        if(currentLocation - 4 < 0)
+        if(currentLocation - 3 < 0)
         {
-            newLocation = currentLocation + (selectable.Count - 4);
+            newLocation = currentLocation + (selectable.Count - 3);
         }
         else
         {
-            newLocation = currentLocation - 4;
+            newLocation = currentLocation - 3;
         }
 
         ShowSelection(newLocation);
@@ -111,13 +117,13 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     {
         int newLocation = 0;
 
-        if (currentLocation + 4 >= selectable.Count)
+        if (currentLocation + 3 >= selectable.Count)
         {
-            newLocation = currentLocation - (selectable.Count - 4);
+            newLocation = currentLocation - (selectable.Count - 3);
         }
         else
         {
-            newLocation = currentLocation + 4;
+            newLocation = currentLocation + 3;
         }
 
         ShowSelection(newLocation);
@@ -158,7 +164,46 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         selectable[currentLocation].GetComponent<Image>().color = baseColor;
         selectable[newLocation].GetComponent<Image>().color = selectedColor;
 
+        if(currentLocation + 1 <= charactersAUGS.Count)
+            selectable[currentLocation].GetComponentsInChildren<Image>()[1].color = baseColor;
+        if (newLocation + 1 <= charactersAUGS.Count)
+            selectable[newLocation].GetComponentsInChildren<Image>()[1].color = selectedColor;
+
         currentLocation = newLocation;
         SetDescription();
+    }
+
+    private void DetermineBG(int currentSlot)
+    {
+        selectable[currentSlot].GetComponentsInChildren<Image>()[1].color = baseColor;
+        selectable[currentSlot].GetComponentsInChildren<Image>()[0].color = baseColor;
+
+        if (currentSlot + 1 > charactersAUGS.Count)
+        {
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[0];
+            selectable[currentSlot].GetComponentsInChildren<Image>()[1].sprite = null;
+            selectable[currentSlot].GetComponentsInChildren<Image>()[1].color = Color.clear;
+            return;
+        }
+
+
+        //Colors fun
+        if (!charactersAUGS[currentSlot].IsBuff && !charactersAUGS[currentSlot].IsDebuff && charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[0];
+
+        else if(!charactersAUGS[currentSlot].IsBuff && !charactersAUGS[currentSlot].IsDebuff && !charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[1];
+
+        else if (charactersAUGS[currentSlot].IsBuff && charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[2];
+
+        else if(charactersAUGS[currentSlot].IsBuff && !charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[3];
+
+        else if (charactersAUGS[currentSlot].IsDebuff && charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[4];
+
+        else if (charactersAUGS[currentSlot].IsDebuff && !charactersAUGS[currentSlot].Removable)
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[5];
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Base class for all debuffs
 [CreateAssetMenu(fileName = "Debuff", menuName = "ScriptableObjects/Debuff/EmptyBase")]
@@ -31,6 +32,10 @@ public class DebuffStackSO : ScriptableObject
     [Header("Stacks")]
     public bool Stackable = false;
     public int MaxStacks = 10;
+
+    [Header("UI")]
+    public Sprite AugmentSprite;
+
     public int CurrentStacks
     {
         get
