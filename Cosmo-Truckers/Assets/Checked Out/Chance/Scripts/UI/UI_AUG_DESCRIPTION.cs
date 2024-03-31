@@ -13,6 +13,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] List<GameObject> selectable;
     [SerializeField] Color selectedColor;
     [SerializeField] Color baseColor;
+    [SerializeField] Color nonFadingColor;
+    [SerializeField] Color fadingColor;
     [SerializeField] TMP_Text AUGDescription;
     [SerializeField] Sprite[] bgs;
     int currentLocation = 0;
@@ -41,6 +43,12 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         for(int i = 0; i < charactersAUGS.Count; i++)
         {
             selectable[i].GetComponentInChildren<TMP_Text>().text = charactersAUGS[i].CurrentStacks.ToString();
+
+            if(charactersAUGS[i].GetFade() != 0)
+                selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = "-" + charactersAUGS[i].GetFade().ToString();
+            else
+                selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = null;
+
             selectable[i].GetComponentsInChildren<Image>()[1].sprite = charactersAUGS[i].AugmentSprite;
         }
         for(int i = 0; i < 6; i++)
@@ -180,7 +188,9 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
         if (currentSlot + 1 > charactersAUGS.Count)
         {
-            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[0];
+            selectable[currentSlot].GetComponentInChildren<TMP_Text>().text = null;
+            selectable[currentSlot].GetComponentsInChildren<TMP_Text>()[1].text = null;
+            selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[6];
             selectable[currentSlot].GetComponentsInChildren<Image>()[1].sprite = null;
             selectable[currentSlot].GetComponentsInChildren<Image>()[1].color = Color.clear;
             return;
