@@ -536,11 +536,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Reflex: 100
   Defense: 0
+  TrueDefense: 0
   Vigor: 100
+  TrueVigor: 0
   Speed: 0
+  TrueSpeed: 0
   Damage: 100
+  TrueDamage: 0
   Restoration: 100
+  TrueRestoration: 0
   Gravity: 1
+  TrueGravity: 0
 --- !u!114 &3820647501544532743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,8 +566,10 @@ MonoBehaviour:
   maxShield: 60
   Stats: {fileID: 3820647501544532736}
   Health: 0
-  TargetingSprites: []
-  ShieldSprites: []
+  TargetingSprites:
+  - {fileID: 9050412254351164355}
+  ShieldSprites:
+  - {fileID: 4863718405811608643}
   shieldedMaterial: {fileID: 2100000, guid: 7809aebb8e9db6d48931d0d9107ecb35, type: 2}
   bubbleShieldMaterial: {fileID: 2100000, guid: e34991fa16a21184daa339aa953927bf, type: 2}
   CombatSpot: 0
@@ -574,6 +582,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   BubbleShieldBrokenEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DieEvent:
     m_PersistentCalls:
       m_Calls: []
   Stunned: 0

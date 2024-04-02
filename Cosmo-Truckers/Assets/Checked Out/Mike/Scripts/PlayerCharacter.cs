@@ -132,6 +132,8 @@ public class PlayerCharacter : Character
         selectionUI.gameObject.SetActive(true);
         SetPlayerCurrentOption();
 
+        CombatManager.Instance.CurrentCharacter = this;
+
         foreach (DebuffStackSO aug in AUGS)
             if (aug.TurnStart)
                 aug.DebuffEffect();

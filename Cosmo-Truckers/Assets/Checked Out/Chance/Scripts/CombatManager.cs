@@ -31,7 +31,7 @@ public class CombatManager : MonoBehaviour
 
     PlayerCharacter CurrentPlayer;
     Enemy CurrentEnemy;
-    Character CurrentCharacter;
+    public Character CurrentCharacter;
     public PlayerCharacter GetCurrentPlayer { get => CurrentPlayer; }
 
     public BaseAttackSO CurrentAttack;

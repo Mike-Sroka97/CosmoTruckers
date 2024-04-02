@@ -17,7 +17,11 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] Color fadingColor;
     [SerializeField] TMP_Text AUGDescription;
     [SerializeField] Sprite[] bgs;
+    [SerializeField] Transform[] characterSlots;
     int currentLocation = 0;
+    int currentSlot = 0;
+    int selectedSlot;
+    int characterCount;
 
     private void OnDisable()
     {
@@ -34,26 +38,36 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     /// Init the AUG list to show all AUGs on character
     /// </summary>
     /// <param name="character">Base class for all characters that holds the AUGS</param>
-    public void InitList(Character character)
+    public void InitList(Character character, bool init = true)
     {
-        currentChar = character;
-
-        charactersAUGS = new(currentChar.GetAUGS);
-
-        for(int i = 0; i < charactersAUGS.Count; i++)
+        if(character)
         {
-            selectable[i].GetComponentInChildren<TMP_Text>().text = charactersAUGS[i].CurrentStacks.ToString();
+            currentChar = character;
 
-            if(charactersAUGS[i].GetFade() != 0)
-                selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = "-" + charactersAUGS[i].GetFade().ToString();
-            else
-                selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = null;
+            charactersAUGS = new(currentChar.GetAUGS);
 
-            selectable[i].GetComponentsInChildren<Image>()[1].sprite = charactersAUGS[i].AugmentSprite;
+            for (int i = 0; i < charactersAUGS.Count; i++)
+            {
+                selectable[i].GetComponentInChildren<TMP_Text>().text = charactersAUGS[i].CurrentStacks.ToString();
+
+                if (charactersAUGS[i].GetFade() != 0)
+                    selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = "-" + charactersAUGS[i].GetFade().ToString();
+                else
+                    selectable[i].GetComponentsInChildren<TMP_Text>()[1].text = null;
+
+                selectable[i].GetComponentsInChildren<Image>()[1].sprite = charactersAUGS[i].AugmentSprite;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                DetermineBG(i);
+            }
+
+            if (init)
+                DetermineCharacterSlots();
         }
-        for(int i = 0; i < 6; i++)
+        else
         {
-            DetermineBG(i);
+
         }
 
         ShowSelection(0);
@@ -63,14 +77,6 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     //TODO Mike
     private void Update()
     {
-        //Somehow we started this script without setting up the character
-        if (currentChar == null)
-        {
-            Debug.LogError("InitList must be called on this obj before update is called");
-            return;
-        }
-
-
         if (Input.GetKeyDown(KeyCode.W))
         {
             //-4
@@ -91,6 +97,11 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
             //+1
             MoveRight();
         }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+            SelectCharacter(true);
+        else if(Input.GetKeyDown(KeyCode.E))
+            SelectCharacter(false);
 
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -215,5 +226,136 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
         else if (charactersAUGS[currentSlot].IsDebuff && !charactersAUGS[currentSlot].Removable)
             selectable[currentSlot].GetComponentsInChildren<Image>()[0].sprite = bgs[5];
+    }
+
+    private void DetermineCharacterSlots()
+    {
+        currentSlot = 0;
+        characterCount = 0;
+
+        //Change icons and darken
+        foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+        {
+            if(currentSlot < 10)
+                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], playerCharacter);
+            else
+                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], playerCharacter);
+
+            currentSlot++;
+        }
+        foreach(PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
+        {
+            if (currentSlot < 10)
+                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], playerCharacterSummon);
+            else
+                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], playerCharacterSummon);
+
+            currentSlot++;
+        }
+        foreach (Enemy enemy in EnemyManager.Instance.Enemies)
+        {
+            if (currentSlot < 10)
+                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], enemy);
+            else
+                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], enemy);
+
+            currentSlot++;
+        }
+        foreach(EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
+        {
+            if (currentSlot < 10)
+                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], enemySummon);
+            else
+                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], enemySummon);
+
+            currentSlot++;
+        }
+
+        currentSlot = 0;
+        selectedSlot = 0;
+
+        //Select current character
+        foreach (AugmentCharacterIcon icon in characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>())
+            SetIconColor(icon);
+
+        foreach (AugmentCharacterIcon icon in characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>())
+            SetIconColor(icon);
+    }
+
+    private void SetIconColor(AugmentCharacterIcon icon)
+    {
+        if (!icon.MyImage)
+        {
+            icon.MyImage = icon.GetComponent<Image>();
+            icon.MyImage.color = Color.gray;
+        }
+        else if (icon.MyCharacter == CombatManager.Instance.GetCurrentCharacter)
+        {
+            icon.MyImage.color = Color.white;
+            selectedSlot = currentSlot;
+        }
+
+        currentSlot++;
+    }
+
+    private void InitializeCharacterIcon(AugmentCharacterIcon icon, Character character)
+    {
+        icon.MyImage = icon.GetComponent<Image>();
+        icon.MyImage.sprite = character.TargetingSprites[0].sprite;
+        icon.MyImage.color = Color.gray;
+
+        icon.MyCharacter = character;
+
+        characterCount++;
+    }
+
+    private void SelectCharacter(bool left)
+    {
+        if(left)
+        {
+            if (selectedSlot < 10)
+                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.gray;
+            else
+                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.gray;
+
+            selectedSlot--;
+            if (selectedSlot < 0)
+                selectedSlot = 19;
+            if (selectedSlot + 1 > characterCount)
+                selectedSlot = characterCount - 1;
+
+            if (selectedSlot < 10)
+            {
+                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.white;
+                InitList(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyCharacter, false);
+            }
+            else
+            {
+                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.white;
+                InitList(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyCharacter, false);
+            }
+        }
+        else
+        {
+            if (selectedSlot < 10)
+                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.gray;
+            else
+                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.gray;
+
+            selectedSlot++;
+            if (selectedSlot > 19 || selectedSlot + 1 > characterCount)
+                selectedSlot = 0;
+
+            if (selectedSlot < 10)
+            {
+                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.white;
+                InitList(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyCharacter, false);
+            }
+            else
+            {
+                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.white;
+                InitList(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyCharacter, false);
+            }
+        }
     }
 }
