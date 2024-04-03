@@ -174,6 +174,7 @@ public class PlayerCharacter : Character
     }
     public void SetupAttackWheel()
     {
+        selectionUI.gameObject.SetActive(true);
         isTurn = true;
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);

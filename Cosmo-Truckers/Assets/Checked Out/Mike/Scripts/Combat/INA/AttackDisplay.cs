@@ -45,7 +45,8 @@ public class AttackDisplay : MonoBehaviour
         foreach (SpriteRenderer light in playerLights)
             light.color = offColor;
         foreach (PlayerCharacter player in activePlayers)
-            playerLights[player.PlayerNumber - 1].color = playerColors[player.PlayerNumber - 1];
+            if(player)
+                playerLights[player.PlayerNumber - 1].color = playerColors[player.PlayerNumber - 1];
     }
 
     private IEnumerator RotateMe(bool activate)

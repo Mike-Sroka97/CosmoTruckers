@@ -612,7 +612,7 @@ public class Targeting : MonoBehaviour
                 ReactivateCombatManager();
             }
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 targetingEnemies = !targetingEnemies;
 

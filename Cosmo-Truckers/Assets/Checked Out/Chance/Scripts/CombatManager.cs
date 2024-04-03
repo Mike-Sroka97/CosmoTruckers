@@ -83,8 +83,10 @@ public class CombatManager : MonoBehaviour
         {
             if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character))
                 ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
-            else if (character.GetComponent<PlayerCharacterSummon>())
+            else if (character.GetComponent<PlayerCharacterSummon>() && character.GetComponent<PlayerCharacterSummon>().Summoner)
                 ActivePlayers.Add(character.GetComponent<PlayerCharacterSummon>().Summoner);
+            else if (character.GetComponent<PlayerCharacterSummon>())
+                ActivePlayers.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - EnemyManager.Instance.playerSummonIndexAdder].GetComponent<PlayerCharacter>());
             CharactersSelected.Add(character);
         }
 
@@ -177,6 +179,10 @@ public class CombatManager : MonoBehaviour
             foreach (Character character in CharactersSelected)
                 if (character.GetComponent<PlayerCharacter>() && !character.GetComponent<PlayerCharacterSummon>() && !ActivePlayers.Contains(character) && !CurrentAttack.AutoCast)
                     ActivePlayers.Add(character.GetComponent<PlayerCharacter>());
+                else if (character.GetComponent<PlayerCharacterSummon>() && !character.GetComponent<PlayerCharacterSummon>().Summoner)
+                    ActivePlayers.Add(character.GetComponent<PlayerCharacterSummon>().Summoner);
+                else if (character.GetComponent<PlayerCharacterSummon>())
+                    ActivePlayers.Add(EnemyManager.Instance.PlayerCombatSpots[character.CombatSpot - EnemyManager.Instance.playerSummonIndexAdder].GetComponent<PlayerCharacter>());
         }
         else
         {

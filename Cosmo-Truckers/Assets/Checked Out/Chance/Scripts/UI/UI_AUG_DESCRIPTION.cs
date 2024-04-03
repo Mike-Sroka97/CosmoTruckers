@@ -105,7 +105,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 

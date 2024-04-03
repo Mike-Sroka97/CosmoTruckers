@@ -81,13 +81,13 @@ public abstract class AttackUI : MonoBehaviour
     {
         if (!spinning)
         {
-            if(Input.GetKeyDown(KeyCode.T) && !attackDescriptionActive)
+            if(Input.GetKeyDown(KeyCode.E) && !attackDescriptionActive)
             {
                 attackDescriptionActive = true;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(true);
                 UpdateAttackDescription();
             }
-            else if(Input.GetKeyDown(KeyCode.T) && attackDescriptionActive)
+            else if(Input.GetKeyDown(KeyCode.E) && attackDescriptionActive)
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
@@ -109,7 +109,7 @@ public abstract class AttackUI : MonoBehaviour
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
                 if (transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
-                    StartAttack();
+                    StartCoroutine(StartAttack());
             }
         }
     }
@@ -121,8 +121,10 @@ public abstract class AttackUI : MonoBehaviour
         CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentPlayer.GetAllAttacks[currentAttack].MinigameDemo;
     }
 
-    protected virtual void StartAttack()
+    IEnumerator StartAttack()
     {
+        yield return null; //Lol fuck my life
+
         currentPlayer.EndTurn();
 
         CombatManager.Instance.StartCombat(currentPlayer.GetAllAttacks[currentAttack], currentPlayer);

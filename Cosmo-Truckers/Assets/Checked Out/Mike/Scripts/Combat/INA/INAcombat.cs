@@ -13,6 +13,7 @@ public class INAcombat : MonoBehaviour
     [SerializeField] GameObject DungeonGen;
     [SerializeField] float screenOpenSpeed;
     [SerializeField] float screenGoalDistance;
+    [SerializeField] Transform aboveMask;
     [SerializeField] Transform topMask;
     [SerializeField] Transform bottomMask;
 
@@ -130,7 +131,7 @@ public class INAcombat : MonoBehaviour
 
         if (moveUp)
         {
-            topMask.gameObject.SetActive(true);
+            aboveMask.gameObject.SetActive(true);
 
             //Wait a frame to fix renderer threading issues
             yield return null; 
@@ -211,7 +212,7 @@ public class INAcombat : MonoBehaviour
         }
         else
         {
-            topMask.gameObject.SetActive(false);
+            aboveMask.gameObject.SetActive(false);
 
             //CloseScreen
 
