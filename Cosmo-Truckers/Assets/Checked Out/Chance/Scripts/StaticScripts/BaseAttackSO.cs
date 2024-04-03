@@ -22,7 +22,7 @@ public class BaseAttackSO : ScriptableObject
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;
-    [TextAreaAttribute]
+    [TextArea(15, 20)]
     public string AttackDescription;
     public VideoClip MinigameDemo;
 
