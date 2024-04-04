@@ -74,6 +74,7 @@ public class PlayerCharacter : Character
                     return;
 
                 ClosePages();
+                selectionUI.gameObject.SetActive(true);
                 SetPlayerCurrentOption();
 
                 if(checkingEnemyIntentions)
@@ -85,7 +86,7 @@ public class PlayerCharacter : Character
         }
         else
         {
-            if(Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D))
             {
                 if (playerIntent >= maxPlayerIntent)
                     playerIntent = 0;
@@ -105,7 +106,9 @@ public class PlayerCharacter : Character
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                switch(playerIntent)
+                selectionUI.gameObject.SetActive(false);
+
+                switch (playerIntent)
                 {
                     //Attack
                     case 0:
@@ -174,7 +177,6 @@ public class PlayerCharacter : Character
     }
     public void SetupAttackWheel()
     {
-        selectionUI.gameObject.SetActive(true);
         isTurn = true;
         wheel.SetActive(true);
         wheel.GetComponentInChildren<AttackUI>().StartTurn(this);
@@ -194,7 +196,6 @@ public class PlayerCharacter : Character
         augList.SetActive(false);
 
         isTurn = false;
-        selectionUI.gameObject.SetActive(false);
     }
 
     public override void AdjustMaxHealth(int adjuster)
