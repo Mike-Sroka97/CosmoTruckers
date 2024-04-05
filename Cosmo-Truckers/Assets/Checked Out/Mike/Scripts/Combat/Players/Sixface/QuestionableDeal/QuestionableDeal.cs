@@ -58,7 +58,11 @@ public class QuestionableDeal : CombatMove
         currentDamage = Score * Damage;
         currentDamage += baseDamage;
 
-        //TODO CHANCE if enemy has subduction && !Enemy.IsBoss deal 999 damage instead. Use variable subductionDamage
+        //Check if not boss and has subduction for instant kill
+        if(Score > 0 && !CombatManager.Instance.CharactersSelected[0].GetComponent<Enemy>().IsBoss)
+            foreach (DebuffStackSO augment in CombatManager.Instance.CharactersSelected[0].GetAUGS)
+                if (augment.DebuffName == "Subduction")
+                    currentDamage = 999;
 
         //Apply augment
         CombatManager.Instance.CharactersSelected[0].AddDebuffStack(DebuffToAdd, AugmentScore);
@@ -66,7 +70,6 @@ public class QuestionableDeal : CombatMove
         //1 being base damage
         float DamageAdj = 1;
 
-        //TODO CHANCE DAMAGE BUFF AUG (ALSO POTENCY AUG)
         //Damage on players must be divided by 100 to multiply the final
         DamageAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100;
 
