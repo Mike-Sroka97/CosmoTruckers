@@ -15,6 +15,7 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] Image currentShieldBar;
     [SerializeField] Sprite aliveSprite;
     [SerializeField] Sprite deadSprite;
+    [SerializeField] Material[] playerOutlineMaterials;
 
     [Space(20)]
     [Header("Special Effects")]
@@ -38,6 +39,9 @@ public class PlayerVessel : MonoBehaviour
 
         //set image
         characterImage.sprite = myCharacter.VesselImage;
+
+        //set vessel outline
+        characterImage.material = playerOutlineMaterials[myCharacter.PlayerNumber - 1];
 
         //set shield
         shieldText.color = shieldColor;
