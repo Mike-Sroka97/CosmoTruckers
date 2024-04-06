@@ -52,9 +52,10 @@ public class DialogTextAnimations
     #endregion
 
     // Begin to animate the text in using a coroutine
-    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker)
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker = null)
     {
-        speaker = _speaker; 
+        if (_speaker != null)
+            speaker = _speaker; 
 
         secondsPerCharacterValue_1 = 1f;
         secondsPerCharacterValue_2 = secondsPerCharStartValue;
@@ -231,6 +232,8 @@ public class DialogTextAnimations
                 textBox.mesh.colors32 = currentColors;
             }
         }
+
+        textBox.text = string.Empty;
     }
     private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter)
     {
@@ -349,8 +352,12 @@ public class DialogTextAnimations
 
     private void UpdateDialogSound(string _vcType, float _vcRate, bool _vcFluctuate = true)
     {
-        vcRate = speaker.GetVoiceBarkRate((int)_vcRate);
-        vcBarks = speaker.GetVoiceBarkType(_vcType);
+        if (speaker != null)
+        {
+            vcBarks = speaker.GetVoiceBarkType(_vcType);
+            vcRate = speaker.GetVoiceBarkRate((int)_vcRate);
+        }
+
         vcFluctuate = _vcFluctuate; 
 
         // Set first character to equal vcRate (minus 1 because count will be added +1 after this call) so that it always plays on first character

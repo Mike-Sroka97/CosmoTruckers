@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +12,6 @@ public class DialogManager : MonoBehaviour
 
     [Header("Main Text Components")]
     [SerializeField] private TMP_Text textBox;
-    [SerializeField] private TextMeshProUGUI dialogText;
     [SerializeField] private TextMeshProUGUI displayNameText;
 
     [Header("Dialog Box UI")]
@@ -25,6 +25,7 @@ public class DialogManager : MonoBehaviour
     // 0:normal 1:box 2:spiky 3:happy
     [SerializeField] private Sprite[] dialogBoxBases; 
     [SerializeField] private Sprite[] dialogBoxBorders;
+    [SerializeField] private Sprite defaultNextIndicator; 
     private int boxNumber = 0; 
     
     [Header("Dialog Scene Loading")]
@@ -37,12 +38,11 @@ public class DialogManager : MonoBehaviour
     TextAsset textFile;
     List<BaseActor> playerActors;
 
-    // Audio Variables
     private AudioSource audioSource;
-
     private DialogTextAnimations dialogTextAnimations;
+    private List<BaseActor> currentActorsToAnimate;
+    private RegularTextManager regularTextManager; 
     private string currentLine;
-    private List<BaseActor> currentActorsToAnimate; 
     private bool boxIsActive = false;
 
     // Public bools
@@ -70,18 +70,21 @@ public class DialogManager : MonoBehaviour
     #region New Dialog Scene
     public IEnumerator LoadDialogScene(GameObject _sceneLayout, TextAsset _textFile, List<BaseActor> _playerActors)
     {
-        sceneLayout = _sceneLayout;
-        textFile = _textFile;
-        playerActors = _playerActors;
+        if (!DialogIsPlaying && !regularTextManager.DialogIsPlaying)
+        {
+            sceneLayout = _sceneLayout;
+            textFile = _textFile;
+            playerActors = _playerActors;
 
-        SetFading(true); 
-        StartCoroutine(FadeFader()); 
+            SetFading(true);
+            StartCoroutine(FadeFader());
 
-        while (fading)
-            yield return null;
+            while (fading)
+                yield return null;
 
-        // Load into new scene after fading
-        SceneManager.LoadScene(7);
+            // Load into new scene after fading
+            SceneManager.LoadScene(7);
+        }
     }
     public void GetSceneInformation(ref GameObject _sceneLayout, ref TextAsset _textFile, ref List<BaseActor> _playerActors)
     {
@@ -129,10 +132,16 @@ public class DialogManager : MonoBehaviour
     {
         boxNumber = dialogBoxNumber; 
     }
-    private void SetDialogBox()
+    private void SetDialogBox(BaseActor speaker)
     {
         dialogBoxImage.sprite = dialogBoxBases[boxNumber]; 
-        dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber]; 
+        dialogBoxImageBorder.sprite = dialogBoxBorders[boxNumber];
+        dialogBoxImageBorder.material = speaker.actorTextMaterial;
+
+        if (speaker.actorNextIndicator != null)
+            nextLineIndicator.sprite = speaker.actorNextIndicator;
+        else
+            nextLineIndicator.sprite = defaultNextIndicator; 
     }
     private void SetDialogUI(Transform newPosition, string direction)
     {
@@ -231,6 +240,8 @@ public class DialogManager : MonoBehaviour
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
+        DialogIsPlaying = true; 
+
         string actorName = speaker.actorName; 
 
         // If it's the first time dialog, don't animate out and in, just in
@@ -247,7 +258,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
-            SetDialogBox();
+            SetDialogBox(speaker);
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 
@@ -278,7 +289,7 @@ public class DialogManager : MonoBehaviour
             // We can use tags to alter this
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
-            SetDialogBox();
+            SetDialogBox(speaker);
             AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
 
@@ -308,7 +319,79 @@ public class DialogManager : MonoBehaviour
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
         lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker));
     }
-    
+
+    public void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate,
+    ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate, ref int boxNumber)
+    {
+        // Start at 1, first tag is actorID
+        for (int i = 1; i < tags.Length; i++)
+        {
+            string[] tagValues = tags[i].Split(":");
+            string tagKey = tagValues[0].Trim();
+            string tagValue = tagValues[1].Trim();
+
+            if (tagKey == "direction")
+            {
+                speakerDirection = tagValue;
+            }
+            else if (tagKey == "pBefore")
+            {
+                pBefore = float.Parse(tagValue);
+            }
+            else if (tagKey == "animWait" || tagKey == "animDefault")
+            {
+                if (tagKey == "animWait")
+                    waitForAnim = true;
+
+                List<string> allValues = tagValue.Split(",").ToList();
+                animToPlay = allValues[allValues.Count - 1];
+                allValues.RemoveAt(allValues.Count - 1);
+
+                foreach (string actorID in allValues)
+                {
+                    int thisID = 0;
+                    if (int.TryParse(actorID, out thisID))
+                    {
+                        actorsToAnimate.Add(thisID);
+                    }
+                    else
+                    {
+                        Debug.LogError("Animation actor ID is not an integer!");
+                    }
+                }
+            }
+            else if (tagKey == "vc")
+            {
+                // VC Type is 0, VC Rate is 1 
+                List<string> allValues = tagValue.Split(",").ToList();
+                vcType = allValues[0];
+
+                int rate = 0;
+                if (int.TryParse(allValues[1], out rate))
+                {
+                    vcRate = rate;
+                }
+                else
+                {
+                    Debug.LogError("VC Rate is not an integer - going with default rate!");
+                }
+            }
+            else if (tagKey == "bub")
+            {
+                if (int.TryParse(tagValue, out int parsedNumber))
+                {
+                    boxNumber = parsedNumber;
+                }
+            }
+            else
+            {
+                Debug.Log("No additional Pre-Text tag found!");
+            }
+        }
+
+        DialogManager.Instance.SetDialogBoxNumber(boxNumber);
+    }
+
     public IEnumerator EndDialog()
     {
         if (boxIsActive)
@@ -337,7 +420,7 @@ public class DialogManager : MonoBehaviour
     }
     private void ClearDialogText()
     {
-        dialogText.text = string.Empty;
+        textBox.text = string.Empty;
         displayNameText.text = string.Empty;
 
         if (dialogTextAnimations != null)
@@ -347,7 +430,10 @@ public class DialogManager : MonoBehaviour
     }
     public bool CheckIfDialogTextAnimating()
     {
-        return dialogTextAnimations.isTextAnimating;
+        if (dialogTextAnimations != null)
+            return dialogTextAnimations.isTextAnimating;
+        else
+            return false; 
     }
     public void StopAnimating()
     {
@@ -356,6 +442,23 @@ public class DialogManager : MonoBehaviour
     public bool CheckIfFading()
     {
         return fading; 
+    }
+
+    #endregion
+
+    #region Regular Text Methods
+    public void StartRegularTextMode(TextAsset _textFile, TMP_Text _textBox, Image _nextLineIndicator)
+    {
+        // Get the Regular Text Manager
+        regularTextManager = GetComponent<RegularTextManager>();
+
+        if (regularTextManager == null)
+            Debug.LogError("No Regular Text Manager!");
+        else 
+        {
+            if (!regularTextManager.DialogIsPlaying)
+                regularTextManager.StartRegularTextMode(_textFile, _textBox, _nextLineIndicator, audioSource);
+        }
     }
     #endregion
 }

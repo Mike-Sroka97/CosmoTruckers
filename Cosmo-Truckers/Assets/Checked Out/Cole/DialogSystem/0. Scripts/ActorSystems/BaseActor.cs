@@ -8,19 +8,26 @@ public class BaseActor : MonoBehaviour
 {
     //Variables
     [Header("Main Actor Variables")]
-    [SerializeField] Material actorTextMaterial;
     [SerializeField] Animation[] actorStates;
     [SerializeField] Transform textBoxPosition;
     [SerializeField] SpeakingDirection myDirection;
     public string actorName;
     public int actorID;
 
+    [Header("Visual Variables")]
+    public Material actorTextMaterial;
+    public Sprite actorNextIndicator; 
+
     [Header("Standard Voice Barks")]
     [SerializeField] private AudioClip[] normal; 
     [SerializeField] private AudioClip[] low; 
     [SerializeField] private AudioClip[] high; 
     [SerializeField] private AudioClip[] nervous;
-    [SerializeField] private int defaultVoiceRate = 3;
+    [SerializeField] private int defaultNormalVoiceRate = 3;
+    [SerializeField] private int defaultLowVoiceRate = 3;
+    [SerializeField] private int defaultHighVoiceRate = 3;
+
+    private int currentDefaultVoiceRate = 3; 
 
     [Header("Unique Voice Barks")]
     [SerializeField] private AudioClip unique1;
@@ -94,24 +101,35 @@ public class BaseActor : MonoBehaviour
     {
         // Swap between the types depending on what is passed in. Normal will be chosen last
         if (vcType == "low")
+        {
             voiceBarks = low.ToList<AudioClip>();
+            currentDefaultVoiceRate = defaultLowVoiceRate;
+        }
         else if (vcType == "high")
+        {
             voiceBarks = high.ToList<AudioClip>();
+            currentDefaultVoiceRate = defaultHighVoiceRate;
+        }
         else if (vcType == "nervous")
             voiceBarks = nervous.ToList<AudioClip>();
         else if (vcType == "unique1")
-            voiceBarks.Add(unique1); 
-        else 
+            voiceBarks.Add(unique1);
+        else
+        {
             voiceBarks = normal.ToList<AudioClip>();
+            currentDefaultVoiceRate = defaultNormalVoiceRate;
+        }
 
         return voiceBarks; 
     }
     public int GetVoiceBarkRate(int vcRate)
     {
+        // If no rate is entered, choose a default rate based on voice bark type
         if (vcRate == -1)
-            voiceRate = defaultVoiceRate;
+            voiceRate = currentDefaultVoiceRate;
+        // Maybe change this, setting it so high that it'll never play again
         else if (vcRate == -2)
-            voiceRate = 200; // Maybe change this, setting it so high that it'll never play again
+            voiceRate = 200;
         else
             voiceRate = vcRate;
 
@@ -139,7 +157,6 @@ public class BaseActor : MonoBehaviour
     {
         myAnimator.Play(animationToPlay.name);
     }
-
     #endregion
 }
 
