@@ -12,6 +12,10 @@ public class Targeting : MonoBehaviour
     [SerializeField] Material negativeSelectedMaterial; //Solid red
     [SerializeField] Material positiveSelectedMaterial; //Solid green
 
+    [Space(20)]
+    [Header("Attack Description")]
+    [SerializeField] float staticTime = .1f;
+
     bool isTargeting = false;
     public EnumManager.TargetingType CurrentTargetingType;
     BaseAttackSO currentAttack;
@@ -304,9 +308,13 @@ public class Targeting : MonoBehaviour
     private void CancelAttack()
     {
         if(checkingEnemyItentions)
+        {
+            CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
             checkingEnemyItentions = false;
+        }
         else
             CombatManager.Instance.GetCurrentPlayer.SetupAttackWheel();
+
         CombatManager.Instance.StopAllCoroutines();
         isTargeting = false;
         currentNumberOfTargets = 0;
@@ -964,22 +972,67 @@ public class Targeting : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             TrackEnemyIntentionsUpTargeting();
+
+            if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                UpdateAttackDescription();
         }
         //track down input
         else if (Input.GetKeyDown(KeyCode.S))
         {
             TrackEnemyIntentionsDownTargeting();
+
+            if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                UpdateAttackDescription();
         }
         //track left input
         else if (Input.GetKeyDown(KeyCode.A))
         {
             TrackEnemyIntentionsLeftTargeting();
+
+            if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                UpdateAttackDescription();
         }
         //track right input
         else if (Input.GetKeyDown(KeyCode.D))
         {
             TrackEnemyIntentionsRightTargeting();
+
+            if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                UpdateAttackDescription();
         }
+
+        //enable/disable attack description
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+            if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
+            else
+            {
+                CombatManager.Instance.AttackDescription.gameObject.SetActive(true);
+                UpdateAttackDescription();
+            }
+        }
+    }
+
+    private void UpdateAttackDescription()
+    {
+        StartCoroutine(StaticEffect());
+
+        CombatManager.Instance.AttackDescription.MyAttackName.text = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.AttackName;
+        CombatManager.Instance.AttackDescription.MyAttackDescription.text = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.AttackDescription;
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.MinigameDemo;
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.frame = 0;
+    }
+
+    IEnumerator StaticEffect()
+    {
+        CombatManager.Instance.AttackDescription.Static.SetActive(true);
+        CombatManager.Instance.AttackDescription.Screen.SetActive(false);
+
+        yield return new WaitForSeconds(staticTime);
+
+        CombatManager.Instance.AttackDescription.Static.SetActive(false);
+        CombatManager.Instance.AttackDescription.Screen.SetActive(true);
     }
 
     private void TrackEnemyUpTargeting()

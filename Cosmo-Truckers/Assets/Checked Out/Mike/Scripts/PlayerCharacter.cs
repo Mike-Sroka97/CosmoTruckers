@@ -70,7 +70,7 @@ public class PlayerCharacter : Character
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy)
+                if (CombatManager.Instance.AttackDescription.gameObject.activeInHierarchy && !checkingEnemyIntentions)
                     return;
 
                 ClosePages();
