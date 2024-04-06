@@ -284,7 +284,7 @@ public class DialogDirector : MonoBehaviour
         else
         {
             // At the current line in the base dialog, get the tags
-            string[] tags = textParser.GetTagsAtCurrentLine(baseDialog, currentLineIndex);
+            string[] tags = textParser.GetTagsAtCurrentDialogLine(baseDialog, currentLineIndex);
             string speakerDialog = null;
 
             // Get the actor ID for this line and the dialog associated with that actor
@@ -315,7 +315,7 @@ public class DialogDirector : MonoBehaviour
             int vcRate = -1; // If -1 is passed in, use default voice rate
             int boxNumber = 0;
 
-            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, 
+            DialogManager.Instance.HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, 
                 ref waitForAnim, ref vcType, ref vcRate, ref boxNumber);
 
             // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
@@ -357,7 +357,7 @@ public class DialogDirector : MonoBehaviour
             }
 
             // Get the line associated with this actor and their dialog
-            string currentLine = textParser.GetTextAtCurrentLine(speakerDialog, currentLineIndex);
+            string currentLine = textParser.GetDialogTextAtCurrentLine(speakerDialog, currentLineIndex);
 
             // Check if it's the first line in the dialog
             bool firstDialog = false;
@@ -372,79 +372,6 @@ public class DialogDirector : MonoBehaviour
 
             yield return null; 
         }
-    }
-    private void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate, 
-        ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate, ref int boxNumber)
-    {
-        // Start at 1, first tag is actorID
-        for (int i = 1; i < tags.Length; i++)
-        {
-            string[] tagValues = tags[i].Split(":"); 
-            string tagKey = tagValues[0].Trim();
-            string tagValue = tagValues[1].Trim();
-
-            if (tagKey == "direction")
-            {
-                speakerDirection = tagValue;
-            }
-            else if (tagKey == "pBefore")
-            {
-                pBefore = float.Parse(tagValue);
-            }
-            else if (tagKey == "animWait" || tagKey == "animDefault")
-            {
-                if (tagKey == "animWait")
-                    waitForAnim = true;
-
-                List<string> allValues = tagValue.Split(",").ToList();
-                animToPlay = allValues[allValues.Count - 1];
-                allValues.RemoveAt(allValues.Count - 1);
-
-                foreach (string actorID in allValues)
-                {
-                    int thisID = 0; 
-                    if (int.TryParse(actorID, out thisID))
-                    {
-                        actorsToAnimate.Add(thisID);
-                    }
-                    else
-                    {
-                        Debug.LogError("Animation actor ID is not an integer!");
-                    }
-                }
-
-                //actorsToAnimate = allValues;
-            }
-            else if (tagKey == "vc")
-            {
-                // VC Type is 0, VC Rate is 1 
-                List<string> allValues = tagValue.Split(",").ToList();
-                vcType = allValues[0]; 
-                
-                int rate = 0;
-                if (int.TryParse(allValues[1], out rate))
-                {
-                    vcRate = rate; 
-                }
-                else
-                {
-                    Debug.LogError("VC Rate is not an integer - going with default rate!"); 
-                }
-            }
-            else if (tagKey == "bub")
-            {
-                if (int.TryParse(tagValue, out int parsedNumber))
-                {
-                    boxNumber = parsedNumber; 
-                }
-            }
-            else
-            {
-                Debug.Log("No additional Pre-Text tag found!");
-            }
-        }
-
-        DialogManager.Instance.SetDialogBoxNumber(boxNumber);
     }
 
     private void EndScene()
