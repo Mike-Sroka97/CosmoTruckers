@@ -13,6 +13,8 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI currentShield;
     [SerializeField] protected Image currentHealthBar;
     [SerializeField] Image currentShieldBar;
+    [SerializeField] Sprite aliveSprite;
+    [SerializeField] Sprite deadSprite;
 
     [Space(20)]
     [Header("Special Effects")]
@@ -61,10 +63,20 @@ public class PlayerVessel : MonoBehaviour
         currentHealthBar.fillAmount = healthRatio;
     }
 
+    protected void AdjustPlayerIcon(int health)
+    {
+        if (health == 0)
+            characterImage.sprite = deadSprite;
+        else
+            characterImage.sprite = aliveSprite;
+    }
+
     public void AdjustCurrentHealthDisplay(int newHealth, int damageHealingAmount, bool damage = true)
     {
         if (newHealth < 0)
             newHealth = 0;
+
+        AdjustPlayerIcon(newHealth);
 
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
@@ -80,6 +92,8 @@ public class PlayerVessel : MonoBehaviour
     {
         if (newHealth < 0)
             newHealth = 0;
+
+        AdjustPlayerIcon(newHealth);
 
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
