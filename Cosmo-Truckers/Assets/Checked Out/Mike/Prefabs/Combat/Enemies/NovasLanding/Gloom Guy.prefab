@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1706310560770348452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5359453496822502030}
+  m_Layer: 5
+  m_Name: IntentionChangeSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5359453496822502030
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706310560770348452}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5389850123827441541}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1.6}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1920206503237976385
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +655,7 @@ RectTransform:
   - {fileID: 7241897691041573090}
   - {fileID: 1051781202412528630}
   - {fileID: 2233886067596877002}
+  - {fileID: 5359453496822502030}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -666,6 +703,9 @@ MonoBehaviour:
   BubbleShieldBrokenEvent:
     m_PersistentCalls:
       m_Calls: []
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   Stunned: 0
   Tireless: 0
   BubbleShielded: 0
@@ -699,13 +739,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 15
+  Reflex: 20
   Defense: 0
+  TrueDefense: 0
   Vigor: 100
+  TrueVigor: 0
   Speed: 100
+  TrueSpeed: 0
   Damage: 100
+  TrueDamage: 0
   Restoration: 100
+  TrueRestoration: 0
   Gravity: 1
+  TrueGravity: 0
 --- !u!95 &5389850123827441540
 Animator:
   serializedVersion: 4

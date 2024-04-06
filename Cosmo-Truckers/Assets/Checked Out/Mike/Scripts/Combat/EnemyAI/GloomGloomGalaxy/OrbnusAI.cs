@@ -10,8 +10,6 @@ public class OrbnusAI : Enemy
     [HideInInspector] public bool EyeTwoKilled = false;
     [HideInInspector] public bool EyeThreeKilled = false;
 
-    bool turnOne = false;
-
     public int Phase = 1;
 
     protected override int SelectAttack()

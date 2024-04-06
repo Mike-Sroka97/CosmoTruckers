@@ -6,7 +6,7 @@ public class GloomGuyAI : Enemy
 {
     protected override void Start()
     {
-        tauntedByChanged.AddListener(QueueNextMove);
+        tauntedByChanged.AddListener(ChangeIntention);
         base.Start();
     }
 
@@ -98,5 +98,11 @@ public class GloomGuyAI : Enemy
 
         //FanTheHammer && HorsingAround (hits taunted character)
         CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
+    }
+
+    protected override void ChangeIntention()
+    {
+        if (FindObjectOfType<AUG_BullsEye>() && FindObjectOfType<AUG_BullsEye>().AugmentSO.MyCharacter != TauntedBy)
+            base.ChangeIntention();
     }
 }

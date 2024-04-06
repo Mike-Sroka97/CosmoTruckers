@@ -43,6 +43,8 @@ public class CombatManager : MonoBehaviour
     public bool PauseManager = false;
     public bool PauseAttack = false;
 
+    public GameObject IntentionChange;
+
     bool inTrashEndMove = false;
 
     private void Awake() => Instance = this;

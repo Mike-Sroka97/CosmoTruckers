@@ -45,7 +45,7 @@ public class Enemy : Character
 
         set
         {
-            tauntedBy = TauntedBy;
+            tauntedBy = value;
 
             if(tauntedBy != null)
                 tauntedByChanged.Invoke();
@@ -278,4 +278,11 @@ public class Enemy : Character
     }
 
     protected virtual void SpecialTarget(int attackIndex) { }
+
+    //Always put IntentionChangeSpawn at the next level down from the parent for the love of god please I need this
+    protected virtual void ChangeIntention()
+    {
+        Instantiate(CombatManager.Instance.IntentionChange, transform.Find("IntentionChangeSpawn"));
+        QueueNextMove();
+    }
 }
