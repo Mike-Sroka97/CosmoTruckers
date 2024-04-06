@@ -259,6 +259,9 @@ public class Enemy : Character
 
     public void QueueNextMove()
     {
+        if (EnemyManager.Instance.GetAlivePlayerCharacters().Count <= 0)
+            return;
+
         SpecialTarget(SelectAttack());
     }
 

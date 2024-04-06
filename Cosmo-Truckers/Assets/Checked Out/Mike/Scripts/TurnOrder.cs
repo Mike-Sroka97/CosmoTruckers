@@ -101,31 +101,23 @@ public class TurnOrder : MonoBehaviour
     {
         EnemyManager.Instance.UpdateTrashMobList();
 
-        livingCharacters[currentCharactersTurn].GetComponent<Character>().FadeAugments();
+        CombatManager.Instance.CurrentCharacter.EndTurn();
 
-        if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
-        {
-            livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();
-        }
-        else
-        {
-            livingCharacters[currentCharactersTurn].GetComponent<Enemy>().EndTurn();
-        }
+        CombatManager.Instance.CurrentCharacter.GetComponent<Character>().FadeAugments();
 
         //Handle characters with extra turns
-        if(livingCharacters[currentCharactersTurn].GetComponent<Character>().Tireless)
+        if (CombatManager.Instance.CurrentCharacter.Tireless)
         {
             livingCharacters[currentCharactersTurn].GetComponent<Character>().Energize(false);
+            if(CombatManager.Instance.CurrentCharacter.Dead)
+                currentCharactersTurn++;
         }
         else
-        {
             currentCharactersTurn++;
-        }
 
-        if(currentCharactersTurn >= livingCharacters.Length)
-        {
+        if (currentCharactersTurn >= livingCharacters.Length)
             currentCharactersTurn = 0;
-        }
+
         StartTurn();
     }
 
