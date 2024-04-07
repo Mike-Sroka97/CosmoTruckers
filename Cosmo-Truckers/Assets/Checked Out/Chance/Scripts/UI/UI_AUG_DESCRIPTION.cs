@@ -17,11 +17,11 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] Color fadingColor;
     [SerializeField] TMP_Text AUGDescription;
     [SerializeField] Sprite[] bgs;
-    [SerializeField] Transform[] characterSlots;
+    [SerializeField] Transform characterSlots;
+    [SerializeField] Image mainSlot;
     int currentLocation = 0;
-    int currentSlot = 0;
-    int selectedSlot;
-    int characterCount;
+    int currentCharacterLocation;
+    List<AugmentCharacterIcon> actualCharacters = new List<AugmentCharacterIcon>();
 
     private void OnDisable()
     {
@@ -64,10 +64,6 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
             if (init)
                 DetermineCharacterSlots();
-        }
-        else
-        {
-
         }
 
         ShowSelection(0);
@@ -230,56 +226,115 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
     private void DetermineCharacterSlots()
     {
-        currentSlot = 0;
-        characterCount = 0;
+        actualCharacters.Clear();
 
-        //Change icons and darken
-        foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.Players)
+        //Change icons and darken. Have to reverse the enemymanager lists to make this not shit itself
+        List<PlayerCharacter> pc = EnemyManager.Instance.Players;
+        pc.Reverse();
+        foreach (PlayerCharacter playerCharacter in pc)
         {
-            if(currentSlot < 10)
-                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], playerCharacter);
-            else
-                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], playerCharacter);
-
-            currentSlot++;
-        }
-        foreach(PlayerCharacterSummon playerCharacterSummon in EnemyManager.Instance.PlayerSummons)
-        {
-            if (currentSlot < 10)
-                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], playerCharacterSummon);
-            else
-                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], playerCharacterSummon);
-
-            currentSlot++;
-        }
-        foreach (Enemy enemy in EnemyManager.Instance.Enemies)
-        {
-            if (currentSlot < 10)
-                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], enemy);
-            else
-                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], enemy);
-
-            currentSlot++;
-        }
-        foreach(EnemySummon enemySummon in EnemyManager.Instance.EnemySummons)
-        {
-            if (currentSlot < 10)
-                InitializeCharacterIcon(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot], enemySummon);
-            else
-                InitializeCharacterIcon(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[currentSlot - 10], enemySummon);
-
-            currentSlot++;
+            InitializeCharacterIcon(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[playerCharacter.CombatSpot], playerCharacter);
+            actualCharacters.Add(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[playerCharacter.CombatSpot]);
         }
 
-        currentSlot = 0;
-        selectedSlot = 0;
+        List<PlayerCharacterSummon> pcs = EnemyManager.Instance.PlayerSummons;
+        pcs.Reverse();
+        foreach (PlayerCharacterSummon playerCharacterSummon in pcs)
+        {
+            InitializeCharacterIcon(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[playerCharacterSummon.CombatSpot], playerCharacterSummon);
+            actualCharacters.Add(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[playerCharacterSummon.CombatSpot]);
+        }
+
+        List<EnemySummon> es = EnemyManager.Instance.EnemySummons;
+        es.Reverse();
+        foreach (EnemySummon enemySummon in es)
+        {
+            InitializeCharacterIcon(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[enemySummon.CombatSpot], enemySummon);
+            actualCharacters.Add(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[enemySummon.CombatSpot]);
+        }
+
+        List<Enemy> e = EnemyManager.Instance.Enemies;
+        e.Reverse();
+        EnemyCorrection(e);
+        foreach (Enemy enemy in e)
+        {
+            InitializeCharacterIcon(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[enemy.CombatSpot + 12], enemy);
+            actualCharacters.Add(characterSlots.GetComponentsInChildren<AugmentCharacterIcon>()[enemy.CombatSpot + 12]);
+        }
 
         //Select current character
-        foreach (AugmentCharacterIcon icon in characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>())
+        foreach (AugmentCharacterIcon icon in characterSlots.GetComponentsInChildren<AugmentCharacterIcon>())
             SetIconColor(icon);
+    }
 
-        foreach (AugmentCharacterIcon icon in characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>())
-            SetIconColor(icon);
+    //TODO probably needs to be totally reworked (LOL) to work with odd enemy layouts created by summoning and what not
+    private void EnemyCorrection(List<Enemy> e)
+    {
+        Enemy tempEnemy;
+
+        if(e.Count >= 8)
+        {
+            tempEnemy = e[7];
+            e[7] = e[3];
+            e[3] = tempEnemy;
+            tempEnemy = e[6];
+            e[6] = e[2];
+            e[2] = tempEnemy;
+            tempEnemy = e[5];
+            e[5] = e[1];
+            e[1] = tempEnemy;
+            tempEnemy = e[4];
+            e[4] = e[0];
+            e[0] = tempEnemy;
+        }
+        else if(e.Count >= 7)
+        {
+            tempEnemy = e[6];
+            e[6] = e[2];
+            e[2] = tempEnemy;
+            tempEnemy = e[5];
+            e[5] = e[1];
+            e[1] = tempEnemy;
+            tempEnemy = e[4];
+            e[4] = e[0];
+            e[0] = tempEnemy;
+
+            tempEnemy = e[3];
+            e.RemoveAt(3);
+            e.Add(tempEnemy);
+        }
+        else if(e.Count >= 6)
+        {
+            tempEnemy = e[2];
+            e[2] = e[0];
+            e[0] = tempEnemy;
+            tempEnemy = e[3];
+            e[3] = e[1];
+            e[1] = tempEnemy;
+
+            tempEnemy = e[5];
+            e[5] = e[1];
+            e[1] = tempEnemy;
+            tempEnemy = e[4];
+            e[4] = e[0];
+            e[0] = tempEnemy;
+        }
+        else if(e.Count >= 5)
+        {
+            tempEnemy = e[4];
+            e[4] = e[0];
+            e[0] = tempEnemy;
+
+            tempEnemy = e[4];
+            Enemy tempEnemy2 = e[1];
+            Enemy tempEnemy3 = e[2];
+            Enemy tempEnemy4 = e[3];
+
+            e[1] = tempEnemy;
+            e[2] = tempEnemy2;
+            e[3] = tempEnemy3;
+            e[4] = tempEnemy4;
+        }
     }
 
     private void SetIconColor(AugmentCharacterIcon icon)
@@ -291,11 +346,13 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         }
         else if (icon.MyCharacter == CombatManager.Instance.GetCurrentCharacter)
         {
+            mainSlot.sprite = icon.MyImage.sprite;
             icon.MyImage.color = Color.white;
-            selectedSlot = currentSlot;
-        }
 
-        currentSlot++;
+            for (int i = 0; i < actualCharacters.Count; i++)
+                if (actualCharacters[i].MyCharacter == icon.MyCharacter)
+                    currentCharacterLocation = i;
+        }
     }
 
     private void InitializeCharacterIcon(AugmentCharacterIcon icon, Character character)
@@ -303,59 +360,38 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         icon.MyImage = icon.GetComponent<Image>();
         icon.MyImage.sprite = character.TargetingSprites[0].sprite;
         icon.MyImage.color = Color.gray;
-
         icon.MyCharacter = character;
-
-        characterCount++;
     }
 
     private void SelectCharacter(bool left)
     {
         if(left)
         {
-            if (selectedSlot < 10)
-                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.gray;
-            else
-                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.gray;
+            actualCharacters[currentCharacterLocation].MyImage.color = Color.gray;
 
-            selectedSlot--;
-            if (selectedSlot < 0)
-                selectedSlot = 19;
-            if (selectedSlot + 1 > characterCount)
-                selectedSlot = characterCount - 1;
+            currentCharacterLocation--;
 
-            if (selectedSlot < 10)
-            {
-                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.white;
-                InitList(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyCharacter, false);
-            }
-            else
-            {
-                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.white;
-                InitList(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyCharacter, false);
-            }
+            if (currentCharacterLocation < 0)
+                currentCharacterLocation = actualCharacters.Count - 1;
+
+            actualCharacters[currentCharacterLocation].MyImage.color = Color.white;
+            mainSlot.sprite = actualCharacters[currentCharacterLocation].MyImage.sprite;
+
+            InitList(actualCharacters[currentCharacterLocation].MyCharacter, false);
         }
         else
         {
-            if (selectedSlot < 10)
-                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.gray;
-            else
-                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.gray;
+            actualCharacters[currentCharacterLocation].MyImage.color = Color.gray;
 
-            selectedSlot++;
-            if (selectedSlot > 19 || selectedSlot + 1 > characterCount)
-                selectedSlot = 0;
+            currentCharacterLocation++;
 
-            if (selectedSlot < 10)
-            {
-                characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyImage.color = Color.white;
-                InitList(characterSlots[0].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot].MyCharacter, false);
-            }
-            else
-            {
-                characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyImage.color = Color.white;
-                InitList(characterSlots[1].GetComponentsInChildren<AugmentCharacterIcon>()[selectedSlot - 10].MyCharacter, false);
-            }
+            if (currentCharacterLocation >= actualCharacters.Count)
+                currentCharacterLocation = 0;
+
+            actualCharacters[currentCharacterLocation].MyImage.color = Color.white;
+            mainSlot.sprite = actualCharacters[currentCharacterLocation].MyImage.sprite;
+
+            InitList(actualCharacters[currentCharacterLocation].MyCharacter, false);
         }
     }
 }
