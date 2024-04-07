@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Targeting : MonoBehaviour
 {
@@ -1027,12 +1028,12 @@ public class Targeting : MonoBehaviour
     IEnumerator StaticEffect()
     {
         CombatManager.Instance.AttackDescription.Static.SetActive(true);
-        CombatManager.Instance.AttackDescription.Screen.SetActive(false);
+        CombatManager.Instance.AttackDescription.Screen.GetComponent<RawImage>().color = Color.clear;
 
         yield return new WaitForSeconds(staticTime);
 
         CombatManager.Instance.AttackDescription.Static.SetActive(false);
-        CombatManager.Instance.AttackDescription.Screen.SetActive(true);
+        CombatManager.Instance.AttackDescription.Screen.GetComponent<RawImage>().color = Color.white;
     }
 
     private void TrackEnemyUpTargeting()

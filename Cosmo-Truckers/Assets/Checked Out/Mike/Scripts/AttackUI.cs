@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class AttackUI : MonoBehaviour
 {
@@ -101,8 +102,6 @@ public abstract class AttackUI : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 RotateWheel(rotationDistance);
-                if (attackDescriptionActive)
-                    UpdateAttackDescription();
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
@@ -119,6 +118,7 @@ public abstract class AttackUI : MonoBehaviour
         CombatManager.Instance.AttackDescription.MyAttackDescription.text = currentPlayer.GetAllAttacks[currentAttack].AttackDescription;
         CombatManager.Instance.AttackDescription.MyAttackName.text = currentPlayer.GetAllAttacks[currentAttack].AttackName;
         CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentPlayer.GetAllAttacks[currentAttack].MinigameDemo;
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.frame = 0;
     }
 
     IEnumerator StartAttack()
@@ -205,8 +205,12 @@ public abstract class AttackUI : MonoBehaviour
         speed = baseSpeed;
         spinning = false;
 
-        CombatManager.Instance.AttackDescription.Static.SetActive(false);
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.targetTexture.Release();
         CombatManager.Instance.AttackDescription.Screen.SetActive(true);
+        CombatManager.Instance.AttackDescription.MyVideoPlayer.targetTexture.Create();
+        CombatManager.Instance.AttackDescription.Static.SetActive(false);
+
+        UpdateAttackDescription();
     }
 
     void SetOpacity(int attack)

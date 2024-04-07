@@ -16,6 +16,8 @@ public class AttackDescription : MonoBehaviour
     private void OnEnable()
     {
         Static.SetActive(false);
+        MyVideoPlayer.targetTexture.Release();
         Screen.SetActive(true);
+        MyVideoPlayer.targetTexture.Create();
     }
 }
