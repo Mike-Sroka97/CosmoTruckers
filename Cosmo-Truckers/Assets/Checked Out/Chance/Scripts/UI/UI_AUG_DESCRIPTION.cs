@@ -19,9 +19,19 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] Sprite[] bgs;
     [SerializeField] Transform characterSlots;
     [SerializeField] Image mainSlot;
+    [SerializeField] float flickerTime = 0.1f;
     int currentLocation = 0;
     int currentCharacterLocation;
     List<AugmentCharacterIcon> actualCharacters = new List<AugmentCharacterIcon>();
+
+    Image leftArrow;
+    Image rightArrow;
+
+    private void OnEnable()
+    {
+        leftArrow = transform.Find("Canvas/Arrows/Left Arrow").GetComponent<Image>();
+        rightArrow = transform.Find("Canvas/Arrows/Right Arrow").GetComponent<Image>();
+    }
 
     private void OnDisable()
     {
@@ -70,7 +80,6 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     }
 
     //Temp movement system
-    //TODO Mike
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
@@ -367,6 +376,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     {
         if(left)
         {
+            StartCoroutine(ArrowFlicker(true));
+
             actualCharacters[currentCharacterLocation].MyImage.color = Color.gray;
 
             currentCharacterLocation--;
@@ -381,6 +392,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         }
         else
         {
+            StartCoroutine(ArrowFlicker(false));
+
             actualCharacters[currentCharacterLocation].MyImage.color = Color.gray;
 
             currentCharacterLocation++;
@@ -393,5 +406,20 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
             InitList(actualCharacters[currentCharacterLocation].MyCharacter, false);
         }
+    }
+
+    IEnumerator ArrowFlicker(bool left)
+    {
+        if (left)
+            leftArrow.color = Color.black;
+        else
+            rightArrow.color = Color.black;
+
+        yield return new WaitForSeconds(flickerTime);
+
+        if (left)
+            leftArrow.color = Color.white;
+        else
+            rightArrow.color = Color.white;
     }
 }
