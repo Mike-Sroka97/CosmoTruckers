@@ -28,6 +28,7 @@ public abstract class Character : MonoBehaviour
     public UnityEvent ShieldChangeEvent = new UnityEvent();
     public UnityEvent BubbleShieldBrokenEvent = new UnityEvent();
     public UnityEvent DieEvent = new UnityEvent();
+    public UnityEvent AugmentCountChangeEvent = new UnityEvent();
     public bool Stunned = false;
     private SpriteRenderer stunnedRenderer;
     public bool Tireless = false;
@@ -157,7 +158,7 @@ public abstract class Character : MonoBehaviour
 
             foreach (DebuffStackSO augment in AugmentsToRemove)
             {
-                AUGS.Remove(augment);
+                AdjustAugs(false, augment);
                 Destroy(augment);
             }
 
@@ -211,9 +212,19 @@ public abstract class Character : MonoBehaviour
                 }
 
                 foreach (DebuffStackSO augment in AugmentsToRemove)
-                    AUGS.Remove(augment);
+                    AdjustAugs(false, augment);
             }
         }
+    }
+
+    protected void AdjustAugs(bool add, DebuffStackSO stack)
+    {
+        if (add)
+            AUGS.Add(stack);
+        else
+            AUGS.Remove(stack);
+
+        AugmentCountChangeEvent.Invoke();
     }
 
     public virtual void TakeHealing(int healing, bool ignoreVigor = false)
@@ -357,7 +368,7 @@ public abstract class Character : MonoBehaviour
             if (aug.RemoveOnDeath)
                 AugmentsToRemove.Add(aug);
         foreach (DebuffStackSO aug in AugmentsToRemove)
-            AUGS.Remove(aug);
+            AdjustAugs(false, aug);
     }
 
     public virtual void Resurrect(int newHealth, bool ignoreVigor = false)
@@ -398,7 +409,7 @@ public abstract class Character : MonoBehaviour
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
-        AUGS.Add(tempAUG);
+        AdjustAugs(true, tempAUG);
 
         if (stack.StartUp || stack.StatChange || test)
             tempAUG.DebuffEffect();
@@ -419,7 +430,7 @@ public abstract class Character : MonoBehaviour
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
-        AUGS.Add(tempAUG);
+        AdjustAugs(true, tempAUG);
 
         tempAUG.DebuffEffect();
 
@@ -486,7 +497,7 @@ public abstract class Character : MonoBehaviour
         //Clean up augs if they need to be removed
         foreach (DebuffStackSO augment in AugmentsToRemove)
         {
-            AUGS.Remove(augment);
+            AdjustAugs(false, augment);
             Destroy(augment);
         }
     }
@@ -744,15 +755,6 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    //TODO
-    //Removing on damage augs will cause errors, for now this is the solution
-    //Will need to add a check every turn to see if AUG has 0 stacks and then remove them then
-    IEnumerator DelayedRemoval(DebuffStackSO aug)
-    {
-        yield return new WaitForSeconds(.5f);
-        AUGS.Remove(aug);
-    }
-
     public void FlipCharacter(int position, bool player)
     {
         StartCoroutine(AdjustSpritePosition(position, player));
@@ -952,6 +954,6 @@ public abstract class Character : MonoBehaviour
         foreach (DebuffStackSO augment in AUGS)
             augment.Fade();
         foreach (DebuffStackSO augment in AugmentsToRemove)
-            AUGS.Remove(augment);
+            AdjustAugs(false, augment);
     }
 }

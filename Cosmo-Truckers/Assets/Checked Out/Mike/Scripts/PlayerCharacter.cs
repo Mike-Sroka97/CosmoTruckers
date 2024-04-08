@@ -142,7 +142,7 @@ public class PlayerCharacter : Character
                 aug.DebuffEffect();
 
         foreach (DebuffStackSO augment in AugmentsToRemove)
-            AUGS.Remove(augment);
+            AdjustAugs(false, augment);
 
         AugmentsToRemove.Clear();
     }

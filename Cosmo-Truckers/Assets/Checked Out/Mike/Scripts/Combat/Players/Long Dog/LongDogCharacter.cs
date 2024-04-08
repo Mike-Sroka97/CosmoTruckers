@@ -94,7 +94,7 @@ public class LongDogCharacter : PlayerCharacter
                 }
 
                 foreach (DebuffStackSO augment in AugmentsToRemove)
-                    AUGS.Remove(augment);
+                    AdjustAugs(false, augment);
             }
         }
 
