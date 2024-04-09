@@ -156,6 +156,8 @@ public abstract class AttackUI : MonoBehaviour
                 currentAttack = 0;
         }
 
+        SetOpacity(currentAttack);
+
         StartCoroutine(SpinWheel(tempRotation));
     }
     IEnumerator SpinWheel(float rotationValue)
@@ -200,8 +202,6 @@ public abstract class AttackUI : MonoBehaviour
             }
         }
 
-        SetOpacity(currentAttack);
-
         speed = baseSpeed;
         spinning = false;
 
@@ -221,17 +221,13 @@ public abstract class AttackUI : MonoBehaviour
             {
                 transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 1);
             }
-            else if((attack == 0 && i == transform.childCount - 1) || (attack == transform.childCount - 1 && i == 0))
-            {
-                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
-            }
             else if(i == attack - 1 || i == attack + 1)
             {
                 transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, .5f);
             }
             else
             {
-                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0);
+                transform.GetChild(i).gameObject.GetComponent<TMP_Text>().color = new Color(0, 0, 0, 0.3f);
             }
         }
 
