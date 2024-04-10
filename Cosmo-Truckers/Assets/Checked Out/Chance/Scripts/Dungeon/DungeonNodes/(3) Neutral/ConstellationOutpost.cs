@@ -7,10 +7,18 @@ using UnityEngine.UI;
 
 public class ConstellationOutpost : NCNodePopUpOptions
 {
-    int[] votes;
-    bool[] voteChoice;
+    [SerializeField] string message = "Will this constellation be seen??";
+    [SerializeField] Image goodAug;
+    [SerializeField] Image badAug;
 
-    Dictionary<PlayerCharacter, int> playerVotes;
+    [Space(10)]
+    [SerializeField] float fastRotSpeed = 10;
+    [SerializeField] float slowRotSpeed = 5;
+
+    [SerializeField] Button safeBetButton;
+    [SerializeField] Image safeBetRotate;
+    [SerializeField] Button riskyBetButton;
+    [SerializeField] Image riskyBetRotate;
 
     int toFall;
 
@@ -19,92 +27,107 @@ public class ConstellationOutpost : NCNodePopUpOptions
         StartCoroutine(TextWait(augs));
     }
 
-    void OnButtonClick(int loc, GameObject button, GameObject buttonTwo, DebuffStackSO[] aug)
+    void OnButtonClick(GameObject toRotate, DebuffStackSO augWin, DebuffStackSO augLoss, bool safeBet)
     {
-        votes[loc - 1]++;
+        safeBetButton.interactable = false;
+        riskyBetButton.interactable = false;
 
-        playerVotes.Add(allPlayersSorted[0], loc);
+        StartCoroutine(SpinWheel(toRotate, augWin, augLoss, safeBet));
+    }
 
-        int totalVotes = loc > 3 ? (votes[loc -1 ] + votes[loc - 2]) : (votes[loc - 1] + votes[loc + 2]);
+    IEnumerator SpinWheel(GameObject toRotate, DebuffStackSO augWin, DebuffStackSO augLoss, bool safeBet)
+    {
+        float randomFastSpinTime = UnityEngine.Random.Range(1.0f, 3.0f);
+        float randomSlowSpinTime = UnityEngine.Random.Range(1.0f, 3.0f);
+        float reallySlowTime = 1.0f;
 
-        int realLoc = loc > 3 ? loc - 3 : loc;
+        while(randomFastSpinTime > 0)
+        {
+            randomFastSpinTime -= Time.deltaTime;
 
-        button.GetComponentInChildren<TMP_Text>().text = $"Constelation {realLoc} Safe \nVotes: {totalVotes}";
-        buttonTwo.GetComponentInChildren<TMP_Text>().text = $"Constelation {realLoc} Risky \nVotes: {totalVotes}";
+            toRotate.transform.Rotate(0, 0, fastRotSpeed);
 
+            yield return null;
+        }
 
+        while (randomSlowSpinTime > 0)
+        {
+            randomSlowSpinTime -= Time.deltaTime;
+
+            toRotate.transform.Rotate(0, 0, slowRotSpeed);
+
+            yield return null;
+        }
+
+        while (reallySlowTime > 0)
+        {
+            reallySlowTime -= Time.deltaTime;
+
+            toRotate.transform.Rotate(0, 0, 1);
+
+            yield return null;
+        }
+
+        Debug.Log(toRotate.transform.eulerAngles.z);
+
+        //Equals success for safe bet and fail for risky
+        if (toRotate.transform.eulerAngles.z >= 0 && toRotate.transform.eulerAngles.z <= 235)
+        {
+            if(safeBet)
+            {
+                Debug.Log("Success");
+                allPlayersSorted[0].AddDebuffStack(augWin);
+            }
+            else
+            {
+                Debug.Log("Fail");
+                allPlayersSorted[0].AddDebuffStack(augLoss, 3);
+            }
+        }
+        else
+        {
+            if(safeBet)
+            {
+                Debug.Log("Fail");
+                allPlayersSorted[0].AddDebuffStack(augLoss);
+            }
+            else
+            {
+                Debug.Log("Success");
+                allPlayersSorted[0].AddDebuffStack(augWin, 3);
+            }
+        }
+
+        yield return new WaitForSeconds(2.0f);
+
+        toRotate.transform.rotation = Quaternion.identity;
+
+        safeBetButton.interactable = true;
+        riskyBetButton.interactable = true;
         allPlayersSorted.RemoveAt(0);
 
         if (allPlayersSorted.Count > 0)
             ShowPlayerName(allPlayersSorted[0].CharacterName);
         else
-            VotingOver(aug);
-    }
-
-    void VotingOver(DebuffStackSO[] aug)
-    {
-        foreach(var player in playerVotes)
-        {
-            //Guessed right safe
-            if(player.Value == toFall)
-            {
-                player.Key.AddDebuffStack(aug[toFall - 1]);
-            }
-            //Guessed right risky
-            else if(player.Value - 3 == toFall)
-            {
-                player.Key.AddDebuffStack(aug[toFall - 1], 3);
-            }
-            //Guessed wrong risky
-            else if(player.Value > 3)
-            {
-                player.Key.AddDebuffStack(aug[toFall + 2], 3);
-            }
-            //Guessed wrong safe
-            else
-            {
-                player.Key.AddDebuffStack(aug[toFall + 2]);
-            }
-        }
-
-        Destroy(this.gameObject);
+            Destroy(this.gameObject);
     }
 
     IEnumerator TextWait(DebuffStackSO[] augs)
     {
-        toFall = UnityEngine.Random.Range(1, 4);
+        toFall = UnityEngine.Random.Range(0, 3);
+
+        goodAug.sprite = augs[toFall].AugmentSprite;
+        badAug.sprite = augs[toFall + 3].AugmentSprite;
 
         Debug.Log($"Falling {toFall}");
 
-        currentPlayer.text = "Choose a constelation. . .";
+        currentPlayer.text = message;
 
         yield return new WaitForSeconds(2.0f);
 
         base.SetUp(augs);
 
-        playerVotes = new Dictionary<PlayerCharacter, int>();
-
-        votes = new int[6];
-
-        for (int i = 1; i < 4; i++)
-        {
-            int location = i;
-
-            GameObject button = Instantiate(buttonToAdd);
-            button.transform.SetParent(buttonLocation.transform);
-
-            button.GetComponentInChildren<TMP_Text>().text = $"Constelation {location} Safe \nVotes: {votes[i - 1] + votes[i + 2]}";
-
-            button.transform.localScale = Vector3.one;
-
-            GameObject buttonTwo = Instantiate(buttonToAdd);
-            buttonTwo.transform.SetParent(buttonLocation.transform);
-            buttonTwo.GetComponentInChildren<TMP_Text>().text = $"Constelation {location} Risky \nVotes: {votes[i - 1] + votes[i + 2]}";
-
-            buttonTwo.transform.localScale = Vector3.one;
-
-            button.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(location, button, buttonTwo, augs); });
-            buttonTwo.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(location + 3, button, buttonTwo, augs); });
-        }
+        safeBetButton.onClick.AddListener(delegate { OnButtonClick(safeBetRotate.gameObject, augs[toFall], augs[toFall + 3], true); });
+        riskyBetButton.onClick.AddListener(delegate { OnButtonClick(riskyBetRotate.gameObject, augs[toFall], augs[toFall + 3], false); });
     }
 }
