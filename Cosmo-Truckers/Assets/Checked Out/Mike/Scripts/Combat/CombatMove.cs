@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CombatMove : MonoBehaviour
+public class CombatMove : MonoBehaviour
 {
     [SerializeField] TargetType TypeOfAttack;
     [SerializeField] Transform[] spawnPoints;
