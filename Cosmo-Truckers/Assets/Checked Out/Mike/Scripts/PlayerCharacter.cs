@@ -30,6 +30,7 @@ public class PlayerCharacter : Character
     public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
 
     protected Mana manaBase;
+    public Mana GetManaBase { get => manaBase; }
     [HideInInspector] public PlayerVessel MyVessel;
     public GameObject PlayerVessel;
     public AttackUI PlayerAttackUI;
