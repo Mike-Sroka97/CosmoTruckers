@@ -68,13 +68,13 @@ public class LongDogINA : Player
 
     private void Start()
     {
-        PlayerInitialize();
-
         myBody = head.GetComponent<Rigidbody2D>();
         myCollider = head.GetComponent<Collider2D>();
         playerAnimator = GetComponent<PlayerAnimator>();
         buttStartingLocation = body.transform.localPosition;
         initialGravityModifier = myBody.gravityScale;
+
+        PlayerInitialize();
     }
 
     private void Update()
@@ -100,19 +100,24 @@ public class LongDogINA : Player
     public void StretchingCollision(string collision)
     {
         if(collision != "LDGNoInteraction")
+            ButtStuff();
+    }
+
+    private void ButtStuff()
+    {
+        if (stretching)
         {
-            if (stretching)
-            {
-                stretching = false;
-                myNose.enabled = false;
-                myNose.GetComponent<LongDogNose>().enabled = false;
-                EndDraw();
-            }
+            stretching = false;
+            myNose.enabled = false;
+            myNose.GetComponent<LongDogNose>().enabled = false;
+            EndDraw();
         }
     }
 
     public override IEnumerator Damaged()
     {
+        ButtStuff();
+
         canMove = false;
         canStretch = false;
         iFrames = true;

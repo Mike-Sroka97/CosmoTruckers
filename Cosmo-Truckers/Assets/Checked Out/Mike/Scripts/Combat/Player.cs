@@ -46,7 +46,8 @@ public abstract class Player : MonoBehaviour
 
     public void PlayerInitialize()
     {
-        myBody = GetComponent<Rigidbody2D>();
+        if(!myBody)
+            myBody = GetComponent<Rigidbody2D>();
         DebuffInit();
     }
 

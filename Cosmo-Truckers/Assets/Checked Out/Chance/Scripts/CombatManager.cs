@@ -12,9 +12,8 @@ public class CombatManager : MonoBehaviour
 
     [HideInInspector] public static CombatManager Instance;
     [SerializeField] private Sprite blankBG;
-    public Sprite currentBG;
+    public GameObject CurrentBG;
 
-    [SerializeField] GameObject MiniGameScreen;
     GameObject miniGame;
     public AttackDescription AttackDescription;
     public GameObject GetMiniGame { get => miniGame; }
@@ -46,9 +45,16 @@ public class CombatManager : MonoBehaviour
     public GameObject IntentionChange;
 
     bool inTrashEndMove = false;
+    INAcombat INA;
 
     private void Awake() => Instance = this;
     [HideInInspector] public bool TargetsSelected = true;
+
+    private void Start()
+    {
+        INA = FindObjectOfType<INAcombat>();
+        Instantiate(CurrentBG, INA.transform);
+    }
 
     public void StartCombat(BaseAttackSO attack, PlayerCharacter currentPlayer)
     {
@@ -533,8 +539,6 @@ public class CombatManager : MonoBehaviour
         while (!TargetsSelected)
             yield return null;
 
-        INAcombat INA = MiniGameScreen.GetComponentInParent<INAcombat>();
-
         if (!attack.AutoCast)
         {
             float miniGameTime = attack.MiniGameTime;
@@ -571,8 +575,6 @@ public class CombatManager : MonoBehaviour
 
             while (PauseManager)
                 yield return null;
-
-            MiniGameScreen.GetComponent<SpriteRenderer>().sprite = currentBG;
 
             //Attack SO Start
             foreach (Player player in FindObjectsOfType<Player>())
