@@ -17,6 +17,8 @@ public class CombatData : MonoBehaviour
     public List<PlayerManager> PlayersToSpawn = new();
     public bool lastNode = false;
 
+    public bool skipNCNode = false;
+
 
     private void Awake()
     {

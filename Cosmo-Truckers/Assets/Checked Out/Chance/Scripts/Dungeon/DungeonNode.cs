@@ -146,7 +146,10 @@ public class DungeonNode : MonoBehaviour
         CombatData.Instance.combatLocation = NodeLocation;
         CombatData.Instance.lastNode = lastNode;
 
-        Instantiate(Node.EnemyHolder, FindObjectOfType<DungeonGen>().GetBG.transform).GetComponent<NCNodePopUpOptions>().SetUp(Node.AugToAdd);
+        if(!CombatData.Instance.skipNCNode)
+            Instantiate(Node.EnemyHolder, FindObjectOfType<DungeonGen>().GetBG.transform).GetComponent<NCNodePopUpOptions>().SetUp(Node.AugToAdd);
+        else
+            CombatData.Instance.skipNCNode = false;
 
         StartCoroutine(RedrawMapDelay());
     }
