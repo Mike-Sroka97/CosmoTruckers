@@ -115,6 +115,9 @@ public class ProtoINA : Player
 
             if(!damaged && !dead && Input.GetKey("space") && canMove)
             {
+                if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(jump.name) && currentJumpHoldTime >= jumpMaxHoldTime)
+                    playerAnimator.ChangeAnimation(myAnimator, idle);
+
                 canJump = true;
             }
             if(!isJumping)
