@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThoroughTonguing : NCNodePopUpOptions
+public class MagicHat : NCNodePopUpOptions
 {
-    public string header = "One of you must get tounged, who will it be??";
+    public string header = "One of you must reach into the Magic Hat. . .";
 
     public override void SetUp(DebuffStackSO[] augs)
     {
@@ -16,8 +16,14 @@ public class ThoroughTonguing : NCNodePopUpOptions
     {
         if (taken)
         {
-            allPlayersSorted[0].RemoveAmountOfAugments(999, 2);
-            allPlayersSorted[0].AddDebuffStack(augs[0], 3);
+            int randomChance = Random.Range(0, 100);
+
+            if(randomChance <= 35)
+                allPlayersSorted[0].AddDebuffStack(augs[0], 1);
+            else if(randomChance <= 70)
+                allPlayersSorted[0].AddDebuffStack(augs[1], 1);
+            else
+                allPlayersSorted[0].AddDebuffStack(augs[2], 1);
         }
 
         allPlayersSorted.RemoveAt(0);
@@ -44,7 +50,7 @@ public class ThoroughTonguing : NCNodePopUpOptions
         yesButton.transform.localScale = Vector3.one;
 
         yesButton.GetComponent<Button>().onClick.AddListener(delegate { OnButtonClick(true, augs); });
-        yesButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Get tongued";
+        yesButton.GetComponentInChildren<TMPro.TMP_Text>().text = "Reach into the hat";
 
 
         GameObject noButton = Instantiate(buttonToAdd);
