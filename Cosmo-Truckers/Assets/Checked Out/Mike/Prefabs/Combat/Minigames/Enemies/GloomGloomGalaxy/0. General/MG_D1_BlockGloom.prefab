@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 9054469845532571548}
   - component: {fileID: 1097353337188712035}
   - component: {fileID: 1096400294662045899}
-  - component: {fileID: 3676894953581685767}
   - component: {fileID: 3357528316878016672}
+  - component: {fileID: 315236018179996972}
   m_Layer: 8
   m_Name: MG_D1_BlockGloom
   m_TagString: EnemyDamaging
@@ -113,26 +113,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!95 &3676894953581685767
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8628373338441865849}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 97e39425d16d0f54b953e9c9b3222688, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &3357528316878016672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,4 +126,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
+--- !u!114 &315236018179996972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8628373338441865849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 193462815, guid: e8b3b4939667ed644b8e68e113196bf8, type: 3}
+  - {fileID: 1652005974, guid: e8b3b4939667ed644b8e68e113196bf8, type: 3}
+  timeBetweenEachSprite: 0.5

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108143771}
   - component: {fileID: 2108143772}
+  - component: {fileID: 5725935722579918562}
   m_Layer: 0
   m_Name: MG_D1NC_CeilingCloud
   m_TagString: Untagged
@@ -84,6 +85,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
+--- !u!114 &5725935722579918562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108143770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 21300000, guid: 5b4ae39e9fe3e164ca5229ef241cc37e, type: 3}
+  - {fileID: 21300000, guid: 7b0d9a4d48fafe04285c7e620cdff068, type: 3}
+  timeBetweenEachSprite: 1
 --- !u!1 &833621479230781228
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +391,8 @@ MonoBehaviour:
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   oneScoreTime: 9
