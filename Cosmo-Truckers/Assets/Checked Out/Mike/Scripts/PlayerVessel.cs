@@ -44,7 +44,6 @@ public class PlayerVessel : MonoBehaviour
         characterImage.material = playerOutlineMaterials[myCharacter.PlayerNumber - 1];
 
         //set shield
-        shieldText.color = shieldColor;
         TrackShield();
 
         //set health
@@ -148,7 +147,7 @@ public class PlayerVessel : MonoBehaviour
 
             damageHealingText.transform.localPosition = Vector3.zero;
 
-            if (shieldGO.activeInHierarchy && int.Parse(shieldText.text) <= 0)
+            if (int.Parse(currentShield.text) <= 0)
             {
                 TrackShield();
             }
@@ -162,14 +161,10 @@ public class PlayerVessel : MonoBehaviour
         float currentShieldValue = myCharacter.Shield;
         float shieldRatio = currentShieldValue / 60; //60 is max shields
         currentShieldBar.fillAmount = shieldRatio;
-
-        if (myCharacter.Shield <= 0)
-            shieldGO.SetActive(false);
     }
 
     public void AdjustShieldDisplay(int newShield, int shieldAmount)
     {
-        shieldGO.SetActive(true);
         currentShield.text = myCharacter.Shield.ToString();
 
         float currentShieldValue = myCharacter.Shield;
@@ -181,9 +176,8 @@ public class PlayerVessel : MonoBehaviour
 
     protected virtual IEnumerator ShieldEffect(int shieldAmount)
     {
-        int currentShield = myCharacter.Shield;
-
-        shieldText.text = currentShield.ToString();
+        shieldText.text = shieldAmount.ToString();
+        shieldText.color = shieldColor;
 
         while (shieldText.color.a > 0)
         {

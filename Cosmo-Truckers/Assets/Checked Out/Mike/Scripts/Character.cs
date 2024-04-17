@@ -129,9 +129,9 @@ public abstract class Character : MonoBehaviour
         else if (Shield > 0)
         {
             //calculate overrage damage
-            int overageDamage = damage - Shield;
+            int overageDamage = damage - shield;
 
-            Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+            shield = shield - damage <= 0 ? 0 : shield - damage;
 
             if (overageDamage > 0)
                 CurrentHealth = -overageDamage;

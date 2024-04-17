@@ -25,8 +25,9 @@ public class AUG_ShortCircuit : Augment
         else if(CombatManager.Instance.CurrentAttack.CombatPrefab.GetComponent<CombatMove>().GetIsDamaging())
         {
             foreach (Character character in CombatManager.Instance.CharactersSelected)
-                character.AddDebuffStack(AugmentSO, AugmentSO.CurrentStacks);
-            AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO, AugmentSO.MaxStacks);
+                if(character != AugmentSO.MyCharacter)
+                    character.AddDebuffStack(AugmentSO, AugmentSO.CurrentStacks);
+            AugmentSO.SetFade(60);
         }
     }
 
