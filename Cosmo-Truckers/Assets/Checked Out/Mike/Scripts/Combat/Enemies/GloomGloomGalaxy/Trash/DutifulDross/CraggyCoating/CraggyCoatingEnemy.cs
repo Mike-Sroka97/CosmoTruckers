@@ -28,6 +28,7 @@ public class CraggyCoatingEnemy : MonoBehaviour
         }
         else if(collision.name == "GoodGuy")
         {
+            collision.gameObject.GetComponentInChildren<AdvancedFrameAnimation>().SwitchToHurtAnimation(); 
             minigame.AugmentScore++;
             Destroy(gameObject);
         }
