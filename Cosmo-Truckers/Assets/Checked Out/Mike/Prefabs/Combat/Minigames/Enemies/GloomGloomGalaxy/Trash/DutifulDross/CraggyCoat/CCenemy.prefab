@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 823005095613660183}
   - component: {fileID: 7167378039265851696}
-  - component: {fileID: 8932593349974727896}
+  - component: {fileID: 5840171319739592213}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
   m_SortingOrder: 1
-  m_Sprite: {fileID: -420760356, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 588fef8d2ce07f04c9b2f0af166dda2e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8932593349974727896
+--- !u!114 &5840171319739592213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7126620495460442075}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: -420760356, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
-  - {fileID: -2021707213, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
-  timeBetweenEachSprite: 0.5
+  RotateSpeed: 45
 --- !u!1 &9055948072975307650
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,6 +159,6 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.07, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3

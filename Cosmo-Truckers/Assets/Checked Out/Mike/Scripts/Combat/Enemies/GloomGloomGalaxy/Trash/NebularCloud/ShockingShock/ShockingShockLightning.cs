@@ -8,10 +8,12 @@ public class ShockingShockLightning : MonoBehaviour
     [SerializeField] float shockDelay;
     [SerializeField] int numberOfFlashes;
     [SerializeField] float shockDuration;
-    [SerializeField] GameObject puddle;
+    [SerializeField] GameObject shockedPuddle;
+    [SerializeField] GameObject regularPuddle;
     [HideInInspector] public bool IsShocking;
 
     [SerializeField] SpriteRenderer myRendererer;
+    [SerializeField] ParticleSystem lightningParticles; 
     Collider2D myColliders;
     Color inactiveColor;
     Color activeColor;
@@ -52,7 +54,9 @@ public class ShockingShockLightning : MonoBehaviour
 
         myRendererer.color = activeColor;
         myColliders.enabled = true;
-        puddle.SetActive(true);
+        shockedPuddle.SetActive(true);
+        regularPuddle.SetActive(false);
+        lightningParticles.Play(); 
 
         yield return new WaitForSeconds(shockDuration);
 
@@ -60,6 +64,8 @@ public class ShockingShockLightning : MonoBehaviour
         IsShocking = false;
         minigame.CurrentActivatedLightning--;
         myColliders.enabled = false;
-        puddle.SetActive(false);
+        regularPuddle.SetActive(true);
+        shockedPuddle.SetActive(false);
+
     }
 }
