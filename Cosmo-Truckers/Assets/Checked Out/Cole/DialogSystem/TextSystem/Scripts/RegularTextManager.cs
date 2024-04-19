@@ -16,6 +16,7 @@ public class RegularTextManager : MonoBehaviour
     private string[] allLines;
     private int currentLineIndex = -1;
     private int allLinesCount = 0;
+    private bool canPlayDialog = false; 
 
     public bool DialogIsPlaying { get; private set; }
 
@@ -155,7 +156,7 @@ public class RegularTextManager : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false;
 
-        return canAdvance && !DialogManager.Instance.UpdatingDialogBox;
+        return canAdvance && !DialogManager.Instance.UpdatingDialogBox && DialogIsPlaying;
     }
     public void StopAnimating()
     {

@@ -59,6 +59,9 @@ public class DialogManager : MonoBehaviour
 
             Instance = this;
             DontDestroyOnLoad(this);
+
+            // Get the Regular Text Manager
+            regularTextManager = GetComponent<RegularTextManager>();
         }
         else
         {
@@ -449,9 +452,6 @@ public class DialogManager : MonoBehaviour
     #region Regular Text Methods
     public void StartRegularTextMode(TextAsset _textFile, TMP_Text _textBox, Image _nextLineIndicator)
     {
-        // Get the Regular Text Manager
-        regularTextManager = GetComponent<RegularTextManager>();
-
         if (regularTextManager == null)
             Debug.LogError("No Regular Text Manager!");
         else 
