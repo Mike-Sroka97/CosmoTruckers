@@ -6,6 +6,9 @@ public class CraggyCoatingEnemy : MonoBehaviour
 {
     [SerializeField] Transform target;
     [SerializeField] float moveSpeed;
+    [SerializeField] ParticleSystem starTrail;
+    [SerializeField] float waitToStartTrail = 1.25f;
+    float timer;
 
     CraggyCoating minigame;
 
@@ -17,6 +20,14 @@ public class CraggyCoatingEnemy : MonoBehaviour
 
     private void Update()
     {
+        if (timer < waitToStartTrail)
+        {
+            timer += Time.deltaTime;
+            starTrail.gameObject.SetActive(false);
+        }
+        else
+            starTrail.gameObject.SetActive(true);
+
         MoveMe();
     }
 
@@ -24,14 +35,24 @@ public class CraggyCoatingEnemy : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
+            UnchildParticle();
             Destroy(gameObject);
         }
         else if(collision.name == "GoodGuy")
         {
             collision.gameObject.GetComponentInChildren<AdvancedFrameAnimation>().SwitchToHurtAnimation(); 
             minigame.AugmentScore++;
+
+            UnchildParticle(); 
             Destroy(gameObject);
         }
+    }
+
+    void UnchildParticle()
+    {
+        starTrail.gameObject.transform.parent = GameObject.FindObjectOfType<CombatMove>().transform;
+        var main = starTrail.main;
+        main.stopAction = ParticleSystemStopAction.Destroy;
     }
 
     private void MoveMe()
