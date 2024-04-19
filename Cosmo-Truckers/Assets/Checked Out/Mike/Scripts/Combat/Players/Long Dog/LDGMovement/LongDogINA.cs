@@ -62,6 +62,7 @@ public class LongDogINA : Player
     Vector3 buttStartingLocation;
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
+    float damagedTime;
     int layermask = 1 << 9;
     Collider2D myCollider;
     PlayerAnimator playerAnimator;
@@ -73,6 +74,7 @@ public class LongDogINA : Player
         playerAnimator = GetComponent<PlayerAnimator>();
         buttStartingLocation = body.transform.localPosition;
         initialGravityModifier = myBody.gravityScale;
+        damagedTime = iFrameDuration;
 
         PlayerInitialize();
     }
@@ -121,7 +123,7 @@ public class LongDogINA : Player
         canMove = false;
         canStretch = false;
         iFrames = true;
-        float damagedTime = 0;
+        damagedTime = 0;
         playerAnimator.ChangeAnimation(headAnimator, hurtHead);
         playerAnimator.ChangeAnimation(bodyAnimator, hurtBody);
 
@@ -165,7 +167,7 @@ public class LongDogINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch && !IsGrounded())
+        if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch && !IsGrounded() && !iFrames)
         {
             canStretch = false;
             myBody.velocity = Vector2.zero;
@@ -293,7 +295,9 @@ public class LongDogINA : Player
         body.transform.localPosition = buttStartingLocation;
         head.transform.localRotation = new Quaternion(0, head.transform.localRotation.y, 0, 0);
         body.transform.localRotation = new Quaternion(0, 0, 0, 0);
-        iFrames = false;
+
+        if(damagedTime >= iFrameDuration)
+            iFrames = false;
 
         LDGReset();
     }

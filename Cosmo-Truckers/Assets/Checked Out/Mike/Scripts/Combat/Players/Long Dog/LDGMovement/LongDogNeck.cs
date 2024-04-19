@@ -92,7 +92,6 @@ public class LongDogNeck : MonoBehaviour
     }
 
     public Gradient GetLineColor() { return myLineRenderer.colorGradient; }
-
     public int GetPointCount() { return pointCount; }
     public List<Vector2> GetPointList() { return linePoints;}
 }

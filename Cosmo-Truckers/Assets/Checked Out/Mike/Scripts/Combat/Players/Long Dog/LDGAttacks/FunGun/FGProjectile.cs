@@ -19,9 +19,5 @@ public class FGProjectile : MonoBehaviour
             FindObjectOfType<FunGun>().Score++;
             Debug.Log(FindObjectOfType<FunGun>().Score);
         }
-        else if(collision.tag != "PlayerNonHurtable")
-        {
-            Destroy(gameObject);
-        }
     }
 }
