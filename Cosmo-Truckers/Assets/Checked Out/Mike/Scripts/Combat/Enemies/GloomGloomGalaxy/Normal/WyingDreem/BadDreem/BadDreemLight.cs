@@ -28,7 +28,6 @@ public class BadDreemLight : MonoBehaviour
         parent.position = Vector2.MoveTowards(parent.position, waypoints[currentIndex].position, moveSpeed * Time.deltaTime);
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "EnemyNonDamaging")

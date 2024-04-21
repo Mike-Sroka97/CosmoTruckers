@@ -13,6 +13,7 @@ public class BadDreem : CombatMove
         GenerateLayout();
         CurrentScore = Score;
         trackTime = false;
+        GetComponentInChildren<BadDreemDarkness>().StartWaiting();
     }
 
     public override void StartMove()
