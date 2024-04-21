@@ -8,7 +8,7 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
     [SerializeField] float timeToSwitch;
 
     Color on = new Color(1, 1, 1, 1);
-    Color off = new Color(0, 0, 0, 1);
+    Color off = new Color(1, 1, 1, 0.5f);
 
     Collider2D myCollider;
     SpriteRenderer myRenderer;

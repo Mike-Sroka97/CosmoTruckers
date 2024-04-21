@@ -61,7 +61,14 @@ public class DeathKillHeart : MonoBehaviour
                 currentIndex++;
             }
 
-            isMoving = true;
+            if (minigame.Score == 0)
+            {
+                minigame.EndMove(); 
+            }
+            else
+            {
+                isMoving = true;
+            }
         }
     }
 }

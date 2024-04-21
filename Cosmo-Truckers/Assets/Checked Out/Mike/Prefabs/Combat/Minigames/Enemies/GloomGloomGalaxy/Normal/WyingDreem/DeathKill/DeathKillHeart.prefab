@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6795976929033272532}
   - component: {fileID: 8312780274792423102}
   - component: {fileID: 2360363201571495357}
-  - component: {fileID: 7485495044461440127}
+  - component: {fileID: 9155899820336506453}
   m_Layer: 0
   m_Name: DeathKillHeart
   m_TagString: Untagged
@@ -106,7 +106,7 @@ MonoBehaviour:
   - {fileID: 0}
   moveSpeed: 2.2
   successHitMaterial: {fileID: 2100000, guid: b7dbd5f509fd6574b817390a840a38fe, type: 2}
-  iFrameMaterial: {fileID: 2100000, guid: 0442954e3a081c944b6364630adfd1ac, type: 2}
+  iFrameMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
 --- !u!60 &2360363201571495357
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -147,23 +147,21 @@ PolygonCollider2D:
       - {x: 0.40429625, y: -0.1424561}
       - {x: 0.44480896, y: 0.111326694}
       - {x: 0.37390265, y: 0.2657466}
---- !u!95 &7485495044461440127
-Animator:
-  serializedVersion: 4
+--- !u!114 &9155899820336506453
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2961234403985329007}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6839b546e873cdc4781a5994485bb413, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -677561398, guid: 7d9fcad73eebe4d48955b88fe77ced5a, type: 3}
+  - {fileID: 767632506, guid: 7d9fcad73eebe4d48955b88fe77ced5a, type: 3}
+  - {fileID: -180553410, guid: 7d9fcad73eebe4d48955b88fe77ced5a, type: 3}
+  - {fileID: 11406889, guid: 7d9fcad73eebe4d48955b88fe77ced5a, type: 3}
+  timeBetweenEachSprite: 0.5
