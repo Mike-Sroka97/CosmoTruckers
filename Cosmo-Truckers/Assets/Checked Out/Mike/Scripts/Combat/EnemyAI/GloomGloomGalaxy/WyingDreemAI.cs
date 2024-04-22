@@ -149,6 +149,7 @@ public class WyingDreemAI : Enemy
                 }
             }
 
+            //Target Con 2
             if(CombatManager.Instance.CharactersSelected.Count == 0)
             {
                 if (currentMostNitemare > 0)
@@ -161,14 +162,8 @@ public class WyingDreemAI : Enemy
                 }
             }
 
-            foreach (PlayerCharacter player in players)
-            {
-                if (!CombatManager.Instance.CharactersSelected.Contains(player))
-                {
-                    CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this, player);
-                    break;
-                }
-            }
+            //Second Player
+            CombatManager.Instance.SingleTargetEnemy(ChosenAttack, this);
         }
     }
 

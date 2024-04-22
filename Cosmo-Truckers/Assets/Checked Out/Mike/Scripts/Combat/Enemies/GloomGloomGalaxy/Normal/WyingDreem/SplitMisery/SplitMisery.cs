@@ -44,7 +44,6 @@ public class SplitMisery : CombatMove
         if (CombatManager.Instance.GetCharactersSelected.Count == 1)
             return;
 
-
         int stacksOfNitemare = 0;
 
         foreach (DebuffStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
