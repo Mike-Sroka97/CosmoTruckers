@@ -22,8 +22,11 @@ public class BaseAttackSO : ScriptableObject
     [Space(10)]
     public GameObject CombatPrefab;
     public float MiniGameTime;
-    [TextArea(15, 20)]
+    [TextArea(10, 20)]
     public string AttackDescription;
+    [Space(10)]
+    public string CostTitle;
+    public string CostDescription;
     public VideoClip MinigameDemo;
 
     public virtual void StartCombat() { }

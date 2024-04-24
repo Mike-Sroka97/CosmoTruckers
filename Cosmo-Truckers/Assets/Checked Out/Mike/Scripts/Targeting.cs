@@ -1021,6 +1021,9 @@ public class Targeting : MonoBehaviour
 
         CombatManager.Instance.AttackDescription.MyAttackName.text = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.AttackName;
         CombatManager.Instance.AttackDescription.MyAttackDescription.text = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.AttackDescription;
+        CombatManager.Instance.AttackDescription.UpdateCost(currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.CostTitle, 
+            currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.CostDescription);
+        CombatManager.Instance.AttackDescription.UpdateTargetType(currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.TargetingType.ToString());
         CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentlySelectedTargets[0].GetComponent<Enemy>().ChosenAttack.MinigameDemo;
         CombatManager.Instance.AttackDescription.MyVideoPlayer.frame = 0;
     }

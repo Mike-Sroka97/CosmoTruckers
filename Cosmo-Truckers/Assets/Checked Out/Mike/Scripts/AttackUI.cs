@@ -117,6 +117,8 @@ public abstract class AttackUI : MonoBehaviour
     {
         CombatManager.Instance.AttackDescription.MyAttackDescription.text = currentPlayer.GetAllAttacks[currentAttack].AttackDescription;
         CombatManager.Instance.AttackDescription.MyAttackName.text = currentPlayer.GetAllAttacks[currentAttack].AttackName;
+        CombatManager.Instance.AttackDescription.UpdateCost(currentPlayer.GetAllAttacks[currentAttack].CostTitle, currentPlayer.GetAllAttacks[currentAttack].CostDescription); 
+        CombatManager.Instance.AttackDescription.UpdateTargetType(currentPlayer.GetAllAttacks[currentAttack].TargetingType.ToString());
         CombatManager.Instance.AttackDescription.MyVideoPlayer.clip = currentPlayer.GetAllAttacks[currentAttack].MinigameDemo;
         CombatManager.Instance.AttackDescription.MyVideoPlayer.frame = 0;
     }
