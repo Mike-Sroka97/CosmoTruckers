@@ -38,6 +38,10 @@ public class CombatMove : MonoBehaviour
     public Dictionary<PlayerCharacter, bool> PlayersDead;
 
     [Space(20)]
+    [Header("Descriptions")]
+    public string GoTextReplacement;
+
+    [Space(20)]
     [Header("Boss Variables")]
     [SerializeField] bool bossMove = false;
     public bool FightWon = false;

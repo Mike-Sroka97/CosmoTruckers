@@ -28,7 +28,7 @@ public class INAcombat : MonoBehaviour
     [SerializeField] float shakeSpeedY;
     [SerializeField] float shakeOffsetY;
 
-    const string goText = "GO!";
+    string goText = "GO!";
     const float INAoffset = -0.5f;
 
     Vector3 startingPosition;
@@ -193,7 +193,13 @@ public class INAcombat : MonoBehaviour
             }
 
             //Shake
-            countDownTimer.text = goText;
+            string text;
+            if (minigame.GoTextReplacement != "")
+                text = minigame.GoTextReplacement;
+            else
+                text = goText;
+
+            countDownTimer.text = text;
             currentTime = shakeDuration;
 
             while (currentTime > 0)
