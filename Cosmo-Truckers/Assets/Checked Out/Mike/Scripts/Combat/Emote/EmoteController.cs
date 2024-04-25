@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EmoteController : MonoBehaviour
 {
@@ -20,14 +21,26 @@ public class EmoteController : MonoBehaviour
 
     [Header("Emotes")]
     [Space(20)]
-    public Emote[] Emotes;
-    private Emote[] emoteSlots; //TODO pull from character
+    public List<Emote> Emotes;
+    private List<Emote> emoteSlots; //TODO pull from character
 
     private void OnEnable()
     {
         currentlySelectedEmote = 0;
 
-        emoteSlots = GetComponentsInChildren<Emote>();
+        emoteSlots = GetComponentsInChildren<Emote>().ToList();
+        int originalCount = Emotes.Count;
+
+        int counter = 0;
+        while(Emotes.Count < emoteSlots.Count)
+        {
+            Emotes.Add(Emotes[counter]);
+
+            counter++;
+
+            if (counter >= originalCount)
+                counter = 0;
+        }
 
         SetEmotes();
         SetTransparency();
@@ -35,10 +48,10 @@ public class EmoteController : MonoBehaviour
 
     private void SetEmotes()
     {
-        int emoteCount = Emotes.Length;
+        int emoteCount = Emotes.Count;
         int emoteIndex = currentlySelectedEmote;
 
-        for (int i = 0; i < emoteSlots.Length; i++)
+        for (int i = 0; i < emoteSlots.Count; i++)
         {
             if (emoteIndex >= emoteCount)
                 emoteIndex = 0;
@@ -80,12 +93,12 @@ public class EmoteController : MonoBehaviour
 
         UpdateEmoteVisuals(moveLeft);
 
-        Vector3 originalPosition = transform.position;
+        Vector3 originalPosition = transform.localPosition;
 
         if (moveLeft)
-            transform.position += new Vector3(transform.position.x + distanceToMove, transform.position.y);
+            transform.localPosition = new Vector3(transform.localPosition.x + distanceToMove, transform.localPosition.y);
         else
-            transform.position += new Vector3(transform.position.x - distanceToMove, transform.position.y);
+            transform.localPosition = new Vector3(transform.localPosition.x - distanceToMove, transform.localPosition.y);
 
         float distanceTravelled = 0;
 
@@ -95,20 +108,20 @@ public class EmoteController : MonoBehaviour
             distanceTravelled += distance;
 
             if (moveLeft)
-                transform.position -= new Vector3(distance, 0);
+                transform.localPosition -= new Vector3(distance, 0);
             else
-                transform.position += new Vector3(distance, 0);
+                transform.localPosition += new Vector3(distance, 0);
 
             yield return null;
         }
 
-        transform.position = originalPosition;
+        transform.localPosition = originalPosition;
         scrolling = false;
     }
 
-    private void SetTransparency()
+    private void SetTransparency(int offset = 0)
     {
-        for (int i = 0; i < emoteSlots.Length; i++)
+        for (int i = 0; i < emoteSlots.Count; i++)
         {
             if (i == 2 || i == 8)
                 emoteSlots[i].Icon.color = new Color(1, 1, 1, twoAwayAlpha);
@@ -130,10 +143,10 @@ public class EmoteController : MonoBehaviour
             currentlySelectedEmote--;
 
         //Correct slot
-        if (currentlySelectedEmote >= Emotes.Length)
+        if (currentlySelectedEmote >= Emotes.Count)
             currentlySelectedEmote = 0;
         else if (currentlySelectedEmote < 0)
-            currentlySelectedEmote = Emotes.Length - 1;
+            currentlySelectedEmote = Emotes.Count - 1;
 
         //Update slots
         SetEmotes();
