@@ -131,7 +131,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.12379837}
   m_SpriteTilingProperty:
-    border: {x: 0.14583334, y: 0.14583334, z: 0.14583334, w: 0.14583334}
+    border: {x: 0.16666667, y: 0.16666667, z: 0.16666667, w: 0.16666667}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.0833334, y: 1.0833334}
     newSize: {x: 1.075, y: 8}
@@ -242,7 +242,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.12379837}
   m_SpriteTilingProperty:
-    border: {x: 0.14583334, y: 0.14583334, z: 0.14583334, w: 0.14583334}
+    border: {x: 0.16666667, y: 0.16666667, z: 0.16666667, w: 0.16666667}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1.0833334, y: 1.0833334}
     newSize: {x: 1.07, y: 8}
@@ -701,6 +701,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &8165674583608937134
 GameObject:
@@ -758,7 +763,6 @@ MonoBehaviour:
   Damage: 0
   DebuffToAdd: {fileID: 0}
   playerEnemyTargetDifference: 0
-  defending: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
@@ -773,6 +777,9 @@ MonoBehaviour:
   isDamaging: 0
   isHealing: 0
   pierces: 0
+  GoTextReplacement: EAT HEALTHY!
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   collectibleSpawns:
@@ -907,6 +914,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &8165674584356200419
 GameObject:
@@ -1198,6 +1210,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &8214231485135111781
 MonoBehaviour:
