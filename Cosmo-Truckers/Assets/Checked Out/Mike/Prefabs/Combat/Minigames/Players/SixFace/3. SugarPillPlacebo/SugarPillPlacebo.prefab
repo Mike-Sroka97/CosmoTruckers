@@ -370,6 +370,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &3066160659717427311
 GameObject:
@@ -458,6 +463,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &7857762108967379868
 GameObject:
@@ -549,7 +559,6 @@ MonoBehaviour:
   Damage: 3
   DebuffToAdd: {fileID: 11400000, guid: d049c56f1c8939748805fb7ac9f9b4af, type: 2}
   playerEnemyTargetDifference: 0
-  defending: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
@@ -564,6 +573,9 @@ MonoBehaviour:
   isDamaging: 0
   isHealing: 1
   pierces: 0
+  GoTextReplacement: 'CASH OUT! '
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   CurrentCheckPointLocation: {x: 0, y: 0, z: 0}
@@ -756,6 +768,8 @@ MonoBehaviour:
   moveSpeed: 0.4
   moveDistance: 0.1
   givesAugmentScore: 0
+  givesScore: 1
+  multiplayer: 0
   collectParticle: {fileID: 0}
 --- !u!1 &7857762109303725357
 GameObject:
@@ -875,6 +889,8 @@ MonoBehaviour:
   moveSpeed: 0.4
   moveDistance: 0.1
   givesAugmentScore: 0
+  givesScore: 1
+  multiplayer: 0
   collectParticle: {fileID: 0}
 --- !u!1 &7857762109383199020
 GameObject:
@@ -1627,6 +1643,8 @@ MonoBehaviour:
   moveSpeed: 0.4
   moveDistance: 0.1
   givesAugmentScore: 0
+  givesScore: 1
+  multiplayer: 0
   collectParticle: {fileID: 0}
 --- !u!1 &7857762110205560660
 GameObject:
@@ -2004,6 +2022,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 0
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1001 &1098028919
 PrefabInstance:

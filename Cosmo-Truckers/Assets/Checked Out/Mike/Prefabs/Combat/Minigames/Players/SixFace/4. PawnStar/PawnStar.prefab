@@ -169,7 +169,6 @@ MonoBehaviour:
   Damage: 4
   DebuffToAdd: {fileID: 11400000, guid: 167f9683966c3a74d94039ec0ced584b, type: 2}
   playerEnemyTargetDifference: 0
-  defending: 0
   MinigameDuration: 15
   Score: 0
   PlayerDead: 0
@@ -184,6 +183,9 @@ MonoBehaviour:
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  GoTextReplacement: HIT THE CASH!
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   projectile: {fileID: 5768246734752063071}
@@ -564,6 +566,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!4 &772598933175667413 stripped
 Transform:
@@ -1352,11 +1359,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_Size.x
-      value: 0.5
+      value: 1.0833334
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_Size.y
-      value: 0.5
+      value: 1.0416666
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_Sprite
@@ -1426,7 +1433,7 @@ MonoBehaviour:
   - {fileID: -2122918362, guid: cbc82cf5437a15145a8f8e2580c034ef, type: 3}
   - {fileID: 1099647841, guid: cbc82cf5437a15145a8f8e2580c034ef, type: 3}
   - {fileID: 1745944353, guid: cbc82cf5437a15145a8f8e2580c034ef, type: 3}
-  - {fileID: -885786730, guid: cbc82cf5437a15145a8f8e2580c034ef, type: 3}
+  - {fileID: -392762090, guid: cbc82cf5437a15145a8f8e2580c034ef, type: 3}
   timeBetweenEachSprite: 0.1
 --- !u!1001 &7556640044706673151
 PrefabInstance:
