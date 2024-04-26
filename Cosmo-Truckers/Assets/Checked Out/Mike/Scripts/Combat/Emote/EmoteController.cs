@@ -18,6 +18,19 @@ public class EmoteController : MonoBehaviour
     int currentlySelectedEmote;
     bool open;
     bool scrolling;
+    private bool canOpen = true;
+    public bool CanOpen
+    {
+        get
+        {
+            return canOpen;
+        }
+        set
+        {
+            //HAVE NETWORK TELL PLAYER TO FUCK OFF IF THEY GET SCHLOPPED INTO INA
+            canOpen = value;
+        }
+    }
 
     [Header("Emotes")]
     [Space(20)]
@@ -64,13 +77,13 @@ public class EmoteController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.T))
         {
-            if(open)
+            if (open)
             {
                 transform.Find("Baby").gameObject.SetActive(false);
             }
-            else
+            else if(canOpen)
             {
                 transform.Find("Baby").gameObject.SetActive(true);
                 OnEnable();
@@ -79,13 +92,24 @@ public class EmoteController : MonoBehaviour
             open = !open;
         }
 
-        else if(Input.GetKeyDown(KeyCode.A) && open && !scrolling)
+        else if (Input.GetKeyDown(KeyCode.A) && open && !scrolling)
             StartCoroutine(Scroll(false));
 
         else if (Input.GetKeyDown(KeyCode.D) && open && !scrolling)
             StartCoroutine(Scroll(true));
+
+        else if (Input.GetKeyDown(KeyCode.Space) && open && !scrolling)
+            SpawnEmote();
     }
 
+    private void SpawnEmote()
+    {
+        canOpen = false;
+        open = false;
+        transform.Find("Baby").gameObject.SetActive(false);
+
+        Instantiate(emoteSlots[0].EmoteToSpawn, transform.Find("Spawn"));
+    }
 
     IEnumerator Scroll(bool moveLeft)
     {
