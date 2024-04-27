@@ -43,7 +43,7 @@ public class PlayerManager : NetworkBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
 
-        if (!hasAuthority)
+        if (!authority)
         {
             StartCoroutine(SetPlayerName());
             return;

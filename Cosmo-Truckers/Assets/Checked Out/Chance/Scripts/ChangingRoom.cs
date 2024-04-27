@@ -19,7 +19,7 @@ public class ChangingRoom : NetworkBehaviour
     {
         foreach(var player in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if(player.GetComponent<PlayerManager>().hasAuthority)
+            if(player.GetComponent<PlayerManager>().authority)
             {
                 CurrentPlayer = player.GetComponent<PlayerManager>();
                 break;

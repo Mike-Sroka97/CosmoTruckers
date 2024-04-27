@@ -15,7 +15,7 @@ public class PlayerSpriteSetUp : NetworkBehaviour
 
         foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().hasAuthority)
+            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().authority)
             {
                     NetworkTestManager.Instance.CmdAddPlayers(gameObject);
             }

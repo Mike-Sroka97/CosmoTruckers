@@ -29,7 +29,7 @@ public class PlayerSelectionManager : NetworkBehaviour
     {
         foreach(var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
         {
-            if (obj.GetComponent<NetworkIdentity>().hasAuthority)
+            if (obj.GetComponent<NetworkIdentity>().isOwned)
             {
                 obj.GetComponent<PlayerSelection>().ReadyUp();
                 ReadyButton.GetComponent<Image>().color = Color.green;

@@ -24,8 +24,7 @@ public class PlayerSelection : NetworkBehaviour
 
     private void Start()
     {
-
-        if (!hasAuthority)
+        if (!authority)
         {
             NextPanel.gameObject.SetActive(false);
             PrevPanel.gameObject.SetActive(false);
