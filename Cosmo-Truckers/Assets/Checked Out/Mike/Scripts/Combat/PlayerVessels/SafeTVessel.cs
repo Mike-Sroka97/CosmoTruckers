@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 public class SafeTVessel : PlayerVessel
 {
-    [SerializeField] Image[] angerNodes;
-    [SerializeField] Color offColor;
-    [SerializeField] Color angerColor;
-    [SerializeField] Color rageColor;
+    [SerializeField] Image[] angerNodesLeft;
+    [SerializeField] Image[] angerNodesRight;
+    [SerializeField] Image angerFace;
+    [SerializeField] Sprite[] pipSprites;
+    [SerializeField] Sprite[] angerFaceSprites;
 
     SafeTMana safeTMana;
 
@@ -18,8 +19,10 @@ public class SafeTVessel : PlayerVessel
     public override void ManaTracking()
     {
         //reset mana
-        foreach (Image node in angerNodes)
-            node.color = offColor;
+        foreach (Image node in angerNodesLeft)
+            node.sprite = pipSprites[0];
+        foreach (Image node in angerNodesRight)
+            node.sprite = pipSprites[0];
 
         //set current mana
         safeTMana = MyMana.GetComponent<SafeTMana>();
@@ -28,29 +31,9 @@ public class SafeTVessel : PlayerVessel
 
         for (int i = 0; i < totalAnger; i++)
         {
-            switch(totalRage)
-            {
-                case 0:
-                    angerNodes[i].color = angerColor;
-                    break;
-                case 1:
-                    if (i < ragePip)
-                        angerNodes[i].color = rageColor;
-                    else
-                        angerNodes[i].color = angerColor;
-                    break;
-                case 2:
-                    if (i < ragePip * 2)
-                        angerNodes[i].color = rageColor;
-                    else
-                        angerNodes[i].color = angerColor;
-                    break;
-                case 3:
-                    angerNodes[i].color = rageColor;
-                    break;
-                default:
-                    break;
-            }
+            angerNodesLeft[i].sprite = pipSprites[totalRage];
+            angerNodesRight[i].sprite = pipSprites[totalRage];
+            angerFace.sprite = angerFaceSprites[totalRage];
         }
     }
 
