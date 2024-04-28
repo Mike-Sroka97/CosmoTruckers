@@ -84,8 +84,9 @@ public class CombatManager : MonoBehaviour
         CurrentPlayer = null;
         CurrentCharacter = enemy;
 
-        if (!enemy.SpecialTargetConditions)
-            EnemyTarget(attack, enemy);
+        //I dont think this code is necessary but i am also gay
+        //if (!enemy.SpecialTargetConditions)
+        //    EnemyTarget(attack, enemy);
 
         foreach (Character character in enemy.CurrentTargets)
         {

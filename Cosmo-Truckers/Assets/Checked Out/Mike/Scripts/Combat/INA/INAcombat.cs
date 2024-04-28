@@ -28,6 +28,11 @@ public class INAcombat : MonoBehaviour
     [SerializeField] float shakeSpeedY;
     [SerializeField] float shakeOffsetY;
 
+    [Space(20)]
+    [Header("Face Variables")]
+    [SerializeField] float faceWaitTime = 1f;
+    [SerializeField] Animator face;
+
     string goText = "GO!";
     const float INAoffset = -0.5f;
 
@@ -69,6 +74,8 @@ public class INAcombat : MonoBehaviour
 
         if (moveUp)
         {
+            face.gameObject.SetActive(false);
+
             //Wait a frame to fix renderer threading issues
             yield return null;
 
@@ -80,6 +87,8 @@ public class INAcombat : MonoBehaviour
             }
 
             transform.localPosition = goalPosition;
+
+            yield return new WaitForSeconds(faceWaitTime);
 
             //OpenScreen
             while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
@@ -98,6 +107,8 @@ public class INAcombat : MonoBehaviour
         }
         else
         {
+            face.gameObject.SetActive(false);
+
             DungeonGen.SetActive(false);
 
             //CloseScreen
@@ -133,6 +144,14 @@ public class INAcombat : MonoBehaviour
         {
             aboveMask.gameObject.SetActive(true);
 
+            //Move Vessels out of the way blud
+            StartCoroutine(PlayerVesselManager.Instance.MoveMe(!moveUp));
+
+            //Generate Face
+            face.gameObject.SetActive(true);
+            AnimationClip randomFace = face.runtimeAnimatorController.animationClips[Random.Range(0, face.runtimeAnimatorController.animationClips.Length)];
+            face.Play(randomFace.name);
+
             //Wait a frame to fix renderer threading issues
             yield return null; 
 
@@ -160,6 +179,9 @@ public class INAcombat : MonoBehaviour
                 trail.enabled = true;
 
             transform.localPosition = goalPosition;
+
+            yield return new WaitForSeconds(faceWaitTime);
+
             CombatManager.Instance.SpawnPlayers();
             GetComponentInChildren<CombatMove>().SetSpawns();
 
@@ -171,6 +193,8 @@ public class INAcombat : MonoBehaviour
 
                 yield return null;
             }
+
+            face.gameObject.SetActive(false);
 
             topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
             bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
@@ -247,6 +271,9 @@ public class INAcombat : MonoBehaviour
                 yield return null;
             }
             transform.localPosition = startingPosition;
+
+            //Move Vessels into the way blud
+            StartCoroutine(PlayerVesselManager.Instance.MoveMe(!moveUp));
 
             StartCoroutine(CombatManager.Instance.EndCombat());
         }

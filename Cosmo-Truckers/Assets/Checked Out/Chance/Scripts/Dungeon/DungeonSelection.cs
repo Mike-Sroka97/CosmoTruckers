@@ -12,23 +12,35 @@ public class DungeonSelection : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        if (PlayerPrefs.GetInt("CurrentDungeon", 0) >= DungeonData.CurrentDungeon)
+        GetComponent<Button>().onClick.AddListener(delegate
         {
-            GetComponent<Button>().onClick.AddListener(delegate
-            {
-                DungeonPage.SetActive(true);
-                DungeonPage.GetComponent<DungeonDisplay>().DungeonScreenSetUp
-                (
-                    DungeonData.DungonSprite,
-                    DungeonData.DungeonName,
-                    DungeonData.DungeonDescription,
-                    DungeonData.CurrentDungeon
-                );
-            });
-        }
-        else
-        {
-            GetComponent<Button>().interactable = false;
-        }
+            DungeonPage.SetActive(true);
+            DungeonPage.GetComponent<DungeonDisplay>().DungeonScreenSetUp
+            (
+                DungeonData.DungonSprite,
+                DungeonData.DungeonName,
+                DungeonData.DungeonDescription,
+                DungeonData.CurrentDungeon
+            );
+        });
+
+        //if (PlayerPrefs.GetInt("CurrentDungeon", 0) >= DungeonData.CurrentDungeon)
+        //{
+        //    GetComponent<Button>().onClick.AddListener(delegate
+        //    {
+        //        DungeonPage.SetActive(true);
+        //        DungeonPage.GetComponent<DungeonDisplay>().DungeonScreenSetUp
+        //        (
+        //            DungeonData.DungonSprite,
+        //            DungeonData.DungeonName,
+        //            DungeonData.DungeonDescription,
+        //            DungeonData.CurrentDungeon
+        //        );
+        //    });
+        //}
+        //else
+        //{
+        //    GetComponent<Button>().interactable = false;
+        //}
     }
 }
