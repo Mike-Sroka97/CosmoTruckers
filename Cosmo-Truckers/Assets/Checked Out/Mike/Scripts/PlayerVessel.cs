@@ -30,6 +30,7 @@ public class PlayerVessel : MonoBehaviour
 
     protected PlayerCharacter myCharacter;
     [HideInInspector] public Mana MyMana;
+    Transform myINAvessel;
 
     public virtual void Initialize(PlayerCharacter player)
     {
@@ -53,6 +54,30 @@ public class PlayerVessel : MonoBehaviour
         //assign vessel to mana
         MyMana = myCharacter.GetComponent<Mana>();
         MyMana.SetVessel(this);
+
+        //assign INA vessel
+        myINAvessel = FindObjectOfType<INAcombat>().transform.Find("Health Vessels").GetChild(myCharacter.PlayerNumber - 1).transform;
+        UpdateHealthText();
+
+        myCharacter.HealthChangeEvent.AddListener(UpdateHealthText);
+    }
+
+    public void UpdateHealthText()
+    {
+        myINAvessel.GetComponentInChildren<TextMeshPro>().text = myCharacter.CurrentHealth.ToString();
+
+        if(myCharacter.CurrentHealth > 0)
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = aliveSprite;
+        else
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = deadSprite;
+    }
+
+    public void SetINAvesselSprite(bool alive)
+    {
+        if (alive)
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = aliveSprite;
+        else
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = deadSprite;
     }
 
     public void AdjustFill()
@@ -197,4 +222,9 @@ public class PlayerVessel : MonoBehaviour
     }
 
     public virtual void ManaTracking() { }
+
+    private void OnDestroy()
+    {
+        myCharacter.HealthChangeEvent.RemoveListener(UpdateHealthText);
+    }
 }

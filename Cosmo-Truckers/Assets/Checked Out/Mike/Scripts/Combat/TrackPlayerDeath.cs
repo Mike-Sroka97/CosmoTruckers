@@ -28,6 +28,8 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (trackDeath && minigame)
         {
+            player.MyCharacter.MyVessel.SetINAvesselSprite(false);
+
             if (Multiplayer)
             {
                 if (Boss && player.MyCharacter.CurrentHealth > 0)

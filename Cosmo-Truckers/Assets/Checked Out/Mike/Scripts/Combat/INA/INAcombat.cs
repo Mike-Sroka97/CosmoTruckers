@@ -146,6 +146,8 @@ public class INAcombat : MonoBehaviour
 
             //Move Vessels out of the way blud
             StartCoroutine(PlayerVesselManager.Instance.MoveMe(!moveUp));
+            foreach (PlayerVessel playerVessel in PlayerVesselManager.Instance.PlayerVessels)
+                playerVessel.UpdateHealthText();
 
             //Generate Face
             face.gameObject.SetActive(true);

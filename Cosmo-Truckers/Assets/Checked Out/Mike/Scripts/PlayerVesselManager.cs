@@ -9,6 +9,7 @@ public class PlayerVesselManager : MonoBehaviour
     [SerializeField] float moveSpeed;
 
     [HideInInspector] public static PlayerVesselManager Instance;
+    [HideInInspector] public PlayerVessel[] PlayerVessels;
 
     Vector3 startPos;
 
@@ -26,6 +27,8 @@ public class PlayerVesselManager : MonoBehaviour
                 currentVessel.Initialize(EnemyManager.Instance.Players[i]);
             }
         }
+
+        PlayerVessels = GetComponentsInChildren<PlayerVessel>();
     }
 
     public IEnumerator MoveMe(bool up)
