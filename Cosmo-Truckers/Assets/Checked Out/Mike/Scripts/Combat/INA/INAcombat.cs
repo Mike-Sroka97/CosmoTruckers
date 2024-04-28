@@ -195,7 +195,12 @@ public class INAcombat : MonoBehaviour
             //Shake
             string text;
             if (minigame.GoTextReplacement != "")
-                text = minigame.GoTextReplacement;
+            {
+                text = minigame.GoTextReplacement.ToUpper();
+                if (text[text.Length - 1] != '!')
+                    text += "!";
+            }
+
             else
                 text = goText;
 
