@@ -10,13 +10,14 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     [SerializeField] float hurtTimeBeforeSwapping = 1f;
     [SerializeField] Sprite[] happySprites;
     [SerializeField] float timeBetweenHappySprites = 0.25f;
-    [SerializeField] float happyTimeBeforeSwapping = 1f; 
+    [SerializeField] float happyTimeBeforeSwapping = 1f;
+    [SerializeField] bool playerHitHurts = false; 
 
     bool startHurt = false;
     bool startHappy = false; 
     float timer = 0f;
     float frameTimer = 0f;
-    int currentFrame = 0; 
+    int currentFrame = -1; 
 
     public void SwitchToHurtAnimation()
     {
@@ -38,65 +39,56 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     {
         if (startHurt)
         {
-            HurtAnimation(); 
+            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, hurtTimeBeforeSwapping, ref startHurt); 
         }
 
         if (startHappy)
         {
-            HappyAnimation(); 
+            ChangeAnimation(happySprites, timeBetweenHappySprites, happyTimeBeforeSwapping, ref startHappy);
         }
     }
 
-    void HurtAnimation()
+    void ChangeAnimation(Sprite[] sprites, float timeBetweenSprites, float timeBeforeSwapping, ref bool boolToSet)
     {
+        if (currentFrame == -1)
+        {
+            currentFrame = 0; 
+            mySpriteRenderer.sprite = sprites[currentFrame];
+        }
+
         timer += Time.deltaTime;
         frameTimer += Time.deltaTime;
 
-        if (frameTimer >= timeBetweenHurtSprites)
+        if (frameTimer >= timeBetweenSprites)
         {
-            if (currentFrame >= hurtSprites.Length)
+            currentFrame++;
+
+            if (currentFrame >= sprites.Length)
                 currentFrame = 0;
 
-            mySpriteRenderer.sprite = hurtSprites[currentFrame];
-            currentFrame++;
+            mySpriteRenderer.sprite = sprites[currentFrame];
             frameTimer = 0f;
         }
 
-        if (timer > hurtTimeBeforeSwapping)
+        if (timer > timeBeforeSwapping)
         {
-            startHurt = false;
-            timer = 0;
-            StartCoroutine(ChangeSprites());
-        }
-    }
-
-    void HappyAnimation()
-    {
-        timer += Time.deltaTime;
-        frameTimer += Time.deltaTime;
-
-        if (frameTimer >= timeBetweenHappySprites)
-        {
-            if (currentFrame >= happySprites.Length)
-                currentFrame = 0;
-
-            mySpriteRenderer.sprite = happySprites[currentFrame];
-            currentFrame++;
-            frameTimer = 0f;
-        }
-
-        if (timer > happyTimeBeforeSwapping)
-        {
-            startHappy = false;
-            timer = 0;
+            boolToSet = false;
             StartCoroutine(ChangeSprites());
         }
     }
 
     void ResetValues()
     {
-        currentFrame = 0;
+        currentFrame = -1;
         timer = 0;
         frameTimer = 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttack") && !startHurt)
+        {
+            SwitchToHurtAnimation(); 
+        }
     }
 }
