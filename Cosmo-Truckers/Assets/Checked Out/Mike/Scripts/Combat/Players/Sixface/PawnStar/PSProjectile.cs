@@ -53,15 +53,6 @@ public class PSProjectile : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "Player")
-        {
-            minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
-        }
-    }
-
     private void TrackTime()
     {
         //Wait initial delay when minigame starts
