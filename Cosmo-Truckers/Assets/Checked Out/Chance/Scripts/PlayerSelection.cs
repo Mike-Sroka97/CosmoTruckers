@@ -57,6 +57,8 @@ public class PlayerSelection : NetworkBehaviour
     public void CmdReadyUp()
     {
         IsReady = true;
+        RpcGrayOutPlayer();
+
         CmdSelectCharacter(CharacterSelected);
 
         foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
@@ -88,6 +90,12 @@ public class PlayerSelection : NetworkBehaviour
     {
         CharacterImage.sprite = Characters[selection].CharacterImage;
         CharacterName.text = Characters[selection].CharacterName;
+    }
+
+    [ClientRpc]
+    void RpcGrayOutPlayer()
+    {
+        CharacterImage.color = Color.gray;
     }
 
     void GoToNextPanel()
