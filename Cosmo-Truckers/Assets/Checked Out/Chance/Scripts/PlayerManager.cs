@@ -6,12 +6,17 @@ using Mirror;
 public class PlayerManager : NetworkBehaviour
 {
     [SerializeField] List<CharacterSO> AllCharacters;
+
+    //The number of the player on the server
     [SyncVar] int playerNumber = 0;
+
+    //The current character the player has selected to play
     [SerializeField] [SyncVar] int PlayerID;
     CharacterSO Player;
     [SerializeField] SaveData PlayerData;
     public SaveData GetPlayerData { get => PlayerData; }
     public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
+    public int GetPlayerNumber { get => playerNumber; }
 
     /// <summary>
     /// Load in the player data for this character and set it for online play

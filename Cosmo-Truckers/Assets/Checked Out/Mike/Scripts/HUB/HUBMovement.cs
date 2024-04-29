@@ -36,7 +36,7 @@ public class HUBMovement : NetworkBehaviour
     {
         foreach (var player in GameObject.FindGameObjectsWithTag("Player"))
         {
-            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().authority)
+            if (player.name == gameObject.name && player.GetComponent<PlayerManager>().isOwned)
             {
                 control = true;
                 player.GetComponent<PlayerManager>().CmdGivePlayerItem(netIdentity);

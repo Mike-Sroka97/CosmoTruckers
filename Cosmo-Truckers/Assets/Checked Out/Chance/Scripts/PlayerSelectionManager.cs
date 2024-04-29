@@ -48,9 +48,10 @@ public class PlayerSelectionManager : NetworkBehaviour
     void CmdStartGame()
     {
         NetworkManager.singleton.maxConnections = NetworkManager.singleton.numPlayers;
+
         if(ReadyCount() < 4)
         {
-            StartCoroutine(SlowSpawnAI());
+            //StartCoroutine(SlowSpawnAI());
         }
         else
         {
@@ -67,12 +68,6 @@ public class PlayerSelectionManager : NetworkBehaviour
 
         foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
         {
-            //if (obj.GetComponent<NetworkIdentity>().hasAuthority)
-            //{
-            //    obj.GetComponent<PlayerSelection>().CmdReadyUp();
-            //    ReadyButton.GetComponent<Image>().color = Color.green;
-            //}
-
             AllReady += obj.GetComponent<PlayerSelection>().GetReady ? 1 : 0;
 
             print(AllReady + " : " + NetworkTestManager.Instance.GetPlayerCount);
@@ -81,48 +76,14 @@ public class PlayerSelectionManager : NetworkBehaviour
         return AllReady;
     }
 
-    IEnumerator SlowSpawnAI()
-    {
-        for (int i = NetworkTestManager.Instance.GetPlayerCount; i < PlayerSelections.Length; i++)
-        {
-            GameObject obj = Instantiate(
-                PlayerSelectionPreFab
-            );
-
-            ToShow.Add(obj);
-
-            NetworkServer.Spawn(
-                obj,
-                NetworkTestManager.Instance.GetPlayers
-                [0].
-                GetComponent<NetworkIdentity>().connectionToClient
-                );
-
-            
-            RpcShowAllActivePlayers(ToShow[i], i);
-
-            yield return new WaitForEndOfFrame();
-
-            obj.GetComponent<PlayerSelection>().CmdReadyUpAI();
-        }
-
-        //ReadyButton.GetComponent<Image>().color = Color.red;
-        //GoButton.GetComponent<Button>().interactable = false;
-        //GoButton.GetComponent<Image>().color = Color.red;
-        GoButton.GetComponentInChildren<TMP_Text>().text = "Play";
-    }
-
     [Command(requiresAuthority = false)]
     void CmdCheckIfReady()
     {
         int AllReady = ReadyCount();
 
-        if (AllReady >= NetworkTestManager.Instance.GetPlayerCount)
+        if (AllReady == 4)
         {
             GoButton.GetComponent<Button>().interactable = true;
-
-            if (AllReady == NetworkManager.singleton.maxConnections)
-                GoButton.GetComponentInChildren<TMP_Text>().text = "Play";
 
             GoButton.GetComponent<Image>().color = Color.green;
         }
@@ -145,6 +106,26 @@ public class PlayerSelectionManager : NetworkBehaviour
         if (NetworkTestManager.Instance.GetPlayers.Count == 1)
             GoButton.SetActive(true);
 
+        for (int i = 0; i < ToShow.Count; i++)
+        {
+            RpcShowAllActivePlayers(ToShow[i], i);
+        }
+
+        //Turn off the play button
+        //Obviosly they have not readied up yet
+        CmdCheckIfReady();
+    }
+
+    public void AddCharacter()
+    {
+        NetworkIdentity networkIdentity = NetworkClient.connection.identity;
+
+        CmdAddCharacter(networkIdentity);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdAddCharacter(NetworkIdentity networkIdentity)
+    {
         GameObject obj = Instantiate(
             PlayerSelectionPreFab
             );
@@ -152,20 +133,15 @@ public class PlayerSelectionManager : NetworkBehaviour
         ToShow.Add(obj);
 
         NetworkServer.Spawn(
-            obj, 
-            NetworkTestManager.Instance.GetPlayers
-            [NetworkTestManager.Instance.GetPlayers.Count - 1].
-            GetComponent<NetworkIdentity>().connectionToClient
+            obj,
+            networkIdentity.connectionToClient
             );
+
 
         for (int i = 0; i < ToShow.Count; i++)
         {
             RpcShowAllActivePlayers(ToShow[i], i);
         }
-
-        //Turn off the play button
-        //Obviosly they have no readied up yet
-        CmdCheckIfReady();
     }
 
     [ClientRpc]
