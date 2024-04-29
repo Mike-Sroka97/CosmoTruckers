@@ -70,9 +70,13 @@ public class AttackDisplay : MonoBehaviour
         {
             transform.localEulerAngles = new Vector3(359, 0, 0);
 
-            while (transform.localEulerAngles.x > 270)
+            while (transform.localEulerAngles.x > 275)
             {
                 transform.Rotate(new Vector3(-rotateSpeed * Time.deltaTime, 0, 0));
+
+                if(transform.rotation.x >= .75)
+                    transform.localEulerAngles = new Vector3(270, 0, 0);
+
                 yield return null;
             }
 

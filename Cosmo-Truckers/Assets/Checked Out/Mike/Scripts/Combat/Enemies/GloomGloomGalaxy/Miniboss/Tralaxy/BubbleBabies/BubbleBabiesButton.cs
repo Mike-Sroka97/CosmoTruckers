@@ -6,18 +6,11 @@ public class BubbleBabiesButton : MonoBehaviour
 {
     [SerializeField] bool left = false;
     [SerializeField] BubbleBabiesNeedle myNeedle;
-    [SerializeField] AnimationClip hurtAnimationClip;
     [SerializeField] float waitBetweenHits = 0.5f;
     [SerializeField] Material defaultMaterial, toggledMaterial; 
 
-    private Animator myAnimator; 
     private bool canHit = true; 
     private float timer;
-
-    private void Start()
-    {
-        myAnimator = GetComponent<Animator>(); 
-    }
 
     private void Update()
     {
@@ -43,8 +36,6 @@ public class BubbleBabiesButton : MonoBehaviour
             {
                 myNeedle.MoveMe(left);
                 canHit = false;
-                myAnimator.Play(hurtAnimationClip.name);
-                GetComponent<SpriteRenderer>().material = toggledMaterial; 
             }
         }
     }

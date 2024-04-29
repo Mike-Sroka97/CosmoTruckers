@@ -6,9 +6,8 @@ using UnityEngine.UI;
 public class ProtoVessel : PlayerVessel
 {
     [SerializeField] Image[] batteryPips;
-    [SerializeField] Color offColor;
-    [SerializeField] Color onColor;
-    [SerializeField] Color retentionColor;
+    [SerializeField] Sprite normalCharge;
+    [SerializeField] Sprite retainedCharge;
 
     ProtoMana protoMana;
 
@@ -24,7 +23,7 @@ public class ProtoVessel : PlayerVessel
     {
         //reset mana
         foreach (Image node in batteryPips)
-            node.color = offColor;
+            node.color = Color.clear;
 
         //set current mana
         protoMana = MyMana.GetComponent<ProtoMana>();
@@ -34,11 +33,19 @@ public class ProtoVessel : PlayerVessel
         for (int i = 0; i < maxBattery; i++)
         {
             if(i < retentionCount)
-                batteryPips[i].color = retentionColor;
+            {
+                batteryPips[i].color = Color.white;
+                batteryPips[i].sprite = retainedCharge;
+            }
             else if (i < batteryCount)
-                batteryPips[i].color = onColor;
+            {
+                batteryPips[i].color = Color.white;
+                batteryPips[i].sprite = normalCharge;
+            }
             else
-                batteryPips[i].color = offColor;
+            {
+                batteryPips[i].color = Color.clear;
+            }
         }
     }
 }

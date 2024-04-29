@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 6295090700353293007}
   - component: {fileID: 6295090700353293010}
   - component: {fileID: 6295090700353293005}
+  - component: {fileID: 4713074507554604135}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: EnemyDamaging
@@ -165,9 +166,28 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.01, y: 0.05}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.45
+--- !u!114 &4713074507554604135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295090700353293006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
+  TrackingDamage: 1
 --- !u!1 &6652937670034974434
 GameObject:
   m_ObjectHideFlags: 0
