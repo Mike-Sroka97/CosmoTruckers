@@ -19,7 +19,7 @@ public class FanTheHammer : CombatMove
         FanTheHammerGloomGuy[] gloomGuys = GetComponentsInChildren<FanTheHammerGloomGuy>();
 
         foreach (FanTheHammerGloomGuy gloomGuy in gloomGuys)
-            gloomGuy.Initialize();
+            gloomGuy.Initialize(this);
 
 
         base.StartMove();

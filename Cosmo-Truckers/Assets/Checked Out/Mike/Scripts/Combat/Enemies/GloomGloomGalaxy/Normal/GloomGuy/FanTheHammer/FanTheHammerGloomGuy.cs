@@ -35,14 +35,17 @@ public class FanTheHammerGloomGuy : MonoBehaviour
     bool trackTime = true;
     public bool Initialized = false;
 
+    CombatMove minigame; 
+
     private void Start()
     {
         float random = UnityEngine.Random.Range(-xClamp, xClamp);
         transform.position = new Vector3(random, transform.position.y, transform.position.z);
     }
 
-    public void Initialize()
+    public void Initialize(CombatMove cb)
     {
+        minigame = cb; 
         myBody = GetComponent<Rigidbody2D>();
         gun = transform.Find("Gun");
         player = FindObjectOfType<Player>();
@@ -59,6 +62,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         }
 
         Initialized = true;
+        animatorGloomGuy.Play(ggWalk.name); 
     }
 
     private void Update()
@@ -98,7 +102,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         while(currentBulletsFired < numberOfTimesToFire)
         {
             animatorGun.Play(gunShoot.name, -1, 0f);
-            GameObject tempSmoke = Instantiate(smokeParticle, smokePoint.position, gun.rotation);
+            GameObject tempSmoke = Instantiate(smokeParticle, smokePoint.position, gun.rotation, minigame.transform);
             tempSmoke.transform.parent = null; 
 
             if (fan)
@@ -107,7 +111,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
             }
             else
             {
-                GameObject tempBullet = Instantiate(bullet, barrel, transform.parent);
+                GameObject tempBullet = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
                 tempBullet.transform.parent = null;
                 tempBullet.transform.localScale = new Vector3(1, 1, 1);
             }

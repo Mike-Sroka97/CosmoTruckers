@@ -6,7 +6,11 @@ public class LargeIronTrigger : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
     [SerializeField] Transform barrel;
+    [SerializeField] GameObject smokeParticles; 
+    [SerializeField] SpriteRenderer gunSpriteRender;
+    [SerializeField] Sprite firedSprite;
 
+    CombatMove minigame; 
     LargeIronClock clock;
     Collider2D myCollider;
 
@@ -14,19 +18,21 @@ public class LargeIronTrigger : MonoBehaviour
     {
         clock = FindObjectOfType<LargeIronClock>();
         myCollider = GetComponent<Collider2D>();
+        minigame = FindObjectOfType<CombatMove>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack")
+        if (collision.tag == "PlayerAttack" && !clock.PlayerFired)
         {
             clock.Fire();
             clock.PlayerFired = true;
             myCollider.enabled = false;
-            GameObject bulletTemp = Instantiate(bullet, barrel);
-            bulletTemp.transform.parent = null;
-            bulletTemp.transform.localScale = new Vector3(1, 1, 1);
-            bulletTemp.transform.position = barrel.position;
+            GameObject bulletTemp = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
+            GameObject spokeParticle = Instantiate(smokeParticles, barrel.position, barrel.rotation, minigame.transform);
+            gunSpriteRender.sprite = firedSprite;
+            transform.localEulerAngles = new Vector3(0f, 0f, -35f);
+            transform.localPosition = new Vector3(transform.localPosition.x, -0.325f, transform.localPosition.z);
         }
     }
 }
