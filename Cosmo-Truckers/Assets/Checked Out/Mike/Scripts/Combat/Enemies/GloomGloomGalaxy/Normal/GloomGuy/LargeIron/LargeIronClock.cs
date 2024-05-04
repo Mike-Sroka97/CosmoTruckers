@@ -27,7 +27,8 @@ public class LargeIronClock : MonoBehaviour
     bool spinning = true;
     bool trackTime = false;
     public bool PlayerFired = false;
-    private float rotationTime;  
+    private float rotationTime;
+    float beforeWaitTime; 
 
     private void Start()
     {
@@ -35,7 +36,8 @@ public class LargeIronClock : MonoBehaviour
         rotationSpeed = Random.Range(minRotationSpeed, maxRotationSpeed);
         trigger = GameObject.Find("EnemyGunTrigger").transform; 
         gloomGuy = GameObject.Find("GloomGuy").GetComponent<SpriteRenderer>();
-
+        
+        beforeWaitTime = scoreWaitTime / 3.0f;
         rotationTime = 360f / rotationSpeed;
 
         //direction correction
@@ -90,8 +92,7 @@ public class LargeIronClock : MonoBehaviour
 
     public void Fire()
     {
-        float scoreTime;
-        float beforeWaitTime = scoreWaitTime / 2.0f; 
+        float scoreTime; 
 
         if((currentTime <= 0 || currentTime > scoreWaitTime) && rotationTime > beforeWaitTime)
         {
@@ -104,11 +105,6 @@ public class LargeIronClock : MonoBehaviour
         {
             if (currentTime > 0)
                 scoreTime = currentTime;
-            else if (rotationTime > 0)
-            {
-                // Rotation time is halved, so double it to get correct range
-                scoreTime = rotationTime * 2;
-            }
             else
                 scoreTime = scoreWaitTime; 
 
@@ -122,6 +118,14 @@ public class LargeIronClock : MonoBehaviour
             spell.Score += 1;
             scoreTime -= .1f;
         }
+    }
+
+    public bool TooEarly()
+    {
+        if (rotationTime > beforeWaitTime)
+            return true;
+        else
+            return false; 
     }
 
     public void GloomGuySad()
