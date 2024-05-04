@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class TTONTTbulletExplode : MonoBehaviour
@@ -47,8 +48,7 @@ public class TTONTTbulletExplode : MonoBehaviour
         {
             for(int i = 0; i < numberOfChildren; i++)
             {
-                GameObject tempBullet = Instantiate(nonExplodingBullet, child);
-                tempBullet.transform.parent = null;
+                GameObject tempBullet = Instantiate(nonExplodingBullet, child.position, child.rotation, transform.parent.parent);
                 tempBullet.transform.Rotate(new Vector3(0, 0, degreeIncrease * i));
             }
             Destroy(gameObject);

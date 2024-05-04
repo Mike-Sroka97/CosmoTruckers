@@ -12,7 +12,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] Transform barrel;
     [SerializeField] Animator tongueAnimator;
-    [SerializeField] AnimationClip tongueShoot; 
+    [SerializeField] AnimationClip tongueShoot;
 
     Player player;
     Collider2D aggroRadius;
@@ -22,7 +22,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
     private void OnEnable()
     {
         player = FindObjectOfType<Player>();
-        aggroRadius = GetComponent<Collider2D>();
+        aggroRadius = GetComponent<Collider2D>(); 
     }
 
     private void Update()
@@ -42,8 +42,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
         {
             currentShootTime = 0;
             tongueAnimator.Play(tongueShoot.name);
-            GameObject tempBullet = Instantiate(bullet, barrel);
-            tempBullet.transform.parent = transform.parent;
+            GameObject tempBullet = Instantiate(bullet, barrel.position, barrel.rotation, transform.parent);
             tempBullet.transform.localScale = new Vector3(1, 1, 1);
         }
     }
