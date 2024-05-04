@@ -9,6 +9,7 @@ public class LargeIronTrigger : MonoBehaviour
     [SerializeField] GameObject smokeParticles; 
     [SerializeField] SpriteRenderer gunSpriteRender;
     [SerializeField] Sprite firedSprite;
+    [SerializeField] LargeIronGun playerGun; 
 
     CombatMove minigame; 
     LargeIronClock clock;
@@ -27,12 +28,20 @@ public class LargeIronTrigger : MonoBehaviour
         {
             clock.Fire();
             clock.PlayerFired = true;
-            myCollider.enabled = false;
-            GameObject bulletTemp = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
-            GameObject spokeParticle = Instantiate(smokeParticles, barrel.position, barrel.rotation, minigame.transform);
-            gunSpriteRender.sprite = firedSprite;
-            transform.localEulerAngles = new Vector3(0f, 0f, -35f);
-            transform.localPosition = new Vector3(transform.localPosition.x, -0.325f, transform.localPosition.z);
+
+            if (!clock.TooEarly())
+            {
+                myCollider.enabled = false;
+                GameObject bulletTemp = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
+                GameObject spokeParticle = Instantiate(smokeParticles, barrel.position, barrel.rotation, minigame.transform);
+                gunSpriteRender.sprite = firedSprite;
+                transform.localEulerAngles = new Vector3(0f, 0f, -35f);
+                transform.localPosition = new Vector3(transform.localPosition.x, -0.325f, transform.localPosition.z);
+            }
+            else
+            {
+                playerGun.DamagePlayerGun(); 
+            }
         }
     }
 }

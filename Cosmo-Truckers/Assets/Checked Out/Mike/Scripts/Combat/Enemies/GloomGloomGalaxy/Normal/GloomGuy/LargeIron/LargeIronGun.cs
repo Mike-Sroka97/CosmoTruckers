@@ -32,8 +32,7 @@ public class LargeIronGun : MonoBehaviour
                 }
                 else
                 {
-                    Player player = FindObjectOfType<PlayerBody>().Body;
-                    player.TakeDamage();
+                    DamagePlayerGun(); 
                 }
             }
             else
@@ -44,5 +43,12 @@ public class LargeIronGun : MonoBehaviour
                 Destroy(collision.gameObject);
             }
         }
+    }
+
+    public void DamagePlayerGun()
+    {
+        gunRenderer.sprite = damagedSprite;
+        Player player = FindObjectOfType<PlayerBody>().Body;
+        player.TakeDamage();
     }
 }
