@@ -10,6 +10,7 @@ public class TTONTTbulletExplode : MonoBehaviour
     [SerializeField] float growSpeed;
     [SerializeField] bool explode = true;
     [SerializeField] GameObject nonExplodingBullet;
+    [SerializeField] GameObject burstParticle; 
 
     MoveForward myBullet;
     Player player;
@@ -49,6 +50,7 @@ public class TTONTTbulletExplode : MonoBehaviour
             for(int i = 0; i < numberOfChildren; i++)
             {
                 GameObject tempBullet = Instantiate(nonExplodingBullet, child.position, child.rotation, transform.parent.parent);
+                Instantiate(burstParticle, child.position, child.rotation, transform.parent.parent);
                 tempBullet.transform.Rotate(new Vector3(0, 0, degreeIncrease * i));
             }
             Destroy(gameObject);
