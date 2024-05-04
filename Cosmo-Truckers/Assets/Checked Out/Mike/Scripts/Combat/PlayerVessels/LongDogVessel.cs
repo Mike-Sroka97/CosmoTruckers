@@ -7,6 +7,7 @@ public class LongDogVessel : PlayerVessel
 {
     [SerializeField] GameObject[] LoadedBullets;
     [SerializeField] GameObject[] ReserveBullets;
+    [SerializeField] Sprite[] bulletTypeSprites;
 
     LongDogMana mana;
     LongDogCharacter character;
@@ -26,13 +27,25 @@ public class LongDogVessel : PlayerVessel
         for(int i = 0; i < mana.LoadedBullets.Count; i++)
         {
             LoadedBullets[i].SetActive(true);
-            //handle sprite based on type of bullet
+            
+            if(mana.LoadedBullets[i] == 0)
+                LoadedBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[0];
+            else if(mana.LoadedBullets[i] == 1)
+                LoadedBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[1];
+            else
+                LoadedBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[2];
         }
 
         for (int i = 0; i < mana.ReserveBullets.Count; i++)
         {
             ReserveBullets[i].SetActive(true);
-            //handle sprite based on type of bullet
+
+            if (mana.ReserveBullets[i] == 0)
+                ReserveBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[0];
+            else if (mana.ReserveBullets[i] == 1)
+                ReserveBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[1];
+            else
+                ReserveBullets[i].GetComponent<Image>().sprite = bulletTypeSprites[2];
         }
     }
 

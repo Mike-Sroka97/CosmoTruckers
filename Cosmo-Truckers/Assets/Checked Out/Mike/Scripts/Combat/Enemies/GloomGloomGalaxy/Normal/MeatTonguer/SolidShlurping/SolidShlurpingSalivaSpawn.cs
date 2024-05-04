@@ -30,12 +30,12 @@ public class SolidShlurpingSalivaSpawn : MonoBehaviour
             currentTime = 0;
             CalculateSpawnDelay();
             GameObject tempBullet = Instantiate(bullet, transform);
-            tempBullet.transform.parent = null;
+            tempBullet.transform.parent = transform.parent;
         }
     }
 
     private void CalculateSpawnDelay()
     {
-        currentSpawnDelay = UnityEngine.Random.Range(minSpawnDelay, maxSpawnDelay);
+        currentSpawnDelay = Random.Range(minSpawnDelay, maxSpawnDelay);
     }
 }
