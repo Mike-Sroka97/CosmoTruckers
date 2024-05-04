@@ -16,6 +16,7 @@ public class LargeIronClock : MonoBehaviour
 
     [Header("Gloom Guy")]
     SpriteRenderer gloomGuy;
+    [SerializeField] GameObject gloomGuyFader; 
     [SerializeField] Sprite happySprite, sadSprite; 
 
     CombatMove minigame;
@@ -26,6 +27,7 @@ public class LargeIronClock : MonoBehaviour
     bool spinning = true;
     bool trackTime = false;
     public bool PlayerFired = false;
+    private float rotationTime;  
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class LargeIronClock : MonoBehaviour
         rotationSpeed = Random.Range(minRotationSpeed, maxRotationSpeed);
         trigger = GameObject.Find("EnemyGunTrigger").transform; 
         gloomGuy = GameObject.Find("GloomGuy").GetComponent<SpriteRenderer>();
+
+        rotationTime = 360f / rotationSpeed;
 
         //direction correction
         rotationSpeed = -rotationSpeed;
@@ -74,6 +78,7 @@ public class LargeIronClock : MonoBehaviour
 
         transform.Rotate(new Vector3(0, 0, rotationSpeed * Time.deltaTime));
         currentDegreesRotated += rotationSpeed * Time.deltaTime;
+        rotationTime -= Time.deltaTime; 
 
         if(currentDegreesRotated <= -360)
         {
@@ -86,15 +91,27 @@ public class LargeIronClock : MonoBehaviour
     public void Fire()
     {
         float scoreTime;
+        float beforeWaitTime = scoreWaitTime / 2.0f; 
 
-        if(currentTime <= 0 || (currentTime > scoreWaitTime && currentDegreesRotated > -350f))
+        if((currentTime <= 0 || currentTime > scoreWaitTime) && rotationTime > beforeWaitTime)
         {
             scoreTime = 0;
             gloomGuy.sprite = happySprite;
+            GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.gameObject.transform.position, gloomGuy.gameObject.transform.rotation, minigame.transform);
+            tempFader.GetComponent<SpawnFadeObject>().StartFading(happySprite); 
         }
         else
         {
-            scoreTime = currentTime;
+            if (currentTime > 0)
+                scoreTime = currentTime;
+            else if (rotationTime > 0)
+            {
+                // Rotation time is halved, so double it to get correct range
+                scoreTime = rotationTime * 2;
+            }
+            else
+                scoreTime = scoreWaitTime; 
+
         }
 
         CombatMove spell = FindObjectOfType<CombatMove>();
@@ -110,5 +127,7 @@ public class LargeIronClock : MonoBehaviour
     public void GloomGuySad()
     {
         gloomGuy.sprite = sadSprite;
+        GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.gameObject.transform.position, gloomGuy.gameObject.transform.rotation, minigame.transform);
+        tempFader.GetComponent<SpawnFadeObject>().StartFading(sadSprite, 0);
     }
 }
