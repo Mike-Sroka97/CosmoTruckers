@@ -66,20 +66,21 @@ public class CameraController : MonoBehaviour
         ExecutingCommand = true;
 
         float speed = maxSpeed;
+        float startDistance = Vector3.Distance(transform.position, position);
 
-        if (accelerate)
-            speed /= 10;
-
-        while(transform.position != position)
+        while (transform.position != position)
         {
             transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
 
-            if (accelerate && speed < maxSpeed)
+            if (accelerate)
             {
-                speed += Time.deltaTime;
+                float currentDistance = Vector3.Distance(transform.position, position);
 
-                if (speed > maxSpeed)
-                    speed = maxSpeed;
+                if(currentDistance > startDistance / 2)
+                    speed = maxSpeed - maxSpeed * (currentDistance / startDistance) + (maxSpeed / 4);
+
+                else
+                    speed = maxSpeed * (currentDistance / startDistance) + (maxSpeed / 4);
             }
 
             yield return null;
