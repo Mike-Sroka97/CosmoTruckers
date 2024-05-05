@@ -13,6 +13,7 @@ public class TallyYourSinCircle : MonoBehaviour
     int sinCount;
 
     bool initialized = false;
+    bool isLongDog = false; 
 
     private void Start()
     {
@@ -36,7 +37,16 @@ public class TallyYourSinCircle : MonoBehaviour
 
     public void Initialize()
     {
-        player = FindObjectOfType<Player>();
+        LongDogINA longDog = FindObjectOfType<LongDogINA>();
+
+        if (longDog != null)
+        {
+            isLongDog = true;
+            player = longDog; 
+        }
+        else
+            player = FindObjectOfType<Player>();
+
         StartCoroutine(FireSin());
         initialized = true;
     }
@@ -46,7 +56,11 @@ public class TallyYourSinCircle : MonoBehaviour
         if (!initialized)
             return;
 
-        transform.position = player.transform.position;
+        // Special case for Long Dog targeting head
+        if (isLongDog)
+            transform.position = player.transform.GetChild(0).position; 
+        else
+            transform.position = player.transform.position;
     }
 
     IEnumerator FireSin()
@@ -61,7 +75,12 @@ public class TallyYourSinCircle : MonoBehaviour
         }
 
         firedSins[random] = true;
-        sins[random].FireMe();
+
+        // Special case for Long Dog targeting head
+        if (isLongDog)
+            sins[random].FireMe(player.transform.GetChild(0));
+        else
+            sins[random].FireMe(player.transform);
 
         sinCount--;
         if(sinCount > 0)

@@ -19,12 +19,7 @@ public class TallyYourSin : CombatMove
         foreach (TallyYourSinCircle sin in GetComponentsInChildren<TallyYourSinCircle>())
             sin.Initialize();
 
-        foreach (TallyYourSinSin sin in GetComponentsInChildren<TallyYourSinSin>())
-            sin.Initialize();
-
         mickeysDickMasher.enabled = true;
-
-        base.StartMove();
     }
 
     public override void EndMove()

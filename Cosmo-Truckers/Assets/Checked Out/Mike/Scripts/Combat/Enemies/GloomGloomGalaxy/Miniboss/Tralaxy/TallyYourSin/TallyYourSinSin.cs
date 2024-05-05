@@ -19,22 +19,16 @@ public class TallyYourSinSin : MonoBehaviour
     float lerpTime = 0f; 
     Color lerpedColor; 
     bool lerpToColor = false; 
-    Player player;
-
-    public void Initialize()
-    {
-        player = FindObjectOfType<Player>();
-    }
 
     private void Update()
     {
         LerpColors();
     }
 
-    public void FireMe()
+    public void FireMe(Transform playerTransform)
     {
         transform.parent = transform.parent.parent;
-        transform.right = player.transform.position - transform.position;
+        transform.right = playerTransform.position - transform.position;
         StartCoroutine(FireCo());
     }
 
