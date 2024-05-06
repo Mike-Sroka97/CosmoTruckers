@@ -345,7 +345,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.10700001, y: 0.04635453}
   m_AnchorMax: {x: 0.39749685, y: 0.7493546}
-  m_AnchoredPosition: {x: 227.99966, y: -11.000015}
+  m_AnchoredPosition: {x: 227.99966, y: -11.0000305}
   m_SizeDelta: {x: -118.37, y: -177.84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &73088553
@@ -619,7 +619,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1421946246}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: SetResolution
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &243987934
 GameObject:
@@ -3241,7 +3253,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1913008611}
   m_HandleRect: {fileID: 682244471}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: -1
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -3250,7 +3262,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1421946246}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: TestVol
+        m_MethodName: TestMusicVol
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5852,7 +5864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetX: 0
+  offsetX: 600
   offsetY: 0
 --- !u!114 &1603867586
 MonoBehaviour:
@@ -5866,16 +5878,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 7777
+  port: 7777
   DualMode: 1
   NoDelay: 1
   Interval: 10
   Timeout: 10000
+  RecvBufferSize: 7361536
+  SendBufferSize: 7361536
   FastResend: 2
-  CongestionWindow: 0
-  SendWindowSize: 4096
   ReceiveWindowSize: 4096
-  NonAlloc: 1
+  SendWindowSize: 4096
+  MaxRetransmit: 40
+  MaximizeSocketBuffers: 1
+  ReliableMaxMessageSize: 297433
+  UnreliableMaxMessageSize: 1194
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
@@ -5892,21 +5908,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PersistNetworkManagerToOfflineScene: 0
   runInBackground: 1
-  autoStartServerBuild: 1
-  serverTickRate: 30
+  headlessStartMode: 1
+  editorAutoStart: 0
+  sendRate: 30
+  autoStartServerBuild: 0
+  autoConnectClientBuild: 0
   offlineScene: Assets/Checked Out/Chance/Scenes/Menu.unity
   onlineScene: Assets/Checked Out/Chance/Scenes/SelectCharacter.unity
   transport: {fileID: 1603867586}
   networkAddress: localhost
   maxConnections: 4
+  disconnectInactiveConnections: 0
+  disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 4445380430938373919, guid: 29fb57bcd30648d428b6c6f8ba2f9b0f, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
   - {fileID: 8135897369680457336, guid: 95457242d5f0c0e4695b7a909e3bf7d8, type: 3}
+  exceptionsDisconnect: 1
+  snapshotSettings:
+    bufferTimeMultiplier: 2
+    bufferLimit: 32
+    catchupNegativeThreshold: -1
+    catchupPositiveThreshold: 1
+    catchupSpeed: 0.019999999552965164
+    slowdownSpeed: 0.03999999910593033
+    driftEmaDuration: 1
+    dynamicAdjustment: 1
+    dynamicAdjustmentTolerance: 1
+    deliveryTimeEmaDuration: 2
+  evaluationMethod: 0
+  evaluationInterval: 3
+  timeInterpolationGui: 0
 --- !u!4 &1603867588
 Transform:
   m_ObjectHideFlags: 0
@@ -6189,7 +6224,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 918168337}
   m_HandleRect: {fileID: 181287820}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: -1
   m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
@@ -6198,23 +6233,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1421946246}
         m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
-        m_MethodName: TestVol
+        m_MethodName: TestSFXVol
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1421946245}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7773,7 +7796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7686952004196093518, guid: 7b154f6fafe94ed47aa054899736e14b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.25003052
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7686952004196093518, guid: 7b154f6fafe94ed47aa054899736e14b, type: 3}
       propertyPath: m_AnchoredPosition.y

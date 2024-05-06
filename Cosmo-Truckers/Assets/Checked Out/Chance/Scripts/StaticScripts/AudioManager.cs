@@ -80,12 +80,19 @@ public class AudioManager : MonoBehaviour
         float musicVolume = PlayerPrefs.GetFloat("Music", .5f);
 
 
-        masterMixer.SetFloat("musicVol", musicVolume == 0 ? -80 : musicVolume * (40 + (-20))) ;
-        masterMixer.SetFloat("sfxVol", sfxVolume == 0 ? -80 : sfxVolume * (40 + (-20)));
+        masterMixer.SetFloat("musicVol", musicVolume == -1 ? -80 : musicVolume * 20) ;
+        masterMixer.SetFloat("sfxVol", sfxVolume == -1 ? -80 : sfxVolume * 20);
     }
 
-    public void TestVolume(float vol)
+    public void TestSFXVolume(float vol)
     {
-        masterMixer.SetFloat("musicVol", vol == 0 ? -80 : vol * (40 + (-20)));
+        masterMixer.SetFloat("sfxVol", vol == -1 ? -80 : vol * 20);
+
+        if (!sfxAudioSource.isPlaying)
+            sfxAudioSource.Play();
+    }
+    public void TestMusicVolume(float vol)
+    {
+        masterMixer.SetFloat("musicVol", vol == -1 ? -80 : vol * 20);
     }
 }

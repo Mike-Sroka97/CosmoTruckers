@@ -132,6 +132,26 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    public void ChangeResolution()
+    {
+        bool fullScreen = Screen.fullScreen;
+
+        switch (ResolutionDropDown.value)
+        {
+            default:
+            case 0:
+                Screen.SetResolution(1280, 720, fullScreen);
+                break;
+            case 1:
+                Screen.SetResolution(1366, 768, fullScreen);
+                break;
+            case 2:
+                Screen.SetResolution(1920, 1080, fullScreen);
+                break;
+
+        }
+    }
+
     public void SaveOptions()
     {
         PlayerPrefs.SetInt("WindowedMode", WindowedToggle.isOn ? 1 : 0);
@@ -142,6 +162,8 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetFloat("SFX", SFXSlider.value);
 
         AudioManager.Instance.CheckVolume();
+
+        PlayerPrefs.Save();
     }
 
     public void DefaultOptions()
@@ -157,9 +179,14 @@ public class MainMenu : MonoBehaviour
         AudioManager.Instance.CheckVolume();
     }
 
-    public void TestVol(float vol)
+    public void TestSFXVol(float vol)
     {
-        AudioManager.Instance.TestVolume(vol);
+        if(OptionOptions.activeInHierarchy)
+            AudioManager.Instance.TestSFXVolume(vol);
+    }
+    public void TestMusicVol(float vol)
+    {
+        AudioManager.Instance.TestMusicVolume(vol);
     }
 
     IEnumerator MenuChange(float direction)
@@ -329,21 +356,19 @@ public class MainMenu : MonoBehaviour
     {
         bool value = false;
 
-
         if (SFXSlider.value != PlayerPrefs.GetFloat("SFX", .5f))
             value = true;
         if(MusicSlider.value != PlayerPrefs.GetFloat("Music", .5f))
             value = true;
 
+        print(PlayerPrefs.GetInt("WindowedMode"));
+
         //TODO find a better way
-        //if (false)
-        //{
-        //    if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && !WindowedToggle.isOn ||
-        //        PlayerPrefs.GetInt("WindowedMode", 0) == 1 && WindowedToggle.isOn)
-        //        value = true;
-        //    if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
-        //        value = true;
-        //}
+        if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && WindowedToggle.isOn ||
+            PlayerPrefs.GetInt("WindowedMode", 0) == 1 && !WindowedToggle.isOn)
+            value = true;
+        if (Screen.currentResolution.height != PlayerPrefs.GetInt("ResolutionHeight", 1080))
+            value = true;
         return value;
     }
 

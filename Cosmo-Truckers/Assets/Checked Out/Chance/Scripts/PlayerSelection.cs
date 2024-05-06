@@ -16,6 +16,8 @@ public class PlayerSelection : NetworkBehaviour
     [SerializeField] Button NextPanel;
     [SerializeField] Button PrevPanel;
     [Space(5)]
+    [SerializeField] Material SelectedMaterial;
+    [SerializeField] Material SelectingMaterial;
     [SerializeField] Image CharacterImage;
     [SerializeField] TMP_Text CharacterName;
 
@@ -28,7 +30,12 @@ public class PlayerSelection : NetworkBehaviour
         {
             NextPanel.gameObject.SetActive(false);
             PrevPanel.gameObject.SetActive(false);
+            CharacterImage.color = Color.black;
             return;
+        }
+        else
+        {
+            CharacterImage.material = SelectingMaterial;
         }
 
         CheckSelection();
@@ -57,7 +64,7 @@ public class PlayerSelection : NetworkBehaviour
     public void CmdReadyUp()
     {
         IsReady = true;
-        RpcGrayOutPlayer();
+        RpcBlackOutPlayer();
 
         CmdSelectCharacter(CharacterSelected);
 
@@ -93,9 +100,16 @@ public class PlayerSelection : NetworkBehaviour
     }
 
     [ClientRpc]
-    void RpcGrayOutPlayer()
+    void RpcBlackOutPlayer()
     {
-        CharacterImage.color = Color.gray;
+        if (isOwned)
+        {
+            NextPanel.gameObject.SetActive(false);
+            PrevPanel.gameObject.SetActive(false);
+            CharacterImage.material = SelectedMaterial;
+        }
+        else
+            CharacterImage.color = Color.black;
     }
 
     void GoToNextPanel()
