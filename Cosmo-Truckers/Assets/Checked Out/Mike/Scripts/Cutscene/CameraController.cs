@@ -12,13 +12,13 @@ public class CameraController : MonoBehaviour
 
     SpriteRenderer vignette;
     TextMeshProUGUI text;
-    CutsceneController cutscene;
+    Camera myCamera;
 
     private void Start()
     {
         vignette = GetComponentInChildren<SpriteRenderer>();
         text = GetComponentInChildren<TextMeshProUGUI>();
-        cutscene = FindObjectOfType<CutsceneController>();
+        myCamera = GetComponent<Camera>();
     }
 
     public IEnumerator FadeVignette(bool FadeIn)
@@ -85,6 +85,54 @@ public class CameraController : MonoBehaviour
 
             yield return null;
         }
+
+        ExecutingCommand = false;
+    }
+
+    public IEnumerator Shake(float duration, float shakeSpeed, float shakeOffset)
+    {
+        Vector3 shakeOriginalPosition = transform.position;
+        ExecutingCommand = true;
+
+        while(duration > 0)
+        {
+            transform.position = new Vector3(Mathf.Sin(Time.time * shakeSpeed) * shakeOffset, (Mathf.Sin(Time.time * shakeSpeed) * shakeOffset), 0) + shakeOriginalPosition;
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+
+        while(transform.position != shakeOriginalPosition)
+        {
+            Vector3.MoveTowards(transform.position, shakeOriginalPosition, shakeSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        ExecutingCommand = false;
+    }
+
+    public IEnumerator Zoom(bool zoomIn, float speed, float size)
+    {
+        ExecutingCommand = true;
+
+        if (zoomIn)
+        {
+            while (myCamera.orthographicSize > size)
+            {
+                myCamera.orthographicSize -= speed * Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        else
+        {
+            while (myCamera.orthographicSize < size)
+            {
+                myCamera.orthographicSize += speed * Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        myCamera.orthographicSize = size;
 
         ExecutingCommand = false;
     }
