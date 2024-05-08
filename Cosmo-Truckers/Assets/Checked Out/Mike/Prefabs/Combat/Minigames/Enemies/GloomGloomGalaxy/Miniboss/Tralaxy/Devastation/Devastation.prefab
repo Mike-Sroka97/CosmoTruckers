@@ -309,7 +309,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!58 &2273927187305533717
 CircleCollider2D:
@@ -342,7 +342,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!50 &2273927187305533715
 Rigidbody2D:
@@ -487,6 +489,9 @@ MonoBehaviour:
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  GoTextReplacement: SURVIVE!
+  bossMove: 0
+  FightWon: 0
   spawnTest: 0
   startMoveTest: 0
   balls:
@@ -728,7 +733,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &2273927188675244405
 MonoBehaviour:
@@ -1063,7 +1070,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &7246273556589608471
 MonoBehaviour:
@@ -1525,7 +1534,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &477278898051072756
 MonoBehaviour:
@@ -1791,7 +1802,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 1
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &359147819220509563
 MonoBehaviour:
