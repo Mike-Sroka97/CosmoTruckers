@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public abstract class CutsceneController : MonoBehaviour
 {
     [SerializeField] protected float bufferTime = 1.5f;
+    [SerializeField] string sceneToLoad;
 
     protected CameraController cameraController;
 
@@ -12,6 +14,11 @@ public abstract class CutsceneController : MonoBehaviour
     {
         cameraController = FindObjectOfType<CameraController>();
         StartCoroutine(Buffer());
+    }
+
+    protected virtual void End()
+    {
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     IEnumerator Buffer()

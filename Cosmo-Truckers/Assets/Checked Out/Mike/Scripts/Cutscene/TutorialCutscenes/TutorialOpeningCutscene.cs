@@ -47,11 +47,22 @@ public class TutorialOpeningCutscene : CutsceneController
 
         SpriteRenderer shipFront = ship.transform.Find("ShipFront").GetComponent<SpriteRenderer>();
 
-        while (shipFront.color.a != 0)
+        while (shipFront.color.a > 0)
         {
             shipFront.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
             yield return null;
         }
+
+        //TODO COLE PLEASE GOD PLEEEEASE I AM BEGGING YOU ADD DIALOG FOR TUTORIAL PART 1 STEPS 9-13
+
+        StartCoroutine(cameraController.FadeVignette(false));
+
+        yield return null;
+
+        while (cameraController.transform.Find("CameraVignette").GetComponent<SpriteRenderer>().color.a < 1)
+            yield return null;
+
+        End();
     }
 
     private IEnumerator MoveShip()
