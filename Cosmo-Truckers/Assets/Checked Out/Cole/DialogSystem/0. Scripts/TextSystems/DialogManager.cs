@@ -20,14 +20,17 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Image dialogBoxImageBorder; 
     [SerializeField] private Image actorDirection; 
     [SerializeField] private Image nextLineIndicator;
-    private Animator indicatorAnimator; 
     [SerializeField] private float disableUITime = 1f;
+    private Animator indicatorAnimator;
+
+    // Dialog Box Stuff
     // 0:normal 1:box 2:spiky 3:happy
     [SerializeField] private Sprite[] dialogBoxBases; 
     [SerializeField] private Sprite[] dialogBoxBorders;
     [SerializeField] private Sprite defaultNextIndicator; 
-    private int boxNumber = 0; 
-    
+    private int boxNumber = 0;
+    private bool boxIsActive = false;
+
     [Header("Dialog Scene Loading")]
     [SerializeField] private Image fader; 
     private const float FadeTime = 2f;
@@ -43,7 +46,7 @@ public class DialogManager : MonoBehaviour
     private List<BaseActor> currentActorsToAnimate;
     private RegularTextManager regularTextManager; 
     private string currentLine;
-    private bool boxIsActive = false;
+
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }
@@ -163,6 +166,8 @@ public class DialogManager : MonoBehaviour
         }
 
     }
+
+    /// Grow or shrink the Dialog Box
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.5f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
         if (!boxIsActive && grow)
@@ -191,7 +196,12 @@ public class DialogManager : MonoBehaviour
             timer += Time.deltaTime;
             dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
             newAlpha = Mathf.Lerp(minVal, maxVal, timer / timeToAnimate);
-            UpdateUIBoxColors(newAlpha);
+
+            // Set the alpha of the UI Dialog Box elements
+            dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, newAlpha);
+            dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, newAlpha);
+            actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, newAlpha);
+
             yield return null;
         }
 
@@ -204,25 +214,31 @@ public class DialogManager : MonoBehaviour
             SetUIBoxActiveStates(false);
         }
     }
+
+    /// Set the active state of the UI Dialog Box elements
     private void SetUIBoxActiveStates(bool state)
     {
         dialogBoxImage.gameObject.SetActive(state);
         dialogBoxImageBorder.gameObject.SetActive(state);
         actorDirection.gameObject.SetActive(state);
     }
-    private void UpdateUIBoxColors(float alpha)
-    {
-        dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, alpha); 
-        dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, alpha); 
-        actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, alpha);
-    }
+
+    /// <summary>
+    /// Set which actors will be animated
+    /// </summary>
+    /// <param name="actors"></param>
     public void ActorsToAnimate(List<BaseActor> actors)
     {
         if (actors == null)
             currentActorsToAnimate.Clear();
         else
             currentActorsToAnimate = actors;
-    } //Set the actors to animate
+    } 
+
+    /// <summary>
+    /// Enable or disable the next line indicator
+    /// </summary>
+    /// <param name="state"></param>
     public void SetNextLineIndicatorState(bool state)
     {
         if (indicatorAnimator == null)
@@ -236,6 +252,11 @@ public class DialogManager : MonoBehaviour
     #endregion
 
     #region Dialog Mode
+
+    /// Start the next dialog
+    /// Currently called by BaseActor
+
+    private Coroutine lineRoutine = null;
     public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
@@ -244,7 +265,7 @@ public class DialogManager : MonoBehaviour
 
         string actorName = speaker.actorName; 
 
-        // If it's the first time dialog, don't animate out and in, just in
+        // If it's the first time dialog, don't animate box out and in, just in
         if (firstDialog)
         {
             UpdatingDialogBox = true;
@@ -267,7 +288,7 @@ public class DialogManager : MonoBehaviour
 
             UpdatingDialogBox = false;
         }
-        //If it's not the same speaker, animate out and in to new speaker
+        //If it's not the same speaker, animate box out and in to new speaker
         else if (!sameSpeaker)
         {
             UpdatingDialogBox = true; 
@@ -298,6 +319,8 @@ public class DialogManager : MonoBehaviour
 
             UpdatingDialogBox = false;
         }
+        
+        // Otherwise, stop Animating and Updating Dialog Box
         else 
         { 
             AnimatingDialogBox = false;
@@ -306,20 +329,28 @@ public class DialogManager : MonoBehaviour
 
         SetDialogAnimator();
         displayNameText.text = actorName;
-        SpeakNextLine(nextLine, speaker);
-    }
 
-    private Coroutine lineRoutine = null;
-    private void SpeakNextLine(string nextLine, BaseActor speaker)
-    {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
         dialogTextAnimations.isTextAnimating = false;
 
+        // Speak the next line of dialog. Process the dialog commands and start animating the text into the text box
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
         lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker));
     }
 
+    /// <summary>
+    /// Grab all of the tags before the text starts playing
+    /// </summary>
+    /// <param name="tags"></param>
+    /// <param name="speakerDirection"></param>
+    /// <param name="pBefore"></param>
+    /// <param name="actorsToAnimate"></param>
+    /// <param name="animToPlay"></param>
+    /// <param name="waitForAnim"></param>
+    /// <param name="vcType"></param>
+    /// <param name="vcRate"></param>
+    /// <param name="boxNumber"></param>
     public void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate,
     ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate, ref int boxNumber)
     {
@@ -389,9 +420,14 @@ public class DialogManager : MonoBehaviour
             }
         }
 
-        DialogManager.Instance.SetDialogBoxNumber(boxNumber);
+        SetDialogBoxNumber(boxNumber);
     }
 
+    /// <summary>
+    /// End the Dialog. 
+    /// Shrink the dialog box, clear the text, disable UI, and set DialogIsPlaying to false
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator EndDialog()
     {
         if (boxIsActive)
