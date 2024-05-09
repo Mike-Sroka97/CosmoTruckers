@@ -46,14 +46,8 @@ public class DialogDirector : MonoBehaviour
         List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
         actors = SpawnActorsIn(actorPrefabs);
 
-        DialogManager.Instance.SetFading(true); 
-        StartCoroutine(DialogManager.Instance.FadeFader(fadeIn: false));
-
-        while (DialogManager.Instance.CheckIfFading())
-            yield return null;
-
         // Delay wait time before starting dialog
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2f); //TODO AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 
         StartCoroutine(AdvanceScene());
 
@@ -259,7 +253,7 @@ public class DialogDirector : MonoBehaviour
         {
             // At the current line in the base dialog, get the tags
             string[] tags = textParser.GetTagsAtCurrentDialogLine(baseDialog, currentLineIndex);
-            string speakerDialog = null;
+            string speakerDialog;
 
             // Get the actor ID for this line and the dialog associated with that actor
             if (int.TryParse(tags[0], out currentID))
@@ -287,10 +281,9 @@ public class DialogDirector : MonoBehaviour
             float waitTime = 0f;
             string vcType = string.Empty; 
             int vcRate = -1; // If -1 is passed in, use default voice rate
-            int boxNumber = 0;
 
             DialogManager.Instance.HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay, 
-                ref waitForAnim, ref vcType, ref vcRate, ref boxNumber);
+                ref waitForAnim, ref vcType, ref vcRate);
 
             // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
             if (pBefore > 0f)
@@ -346,11 +339,6 @@ public class DialogDirector : MonoBehaviour
 
             yield return null; 
         }
-    }
-
-    private void EndScene()
-    {
-        DialogManager.Instance.SetNextLineIndicatorState(false);
     }
 
     private void CheckPlayerInput()

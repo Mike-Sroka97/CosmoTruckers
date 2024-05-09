@@ -31,11 +31,6 @@ public class DialogManager : MonoBehaviour
     private int boxNumber = 0;
     private bool boxIsActive = false;
 
-    [Header("Dialog Scene Loading")]
-    [SerializeField] private Image fader; 
-    private const float FadeTime = 2f;
-    private bool fading = false; 
-
     // Dialog Scene Variables
     private GameObject sceneLayout;
     TextAsset textFile;
@@ -45,8 +40,6 @@ public class DialogManager : MonoBehaviour
     private DialogTextAnimations dialogTextAnimations;
     private List<BaseActor> currentActorsToAnimate;
     private RegularTextManager regularTextManager; 
-    private string currentLine;
-
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }
@@ -58,7 +51,7 @@ public class DialogManager : MonoBehaviour
         if (Instance == null)
         {
             // Add the audio source
-            audioSource = this.gameObject.AddComponent<AudioSource>(); 
+            audioSource = gameObject.AddComponent<AudioSource>(); 
 
             Instance = this;
             DontDestroyOnLoad(this);
@@ -71,23 +64,11 @@ public class DialogManager : MonoBehaviour
     }
 
     #region New Dialog Scene
-    public IEnumerator LoadDialogScene(GameObject _sceneLayout, TextAsset _textFile, List<BaseActor> _playerActors)
+    public void LoadDialogScene(GameObject _sceneLayout, TextAsset _textFile, List<BaseActor> _playerActors)
     {
-        if (!DialogIsPlaying && !regularTextManager.DialogIsPlaying)
-        {
-            sceneLayout = _sceneLayout;
-            textFile = _textFile;
-            playerActors = _playerActors;
-
-            SetFading(true);
-            StartCoroutine(FadeFader());
-
-            while (fading)
-                yield return null;
-
-            // Load into new scene after fading
-            SceneManager.LoadScene(7);
-        }
+        sceneLayout = _sceneLayout;
+        textFile = _textFile;
+        playerActors = _playerActors;
     }
     public void GetSceneInformation(ref GameObject _sceneLayout, ref TextAsset _textFile, ref List<BaseActor> _playerActors)
     {
@@ -95,46 +76,9 @@ public class DialogManager : MonoBehaviour
         _textFile = textFile;
         _playerActors = playerActors;
     }
-    public IEnumerator FadeFader(float fadeTime = FadeTime, bool fadeIn = true)
-    {
-        float timer = 0;
-        float newAlpha = fader.color.a;
-        float startAlpha = 0.05f;
-        float endAlpha = 1f; 
-
-        if (!fadeIn)
-        {
-            startAlpha = 1f; 
-            endAlpha = 0.05f; 
-        }
-
-        while ((fadeIn && newAlpha < endAlpha) || (!fadeIn && newAlpha > endAlpha))
-        {
-            timer += Time.deltaTime;
-            newAlpha = Mathf.Lerp(startAlpha, endAlpha, timer / fadeTime);
-            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, newAlpha); 
-            yield return null;
-        }
-
-        // Make sure the fader alpha is correct
-        if (!fadeIn)
-            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, 0f);
-        else
-            fader.color = new Color(fader.color.r, fader.color.g, fader.color.b, 1f);
-
-        SetFading(false); 
-    } 
     #endregion
 
     #region Next Dialog Setup
-    private void SetDialogAnimator() // Set the new Dialog Animatior here
-    {
-        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
-    }
-    public void SetDialogBoxNumber(int dialogBoxNumber)
-    {
-        boxNumber = dialogBoxNumber; 
-    }
     private void SetDialogBox(BaseActor speaker)
     {
         dialogBoxImage.sprite = dialogBoxBases[boxNumber]; 
@@ -164,7 +108,6 @@ public class DialogManager : MonoBehaviour
                 actorDirection.rectTransform.eulerAngles = new Vector3(0, 0f, 0);
                 break; 
         }
-
     }
 
     /// Grow or shrink the Dialog Box
@@ -185,7 +128,7 @@ public class DialogManager : MonoBehaviour
 
         Vector3 startScale = new Vector3(minVal, minVal, minVal);
         Vector3 endScale = new Vector3(maxVal, maxVal, maxVal);
-        float newAlpha = 1f; 
+        float newAlpha; 
 
         dialogBox.localScale = startScale;
         float timer = 0;
@@ -327,7 +270,7 @@ public class DialogManager : MonoBehaviour
             UpdatingDialogBox = false;
         }
 
-        SetDialogAnimator();
+        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
         displayNameText.text = actorName;
 
         // Stop the Coroutine
@@ -352,7 +295,7 @@ public class DialogManager : MonoBehaviour
     /// <param name="vcRate"></param>
     /// <param name="boxNumber"></param>
     public void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate,
-    ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate, ref int boxNumber)
+    ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate)
     {
         // Start at 1, first tag is actorID
         for (int i = 1; i < tags.Length; i++)
@@ -382,13 +325,9 @@ public class DialogManager : MonoBehaviour
                 {
                     int thisID = 0;
                     if (int.TryParse(actorID, out thisID))
-                    {
                         actorsToAnimate.Add(thisID);
-                    }
                     else
-                    {
                         Debug.LogError("Animation actor ID is not an integer!");
-                    }
                 }
             }
             else if (tagKey == "vc")
@@ -397,30 +336,22 @@ public class DialogManager : MonoBehaviour
                 List<string> allValues = tagValue.Split(",").ToList();
                 vcType = allValues[0];
 
-                int rate = 0;
+                int rate;
                 if (int.TryParse(allValues[1], out rate))
-                {
                     vcRate = rate;
-                }
                 else
-                {
                     Debug.LogError("VC Rate is not an integer - going with default rate!");
-                }
             }
             else if (tagKey == "bub")
             {
                 if (int.TryParse(tagValue, out int parsedNumber))
-                {
                     boxNumber = parsedNumber;
-                }
             }
             else
             {
                 Debug.Log("No additional Pre-Text tag found!");
             }
         }
-
-        SetDialogBoxNumber(boxNumber);
     }
 
     /// <summary>
@@ -450,10 +381,6 @@ public class DialogManager : MonoBehaviour
     #endregion
 
     #region Methods and Checks
-    public void SetFading(bool state)
-    {
-        fading = state; 
-    }
     private void ClearDialogText()
     {
         textBox.text = string.Empty;
@@ -474,10 +401,6 @@ public class DialogManager : MonoBehaviour
     public void StopAnimating()
     {
         dialogTextAnimations.FinishCurrentAnimation();
-    }
-    public bool CheckIfFading()
-    {
-        return fading; 
     }
 
     #endregion
