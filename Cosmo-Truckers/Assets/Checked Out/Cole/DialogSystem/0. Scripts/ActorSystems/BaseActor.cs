@@ -77,6 +77,10 @@ public class BaseActor : MonoBehaviour
             sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 
+    /// <summary>
+    /// This is for sorting the spawned actors based on which spot they are in, so no overlap happens.
+    /// </summary>
+    /// <param name="sortingLayer"></param>
     private void SetSpriteSorting(int sortingLayer)
     {
         SortingGroup sortingGroup = GetComponentInChildren<SortingGroup>();
@@ -138,10 +142,16 @@ public class BaseActor : MonoBehaviour
     #endregion
 
     #region Animation
+    /// <summary>
+    /// Pass in an animation name for a character and get the time of the animation
+    /// </summary>
+    /// <param name="animationName"></param>
+    /// <param name="animationTime"></param>
     public void GetAnimationInfo(string animationName, ref float animationTime)
     {
         // Players will always be ID #'s 1 - 4
         bool isPlayer = false; 
+
         if (actorID < 5)
             isPlayer = true;
 

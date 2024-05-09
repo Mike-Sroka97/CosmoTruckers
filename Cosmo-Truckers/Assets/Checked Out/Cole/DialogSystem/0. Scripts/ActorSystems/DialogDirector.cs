@@ -22,7 +22,7 @@ public class DialogDirector : MonoBehaviour
     private int lastID = -1;
     private int allLinesCount = 0; 
 
-    private static readonly string[] basePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
+    private static readonly string[] basePlayerNames = new string[] {"AEGLAR", "SAFE-T", "PROTO", "SIX FACE"};
 
     private void Start()
     {
@@ -50,16 +50,13 @@ public class DialogDirector : MonoBehaviour
         StartCoroutine(DialogManager.Instance.FadeFader(fadeIn: false));
 
         while (DialogManager.Instance.CheckIfFading())
-            yield return null; 
+            yield return null;
 
         // Delay wait time before starting dialog
-        StartCoroutine(StartScene(2f)); 
+        yield return new WaitForSeconds(2f);
 
-    }
-    IEnumerator StartScene(float startSceneWaitTime)
-    {
-        yield return new WaitForSeconds(startSceneWaitTime); 
         StartCoroutine(AdvanceScene());
+
     }
 
     /// <summary>
@@ -178,7 +175,6 @@ public class DialogDirector : MonoBehaviour
         return finalPrefabs;
     }
 
-    // THIS DOESN'T TAKE ORIGINAL PLAYER ORDER INTO ACCOUNT YET. PLEASE FIX. 
     private BaseActor[] SpawnActorsIn(List<GameObject> actorPrefabs)
     {
         // Get all the actor spots
@@ -219,21 +215,6 @@ public class DialogDirector : MonoBehaviour
     }
     #endregion
 
-    #region Actor Commands
-    public void MoveActor(BaseActor actor, Vector3 actorDestination, float speed = 1)
-    {
-
-    }
-    public void CommandActor(BaseActor actor)
-    {
-
-    }
-    public void CommandAllActors(bool justPlayerActors = true) // call a BaseActor.cs Function on all actors
-    {
-
-    }
-    #endregion
-
     #region Values 
     private bool CanAdvance()
     {
@@ -255,17 +236,10 @@ public class DialogDirector : MonoBehaviour
 
     #endregion
 
-    private void CheckPlayerInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (CanAdvance())
-            {
-                if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
-                else { StartCoroutine(AdvanceScene()); }
-            }
-        }
-    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator AdvanceScene()
     {
         // Increment the current line
@@ -377,6 +351,18 @@ public class DialogDirector : MonoBehaviour
     private void EndScene()
     {
         DialogManager.Instance.SetNextLineIndicatorState(false);
+    }
+
+    private void CheckPlayerInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (CanAdvance())
+            {
+                if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
+                else { StartCoroutine(AdvanceScene()); }
+            }
+        }
     }
 
     // Update is called once per frame
