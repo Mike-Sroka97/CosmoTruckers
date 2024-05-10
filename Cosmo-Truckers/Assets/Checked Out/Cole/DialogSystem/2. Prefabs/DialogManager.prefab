@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 3657133511217227139}
   - component: {fileID: 3657133511217227136}
   - component: {fileID: 5739048915141486284}
+  - component: {fileID: 8101716373536758394}
+  - component: {fileID: 1745723343179435561}
   m_Layer: 0
   m_Name: DialogManager
   m_TagString: Untagged
@@ -66,7 +68,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c218d48a05318804387361f4704dee14, type: 3}
   - {fileID: 21300000, guid: 63674d01e4c474a4dace1b29abee624e, type: 3}
   defaultNextIndicator: {fileID: 21300000, guid: d8fd7d1a1e58f7c4d940eb3b25102595, type: 3}
-  fader: {fileID: 355728070687510810}
+  TextParser: {fileID: 0}
+  ActorList: {fileID: 0}
+  DialogIsPlaying: 0
 --- !u!114 &5739048915141486284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +85,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textBox: {fileID: 0}
   nextLineIndicator: {fileID: 0}
+--- !u!114 &8101716373536758394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657133511217227137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a27e9721fb9527147b8cfe6edecbeb2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerActorPrefabs:
+  - {fileID: 8048526332604502650, guid: 5e3c884c2872f0d4aa5e24d65c67364e, type: 3}
+  - {fileID: 4083539211517335718, guid: b17f40443411786428b7fadde83d5ec8, type: 3}
+  - {fileID: 1207137710250962783, guid: 925d242fbf640f84dae8a938dbecb1cf, type: 3}
+  - {fileID: 6510000629981797322, guid: 6f678429cd37863439e699cdb0870a67, type: 3}
+  - {fileID: 6881214861922783990, guid: f4380911a2838154f8ef461eab8dd940, type: 3}
+  additionalActorPrefabsInLayout: []
+--- !u!114 &1745723343179435561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3657133511217227137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0868f51ba4aa514a8636b2ec636522f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6200431580425374309
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +226,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1657247286862177589, guid: 7e23e395500610744be7ea470cc82308, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1657247286862177589, guid: 7e23e395500610744be7ea470cc82308, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 1657247286862177589, guid: 7e23e395500610744be7ea470cc82308, type: 3}
       propertyPath: m_VerticalAlignment
       value: 256
       objectReference: {fileID: 0}
@@ -218,6 +261,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5690953358216455234, guid: 7e23e395500610744be7ea470cc82308, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+    - target: {fileID: 5690953358216455234, guid: 7e23e395500610744be7ea470cc82308, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6658995816807667586, guid: 7e23e395500610744be7ea470cc82308, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1

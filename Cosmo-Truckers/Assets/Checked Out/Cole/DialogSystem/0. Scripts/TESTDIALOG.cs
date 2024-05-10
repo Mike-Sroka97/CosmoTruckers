@@ -40,6 +40,6 @@ public class TESTDIALOG : MonoBehaviour
 
     private void SetUpDialog()
     {
-        DialogManager.Instance.LoadDialogScene(sceneLayout, dialogFile, playerActors.ToList());
+        //DialogManager.Instance.LoadDialogScene(sceneLayout, dialogFile, playerActors.ToList());
     }
 }

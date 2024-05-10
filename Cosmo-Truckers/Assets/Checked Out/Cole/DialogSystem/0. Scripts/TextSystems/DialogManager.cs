@@ -34,24 +34,31 @@ public class DialogManager : MonoBehaviour
     // Dialog Scene Variables
     private GameObject sceneLayout;
     TextAsset textFile;
-    List<BaseActor> playerActors;
 
     private AudioSource audioSource;
     private DialogTextAnimations dialogTextAnimations;
     private List<BaseActor> currentActorsToAnimate;
-    private RegularTextManager regularTextManager; 
+    private RegularTextManager regularTextManager;
+
+    public List<BaseActor> PlayerActors { get; private set; }
+    public TextParser TextParser;
+    public ActorList ActorList;
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }
-    public bool DialogIsPlaying { get; private set; }
     public bool UpdatingDialogBox { get; private set; }
+
+    public bool DialogIsPlaying;
 
     void Awake()
     {
         if (Instance == null)
         {
             // Add the audio source
-            audioSource = gameObject.AddComponent<AudioSource>(); 
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+            // Make sure it has scripts
+            GetLocalScripts();
 
             Instance = this;
             DontDestroyOnLoad(this);
@@ -63,18 +70,18 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    #region New Dialog Scene
-    public void LoadDialogScene(GameObject _sceneLayout, TextAsset _textFile, List<BaseActor> _playerActors)
+    #region New Dialog Info
+    public void SetPlayerActors(List<BaseActor> actors)
     {
-        sceneLayout = _sceneLayout;
-        textFile = _textFile;
-        playerActors = _playerActors;
+        PlayerActors = actors;
     }
-    public void GetSceneInformation(ref GameObject _sceneLayout, ref TextAsset _textFile, ref List<BaseActor> _playerActors)
+    public void GetLocalScripts()
     {
-        _sceneLayout = sceneLayout;
-        _textFile = textFile;
-        _playerActors = playerActors;
+        if (TextParser == null)
+        {
+            TextParser = GetComponent<TextParser>();
+            ActorList = GetComponent<ActorList>();
+        }
     }
     #endregion
 
@@ -204,8 +211,6 @@ public class DialogManager : MonoBehaviour
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
-        DialogIsPlaying = true; 
-
         string actorName = speaker.actorName; 
 
         // If it's the first time dialog, don't animate box out and in, just in

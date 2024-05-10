@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TutorialOpeningCutscene : CutsceneController
@@ -14,6 +15,7 @@ public class TutorialOpeningCutscene : CutsceneController
     [SerializeField] Transform bg;
 
     [SerializeField] float fadeSpeed;
+    [SerializeField] BaseActor[] baseActors; 
 
     protected override IEnumerator CutsceneCommands()
     {
@@ -55,6 +57,25 @@ public class TutorialOpeningCutscene : CutsceneController
 
         //TODO COLE PLEASE GOD PLEEEEASE I AM BEGGING YOU ADD DIALOG FOR TUTORIAL PART 1 STEPS 9-13
 
+        // Set the player actors here, since this cutscene will always have the same player actors
+        DialogManager.Instance.SetPlayerActors(baseActors.ToList());
+
+        // Setup Dialog
+        DialogSetup();
+
+        while (cameraController.ExecutingCommand)
+        {
+            yield return null;
+        }
+
+        // Advance the scene
+        StartCoroutine(AdvanceScene());
+
+        while (DialogManager.Instance.DialogIsPlaying)
+        {
+            yield return null;
+        }
+
         StartCoroutine(cameraController.FadeVignette(false));
 
         yield return null;
@@ -63,6 +84,11 @@ public class TutorialOpeningCutscene : CutsceneController
             yield return null;
 
         End();
+    }
+
+    private void Update()
+    {
+        CheckPlayerInput(); 
     }
 
     private IEnumerator MoveShip()
