@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] float fadeSpeed;
     [SerializeField] float textFadeSpeed;
 
-    [HideInInspector] public bool ExecutingCommand { get; private set; }
+    [HideInInspector] public int CommandsExecuting { get; private set; }
 
     SpriteRenderer vignette;
     TextMeshProUGUI text;
@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 
     public IEnumerator FadeVignette(bool FadeIn)
     {
-        ExecutingCommand = true;
+        CommandsExecuting++; 
 
         if (FadeIn)
             while (vignette.color.a > 0)
@@ -38,12 +38,12 @@ public class CameraController : MonoBehaviour
                 yield return null;
             }
 
-        ExecutingCommand = false;
+        CommandsExecuting--;
     }
 
     public IEnumerator FadeText(bool FadeIn)
     {
-        ExecutingCommand = true;
+        CommandsExecuting++;
 
         if (FadeIn)
             while (text.color.a < 1)
@@ -58,12 +58,12 @@ public class CameraController : MonoBehaviour
                 yield return null;
             }
 
-        ExecutingCommand = false;
+        CommandsExecuting--; 
     }
 
     public IEnumerator MoveTowardsPosition(Vector3 position, float maxSpeed, bool accelerate = false)
     {
-        ExecutingCommand = true;
+        CommandsExecuting++;
 
         float speed = maxSpeed;
         float startDistance = Vector3.Distance(transform.position, position);
@@ -86,15 +86,16 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
 
-        ExecutingCommand = false;
+        CommandsExecuting--; 
     }
 
     public IEnumerator Shake(float duration, float shakeSpeed, float shakeOffset)
     {
-        Vector3 shakeOriginalPosition = transform.position;
-        ExecutingCommand = true;
+        CommandsExecuting++;
 
-        while(duration > 0)
+        Vector3 shakeOriginalPosition = transform.position;
+
+        while (duration > 0)
         {
             transform.position = new Vector3(Mathf.Sin(Time.time * shakeSpeed) * shakeOffset, (Mathf.Sin(Time.time * shakeSpeed) * shakeOffset), 0) + shakeOriginalPosition;
             duration -= Time.deltaTime;
@@ -107,12 +108,12 @@ public class CameraController : MonoBehaviour
             yield return null;
         }
 
-        ExecutingCommand = false;
+        CommandsExecuting--; 
     }
 
     public IEnumerator Zoom(bool zoomIn, float speed, float size)
     {
-        ExecutingCommand = true;
+        CommandsExecuting++;
 
         if (zoomIn)
         {
@@ -134,6 +135,6 @@ public class CameraController : MonoBehaviour
 
         myCamera.orthographicSize = size;
 
-        ExecutingCommand = false;
+        CommandsExecuting--; 
     }
 }

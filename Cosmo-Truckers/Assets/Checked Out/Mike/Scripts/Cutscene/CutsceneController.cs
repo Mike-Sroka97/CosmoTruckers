@@ -42,7 +42,7 @@ public abstract class CutsceneController : MonoBehaviour
         yield return new WaitForSeconds(bufferTime);
         StartCoroutine(cameraController.FadeVignette(true));
 
-        while (cameraController.ExecutingCommand)
+        while (cameraController.CommandsExecuting > 0)
             yield return null;
 
         StartCoroutine(CutsceneCommands());

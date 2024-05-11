@@ -22,7 +22,7 @@ public class TutorialOpeningCutscene : CutsceneController
         //Show text
         StartCoroutine(cameraController.FadeText(true));
 
-        while (cameraController.ExecutingCommand)
+        while (cameraController.CommandsExecuting > 0)
             yield return null;
 
         //Fade text out and move camera simultaneously (can't use a ExecutingCommand check here so we use a camera pos check)
@@ -45,6 +45,13 @@ public class TutorialOpeningCutscene : CutsceneController
         //fade front of ship out
         yield return new WaitForSeconds(3);
 
+        // Set the player actors here, since this cutscene will always have the same player actors
+        DialogManager.Instance.SetPlayerActors(baseActors.ToList());
+
+        // Setup Dialog
+        DialogSetup();
+
+        // Zoom into ship
         StartCoroutine(cameraController.Zoom(true, 1.2f, 3.5f));
 
         SpriteRenderer shipFront = ship.transform.Find("ShipFront").GetComponent<SpriteRenderer>();
@@ -57,13 +64,7 @@ public class TutorialOpeningCutscene : CutsceneController
 
         //TODO COLE PLEASE GOD PLEEEEASE I AM BEGGING YOU ADD DIALOG FOR TUTORIAL PART 1 STEPS 9-13
 
-        // Set the player actors here, since this cutscene will always have the same player actors
-        DialogManager.Instance.SetPlayerActors(baseActors.ToList());
-
-        // Setup Dialog
-        DialogSetup();
-
-        while (cameraController.ExecutingCommand)
+        while (cameraController.CommandsExecuting > 0)
         {
             yield return null;
         }
