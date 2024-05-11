@@ -15,8 +15,8 @@ public class TurnOrder : MonoBehaviour
     [SerializeField] string lossText = "Trucker Loss";
 
     [SerializeField] List<CharacterStats> speedList;
-    CharacterStats[] livingCharacters;
-    int currentCharactersTurn = 0;
+    protected CharacterStats[] livingCharacters;
+    protected int currentCharactersTurn = 0;
     bool combatOver = false;
 
     private void Awake()
@@ -51,7 +51,7 @@ public class TurnOrder : MonoBehaviour
         Array.Sort(livingCharacters, new SpeedComparer());
     }
 
-    private void StartTurn()
+    protected virtual void StartTurn()
     {
         //Determine if the combat is won/lost
         DetermineCombatEnd();
