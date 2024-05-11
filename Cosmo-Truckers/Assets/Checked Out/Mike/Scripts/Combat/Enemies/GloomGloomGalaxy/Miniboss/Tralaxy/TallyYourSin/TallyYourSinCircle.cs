@@ -9,11 +9,10 @@ public class TallyYourSinCircle : MonoBehaviour
     [SerializeField] float timeBetweenShots;
 
     bool[] firedSins;
-    Player player;
+    PlayerBody player;
     int sinCount;
 
     bool initialized = false;
-    bool isLongDog = false; 
 
     private void Start()
     {
@@ -37,15 +36,7 @@ public class TallyYourSinCircle : MonoBehaviour
 
     public void Initialize()
     {
-        LongDogINA longDog = FindObjectOfType<LongDogINA>();
-
-        if (longDog != null)
-        {
-            isLongDog = true;
-            player = longDog; 
-        }
-        else
-            player = FindObjectOfType<Player>();
+        player = FindObjectOfType<PlayerBody>();
 
         StartCoroutine(FireSin());
         initialized = true;
@@ -57,30 +48,24 @@ public class TallyYourSinCircle : MonoBehaviour
             return;
 
         // Special case for Long Dog targeting head
-        if (isLongDog)
-            transform.position = player.transform.GetChild(0).position; 
-        else
-            transform.position = player.transform.position;
+        transform.position = player.transform.position;
     }
 
     IEnumerator FireSin()
     {
         yield return new WaitForSeconds(timeBetweenShots);
 
-        int random = UnityEngine.Random.Range(0, sins.Length);
+        int random = Random.Range(0, sins.Length);
 
         while(firedSins[random] == true)
         {
-            random = UnityEngine.Random.Range(0, sins.Length);
+            random = Random.Range(0, sins.Length);
         }
 
         firedSins[random] = true;
 
         // Special case for Long Dog targeting head
-        if (isLongDog)
-            sins[random].FireMe(player.transform.GetChild(0));
-        else
-            sins[random].FireMe(player.transform);
+        sins[random].FireMe(player.transform);
 
         sinCount--;
         if(sinCount > 0)
