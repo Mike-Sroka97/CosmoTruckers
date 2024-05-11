@@ -99,14 +99,12 @@ public class CombatManager : MonoBehaviour
             CharactersSelected.Add(character);
         }
 
-        bool allTargetsDead = true;
-
         foreach (Character character in CharactersSelected)
-            if (!character.Dead)
-                allTargetsDead = false;
+            if (character.Dead && !attack.TargetsDead)
+                CharactersSelected.Remove(character);
 
         //Plays minigame if there is a reason to
-        if(attack.TargetsDead || !allTargetsDead)
+        if(CharactersSelected.Count > 0)
         {
             StartCoroutine(DisplayAttack(attack, ActivePlayers));
             MyTargeting.EnemyTargeting(attack);
