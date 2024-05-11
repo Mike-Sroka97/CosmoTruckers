@@ -10,7 +10,7 @@ public class BaseActor : MonoBehaviour
     [Header("Main Actor Variables")]
     [SerializeField] Animation[] actorStates;
     [SerializeField] Transform textBoxPosition;
-    [SerializeField] SpeakingDirection myDirection;
+    SpeakingDirection myDirection;
     public string actorName;
     public int actorID;
 
@@ -71,9 +71,15 @@ public class BaseActor : MonoBehaviour
 
         float timeToWait = 0.5f;
         if (waitTime > timeToWait)
-            timeToWait = waitTime; 
+            timeToWait = waitTime;
 
-        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, this, actorTextMaterial, textBoxPosition,
+        // Get the scale to pass in. If this is a player, we need the parent actor spot's scale
+        float scaleToPass = transform.localScale.x;
+        
+        if (transform.parent.GetComponent<ActorSpot>() != null)
+            scaleToPass = transform.parent.localScale.x; 
+
+        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, this, actorTextMaterial, textBoxPosition, scale: scaleToPass,
             sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 

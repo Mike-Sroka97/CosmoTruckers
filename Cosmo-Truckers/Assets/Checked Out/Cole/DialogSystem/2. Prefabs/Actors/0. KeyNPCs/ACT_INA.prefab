@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1425564283613278616}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 3, z: 0}
+  m_LocalPosition: {x: 0.25, y: 0.75, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -125,6 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8620235069854048989}
   - component: {fileID: 8070324993478927244}
+  - component: {fileID: 5580347729569588525}
   - component: {fileID: 4255243349294053374}
   m_Layer: 0
   m_Name: ACT_INA
@@ -164,7 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorStates: []
   textBoxPosition: {fileID: 7668871308722051932}
-  myDirection: 0
   actorName: INA
   actorID: 0
   actorTextMaterial: {fileID: 2100000, guid: ff637a88d74d47d41b4914464515675e, type: 2}
@@ -181,6 +181,21 @@ MonoBehaviour:
   defaultLowVoiceRate: 3
   defaultHighVoiceRate: 3
   unique1: {fileID: 0}
+--- !u!114 &5580347729569588525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8620235069854048978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d374fdf0b4115f46843baa403563301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingLayerOrder: 0
+  isFacingRight: 1
+  actorNumber: 5
 --- !u!95 &4255243349294053374
 Animator:
   serializedVersion: 4

@@ -294,36 +294,51 @@ public abstract class CutsceneController : MonoBehaviour
     {
         // Get all the actor spots
         ActorSpot[] actorSpots = FindObjectsOfType<ActorSpot>();
+
         // Make a list of actors the size of how many spots
         BaseActor[] actors = new BaseActor[actorSpots.Length];
 
+        // Go through all of the actor spots found. NPCs should have actor spots on their prefab
         for (int i = 0; i < actorSpots.Length; i++)
         {
-            GameObject prefabToSpawn = null;
+            BaseActor npcActor = actorSpots[i].GetComponent<BaseActor>();
 
-            foreach (GameObject prefab in actorPrefabs)
+            // If it's an NPC actor, initialize and put the actor into this list
+            if (npcActor != null)
             {
-                BaseActor currentPrefabActor = prefab.GetComponent<BaseActor>();
-                // Compare if the current prefab should be spawned at this spot
-                if (currentPrefabActor.actorID == actorSpots[i].GetActorNumber())
-                {
-                    prefabToSpawn = prefab;
-                    break;
-                }
-            }
-
-            if (prefabToSpawn != null)
-            {
-                GameObject spawnedActor = Instantiate(prefabToSpawn, actorSpots[i].transform);
-                BaseActor actor = spawnedActor.GetComponent<BaseActor>();
-                actor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
+                npcActor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
 
                 // Set the actor in the correct spot in the array
-                actors[actorSpots[i].GetActorNumber() - 1] = actor;
+                actors[actorSpots[i].GetActorNumber() - 1] = npcActor;
             }
+            // Otherwise it's a player actor
             else
-                Debug.LogError("Prefab couldn't find an actor spot to spawn at!");
+            {
+                GameObject prefabToSpawn = null;
 
+                foreach (GameObject prefab in actorPrefabs)
+                {
+                    BaseActor currentPrefabActor = prefab.GetComponent<BaseActor>();
+                    // Compare if the current prefab should be spawned at this spot
+                    if (currentPrefabActor.actorID == actorSpots[i].GetActorNumber())
+                    {
+                        prefabToSpawn = prefab;
+                        break;
+                    }
+                }
+
+                if (prefabToSpawn != null)
+                {
+                    GameObject spawnedActor = Instantiate(prefabToSpawn, actorSpots[i].transform);
+                    BaseActor actor = spawnedActor.GetComponent<BaseActor>();
+                    actor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
+
+                    // Set the actor in the correct spot in the array
+                    actors[actorSpots[i].GetActorNumber() - 1] = actor;
+                }
+                else
+                    Debug.LogError("Prefab couldn't find an actor spot to spawn at!");
+            }
         }
 
         return actors;

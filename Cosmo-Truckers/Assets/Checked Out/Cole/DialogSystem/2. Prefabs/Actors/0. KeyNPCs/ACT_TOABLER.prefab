@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2981631784323132115}
   - component: {fileID: 3548367573296835458}
+  - component: {fileID: 7664052360559041538}
   - component: {fileID: 7335362238071980016}
   m_Layer: 0
   m_Name: ACT_TOABLER
@@ -49,7 +50,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorStates: []
   textBoxPosition: {fileID: 3795572972887724882}
-  myDirection: 0
   actorName: TOABLER
   actorID: 0
   actorTextMaterial: {fileID: 2100000, guid: ff637a88d74d47d41b4914464515675e, type: 2}
@@ -66,6 +66,21 @@ MonoBehaviour:
   defaultLowVoiceRate: 3
   defaultHighVoiceRate: 3
   unique1: {fileID: 0}
+--- !u!114 &7664052360559041538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2981631784323132124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d374fdf0b4115f46843baa403563301, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingLayerOrder: 0
+  isFacingRight: 1
+  actorNumber: 5
 --- !u!95 &7335362238071980016
 Animator:
   serializedVersion: 4
@@ -110,7 +125,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5551046600758606230}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 3, z: 0}
+  m_LocalPosition: {x: 0.75, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -97,9 +97,10 @@ public class DialogManager : MonoBehaviour
         else
             nextLineIndicator.sprite = defaultNextIndicator; 
     }
-    private void SetDialogUI(Transform newPosition, string direction)
+    private void SetDialogUI(Transform newPosition, string direction, float scale)
     {
         dialogBox.position = newPosition.position;
+        dialogBox.localScale = new Vector3(scale, scale, scale); 
 
         switch (direction)
         {
@@ -126,11 +127,18 @@ public class DialogManager : MonoBehaviour
             SetUIBoxActiveStates(true);
         }
 
+        float minAlpha = 0.1f;
+        float maxAlpha = 1f; 
+
         if (!grow)
         {
             float tempVal = minVal;
             minVal = maxVal; 
             maxVal = tempVal;
+
+            float tempAlpha = minAlpha;
+            minAlpha = maxAlpha; 
+            maxAlpha = tempAlpha;
         }
 
         Vector3 startScale = new Vector3(minVal, minVal, minVal);
@@ -145,7 +153,7 @@ public class DialogManager : MonoBehaviour
         {
             timer += Time.deltaTime;
             dialogBox.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
-            newAlpha = Mathf.Lerp(minVal, maxVal, timer / timeToAnimate);
+            newAlpha = Mathf.Lerp(minAlpha, maxAlpha, timer / timeToAnimate);
 
             // Set the alpha of the UI Dialog Box elements
             dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, newAlpha);
@@ -208,7 +216,7 @@ public class DialogManager : MonoBehaviour
 
     private Coroutine lineRoutine = null;
     public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
-        Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
+        Transform textBoxPosition, float scale, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
     {
         string actorName = speaker.actorName; 
@@ -218,7 +226,7 @@ public class DialogManager : MonoBehaviour
         {
             UpdatingDialogBox = true;
 
-            SetDialogUI(textBoxPosition, actorDirection);
+            SetDialogUI(textBoxPosition, actorDirection, scale);
             ClearDialogText();
 
             foreach (BaseActor actor in currentActorsToAnimate)
@@ -229,7 +237,7 @@ public class DialogManager : MonoBehaviour
 
             SetDialogBox(speaker);
             AnimatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize());
+            StartCoroutine(AnimateUIToSize(maxVal: scale));
 
             while (AnimatingDialogBox)
                 yield return null;
@@ -242,13 +250,13 @@ public class DialogManager : MonoBehaviour
             UpdatingDialogBox = true; 
 
             AnimatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize(grow:false));
+            StartCoroutine(AnimateUIToSize(maxVal: scale, grow:false));
 
             while (AnimatingDialogBox)
                 yield return null;
 
             // Wait until text box is shrunk before moving positions
-            SetDialogUI(textBoxPosition, actorDirection);
+            SetDialogUI(textBoxPosition, actorDirection, scale);
             ClearDialogText();
 
             // Wait before shrinking Dialog Box to animate
@@ -260,7 +268,7 @@ public class DialogManager : MonoBehaviour
 
             SetDialogBox(speaker);
             AnimatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize());
+            StartCoroutine(AnimateUIToSize(maxVal: scale));
 
             while (AnimatingDialogBox)
                 yield return null;
@@ -369,7 +377,7 @@ public class DialogManager : MonoBehaviour
         if (boxIsActive)
         {
             AnimatingDialogBox = true;
-            StartCoroutine(AnimateUIToSize(grow:false));
+            StartCoroutine(AnimateUIToSize(maxVal: dialogBox.transform.localScale.x, grow:false));
         }
         else { AnimatingDialogBox = false; }
 
