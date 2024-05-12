@@ -18,7 +18,11 @@ public class SixFaceMana : Mana
 
     public override void CheckCastableSpells()
     {
-        if(freeSpells)
+        if (Tutorial)
+        {
+            TutorialCheckCastableSpells();
+        }
+        else if (freeSpells)
         {
             foreach (SixFaceAttackSO attack in attacks)
             {

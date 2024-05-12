@@ -22,7 +22,11 @@ public class SafeTMana : Mana
 
     public override void CheckCastableSpells()
     {
-        if (freeSpells)
+        if (Tutorial)
+        {
+            TutorialCheckCastableSpells();
+        }
+        else if (freeSpells)
         {
             foreach (SafeTAttackSO attack in attacks)
             {

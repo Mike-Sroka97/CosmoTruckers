@@ -12,7 +12,11 @@ public class AeglarMana : Mana
 
     public override void CheckCastableSpells()
     {
-        if (freeSpells)
+        if(Tutorial)
+        {
+            TutorialCheckCastableSpells();
+        }
+        else if (freeSpells)
         {
             foreach (AeglarAttackSO attack in attacks)
             {

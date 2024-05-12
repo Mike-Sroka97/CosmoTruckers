@@ -10,6 +10,9 @@ public abstract class Mana : MonoBehaviour
     protected PlayerCharacter myCharacter;
     protected List<BaseAttackSO> attacks;
     [HideInInspector] public PlayerVessel MyVessel;
+    [HideInInspector] public bool Tutorial;
+    [HideInInspector] public string TutorialAttackName;
+
 
     private void Start()
     {
@@ -20,6 +23,15 @@ public abstract class Mana : MonoBehaviour
     public virtual void SetVessel(PlayerVessel newVessel)
     {
         MyVessel = newVessel;
+    }
+
+    public void TutorialCheckCastableSpells()
+    {
+        foreach (BaseAttackSO attack in attacks)
+            if (attack.AttackName != TutorialAttackName)
+                attack.CanUse = false;
+            else
+                attack.CanUse = true;
     }
 
     public abstract void CheckCastableSpells();

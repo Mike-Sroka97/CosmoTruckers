@@ -14,7 +14,11 @@ public class ProtoMana : Mana
 
     public override void CheckCastableSpells()
     {
-        if (freeSpells)
+        if (Tutorial)
+        {
+            TutorialCheckCastableSpells();
+        }
+        else if (freeSpells)
         {
             foreach (ProtoAttackSO attack in attacks)
             {
