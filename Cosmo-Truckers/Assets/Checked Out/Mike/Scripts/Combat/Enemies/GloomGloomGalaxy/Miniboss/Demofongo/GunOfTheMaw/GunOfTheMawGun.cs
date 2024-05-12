@@ -13,8 +13,8 @@ public class GunOfTheMawGun : MonoBehaviour
     [SerializeField] float fireDelay;
     [SerializeField] float animationDelay, startSpinDelay; 
     [SerializeField] Transform barrel;
-    [SerializeField] GameObject bullet;
-    [SerializeField] AnimationClip shoot; 
+    [SerializeField] GameObject bullet, confettiParticle;
+    [SerializeField] AnimationClip shoot;
 
     [HideInInspector] public int CurrentBlackListedSpawn = 8;
 
@@ -28,6 +28,7 @@ public class GunOfTheMawGun : MonoBehaviour
         myRotator = GetComponent<Rotator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
+
 
         DeterminePosition();
     }
@@ -71,7 +72,9 @@ public class GunOfTheMawGun : MonoBehaviour
         yield return new WaitForSeconds(animationDelay);
 
         GameObject newBullet = Instantiate(bullet, barrel);
+        GameObject confetti = Instantiate(confettiParticle, barrel);
         newBullet.transform.parent = transform.parent;
+        confetti.transform.parent = transform.parent; 
 
         yield return new WaitForSeconds(startSpinDelay);
 
