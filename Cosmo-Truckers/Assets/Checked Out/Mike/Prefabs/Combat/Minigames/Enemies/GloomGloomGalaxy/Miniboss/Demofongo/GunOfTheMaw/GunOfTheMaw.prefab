@@ -202,19 +202,20 @@ MonoBehaviour:
   DebuffToAdd: {fileID: 11400000, guid: dc3a0113607822c40aa68d7a7c7e15fb, type: 2}
   playerEnemyTargetDifference: 0
   MinigameDuration: 15
-  Score: 1
+  Score: 0
   PlayerDead: 0
   MoveEnded: 0
   AugmentScore: 0
   maxScore: 1
-  augmentStacksPerScore: 0
-  maxAugmentStacks: 1
+  augmentStacksPerScore: 2
+  maxAugmentStacks: 8
   baseDamage: 22
   baseAugmentStacks: 1
   timeToEndMove: 1
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  GoTextReplacement: 
   bossMove: 0
   FightWon: 0
   spawnTest: 0
@@ -233,8 +234,9 @@ GameObject:
   - component: {fileID: 684717683899806080}
   - component: {fileID: 684717683899806095}
   - component: {fileID: 2938564792458644567}
+  - component: {fileID: 7423296281765908941}
   m_Layer: 0
-  m_Name: Head
+  m_Name: DemofongoHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -320,9 +322,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05, y: -0.1}
+  m_Offset: {x: -0.049999952, y: -0.03218603}
   serializedVersion: 2
-  m_Radius: 0.75
+  m_Radius: 0.6821861
 --- !u!114 &684717683899806080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,6 +358,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dashDelay: 2.8
   dashSpeed: 5.2
+  idle: {fileID: 7400000, guid: 133a01bedd6a25144a3082ef701b2f75, type: 2}
+  attack: {fileID: 7400000, guid: 9851407b88aeca346b6dff2aad3bb67b, type: 2}
 --- !u!50 &2938564792458644567
 Rigidbody2D:
   serializedVersion: 4
@@ -377,6 +381,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &7423296281765908941
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684717683899806082}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 055afdd4cdffc234cb6af7ed69dc8af6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &684717684086841524
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +512,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
   m_SortingLayer: 4
-  m_SortingOrder: 1
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 7f3cd78f83ab9a3459a431ae8b771c62, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -545,6 +569,7 @@ MonoBehaviour:
   startSpinDelay: 0
   barrel: {fileID: 684717684671321004}
   bullet: {fileID: 5741512667775297908, guid: 5690803201272bb4293aa4f20f711952, type: 3}
+  confettiParticle: {fileID: 779253218040689466, guid: 68d10d7d8903983469b8683e9d313a2f, type: 3}
   shoot: {fileID: 7400000, guid: 79c18f8dd19f01749a30aaee7b2372a8, type: 2}
   CurrentBlackListedSpawn: 8
 --- !u!95 &1871192242
