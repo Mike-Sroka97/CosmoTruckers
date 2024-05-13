@@ -43,6 +43,7 @@ public class DialogManager : MonoBehaviour
     public List<BaseActor> PlayerActors { get; private set; }
     public TextParser TextParser;
     public ActorList ActorList;
+    private bool noWaitDialog = false;
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }
@@ -360,6 +361,8 @@ public class DialogManager : MonoBehaviour
                 if (int.TryParse(tagValue, out int parsedNumber))
                     boxNumber = parsedNumber;
             }
+            else if (tagKey == "noWait")
+                noWaitDialog = true;
             else
             {
                 Debug.Log("No additional Pre-Text tag found!");

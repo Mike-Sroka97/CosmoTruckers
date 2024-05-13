@@ -170,7 +170,7 @@ public abstract class CutsceneController : MonoBehaviour
             // Set last id after delivering
             lastID = currentID;
 
-            yield return null;
+            yield return null; 
         }
     }
 
@@ -354,15 +354,20 @@ public abstract class CutsceneController : MonoBehaviour
         return canAdvance && !DialogManager.Instance.UpdatingDialogBox && DialogManager.Instance.DialogIsPlaying;
     }
 
+    private void TryToAdvanceDialog()
+    {
+        if (CanAdvanceDialog())
+        {
+            if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
+            else { StartCoroutine(AdvanceScene()); }
+        }
+    }
+
     public void CheckPlayerInput()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (CanAdvanceDialog())
-            {
-                if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
-                else { StartCoroutine(AdvanceScene()); }
-            }
+            TryToAdvanceDialog(); 
         }
     }
 }

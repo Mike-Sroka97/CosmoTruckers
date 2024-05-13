@@ -131,11 +131,12 @@ public class DialogTextAnimations
                     // Make sure every character talks
                     if (visibleCharacterIndex == 0)
                         UpdateDialogSound("normal", -1); 
-
-                    ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                    
+                    if (isTextAnimating)
+                        ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
                     
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
-                    if (visibleCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
+                    if ((visibleCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter)))
                     {
                         // set the animation start time to now
                         characterAnimStartTimes[visibleCharacterIndex] = Time.unscaledTime;
@@ -208,6 +209,7 @@ public class DialogTextAnimations
                 info.mesh.vertices = info.vertices;
                 textBox.UpdateGeometry(info.mesh, i); 
             }
+
             yield return null; 
         }
     }

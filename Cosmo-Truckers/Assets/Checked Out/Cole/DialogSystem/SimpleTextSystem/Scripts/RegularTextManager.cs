@@ -91,6 +91,7 @@ public class RegularTextManager : MonoBehaviour
             float pBefore = 0.1f;
             string vcType = string.Empty;
             int vcRate = -1; // If -1 is passed in, use default voice rate
+            bool noWaitDialog = false;
 
             DialogManager.Instance.HandlePreTextTags(tags, ref emptyStringReference, ref pBefore, ref emptyActors, ref emptyStringReference,
                 ref emptyBoolReference, ref vcType, ref vcRate);
