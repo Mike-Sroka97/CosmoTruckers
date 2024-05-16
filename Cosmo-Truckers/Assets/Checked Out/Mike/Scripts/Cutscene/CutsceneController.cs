@@ -11,19 +11,6 @@ public abstract class CutsceneController : MonoBehaviour
     // Dialog Scene Setup Variables
     [SerializeField] TextAsset[] textFiles;
 
-    private BaseActor[] actors;
-
-    private string[] dialogs;
-    private string baseDialog;
-    private int currentLineIndex = 0;
-    private int currentID = 1;
-    private int lastID = -1;
-    private int allLinesCount = 0;
-    private int currentTextFile = 0; 
-
-    private static readonly string[] basePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
-
-
     protected CameraController cameraController;
 
     private void Start()
@@ -57,121 +44,12 @@ public abstract class CutsceneController : MonoBehaviour
     protected void DialogSetup()
     {
         DialogManager.Instance.DialogIsPlaying = true;
-
-        dialogs = new string[DialogManager.Instance.PlayerActors.Count];
-        baseDialog = DialogManager.Instance.TextParser.GetAllDialogs(textFiles[currentTextFile])[0];
+        DialogManager.Instance.SetupDialogs(textFiles[DialogManager.Instance.CurrentTextFile]); 
 
         // Sort the player actors
         BaseActor[] sortedActors = SortBasePlayerActors(DialogManager.Instance.PlayerActors);
         List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
-        actors = SpawnActorsIn(actorPrefabs);
-    }
-
-    protected IEnumerator AdvanceScene()
-    {
-        // Increment the current line
-        currentLineIndex++;
-
-        allLinesCount = DialogManager.Instance.TextParser.GetAllLinesInThisDialogCount(dialogs[0]);
-
-        DialogManager.Instance.SetNextLineIndicatorState(false);
-
-        // End the dialog if we've reached the line count
-        if (currentLineIndex >= allLinesCount)
-        {
-            StartCoroutine(DialogManager.Instance.EndDialog());
-        }
-        // Otherwise, continue the dialog
-        else
-        {
-            // At the current line in the base dialog, get the tags
-            string[] tags = DialogManager.Instance.TextParser.GetTagsAtCurrentDialogLine(baseDialog, currentLineIndex);
-            string speakerDialog;
-
-            // Get the actor ID for this line and the dialog associated with that actor
-            if (int.TryParse(tags[0], out currentID))
-            {
-                int dialogToGrab = currentID - 1;
-
-                // Non-players don't need to worry about this. Grab the base dialog
-                if (dialogToGrab > 3)
-                    dialogToGrab = 0;
-
-                speakerDialog = dialogs[dialogToGrab]; // ID's in text will be on a starting scale of 1
-            }
-            else
-            {
-                Debug.LogError("Unable to parse int out of first tag!");
-                speakerDialog = baseDialog;
-            }
-
-            // Handle the Pre Text Tags, and return any variables needed to pass into actors
-            string speakerDirection = string.Empty;
-            float pBefore = 0f;
-            List<int> actorsToAnim = new List<int> { };
-            string animToPlay = string.Empty;
-            bool waitForAnim = false;
-            float waitTime = 0f;
-            string vcType = string.Empty;
-            int vcRate = -1; // If -1 is passed in, use default voice rate
-
-            DialogManager.Instance.HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay,
-                ref waitForAnim, ref vcType, ref vcRate);
-
-            // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
-            if (pBefore > 0f)
-                waitTime = pBefore;
-
-            // Animate actors or clear their animation
-            List<BaseActor> actorsToAnimate = new List<BaseActor>();
-            if (actorsToAnim != null)
-            {
-                float animationTime = 0;
-
-                for (int i = 0; i < actorsToAnim.Count; i++)
-                {
-                    foreach (BaseActor actor in actors)
-                    {
-                        if (actor.actorID == actorsToAnim[i])
-                        {
-                            actor.GetAnimationInfo(animToPlay, ref animationTime);
-                            actorsToAnimate.Add(actor);
-                            break;
-                        }
-                    }
-                }
-
-                DialogManager.Instance.ActorsToAnimate(actorsToAnimate);
-
-                if (waitForAnim)
-                    waitTime = animationTime;
-            }
-            else
-            {
-                foreach (BaseActor actor in actors)
-                {
-                    actor.ClearAnimationInfo();
-                }
-
-                DialogManager.Instance.ActorsToAnimate(null);
-            }
-
-            // Get the line associated with this actor and their dialog
-            string currentLine = DialogManager.Instance.TextParser.GetDialogTextAtCurrentLine(speakerDialog, currentLineIndex);
-
-            // Check if it's the first line in the dialog
-            bool firstDialog = false;
-            if (currentLineIndex == 1)
-                firstDialog = true;
-
-            // Tell the actor to deliver the line
-            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
-
-            // Set last id after delivering
-            lastID = currentID;
-
-            yield return null; 
-        }
+        DialogManager.Instance.SetBaseActors(SpawnActorsIn(actorPrefabs));
     }
 
     /// <summary>
@@ -196,15 +74,15 @@ public abstract class CutsceneController : MonoBehaviour
             bool basePlayerFound = false;
 
             // Go through all base player names
-            for (int j = 0; j < basePlayerNames.Length; j++)
+            for (int j = 0; j < DialogManager.BasePlayerNames.Length; j++)
             {
                 // This is one of the base players. Set them to the correct position of the base player. 
-                if (basePlayerNames[j] == actor.actorName)
+                if (DialogManager.BasePlayerNames[j] == actor.actorName)
                 {
                     finalPlayerActors[j] = actor;
                     finalPlayerActors[j].actorID = j + 1;
                     //This is a base character, so we will use the first dialog
-                    dialogs[j] = DialogManager.Instance.TextParser.GetAllDialogs(textFiles[currentTextFile])[0];
+                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetAllDialogs(textFiles[DialogManager.Instance.CurrentLineIndex])[0]);
                     basePlayerFound = true;
                 }
 
@@ -228,7 +106,7 @@ public abstract class CutsceneController : MonoBehaviour
                     // Set the null spots to the remaining player actors
                     finalPlayerActors[j] = remainingPlayerActors[i];
                     // Set the dialog for this player slot to be a specific actor dialog
-                    dialogs[j] = DialogManager.Instance.TextParser.GetActorDialog(textFiles[currentLineIndex], remainingPlayerActors[i].actorName);
+                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetActorDialog(textFiles[DialogManager.Instance.CurrentLineIndex], remainingPlayerActors[i].actorName)); 
                     finalPlayerActors[j].actorID = j + 1;
                     break;
                 }
@@ -344,22 +222,12 @@ public abstract class CutsceneController : MonoBehaviour
         return actors;
     }
 
-    private bool CanAdvanceDialog()
-    {
-        bool canAdvance = true;
-
-        if (currentLineIndex >= allLinesCount)
-            canAdvance = false;
-
-        return canAdvance && !DialogManager.Instance.UpdatingDialogBox && DialogManager.Instance.DialogIsPlaying;
-    }
-
     private void TryToAdvanceDialog()
     {
-        if (CanAdvanceDialog())
+        if (DialogManager.Instance.CanAdvanceDialog())
         {
             if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
-            else { StartCoroutine(AdvanceScene()); }
+            else { StartCoroutine(DialogManager.Instance.AdvanceScene()); }
         }
     }
 

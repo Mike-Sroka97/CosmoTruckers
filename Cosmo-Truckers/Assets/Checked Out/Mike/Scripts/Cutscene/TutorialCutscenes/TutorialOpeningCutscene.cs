@@ -46,7 +46,7 @@ public class TutorialOpeningCutscene : CutsceneController
         yield return new WaitForSeconds(3);
 
         // Set the player actors here, since this cutscene will always have the same player actors
-        DialogManager.Instance.SetPlayerActors(baseActors.ToList());
+        DialogManager.Instance.SetPlayerActors(baseActors.ToList(), isCutscene: true);
 
         // Setup Dialog
         DialogSetup();
@@ -70,7 +70,7 @@ public class TutorialOpeningCutscene : CutsceneController
         }
 
         // Advance the scene
-        StartCoroutine(AdvanceScene());
+        StartCoroutine(DialogManager.Instance.AdvanceScene());
 
         while (DialogManager.Instance.DialogIsPlaying)
         {

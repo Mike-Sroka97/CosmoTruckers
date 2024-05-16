@@ -43,11 +43,31 @@ public class DialogManager : MonoBehaviour
     public List<BaseActor> PlayerActors { get; private set; }
     public TextParser TextParser;
     public ActorList ActorList;
+
+    private BaseActor[] actors;
+    private string[] dialogs;
+    private string baseDialog;
+    private int currentLineIndex = 0;
+    private int currentID = 1;
+    private int lastID = -1;
+    private int allLinesCount = 0;
+    
+    private bool firstTimeSetupComplete;
+    private float lastBoxScale = 1f;
     private bool noWaitDialog = false;
+    private float noWaitDialogTimeBetween = 0.35f; 
+    private float cutsceneDialogWaitTime = 1.25f; 
+
+    // Public Variables
+    public int CurrentLineIndex { get; private set; } = 0;
+    public int CurrentTextFile { get; private set; } = 0;
+
+    public static readonly string[] BasePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }
     public bool UpdatingDialogBox { get; private set; }
+    public bool CutsceneDialog { get; private set; }
 
     public bool DialogIsPlaying;
 
@@ -59,7 +79,7 @@ public class DialogManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
 
             // Make sure it has scripts
-            GetLocalScripts();
+            SetupLocalScripts();
 
             Instance = this;
             DontDestroyOnLoad(this);
@@ -72,11 +92,12 @@ public class DialogManager : MonoBehaviour
     }
 
     #region New Dialog Info
-    public void SetPlayerActors(List<BaseActor> actors)
+    public void SetPlayerActors(List<BaseActor> actors, bool isCutscene = false)
     {
         PlayerActors = actors;
+        CutsceneDialog = isCutscene;
     }
-    public void GetLocalScripts()
+    public void SetupLocalScripts()
     {
         if (TextParser == null)
         {
@@ -84,6 +105,16 @@ public class DialogManager : MonoBehaviour
             ActorList = GetComponent<ActorList>();
         }
     }
+    public void SetupDialogs(TextAsset textFile)
+    {
+        dialogs = new string[PlayerActors.Count];
+        baseDialog = TextParser.GetAllDialogs(textFile)[0];
+    }
+    public void SetBaseActors(BaseActor[] _actors)
+    {
+        actors = _actors; 
+    }
+
     #endregion
 
     #region Next Dialog Setup
@@ -119,12 +150,13 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    /// Grow or shrink the Dialog Box
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.5f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
+        /// Grow or shrink the Dialog Box
         if (!boxIsActive && grow)
         {
-            boxIsActive = true; 
+            boxIsActive = true;
+            lastBoxScale = maxVal; 
             SetUIBoxActiveStates(true);
         }
 
@@ -133,9 +165,9 @@ public class DialogManager : MonoBehaviour
 
         if (!grow)
         {
-            float tempVal = minVal;
-            minVal = maxVal; 
-            maxVal = tempVal;
+            // We don't want new actor to shrink box to their scale
+            maxVal = minVal;
+            minVal = lastBoxScale; 
 
             float tempAlpha = minAlpha;
             minAlpha = maxAlpha; 
@@ -174,9 +206,9 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    /// Set the active state of the UI Dialog Box elements
     private void SetUIBoxActiveStates(bool state)
     {
+        /// Set the active state of the UI Dialog Box elements
         dialogBoxImage.gameObject.SetActive(state);
         dialogBoxImageBorder.gameObject.SetActive(state);
         actorDirection.gameObject.SetActive(state);
@@ -200,21 +232,168 @@ public class DialogManager : MonoBehaviour
     /// <param name="state"></param>
     public void SetNextLineIndicatorState(bool state)
     {
-        if (indicatorAnimator == null)
-            indicatorAnimator = nextLineIndicator.GetComponent<Animator>();
+        if (!CutsceneDialog)
+        {
+            if (indicatorAnimator == null)
+                indicatorAnimator = nextLineIndicator.GetComponent<Animator>();
 
-        if (state == true)
-            indicatorAnimator.Play("DM_NextLineIndicator_Grow"); 
+            if (state == true)
+                indicatorAnimator.Play("DM_NextLineIndicator_Grow");
 
-        nextLineIndicator.enabled = state; 
+            nextLineIndicator.enabled = state;
+        }
+        else
+        {
+            nextLineIndicator.enabled = false; 
+        }
     }
     #endregion
 
     #region Dialog Mode
 
+    public IEnumerator AdvanceScene()
+    {
+
+        if (noWaitDialog)
+            yield break; 
+
+        // Increment the current line
+        currentLineIndex++;
+
+        allLinesCount = TextParser.GetAllLinesInThisDialogCount(dialogs[0]);
+
+        SetNextLineIndicatorState(false);
+
+        // End the dialog if we've reached the line count
+        if (currentLineIndex >= allLinesCount)
+        {
+            StartCoroutine(EndDialog());
+        }
+        // Otherwise, continue the dialog
+        else
+        {
+            // At the current line in the base dialog, get the tags
+            string[] tags = TextParser.GetTagsAtCurrentDialogLine(baseDialog, currentLineIndex);
+            string speakerDialog;
+
+            // Get the actor ID for this line and the dialog associated with that actor
+            if (int.TryParse(tags[0], out currentID))
+            {
+                int dialogToGrab = currentID - 1;
+
+                // Non-players don't need to worry about this. Grab the base dialog
+                if (dialogToGrab > 3)
+                    dialogToGrab = 0;
+
+                speakerDialog = dialogs[dialogToGrab]; // ID's in text will be on a starting scale of 1
+            }
+            else
+            {
+                Debug.LogError("Unable to parse int out of first tag!");
+                speakerDialog = baseDialog;
+            }
+
+            // Handle the Pre Text Tags, and return any variables needed to pass into actors
+            string speakerDirection = string.Empty;
+            float pBefore = 0f;
+            List<int> actorsToAnim = new List<int> { };
+            string animToPlay = string.Empty;
+            bool waitForAnim = false;
+            float waitTime = 0f;
+            string vcType = string.Empty;
+            int vcRate = -1; // If -1 is passed in, use default voice rate
+
+            HandlePreTextTags(tags, ref speakerDirection, ref pBefore, ref actorsToAnim, ref animToPlay,
+                ref waitForAnim, ref vcType, ref vcRate);
+
+            // Set wait time to pause before value. This will get overwritten if waitForAnim is true 
+            if (pBefore > 0f)
+                waitTime = pBefore;
+
+            // Animate actors or clear their animation
+            List<BaseActor> actorsToAnimate = new List<BaseActor>();
+            if (actorsToAnim != null)
+            {
+                float animationTime = 0;
+
+                for (int i = 0; i < actorsToAnim.Count; i++)
+                {
+                    foreach (BaseActor actor in actors)
+                    {
+                        if (actor.actorID == actorsToAnim[i])
+                        {
+                            actor.GetAnimationInfo(animToPlay, ref animationTime);
+                            actorsToAnimate.Add(actor);
+                            break;
+                        }
+                    }
+                }
+
+                ActorsToAnimate(actorsToAnimate);
+
+                if (waitForAnim)
+                    waitTime = animationTime;
+            }
+            else
+            {
+                foreach (BaseActor actor in actors)
+                {
+                    actor.ClearAnimationInfo();
+                }
+
+                ActorsToAnimate(null);
+            }
+
+            // Get the line associated with this actor and their dialog
+            string currentLine = TextParser.GetDialogTextAtCurrentLine(speakerDialog, currentLineIndex);
+
+            // Check if it's the first line in the dialog
+            bool firstDialog = false;
+            if (currentLineIndex == 1)
+                firstDialog = true;
+
+            // Tell the actor to deliver the line
+            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
+
+            // Set last id after delivering
+            lastID = currentID;
+
+            // Prevents user from spamming
+            firstTimeSetupComplete = true; 
+
+            while (noWaitDialog)
+            {
+                if (CheckIfDialogTextAnimating())
+                {
+                    yield return null; 
+                }
+                else
+                {
+                    yield return new WaitForSeconds(noWaitDialogTimeBetween); 
+                    noWaitDialog = false;
+                    StartCoroutine(AdvanceScene());
+                    yield break; 
+                }
+            }
+
+            if (!noWaitDialog && CutsceneDialog)
+            {
+                while (CheckIfDialogTextAnimating() || UpdatingDialogBox)
+                {
+                    yield return null;
+                }
+
+                yield return new WaitForSeconds(cutsceneDialogWaitTime);
+                StartCoroutine(AdvanceScene());
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
     /// Start the next dialog
     /// Currently called by BaseActor
-
     private Coroutine lineRoutine = null;
     public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
         Transform textBoxPosition, float scale, bool sameSpeaker = false, bool firstDialog = false, 
@@ -289,7 +468,7 @@ public class DialogManager : MonoBehaviour
 
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
-        dialogTextAnimations.isTextAnimating = false;
+        dialogTextAnimations.IsTextPlaying = false;
 
         // Speak the next line of dialog. Process the dialog commands and start animating the text into the text box
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
@@ -393,6 +572,7 @@ public class DialogManager : MonoBehaviour
         yield return new WaitForSeconds(disableUITime);
 
         DialogIsPlaying = false;
+        firstTimeSetupComplete = false; 
     }
     #endregion
 
@@ -410,13 +590,26 @@ public class DialogManager : MonoBehaviour
     public bool CheckIfDialogTextAnimating()
     {
         if (dialogTextAnimations != null)
-            return dialogTextAnimations.isTextAnimating;
+            return dialogTextAnimations.IsTextPlaying;
         else
             return false; 
     }
     public void StopAnimating()
     {
         dialogTextAnimations.FinishCurrentAnimation();
+    }
+    public void SetDialog(int index, string dialog)
+    {
+        dialogs[index] = dialog;
+    }
+    public bool CanAdvanceDialog()
+    {
+        bool canAdvance = true;
+
+        if (currentLineIndex >= allLinesCount)
+            canAdvance = false;
+
+        return canAdvance && !UpdatingDialogBox && DialogIsPlaying && firstTimeSetupComplete && CutsceneDialog;
     }
 
     #endregion
