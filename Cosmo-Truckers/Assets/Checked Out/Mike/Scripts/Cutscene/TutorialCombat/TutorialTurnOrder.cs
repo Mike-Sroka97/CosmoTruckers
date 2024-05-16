@@ -45,8 +45,6 @@ public class TutorialTurnOrder : TurnOrder
         switch (turn)
         {
             case 1:
-                //Goofy ah text COLE
-                //while(tutorial text yield return null
                 aeglar.GetManaBase.SetMaxMana();
                 aeglar.GetManaBase.TutorialAttackName = "Porkanator";
                 aeglar.StartTurn();
@@ -54,15 +52,17 @@ public class TutorialTurnOrder : TurnOrder
             case 2:
                 proto.GetManaBase.TutorialAttackName = "Electro-Whip";
                 proto.StartTurn();
-                //Force target malite 0
+                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
                 break;
             case 3:
-                safeT.GetManaBase.TutorialAttackName = "Clock Out";
-                safeT.StartTurn();
-                break;
-            case 4:
                 sixFace.GetManaBase.TutorialAttackName = "Petty Theft";
                 sixFace.StartTurn();
+                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[0];
+                break;
+            case 4:
+                safeT.GetManaBase.TutorialAttackName = "Clock Out";
+                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
+                safeT.StartTurn();
                 break;
             case 5:
                 malites[0].CurrentTargets.Clear();
@@ -76,6 +76,7 @@ public class TutorialTurnOrder : TurnOrder
                 break;
             case 7:
                 aeglar.GetManaBase.TutorialAttackName = "Veggie Vengeance";
+                CombatManager.Instance.MyTargeting.ForcedTarget = FindObjectOfType<ProtoCharacter>();
                 aeglar.StartTurn();
                 break;
             case 8:
@@ -89,6 +90,7 @@ public class TutorialTurnOrder : TurnOrder
             case 10:
                 safeT.GetManaBase.SetMaxMana();
                 safeT.GetManaBase.TutorialAttackName = "Power Pummel";
+                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
                 safeT.StartTurn();
                 break;
             case 11:
@@ -97,6 +99,7 @@ public class TutorialTurnOrder : TurnOrder
                 malites[1].StartTurn();
                 break;
             case 12:
+                CombatManager.Instance.MyTargeting.ForcedTarget = FindObjectOfType<AeglarCharacter>();
                 aeglar.StartTurn();
                 break;
             case 13:

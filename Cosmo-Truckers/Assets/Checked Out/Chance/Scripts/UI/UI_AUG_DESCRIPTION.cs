@@ -82,6 +82,9 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     //Temp movement system
     private void Update()
     {
+        if (CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls)
+            return;
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             //-4

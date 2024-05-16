@@ -27,6 +27,7 @@ public class INAcombat : MonoBehaviour
     [SerializeField] float shakeOffsetX;
     [SerializeField] float shakeSpeedY;
     [SerializeField] float shakeOffsetY;
+    [HideInInspector] public bool HoldCountDown;
 
     [Space(20)]
     [Header("Face Variables")]
@@ -42,6 +43,7 @@ public class INAcombat : MonoBehaviour
 
     private void Start()
     {
+        HoldCountDown = false;
         startingPosition = transform.position;
         topMaskStartingY = topMask.localPosition.y;
         bottomMaskStartingY = bottomMask.localPosition.y;
@@ -207,6 +209,9 @@ public class INAcombat : MonoBehaviour
             countDownTimer.transform.localScale = Vector3.one;
 
             float currentTime = maxTime;
+
+            while (HoldCountDown)
+                yield return null;
 
             while (currentTime > 0)
             {

@@ -80,7 +80,7 @@ public abstract class AttackUI : MonoBehaviour
 
     private void GetInput()
     {
-        if (!spinning)
+        if (!spinning && !CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls)
         {
             if(Input.GetKeyDown(KeyCode.E) && !attackDescriptionActive)
             {

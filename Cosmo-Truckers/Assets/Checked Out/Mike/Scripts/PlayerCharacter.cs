@@ -13,6 +13,7 @@ public class PlayerCharacter : Character
     public bool IsTank;
     public bool IsSupport;
     public bool IsUtility;
+    public bool RevokeControls = false;
     public int PlayerNumber;
     public string CharacterName { get => Name; private set => Name = value; }
 
@@ -65,7 +66,7 @@ public class PlayerCharacter : Character
 
     private void Update()
     {
-        if (!isTurn) return;
+        if (!isTurn || RevokeControls) return;
 
         if(wheel.activeInHierarchy || augList.activeInHierarchy || checkingEnemyIntentions)
         {

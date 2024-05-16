@@ -19,6 +19,7 @@ public class Targeting : MonoBehaviour
 
     bool isTargeting = false;
     public EnumManager.TargetingType CurrentTargetingType;
+    [HideInInspector] public Character ForcedTarget;
     BaseAttackSO currentAttack;
     public bool InitialSetup = false;
     bool targetingEnemies = true;
@@ -210,7 +211,7 @@ public class Targeting : MonoBehaviour
 
     private void TrackPlayerInput()
     {
-        if (!isTargeting || enemyAttacking)
+        if (!isTargeting || enemyAttacking || CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls)
             return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -248,6 +249,11 @@ public class Targeting : MonoBehaviour
 
     private void ReactivateCombatManager(bool enemyTargeting = false)
     {
+        if (ForcedTarget != null && currentlySelectedTargets[0] != ForcedTarget)
+            return;
+        else if (ForcedTarget != null)
+            ForcedTarget = null;
+
         //actually adds cone targets to the list
         if(currentAttack.TargetingType == EnumManager.TargetingType.Multi_Target_Cone)
         {
