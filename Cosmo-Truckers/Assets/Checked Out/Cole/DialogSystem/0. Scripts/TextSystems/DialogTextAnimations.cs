@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class DialogTextAnimations
 {
-    public bool isTextAnimating = false; 
+    public bool IsTextPlaying = false; 
     private bool stopAnimating = false;
 
     private readonly TMP_Text textBox;
@@ -61,7 +61,7 @@ public class DialogTextAnimations
         secondsPerCharacterValue_2 = secondsPerCharStartValue;
 
         // set the isTextAnimating to true and get Seconds Per Character
-        isTextAnimating = true; 
+        IsTextPlaying = true; 
         secondsPerCharacter = secondsPerCharacterValue_1 / secondsPerCharacterValue_2;
         float timeOfLastCharacter = 0;
 
@@ -132,7 +132,7 @@ public class DialogTextAnimations
                     if (visibleCharacterIndex == 0)
                         UpdateDialogSound("normal", -1); 
                     
-                    if (isTextAnimating)
+                    if (IsTextPlaying)
                         ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
                     
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
@@ -443,7 +443,7 @@ public class DialogTextAnimations
     private void FinishAnimating()
     {
         // Call this when the animation is finished. 
-        isTextAnimating = false;
+        IsTextPlaying = false;
         stopAnimating = false;
         DialogManager.Instance.SetNextLineIndicatorState(true); 
     }
@@ -451,7 +451,7 @@ public class DialogTextAnimations
     {
         secondsPerCharacter = 0;
 
-        if (isTextAnimating)
+        if (IsTextPlaying)
             stopAnimating = true;
     }
 

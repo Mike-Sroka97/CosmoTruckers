@@ -55,7 +55,7 @@ public class RegularTextManager : MonoBehaviour
     {
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
-        dialogTextAnimations.isTextAnimating = false;
+        dialogTextAnimations.IsTextPlaying = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
         lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, null));
@@ -142,7 +142,7 @@ public class RegularTextManager : MonoBehaviour
     public bool CheckIfDialogTextAnimating()
     {
         if (dialogTextAnimations != null)
-            return dialogTextAnimations.isTextAnimating;
+            return dialogTextAnimations.IsTextPlaying;
         else
             return false;
     }
