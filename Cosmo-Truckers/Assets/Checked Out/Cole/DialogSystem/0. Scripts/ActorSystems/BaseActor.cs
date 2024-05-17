@@ -73,13 +73,7 @@ public class BaseActor : MonoBehaviour
         if (waitTime > timeToWait)
             timeToWait = waitTime;
 
-        // Get the scale to pass in. If this is a player, we need the parent actor spot's scale
-        float scaleToPass = transform.localScale.x;
-        
-        if (transform.parent.GetComponent<ActorSpot>() != null)
-            scaleToPass = transform.parent.localScale.x; 
-
-        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, this, actorTextMaterial, textBoxPosition, scale: scaleToPass,
+        StartCoroutine(DialogManager.Instance.StartNextDialog(actorsLine, this, actorTextMaterial, textBoxPosition,
             sameSpeaker, firstDialog, waitTimeBetweenDialogs: timeToWait, actorDirection: direction)); 
     } 
 
