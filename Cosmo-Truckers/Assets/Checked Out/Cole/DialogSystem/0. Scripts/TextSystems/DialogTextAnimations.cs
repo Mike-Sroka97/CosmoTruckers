@@ -23,7 +23,11 @@ public class DialogTextAnimations
     // Voice Bark Values
     int vcRate = 3;
     List<AudioClip> vcBarks = new List<AudioClip>();
-    bool vcFluctuate = true; 
+    bool vcFluctuate = true;
+
+    private static readonly char[] EndPunctuation = new char[] {'.', '!', '?'};
+    private static readonly float endPunctuationTime = 0.75f; 
+    private static readonly float maxCharacterWaitTime = 1f; 
 
     // Initializer
     public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
@@ -37,10 +41,10 @@ public class DialogTextAnimations
     #region DEFAULT ANIMATION VARIABLES
     private static readonly Color32 clear = new Color32(0, 0, 0, 0);
     private const float CHAR_ANIM_TIME = 0.07f;
-    private float secondsPerCharStartValue = 150f;
-    private float secondsPerCharacterValue_1 = 1f;
-    private float secondsPerCharacterValue_2 = 150f;
+    private float secondsPerCharacterNormal = 150f;
+    private float secondsPerCharacterSpeedMultiplier = 1.5f;
     private float secondsPerCharacter;
+    private bool NormalSpeed = false; 
 
     private static readonly Vector3 vectorZero = Vector3.zero;
     #endregion
@@ -52,17 +56,21 @@ public class DialogTextAnimations
     #endregion
 
     // Begin to animate the text in using a coroutine
-    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker = null)
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker = null, bool normalSpeed = true)
     {
+        NormalSpeed = normalSpeed; 
+
         if (_speaker != null)
             speaker = _speaker; 
 
-        secondsPerCharacterValue_1 = 1f;
-        secondsPerCharacterValue_2 = secondsPerCharStartValue;
-
         // set the isTextAnimating to true and get Seconds Per Character
-        IsTextPlaying = true; 
-        secondsPerCharacter = secondsPerCharacterValue_1 / secondsPerCharacterValue_2;
+        IsTextPlaying = true;
+
+        if (NormalSpeed)
+            secondsPerCharacterSpeedMultiplier = 1f; 
+        
+        secondsPerCharacter = 1f / (secondsPerCharacterNormal * secondsPerCharacterSpeedMultiplier);  
+
         float timeOfLastCharacter = 0;
 
         // Get the start and ending index for text anims, colors, and sizes
@@ -104,7 +112,7 @@ public class DialogTextAnimations
             characterAnimStartTimes[i] = -1; 
         }
 
-        int visibleCharacterIndex = 0;
+        int currentCharacterIndex = 0;
 
         // Get the colors for this dialog
         Color32[] destinationColors = RetrieveDestinationColors(characterCount, textInfo, textColorInfo, cachedMeshInfo);
@@ -115,34 +123,34 @@ public class DialogTextAnimations
             if (stopAnimating)
             {
                 // If stopAnimating is true, set all character anim start times to right now and finish animating
-                for (int i = visibleCharacterIndex; i < characterCount; i++)
+                for (int i = currentCharacterIndex; i < characterCount; i++)
                 {
                     characterAnimStartTimes[i] = Time.unscaledTime; 
                 }
                 // set the visible character count to the text info character count
-                visibleCharacterIndex = characterCount;
+                currentCharacterIndex = characterCount;
                 FinishAnimating(); 
             }
             if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
             {
                 // If we're not at the end of the characterCount 
-                if (visibleCharacterIndex <= characterCount)
+                if (currentCharacterIndex <= characterCount)
                 {
                     // Make sure every character talks
-                    if (visibleCharacterIndex == 0)
+                    if (currentCharacterIndex == 0)
                         UpdateDialogSound("normal", -1); 
                     
                     if (IsTextPlaying)
-                        ExecuteRemainingCommandsAtIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                        ExecuteRemainingCommandsAtIndex(commands, currentCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
                     
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
-                    if ((visibleCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter)))
+                    if ((currentCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter)))
                     {
                         // set the animation start time to now
-                        characterAnimStartTimes[visibleCharacterIndex] = Time.unscaledTime;
+                        characterAnimStartTimes[currentCharacterIndex] = Time.unscaledTime;
 
                         // progress visible character index
-                        visibleCharacterIndex++; 
+                        currentCharacterIndex++; 
                         timeOfLastCharacter = Time.unscaledTime; // set time of last character to now
 
                         // progress last dialog bark count
@@ -152,7 +160,7 @@ public class DialogTextAnimations
                         PlayDialogSound(); 
 
                         // If we're at the characterCount, finish animating
-                        if (visibleCharacterIndex == characterCount)
+                        if (currentCharacterIndex == characterCount)
                         {
                             FinishAnimating(); 
                         }
@@ -183,11 +191,11 @@ public class DialogTextAnimations
                     float characterTime = 0;
                     float characterAnimStartTime = characterAnimStartTimes[j]; 
 
-                    // Wait between each character. Max 1 second
+                    // Wait between each character. Max 2 seconds
                     if (characterAnimStartTime >= 0)
                     {
                         float timeSinceAnimStart = Time.unscaledTime - characterAnimStartTime;
-                        characterTime = Mathf.Min(1, timeSinceAnimStart / CHAR_ANIM_TIME); 
+                        characterTime = Mathf.Min(maxCharacterWaitTime, timeSinceAnimStart / CHAR_ANIM_TIME); 
                     }
 
                     // May need to get text font size of each character here, check back later
@@ -243,23 +251,46 @@ public class DialogTextAnimations
         return (Time.unscaledTime - timeOfLastCharacter) > secondsPerCharacter;         
     }
 
-    private void ExecuteRemainingCommandsAtIndex(List<DialogCommand> commands, int visibleCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
+    private void ExecuteRemainingCommandsAtIndex(List<DialogCommand> commands, int currentCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
     {
+        bool isEndPunctuation = false;
+
+        // 5 seems like a good minimum count to check this
+        if (textBox.text.Length > 5)
+        {
+            if (currentCharacterIndex <= (textBox.text.Length - 5))
+            {
+                char currentChar = textBox.text[currentCharacterIndex];
+                char nextChar = textBox.text[currentCharacterIndex + 1];
+
+                foreach (char punctuation in EndPunctuation)
+                {
+                    if (punctuation == currentChar && nextChar == ' ')
+                    {
+                        isEndPunctuation = true;
+                    }
+                }
+            }
+        }
+
         // At the current index, go through the remaining DialogCommands and apply the effects if they are at the current index
         for (int i = 0; i < commands.Count; i++)
         {
             DialogCommand currentCommand = commands[i];
-            if (currentCommand.position == visibleCharacterIndex)
+            if (currentCommand.position == currentCharacterIndex)
             {
                 switch (currentCommand.type)
                 {
                     // Add a pause between characters using timeOfLastCharacter
                     case TextCommandType.Pause:
-                        timeOfLastCharacter = Time.unscaledTime + currentCommand.floatValue;
+                        if (isEndPunctuation && currentCommand.floatValue < endPunctuationTime)
+                            timeOfLastCharacter = Time.unscaledTime + endPunctuationTime; 
+                        else
+                            timeOfLastCharacter = Time.unscaledTime + currentCommand.floatValue;
                         break;
                     // Set the text speed with seconds per character
                     case TextCommandType.TextSpeedChange: 
-                        secondsPerCharacter = 1f / currentCommand.floatValue;
+                            secondsPerCharacter = 1f / (currentCommand.floatValue * secondsPerCharacterSpeedMultiplier);
                         break;
                     case TextCommandType.VoiceBark:
                         UpdateDialogSound(currentCommand.stringValue, currentCommand.floatValue, currentCommand.boolValue);
@@ -578,3 +609,4 @@ public struct TextColorInfo
     public int endIndex;
     public Color32 color;
 }
+

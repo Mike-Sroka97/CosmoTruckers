@@ -57,7 +57,7 @@ public class DialogManager : MonoBehaviour
     private Vector3 lastBoxPosition = Vector3.zero; 
     private bool noWaitDialog = false;
     private float noWaitDialogTimeBetween = 0.35f; 
-    private float cutsceneDialogWaitTime = 1.25f; 
+    private float cutsceneDialogWaitTime = 2.5f; 
 
     // Public Variables
     public int CurrentLineIndex { get; private set; } = 0;
@@ -69,6 +69,8 @@ public class DialogManager : MonoBehaviour
     public bool AnimatingDialogBox { get; private set; }
     public bool UpdatingDialogBox { get; private set; }
     public bool CutsceneDialog { get; private set; }
+
+    public bool TextSpeedNormal = true; 
 
     public bool DialogIsPlaying;
 
@@ -150,7 +152,7 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.5f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
+    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
         float minAlpha = 0.1f;
         float maxAlpha = 1f;
@@ -174,7 +176,7 @@ public class DialogManager : MonoBehaviour
             // We don't want new actor to shrink box to their scale
             float tempVal = maxVal;
             maxVal = minVal;
-            minVal = maxVal; 
+            minVal = tempVal; 
 
             float tempAlpha = minAlpha;
             minAlpha = maxAlpha; 
@@ -267,7 +269,6 @@ public class DialogManager : MonoBehaviour
 
     public IEnumerator AdvanceScene()
     {
-
         if (noWaitDialog)
             yield break; 
 
@@ -430,8 +431,8 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
+            AnimatingDialogBox = true; 
 
             while (AnimatingDialogBox)
                 yield return null;
@@ -443,8 +444,8 @@ public class DialogManager : MonoBehaviour
         {
             UpdatingDialogBox = true; 
 
-            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize(grow:false));
+            AnimatingDialogBox = true;
 
             while (AnimatingDialogBox)
                 yield return null;
@@ -461,8 +462,8 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize());
+            AnimatingDialogBox = true;
 
             while (AnimatingDialogBox)
                 yield return null;
@@ -486,7 +487,7 @@ public class DialogManager : MonoBehaviour
 
         // Speak the next line of dialog. Process the dialog commands and start animating the text into the text box
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker));
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker, TextSpeedNormal));
     }
 
     /// <summary>
@@ -572,8 +573,8 @@ public class DialogManager : MonoBehaviour
     {
         if (boxIsActive)
         {
-            AnimatingDialogBox = true;
             StartCoroutine(AnimateUIToSize(maxVal: dialogBox.transform.localScale.x, grow:false));
+            AnimatingDialogBox = true;
         }
         else { AnimatingDialogBox = false; }
 
