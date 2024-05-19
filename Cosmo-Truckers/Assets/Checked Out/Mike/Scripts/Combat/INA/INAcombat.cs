@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class INAcombat : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class INAcombat : MonoBehaviour
     [SerializeField] float shakeSpeedY;
     [SerializeField] float shakeOffsetY;
     [HideInInspector] public bool HoldCountDown;
+    [HideInInspector] public UnityEvent AttackStarted = new UnityEvent();
 
     [Space(20)]
     [Header("Face Variables")]
@@ -57,6 +59,11 @@ public class INAcombat : MonoBehaviour
         {
             StartCoroutine(MoveINADungeon(true));
         }
+    }
+
+    private void OnDisable()
+    {
+        AttackStarted.RemoveAllListeners();
     }
 
     public void CloseDungeonPage()
@@ -210,6 +217,7 @@ public class INAcombat : MonoBehaviour
 
             float currentTime = maxTime;
 
+            AttackStarted.Invoke();
             while (HoldCountDown)
                 yield return null;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerCharacter : Character
@@ -18,7 +19,7 @@ public class PlayerCharacter : Character
     public string CharacterName { get => Name; private set => Name = value; }
 
     [Header("Start turn objects")]
-    [SerializeField] UI_PlayerTurnStart selectionUI;
+    public UI_PlayerTurnStart SelectionUI;
     [SerializeField] GameObject wheel;
     [SerializeField] GameObject augList;
 
@@ -35,6 +36,8 @@ public class PlayerCharacter : Character
     [HideInInspector] public PlayerVessel MyVessel;
     public GameObject PlayerVessel;
     public AttackUI PlayerAttackUI;
+
+    public UnityEvent AttackWheelOpenedEvent = new UnityEvent();
 
     bool isTurn = false;
     bool checkingEnemyIntentions = false;
@@ -62,6 +65,7 @@ public class PlayerCharacter : Character
     }
 
     private int playerIntent = 0;
+    private int lastIntent = 0;
     private int maxPlayerIntent = 2;
 
     private void Update()
@@ -76,7 +80,7 @@ public class PlayerCharacter : Character
                     return;
 
                 ClosePages();
-                selectionUI.gameObject.SetActive(true);
+                SelectionUI.gameObject.SetActive(true);
                 SetPlayerCurrentOption();
 
                 if(checkingEnemyIntentions)
@@ -90,6 +94,8 @@ public class PlayerCharacter : Character
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
+                lastIntent = playerIntent;
+
                 if (playerIntent >= maxPlayerIntent)
                     playerIntent = 0;
                 else
@@ -99,6 +105,8 @@ public class PlayerCharacter : Character
             }
             else if(Input.GetKeyDown(KeyCode.A))
             {
+                lastIntent = playerIntent;
+
                 if (playerIntent == 0)
                     playerIntent = maxPlayerIntent;
                 else
@@ -108,13 +116,14 @@ public class PlayerCharacter : Character
             }
             else if(Input.GetKeyDown(KeyCode.Space))
             {
-                selectionUI.gameObject.SetActive(false);
+                SelectionUI.gameObject.SetActive(false);
 
                 switch (playerIntent)
                 {
                     //Attack
                     case 0:
                         SetupAttackWheel();
+                        AttackWheelOpenedEvent.Invoke();
                         break;
                     //Augs
                     case 1:
@@ -131,10 +140,24 @@ public class PlayerCharacter : Character
         }
     }
 
+    protected override void OnDisable()
+    {
+        //Clean up
+        AttackWheelOpenedEvent.RemoveAllListeners();
+
+        base.OnDisable();
+    }
+
     public override void StartTurn()
     {
         isTurn = true;
-        selectionUI.gameObject.SetActive(true);
+        SelectionUI.gameObject.SetActive(true);
+
+        if (SelectionUI.AttackDisabled)
+            playerIntent = 1;
+        if (SelectionUI.AttackDisabled && SelectionUI.AugDisabled)
+            playerIntent = 2;
+
         SetPlayerCurrentOption();
 
         CombatManager.Instance.CurrentCharacter = this;
@@ -154,7 +177,7 @@ public class PlayerCharacter : Character
         wheel.SetActive(false);
         augList.SetActive(false);
 
-        selectionUI.ResetColor();
+        SelectionUI.ResetColor();
         CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
     }
 
@@ -164,15 +187,33 @@ public class PlayerCharacter : Character
         {
             //Attack
             case 0:
-                selectionUI.StartAttack();
+                if (SelectionUI.AttackDisabled)
+                {
+                    playerIntent = lastIntent;
+                    return;
+                }
+
+                SelectionUI.StartAttack();
                 break;
             //Augs
             case 1:
-                selectionUI.StartAUG();
+                if (SelectionUI.AugDisabled)
+                {
+                    playerIntent = lastIntent;
+                    return;
+                }
+
+                SelectionUI.StartAUG();
                 break;
             //Intentions
             case 2:
-                selectionUI.StartIntent();
+                if (SelectionUI.InsightDisabled)
+                {
+                    playerIntent = lastIntent;
+                    return;
+                }
+;
+                SelectionUI.StartIntent();
                 break;
             default: break;
         }

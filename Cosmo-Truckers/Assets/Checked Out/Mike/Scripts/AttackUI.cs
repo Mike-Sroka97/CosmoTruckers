@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public abstract class AttackUI : MonoBehaviour
@@ -24,6 +25,7 @@ public abstract class AttackUI : MonoBehaviour
     protected bool spinning = false;
     protected PlayerCharacter currentPlayer;
     Transform heheHahaCircle;
+    public UnityEvent AttackSelected = new UnityEvent();
 
     public void StartTurn(PlayerCharacter player)
     {
@@ -70,6 +72,8 @@ public abstract class AttackUI : MonoBehaviour
 
     private void OnDisable()
     {
+        AttackSelected.RemoveAllListeners();
+
         for (int i = 0; i < transform.childCount; i++)
             transform.GetChild(i).gameObject.SetActive(false);
     }
@@ -107,6 +111,7 @@ public abstract class AttackUI : MonoBehaviour
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
+                AttackSelected.Invoke();
                 if (transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
                     StartCoroutine(StartAttack());
             }

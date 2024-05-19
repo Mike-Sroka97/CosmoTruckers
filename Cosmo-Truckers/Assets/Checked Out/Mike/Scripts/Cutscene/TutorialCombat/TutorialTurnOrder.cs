@@ -56,58 +56,62 @@ public class TutorialTurnOrder : TurnOrder
         {
             case 1:
                 //INA goes BLAH BLAH
-                yield return new WaitForSeconds(2f); 
+                //yield return new WaitForSeconds(2f); 
 
-                textManager.StartRegularTextMode(inaDialogs[inaDialogCounter]);
-                inaDialogCounter++;
+                //textManager.StartRegularTextMode(inaDialogs[inaDialogCounter]);
+                //inaDialogCounter++;
 
-                yield return new WaitForSeconds(dialogSetupTime); 
+                //yield return new WaitForSeconds(dialogSetupTime); 
 
-                while (textManager.DialogIsPlaying)
-                {
-                    yield return null; 
-                }
+                //while (textManager.DialogIsPlaying)
+                //    yield return null;
 
                 aeglar.GetManaBase.SetMaxMana();
                 aeglar.GetManaBase.TutorialAttackName = "Porkanator";
-                //Force Action
+                aeglar.SelectionUI.DisableButton(2);
+                aeglar.SelectionUI.DisableButton(3);
                 aeglar.StartTurn();
-                //INA listener to yap when attack wheel is open
-                //INA listener to yap when attack is selected
-                //INA listener to yap when attack starts (LOL)
+                //INA listener to yap when attack wheel opened "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
+                //INA listener to yap when attack is selected "PlayerCharacter.PlayerAttackUI.AttackSelected.AddListener(cum and piss and shit domain)"
+                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
                 break;
             case 2:
                 //INA yaps
+                aeglar.SelectionUI.EnableAllButtons();
                 proto.GetManaBase.TutorialAttackName = "Electro-Whip";
-                //Force Augment List
+                proto.SelectionUI.DisableButton(1);
+                proto.SelectionUI.DisableButton(3);
                 //INA listener for Aug list open (TODO: reenable combat button)
                 proto.StartTurn();
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
-                //INA listener to yap when attack wheel is open
-                //INA listener to yap when attack starts (LOL)
+                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
+                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
                 break;
             case 3:
+                proto.SelectionUI.EnableAllButtons();
                 //INA yaps about taunting from last turn at this point
                 sixFace.GetManaBase.TutorialAttackName = "Petty Theft";
-                //Force Insight
-                //INA listener for Insight open (TODO: reenable combat button and aug list)
+                sixFace.SelectionUI.DisableButton(1);
+                sixFace.SelectionUI.DisableButton(2);
+                //INA listener for Insight open (TODO: reenable combat button and aug list) => use PlayerCharacter.SelectionUI.EnableAllButtons()
                 sixFace.StartTurn();
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[0];
-                //INA listener to yap when attack wheel is open
-                //INA listener to yap when attack starts (LOL)
+                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
+                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
                 break;
             case 4:
+                sixFace.SelectionUI.EnableAllButtons();
                 safeT.GetManaBase.TutorialAttackName = "Clock Out";
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
                 safeT.StartTurn();
-                //INA listener to yap when attack wheel is open
-                //INA listener to yap when attack starts (LOL)
+                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
+                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
                 break;
             case 5:
                 malites[0].CurrentTargets.Clear();
                 malites[0].CurrentTargets.Add(proto);
                 malites[0].StartTurn();
-                //INA listener to yap when attack starts (LOL)
+                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
                 break;
             case 6:
                 malites[1].CurrentTargets.Clear();
@@ -115,29 +119,27 @@ public class TutorialTurnOrder : TurnOrder
                 malites[1].StartTurn();
                 break;
             case 7:
-                //(TODO enable all buttons)
                 aeglar.GetManaBase.TutorialAttackName = "Veggie Vengeance";
                 CombatManager.Instance.MyTargeting.ForcedTarget = FindObjectOfType<ProtoCharacter>();
                 aeglar.StartTurn();
-                //INA listener to yap when attack wheel is open
+                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
                 break;
             case 8:
-                //(TODO enable all buttons)
                 proto.GetManaBase.TutorialAttackName = "Spark Shield";
                 proto.StartTurn();
-                //INA listener to yap when attack wheel is open
+                //INA listener to yap when attack wheel is open"PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
                 break;
             case 9:
                 sixFace.GetManaBase.TutorialAttackName = "Bribery";
                 sixFace.StartTurn();
-                //INA listener to yap when attack wheel is open
+                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
                 break;
             case 10:
                 safeT.GetManaBase.SetMaxMana();
                 safeT.GetManaBase.TutorialAttackName = "Power Pummel";
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
                 safeT.StartTurn();
-                //INA listener to yap when attack wheel is open (TODO make the safeT.GetManaBase.SetMaxMana(); call here after INA brings attention to it)
+                //INA listener to yap when attack wheel is open (TODO make the safeT.GetManaBase.SetMaxMana(); call here after INA brings attention to it) "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
                 break;
             case 11:
                 malites[1].CurrentTargets.Clear();

@@ -11,6 +11,11 @@ public class UI_PlayerTurnStart : MonoBehaviour
     [SerializeField] SpriteRenderer attackOutline;
     [SerializeField] SpriteRenderer augOutline;
     [SerializeField] SpriteRenderer intentOutline;
+    [SerializeField] GameObject[] disabledIcons;
+
+    [HideInInspector] public bool AttackDisabled;
+    [HideInInspector] public bool AugDisabled;
+    [HideInInspector] public bool InsightDisabled;
 
     private void OnEnable()
     {
@@ -44,6 +49,54 @@ public class UI_PlayerTurnStart : MonoBehaviour
         attack.color = aug.color = Color.clear;
 
         intentOutline.color = Color.black;
-        augOutline.color = attackOutline.color = Color.clear;
+        attackOutline.color = Color.clear;
+    }
+
+    public void DisableButton(int buttonToDisable)
+    {
+        if(buttonToDisable == 1)
+        {
+            AttackDisabled = true;
+            disabledIcons[0].SetActive(true);
+        }
+        else if(buttonToDisable == 2)
+        {
+            AugDisabled = true;
+            disabledIcons[1].SetActive(true);
+        }
+        else
+        {
+            InsightDisabled = true;
+            disabledIcons[2].SetActive(true);
+        }
+    }
+
+    public void EnableButton(int buttonToEnable)
+    {
+        if (buttonToEnable == 1)
+        {
+            AttackDisabled = false;
+            disabledIcons[0].SetActive(false);
+        }
+        else if (buttonToEnable == 2)
+        {
+            AugDisabled = false;
+            disabledIcons[1].SetActive(false);
+        }
+        else
+        {
+            InsightDisabled = false;
+            disabledIcons[2].SetActive(false);
+        }
+    }
+
+    public void EnableAllButtons()
+    {
+        AttackDisabled = false;
+        AugDisabled = false;
+        InsightDisabled = false;
+        disabledIcons[0].SetActive(false);
+        disabledIcons[1].SetActive(false);
+        disabledIcons[2].SetActive(false);
     }
 }
