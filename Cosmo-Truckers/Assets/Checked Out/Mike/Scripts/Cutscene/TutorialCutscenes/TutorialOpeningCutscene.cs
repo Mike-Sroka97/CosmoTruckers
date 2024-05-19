@@ -69,8 +69,6 @@ public class TutorialOpeningCutscene : CutsceneController
             yield return null;
         }
 
-        DialogManager.Instance.TextSpeedNormal = false; 
-
         // Advance the scene
         StartCoroutine(DialogManager.Instance.AdvanceScene());
 

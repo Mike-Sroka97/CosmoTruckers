@@ -376,32 +376,39 @@ public class DialogManager : MonoBehaviour
             // Prevents user from spamming
             firstTimeSetupComplete = true; 
 
-            while (noWaitDialog)
+            if (noWaitDialog)
             {
-                if (CheckIfDialogTextAnimating())
+                while (noWaitDialog)
                 {
-                    yield return null; 
+                    if (CheckIfDialogTextAnimating() || UpdatingDialogBox)
+                    {
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(noWaitDialogTimeBetween);
+                        noWaitDialog = false;
+                        StartCoroutine(AdvanceScene());
+                        yield break;
+                    }
                 }
-                else
+            }
+
+            else
+            {
+                if (CutsceneDialog)
                 {
-                    yield return new WaitForSeconds(noWaitDialogTimeBetween); 
-                    noWaitDialog = false;
+                    while (CheckIfDialogTextAnimating() || UpdatingDialogBox)
+                    {
+                        yield return null;
+                    }
+
+                    yield return new WaitForSeconds(cutsceneDialogWaitTime);
                     StartCoroutine(AdvanceScene());
-                    yield break; 
+                    yield break;
                 }
             }
 
-            if (!noWaitDialog && CutsceneDialog)
-            {
-                while (CheckIfDialogTextAnimating() || UpdatingDialogBox)
-                {
-                    yield return null;
-                }
-
-                yield return new WaitForSeconds(cutsceneDialogWaitTime);
-                StartCoroutine(AdvanceScene());
-                yield break;
-            }
 
             yield return null;
         }
