@@ -38,6 +38,7 @@ public class PlayerCharacter : Character
     public AttackUI PlayerAttackUI;
 
     public UnityEvent AttackWheelOpenedEvent = new UnityEvent();
+    public UnityEvent AUGListOpenedEvent = new UnityEvent();
 
     bool isTurn = false;
     bool checkingEnemyIntentions = false;
@@ -128,6 +129,7 @@ public class PlayerCharacter : Character
                     //Augs
                     case 1:
                         SetUpAUGDescription(this);
+                        AUGListOpenedEvent.Invoke();
                         break;
                     //Intentions
                     case 2:
@@ -144,6 +146,7 @@ public class PlayerCharacter : Character
     {
         //Clean up
         AttackWheelOpenedEvent.RemoveAllListeners();
+        AUGListOpenedEvent.RemoveAllListeners();
 
         base.OnDisable();
     }

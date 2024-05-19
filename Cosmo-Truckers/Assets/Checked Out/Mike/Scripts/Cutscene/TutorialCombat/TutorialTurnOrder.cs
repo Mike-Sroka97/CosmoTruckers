@@ -81,7 +81,7 @@ public class TutorialTurnOrder : TurnOrder
                 proto.GetManaBase.TutorialAttackName = "Electro-Whip";
                 proto.SelectionUI.DisableButton(1);
                 proto.SelectionUI.DisableButton(3);
-                //INA listener for Aug list open (TODO: reenable combat button)
+                //INA listener for Aug list open (TODO: reenable combat button) "PlayerCharacter.AUGListOpened.AddListener(PlayerCharacter.SelectionUI.EnableButton(1))
                 proto.StartTurn();
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
                 //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
