@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,6 @@ public class DialogManager : MonoBehaviour
     private AudioSource audioSource;
     private DialogTextAnimations dialogTextAnimations;
     private List<BaseActor> currentActorsToAnimate;
-    private RegularTextManager regularTextManager;
 
     public List<BaseActor> PlayerActors { get; private set; }
     public TextParser TextParser;
@@ -494,7 +494,8 @@ public class DialogManager : MonoBehaviour
 
         // Speak the next line of dialog. Process the dialog commands and start animating the text into the text box
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, speaker, TextSpeedNormal));
+        Action<bool> action = SetNextLineIndicatorState; 
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, action, speaker, TextSpeedNormal));
     }
 
     /// <summary>
@@ -634,21 +635,5 @@ public class DialogManager : MonoBehaviour
         return canAdvance && !UpdatingDialogBox && DialogIsPlaying && firstTimeSetupComplete && CutsceneDialog;
     }
 
-    #endregion
-
-    #region Regular Text Methods
-    public void StartRegularTextMode(TextAsset _textFile, TMP_Text _textBox, Image _nextLineIndicator)
-    {
-        // Get the Regular Text Manager
-        regularTextManager = GetComponent<RegularTextManager>();
-
-        if (regularTextManager == null)
-            Debug.LogError("No Regular Text Manager!");
-        else 
-        {
-            if (!regularTextManager.DialogIsPlaying)
-                regularTextManager.StartRegularTextMode(_textFile, _textBox, _nextLineIndicator, audioSource);
-        }
-    }
     #endregion
 }

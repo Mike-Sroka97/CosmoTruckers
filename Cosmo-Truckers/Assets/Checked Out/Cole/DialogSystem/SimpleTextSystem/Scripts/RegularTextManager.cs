@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +10,9 @@ public class RegularTextManager : MonoBehaviour
 {
     [Header("Main Text Components")]
     [SerializeField] private TMP_Text textBox;
+    [SerializeField] private Image boxImage;
     [SerializeField] private Image nextLineIndicator;
+    private bool boxIsActive = false;
 
     private AudioSource audioSource;
     private DialogTextAnimations dialogTextAnimations;
@@ -16,22 +20,21 @@ public class RegularTextManager : MonoBehaviour
     private string[] allLines;
     private int currentLineIndex = -1;
     private int allLinesCount = 0;
+    private Animator indicatorAnimator;
 
     public bool DialogIsPlaying { get; private set; }
+    public bool AnimatingDialogBox { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        GetTextParser(); 
+        GetScripts(); 
     }
 
-    public void StartRegularTextMode(TextAsset _textFile, TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
+    public void StartRegularTextMode(TextAsset _textFile)
     {
         if (!DialogIsPlaying && !DialogManager.Instance.DialogIsPlaying)
         {
-            textBox = _textBox;
-            nextLineIndicator = _nextLineIndicator;
-            audioSource = _audioSource;
             SetupVariables(_textFile);
             DialogIsPlaying = true;
 
@@ -40,6 +43,70 @@ public class RegularTextManager : MonoBehaviour
     }
 
     #region Text Mode
+
+    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
+    {
+        float minAlpha = 0.1f;
+        float maxAlpha = 1f;
+
+        Vector3 enablePosition = new Vector3(0, 0, 0);
+        Vector3 disablePosition = new Vector3(-1000, -1000, 0);
+
+        /// Grow or shrink the Dialog Box
+        if (grow)
+        {
+            if (!boxIsActive)
+            {
+                boxIsActive = true;
+                SetUIBoxActiveStates(true);
+            }
+        }
+
+        if (!grow)
+        {
+            // We don't want new actor to shrink box to their scale
+            float tempVal = maxVal;
+            maxVal = minVal;
+            minVal = tempVal;
+
+            float tempAlpha = minAlpha;
+            minAlpha = maxAlpha;
+            maxAlpha = tempAlpha;
+        }
+
+        Vector3 startScale = new Vector3(minVal, minVal, minVal);
+        Vector3 endScale = new Vector3(maxVal, maxVal, maxVal);
+
+
+        float newAlpha;
+
+        boxImage.transform.localScale = startScale;
+        float timer = 0;
+
+        boxImage.transform.position = enablePosition;
+
+        // Maybe rewrite this weird conditional
+        while ((grow && boxImage.transform.localScale.x < maxVal) || (!grow && boxImage.transform.localScale.x > maxVal))
+        {
+            timer += Time.deltaTime;
+            boxImage.transform.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
+            newAlpha = Mathf.Lerp(minAlpha, maxAlpha, timer / timeToAnimate);
+
+            // Set the alpha of the UI Dialog Box elements
+            boxImage.color = new Color(boxImage.color.r, boxImage.color.g, boxImage.color.b, newAlpha);
+
+            yield return null;
+        }
+        boxImage.transform.localScale = endScale;
+        AnimatingDialogBox = false;
+
+        if (boxIsActive && !grow)
+        {
+            boxIsActive = false;
+            SetUIBoxActiveStates(false);
+            boxImage.transform.position = disablePosition;
+        }
+    }
 
     public IEnumerator StartNextText(string nextLine, float waitTimeBetweenText = 0.1f, bool firstDialog = false)
     {
@@ -58,17 +125,27 @@ public class RegularTextManager : MonoBehaviour
         dialogTextAnimations.IsTextPlaying = false;
 
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, null));
+        Action<bool> action = SetNextLineIndicatorState;
+        lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, action, null));
     }
 
     private IEnumerator AdvanceText()
     {
         // Increment the current line
         currentLineIndex++;
-        allLinesCount = allLines.Length; 
+        allLinesCount = allLines.Length;
 
         // Change this
-        DialogManager.Instance.SetNextLineIndicatorState(false);
+        SetNextLineIndicatorState(false);
+
+        if (currentLineIndex == 0) 
+        {
+            StartCoroutine(AnimateUIToSize());
+            AnimatingDialogBox = true;
+
+            while (AnimatingDialogBox)
+                yield return null;
+        }
 
         // End the text if we've reached the line count
         if (currentLineIndex >= allLinesCount)
@@ -114,7 +191,13 @@ public class RegularTextManager : MonoBehaviour
     public IEnumerator EndDialog()
     {
         dialogTextAnimations.ClearText();
-        DialogManager.Instance.SetNextLineIndicatorState(false);
+        SetNextLineIndicatorState(false);
+
+        StartCoroutine(AnimateUIToSize(grow: false));
+        AnimatingDialogBox = true;
+
+        while (AnimatingDialogBox)
+            yield return null;
 
         yield return null; 
 
@@ -128,14 +211,16 @@ public class RegularTextManager : MonoBehaviour
     {
         dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
         currentLineIndex = -1; 
-        GetTextParser();
+        GetScripts();
 
         allLines = myTextParser.GetAllLinesInRegularText(_textFile); 
     }
-    private void GetTextParser()
+    private void GetScripts()
     {
         myTextParser = GetComponent<TextParser>();
-        
+        // Add the audio source
+        audioSource = gameObject.AddComponent<AudioSource>();
+
         if (myTextParser == null)
             myTextParser = gameObject.AddComponent<TextParser>();
     }
@@ -145,6 +230,24 @@ public class RegularTextManager : MonoBehaviour
             return dialogTextAnimations.IsTextPlaying;
         else
             return false;
+    }
+
+    private void SetUIBoxActiveStates(bool state)
+    {
+        /// Set the active state of the UI Dialog Box elements
+        boxImage.gameObject.SetActive(state); 
+        textBox.gameObject.SetActive(state);
+    }
+
+    void SetNextLineIndicatorState(bool state)
+    {
+        if (indicatorAnimator == null)
+            indicatorAnimator = nextLineIndicator.GetComponent<Animator>();
+
+        if (state == true)
+            indicatorAnimator.Play("DM_NextLineIndicator_Grow");
+
+        nextLineIndicator.enabled = state; 
     }
     #endregion
 

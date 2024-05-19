@@ -34,7 +34,7 @@ public class TESTDIALOG : MonoBehaviour
 
         if (Input.GetKey(inputKey))
         {
-            DialogManager.Instance.StartRegularTextMode(textFile, textBox, nextLineIndicator); 
+            //DialogManager.Instance.StartRegularTextMode(textFile, textBox, nextLineIndicator); 
         }
     }
 

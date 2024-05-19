@@ -56,7 +56,7 @@ public class DialogTextAnimations
     #endregion
 
     // Begin to animate the text in using a coroutine
-    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, BaseActor _speaker = null, bool normalSpeed = true)
+    public IEnumerator AnimateTextIn(List<DialogCommand> commands, string processedMessage, Action<bool> indicatorAction, BaseActor _speaker = null, bool normalSpeed = true)
     {
         NormalSpeed = normalSpeed; 
 
@@ -129,7 +129,7 @@ public class DialogTextAnimations
                 }
                 // set the visible character count to the text info character count
                 currentCharacterIndex = characterCount;
-                FinishAnimating(); 
+                FinishAnimating(indicatorAction); 
             }
             if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
             {
@@ -162,7 +162,7 @@ public class DialogTextAnimations
                         // If we're at the characterCount, finish animating
                         if (currentCharacterIndex == characterCount)
                         {
-                            FinishAnimating(); 
+                            FinishAnimating(indicatorAction); 
                         }
                     }
                 }
@@ -471,12 +471,13 @@ public class DialogTextAnimations
         return new Vector3(x, y, 0);
     }
 
-    private void FinishAnimating()
+    private void FinishAnimating(Action<bool> indicatorAction)
     {
         // Call this when the animation is finished. 
         IsTextPlaying = false;
         stopAnimating = false;
-        DialogManager.Instance.SetNextLineIndicatorState(true); 
+
+        indicatorAction(true); 
     }
     public void FinishCurrentAnimation()
     {

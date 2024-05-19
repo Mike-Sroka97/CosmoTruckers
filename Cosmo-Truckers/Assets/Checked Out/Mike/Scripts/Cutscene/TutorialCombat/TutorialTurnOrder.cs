@@ -11,6 +11,16 @@ public class TutorialTurnOrder : TurnOrder
     SixFaceCharacter sixFace;
     List<Enemy> malites = new List<Enemy>();
 
+    [SerializeField] private List<TextAsset> inaDialogs;
+    int inaDialogCounter = 0;
+    float dialogSetupTime = 0.5f; 
+    RegularTextManager textManager;
+
+    private void Start()
+    {
+        textManager = FindObjectOfType<RegularTextManager>();
+    }
+
     protected override void StartTurn()
     {
         if (!aeglar)
@@ -46,6 +56,18 @@ public class TutorialTurnOrder : TurnOrder
         {
             case 1:
                 //INA goes BLAH BLAH
+                yield return new WaitForSeconds(2f); 
+
+                textManager.StartRegularTextMode(inaDialogs[inaDialogCounter]);
+                inaDialogCounter++;
+
+                yield return new WaitForSeconds(dialogSetupTime); 
+
+                while (textManager.DialogIsPlaying)
+                {
+                    yield return null; 
+                }
+
                 aeglar.GetManaBase.SetMaxMana();
                 aeglar.GetManaBase.TutorialAttackName = "Porkanator";
                 //Force Action
