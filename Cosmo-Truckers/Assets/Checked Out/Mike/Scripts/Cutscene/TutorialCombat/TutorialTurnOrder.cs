@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TutorialTurnOrder : TurnOrder
 {
-    int turn = 0;
+    int turn = 13;
     AeglarCharacter aeglar;
     SafeTCharacter safeT;
     ProtoCharacter proto;
@@ -155,7 +155,7 @@ public class TutorialTurnOrder : TurnOrder
                 proto.StartTurn();
                 break;
             case 14:
-                //Malice malice's all over the place
+                StartCoroutine(FindObjectOfType<MaliceAI>().Fall());
                 break;
             default:
                 break;
