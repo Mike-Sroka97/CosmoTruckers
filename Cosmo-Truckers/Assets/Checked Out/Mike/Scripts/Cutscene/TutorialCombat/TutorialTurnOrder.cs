@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialTurnOrder : TurnOrder
 {
@@ -15,6 +16,8 @@ public class TutorialTurnOrder : TurnOrder
     int inaDialogCounter = 0;
     float dialogSetupTime = 0.5f; 
     RegularTextManager textManager;
+
+    [SerializeField] string sceneToLoad;
 
     private void Start()
     {
@@ -156,6 +159,17 @@ public class TutorialTurnOrder : TurnOrder
                 break;
             case 14:
                 StartCoroutine(FindObjectOfType<MaliceAI>().Fall());
+                break;
+            case 15:
+                //add Malice dance
+                yield return new WaitForSeconds(10);
+                CameraController camera = FindObjectOfType<CameraController>();
+                StartCoroutine(camera.FadeVignette(false));
+                while (camera.CommandsExecuting > 0)
+                    yield return null;
+                //Fade music
+                yield return new WaitForSeconds(5);
+                SceneManager.LoadScene(sceneToLoad);
                 break;
             default:
                 break;
