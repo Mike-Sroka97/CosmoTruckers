@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,30 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class TutorialTurnOrder : TurnOrder
 {
-    int turn = 13;
+    int turn = 0;
     AeglarCharacter aeglar;
     SafeTCharacter safeT;
     ProtoCharacter proto;
     SixFaceCharacter sixFace;
     List<Enemy> malites = new List<Enemy>();
 
-    [SerializeField] private List<TextAsset> inaDialogs;
-    int inaDialogCounter = 0;
-    float dialogSetupTime = 0.5f; 
-    RegularTextManager textManager;
-
     [SerializeField] string sceneToLoad;
 
-    private void Start()
-    {
-        textManager = FindObjectOfType<RegularTextManager>();
-    }
+    INATalker MyINATalker;
+    INAcombat MyINACombat;
+
+    [SerializeField] private List<TextAsset> inaDialogs;
+    float dialogSetupTime = 0.5f;
 
     protected override void StartTurn()
     {
         if (!aeglar)
             SetCharacters();
 
+        GetINAScripts();
         StartCoroutine(HandleTurnTutorial());
     }
 
@@ -51,6 +49,13 @@ public class TutorialTurnOrder : TurnOrder
                 malites.Add(enemy);
     }
 
+    private void GetINAScripts()
+    {
+        MyINACombat = FindObjectOfType<INAcombat>(); 
+        MyINATalker = FindObjectOfType<INATalker>();
+        MyINATalker.SetupINATalker(inaDialogs);
+    }
+
     IEnumerator HandleTurnTutorial()
     {
         turn++;
@@ -58,25 +63,35 @@ public class TutorialTurnOrder : TurnOrder
         switch (turn)
         {
             case 1:
-                //INA goes BLAH BLAH
-                //yield return new WaitForSeconds(2f); 
+                // Wait to Blah Blah
+                yield return new WaitForSeconds(2f);
 
-                //textManager.StartRegularTextMode(inaDialogs[inaDialogCounter]);
-                //inaDialogCounter++;
+                // INA goes BLAH BLAH (1)
+                MyINATalker.INAStartNextDialog(); 
 
-                //yield return new WaitForSeconds(dialogSetupTime); 
+                yield return new WaitForSeconds(dialogSetupTime); 
 
-                //while (textManager.DialogIsPlaying)
-                //    yield return null;
+                while (MyINATalker.DialogPlaying())
+                    yield return null;
 
                 aeglar.GetManaBase.SetMaxMana();
                 aeglar.GetManaBase.TutorialAttackName = "Porkanator";
                 aeglar.SelectionUI.DisableButton(2);
                 aeglar.SelectionUI.DisableButton(3);
                 aeglar.StartTurn();
-                //INA listener to yap when attack wheel opened "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
-                //INA listener to yap when attack is selected "PlayerCharacter.PlayerAttackUI.AttackSelected.AddListener(cum and piss and shit domain)"
-                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
+
+                //INA listener to yap when attack wheel opened (2)
+                aeglar.AttackWheelOpenedEvent.AddListener(MyINATalker.INAStartNextDialog);
+                //INA listener to yap when attack is selected (3)
+                aeglar.PlayerAttackUI.AttackSelected.AddListener(MyINATalker.INAStartNextDialog);
+                //INA listener to yap when attack starts (LOL) and set HoldDownCount to true (4)
+                MyINACombat.HoldCountDown = true;
+                MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
+                //Then set to false once INA finishes shitting and cumming
+                
+                // Fix me
+                MyINATalker.textManager.DialogEnded.AddListener(SetHoldCountDownToFalse); 
+
                 break;
             case 2:
                 //INA yaps
@@ -176,5 +191,10 @@ public class TutorialTurnOrder : TurnOrder
         }
 
         yield return null;
+    }
+
+    public void SetHoldCountDownToFalse()
+    {
+        MyINACombat.HoldCountDown = false;
     }
 }

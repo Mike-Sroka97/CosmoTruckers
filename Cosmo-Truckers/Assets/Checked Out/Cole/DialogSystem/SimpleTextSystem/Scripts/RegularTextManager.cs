@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class RegularTextManager : MonoBehaviour
 {
     [Header("Main Text Components")]
+    [SerializeField] private Transform boxParent;
     [SerializeField] private TMP_Text textBox;
     [SerializeField] private Image boxImage;
     [SerializeField] private Image nextLineIndicator;
@@ -21,6 +23,9 @@ public class RegularTextManager : MonoBehaviour
     private int currentLineIndex = -1;
     private int allLinesCount = 0;
     private Animator indicatorAnimator;
+
+    [HideInInspector]
+    public UnityEvent DialogEnded = new UnityEvent();
 
     public bool DialogIsPlaying { get; private set; }
     public bool AnimatingDialogBox { get; private set; }
@@ -80,16 +85,16 @@ public class RegularTextManager : MonoBehaviour
 
         float newAlpha;
 
-        boxImage.transform.localScale = startScale;
+        boxParent.transform.localScale = startScale;
         float timer = 0;
 
-        boxImage.transform.position = enablePosition;
+        boxParent.transform.position = enablePosition;
 
         // Maybe rewrite this weird conditional
-        while ((grow && boxImage.transform.localScale.x < maxVal) || (!grow && boxImage.transform.localScale.x > maxVal))
+        while ((grow && boxParent.transform.localScale.x < maxVal) || (!grow && boxParent.transform.localScale.x > maxVal))
         {
             timer += Time.deltaTime;
-            boxImage.transform.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
+            boxParent.transform.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
             newAlpha = Mathf.Lerp(minAlpha, maxAlpha, timer / timeToAnimate);
 
             // Set the alpha of the UI Dialog Box elements
@@ -97,14 +102,14 @@ public class RegularTextManager : MonoBehaviour
 
             yield return null;
         }
-        boxImage.transform.localScale = endScale;
+        boxParent.transform.localScale = endScale;
         AnimatingDialogBox = false;
 
         if (boxIsActive && !grow)
         {
             boxIsActive = false;
             SetUIBoxActiveStates(false);
-            boxImage.transform.position = disablePosition;
+            boxParent.transform.position = disablePosition;
         }
     }
 
@@ -281,5 +286,10 @@ public class RegularTextManager : MonoBehaviour
     void Update()
     {
         CheckPlayerInput();
+    }
+
+    private void OnDisable()
+    {
+        DialogEnded.RemoveAllListeners();
     }
 }
