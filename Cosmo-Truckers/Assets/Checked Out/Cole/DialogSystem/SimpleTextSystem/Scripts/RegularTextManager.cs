@@ -21,10 +21,13 @@ public class RegularTextManager : MonoBehaviour
     private TextParser myTextParser;
     private string[] allLines;
     private int currentLineIndex = -1;
-    private int allLinesCount = 0;
+    private int allLinesCount = -1;
     private Animator indicatorAnimator;
 
+    private Vector3 currentBoxPosition;
+
     [HideInInspector]
+    public UnityEvent DialogStarted = new UnityEvent();
     public UnityEvent DialogEnded = new UnityEvent();
 
     public bool DialogIsPlaying { get; private set; }
@@ -36,13 +39,22 @@ public class RegularTextManager : MonoBehaviour
         GetScripts(); 
     }
 
-    public void StartRegularTextMode(TextAsset _textFile)
+    public void StartRegularTextMode(TextAsset _textFile, Transform newBoxPosition)
     {
+        if (newBoxPosition != null)
+            currentBoxPosition = newBoxPosition.position;
+        else
+            currentBoxPosition = Vector3.zero; 
+
         if (!DialogIsPlaying && !DialogManager.Instance.DialogIsPlaying)
         {
             SetupVariables(_textFile);
             DialogIsPlaying = true;
 
+            // Invoke Dialog Started Event
+            DialogStarted.Invoke();
+
+            // Go through the process of advancing the text
             StartCoroutine(AdvanceText());
         }
     }
@@ -54,7 +66,7 @@ public class RegularTextManager : MonoBehaviour
         float minAlpha = 0.1f;
         float maxAlpha = 1f;
 
-        Vector3 enablePosition = new Vector3(0, 0, 0);
+        Vector3 enablePosition = currentBoxPosition; 
         Vector3 disablePosition = new Vector3(-1000, -1000, 0);
 
         /// Grow or shrink the Dialog Box
@@ -167,13 +179,11 @@ public class RegularTextManager : MonoBehaviour
             // Using the same method as dialogs for simplicity, but we don't need some info, so pass in a variable that we don't care about
             string emptyStringReference = string.Empty;
             List<int> emptyActors = new List<int> { };
-            int emptyIntReference = 0;
             bool emptyBoolReference = false;
 
             float pBefore = 0.1f;
             string vcType = string.Empty;
             int vcRate = -1; // If -1 is passed in, use default voice rate
-            bool noWaitDialog = false;
 
             DialogManager.Instance.HandlePreTextTags(tags, ref emptyStringReference, ref pBefore, ref emptyActors, ref emptyStringReference,
                 ref emptyBoolReference, ref vcType, ref vcRate);
@@ -195,6 +205,8 @@ public class RegularTextManager : MonoBehaviour
 
     public IEnumerator EndDialog()
     {
+        allLinesCount = -1; 
+
         dialogTextAnimations.ClearText();
         SetNextLineIndicatorState(false);
 
@@ -207,6 +219,9 @@ public class RegularTextManager : MonoBehaviour
         yield return null; 
 
         DialogIsPlaying = false;
+        
+        // Invoke Dialog Ended Event
+        DialogEnded.Invoke(); 
     }
 
     #endregion
@@ -290,6 +305,7 @@ public class RegularTextManager : MonoBehaviour
 
     private void OnDisable()
     {
+        DialogStarted.RemoveAllListeners();
         DialogEnded.RemoveAllListeners();
     }
 }

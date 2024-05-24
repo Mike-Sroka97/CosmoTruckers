@@ -111,9 +111,12 @@ public abstract class AttackUI : MonoBehaviour
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
-                AttackSelected.Invoke();
+
                 if (transform.GetChild(currentAttack).gameObject.activeSelf && currentPlayer.GetAllAttacks[currentAttack].CanUse)
+                {
+                    AttackSelected.Invoke();
                     StartCoroutine(StartAttack());
+                }
             }
         }
     }

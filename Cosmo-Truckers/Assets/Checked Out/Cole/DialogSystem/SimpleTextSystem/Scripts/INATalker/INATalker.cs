@@ -8,23 +8,28 @@ public class INATalker : MonoBehaviour
     int TalkingCommandsRunning = 0; 
 
     List<TextAsset> inaDialogs;
+    List<Transform> textPositions;
     int inaDialogCounter = -1;
     [HideInInspector]
     public RegularTextManager textManager;
     private bool CheckingDialog = false;
 
-    public void SetupINATalker(List<TextAsset> dialogs)
+    public void SetupINATalker(List<TextAsset> dialogs, List<Transform> textBoxPositions)
     {
         textManager = FindObjectOfType<RegularTextManager>();
         inaDialogCounter = -1;
         TalkingCommandsRunning = 0;
-        inaDialogs = dialogs; 
+        inaDialogs = dialogs;
+        textPositions = textBoxPositions;
+
+        if (inaDialogs.Count != textPositions.Count)
+            Debug.LogError("These need to be even to work correctly"); 
     }
 
     public void INAStartNextDialog()
     {
         CheckingDialog = true;
-        StartCoroutine(INATrackNextDialog()); 
+        StartCoroutine(INATrackNextDialog());
     }
 
     private IEnumerator INATrackNextDialog()
@@ -42,7 +47,7 @@ public class INATalker : MonoBehaviour
         }
         else
         {
-            textManager.StartRegularTextMode(inaDialogs[inaDialogCounter]);
+            textManager.StartRegularTextMode(inaDialogs[inaDialogCounter], textPositions[inaDialogCounter]);
         }
 
         while (textManager.DialogIsPlaying)
