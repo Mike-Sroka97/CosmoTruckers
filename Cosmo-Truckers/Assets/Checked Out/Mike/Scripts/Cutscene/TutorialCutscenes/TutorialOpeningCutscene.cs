@@ -62,8 +62,6 @@ public class TutorialOpeningCutscene : CutsceneController
             yield return null;
         }
 
-        //TODO COLE PLEASE GOD PLEEEEASE I AM BEGGING YOU ADD DIALOG FOR TUTORIAL PART 1 STEPS 9-13
-
         while (cameraController.CommandsExecuting > 0)
         {
             yield return null;

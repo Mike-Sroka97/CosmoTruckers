@@ -19,6 +19,7 @@ public class TutorialTurnOrder : TurnOrder
     INAcombat MyINACombat;
 
     [SerializeField] private List<TextAsset> inaDialogs;
+    [SerializeField] private List<Transform> textBoxPositions; 
     float dialogSetupTime = 0.5f;
 
     protected override void StartTurn()
@@ -53,7 +54,7 @@ public class TutorialTurnOrder : TurnOrder
     {
         MyINACombat = FindObjectOfType<INAcombat>(); 
         MyINATalker = FindObjectOfType<INATalker>();
-        MyINATalker.SetupINATalker(inaDialogs);
+        MyINATalker.SetupINATalker(inaDialogs, textBoxPositions);
     }
 
     IEnumerator HandleTurnTutorial()
@@ -80,18 +81,18 @@ public class TutorialTurnOrder : TurnOrder
                 aeglar.SelectionUI.DisableButton(3);
                 aeglar.StartTurn();
 
+                MyINATalker.textManager.DialogStarted.AddListener(DialogStartedDefaultCall);
+                MyINATalker.textManager.DialogEnded.AddListener(DialogEndedDefaultCall);
+
                 //INA listener to yap when attack wheel opened (2)
                 aeglar.AttackWheelOpenedEvent.AddListener(MyINATalker.INAStartNextDialog);
-                //INA listener to yap when attack is selected (3)
+                //INA listener to yap when attack is selected.
+                //Explain targeting here and player shouldn't be able to target (3)
                 aeglar.PlayerAttackUI.AttackSelected.AddListener(MyINATalker.INAStartNextDialog);
                 //INA listener to yap when attack starts (LOL) and set HoldDownCount to true (4)
-                MyINACombat.HoldCountDown = true;
+                MyINACombat.AttackStarted.AddListener(SetHoldCountDownTrue);
                 MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
                 //Then set to false once INA finishes shitting and cumming
-                
-                // Fix me
-                MyINATalker.textManager.DialogEnded.AddListener(SetHoldCountDownToFalse); 
-
                 break;
             case 2:
                 //INA yaps
@@ -193,8 +194,19 @@ public class TutorialTurnOrder : TurnOrder
         yield return null;
     }
 
-    public void SetHoldCountDownToFalse()
+    public void DialogStartedDefaultCall()
+    {
+        CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls = true;
+    }
+
+    public void DialogEndedDefaultCall()
     {
         MyINACombat.HoldCountDown = false;
+        CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls = false; 
+    }
+
+    public void SetHoldCountDownTrue()
+    {
+        MyINACombat.HoldCountDown = true;
     }
 }
