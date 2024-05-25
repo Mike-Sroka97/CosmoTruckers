@@ -14,25 +14,35 @@ public class INATalker : MonoBehaviour
     public RegularTextManager textManager;
     private bool CheckingDialog = false;
 
+    private int textBoxPosition = 0; 
+
     public void SetupINATalker(List<TextAsset> dialogs, List<Transform> textBoxPositions)
     {
-        textManager = FindObjectOfType<RegularTextManager>();
+        if (textManager == null)
+            textManager = FindObjectOfType<RegularTextManager>();
+
         inaDialogCounter = -1;
         TalkingCommandsRunning = 0;
         inaDialogs = dialogs;
         textPositions = textBoxPositions;
-
-        if (inaDialogs.Count != textPositions.Count)
-            Debug.LogError("These need to be even to work correctly"); 
     }
 
+    // Run dialog with the first text box position set at the center of the screen
     public void INAStartNextDialog()
     {
         CheckingDialog = true;
-        StartCoroutine(INATrackNextDialog());
+        StartCoroutine(INATrackNextDialog(0));
     }
 
-    private IEnumerator INATrackNextDialog()
+    // Call this when you want dialog with the next unique text box position
+    public void INAStartNextDialogWithNewTextPosition()
+    {
+        CheckingDialog = true;
+        textBoxPosition++; 
+        StartCoroutine(INATrackNextDialog(textBoxPosition));
+    }
+
+    private IEnumerator INATrackNextDialog(int textPos)
     {
         while (TalkingCommandsRunning > 0)
             yield return null;
@@ -47,7 +57,7 @@ public class INATalker : MonoBehaviour
         }
         else
         {
-            textManager.StartRegularTextMode(inaDialogs[inaDialogCounter], textPositions[inaDialogCounter]);
+            textManager.StartRegularTextMode(inaDialogs[inaDialogCounter], textPositions[textPos]);
         }
 
         while (textManager.DialogIsPlaying)

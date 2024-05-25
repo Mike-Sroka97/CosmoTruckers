@@ -205,10 +205,13 @@ public class INAcombat : MonoBehaviour
                 yield return null;
             }
 
+
             face.gameObject.SetActive(false);
 
             topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
             bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+            AttackStarted.Invoke();
 
             //Timer
             countDownTimer.enabled = true;
@@ -217,7 +220,6 @@ public class INAcombat : MonoBehaviour
 
             float currentTime = maxTime;
 
-            AttackStarted.Invoke();
             while (HoldCountDown)
                 yield return null;
 

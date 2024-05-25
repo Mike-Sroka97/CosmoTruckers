@@ -39,6 +39,7 @@ public class PlayerCharacter : Character
 
     public UnityEvent AttackWheelOpenedEvent = new UnityEvent();
     public UnityEvent AUGListOpenedEvent = new UnityEvent();
+    public UnityEvent AUGListClosedEvent = new UnityEvent();
 
     bool isTurn = false;
     bool checkingEnemyIntentions = false;
@@ -147,6 +148,8 @@ public class PlayerCharacter : Character
         //Clean up
         AttackWheelOpenedEvent.RemoveAllListeners();
         AUGListOpenedEvent.RemoveAllListeners();
+        AUGListClosedEvent.RemoveAllListeners();
+        PlayerAttackUI.AttackSelected.RemoveAllListeners(); 
 
         base.OnDisable();
     }
@@ -178,6 +181,10 @@ public class PlayerCharacter : Character
     public void ClosePages()
     {
         wheel.SetActive(false);
+
+        if (augList.activeInHierarchy)
+            AUGListClosedEvent.Invoke(); 
+        
         augList.SetActive(false);
 
         SelectionUI.ResetColor();

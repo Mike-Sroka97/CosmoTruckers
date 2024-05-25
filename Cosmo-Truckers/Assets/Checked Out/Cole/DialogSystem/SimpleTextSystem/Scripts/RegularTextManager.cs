@@ -33,6 +33,10 @@ public class RegularTextManager : MonoBehaviour
     public bool DialogIsPlaying { get; private set; }
     public bool AnimatingDialogBox { get; private set; }
 
+    // Use these for additional check when trying to skip dialog
+    private bool AdvanceTextCommencing = false;
+    private bool FirstTimeSetupComplete;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +67,7 @@ public class RegularTextManager : MonoBehaviour
 
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
+
         float minAlpha = 0.1f;
         float maxAlpha = 1f;
 
@@ -148,6 +153,8 @@ public class RegularTextManager : MonoBehaviour
 
     private IEnumerator AdvanceText()
     {
+        AdvanceTextCommencing = true; 
+
         // Increment the current line
         currentLineIndex++;
         allLinesCount = allLines.Length;
@@ -155,8 +162,8 @@ public class RegularTextManager : MonoBehaviour
         // Change this
         SetNextLineIndicatorState(false);
 
-        if (currentLineIndex == 0) 
-        {
+        if (currentLineIndex == 0)
+        { 
             StartCoroutine(AnimateUIToSize());
             AnimatingDialogBox = true;
 
@@ -200,6 +207,9 @@ public class RegularTextManager : MonoBehaviour
             StartCoroutine(StartNextText(currentLine, waitTimeBetweenText: pBefore, firstDialog));
 
             yield return null;
+
+            FirstTimeSetupComplete = true; 
+            AdvanceTextCommencing = false; 
         }
     }
 
@@ -221,7 +231,9 @@ public class RegularTextManager : MonoBehaviour
         DialogIsPlaying = false;
         
         // Invoke Dialog Ended Event
-        DialogEnded.Invoke(); 
+        DialogEnded.Invoke();
+
+        FirstTimeSetupComplete = false; 
     }
 
     #endregion
@@ -251,6 +263,11 @@ public class RegularTextManager : MonoBehaviour
         else
             return false;
     }
+    
+    public bool CanSkipDialogText()
+    {
+        return dialogTextAnimations.CanSkipText && !AdvanceTextCommencing; 
+    }
 
     private void SetUIBoxActiveStates(bool state)
     {
@@ -279,7 +296,7 @@ public class RegularTextManager : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false;
 
-        return canAdvance && !DialogManager.Instance.UpdatingDialogBox;
+        return canAdvance && !DialogManager.Instance.DialogIsPlaying && FirstTimeSetupComplete;
     }
     public void StopAnimating()
     {
@@ -291,7 +308,11 @@ public class RegularTextManager : MonoBehaviour
         {
             if (CanAdvance())
             {
-                if (CheckIfDialogTextAnimating()) { StopAnimating(); }
+                if (CheckIfDialogTextAnimating())
+                {
+                    if (CanSkipDialogText())
+                        StopAnimating();
+                }
                 else { StartCoroutine(AdvanceText()); }
             }
         }

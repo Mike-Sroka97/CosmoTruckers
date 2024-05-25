@@ -21,13 +21,18 @@ public class TutorialTurnOrder : TurnOrder
     [SerializeField] private List<TextAsset> inaDialogs;
     [SerializeField] private List<Transform> textBoxPositions; 
     float dialogSetupTime = 0.5f;
+    float turnStartWaitTime = 1.5f;
+
+    PlayerCharacter currentCharacter = null; 
 
     protected override void StartTurn()
     {
         if (!aeglar)
             SetCharacters();
 
-        GetINAScripts();
+        if (turn == 0)
+            GetINAScripts();
+
         StartCoroutine(HandleTurnTutorial());
     }
 
@@ -65,7 +70,7 @@ public class TutorialTurnOrder : TurnOrder
         {
             case 1:
                 // Wait to Blah Blah
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(turnStartWaitTime);
 
                 // INA goes BLAH BLAH (1)
                 MyINATalker.INAStartNextDialog(); 
@@ -79,32 +84,64 @@ public class TutorialTurnOrder : TurnOrder
                 aeglar.GetManaBase.TutorialAttackName = "Porkanator";
                 aeglar.SelectionUI.DisableButton(2);
                 aeglar.SelectionUI.DisableButton(3);
+                currentCharacter = aeglar;
                 aeglar.StartTurn();
 
                 MyINATalker.textManager.DialogStarted.AddListener(DialogStartedDefaultCall);
                 MyINATalker.textManager.DialogEnded.AddListener(DialogEndedDefaultCall);
 
                 //INA listener to yap when attack wheel opened (2)
-                aeglar.AttackWheelOpenedEvent.AddListener(MyINATalker.INAStartNextDialog);
+                aeglar.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 //INA listener to yap when attack is selected.
                 //Explain targeting here and player shouldn't be able to target (3)
                 aeglar.PlayerAttackUI.AttackSelected.AddListener(MyINATalker.INAStartNextDialog);
-                //INA listener to yap when attack starts (LOL) and set HoldDownCount to true (4)
+                //INA listener to yap when attack starts and set HoldDownCount to true (4)
                 MyINACombat.AttackStarted.AddListener(SetHoldCountDownTrue);
                 MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
                 //Then set to false once INA finishes shitting and cumming
                 break;
             case 2:
-                //INA yaps
+                // Remove Aeglar's current listeners. Aeglar is still the current player.
+                RemoveCurrentPlayerListeners(); 
                 aeglar.SelectionUI.EnableAllButtons();
+
                 proto.GetManaBase.TutorialAttackName = "Electro-Whip";
                 proto.SelectionUI.DisableButton(1);
                 proto.SelectionUI.DisableButton(3);
-                //INA listener for Aug list open (TODO: reenable combat button) "PlayerCharacter.AUGListOpened.AddListener(PlayerCharacter.SelectionUI.EnableButton(1))
+                currentCharacter = proto;
+
+                // Wait to Blah Blah
+                yield return new WaitForSeconds(turnStartWaitTime);
+
+                // INA goes BLAH BLAH (1)
+                MyINATalker.INAStartNextDialog();
+
+                yield return new WaitForSeconds(dialogSetupTime);
+
+                while (MyINATalker.DialogPlaying())
+                    yield return null;
+
                 proto.StartTurn();
                 CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
-                //INA listener to yap when attack wheel is open "PlayerCharacter.AttackWheelOpened.AddListener(piss and shit domain);"
-                //INA listener to yap when attack starts (LOL) => Set INACombat.HoldCountDown to true. Then set to false once INA finishes shitting and cumming (INACombat.AttackStarted.AddListener(cum and piss and cum)
+
+                MyINATalker.textManager.DialogStarted.AddListener(DialogStartedDefaultCall);
+                MyINATalker.textManager.DialogEnded.AddListener(DialogEndedDefaultCall);
+
+                //INA listener for Aug list open (TODO: reenable combat button)
+                proto.AUGListOpenedEvent.AddListener(EnableCurrentPlayerAttackUI);
+
+                //INA listener to yap when attack wheel opened (2)
+                proto.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
+
+                //INA Listener to yap when aug list is closed (3) 
+                proto.AUGListClosedEvent.AddListener(AugListClosedStartDialog);
+
+                //INA Listener to yap when attack is selected (4) 
+                proto.PlayerAttackUI.AttackSelected.AddListener(MyINATalker.INAStartNextDialog);
+
+                //INA listener to yap when attack starts and set HoldDownCount to true (5)
+                MyINACombat.AttackStarted.AddListener(SetHoldCountDownTrue);
+                MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
                 break;
             case 3:
                 proto.SelectionUI.EnableAllButtons();
@@ -194,19 +231,44 @@ public class TutorialTurnOrder : TurnOrder
         yield return null;
     }
 
-    public void DialogStartedDefaultCall()
+    private void DialogStartedDefaultCall()
     {
         CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls = true;
     }
-
-    public void DialogEndedDefaultCall()
+    private void DialogEndedDefaultCall()
     {
         MyINACombat.HoldCountDown = false;
         CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls = false; 
     }
-
-    public void SetHoldCountDownTrue()
+    private void SetHoldCountDownTrue()
     {
         MyINACombat.HoldCountDown = true;
+    }
+    private void EnableCurrentPlayerAttackUI()
+     {
+        if (currentCharacter != null)
+            currentCharacter.SelectionUI.EnableButton(1); 
+    }
+    private void RemoveCurrentPlayerListeners()
+    {
+        if (currentCharacter != null)
+        {
+            currentCharacter.AttackWheelOpenedEvent.RemoveAllListeners();
+            currentCharacter.AUGListOpenedEvent.RemoveAllListeners();
+            currentCharacter.AUGListClosedEvent.RemoveAllListeners();
+            currentCharacter.PlayerAttackUI.AttackSelected.RemoveAllListeners(); 
+        }
+    }
+    
+    // The following methods are going to fire off the dialog and then remove the listeners from the event
+    private void AttackWheelOpenStartDialog()
+    {
+        currentCharacter.AttackWheelOpenedEvent.RemoveAllListeners();
+        MyINATalker.INAStartNextDialogWithNewTextPosition();
+    }
+    private void AugListClosedStartDialog()
+    {
+        currentCharacter.AUGListClosedEvent.RemoveAllListeners();
+        MyINATalker.INAStartNextDialog();
     }
 }

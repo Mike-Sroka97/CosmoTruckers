@@ -52,7 +52,6 @@ public class DialogManager : MonoBehaviour
     private int lastID = -1;
     private int allLinesCount = 0;
     
-    private bool firstTimeSetupComplete;
     private Vector3 newBoxPosition = Vector3.zero; 
     private Vector3 lastBoxPosition = Vector3.zero; 
     private bool noWaitDialog = false;
@@ -73,6 +72,10 @@ public class DialogManager : MonoBehaviour
     public bool TextSpeedNormal = true; 
 
     public bool DialogIsPlaying;
+
+    // Use these as additional checks to wait for AdvanceScene text spamming
+    private bool FirstTimeSetupComplete;
+    private bool AdvanceSceneCommencing = false; 
 
     void Awake()
     {
@@ -269,6 +272,8 @@ public class DialogManager : MonoBehaviour
 
     public IEnumerator AdvanceScene()
     {
+        AdvanceSceneCommencing = true; 
+
         if (noWaitDialog)
             yield break; 
 
@@ -374,7 +379,7 @@ public class DialogManager : MonoBehaviour
             lastID = currentID;
 
             // Prevents user from spamming
-            firstTimeSetupComplete = true; 
+            FirstTimeSetupComplete = true; 
 
             if (noWaitDialog)
             {
@@ -409,8 +414,8 @@ public class DialogManager : MonoBehaviour
                 }
             }
 
-
             yield return null;
+            AdvanceSceneCommencing = false; 
         }
     }
 
@@ -595,7 +600,7 @@ public class DialogManager : MonoBehaviour
         yield return new WaitForSeconds(disableUITime);
 
         DialogIsPlaying = false;
-        firstTimeSetupComplete = false; 
+        FirstTimeSetupComplete = false; 
     }
     #endregion
 
@@ -617,6 +622,11 @@ public class DialogManager : MonoBehaviour
         else
             return false; 
     }
+    public bool CanSkipDialogText()
+    {
+        return dialogTextAnimations.CanSkipText && !AdvanceSceneCommencing;
+    }
+
     public void StopAnimating()
     {
         dialogTextAnimations.FinishCurrentAnimation();
@@ -632,7 +642,7 @@ public class DialogManager : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false;
 
-        return canAdvance && !UpdatingDialogBox && DialogIsPlaying && firstTimeSetupComplete && CutsceneDialog;
+        return canAdvance && !UpdatingDialogBox && DialogIsPlaying && FirstTimeSetupComplete && CutsceneDialog;
     }
 
     #endregion

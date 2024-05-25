@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class DialogTextAnimations
 {
     public bool IsTextPlaying = false; 
+    public bool CanSkipText = false; 
     private bool stopAnimating = false;
 
     private readonly TMP_Text textBox;
@@ -63,9 +64,11 @@ public class DialogTextAnimations
         if (_speaker != null)
             speaker = _speaker; 
 
-        // set the isTextAnimating to true and get Seconds Per Character
+        // Text is Playing, but we want to wait until at least one character is on screen to skip text
         IsTextPlaying = true;
+        CanSkipText = false; 
 
+        // Get Seconds Per Character
         if (NormalSpeed)
             secondsPerCharacterSpeedMultiplier = 1f; 
         
@@ -142,7 +145,10 @@ public class DialogTextAnimations
                     
                     if (IsTextPlaying)
                         ExecuteRemainingCommandsAtIndex(commands, currentCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
-                    
+
+                    if (currentCharacterIndex > 0)
+                        CanSkipText = true; 
+
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
                     if ((currentCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter)))
                     {

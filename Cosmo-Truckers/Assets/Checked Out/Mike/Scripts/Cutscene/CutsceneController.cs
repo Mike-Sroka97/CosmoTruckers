@@ -226,7 +226,11 @@ public abstract class CutsceneController : MonoBehaviour
     {
         if (DialogManager.Instance.CanAdvanceDialog())
         {
-            if (DialogManager.Instance.CheckIfDialogTextAnimating()) { DialogManager.Instance.StopAnimating(); }
+            if (DialogManager.Instance.CheckIfDialogTextAnimating()) 
+            {
+                if (DialogManager.Instance.CanSkipDialogText())
+                    DialogManager.Instance.StopAnimating(); 
+            }
             else { StartCoroutine(DialogManager.Instance.AdvanceScene()); }
         }
     }
