@@ -40,6 +40,7 @@ public class PlayerCharacter : Character
     public UnityEvent AttackWheelOpenedEvent = new UnityEvent();
     public UnityEvent AUGListOpenedEvent = new UnityEvent();
     public UnityEvent AUGListClosedEvent = new UnityEvent();
+    public UnityEvent InsightOpenedEvent = new UnityEvent();
 
     bool isTurn = false;
     bool checkingEnemyIntentions = false;
@@ -136,6 +137,7 @@ public class PlayerCharacter : Character
                     case 2:
                         checkingEnemyIntentions = true;
                         CombatManager.Instance.MyTargeting.StartCheckingEnemyIntentions();
+                        InsightOpenedEvent.Invoke();
                         break;
                     default: break;
                 }
@@ -149,7 +151,8 @@ public class PlayerCharacter : Character
         AttackWheelOpenedEvent.RemoveAllListeners();
         AUGListOpenedEvent.RemoveAllListeners();
         AUGListClosedEvent.RemoveAllListeners();
-        PlayerAttackUI.AttackSelected.RemoveAllListeners(); 
+        PlayerAttackUI.AttackSelected.RemoveAllListeners();
+        InsightOpenedEvent.RemoveAllListeners(); 
 
         base.OnDisable();
     }
