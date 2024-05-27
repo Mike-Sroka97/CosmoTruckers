@@ -48,6 +48,35 @@ public class DialogUtility : MonoBehaviour
         {"large", 2f},
         {"huge", 3f},
     };
+
+    private static readonly Dictionary<string, Color32> colorDictionary = new Dictionary<string, Color32>
+    {
+        {"yellowlight", new Color32(237,232,197,255)},
+        {"yellow", new Color32(240,211,117,255)},
+        {"skin", new Color32(240,179,149,255)},
+        {"orange", new Color32(235,148,101,255)},
+        {"brown", new Color32(189,104,91,255)},
+        {"brown-dark", new Color32(48,17,28,255)},
+        {"gray", new Color32(189,157,157,255)},
+        {"pink", new Color32(250,150,170,255)},
+        {"magenta", new Color32(212,76,121,255)},
+        {"magentadark", new Color32(138,59,102,255)},
+        {"bluelight", new Color32(120,182,204,255)},
+        {"blue", new Color32(114,127,181,255)},
+        {"royal", new Color32(100,80,148,255)},
+        {"purpledark", new Color32(87,51,89,255)},
+        {"purplelight", new Color32(182,137,204,255)},
+        {"purple", new Color32(145,83,163,255)},
+        {"regal", new Color32(130,91,112,255)},
+        {"greenlight", new Color32(157,189,92,255)},
+        {"green", new Color32(93,153,92,255)},
+        {"greendark", new Color32(77,105,99,255)},
+        {"neonred", new Color32(191,0,0,255)},
+        {"neongreen", new Color32(57,255,20,255)},
+        {"neonorange", new Color32(255,95,31,255)},
+        {"neonyellow", new Color32(255,234,0,255)},
+        {"neonwhite", new Color32(191,191,191,255)},
+    };
     #endregion
 
     /// <summary>
@@ -324,37 +353,42 @@ public class DialogUtility : MonoBehaviour
     }
     private static Color32 GetColor(string stringVal)
     {
-        // split the string up based on commas
-        string[] valueList = stringVal.Split(',');
-        float[] numbers = new float[4]; 
+        Color32 newColor;
 
-        for (int i = 0; i < 4; i++)
+            if (!colorDictionary.TryGetValue(stringVal, out newColor))
         {
-            // RGB of color
-            if (i < 3)
-            { 
-                if (float.TryParse(valueList[i], out float currentValue))
-                    numbers[i] = (currentValue / 255);
-                else
-                    numbers[i] = 1f;
-            }
-            // Alpha of color
-            else
+            // split the string up based on commas
+            string[] valueList = stringVal.Split(',');
+            float[] numbers = new float[4];
+
+            for (int i = 0; i < 4; i++)
             {
-                if (valueList[i] != null)
+                // RGB of color
+                if (i < 3)
                 {
-                    if (float.TryParse(valueList[i], out float currentValue) && currentValue <= 1f)
-                        numbers[i] = currentValue;
+                    if (float.TryParse(valueList[i], out float currentValue))
+                        numbers[i] = (currentValue / 255);
                     else
                         numbers[i] = 1f;
                 }
+                // Alpha of color
+                else
+                {
+                    if (valueList[i] != null)
+                    {
+                        if (float.TryParse(valueList[i], out float currentValue) && currentValue <= 1f)
+                            numbers[i] = currentValue;
+                        else
+                            numbers[i] = 1f;
+                    }
+                }
             }
+
+            Color tempColor = new Color(numbers[0], numbers[1], numbers[2], numbers[3]);
+            newColor = (Color32)tempColor;
         }
 
-        Color newColor = new Color(numbers[0], numbers[1], numbers[2], numbers[3]);
-        Color32 newColor32 = (Color32)newColor;
-
-        return newColor32;
+        return newColor;
     }
     private static float GetVoiceRate(string stringVal)
     {
