@@ -6,10 +6,14 @@ using UnityEngine.UI;
 using System;
 using UnityEditor;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class MainMenu : MonoBehaviour
 {
     bool StartUp = true;
+    [Header("Input")]
+    [SerializeField] InputControl input;
+
     [Header("Pages")]
     [SerializeField] GameObject[] TileScreen;
     [SerializeField] GameObject[] MainMenuScreen;
