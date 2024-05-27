@@ -205,10 +205,17 @@ public class INAcombat : MonoBehaviour
                 yield return null;
             }
 
+
             face.gameObject.SetActive(false);
 
             topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
             bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+            // Set countdown timer text to null to start with
+            countDownTimer.text = "";
+
+            // Invoke Attack Started
+            AttackStarted.Invoke();
 
             //Timer
             countDownTimer.enabled = true;
@@ -217,7 +224,6 @@ public class INAcombat : MonoBehaviour
 
             float currentTime = maxTime;
 
-            AttackStarted.Invoke();
             while (HoldCountDown)
                 yield return null;
 
@@ -231,7 +237,7 @@ public class INAcombat : MonoBehaviour
                 yield return null;
             }
 
-            //Shake
+            // Set Go Text
             string text;
             if (minigame.GoTextReplacement != "")
             {
@@ -244,6 +250,8 @@ public class INAcombat : MonoBehaviour
                 text = goText;
 
             countDownTimer.text = text;
+
+            //Shake
             currentTime = shakeDuration;
 
             while (currentTime > 0)

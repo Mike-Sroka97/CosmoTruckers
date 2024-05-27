@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class RegularTextManager : MonoBehaviour
 {
     [Header("Main Text Components")]
+    [SerializeField] private Transform boxParent;
     [SerializeField] private TMP_Text textBox;
     [SerializeField] private Image boxImage;
     [SerializeField] private Image nextLineIndicator;
@@ -19,11 +21,21 @@ public class RegularTextManager : MonoBehaviour
     private TextParser myTextParser;
     private string[] allLines;
     private int currentLineIndex = -1;
-    private int allLinesCount = 0;
+    private int allLinesCount = -1;
     private Animator indicatorAnimator;
+
+    private Vector3 currentBoxPosition;
+
+    [HideInInspector]
+    public UnityEvent DialogStarted = new UnityEvent();
+    public UnityEvent DialogEnded = new UnityEvent();
 
     public bool DialogIsPlaying { get; private set; }
     public bool AnimatingDialogBox { get; private set; }
+
+    // Use these for additional check when trying to skip dialog
+    private bool AdvanceTextCommencing = false;
+    private bool FirstTimeSetupComplete;
 
     // Start is called before the first frame update
     void Start()
@@ -31,13 +43,22 @@ public class RegularTextManager : MonoBehaviour
         GetScripts(); 
     }
 
-    public void StartRegularTextMode(TextAsset _textFile)
+    public void StartRegularTextMode(TextAsset _textFile, Transform newBoxPosition)
     {
+        if (newBoxPosition != null)
+            currentBoxPosition = newBoxPosition.position;
+        else
+            currentBoxPosition = Vector3.zero; 
+
         if (!DialogIsPlaying && !DialogManager.Instance.DialogIsPlaying)
         {
             SetupVariables(_textFile);
             DialogIsPlaying = true;
 
+            // Invoke Dialog Started Event
+            DialogStarted.Invoke();
+
+            // Go through the process of advancing the text
             StartCoroutine(AdvanceText());
         }
     }
@@ -46,10 +67,11 @@ public class RegularTextManager : MonoBehaviour
 
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
     {
+
         float minAlpha = 0.1f;
         float maxAlpha = 1f;
 
-        Vector3 enablePosition = new Vector3(0, 0, 0);
+        Vector3 enablePosition = currentBoxPosition; 
         Vector3 disablePosition = new Vector3(-1000, -1000, 0);
 
         /// Grow or shrink the Dialog Box
@@ -80,16 +102,16 @@ public class RegularTextManager : MonoBehaviour
 
         float newAlpha;
 
-        boxImage.transform.localScale = startScale;
+        boxParent.transform.localScale = startScale;
         float timer = 0;
 
-        boxImage.transform.position = enablePosition;
+        boxParent.transform.position = enablePosition;
 
         // Maybe rewrite this weird conditional
-        while ((grow && boxImage.transform.localScale.x < maxVal) || (!grow && boxImage.transform.localScale.x > maxVal))
+        while ((grow && boxParent.transform.localScale.x < maxVal) || (!grow && boxParent.transform.localScale.x > maxVal))
         {
             timer += Time.deltaTime;
-            boxImage.transform.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
+            boxParent.transform.localScale = Vector3.Lerp(startScale, endScale, timer / timeToAnimate);
             newAlpha = Mathf.Lerp(minAlpha, maxAlpha, timer / timeToAnimate);
 
             // Set the alpha of the UI Dialog Box elements
@@ -97,14 +119,14 @@ public class RegularTextManager : MonoBehaviour
 
             yield return null;
         }
-        boxImage.transform.localScale = endScale;
+        boxParent.transform.localScale = endScale;
         AnimatingDialogBox = false;
 
         if (boxIsActive && !grow)
         {
             boxIsActive = false;
             SetUIBoxActiveStates(false);
-            boxImage.transform.position = disablePosition;
+            boxParent.transform.position = disablePosition;
         }
     }
 
@@ -131,6 +153,8 @@ public class RegularTextManager : MonoBehaviour
 
     private IEnumerator AdvanceText()
     {
+        AdvanceTextCommencing = true; 
+
         // Increment the current line
         currentLineIndex++;
         allLinesCount = allLines.Length;
@@ -138,8 +162,8 @@ public class RegularTextManager : MonoBehaviour
         // Change this
         SetNextLineIndicatorState(false);
 
-        if (currentLineIndex == 0) 
-        {
+        if (currentLineIndex == 0)
+        { 
             StartCoroutine(AnimateUIToSize());
             AnimatingDialogBox = true;
 
@@ -162,13 +186,11 @@ public class RegularTextManager : MonoBehaviour
             // Using the same method as dialogs for simplicity, but we don't need some info, so pass in a variable that we don't care about
             string emptyStringReference = string.Empty;
             List<int> emptyActors = new List<int> { };
-            int emptyIntReference = 0;
             bool emptyBoolReference = false;
 
             float pBefore = 0.1f;
             string vcType = string.Empty;
             int vcRate = -1; // If -1 is passed in, use default voice rate
-            bool noWaitDialog = false;
 
             DialogManager.Instance.HandlePreTextTags(tags, ref emptyStringReference, ref pBefore, ref emptyActors, ref emptyStringReference,
                 ref emptyBoolReference, ref vcType, ref vcRate);
@@ -185,11 +207,16 @@ public class RegularTextManager : MonoBehaviour
             StartCoroutine(StartNextText(currentLine, waitTimeBetweenText: pBefore, firstDialog));
 
             yield return null;
+
+            FirstTimeSetupComplete = true; 
+            AdvanceTextCommencing = false; 
         }
     }
 
     public IEnumerator EndDialog()
     {
+        allLinesCount = -1; 
+
         dialogTextAnimations.ClearText();
         SetNextLineIndicatorState(false);
 
@@ -202,6 +229,11 @@ public class RegularTextManager : MonoBehaviour
         yield return null; 
 
         DialogIsPlaying = false;
+        
+        // Invoke Dialog Ended Event
+        DialogEnded.Invoke();
+
+        FirstTimeSetupComplete = false; 
     }
 
     #endregion
@@ -231,6 +263,11 @@ public class RegularTextManager : MonoBehaviour
         else
             return false;
     }
+    
+    public bool CanSkipDialogText()
+    {
+        return dialogTextAnimations.CanSkipText && !AdvanceTextCommencing; 
+    }
 
     private void SetUIBoxActiveStates(bool state)
     {
@@ -259,7 +296,7 @@ public class RegularTextManager : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false;
 
-        return canAdvance && !DialogManager.Instance.UpdatingDialogBox;
+        return canAdvance && !DialogManager.Instance.DialogIsPlaying && FirstTimeSetupComplete;
     }
     public void StopAnimating()
     {
@@ -271,7 +308,11 @@ public class RegularTextManager : MonoBehaviour
         {
             if (CanAdvance())
             {
-                if (CheckIfDialogTextAnimating()) { StopAnimating(); }
+                if (CheckIfDialogTextAnimating())
+                {
+                    if (CanSkipDialogText())
+                        StopAnimating();
+                }
                 else { StartCoroutine(AdvanceText()); }
             }
         }
@@ -281,5 +322,11 @@ public class RegularTextManager : MonoBehaviour
     void Update()
     {
         CheckPlayerInput();
+    }
+
+    private void OnDisable()
+    {
+        DialogStarted.RemoveAllListeners();
+        DialogEnded.RemoveAllListeners();
     }
 }

@@ -6020,11 +6020,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1452449605 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6646484922084356067, guid: 8a88f869d2697d2418d81a18d59d9016, type: 3}
-  m_PrefabInstance: {fileID: 6646484920833241254}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1458012862
 GameObject:
   m_ObjectHideFlags: 0
@@ -6303,7 +6298,7 @@ Transform:
   - {fileID: 1808260175}
   - {fileID: 296507588}
   - {fileID: 5934017210628714479}
-  - {fileID: 1452449605}
+  - {fileID: 6646484920833241255}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6638,8 +6633,9 @@ MonoBehaviour:
   IsTank: 0
   IsSupport: 0
   IsUtility: 0
+  RevokeControls: 0
   PlayerNumber: 0
-  selectionUI: {fileID: 0}
+  SelectionUI: {fileID: 0}
   wheel: {fileID: 0}
   augList: {fileID: 0}
   attacks: []
@@ -6647,6 +6643,12 @@ MonoBehaviour:
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 0}
   PlayerAttackUI: {fileID: 0}
+  AttackWheelOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AUGListOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1569895544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 564899436680103188, guid: 1a45be3cdc9d2c2469694f59f5103f9c, type: 3}
@@ -10277,6 +10279,7 @@ MonoBehaviour:
   positiveSelectedMaterial: {fileID: 2100000, guid: 24a0935c156799849b7180ebc29b9bb2, type: 2}
   staticTime: 0.25
   CurrentTargetingType: 0
+  ForcedTarget: {fileID: 0}
   InitialSetup: 0
 --- !u!1 &2133023330
 GameObject:
@@ -14326,6 +14329,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a88f869d2697d2418d81a18d59d9016, type: 3}
+--- !u!4 &6646484920833241255 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6247023491330371192, guid: 8a88f869d2697d2418d81a18d59d9016, type: 3}
+  m_PrefabInstance: {fileID: 6646484920833241254}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7230636539997125709
 PrefabInstance:
   m_ObjectHideFlags: 0
