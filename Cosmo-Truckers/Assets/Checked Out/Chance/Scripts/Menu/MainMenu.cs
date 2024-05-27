@@ -7,6 +7,7 @@ using System;
 using UnityEditor;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class MainMenu : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] Slider MusicSlider;
     [SerializeField] Toggle WindowedToggle;
     [SerializeField] TMP_Dropdown ResolutionDropDown;
+
+    [Header("Menu Buttons")]
+    [SerializeField] GameObject HostButton;
+    [SerializeField] GameObject SettingBack;
 
     delegate void YesFunction();
     delegate void NoFunction();
@@ -228,9 +233,15 @@ public class MainMenu : MonoBehaviour
         Camera.main.transform.position = camPos;
 
         if (direction == 0)
+        {
             MainOptions.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(HostButton);
+        }
         else
+        {
             OptionOptions.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(SettingBack);
+        }
 
     }
 
@@ -286,6 +297,7 @@ public class MainMenu : MonoBehaviour
         Camera.main.orthographicSize = 5;
         Fade.SetActive(false);
 
+        EventSystem.current.SetSelectedGameObject(HostButton);
         //StartUp = false;
     }
 
@@ -349,6 +361,7 @@ public class MainMenu : MonoBehaviour
             delegate
             {
                 Confirm = 0;
+                EventSystem.current.SetSelectedGameObject(HostButton);
             });
 
         Confirm = -1;
