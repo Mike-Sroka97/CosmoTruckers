@@ -358,6 +358,8 @@ public abstract class Character : MonoBehaviour
         GetComponent<CharacterStats>().enabled = false;
         foreach (SpriteRenderer renderer in TargetingSprites)
             renderer.enabled = false;
+        foreach (SpriteRenderer renderer in ShieldSprites)
+            renderer.enabled = false;
         turnOrder.RemoveFromSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
 
