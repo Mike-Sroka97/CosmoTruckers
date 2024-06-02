@@ -642,7 +642,7 @@ public class DialogManager : MonoBehaviour
         if (currentLineIndex >= allLinesCount)
             canAdvance = false;
 
-        return canAdvance && !UpdatingDialogBox && DialogIsPlaying && FirstTimeSetupComplete && CutsceneDialog;
+        return canAdvance && !UpdatingDialogBox && DialogIsPlaying && FirstTimeSetupComplete && !CutsceneDialog;
     }
 
     #endregion

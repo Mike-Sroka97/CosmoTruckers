@@ -53,7 +53,9 @@ public class INAcombat : MonoBehaviour
         if (CombatData.Instance.TESTING)
         {
             DungeonGen.SetActive(false);
-            EnemyManager.Instance.InitializeEnemys();
+
+            if (EnemyManager.Instance.Enemies.Count <= 0)
+                EnemyManager.Instance.InitializeEnemys();
         }
         else
         {

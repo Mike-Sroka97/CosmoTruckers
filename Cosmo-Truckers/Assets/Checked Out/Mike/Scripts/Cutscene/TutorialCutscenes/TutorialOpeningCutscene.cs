@@ -37,7 +37,7 @@ public class TutorialOpeningCutscene : CutsceneController
         //execute camera shake
         StartCoroutine(cameraController.Shake(5f, 40, .05f));
 
-        //move ship and fucking obliterate the meteors
+        //move ship and obliterate the meteors
         yield return new WaitForSeconds(2);
 
         StartCoroutine(MoveShip());
