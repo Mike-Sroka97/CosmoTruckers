@@ -12,6 +12,7 @@ public class PlayerVesselManager : MonoBehaviour
     [HideInInspector] public PlayerVessel[] PlayerVessels;
 
     Vector3 startPos;
+    public bool IsMoving;
 
     private void Awake() => Instance = this;
 
@@ -33,6 +34,8 @@ public class PlayerVesselManager : MonoBehaviour
 
     public IEnumerator MoveMe(bool up)
     {
+        IsMoving = true;
+
         if(up)
         {
             while(transform.position.y < startPos.y)
@@ -53,5 +56,7 @@ public class PlayerVesselManager : MonoBehaviour
 
             transform.position = lowerPos.position;
         }
+
+        IsMoving = false;
     }
 }

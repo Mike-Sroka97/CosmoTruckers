@@ -298,6 +298,9 @@ public class INAcombat : MonoBehaviour
             //Move Vessels into the way blud
             StartCoroutine(PlayerVesselManager.Instance.MoveMe(!moveUp));
 
+            while (PlayerVesselManager.Instance.IsMoving)
+                yield return null;
+
             StartCoroutine(CombatManager.Instance.EndCombat());
         }
 

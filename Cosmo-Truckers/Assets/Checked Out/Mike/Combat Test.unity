@@ -4769,10 +4769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemiesToSpawn:
-  - {fileID: 5603782182012581459, guid: ab6abf72c4b6b72469d6894bd2897e03, type: 3}
-  - {fileID: 2017916592851816976, guid: 3fe401e5cc940b44f9ea7c3040ecca99, type: 3}
   - {fileID: 3105286010299706999, guid: 5a76445a41be174428569e9e12d56e07, type: 3}
-  - {fileID: 5094879767465362817, guid: 5a0da87d8b74ec7479e07b5d8cf29052, type: 3}
   EnemySummonsToSpawn: []
   PlayersToSpawn: []
   PlayerSummonsToSpawn: []
@@ -6649,6 +6646,12 @@ MonoBehaviour:
   AUGListOpenedEvent:
     m_PersistentCalls:
       m_Calls: []
+  AUGListClosedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  InsightOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1569895544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 564899436680103188, guid: 1a45be3cdc9d2c2469694f59f5103f9c, type: 3}
@@ -6789,9 +6792,6 @@ MonoBehaviour:
   EnemySummonsToSpawn: []
   PlayersToSpawn:
   - {fileID: 1766569172}
-  - {fileID: 1766569170}
-  - {fileID: 1766569171}
-  - {fileID: 2059037378}
   lastNode: 0
   skipNCNode: 0
 --- !u!1 &1624927859
@@ -7813,28 +7813,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d396e6cb20e26541820d12376bff2cb, type: 3}
---- !u!114 &1766569170 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1978591869348249575, guid: 7d396e6cb20e26541820d12376bff2cb, type: 3}
-  m_PrefabInstance: {fileID: 1766569169}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b170da8ea0c1d55409b64ca866fe03ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1766569171 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1978591868691077766, guid: 7d396e6cb20e26541820d12376bff2cb, type: 3}
-  m_PrefabInstance: {fileID: 1766569169}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b170da8ea0c1d55409b64ca866fe03ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1766569172 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1978591867913036051, guid: 7d396e6cb20e26541820d12376bff2cb, type: 3}
@@ -9984,17 +9962,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29fb57bcd30648d428b6c6f8ba2f9b0f, type: 3}
---- !u!114 &2059037378 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4445380430938373918, guid: 29fb57bcd30648d428b6c6f8ba2f9b0f, type: 3}
-  m_PrefabInstance: {fileID: 2059037377}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b170da8ea0c1d55409b64ca866fe03ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2064719884
 GameObject:
   m_ObjectHideFlags: 0
@@ -14227,6 +14194,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1510170930}
     m_Modifications:
+    - target: {fileID: 6247023491330371192, guid: 8a88f869d2697d2418d81a18d59d9016, type: 3}
+      propertyPath: m_RootOrder
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 6646484920545139084, guid: 8a88f869d2697d2418d81a18d59d9016, type: 3}
       propertyPath: endPoint
       value: 

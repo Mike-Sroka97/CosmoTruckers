@@ -72,6 +72,7 @@ public class TutorialTurnOrder : TurnOrder
         switch (turn)
         {
             // If you want to skip dialog, comment out "NewTurnStartup" and listener for "SetHoldCountDownTrue"
+            //Aeglar
             case 1:
                 NewTurnStartup(0); 
 
@@ -103,6 +104,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack starts and set HoldDownCount to true (4)
                 AttackStartedAddListeners(); 
                 break;
+            //Proto
             case 2:
                 NewTurnStartup(1);
 
@@ -141,6 +143,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack starts and set HoldDownCount to true (5)
                 AttackStartedAddListeners();
                 break;
+            //Six-face
             case 3:
                 NewTurnStartup(2);
 
@@ -164,6 +167,13 @@ public class TutorialTurnOrder : TurnOrder
 
                 // Enable all buttons after Insight is open
                 sixFace.InsightOpenedEvent.AddListener(sixFace.SelectionUI.EnableAllButtons);
+
+                //fuggin set the enemy intentions so they aren't wrong :cheems:
+                malites[0].CurrentTargets.Clear();
+                malites[0].CurrentTargets.Add(proto);
+                malites[1].CurrentTargets.Clear();
+                malites[1].CurrentTargets.Add(safeT);
+
                 //INA listener for Insight open and yaps (2)
                 sixFace.InsightOpenedEvent.AddListener(InsightOpenStartDialog); 
 
@@ -176,12 +186,19 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack starts. Explain Six Face movement, wind, and down attack (4)
                 AttackStartedAddListeners();
                 break;
+            //Safe-T
             case 4:
                 NewTurnStartup(3);
 
                 sixFace.SelectionUI.EnableAllButtons();
                 safeT.GetManaBase.TutorialAttackName = "Clock Out";
-                currentCharacter = safeT; 
+                currentCharacter = safeT;
+
+                //set malite intention for insight
+                malites[0].CurrentTargets.Clear();
+                malites[0].CurrentTargets.Add(sixFace);
+                malites[1].CurrentTargets.Clear();
+                malites[1].CurrentTargets.Add(aeglar);
 
                 // Wait to Blah Blah
                 yield return new WaitForSeconds(turnStartWaitTime);
@@ -203,22 +220,21 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack starts (3)
                 AttackStartedAddListeners();
                 break;
+            //Malite 1
             case 5:
                 NewTurnStartup(4);
                 currentCharacter = proto; 
-                malites[0].CurrentTargets.Clear();
-                malites[0].CurrentTargets.Add(proto);
                 malites[0].StartTurn();
                 //INA listener to yap when attack starts (1)
                 AttackStartedAddListeners();
                 break;
+            //Malite 2
             case 6:
                 RemoveCurrentListeners(); 
                 currentCharacter = safeT; 
-                malites[1].CurrentTargets.Clear();
-                malites[1].CurrentTargets.Add(safeT);
                 malites[1].StartTurn();
                 break;
+            //Aeglar
             case 7:
                 NewTurnStartup(5);
 
@@ -240,6 +256,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack wheel is open (2)
                 aeglar.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 break;
+            //Proto
             case 8:
                 NewTurnStartup(6);
 
@@ -260,6 +277,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack wheel is open (2)
                 proto.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 break;
+            //Six-face
             case 9:
                 NewTurnStartup(7);
 
@@ -280,6 +298,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack wheel is open (2)
                 sixFace.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 break;
+            //Safe-T
             case 10:
                 NewTurnStartup(8);
 
@@ -302,6 +321,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack wheel is open (2)
                 safeT.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 break;
+            //Malite 2
             case 11:
                 NewTurnStartup(9);
 
@@ -316,10 +336,9 @@ public class TutorialTurnOrder : TurnOrder
                 while (MyINATalker.DialogPlaying())
                     yield return null;
 
-                malites[1].CurrentTargets.Clear();
-                malites[1].CurrentTargets.Add(aeglar);
                 malites[1].StartTurn();
                 break;
+            //Aeglar
             case 12:
                 NewTurnStartup(10);
 
@@ -339,6 +358,7 @@ public class TutorialTurnOrder : TurnOrder
                 //INA listener to yap when attack wheel is open (2)
                 aeglar.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
                 break;
+            //Proto
             case 13:
                 NewTurnStartup(11);
 
@@ -356,11 +376,13 @@ public class TutorialTurnOrder : TurnOrder
                 proto.GetManaBase.TutorialAttackName = "Energon Jab";
                 proto.StartTurn();
                 break;
+            //Malice
             case 14:
                 malites[1].Die(); 
                 maliceCharacter = Instantiate(malice, maliceSpawn).GetComponent<MaliceAI>(); 
                 StartCoroutine(FindObjectOfType<MaliceAI>().Fall());
                 break;
+            //Malice
             case 15:
                 //add Malice dance
                 yield return new WaitForSeconds(10);
