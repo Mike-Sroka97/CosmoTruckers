@@ -8,6 +8,11 @@ using TMPro;
 
 public class PlayerSelectionManager : NetworkBehaviour
 {
+    [Header("Network testing")]
+    [SerializeField] bool TestingNetworkOBJ = false;
+    [SerializeField] GameObject TestHolder;
+
+    [Header("Scenes to load")]
     [SerializeField] string HUBSceneName;
     [SerializeField] string TutorialSceneName;
     [SerializeField] GameObject[] PlayerSelections;
@@ -58,7 +63,19 @@ public class PlayerSelectionManager : NetworkBehaviour
             //if(SaveData.newGame)
             //  NetworkManager.singleton.ServerChangeScene(TutorialSceneName);
             //else
-            NetworkManager.singleton.ServerChangeScene(HUBSceneName);
+
+            //TODO  TODO    TODO    TODO    TODO
+            //This has been modified for testing the net code in combat
+
+            //If this is not the testing network
+            if (!TestingNetworkOBJ)
+                NetworkManager.singleton.ServerChangeScene(HUBSceneName);
+            //If this is for testing only
+            //Add a call for any objects that need acces to the TRUE player list
+            else
+            {
+                TestHolder.SetActive(false);
+            }
         }
     }
 
