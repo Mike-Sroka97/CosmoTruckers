@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class TutorialTurnOrder : TurnOrder
 {
-    int turn = 0;
+    [SerializeField] int turn = 0;
     AeglarCharacter aeglar;
     SafeTCharacter safeT;
     ProtoCharacter proto;
@@ -126,7 +126,7 @@ public class TutorialTurnOrder : TurnOrder
                     yield return null;
 
                 proto.StartTurn();
-                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[1];
+                CombatManager.Instance.MyTargeting.ForcedTarget = malites[1];
 
                 //INA listener for Aug list open (TODO: reenable combat button)
                 proto.AUGListOpenedEvent.AddListener(EnableCurrentPlayerAttackUI);
@@ -178,7 +178,7 @@ public class TutorialTurnOrder : TurnOrder
                 sixFace.InsightOpenedEvent.AddListener(InsightOpenStartDialog); 
 
                 sixFace.StartTurn();
-                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[0];
+                CombatManager.Instance.MyTargeting.ForcedTarget = malites[0];
 
                 //INA listener to yap when attack wheel is open. Explain mana and tell Six Face to target bottom enemy (3)
                 sixFace.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
@@ -211,7 +211,7 @@ public class TutorialTurnOrder : TurnOrder
                 while (MyINATalker.DialogPlaying())
                     yield return null;
 
-                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[0];
+                CombatManager.Instance.MyTargeting.ForcedTarget = malites[1];
                 safeT.StartTurn();
 
                 //INA listener to yap about mana and using COKO on top Malite (2)
@@ -251,7 +251,7 @@ public class TutorialTurnOrder : TurnOrder
 
                 currentCharacter = aeglar; 
                 aeglar.GetManaBase.TutorialAttackName = "Veggie Vengeance";
-                CombatManager.Instance.MyTargeting.ForcedTarget = FindObjectOfType<ProtoCharacter>();
+                CombatManager.Instance.MyTargeting.ForcedTarget = proto;
                 aeglar.StartTurn();
                 //INA listener to yap when attack wheel is open (2)
                 aeglar.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
@@ -316,7 +316,7 @@ public class TutorialTurnOrder : TurnOrder
                 currentCharacter = safeT;
                 safeT.GetManaBase.SetMaxMana();
                 safeT.GetManaBase.TutorialAttackName = "Power Pummel";
-                CombatManager.Instance.MyTargeting.ForcedTarget = EnemyManager.Instance.Enemies[0];
+                CombatManager.Instance.MyTargeting.ForcedTarget = malites[0];
                 safeT.StartTurn();
                 //INA listener to yap when attack wheel is open (2)
                 safeT.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
@@ -353,7 +353,7 @@ public class TutorialTurnOrder : TurnOrder
                 while (MyINATalker.DialogPlaying())
                     yield return null;
 
-                CombatManager.Instance.MyTargeting.ForcedTarget = FindObjectOfType<AeglarCharacter>();
+                CombatManager.Instance.MyTargeting.ForcedTarget = aeglar;
                 aeglar.StartTurn();
                 //INA listener to yap when attack wheel is open (2)
                 aeglar.AttackWheelOpenedEvent.AddListener(AttackWheelOpenStartDialog);
