@@ -21,7 +21,6 @@ public class HUBController : MonoBehaviour
         //start dimension load if every player in the player manager has voted
         //if(playersLockedIn < playersInLobby)
 
-
         gameObject.SetActive(false);
     }
 
