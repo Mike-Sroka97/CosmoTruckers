@@ -10,37 +10,45 @@ public static class ActorAnimationFinder
         string animationName = null;
         input = input.ToUpper(); 
 
+        // Get general animation for players
         if (isPlayer)
         {
             foreach (PlayerAnimations enumValue in Enum.GetValues(typeof(PlayerAnimations)))
             {
                 if (string.Equals(enumValue.ToString(), input, StringComparison.OrdinalIgnoreCase))
                 {
-                    animationName = actorName + "_" + enumValue.ToString().ToUpper(); 
+                    animationName = actorName + "_" + enumValue.ToString().ToUpper();
+                    break;
                 }
             }
         }
 
+        // Get general animation for NPCs 
         foreach (GeneralAnimations enumValue in Enum.GetValues(typeof(GeneralAnimations)))
         {
             if (string.Equals(enumValue.ToString(), input, StringComparison.OrdinalIgnoreCase))
             {
                 animationName = "ACT_" + enumValue.ToString().ToUpper();
+                break; 
             }
         }
 
-        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips; 
+        // Get all the clips on this animator
+        AnimationClip[] clips = anim.runtimeAnimatorController.animationClips;
+
+        if (animationName == null)
+            animationName = input.ToUpper(); 
 
         foreach (AnimationClip clip in clips)
         {
-            if (animationName == clip.name)
+            if (animationName == clip.name.ToUpper())
             {
                 return clip;
             }
         }
 
         // Handle the case where no match is found
-        throw new ArgumentException("No matching enum value found for the given string", nameof(input));
+        throw new ArgumentException($"No matching enum value found for {input} with the given string {animationName}");
     }
 }
 

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -48,6 +50,7 @@ public abstract class CutsceneController : MonoBehaviour
 
         // Sort the player actors
         BaseActor[] sortedActors = SortBasePlayerActors(DialogManager.Instance.PlayerActors);
+
         List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
         DialogManager.Instance.SetBaseActors(SpawnActorsIn(actorPrefabs));
     }

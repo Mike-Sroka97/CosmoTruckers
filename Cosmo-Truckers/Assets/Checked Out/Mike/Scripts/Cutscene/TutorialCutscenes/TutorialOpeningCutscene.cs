@@ -38,12 +38,12 @@ public class TutorialOpeningCutscene : CutsceneController
         StartCoroutine(cameraController.Shake(5f, 40, .05f));
 
         //move ship and obliterate the meteors
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2f);
 
         StartCoroutine(MoveShip());
 
         //fade front of ship out
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(3f);
 
         // Set the player actors here, since this cutscene will always have the same player actors
         DialogManager.Instance.SetPlayerActors(baseActors.ToList(), isCutscene: true);
@@ -66,6 +66,9 @@ public class TutorialOpeningCutscene : CutsceneController
         {
             yield return null;
         }
+
+        // give a second before starting the dialog
+        yield return new WaitForSeconds(1f);
 
         // Advance the scene
         StartCoroutine(DialogManager.Instance.AdvanceScene());
