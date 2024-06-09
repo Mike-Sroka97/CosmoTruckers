@@ -45,14 +45,21 @@ public abstract class CutsceneController : MonoBehaviour
     /// </summary>
     protected void DialogSetup()
     {
+        BaseActor[] sortedActors = NextDialogSetup();
+
+        List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
+        DialogManager.Instance.SetBaseActors(SpawnActorsIn(actorPrefabs));
+    }
+
+    protected BaseActor[] NextDialogSetup()
+    {
         DialogManager.Instance.DialogIsPlaying = true;
-        DialogManager.Instance.SetupDialogs(textFiles[DialogManager.Instance.CurrentTextFile]); 
+        DialogManager.Instance.SetupDialogs(textFiles[DialogManager.Instance.CurrentTextFile]);
 
         // Sort the player actors
         BaseActor[] sortedActors = SortBasePlayerActors(DialogManager.Instance.PlayerActors);
 
-        List<GameObject> actorPrefabs = GetActorPrefabList(sortedActors);
-        DialogManager.Instance.SetBaseActors(SpawnActorsIn(actorPrefabs));
+        return sortedActors; 
     }
 
     /// <summary>
@@ -85,7 +92,7 @@ public abstract class CutsceneController : MonoBehaviour
                     finalPlayerActors[j] = actor;
                     finalPlayerActors[j].actorID = j + 1;
                     //This is a base character, so we will use the first dialog
-                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetAllDialogs(textFiles[DialogManager.Instance.CurrentLineIndex])[0]);
+                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetAllDialogs(textFiles[DialogManager.Instance.CurrentTextFile])[0]);
                     basePlayerFound = true;
                 }
 
@@ -109,7 +116,7 @@ public abstract class CutsceneController : MonoBehaviour
                     // Set the null spots to the remaining player actors
                     finalPlayerActors[j] = remainingPlayerActors[i];
                     // Set the dialog for this player slot to be a specific actor dialog
-                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetActorDialog(textFiles[DialogManager.Instance.CurrentLineIndex], remainingPlayerActors[i].actorName)); 
+                    DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetActorDialog(textFiles[DialogManager.Instance.CurrentTextFile], remainingPlayerActors[i].actorName)); 
                     finalPlayerActors[j].actorID = j + 1;
                     break;
                 }

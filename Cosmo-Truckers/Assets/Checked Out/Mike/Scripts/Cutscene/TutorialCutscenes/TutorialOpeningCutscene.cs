@@ -63,9 +63,7 @@ public class TutorialOpeningCutscene : CutsceneController
         }
 
         while (cameraController.CommandsExecuting > 0)
-        {
             yield return null;
-        }
 
         // give a second before starting the dialog
         yield return new WaitForSeconds(1f);
@@ -74,9 +72,24 @@ public class TutorialOpeningCutscene : CutsceneController
         StartCoroutine(DialogManager.Instance.AdvanceScene());
 
         while (DialogManager.Instance.DialogIsPlaying)
-        {
             yield return null;
-        }
+
+        NextDialogSetup();
+
+        //execute camera shake - ship gets hit
+        StartCoroutine(cameraController.Shake(2f, 80, .1f));
+
+        while (cameraController.CommandsExecuting > 0)
+            yield return null;
+
+        // give a second before starting the dialog
+        yield return new WaitForSeconds(2f);
+
+        // Advance the scene
+        StartCoroutine(DialogManager.Instance.AdvanceScene());
+
+        while (DialogManager.Instance.DialogIsPlaying)
+            yield return null;
 
         StartCoroutine(cameraController.FadeVignette(false));
 

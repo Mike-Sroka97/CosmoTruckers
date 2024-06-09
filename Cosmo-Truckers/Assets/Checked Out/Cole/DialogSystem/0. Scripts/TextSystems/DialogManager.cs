@@ -59,7 +59,6 @@ public class DialogManager : MonoBehaviour
     private float cutsceneDialogWaitTime = 2.5f; 
 
     // Public Variables
-    public int CurrentLineIndex { get; private set; } = 0;
     public int CurrentTextFile { get; private set; } = 0;
 
     public static readonly string[] BasePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
@@ -280,9 +279,8 @@ public class DialogManager : MonoBehaviour
         // Increment the current line
         currentLineIndex++;
 
-        allLinesCount = TextParser.GetAllLinesInThisDialogCount(dialogs[0]);
-
         SetNextLineIndicatorState(false);
+        allLinesCount = TextParser.GetAllLinesInThisDialogCount(dialogs[0]);
 
         // End the dialog if we've reached the line count
         if (currentLineIndex >= allLinesCount)
@@ -424,7 +422,7 @@ public class DialogManager : MonoBehaviour
     private Coroutine lineRoutine = null;
     public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
-        float waitTimeBetweenDialogs = 0.5f, string actorDirection = "left")
+        float waitTimeBetweenDialogs = 1.5f, string actorDirection = "left")
     {
         string actorName = speaker.actorName; 
 
@@ -598,6 +596,12 @@ public class DialogManager : MonoBehaviour
         SetUIBoxActiveStates(false); 
 
         yield return new WaitForSeconds(disableUITime);
+
+        this.EnsureCoroutineStopped(ref lineRoutine);
+        dialogTextAnimations = null; 
+
+        currentLineIndex = 0; 
+        CurrentTextFile++; 
 
         DialogIsPlaying = false;
         FirstTimeSetupComplete = false; 

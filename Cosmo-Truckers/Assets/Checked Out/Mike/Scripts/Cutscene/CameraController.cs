@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] float fadeSpeed;
     [SerializeField] float textFadeSpeed;
+    float shakeMinDistance = 0.05f; 
 
     [HideInInspector] public int CommandsExecuting { get; private set; }
 
@@ -94,6 +95,7 @@ public class CameraController : MonoBehaviour
         CommandsExecuting++;
 
         Vector3 shakeOriginalPosition = transform.position;
+        float distance = 1000; 
 
         while (duration > 0)
         {
@@ -104,8 +106,15 @@ public class CameraController : MonoBehaviour
 
         while(transform.position != shakeOriginalPosition)
         {
-            Vector3.MoveTowards(transform.position, shakeOriginalPosition, shakeSpeed * Time.deltaTime);
-            yield return null;
+            distance = Mathf.Abs(Vector3.Distance(transform.position, shakeOriginalPosition));
+
+            if (distance <= shakeMinDistance)
+                transform.position = shakeOriginalPosition;
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, shakeOriginalPosition, shakeSpeed * Time.deltaTime);
+                yield return null;
+            }
         }
 
         CommandsExecuting--; 
