@@ -15,7 +15,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     [SerializeField] Color baseColor;
     [SerializeField] Color nonFadingColor;
     [SerializeField] Color fadingColor;
-    [SerializeField] TMP_Text AUGDescription;
+    [SerializeField] TMP_Text AUGNameText;
+    [SerializeField] TMP_Text AUGDescriptionText;
     [SerializeField] Sprite[] bgs;
     [SerializeField] Transform characterSlots;
     [SerializeField] Image mainSlot;
@@ -41,7 +42,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         foreach(var stack in selectable)
             stack.GetComponentInChildren<TMP_Text>().text = "";
 
-        AUGDescription.text = "";
+        AUGNameText.text = "";  
+        AUGDescriptionText.text = "";
     }
 
     /// <summary>
@@ -122,7 +124,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         string AUGName = charactersAUGS.Count > currentLocation ? charactersAUGS[currentLocation].DebuffName : "Empty";
         string AUGDes = charactersAUGS.Count > currentLocation ? charactersAUGS[currentLocation].DebuffDescription : "";
 
-        AUGDescription.text = $"<align=center><b>{AUGName}</b></align>\n{AUGDes}";
+        AUGNameText.text = $"<b>{AUGName}</b>"; 
+        AUGDescriptionText.text = $"{AUGDes}";
     }
 
     void MoveUp()
