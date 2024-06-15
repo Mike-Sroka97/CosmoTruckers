@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HUB Material
-  m_Shader: {fileID: -6465566751694194690, guid: 65b0c9a864e6a8d488a3fb960b10fbf1, type: 3}
+  m_Name: M_UI_HubMaterial
+  m_Shader: {fileID: 4800000, guid: 1e5bc97801ad3e34eae67a5c502fbb44, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -21,11 +21,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b7202ed427d6d664aa7988bbef24431c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 17f05f5571f117341b0200f2f0111399, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _UniqueTexture:
-        m_Texture: {fileID: 2800000, guid: 540f10b33cdef5e428e5b9d2f1da798a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 17f05f5571f117341b0200f2f0111399, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -42,23 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _ScrollSpeed: 0.2
+    - _Alpha: 1
+    - _ColorMask: 15
+    - _ScrollSpeed: 0.1
+    - _Stencil: 0
+    - _StencilComp: 0.9
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
     - _ScrollDirection: {r: 1, g: 1, b: 0, a: 0}
-    - _TilingScale: {r: 3, g: 1, b: 0, a: 0}
+    - _TilingScale: {r: 2, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6527196077374819655
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
