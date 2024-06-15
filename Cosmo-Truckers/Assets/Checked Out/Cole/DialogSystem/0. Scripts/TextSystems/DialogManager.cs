@@ -54,9 +54,12 @@ public class DialogManager : MonoBehaviour
     
     private Vector3 newBoxPosition = Vector3.zero; 
     private Vector3 lastBoxPosition = Vector3.zero; 
+    
+    // Dialog Wait Time Variables
     private bool noWaitDialog = false;
-    private float noWaitDialogTimeBetween = 0.35f; 
-    private float cutsceneDialogWaitTime = 2.5f; 
+    private const float noWaitDialogTimeBetween = 0.35f; 
+    private const float cutsceneDialogWaitTime = 2.5f;
+    private const float bufferBeforeDisplayingDialog = 0.25f; 
 
     // Public Variables
     public int CurrentTextFile { get; private set; } = 0;
@@ -74,7 +77,7 @@ public class DialogManager : MonoBehaviour
 
     // Use these as additional checks to wait for AdvanceScene text spamming
     private bool FirstTimeSetupComplete;
-    private bool AdvanceSceneCommencing = false; 
+    private int AdvanceSceneCalls = 0; 
 
     void Awake()
     {
@@ -271,7 +274,10 @@ public class DialogManager : MonoBehaviour
 
     public IEnumerator AdvanceScene()
     {
-        AdvanceSceneCommencing = true; 
+        if (AdvanceSceneCalls > 0)
+            yield break;
+
+        AdvanceSceneCalls++; 
 
         if (noWaitDialog)
             yield break; 
@@ -372,6 +378,9 @@ public class DialogManager : MonoBehaviour
 
             // Tell the actor to deliver the line
             actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
+            
+            // The Dialog Box will always be set to updating after this, set it here to prevent Advance Scene from isntantly being called again
+            UpdatingDialogBox = true;
 
             // Set last id after delivering
             lastID = currentID;
@@ -391,12 +400,15 @@ public class DialogManager : MonoBehaviour
                     {
                         yield return new WaitForSeconds(noWaitDialogTimeBetween);
                         noWaitDialog = false;
+                        AdvanceSceneCalls--;
                         StartCoroutine(AdvanceScene());
-                        yield break;
                     }
                 }
+
+                yield break; 
             }
 
+            // If this wasn't a cutscene, the user would need to press an input to continue the dialog
             else
             {
                 if (CutsceneDialog)
@@ -407,13 +419,12 @@ public class DialogManager : MonoBehaviour
                     }
 
                     yield return new WaitForSeconds(cutsceneDialogWaitTime);
+                    AdvanceSceneCalls--; 
                     StartCoroutine(AdvanceScene());
-                    yield break;
                 }
-            }
 
-            yield return null;
-            AdvanceSceneCommencing = false; 
+                yield break; 
+            }
         }
     }
 
@@ -424,15 +435,18 @@ public class DialogManager : MonoBehaviour
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
         float waitTimeBetweenDialogs = 1.5f, string actorDirection = "left")
     {
-        string actorName = speaker.actorName; 
+        string actorName = speaker.actorName;
+
+        // Clear the previous dialog text right away
+        ClearDialogText();
+
+        // Set the dialog Text Animations and clear the previous text
+        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
 
         // If it's the first time dialog, don't animate box out and in, just in
         if (firstDialog)
         {
-            UpdatingDialogBox = true;
-
             SetDialogUI(textBoxPosition, actorDirection);
-            ClearDialogText();
 
             foreach (BaseActor actor in currentActorsToAnimate)
                 actor.StartAnimation(); 
@@ -446,14 +460,10 @@ public class DialogManager : MonoBehaviour
 
             while (AnimatingDialogBox)
                 yield return null;
-
-            UpdatingDialogBox = false;
         }
         //If it's not the same speaker, animate box out and in to new speaker
         else if (!sameSpeaker)
         {
-            UpdatingDialogBox = true; 
-
             StartCoroutine(AnimateUIToSize(grow:false));
             AnimatingDialogBox = true;
 
@@ -462,7 +472,6 @@ public class DialogManager : MonoBehaviour
 
             // Wait until text box is shrunk before moving positions
             SetDialogUI(textBoxPosition, actorDirection);
-            ClearDialogText();
 
             // Wait before shrinking Dialog Box to animate
             foreach (BaseActor actor in currentActorsToAnimate)
@@ -477,27 +486,32 @@ public class DialogManager : MonoBehaviour
 
             while (AnimatingDialogBox)
                 yield return null;
-
-            UpdatingDialogBox = false;
         }
         
-        // Otherwise, stop Animating and Updating Dialog Box
-        else 
-        { 
-            AnimatingDialogBox = false;
-            UpdatingDialogBox = false;
-        }
-
-        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
+        // Otherwise, set Animating Dialog Box to false
+        else { AnimatingDialogBox = false; }
+        
+        // Set the speaker name first and then wait a little bit before displaying dialog
         displayNameText.text = actorName;
+
+        // Small buffer after the dialog box has animated in 
+        yield return new WaitForSeconds(bufferBeforeDisplayingDialog);
 
         // Stop the Coroutine
         this.EnsureCoroutineStopped(ref lineRoutine);
         dialogTextAnimations.IsTextPlaying = false;
 
-        // Speak the next line of dialog. Process the dialog commands and start animating the text into the text box
+        // Speak the next line of dialog. Process the dialog commands
         List<DialogCommand> commands = DialogUtility.ProcessMessage(nextLine, out string processedMessage);
-        Action<bool> action = SetNextLineIndicatorState; 
+        Action<bool> action = SetNextLineIndicatorState;
+
+        // Set the Dialog Text Animations to true
+        dialogTextAnimations.IsTextPlaying = true;
+
+        // Finally set Updating Dialog Box to false 
+        UpdatingDialogBox = false;
+
+        // Start the coroutine to animate the text into the text box
         lineRoutine = StartCoroutine(dialogTextAnimations.AnimateTextIn(commands, processedMessage, action, speaker, TextSpeedNormal));
     }
 
@@ -628,7 +642,7 @@ public class DialogManager : MonoBehaviour
     }
     public bool CanSkipDialogText()
     {
-        return dialogTextAnimations.CanSkipText && !AdvanceSceneCommencing;
+        return dialogTextAnimations.CanSkipText && (AdvanceSceneCalls == 0);
     }
 
     public void StopAnimating()
