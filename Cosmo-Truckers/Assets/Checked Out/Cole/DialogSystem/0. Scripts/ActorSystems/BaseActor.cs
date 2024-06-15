@@ -27,7 +27,8 @@ public class BaseActor : MonoBehaviour
     [SerializeField] private int defaultLowVoiceRate = 3;
     [SerializeField] private int defaultHighVoiceRate = 3;
 
-    private int currentDefaultVoiceRate = 3; 
+    private int currentVoiceRate = 3;
+    private const float defaultWaitTimeBetweenDialogs = 1.25f; 
 
     [Header("Unique Voice Barks")]
     [SerializeField] private AudioClip unique1;
@@ -69,7 +70,8 @@ public class BaseActor : MonoBehaviour
         if (actorID == lastID && waitTime == 0)
             sameSpeaker = true;
 
-        float timeToWait = 0.5f;
+        // Use the default wait time between dialogs unless the specified wait time is longer
+        float timeToWait = defaultWaitTimeBetweenDialogs;
         if (waitTime > timeToWait)
             timeToWait = waitTime;
 
@@ -107,12 +109,12 @@ public class BaseActor : MonoBehaviour
         if (vcType == "low")
         {
             voiceBarks = low.ToList<AudioClip>();
-            currentDefaultVoiceRate = defaultLowVoiceRate;
+            currentVoiceRate = defaultLowVoiceRate;
         }
         else if (vcType == "high")
         {
             voiceBarks = high.ToList<AudioClip>();
-            currentDefaultVoiceRate = defaultHighVoiceRate;
+            currentVoiceRate = defaultHighVoiceRate;
         }
         else if (vcType == "nervous")
             voiceBarks = nervous.ToList<AudioClip>();
@@ -121,7 +123,7 @@ public class BaseActor : MonoBehaviour
         else
         {
             voiceBarks = normal.ToList<AudioClip>();
-            currentDefaultVoiceRate = defaultNormalVoiceRate;
+            currentVoiceRate = defaultNormalVoiceRate;
         }
 
         return voiceBarks; 
@@ -130,7 +132,7 @@ public class BaseActor : MonoBehaviour
     {
         // If no rate is entered, choose a default rate based on voice bark type
         if (vcRate == -1)
-            voiceRate = currentDefaultVoiceRate;
+            voiceRate = currentVoiceRate;
         // Maybe change this, setting it so high that it'll never play again
         else if (vcRate == -2)
             voiceRate = 200;

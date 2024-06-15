@@ -65,7 +65,6 @@ public class DialogTextAnimations
             speaker = _speaker; 
 
         // Text is Playing, but we want to wait until at least one character is on screen to skip text
-        IsTextPlaying = true;
         CanSkipText = false; 
 
         // Get Seconds Per Character
