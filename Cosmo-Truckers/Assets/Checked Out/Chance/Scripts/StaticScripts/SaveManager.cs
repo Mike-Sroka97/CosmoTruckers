@@ -59,6 +59,7 @@ public class SaveData
         PlayerCurrentDebuffs = new();
         PlayersLoot = new();
         TutorialFinished = false;
+        Unlocked = false;
     }
 
     [Header("Combat data")]
@@ -70,4 +71,5 @@ public class SaveData
 
     [Header("Other vars")]
     public bool TutorialFinished;
+    public bool Unlocked;
 }

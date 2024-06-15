@@ -5,7 +5,10 @@ using Mirror;
 
 public class PlayerManager : NetworkBehaviour
 {
+    public static PlayerManager Instance;
+
     [SerializeField] List<CharacterSO> AllCharacters;
+    public List<CharacterSO> SelectedCharacters;
 
     //The number of the player on the server
     [SyncVar] int playerNumber = 0;
@@ -17,6 +20,7 @@ public class PlayerManager : NetworkBehaviour
     public SaveData GetPlayerData { get => PlayerData; }
     public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
     public int GetPlayerNumber { get => playerNumber; }
+    private void Awake() => Instance = this;
 
     /// <summary>
     /// Load in the player data for this character and set it for online play
