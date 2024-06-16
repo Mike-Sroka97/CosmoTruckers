@@ -19,7 +19,8 @@ public class DialogManager : MonoBehaviour
     [SerializeField] private Transform dialogBox;
     [SerializeField] private Image dialogBoxImage; 
     [SerializeField] private Image dialogBoxImageBorder; 
-    [SerializeField] private Image actorDirection; 
+    [SerializeField] private Image actorDirectionGraphic; 
+    [SerializeField] private Transform actorDirection; 
     [SerializeField] private Image nextLineIndicator;
     [SerializeField] private float disableUITime = 1f;
     private Animator indicatorAnimator;
@@ -137,23 +138,22 @@ public class DialogManager : MonoBehaviour
         else
             nextLineIndicator.sprite = defaultNextIndicator; 
     }
-    private void SetDialogUI(Transform newPosition, string direction)
+    private void SetNewTextBoxPosition(Transform newPosition)
     {
-        newBoxPosition = newPosition.position; 
-
-        switch (direction)
+        newBoxPosition = newPosition.position;
+    }
+    private void SetActorDirection(bool direction, Transform actorPosition)
+    {
+        // Set the Direction of the speaker if it is enabled
+        if (!direction)
+            actorDirection.gameObject.SetActive(false);
+        else
         {
-            case "right":
-                actorDirection.enabled = true; 
-                actorDirection.rectTransform.eulerAngles = new Vector3(0, 180f, 0);
-                break;
-            case "none": 
-                actorDirection.enabled = false;
-                break;
-            default:
-                actorDirection.enabled = true;
-                actorDirection.rectTransform.eulerAngles = new Vector3(0, 0f, 0);
-                break; 
+            actorDirection.gameObject.SetActive(true);
+
+            Vector3 dir = actorPosition.position - actorDirection.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            actorDirection.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
         }
     }
 
@@ -209,7 +209,7 @@ public class DialogManager : MonoBehaviour
             // Set the alpha of the UI Dialog Box elements
             dialogBoxImage.color = new Color(dialogBoxImage.color.r, dialogBoxImage.color.g, dialogBoxImage.color.b, newAlpha);
             dialogBoxImageBorder.color = new Color(dialogBoxImageBorder.color.r, dialogBoxImageBorder.color.g, dialogBoxImageBorder.color.b, newAlpha);
-            actorDirection.color = new Color(actorDirection.color.r, actorDirection.color.g, actorDirection.color.b, newAlpha);
+            actorDirectionGraphic.color = new Color(actorDirectionGraphic.color.r, actorDirectionGraphic.color.g, actorDirectionGraphic.color.b, newAlpha);
 
             // Grow the box to the center or shrink to the old starting position
             dialogBox.position = Vector3.Lerp(lastBoxPosition, endPosition, timer / timeToAnimate); 
@@ -318,7 +318,7 @@ public class DialogManager : MonoBehaviour
             }
 
             // Handle the Pre Text Tags, and return any variables needed to pass into actors
-            string speakerDirection = string.Empty;
+            bool speakerDirection = true;
             float pBefore = 0f;
             List<int> actorsToAnim = new List<int> { };
             string animToPlay = string.Empty;
@@ -433,7 +433,7 @@ public class DialogManager : MonoBehaviour
     private Coroutine lineRoutine = null;
     public IEnumerator StartNextDialog(string nextLine, BaseActor speaker, Material borderMaterial, 
         Transform textBoxPosition, bool sameSpeaker = false, bool firstDialog = false, 
-        float waitTimeBetweenDialogs = 1.5f, string actorDirection = "left")
+        float waitTimeBetweenDialogs = 1.5f, bool actorDirection = true)
     {
         string actorName = speaker.actorName;
 
@@ -446,7 +446,8 @@ public class DialogManager : MonoBehaviour
         // If it's the first time dialog, don't animate box out and in, just in
         if (firstDialog)
         {
-            SetDialogUI(textBoxPosition, actorDirection);
+            SetNewTextBoxPosition(textBoxPosition);
+            SetActorDirection(actorDirection, speaker.gameObject.transform);
 
             foreach (BaseActor actor in currentActorsToAnimate)
                 actor.StartAnimation(); 
@@ -471,7 +472,7 @@ public class DialogManager : MonoBehaviour
                 yield return null;
 
             // Wait until text box is shrunk before moving positions
-            SetDialogUI(textBoxPosition, actorDirection);
+            SetNewTextBoxPosition(textBoxPosition);
 
             // Wait before shrinking Dialog Box to animate
             foreach (BaseActor actor in currentActorsToAnimate)
@@ -481,6 +482,7 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
+            SetActorDirection(actorDirection, speaker.gameObject.transform);
             StartCoroutine(AnimateUIToSize());
             AnimatingDialogBox = true;
 
@@ -527,7 +529,7 @@ public class DialogManager : MonoBehaviour
     /// <param name="vcType"></param>
     /// <param name="vcRate"></param>
     /// <param name="boxNumber"></param>
-    public void HandlePreTextTags(string[] tags, ref string speakerDirection, ref float pBefore, ref List<int> actorsToAnimate,
+    public void HandlePreTextTags(string[] tags, ref bool speakerDirection, ref float pBefore, ref List<int> actorsToAnimate,
     ref string animToPlay, ref bool waitForAnim, ref string vcType, ref int vcRate)
     {
         // Start at 1, first tag is actorID
@@ -539,7 +541,16 @@ public class DialogManager : MonoBehaviour
 
             if (tagKey == "direction")
             {
-                speakerDirection = tagValue;
+                string noDirection = "false";
+                bool direction = true;
+
+                // Default to true, but change if set to false
+                if (noDirection.Equals(tagKey, StringComparison.OrdinalIgnoreCase))
+                {
+                    direction = false; 
+                }
+
+                speakerDirection = direction;
             }
             else if (tagKey == "pBefore")
             {
