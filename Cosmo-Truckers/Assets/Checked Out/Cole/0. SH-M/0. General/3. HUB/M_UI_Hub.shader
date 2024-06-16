@@ -7,20 +7,18 @@ Shader "SH_UI_MovingTexture"
         _ScrollSpeed("ScrollSpeed", Range(0, 1)) = 0.1
         _ScrollDirection("ScrollDirection", Vector) = (3, 1, 0, 0)
         _TilingScale("TilingScale", Vector) = (2, 1, 0, 0)
-        _Alpha("Alpha", Range(0, 1)) = 0.5
-        _Color("Color", Color) = (1, 1, 1, 1)
         [HideInInspector][NoScaleOffset]unity_Lightmaps("unity_Lightmaps", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_LightmapsInd("unity_LightmapsInd", 2DArray) = "" {}
         [HideInInspector][NoScaleOffset]unity_ShadowMasks("unity_ShadowMasks", 2DArray) = "" {}
 
-        // Added to make it work with Unity Masks:
+
         _StencilComp("Stencil Comparison", Float) = 8
         _Stencil("Stencil ID", Float) = 0
         _StencilOp("Stencil Operation", Float) = 0
         _StencilWriteMask("Stencil Write Mask", Float) = 255
         _StencilReadMask("Stencil Read Mask", Float) = 255
         _ColorMask("Color Mask", Float) = 15
-        // end
+
     }
         SubShader
     {
@@ -34,7 +32,6 @@ Shader "SH_UI_MovingTexture"
             "ShaderGraphTargetId" = ""
         }
 
-        // Added to make it work with Unity Masks:
         Stencil
         {
         Ref[_Stencil]
@@ -236,8 +233,6 @@ float _ScrollSpeed;
 float2 _ScrollDirection;
 float4 _UniqueTexture_TexelSize;
 float2 _TilingScale;
-float _Alpha;
-float4 _Color;
 CBUFFER_END
 
 // Object and Global properties
