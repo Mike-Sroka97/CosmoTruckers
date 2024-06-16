@@ -192,7 +192,7 @@ public class RegularTextManager : MonoBehaviour
             string vcType = string.Empty;
             int vcRate = -1; // If -1 is passed in, use default voice rate
 
-            DialogManager.Instance.HandlePreTextTags(tags, ref emptyStringReference, ref pBefore, ref emptyActors, ref emptyStringReference,
+            DialogManager.Instance.HandlePreTextTags(tags, ref emptyBoolReference, ref pBefore, ref emptyActors, ref emptyStringReference,
                 ref emptyBoolReference, ref vcType, ref vcRate);
 
             // Get the line associated with this actor and their dialog

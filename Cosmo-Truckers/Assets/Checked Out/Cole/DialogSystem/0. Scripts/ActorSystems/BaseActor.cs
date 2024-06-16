@@ -10,7 +10,7 @@ public class BaseActor : MonoBehaviour
     [Header("Main Actor Variables")]
     [SerializeField] Animation[] actorStates;
     [SerializeField] Transform textBoxPosition;
-    SpeakingDirection myDirection;
+    bool hasDirection;
     public string actorName;
     public int actorID;
 
@@ -52,19 +52,9 @@ public class BaseActor : MonoBehaviour
     }
 
     //set text box active and material 
-    public void DeliverLine(string actorsLine, int lastID, bool firstDialog, string direction, float waitTime = 0f)
+    public void DeliverLine(string actorsLine, int lastID, bool firstDialog, bool direction, float waitTime = 0f)
     {
         bool sameSpeaker = false;
-        
-        // If direction is empty, set it to this direction
-        if (direction == string.Empty)
-            direction = myDirection.ToString();
-        else
-        {
-            // If direciton isn't one of the base directions, set it to this direction
-            if (direction != "left" && direction != "right" && direction != "none")
-                direction = myDirection.ToString();
-        }
 
         // If it's the same speaker, we don't want the box to just sit there if waiting 
         if (actorID == lastID && waitTime == 0)
@@ -170,11 +160,4 @@ public class BaseActor : MonoBehaviour
         myAnimator.Play(animationToPlay.name);
     }
     #endregion
-}
-
-public enum SpeakingDirection
-{
-    left,
-    right,
-    none
 }
