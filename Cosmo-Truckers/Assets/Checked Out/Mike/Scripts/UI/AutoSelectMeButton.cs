@@ -8,5 +8,10 @@ public class AutoSelectMeButton : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<Button>().Select();
+
+        if (GetComponent<MainHubButton>())
+        {
+            StartCoroutine(GetComponent<MainHubButton>().MoveMe(true));
+        }
     }
 }

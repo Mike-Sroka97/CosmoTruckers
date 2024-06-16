@@ -24,7 +24,7 @@ public class MainHubButton : MonoBehaviour, IDeselectHandler, ISelectHandler
         StartCoroutine(MoveMe(false));
     }
 
-    IEnumerator MoveMe(bool right)
+    public IEnumerator MoveMe(bool right)
     {
         if(right)
         {
