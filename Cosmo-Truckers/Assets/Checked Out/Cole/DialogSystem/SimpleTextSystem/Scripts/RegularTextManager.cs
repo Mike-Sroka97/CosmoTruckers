@@ -241,7 +241,7 @@ public class RegularTextManager : MonoBehaviour
     #region Setup and Checks
     private void SetupVariables(TextAsset _textFile)
     {
-        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
+        dialogTextAnimations = new DialogTextAnimations(textBox, audioSource);
         currentLineIndex = -1; 
         GetScripts();
 

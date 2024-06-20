@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,11 +18,11 @@ public class DialogManager : MonoBehaviour
 
     [Header("Dialog Box UI")]
     [SerializeField] private Transform dialogBox;
-    [SerializeField] private Image dialogBoxImage; 
-    [SerializeField] private Image dialogBoxImageBorder; 
-    [SerializeField] private Image actorDirectionGraphic; 
+    [SerializeField] private SpriteRenderer dialogBoxImage; 
+    [SerializeField] private SpriteRenderer dialogBoxImageBorder; 
+    [SerializeField] private SpriteRenderer actorDirectionGraphic; 
     [SerializeField] private Transform actorDirection; 
-    [SerializeField] private Image nextLineIndicator;
+    [SerializeField] private SpriteRenderer nextLineIndicator;
     [SerializeField] private float disableUITime = 1f;
     private Animator indicatorAnimator;
 
@@ -42,6 +43,7 @@ public class DialogManager : MonoBehaviour
     private List<BaseActor> currentActorsToAnimate;
 
     public List<BaseActor> PlayerActors { get; private set; }
+    [HideInInspector]
     public TextParser TextParser;
     public ActorList ActorList;
 
@@ -72,6 +74,7 @@ public class DialogManager : MonoBehaviour
     public bool UpdatingDialogBox { get; private set; }
     public bool CutsceneDialog { get; private set; }
 
+    [HideInInspector]
     public bool TextSpeedNormal = true; 
 
     public bool DialogIsPlaying;
@@ -142,27 +145,44 @@ public class DialogManager : MonoBehaviour
     {
         newBoxPosition = newPosition.position;
     }
-    private void SetActorDirection(bool direction, Transform actorPosition)
+    private void SetActorDirection(bool direction, Transform actorPosition, Vector3 cameraPosition, float scale)
     {
         // Set the Direction of the speaker if it is enabled
         if (!direction)
-            actorDirection.gameObject.SetActive(false);
+            actorDirection.GetChild(0).gameObject.SetActive(false);
+
         else
         {
-            actorDirection.gameObject.SetActive(true);
+            // Temporarily set the dialogBox to default settings and the camera's position
+            // Need to do this so that it calculates the speaker direction based on where it will be at the end
+            Vector3 originalPosition = dialogBox.position;
+            Vector3 originalScale = dialogBox.localScale;
+            Vector3 scaleToSet = new Vector3(scale, scale, scale);
 
-            Vector3 dir = actorPosition.position - actorDirection.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            actorDirection.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
+            dialogBox.localScale = scaleToSet; 
+            dialogBox.position = new Vector3(cameraPosition.x, cameraPosition.y, 0);
+            actorDirection.eulerAngles = new Vector3(0f, 0f, 0f); 
+
+            Vector3 dir = actorDirection.position - actorPosition.position; 
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, dir); 
+
+            actorDirection.rotation = targetRotation;
+            actorDirection.GetChild(0).gameObject.SetActive(true);
+
+            // Set it back to original values ensure there's no visual issues when lerping it later
+            dialogBox.position = originalPosition;
+            dialogBox.localScale = originalScale; 
         }
     }
 
-    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true)
+    private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true, 
+        bool actDirection = false, Transform actPosition = null, bool firstTimeDialog = false)
     {
         float minAlpha = 0.1f;
         float maxAlpha = 1f;
-        Vector3 endPosition = FindObjectOfType<CameraController>().transform.position;
-        endPosition = new Vector3(endPosition.x, endPosition.y, 0f); 
+        Transform myCamera = FindObjectOfType<CameraController>().transform;
+        Vector3 endPosition = myCamera.position;
+        endPosition = new Vector3(endPosition.x, endPosition.y, 0f);
 
         /// Grow or shrink the Dialog Box
         if (grow)
@@ -174,6 +194,8 @@ public class DialogManager : MonoBehaviour
             }
 
             lastBoxPosition = newBoxPosition;
+
+            if (actPosition != null) { SetActorDirection(actDirection, actPosition, endPosition, maxVal); }
         }
 
         if (!grow)
@@ -224,6 +246,8 @@ public class DialogManager : MonoBehaviour
         {
             boxIsActive = false;
             SetUIBoxActiveStates(false);
+            // Don't put it into UI Box Active States because we want to rotate it before setting it active
+            actorDirection.GetChild(0).gameObject.SetActive(false);
         }
     }
 
@@ -441,13 +465,12 @@ public class DialogManager : MonoBehaviour
         ClearDialogText();
 
         // Set the dialog Text Animations and clear the previous text
-        dialogTextAnimations = new DialogTextAnimations(textBox, nextLineIndicator, audioSource);
+        dialogTextAnimations = new DialogTextAnimations(textBox, audioSource);
 
         // If it's the first time dialog, don't animate box out and in, just in
         if (firstDialog)
         {
             SetNewTextBoxPosition(textBoxPosition);
-            SetActorDirection(actorDirection, speaker.gameObject.transform);
 
             foreach (BaseActor actor in currentActorsToAnimate)
                 actor.StartAnimation(); 
@@ -456,7 +479,7 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            StartCoroutine(AnimateUIToSize());
+            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.gameObject.transform));
             AnimatingDialogBox = true; 
 
             while (AnimatingDialogBox)
@@ -465,7 +488,7 @@ public class DialogManager : MonoBehaviour
         //If it's not the same speaker, animate box out and in to new speaker
         else if (!sameSpeaker)
         {
-            StartCoroutine(AnimateUIToSize(grow:false));
+            StartCoroutine(AnimateUIToSize(grow: false));
             AnimatingDialogBox = true;
 
             while (AnimatingDialogBox)
@@ -482,8 +505,7 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            SetActorDirection(actorDirection, speaker.gameObject.transform);
-            StartCoroutine(AnimateUIToSize());
+            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.gameObject.transform));
             AnimatingDialogBox = true;
 
             while (AnimatingDialogBox)

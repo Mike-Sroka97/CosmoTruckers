@@ -13,7 +13,6 @@ public class DialogTextAnimations
 
     private readonly TMP_Text textBox;
     private readonly float textAnimationScale;
-    private Image nextLineIndicator;
     private int previousCharacterCount;
 
     private int countSinceLastBark = 0;
@@ -31,10 +30,9 @@ public class DialogTextAnimations
     private static readonly float maxCharacterWaitTime = 1f; 
 
     // Initializer
-    public DialogTextAnimations(TMP_Text _textBox, Image _nextLineIndicator, AudioSource _audioSource)
+    public DialogTextAnimations(TMP_Text _textBox, AudioSource _audioSource)
     {
         textBox = _textBox;
-        nextLineIndicator = _nextLineIndicator;
         textAnimationScale = textBox.fontSize; 
         audioSource = _audioSource;
     }
