@@ -51,7 +51,7 @@ public abstract class CutsceneController : MonoBehaviour
         DialogManager.Instance.SetBaseActors(SpawnActorsIn(actorPrefabs));
     }
 
-    protected BaseActor[] NextDialogSetup()
+    private BaseActor[] NextDialogSetup()
     {
         DialogManager.Instance.DialogIsPlaying = true;
         DialogManager.Instance.SetupDialogs(textFiles[DialogManager.Instance.CurrentTextFile]);
@@ -60,6 +60,11 @@ public abstract class CutsceneController : MonoBehaviour
         BaseActor[] sortedActors = SortBasePlayerActors(DialogManager.Instance.PlayerActors);
 
         return sortedActors; 
+    }
+
+    protected void DialogNextSetup()
+    {
+        NextDialogSetup(); 
     }
 
     /// <summary>

@@ -479,7 +479,7 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.gameObject.transform));
+            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.textBoxPosition));
             AnimatingDialogBox = true; 
 
             while (AnimatingDialogBox)
@@ -505,7 +505,7 @@ public class DialogManager : MonoBehaviour
             yield return new WaitForSeconds(waitTimeBetweenDialogs);
 
             SetDialogBox(speaker);
-            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.gameObject.transform));
+            StartCoroutine(AnimateUIToSize(actDirection: actorDirection, actPosition: speaker.textBoxPosition));
             AnimatingDialogBox = true;
 
             while (AnimatingDialogBox)
@@ -645,8 +645,9 @@ public class DialogManager : MonoBehaviour
         yield return new WaitForSeconds(disableUITime);
 
         this.EnsureCoroutineStopped(ref lineRoutine);
-        dialogTextAnimations = null; 
+        dialogTextAnimations = null;
 
+        AdvanceSceneCalls = 0; 
         currentLineIndex = 0; 
         CurrentTextFile++; 
 

@@ -74,7 +74,7 @@ public class TutorialOpeningCutscene : CutsceneController
         while (DialogManager.Instance.DialogIsPlaying)
             yield return null;
 
-        NextDialogSetup();
+        DialogNextSetup();
 
         //execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));

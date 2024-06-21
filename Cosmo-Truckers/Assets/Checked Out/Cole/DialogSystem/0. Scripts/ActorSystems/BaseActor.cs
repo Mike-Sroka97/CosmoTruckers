@@ -9,7 +9,7 @@ public class BaseActor : MonoBehaviour
     //Variables
     [Header("Main Actor Variables")]
     [SerializeField] Animation[] actorStates;
-    [SerializeField] Transform textBoxPosition;
+    public Transform textBoxPosition; 
     bool hasDirection;
     public string actorName;
     public int actorID;
