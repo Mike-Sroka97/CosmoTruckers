@@ -13,6 +13,7 @@ public class TutorialOpeningCutscene : CutsceneController
     [SerializeField] float shipMoveSpeed;
     [SerializeField] Transform cluster;
     [SerializeField] Transform bg;
+    private bool stopBackgroundMoving = false; 
 
     [SerializeField] float fadeSpeed;
     [SerializeField] BaseActor[] baseActors; 
@@ -79,6 +80,8 @@ public class TutorialOpeningCutscene : CutsceneController
         //execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));
 
+        stopBackgroundMoving = true; 
+
         while (cameraController.CommandsExecuting > 0)
             yield return null;
 
@@ -127,6 +130,7 @@ public class TutorialOpeningCutscene : CutsceneController
 
         yield return null;
 
-        StartCoroutine(MoveShip());
+        if (!stopBackgroundMoving)
+            StartCoroutine(MoveShip());
     }
 }
