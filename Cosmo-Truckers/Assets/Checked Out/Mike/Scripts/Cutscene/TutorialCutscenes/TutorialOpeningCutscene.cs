@@ -16,7 +16,9 @@ public class TutorialOpeningCutscene : CutsceneController
     private bool stopBackgroundMoving = false; 
 
     [SerializeField] float fadeSpeed;
-    [SerializeField] BaseActor[] baseActors; 
+    [SerializeField] BaseActor[] baseActors;
+    [SerializeField] Animator anchorAnimator;
+    [SerializeField] float animationTime; 
 
     protected override IEnumerator CutsceneCommands()
     {
@@ -75,7 +77,13 @@ public class TutorialOpeningCutscene : CutsceneController
         while (DialogManager.Instance.DialogIsPlaying)
             yield return null;
 
+        // First Dialog is finished
         DialogNextSetup();
+
+        // Play the anchor animation and wait until it's done
+        anchorAnimator.SetTrigger("trigger");
+
+        yield return new WaitForSeconds(animationTime); 
 
         //execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));
