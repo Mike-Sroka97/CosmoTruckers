@@ -88,10 +88,10 @@ public class TutorialOpeningCutscene : CutsceneController
         //execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));
 
-        stopBackgroundMoving = true; 
-
         while (cameraController.CommandsExecuting > 0)
-            yield return null;
+            yield return null; 
+
+        stopBackgroundMoving = true; 
 
         // give a second before starting the dialog
         yield return new WaitForSeconds(2f);
