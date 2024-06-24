@@ -16,9 +16,12 @@ public class TutorialOpeningCutscene : CutsceneController
     private bool stopBackgroundMoving = false; 
 
     [SerializeField] float fadeSpeed;
+
+    [Header("Specific Animation Values")]
+    [SerializeField] float toablerCallSpeed;
     [SerializeField] BaseActor[] baseActors;
-    [SerializeField] Animator anchorAnimator;
-    [SerializeField] float animationTime; 
+    [SerializeField] Animator toablerAnimator, anchorAnimator;
+    [SerializeField] AnimationClip toablerOnClip, anchorHitClip;
 
     protected override IEnumerator CutsceneCommands()
     {
@@ -71,19 +74,34 @@ public class TutorialOpeningCutscene : CutsceneController
         // give a second before starting the dialog
         yield return new WaitForSeconds(1f);
 
-        // Advance the scene
+        // FIRST DIALOG
         StartCoroutine(DialogManager.Instance.AdvanceScene());
 
         while (DialogManager.Instance.DialogIsPlaying)
             yield return null;
 
-        // First Dialog is finished
+        // FIRST DIALOG is finished
+        DialogNextSetup();
+
+        yield return new WaitForSeconds(toablerCallSpeed); 
+
+        toablerAnimator.Play(toablerOnClip.name);
+
+        yield return new WaitForSeconds(toablerOnClip.length);
+
+        // SECOND DIALOG
+        StartCoroutine(DialogManager.Instance.AdvanceScene());
+
+        while (DialogManager.Instance.DialogIsPlaying)
+            yield return null;
+
+        // SECOND DIALOG is finished
         DialogNextSetup();
 
         // Play the anchor animation and wait until it's done
-        anchorAnimator.SetTrigger("trigger");
+        anchorAnimator.Play(anchorHitClip.name); 
 
-        yield return new WaitForSeconds(animationTime); 
+        yield return new WaitForSeconds(anchorHitClip.length); 
 
         //execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));

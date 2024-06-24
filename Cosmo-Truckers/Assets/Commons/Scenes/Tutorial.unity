@@ -3973,6 +3973,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2981631784323132115, guid: a8f62d483922c444c9e2b29e72393cf3, type: 3}
   m_PrefabInstance: {fileID: 536289239}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1438658763 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7335362238071980016, guid: a8f62d483922c444c9e2b29e72393cf3, type: 3}
+  m_PrefabInstance: {fileID: 536289239}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1494444786
 GameObject:
   m_ObjectHideFlags: 0
@@ -4006,6 +4011,7 @@ MonoBehaviour:
   sceneToLoad: Tutorial Combat
   textFiles:
   - {fileID: 4900000, guid: 54d911671f83ea649a45649333256b45, type: 3}
+  - {fileID: 4900000, guid: 2ea2c7f5adb94c64dab6f88f514b071d, type: 3}
   - {fileID: 4900000, guid: 664283d6300e9ac4d8246a4b657eef66, type: 3}
   textWaitTime: 2
   metrodonClusterPosition: {x: -43.5, y: 0, z: -10}
@@ -4015,13 +4021,16 @@ MonoBehaviour:
   cluster: {fileID: 1299349375}
   bg: {fileID: 523602483}
   fadeSpeed: 1.2
+  toablerCallSpeed: 2
   baseActors:
   - {fileID: 8641470639108231972, guid: 5e3c884c2872f0d4aa5e24d65c67364e, type: 3}
   - {fileID: 2374824764462717432, guid: b17f40443411786428b7fadde83d5ec8, type: 3}
   - {fileID: 620980628652551681, guid: 925d242fbf640f84dae8a938dbecb1cf, type: 3}
   - {fileID: 4757662514951821972, guid: 6f678429cd37863439e699cdb0870a67, type: 3}
+  toablerAnimator: {fileID: 1438658763}
   anchorAnimator: {fileID: 1570080107}
-  animationTime: 0.35
+  toablerOnClip: {fileID: 7400000, guid: 0ec1bafa0bf34b844985c5b930770986, type: 2}
+  anchorHitClip: {fileID: 7400000, guid: 21f0c8401d202ce45b1eb28d2f32417c, type: 2}
 --- !u!4 &1494444788
 Transform:
   m_ObjectHideFlags: 0

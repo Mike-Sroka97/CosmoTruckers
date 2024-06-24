@@ -28,7 +28,7 @@ public class BaseActor : MonoBehaviour
     [SerializeField] private int defaultHighVoiceRate = 3;
 
     private int currentVoiceRate = 3;
-    private const float defaultWaitTimeBetweenDialogs = 1.25f; 
+    private const float defaultWaitTimeBetweenDialogs = 1.35f; 
 
     [Header("Unique Voice Barks")]
     [SerializeField] private AudioClip unique1;
