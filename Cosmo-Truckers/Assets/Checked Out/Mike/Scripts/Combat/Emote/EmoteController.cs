@@ -27,7 +27,7 @@ public class EmoteController : MonoBehaviour
         }
         set
         {
-            //HAVE NETWORK TELL PLAYER TO FUCK OFF IF THEY GET SCHLOPPED INTO INA
+            //TODO HAVE NETWORK TELL PLAYER TO FUCK OFF IF THEY GET SCHLOPPED INTO INA
             canOpen = value;
         }
     }
