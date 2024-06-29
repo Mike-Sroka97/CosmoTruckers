@@ -53,6 +53,8 @@ public class PlayerSelection : NetworkBehaviour
 
     public void ReadyUp()
     {
+        if (IsReady) return;
+
         NetworkIdentity ni = NetworkClient.connection.identity;
         PlayerManager pm = ni.GetComponent<PlayerManager>();
         pm.SetPlayerCharacter(Characters[CharacterSelected].PlayerID);

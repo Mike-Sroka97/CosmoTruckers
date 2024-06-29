@@ -8,7 +8,9 @@ public class PlayerManager : NetworkBehaviour
     public static PlayerManager Instance;
 
     [SerializeField] List<CharacterSO> AllCharacters;
-    public List<CharacterSO> SelectedCharacters;
+
+    //Secondary characters player is controlling
+    [SerializeField] [SyncVar] List<int> SelectedCharacters;
 
     //The number of the player on the server
     [SyncVar] int playerNumber = 0;
@@ -37,15 +39,27 @@ public class PlayerManager : NetworkBehaviour
     [Command]
     void CmdSetPlayerCharacter(int id)
     {
-        PlayerID = id;
-        RpcSetPlayer(id);
+        if(PlayerID == -1)
+        {
+            PlayerID = id;
+            RpcSetPlayer(id);
+        }
+        else
+        {
+            RpcSetAdditionalCharacters(id);
+        }
     }
     [ClientRpc]
     void RpcSetPlayer(int id)
     {
         foreach (var obj in AllCharacters)
-            if (obj.PlayerID == PlayerID)
+            if (obj.PlayerID == id)
                 Player = obj;
+    }
+    [ClientRpc]
+    void RpcSetAdditionalCharacters(int id)
+    {
+        SelectedCharacters.Add(id);
     }
 
     public override void OnStartClient()

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Mirror;
 
-public class EmoteController : MonoBehaviour
+public class EmoteController : NetworkBehaviour
 {
     [Header("Transparencies")]
     const float selectedAlpha = 1f;

@@ -11,6 +11,7 @@ public class PlayerSelectionManager : NetworkBehaviour
     [Header("Network testing")]
     [SerializeField] bool TestingNetworkOBJ = false;
     [SerializeField] GameObject TestHolder;
+    [SerializeField] GameObject FakeLoadingObj;
 
     [Header("Scenes to load")]
     [SerializeField] string HUBSceneName;
@@ -30,18 +31,31 @@ public class PlayerSelectionManager : NetworkBehaviour
         NetworkTestManager.OnClientChange.RemoveListener(() => CmdAddNewPlayer());
     }
 
+    bool readingUp = false;
     public void ReadyUp()
     {
-        foreach(var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
+        if(!readingUp)
+            StartCoroutine(ReadyDelay());
+    }
+
+    IEnumerator ReadyDelay()
+    {
+        readingUp = true;
+
+        foreach (var obj in GameObject.FindGameObjectsWithTag("PlayerSelection"))
         {
             if (obj.GetComponent<NetworkIdentity>().isOwned)
             {
                 obj.GetComponent<PlayerSelection>().ReadyUp();
                 ReadyButton.GetComponent<Image>().color = Color.green;
             }
+
+            yield return new WaitForSeconds(.1f);
         }
 
         CmdCheckIfReady();
+
+        readingUp = false;
     }
 
     public void AndGo()
@@ -74,9 +88,16 @@ public class PlayerSelectionManager : NetworkBehaviour
             //Add a call for any objects that need acces to the TRUE player list
             else
             {
-                TestHolder.SetActive(false);
+                RpcCloseTestSelection();
             }
         }
+    }
+
+    [ClientRpc]
+    void RpcCloseTestSelection()
+    {
+        TestHolder.SetActive(false);
+        FakeLoadingObj.SetActive(true);
     }
 
     int ReadyCount()
