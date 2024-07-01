@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using Mirror;
 
-public class EmoteController : NetworkBehaviour
+public class EmoteController : MonoBehaviour
 {
     [Header("Transparencies")]
     const float selectedAlpha = 1f;
@@ -80,17 +80,20 @@ public class EmoteController : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            if (open)
+            if (GetComponentInParent<PlayerVessel>().CheckAthority())
             {
-                transform.Find("Baby").gameObject.SetActive(false);
-            }
-            else if(canOpen)
-            {
-                transform.Find("Baby").gameObject.SetActive(true);
-                OnEnable();
-            }
+                if (open)
+                {
+                    transform.Find("Baby").gameObject.SetActive(false);
+                }
+                else if (canOpen)
+                {
+                    transform.Find("Baby").gameObject.SetActive(true);
+                    OnEnable();
+                }
 
-            open = !open;
+                open = !open;
+            }
         }
 
         else if (Input.GetKeyDown(KeyCode.A) && open && !scrolling)
@@ -109,7 +112,7 @@ public class EmoteController : NetworkBehaviour
         open = false;
         transform.Find("Baby").gameObject.SetActive(false);
 
-        Instantiate(emoteSlots[0].EmoteToSpawn, transform.Find("Spawn"));
+        GetComponentInParent<PlayerVessel>().SpawnEmote(emoteSlots[0].EmoteToSpawn);
     }
 
     IEnumerator Scroll(bool moveLeft)

@@ -118,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9113072422697839277}
   - component: {fileID: 7723483987007062122}
+  - component: {fileID: 3640889244608918777}
   m_Layer: 0
   m_Name: PlayerVesselManager
   m_TagString: Untagged
@@ -156,6 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770bc984cda5ef440a73c2f2133d5443, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   vesselSpawns:
   - {fileID: 2582112252005070007}
   - {fileID: 6782274583319583830}
@@ -165,6 +169,23 @@ MonoBehaviour:
   moveSpeed: 4.8
   PlayerVessels: []
   IsMoving: 0
+--- !u!114 &3640889244608918777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4598873063966275163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 3214255867
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &6744814936857378040
 GameObject:
   m_ObjectHideFlags: 0

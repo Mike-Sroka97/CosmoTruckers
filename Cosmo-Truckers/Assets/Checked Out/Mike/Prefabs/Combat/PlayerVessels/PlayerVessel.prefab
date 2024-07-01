@@ -551,6 +551,7 @@ GameObject:
   - component: {fileID: 6900659565006065197}
   - component: {fileID: 1079321508868639540}
   - component: {fileID: 6177080016338387854}
+  - component: {fileID: 4216875251124645390}
   m_Layer: 0
   m_Name: PlayerVessel
   m_TagString: Untagged
@@ -617,6 +618,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2134ddeb1b191a84abc262929e64840e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   currentHealth: {fileID: 9165443550856411114}
   maxHealth: {fileID: 2364498902202310757}
   shieldGO: {fileID: 7356823436729980585}
@@ -633,6 +637,23 @@ MonoBehaviour:
   healingColor: {r: 0, g: 1, b: 0, a: 1}
   shieldColor: {r: 0, g: 0, b: 0, a: 0}
   MyMana: {fileID: 0}
+--- !u!114 &4216875251124645390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5074453809647073394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 1911034288
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &5137553135267297458
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
-public class PlayerVessel : MonoBehaviour
+public class PlayerVessel : NetworkBehaviour
 {
     [SerializeField] protected TextMeshProUGUI currentHealth;
     [SerializeField] TextMeshProUGUI maxHealth;
@@ -32,6 +33,10 @@ public class PlayerVessel : MonoBehaviour
     [HideInInspector] public Mana MyMana;
     Transform myINAvessel;
 
+    public bool CheckAthority()
+    {
+        return isOwned;
+    }
     public virtual void Initialize(PlayerCharacter player)
     {
         //set player
@@ -226,5 +231,21 @@ public class PlayerVessel : MonoBehaviour
     private void OnDestroy()
     {
         myCharacter.HealthChangeEvent.RemoveListener(UpdateHealthText);
+    }
+
+    public void SpawnEmote(GameObject emote)
+    {
+        CmdSpawnEmote(emote);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdSpawnEmote(GameObject emote)
+    {
+        RpcSpawnEmote(emote);
+    }
+    [ClientRpc]
+    void RpcSpawnEmote(GameObject emote)
+    {
+        Instantiate(emote, transform.Find("Spawn"));
     }
 }

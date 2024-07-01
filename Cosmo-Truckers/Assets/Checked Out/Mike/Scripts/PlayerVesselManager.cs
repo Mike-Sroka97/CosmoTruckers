@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class PlayerVesselManager : MonoBehaviour
+public class PlayerVesselManager : NetworkBehaviour
 {
     [SerializeField] RectTransform[] vesselSpawns;
     [SerializeField] Transform lowerPos;
@@ -25,12 +26,14 @@ public class PlayerVesselManager : MonoBehaviour
             if(EnemyManager.Instance.Players[i].PlayerVessel != null)
             {
                 PlayerVessel currentVessel = Instantiate(EnemyManager.Instance.Players[i].PlayerVessel, vesselSpawns[i]).GetComponent<PlayerVessel>();
+                NetworkServer.Spawn(currentVessel.gameObject, NetworkTestManager.Instance.GetPlayers[i].gameObject);
                 currentVessel.Initialize(EnemyManager.Instance.Players[i]);
             }
         }
 
         PlayerVessels = GetComponentsInChildren<PlayerVessel>();
     }
+
 
     public IEnumerator MoveMe(bool up)
     {
