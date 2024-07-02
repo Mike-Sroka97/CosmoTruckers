@@ -27,26 +27,36 @@ public class DialogManager : MonoBehaviour
     private Animator indicatorAnimator;
 
     // Dialog Box Stuff
-    // 0:normal 1:box 2:spiky 3:happy
+    [Header("Dialog Box Images: 0: normal, 1: box, 2: spiky, 3: happy")]
     [SerializeField] private Sprite[] dialogBoxBases; 
     [SerializeField] private Sprite[] dialogBoxBorders;
     [SerializeField] private Sprite defaultNextIndicator; 
     private int boxNumber = 0;
     private bool boxIsActive = false;
 
+    [Header("Actor Directions: 0: center, 1: left, 2: right")]
+    [SerializeField] private Transform[] actorDirectionPositions;
+    [SerializeField] private float actorDirectionPositionCheck = 2f; 
+
+    // Box Position Variables
+    private Vector3 newBoxPosition = Vector3.zero;
+    private Vector3 lastBoxPosition = Vector3.zero;
+
     // Dialog Scene Variables
     private GameObject sceneLayout;
     TextAsset textFile;
 
+    // General components
     private AudioSource audioSource;
     private DialogTextAnimations dialogTextAnimations;
-    private List<BaseActor> currentActorsToAnimate;
 
+    // Actor and Dialog Count Variables
     public List<BaseActor> PlayerActors { get; private set; }
     [HideInInspector]
     public TextParser TextParser;
     public ActorList ActorList;
 
+    private List<BaseActor> currentActorsToAnimate;
     private BaseActor[] actors;
     private string[] dialogs;
     private string baseDialog;
@@ -54,9 +64,6 @@ public class DialogManager : MonoBehaviour
     private int currentID = 1;
     private int lastID = -1;
     private int allLinesCount = 0;
-    
-    private Vector3 newBoxPosition = Vector3.zero; 
-    private Vector3 lastBoxPosition = Vector3.zero; 
     
     // Dialog Wait Time Variables
     private bool noWaitDialog = false;
@@ -161,7 +168,10 @@ public class DialogManager : MonoBehaviour
 
             dialogBox.localScale = scaleToSet; 
             dialogBox.position = new Vector3(cameraPosition.x, cameraPosition.y, 0);
-            actorDirection.eulerAngles = new Vector3(0f, 0f, 0f); 
+            actorDirection.eulerAngles = new Vector3(0f, 0f, 0f);
+
+            // Set the actor direction after setting the dialog Box position
+            SetActorDirectionPosition(actorPosition); 
 
             Vector3 dir = actorDirection.position - actorPosition.position; 
             Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, dir); 
@@ -173,6 +183,21 @@ public class DialogManager : MonoBehaviour
             dialogBox.position = originalPosition;
             dialogBox.localScale = originalScale; 
         }
+    }
+
+    private void SetActorDirectionPosition(Transform actorPosition)
+    {
+        float xDistance = actorPosition.position.x - actorDirection.position.x;
+
+        // If the distance is far left, set to the left position
+        if (xDistance <= -actorDirectionPositionCheck)
+            actorDirection.position = actorDirectionPositions[1].position;
+        // If the distance is far right, set to the right position
+        else if (xDistance >= actorDirectionPositionCheck)
+            actorDirection.position = actorDirectionPositions[2].position;
+        // Otherwise, set to the default center position
+        else
+            actorDirection.position = actorDirectionPositions[0].position;
     }
 
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true, 
