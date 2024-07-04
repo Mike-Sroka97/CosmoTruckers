@@ -31,6 +31,8 @@ Transform:
   - {fileID: 2146711799}
   - {fileID: 1825512287}
   - {fileID: 1709470622}
+  - {fileID: 2211674214253727795}
+  - {fileID: 6640226239739112618}
   m_Father: {fileID: 8855995357501722502}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,6 +129,37 @@ Transform:
   m_Father: {fileID: 814131816}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2972496690364465107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2211674214253727795}
+  m_Layer: 5
+  m_Name: DirectionSpotFarLeft
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2211674214253727795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2972496690364465107}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 814131816}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3657133511217227137
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +231,11 @@ MonoBehaviour:
   - {fileID: 2146711799}
   - {fileID: 1825512287}
   - {fileID: 1709470622}
-  actorDirectionPositionCheck: 2.5
+  - {fileID: 2211674214253727795}
+  - {fileID: 6640226239739112618}
+  actorDirectionPositionChecks:
+  - 2.5
+  - 4
   TextParser: {fileID: 1745723343179435561}
   ActorList: {fileID: 8101716373536758394}
   TextSpeedNormal: 1
@@ -234,6 +271,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0868f51ba4aa514a8636b2ec636522f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8176743777840223487
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6640226239739112618}
+  m_Layer: 5
+  m_Name: DirectionSpotFarRight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6640226239739112618
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8176743777840223487}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 814131816}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7513914721698560819
 PrefabInstance:
   m_ObjectHideFlags: 0

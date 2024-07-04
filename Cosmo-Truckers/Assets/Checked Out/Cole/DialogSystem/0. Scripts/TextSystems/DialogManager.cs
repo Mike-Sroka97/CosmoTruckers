@@ -34,9 +34,10 @@ public class DialogManager : MonoBehaviour
     private int boxNumber = 0;
     private bool boxIsActive = false;
 
-    [Header("Actor Directions: 0: center, 1: left, 2: right")]
+    [Header("Actor Directions: 0: center, 1: left, 2: right, 3: farleft, 4: farright")]
     [SerializeField] private Transform[] actorDirectionPositions;
-    [SerializeField] private float actorDirectionPositionCheck = 2f; 
+    [Header("Position Checks: 0: shortCheck, 1: longCheck")]
+    [SerializeField] private float[] actorDirectionPositionChecks; 
 
     // Box Position Variables
     private Vector3 newBoxPosition = Vector3.zero;
@@ -187,17 +188,37 @@ public class DialogManager : MonoBehaviour
 
     private void SetActorDirectionPosition(Transform actorPosition)
     {
-        float xDistance = actorPosition.position.x - actorDirection.position.x;
+        // Reset where the actor direction is before calculating distance
+        actorDirection.position = actorDirectionPositions[0].position; 
 
-        // If the distance is far left, set to the left position
-        if (xDistance <= -actorDirectionPositionCheck)
-            actorDirection.position = actorDirectionPositions[1].position;
-        // If the distance is far right, set to the right position
-        else if (xDistance >= actorDirectionPositionCheck)
-            actorDirection.position = actorDirectionPositions[2].position;
-        // Otherwise, set to the default center position
-        else
-            actorDirection.position = actorDirectionPositions[0].position;
+        float xDistance = actorPosition.position.x - actorDirection.position.x;
+        Transform newPosition = null; 
+
+        // To the left
+        if (xDistance < 0f)
+        {
+            // Short left
+            if (xDistance <= -actorDirectionPositionChecks[0] && xDistance > -actorDirectionPositionChecks[1])
+                newPosition = actorDirectionPositions[1]; 
+            // Far left
+            else if (xDistance <= -actorDirectionPositionChecks[1])
+                newPosition = actorDirectionPositions[3];
+        }
+        // To the right
+        else if (xDistance > 0f)
+        {
+            // Short right
+            if (xDistance >= actorDirectionPositionChecks[0] && xDistance < actorDirectionPositionChecks[1])
+                newPosition = actorDirectionPositions[2];
+            // Far right
+            else if (xDistance >= actorDirectionPositionChecks[1])
+                newPosition = actorDirectionPositions[4];
+        }
+
+        if (newPosition == null)
+            newPosition = actorDirectionPositions[0];
+
+        actorDirection.position = newPosition.position;
     }
 
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true, 
