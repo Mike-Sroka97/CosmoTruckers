@@ -15,11 +15,43 @@ public class CameraController : MonoBehaviour
     TextMeshProUGUI text;
     Camera myCamera;
 
-    private void Start()
+    //OW stuff
+    float negXclamp;
+    float posXclamp;
+    Transform leader;
+
+    private void Awake()
     {
-        vignette = GetComponentInChildren<SpriteRenderer>();
+        vignette = transform.Find("CameraVignette").GetComponent<SpriteRenderer>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();
+    }
+
+    private void Update()
+    {
+        OwPan();
+    }
+
+    private void OwPan()
+    {
+        if(leader)
+        {
+            float xVal = leader.position.x;
+
+            if (leader.position.x < negXclamp)
+                xVal = negXclamp;
+            else if (leader.position.x > posXclamp)
+                xVal = posXclamp;
+
+            transform.position = new Vector3(xVal, transform.position.y, transform.position.z);
+        }
+    }
+
+    public void InitializeOwCamera(float minClamp, float maxClamp, Transform leaderTransform)
+    {
+        negXclamp = minClamp;
+        posXclamp = maxClamp;
+        leader = leaderTransform;
     }
 
     public IEnumerator FadeVignette(bool FadeIn)
@@ -30,12 +62,14 @@ public class CameraController : MonoBehaviour
             while (vignette.color.a > 0)
             {
                 vignette.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                vignette.GetComponentsInChildren<SpriteRenderer>()[1].color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
         else
             while (vignette.color.a < 1)
             {
                 vignette.color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
 

@@ -39,4 +39,12 @@ public class EnumManager
         Negative,
         Neutral,
     }
+
+    public enum CardinalDirections
+    {
+        Up,
+        Left,
+        Down,
+        Right
+    }
 }

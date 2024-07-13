@@ -21,7 +21,7 @@ public class Follower : MonoBehaviour
     {
         if (storedPositions.Count == 0)
         {
-            storedPositions.Add(leader.transform.position); //store the players currect position
+            storedPositions.Add(leader.transform.position); //store the players correct position
             storedRotations.Add(leader.transform.eulerAngles);
             return;
         }
