@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class CameraController : MonoBehaviour
     //OW stuff
     float negXclamp;
     float posXclamp;
+    float negYclamp;
+    float posYclamp;
     Transform leader;
 
     private void Awake()
@@ -37,21 +40,40 @@ public class CameraController : MonoBehaviour
         if(leader)
         {
             float xVal = leader.position.x;
+            float yVal = leader.position.y;
 
             if (leader.position.x < negXclamp)
                 xVal = negXclamp;
             else if (leader.position.x > posXclamp)
                 xVal = posXclamp;
+            if (leader.position.y < negYclamp)
+                yVal = negYclamp;
+            else if (leader.position.y > posYclamp)
+                yVal = posYclamp;
 
-            transform.position = new Vector3(xVal, transform.position.y, transform.position.z);
+            transform.position = new Vector3(xVal, yVal, transform.position.z);
         }
     }
 
-    public void InitializeOwCamera(float minClamp, float maxClamp, Transform leaderTransform)
+    public void InitializeOwCamera(float minX, float maxX, float minY, float maxY, Transform leaderTransform)
     {
-        negXclamp = minClamp;
-        posXclamp = maxClamp;
+        negXclamp = minX;
+        posXclamp = maxX;
+        negYclamp = minY;
+        posYclamp = maxY;
+
         leader = leaderTransform;
+    }
+
+    public IEnumerator OwCharacterActionSelect(string sceneToLoad)
+    {
+        CommandsExecuting++;
+
+        yield return null;
+
+        CommandsExecuting--;
+
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public IEnumerator FadeVignette(bool FadeIn)
@@ -72,6 +94,9 @@ public class CameraController : MonoBehaviour
                 vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
+
+        if (leader)
+            leader.GetComponent<OverworldCharacter>().enabled = true;
 
         CommandsExecuting--;
     }

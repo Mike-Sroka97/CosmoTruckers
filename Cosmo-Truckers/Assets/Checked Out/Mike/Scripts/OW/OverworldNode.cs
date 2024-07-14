@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OverworldNode : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class OverworldNode : MonoBehaviour
     public Transform[] LeftTransforms;
     public Transform[] DownTransforms;
     public Transform[] RightTransforms;
+
+    [SerializeField] string sceneToLoad;
 
     SpriteRenderer myRenderer;
 
@@ -60,8 +63,7 @@ public class OverworldNode : MonoBehaviour
 
     public void Interact()
     {
-        Debug.Log("fuck you");
-        //play jig => fade => load scene
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     private void SetupLineRendererers()

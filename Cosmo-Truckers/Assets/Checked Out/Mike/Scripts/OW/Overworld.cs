@@ -10,6 +10,8 @@ public class Overworld : MonoBehaviour
     public OverworldNode CurrentNode;
     public float minCameraX;
     public float maxCameraX;
+    public float minCameraY;
+    public float maxCameraY;
 
     new CameraController camera;
 

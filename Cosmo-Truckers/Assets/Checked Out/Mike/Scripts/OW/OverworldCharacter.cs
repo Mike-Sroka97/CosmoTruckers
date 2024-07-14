@@ -20,8 +20,10 @@ public class OverworldCharacter : MonoBehaviour
         overworld = FindObjectOfType<Overworld>();
         transform.position = overworld.Nodes[0].transform.position;
 
-        FindObjectOfType<CameraController>().InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, transform);
+        FindObjectOfType<CameraController>().InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, overworld.minCameraY, overworld.maxCameraY, transform);
         followers = FindObjectsOfType<OverworldFollower>();
+
+        enabled = false;
     }
 
     private void Update()
