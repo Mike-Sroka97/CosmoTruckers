@@ -6,7 +6,7 @@ public class OverworldFollower : MonoBehaviour
 {
     [SerializeField] GameObject leader; // in the inspector drag the gameobject the will be following the player to this field
     [SerializeField] int followDistance;
-    
+
     SpriteRenderer myRenderer;
     List<Vector3> storedPositions;
     bool overflow;
@@ -26,8 +26,8 @@ public class OverworldFollower : MonoBehaviour
 
     void Update()
     {
-        Move();
         Flip();
+        Move();
     }
 
     private void Move()

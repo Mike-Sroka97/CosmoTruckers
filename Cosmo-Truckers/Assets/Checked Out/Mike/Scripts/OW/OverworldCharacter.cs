@@ -9,6 +9,7 @@ public class OverworldCharacter : MonoBehaviour
     Overworld overworld;
     bool moving;
     SpriteRenderer myRenderer;
+    OverworldFollower[] followers;
 
     /// <summary>
     /// Probably want Overworld.cs to handle the initial node at some point
@@ -20,6 +21,7 @@ public class OverworldCharacter : MonoBehaviour
         transform.position = overworld.Nodes[0].transform.position;
 
         FindObjectOfType<CameraController>().InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, transform);
+        followers = FindObjectsOfType<OverworldFollower>();
     }
 
     private void Update()
@@ -39,10 +41,14 @@ public class OverworldCharacter : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
             myRenderer.flipX = false;
 
+        //Interact
+        if (Input.GetKeyDown(KeyCode.Space) && overworld.CurrentNode.Interactive && overworld.CurrentNode.Active)
+            overworld.CurrentNode.Interact(); 
 
         //Up
-        if (Input.GetKeyDown(KeyCode.W) && overworld.CurrentNode.UpNode && overworld.CurrentNode.UpNode.Active)
+        else if (Input.GetKeyDown(KeyCode.W) && overworld.CurrentNode.UpNode && overworld.CurrentNode.UpNode.Active)
         {
+            overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.UpNode;
             StartCoroutine(Move(overworld.CurrentNode.UpTransforms));
         }
@@ -50,6 +56,7 @@ public class OverworldCharacter : MonoBehaviour
         //Left
         else if (Input.GetKeyDown(KeyCode.A) && overworld.CurrentNode.LeftNode && overworld.CurrentNode.LeftNode.Active)
         {
+            overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.LeftNode;
             StartCoroutine(Move(overworld.CurrentNode.LeftTransforms));
         }
@@ -57,6 +64,7 @@ public class OverworldCharacter : MonoBehaviour
         //Down
         else if (Input.GetKeyDown(KeyCode.S) && overworld.CurrentNode.DownNode && overworld.CurrentNode.DownNode.Active)
         {
+            overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.DownNode;
             StartCoroutine(Move(overworld.CurrentNode.DownTransforms));
         }
@@ -64,6 +72,7 @@ public class OverworldCharacter : MonoBehaviour
         //Right
         else if (Input.GetKeyDown(KeyCode.D) && overworld.CurrentNode.RightNode && overworld.CurrentNode.RightNode.Active)
         {
+            overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.RightNode;
             StartCoroutine(Move(overworld.CurrentNode.RightTransforms));
         }
@@ -94,6 +103,8 @@ public class OverworldCharacter : MonoBehaviour
             }
             currentPoint++;
         }
+
+        overworld.CurrentNode.SetupNode();
 
         moving = false;
     }
