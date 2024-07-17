@@ -571,6 +571,8 @@ MonoBehaviour:
   - {fileID: 9050412254351164355}
   ShieldSprites:
   - {fileID: 4863718405811608643}
+  MiniAugSprite: {fileID: 21300000, guid: e73f156df28a8d744af043d4c1bb637a, type: 3}
+  BigAugSprite: {fileID: 21300000, guid: f4669e7b726e0cc41a72f1ee37609430, type: 3}
   shieldedMaterial: {fileID: 2100000, guid: 7809aebb8e9db6d48931d0d9107ecb35, type: 2}
   bubbleShieldMaterial: {fileID: 2100000, guid: e34991fa16a21184daa339aa953927bf, type: 2}
   CombatSpot: 0
@@ -604,8 +606,9 @@ MonoBehaviour:
   IsTank: 0
   IsSupport: 0
   IsUtility: 0
+  RevokeControls: 0
   PlayerNumber: -1
-  selectionUI: {fileID: 0}
+  SelectionUI: {fileID: 0}
   wheel: {fileID: 0}
   augList: {fileID: 0}
   attacks:
@@ -614,6 +617,18 @@ MonoBehaviour:
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 0}
   PlayerAttackUI: {fileID: 0}
+  AttackWheelOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AUGListOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AUGListClosedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  InsightOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   damageText: {fileID: 3820647499709302871}
   healingText: {fileID: 3820647499692460904}
   damageColor: {r: 1, g: 0, b: 0, a: 1}

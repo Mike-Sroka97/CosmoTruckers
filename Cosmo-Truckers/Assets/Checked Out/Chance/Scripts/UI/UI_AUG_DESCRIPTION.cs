@@ -361,7 +361,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         }
         else if (icon.MyCharacter == CombatManager.Instance.GetCurrentCharacter)
         {
-            mainSlot.sprite = icon.MyImage.sprite;
+            mainSlot.sprite = icon.BigImage;
             icon.MyImage.color = Color.white;
 
             for (int i = 0; i < actualCharacters.Count; i++)
@@ -373,7 +373,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     private void InitializeCharacterIcon(AugmentCharacterIcon icon, Character character)
     {
         icon.MyImage = icon.GetComponent<Image>();
-        icon.MyImage.sprite = character.TargetingSprites[0].sprite;
+        icon.MyImage.sprite = character.MiniAugSprite;
+        icon.BigImage = character.BigAugSprite;
         icon.MyImage.color = Color.gray;
         icon.MyCharacter = character;
     }
@@ -392,7 +393,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
                 currentCharacterLocation = actualCharacters.Count - 1;
 
             actualCharacters[currentCharacterLocation].MyImage.color = Color.white;
-            mainSlot.sprite = actualCharacters[currentCharacterLocation].MyImage.sprite;
+            mainSlot.sprite = actualCharacters[currentCharacterLocation].BigImage;
 
             InitList(actualCharacters[currentCharacterLocation].MyCharacter, false);
         }
@@ -408,7 +409,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
                 currentCharacterLocation = 0;
 
             actualCharacters[currentCharacterLocation].MyImage.color = Color.white;
-            mainSlot.sprite = actualCharacters[currentCharacterLocation].MyImage.sprite;
+            mainSlot.sprite = actualCharacters[currentCharacterLocation].BigImage;
 
             InitList(actualCharacters[currentCharacterLocation].MyCharacter, false);
         }

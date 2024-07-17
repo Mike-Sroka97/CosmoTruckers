@@ -18,6 +18,8 @@ public abstract class Character : MonoBehaviour
     public int Health;
     public SpriteRenderer[] TargetingSprites;
     public SpriteRenderer[] ShieldSprites;
+    public Sprite MiniAugSprite;
+    public Sprite BigAugSprite;
     [SerializeField] Material shieldedMaterial;
     [SerializeField] Material bubbleShieldMaterial;
     const float spriteRotationSpeed = -500f;

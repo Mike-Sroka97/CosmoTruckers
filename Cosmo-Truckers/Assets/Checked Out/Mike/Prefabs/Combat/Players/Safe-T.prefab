@@ -255,6 +255,8 @@ MonoBehaviour:
   - {fileID: 4612512054375666509}
   ShieldSprites:
   - {fileID: 9058833038983862103}
+  MiniAugSprite: {fileID: 21300000, guid: d2cccad77ebeaab4ba71951196e57cb5, type: 3}
+  BigAugSprite: {fileID: 21300000, guid: 93d9b36848cf515409a9c4b19c0ff341, type: 3}
   shieldedMaterial: {fileID: 2100000, guid: 7809aebb8e9db6d48931d0d9107ecb35, type: 2}
   bubbleShieldMaterial: {fileID: 2100000, guid: e34991fa16a21184daa339aa953927bf, type: 2}
   CombatSpot: 0
@@ -304,6 +306,18 @@ MonoBehaviour:
   MyVessel: {fileID: 0}
   PlayerVessel: {fileID: 5074453809647073394, guid: f32e662a776e4d04eabf8daf6906cff3, type: 3}
   PlayerAttackUI: {fileID: 8638680350514193670}
+  AttackWheelOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AUGListOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  AUGListClosedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  InsightOpenedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   strength: {fileID: 11400000, guid: adac8bf9a49209041969596bc627bc18, type: 2}
 --- !u!114 &2365435096106904468
 MonoBehaviour:
@@ -1567,6 +1581,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAttack: 0
+  AttackSelected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &7332365510237642082
 PrefabInstance:
   m_ObjectHideFlags: 0

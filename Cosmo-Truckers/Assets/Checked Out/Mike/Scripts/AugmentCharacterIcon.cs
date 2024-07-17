@@ -7,4 +7,5 @@ public class AugmentCharacterIcon : MonoBehaviour
 {
     public Character MyCharacter;
     public Image MyImage;
+    public Sprite BigImage;
 }
