@@ -37,10 +37,10 @@ public class OverworldCharacter : MonoBehaviour
             return;
 
         //flip sprite
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) && myRenderer)
             myRenderer.flipX = true;
 
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D) && myRenderer)
             myRenderer.flipX = false;
 
         //Interact
@@ -84,7 +84,7 @@ public class OverworldCharacter : MonoBehaviour
         }
     }
 
-    protected virtual IEnumerator Move(Transform[] pointsToTraverse)
+    public virtual IEnumerator Move(Transform[] pointsToTraverse)
     {
         moving = true;
         int currentPoint = 0;

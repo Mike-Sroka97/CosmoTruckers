@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] float fadeSpeed;
     [SerializeField] float textFadeSpeed;
+    [SerializeField] float panSpeed;
     float shakeMinDistance = 0.05f; 
 
     [HideInInspector] public int CommandsExecuting { get; private set; }
@@ -21,7 +22,7 @@ public class CameraController : MonoBehaviour
     float posXclamp;
     float negYclamp;
     float posYclamp;
-    Transform leader;
+    public Transform Leader;
 
     private void Awake()
     {
@@ -37,21 +38,21 @@ public class CameraController : MonoBehaviour
 
     private void OwPan()
     {
-        if(leader)
+        if(Leader)
         {
-            float xVal = leader.position.x;
-            float yVal = leader.position.y;
+            float xVal = Leader.position.x;
+            float yVal = Leader.position.y;
 
-            if (leader.position.x < negXclamp)
+            if (Leader.position.x < negXclamp)
                 xVal = negXclamp;
-            else if (leader.position.x > posXclamp)
+            else if (Leader.position.x > posXclamp)
                 xVal = posXclamp;
-            if (leader.position.y < negYclamp)
+            if (Leader.position.y < negYclamp)
                 yVal = negYclamp;
-            else if (leader.position.y > posYclamp)
+            else if (Leader.position.y > posYclamp)
                 yVal = posYclamp;
 
-            transform.position = new Vector3(xVal, yVal, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(xVal, yVal, transform.position.z), panSpeed * Time.deltaTime);
         }
     }
 
@@ -62,7 +63,7 @@ public class CameraController : MonoBehaviour
         negYclamp = minY;
         posYclamp = maxY;
 
-        leader = leaderTransform;
+        Leader = leaderTransform;
     }
 
     public IEnumerator OwCharacterActionSelect(string sceneToLoad)
@@ -95,8 +96,8 @@ public class CameraController : MonoBehaviour
                 yield return null;
             }
 
-        if (leader)
-            leader.GetComponent<OverworldCharacter>().enabled = true;
+        if (Leader)
+            Leader.GetComponent<OverworldCharacter>().enabled = true;
 
         CommandsExecuting--;
     }

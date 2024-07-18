@@ -89,5 +89,6 @@ public class TrainNode : OverworldNode
     private void Unboard()
     {
         Debug.Log($"Now unboarding: {boardingTransform.name}");
+        train.Unboard(boardingTransform, playerController, trainPositionsToTraverse);
     }
 }

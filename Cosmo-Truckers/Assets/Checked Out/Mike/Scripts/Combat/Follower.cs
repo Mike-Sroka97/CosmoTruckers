@@ -17,7 +17,7 @@ public class Follower : MonoBehaviour
         storedRotations = new List<Vector3>();
     }
 
-    void Update()
+    protected virtual void LateUpdate()
     {
         if (storedPositions.Count == 0)
         {
