@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class OverworldCharacter : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
+    [SerializeField] protected float moveSpeed;
 
-    Overworld overworld;
-    bool moving;
+    protected Overworld overworld;
+    protected bool moving;
     SpriteRenderer myRenderer;
     OverworldFollower[] followers;
 
@@ -50,6 +50,7 @@ public class OverworldCharacter : MonoBehaviour
         //Up
         else if (Input.GetKeyDown(KeyCode.W) && overworld.CurrentNode.UpNode && overworld.CurrentNode.UpNode.Active)
         {
+            overworld.CurrentNode.MoveUpEvent?.Invoke();
             overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.UpNode;
             StartCoroutine(Move(overworld.CurrentNode.UpTransforms));
@@ -58,6 +59,7 @@ public class OverworldCharacter : MonoBehaviour
         //Left
         else if (Input.GetKeyDown(KeyCode.A) && overworld.CurrentNode.LeftNode && overworld.CurrentNode.LeftNode.Active)
         {
+            overworld.CurrentNode.MoveLeftEvent?.Invoke();
             overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.LeftNode;
             StartCoroutine(Move(overworld.CurrentNode.LeftTransforms));
@@ -66,6 +68,7 @@ public class OverworldCharacter : MonoBehaviour
         //Down
         else if (Input.GetKeyDown(KeyCode.S) && overworld.CurrentNode.DownNode && overworld.CurrentNode.DownNode.Active)
         {
+            overworld.CurrentNode.MoveDownEvent?.Invoke();
             overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.DownNode;
             StartCoroutine(Move(overworld.CurrentNode.DownTransforms));
@@ -74,13 +77,14 @@ public class OverworldCharacter : MonoBehaviour
         //Right
         else if (Input.GetKeyDown(KeyCode.D) && overworld.CurrentNode.RightNode && overworld.CurrentNode.RightNode.Active)
         {
+            overworld.CurrentNode.MoveRightEvent?.Invoke();
             overworld.CurrentNode.LeavingNodeCleanup();
             overworld.CurrentNode = overworld.CurrentNode.RightNode;
             StartCoroutine(Move(overworld.CurrentNode.RightTransforms));
         }
     }
 
-    private IEnumerator Move(Transform[] pointsToTraverse)
+    protected virtual IEnumerator Move(Transform[] pointsToTraverse)
     {
         moving = true;
         int currentPoint = 0;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class OverworldNode : MonoBehaviour
@@ -11,6 +12,11 @@ public class OverworldNode : MonoBehaviour
     [SerializeField] Sprite activeNode;
     [SerializeField] Sprite deactiveNode;
     [SerializeField] Sprite activeInteractiveUsedNode;
+
+    public UnityEvent MoveUpEvent;
+    public UnityEvent MoveLeftEvent;
+    public UnityEvent MoveDownEvent;
+    public UnityEvent MoveRightEvent;
 
     //Nodes that the player can move to
     public OverworldNode UpNode;
@@ -38,6 +44,14 @@ public class OverworldNode : MonoBehaviour
 
         //TODO call from dimension OW script
         DetermineState();
+    }
+
+    private void OnDestroy()
+    {
+        MoveUpEvent.RemoveAllListeners();
+        MoveLeftEvent.RemoveAllListeners();
+        MoveDownEvent.RemoveAllListeners();
+        MoveRightEvent.RemoveAllListeners();
     }
 
     public void DetermineState()
