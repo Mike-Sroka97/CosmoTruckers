@@ -21,10 +21,11 @@ public class TrainNode : OverworldNode
     Transform[] trainPositionsToTraverse;
     OwTrain train;
 
-    private void Start()
+    protected override void Start()
     {
         playerController = transform.parent.parent.Find("OW_ControllerCharacter").GetComponent<OverworldCharacter>();
         train = transform.parent.parent.Find("Train").GetComponent<OwTrain>();
+        base.Start();
     }
 
     private void Update()

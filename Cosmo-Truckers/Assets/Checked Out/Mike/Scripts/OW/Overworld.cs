@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Overworld : MonoBehaviour
+public abstract class Overworld : MonoBehaviour
 {
-    //TODO MAKE INHERITANT CLASS FOR EACH DIMENSION. HAVE THE START FUNCTION UNLOCK NODES BASED ON SAVE DATA
+    [SerializeField] protected bool debugging;
 
-    public OverworldNode[] Nodes;
     public OverworldNode CurrentNode;
     public float minCameraX;
     public float maxCameraX;
     public float minCameraY;
     public float maxCameraY;
 
-    new CameraController camera;
-
     private void Start()
     {
-        camera = FindObjectOfType<CameraController>();
-        StartCoroutine(camera.FadeVignette(true));
+        OverworldInitialize();
     }
+
+    protected abstract void OverworldInitialize();
+
+    protected abstract void DebugInput();
 }

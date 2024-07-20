@@ -24,8 +24,11 @@ public class CameraController : MonoBehaviour
     float posYclamp;
     public Transform Leader;
 
+    [HideInInspector] public static CameraController Instance;
+
     private void Awake()
     {
+        Instance = this;
         vignette = transform.Find("CameraVignette").GetComponent<SpriteRenderer>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();

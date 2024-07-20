@@ -9,7 +9,6 @@ public class OverworldCharacter : MonoBehaviour
     protected Overworld overworld;
     protected bool moving;
     SpriteRenderer myRenderer;
-    OverworldFollower[] followers;
 
     /// <summary>
     /// Probably want Overworld.cs to handle the initial node at some point
@@ -18,12 +17,13 @@ public class OverworldCharacter : MonoBehaviour
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         overworld = FindObjectOfType<Overworld>();
-        transform.position = overworld.Nodes[0].transform.position;
-
-        FindObjectOfType<CameraController>().InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, overworld.minCameraY, overworld.maxCameraY, transform);
-        followers = FindObjectsOfType<OverworldFollower>();
+        transform.position = overworld.CurrentNode.transform.position;
 
         enabled = false;
+
+        CameraController.Instance.InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, overworld.minCameraY, overworld.maxCameraY, transform);
+        CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
+        overworld.CurrentNode.SetupNode();
     }
 
     private void Update()

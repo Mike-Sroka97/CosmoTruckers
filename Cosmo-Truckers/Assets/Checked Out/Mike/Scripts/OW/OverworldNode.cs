@@ -35,10 +35,11 @@ public class OverworldNode : MonoBehaviour
     public Transform[] RightTransforms;
 
     [SerializeField] string sceneToLoad;
+    public UnityEvent MapEventInteraction;
 
-    SpriteRenderer myRenderer;
+    protected SpriteRenderer myRenderer;
 
-    private void Start()
+    protected virtual void Start()
     {
         myRenderer = GetComponent<SpriteRenderer>();
 
@@ -52,6 +53,7 @@ public class OverworldNode : MonoBehaviour
         MoveLeftEvent.RemoveAllListeners();
         MoveDownEvent.RemoveAllListeners();
         MoveRightEvent.RemoveAllListeners();
+        MapEventInteraction.RemoveAllListeners();
     }
 
     public void DetermineState()
@@ -77,7 +79,10 @@ public class OverworldNode : MonoBehaviour
 
     public void Interact()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        if (sceneToLoad != "")
+            SceneManager.LoadScene(sceneToLoad);
+        else
+            MapEventInteraction?.Invoke();
     }
 
     protected virtual void SetupLineRendererers()

@@ -21,7 +21,7 @@ public class OverworldFollower : MonoBehaviour
     private void Start()
     {
         overworld = FindObjectOfType<Overworld>();
-        transform.position = overworld.Nodes[0].transform.position;
+        transform.position = overworld.CurrentNode.transform.position;
     }
 
     void Update()
