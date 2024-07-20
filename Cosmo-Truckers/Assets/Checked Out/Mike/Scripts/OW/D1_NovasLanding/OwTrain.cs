@@ -50,6 +50,7 @@ public class OwTrain : OverworldCharacter
 
         character.enabled = true;
         character.transform.parent = transform.parent;
+        character.transform.position = new Vector3(character.transform.position.x, overworld.CurrentNode.transform.position.y, character.transform.position.z);
         StartCoroutine(character.Move(pointsToTraverse));
         camera.Leader = character.transform;
 

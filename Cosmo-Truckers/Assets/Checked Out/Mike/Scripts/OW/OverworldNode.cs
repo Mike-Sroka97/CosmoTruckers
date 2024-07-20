@@ -80,7 +80,7 @@ public class OverworldNode : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    private void SetupLineRendererers()
+    protected virtual void SetupLineRendererers()
     {
         LineRenderer currentLine;
 
@@ -137,7 +137,7 @@ public class OverworldNode : MonoBehaviour
         }
     }
 
-    private void SetLinePositions(Transform[] points, LineRenderer currentLine, OverworldNode node)
+    protected void SetLinePositions(Transform[] points, LineRenderer currentLine, OverworldNode node)
     {
         currentLine.positionCount = points.Length + 1;
 

@@ -7,6 +7,12 @@ public class TrainNode : OverworldNode
     [SerializeField] Transform boardingTransformTrainStation;
     [SerializeField] Transform boardingTransformKlipsolsCove;
 
+    //Start "fuck Node" (7) sector
+    [SerializeField] bool overrideLineDraws;
+    [SerializeField] Transform[] trainDownTransforms;
+    [SerializeField] Transform[] hallDownTransforms;
+    //End "fuck Node (7)" sector
+
     bool trackPlayerPosition;
     bool board;
     bool trackPositiveX;
@@ -54,7 +60,7 @@ public class TrainNode : OverworldNode
     public void GetOnTrainFromKlipsolsCove()
     {
         //Node left/up from klipsol's tube
-        trainPositionsToTraverse = LeftNode.UpTransforms;
+        trainPositionsToTraverse = LeftNode.LeftTransforms;
         InitTrain(true, false, boardingTransformKlipsolsCove);
     }
 
@@ -68,7 +74,7 @@ public class TrainNode : OverworldNode
     public void GetOffTrainFromKlipsolsCove()
     {
         //Node right of klipsol's tube
-        trainPositionsToTraverse = DownNode.DownTransforms;
+        trainPositionsToTraverse = DownNode.LeftTransforms;
         InitTrain(false, true, boardingTransformKlipsolsCove);
     }
 
@@ -91,4 +97,40 @@ public class TrainNode : OverworldNode
         Debug.Log($"Now unboarding: {boardingTransform.name}");
         train.Unboard(boardingTransform, playerController, trainPositionsToTraverse);
     }
+
+    //I like to call this block of the code the "fuck Node (7)" section. Node (7)'s entire family could burn in a fire for all I care
+    public void SetDownTransformsFive()
+    {
+        DownTransforms = trainDownTransforms;
+    }
+
+    public void SetDownTransformsTen()
+    {
+        DownTransforms = hallDownTransforms;
+    }
+
+    protected override void SetupLineRendererers()
+    {
+        if(!overrideLineDraws)
+        {
+            base.SetupLineRendererers();
+        }
+        else
+        {
+            LineRenderer currentLine;
+
+            //Up line
+            currentLine = transform.Find("LineRendererUp").GetComponent<LineRenderer>();
+            SetLinePositions(hallDownTransforms, currentLine, UpNode);
+
+            //Left line
+            currentLine = transform.Find("LineRendererLeft").GetComponent<LineRenderer>();
+            SetLinePositions(trainDownTransforms, currentLine, LeftNode);
+
+            //Right line
+            currentLine = transform.Find("LineRendererRight").GetComponent<LineRenderer>();
+            SetLinePositions(LeftTransforms, currentLine, RightNode);
+        }
+    }
+    //End "fuck Node (7)"
 }
