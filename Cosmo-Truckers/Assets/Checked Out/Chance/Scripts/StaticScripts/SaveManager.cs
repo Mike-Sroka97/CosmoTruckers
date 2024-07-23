@@ -10,6 +10,40 @@ public static class SaveManager
     //Set name of save file here defaults to auto save if no name is set
     static string GameName = "SaveData";
 
+    const string dimensionOne = "/dimensionOne.data";
+
+    public static void SaveDimensionOne(DimensionOneLevelData data)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + dimensionOne;
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
+
+    public static DimensionOneLevelData LoadDimensionOne()
+    {
+        string path = Application.persistentDataPath + dimensionOne;
+
+        if(File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            DimensionOneLevelData data = (DimensionOneLevelData)formatter.Deserialize(stream);
+
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            Debug.LogError("Fuck you. Your file does not exist");
+            return null;
+        }
+    }
+
     public static void Save(SaveData data, int character)
     {
         BinaryFormatter formatter = new BinaryFormatter();
@@ -57,7 +91,6 @@ public class SaveData
     {
         PlayerCurrentHP = -1;
         PlayerCurrentDebuffs = new();
-        PlayersLoot = new();
         TutorialFinished = false;
         Unlocked = false;
     }
@@ -65,9 +98,6 @@ public class SaveData
     [Header("Combat data")]
     public int PlayerCurrentHP;
     public List<DebuffStackSO> PlayerCurrentDebuffs;
-
-    [Header("Player inventory")]
-    public List<Loot> PlayersLoot;
 
     [Header("Other vars")]
     public bool TutorialFinished;
