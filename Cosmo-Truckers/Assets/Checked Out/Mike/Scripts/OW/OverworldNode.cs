@@ -80,7 +80,13 @@ public class OverworldNode : MonoBehaviour
     public void Interact()
     {
         if (sceneToLoad != "")
-            SceneManager.LoadScene(sceneToLoad);
+        {
+            foreach(OverworldCharacter character in FindObjectsOfType<OverworldCharacter>())
+                character.enabled = false;
+
+            StartCoroutine(CameraController.Instance.OwCharacterActionSelect(sceneToLoad));
+        }
+
         else
             MapEventInteraction?.Invoke();
     }

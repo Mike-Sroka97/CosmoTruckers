@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 10
   m_SortingOrder: 101
   m_Sprite: {fileID: 7482667652216324306, guid: 3e3d72b2884d02548a61af6dae2eb3a5, type: 3}
-  m_Color: {r: 0.059549302, g: 0.016153438, b: 0.103773594, a: 1}
+  m_Color: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -339,6 +339,7 @@ GameObject:
   - component: {fileID: 6916587973070982759}
   - component: {fileID: 6916587973070982755}
   - component: {fileID: 6916587973070982754}
+  - component: {fileID: 5718127130498195643}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -459,7 +460,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce84266412410744783a740fde6a4bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeSpeed: 0.3
-  textFadeSpeed: 0.3
+  fadeSpeed: 0.6
+  textFadeSpeed: 0.6
   panSpeed: 9
+  CommandsExecuting: 0
   Leader: {fileID: 0}
+--- !u!114 &5718127130498195643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6916587973070982758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e63ed90ec0d341b49b81c818601e8e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scale: 1
+  minScale: -1
+  urpAsset: {fileID: 11400000, guid: 447cc98e20921004e9e2e2e0ea366d86, type: 2}
+  pixelSpeed: 1

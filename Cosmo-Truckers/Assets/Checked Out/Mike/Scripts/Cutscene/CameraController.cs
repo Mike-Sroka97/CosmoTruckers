@@ -9,9 +9,9 @@ public class CameraController : MonoBehaviour
     [SerializeField] float fadeSpeed;
     [SerializeField] float textFadeSpeed;
     [SerializeField] float panSpeed;
-    float shakeMinDistance = 0.05f; 
+    float shakeMinDistance = 0.05f;
 
-    [HideInInspector] public int CommandsExecuting { get; private set; }
+    [HideInInspector] public int CommandsExecuting;
 
     SpriteRenderer vignette;
     TextMeshProUGUI text;
@@ -22,7 +22,9 @@ public class CameraController : MonoBehaviour
     float posXclamp;
     float negYclamp;
     float posYclamp;
-    public Transform Leader;
+    Pixelation myPixelator;
+
+    [HideInInspector] public Transform Leader;
 
     [HideInInspector] public static CameraController Instance;
 
@@ -32,6 +34,7 @@ public class CameraController : MonoBehaviour
         vignette = transform.Find("CameraVignette").GetComponent<SpriteRenderer>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();
+        myPixelator = GetComponent<Pixelation>();
     }
 
     private void Update()
@@ -73,9 +76,17 @@ public class CameraController : MonoBehaviour
     {
         CommandsExecuting++;
 
+        myPixelator.LoadScene();
+
+        while (CommandsExecuting > 0)
+            yield return null;
+
+        StartCoroutine(FadeVignette(false));
+
         yield return null;
 
-        CommandsExecuting--;
+        while (CommandsExecuting > 0)
+            yield return null;
 
         SceneManager.LoadScene(sceneToLoad);
     }
