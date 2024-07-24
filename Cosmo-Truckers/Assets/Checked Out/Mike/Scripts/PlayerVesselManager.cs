@@ -17,6 +17,7 @@ public class PlayerVesselManager : NetworkBehaviour
 
     private void Awake() => Instance = this;
 
+    [Server]
     public void Initialize()
     {
         startPos = transform.position;
@@ -27,13 +28,19 @@ public class PlayerVesselManager : NetworkBehaviour
             {
                 PlayerVessel currentVessel = Instantiate(EnemyManager.Instance.Players[i].PlayerVessel, vesselSpawns[i]).GetComponent<PlayerVessel>();
                 NetworkServer.Spawn(currentVessel.gameObject, NetworkTestManager.Instance.GetPlayers[i].gameObject);
-                currentVessel.Initialize(EnemyManager.Instance.Players[i]);
+                RpcinitVessel(currentVessel, i);
+                //currentVessel.Initialize(EnemyManager.Instance.Players[i]);
             }
         }
 
         PlayerVessels = GetComponentsInChildren<PlayerVessel>();
     }
 
+    [ClientRpc]
+    void RpcinitVessel(PlayerVessel vessel, int player)
+    {
+        vessel.Initialize(EnemyManager.Instance.Players[player]);
+    }
 
     public IEnumerator MoveMe(bool up)
     {

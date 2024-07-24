@@ -12,6 +12,7 @@ public class PlayerSelectionManager : NetworkBehaviour
     [SerializeField] bool TestingNetworkOBJ = false;
     [SerializeField] GameObject TestHolder;
     [SerializeField] GameObject FakeLoadingObj;
+    [SerializeField] GameObject PlayerVesselManager;
 
     [Header("Scenes to load")]
     [SerializeField] string HUBSceneName;
@@ -96,6 +97,8 @@ public class PlayerSelectionManager : NetworkBehaviour
     [ClientRpc]
     void RpcCloseTestSelection()
     {
+        PlayerVesselManager.SetActive(true);
+
         TestHolder.SetActive(false);
         FakeLoadingObj.SetActive(true);
     }

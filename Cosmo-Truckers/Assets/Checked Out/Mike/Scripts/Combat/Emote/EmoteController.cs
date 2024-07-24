@@ -36,7 +36,7 @@ public class EmoteController : MonoBehaviour
     [Header("Emotes")]
     [Space(20)]
     public List<Emote> Emotes;
-    private List<Emote> emoteSlots; //TODO pull from character
+    public List<Emote> emoteSlots; //TODO pull from character
 
     private void OnEnable()
     {

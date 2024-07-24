@@ -246,6 +246,6 @@ public class PlayerVessel : NetworkBehaviour
     [ClientRpc]
     void RpcSpawnEmote(GameObject emote)
     {
-        Instantiate(emote, transform.Find("Spawn"));
+        Instantiate(GetComponentInChildren<EmoteController>().emoteSlots[0].EmoteToSpawn, transform.Find("Spawn"));
     }
 }
