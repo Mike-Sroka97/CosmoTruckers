@@ -111,7 +111,7 @@ public class CameraController : MonoBehaviour
             }
 
         if (Leader)
-            Leader.GetComponent<OverworldCharacter>().enabled = true;
+            FindObjectOfType<Overworld>().CameraFadeFinished();
 
         CommandsExecuting--;
     }

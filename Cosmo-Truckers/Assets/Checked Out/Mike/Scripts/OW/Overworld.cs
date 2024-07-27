@@ -12,9 +12,17 @@ public abstract class Overworld : MonoBehaviour
     public float minCameraY;
     public float maxCameraY;
 
+    protected bool enableLeaderOnFade = true;
+
     private void Start()
     {
         OverworldInitialize();
+    }
+
+    public void CameraFadeFinished()
+    {
+        if (enableLeaderOnFade)
+            CameraController.Instance.Leader.GetComponent<OverworldCharacter>().enabled = true;
     }
 
     protected abstract void OverworldInitialize();

@@ -28,6 +28,7 @@ public static class SaveManager
 
         if(File.Exists(path))
         {
+            //Load save data if it does exist
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
@@ -39,8 +40,10 @@ public static class SaveManager
         }
         else
         {
-            Debug.LogError("Fuck you. Your file does not exist");
-            return null;
+            //Create save data if it doesn't exist
+            DimensionOneLevelData data = new DimensionOneLevelData();
+            SaveDimensionOne(data);
+            return data;
         }
     }
 
