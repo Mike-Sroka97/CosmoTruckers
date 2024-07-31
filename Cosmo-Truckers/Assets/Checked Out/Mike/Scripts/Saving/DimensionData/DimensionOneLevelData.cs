@@ -34,4 +34,22 @@ public class DimensionOneLevelData : DimensionData
         LoonaTalkedToPostDungeonThree = loadData.LoonaTalkedToPostDungeonThree;
         AfterPartyAttended = loadData.AfterPartyAttended;
     }
+
+    public override void DeleteLevelData()
+    {
+        Debug.LogWarning("WARNING: deleting save data for dimension one");
+
+        for (int i = 0; i < DungeonsCompleted.Length; i++)
+            DungeonsCompleted[i] = false;
+        PreludeOlarisTalkedTo = false;
+        PreludeYedTalkedTo = false;
+        LoonaTalkedToPostDungeonOne = false;
+        MoonStonePlaced = false;
+        KleptorTalkedToPostDungeonTwo = false;
+        SmallDogStretched = false;
+        LoonaTalkedToPostDungeonThree = false;
+        AfterPartyAttended = false;
+
+        SaveLevelData();
+    }
 }

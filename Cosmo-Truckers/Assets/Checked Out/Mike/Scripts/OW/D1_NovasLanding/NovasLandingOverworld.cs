@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class NovasLandingOverworld : Overworld
 {
-    [Header("First time visit stuff")]
+    [Header("First Time Visit Stuff")]
     [SerializeField] GameObject olaris;
     [SerializeField] Transform[] olarisPointsToMove;
     [SerializeField] float olarisFadeSpeed;
     [SerializeField] OverworldNode olarisHomeNode;
+    [SerializeField] float olarisMoveSpeed;
 
     [Space(20)]
     [Header("Yed Stuff")]
+    [SerializeField] OverworldNode yedNode;
+    [SerializeField] OverworldNode yedNodeToEnable;
+    [SerializeField] OverworldNode dungeonOneNode;
+
+    [Space(20)]
+    [Header("Dungeon One Stuff")]
 
     [Space(20)]
     [Header("Klipsol Rock Stuff")]
@@ -26,7 +33,10 @@ public class NovasLandingOverworld : Overworld
 
     protected override void OverworldInitialize()
     {
-        data = SaveManager.LoadDimensionOne();
+        if(data == null)
+            data = SaveManager.LoadDimensionOne();
+
+        StartCoroutine(WaitAFrame());
 
         //Pre cutscene
         /*
@@ -36,12 +46,19 @@ public class NovasLandingOverworld : Overworld
          */
         if (!data.PreludeOlarisTalkedTo)
         {
-            enableLeaderOnFade = false;
+            PreludeOlarisMapEvent();
         }
 
         else if (!data.PreludeYedTalkedTo)
         {
+            PreludeYed();
+        }
 
+        else if(data.PreludeYedTalkedTo)
+        {
+            yedNodeToEnable.Active = true;
+            yedNodeToEnable.DetermineState();
+            dungeonOneNode.ActivateNode();
         }
 
         //Post cutscene
@@ -143,7 +160,94 @@ public class NovasLandingOverworld : Overworld
 
     protected override void DebugInput()
     {
+        if (Input.GetKeyDown(KeyCode.Delete))
+            data.DeleteLevelData();
+    }
 
+    private void PreludeOlarisMapEvent()
+    {
+        enableLeaderOnFade = false;
+        StartCoroutine(FadeOlaris(olaris.GetComponent<SpriteRenderer>(), true));
+    }
+
+    IEnumerator WaitAFrame()
+    {
+        yield return null;
+    }
+
+    IEnumerator FadeOlaris(SpriteRenderer renderer, bool fadeIn)
+    {
+        if(fadeIn)
+        {
+            yield return new WaitForSeconds(1f);
+
+            while (renderer.color.a < 1)
+            {
+                renderer.color += new Color(0, 0, 0, olarisFadeSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            StartCoroutine(MoveOlaris());
+        }
+        else
+        {
+            while (renderer.color.a > 0)
+            {
+                renderer.color -= new Color(0, 0, 0, olarisFadeSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(1f);
+
+            CameraController.Instance.Leader.GetComponent<OverworldCharacter>().enabled = true;
+            olarisHomeNode.ActivateNode();
+        }
+    }
+
+    IEnumerator MoveOlaris()
+    {
+        while (CameraController.Instance.CommandsExecuting > 0)
+            yield return null;
+
+        for (int i = 0; i < olarisPointsToMove.Length; i++)
+        {
+            if (i == 1)
+                olaris.GetComponent<SpriteRenderer>().flipX = true;
+
+            Vector3 currentGoal = new Vector3(olarisPointsToMove[i].position.x, olarisPointsToMove[i].position.y + 0.5f, olarisPointsToMove[i].position.z);
+
+            while (olaris.transform.position != currentGoal)
+            {
+                olaris.transform.position = Vector3.MoveTowards(olaris.transform.position, currentGoal, olarisMoveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
+
+        StartCoroutine(FadeOlaris(olaris.GetComponent<SpriteRenderer>(), false));
+    }
+
+    public void SaveOlarisPrelude()
+    {
+        olarisHomeNode.DeactiveNode();
+        data.PreludeOlarisTalkedTo = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+    }
+
+    private void PreludeYed()
+    {
+        yedNode.ActivateNode();
+    }
+
+    public void TalkToYed()
+    {
+        yedNodeToEnable.Active = true;
+        yedNodeToEnable.DetermineState();
+        yedNode.DeactiveNode();
+
+        data.PreludeYedTalkedTo = true;
+        data.SaveLevelData();
+        OverworldInitialize();
     }
 
     public void MoveKlippsolRock()

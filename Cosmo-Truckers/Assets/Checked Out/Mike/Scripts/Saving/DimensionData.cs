@@ -10,4 +10,6 @@ public abstract class DimensionData
 
     public abstract void SaveLevelData();
     public abstract void LoadLevelData();
+
+    public abstract void DeleteLevelData();
 }

@@ -33,6 +33,7 @@ public class OverworldNode : MonoBehaviour
     public Transform[] LeftTransforms;
     public Transform[] DownTransforms;
     public Transform[] RightTransforms;
+    public GameObject LookAtMeSprite;
 
     [SerializeField] string sceneToLoad;
     public UnityEvent MapEventInteraction;
@@ -58,6 +59,9 @@ public class OverworldNode : MonoBehaviour
 
     public void DetermineState()
     {
+        if(!myRenderer)
+            myRenderer = GetComponent<SpriteRenderer>();
+
         if (Active && Interactive && FindObjectOfType<Overworld>().CurrentNode == this)
         {
             myRenderer.sprite = activeInteractiveUsedNode;
@@ -89,6 +93,20 @@ public class OverworldNode : MonoBehaviour
 
         else
             MapEventInteraction?.Invoke();
+    }
+
+    public void ActivateNode()
+    {
+        Interactive = true;
+        LookAtMeSprite.SetActive(true);
+        DetermineState();
+    }
+
+    public void DeactiveNode()
+    {
+        Interactive = false;
+        LookAtMeSprite.SetActive(false);
+        DetermineState();
     }
 
     protected virtual void SetupLineRendererers()
