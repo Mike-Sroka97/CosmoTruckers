@@ -15,10 +15,14 @@ public class NovasLandingOverworld : Overworld
     [Header("Yed Stuff")]
     [SerializeField] OverworldNode yedNode;
     [SerializeField] OverworldNode yedNodeToEnable;
-    [SerializeField] OverworldNode dungeonOneNode;
+    [SerializeField] OverworldNode d1Node;
 
     [Space(20)]
     [Header("Dungeon One Stuff")]
+
+    [Space(20)]
+    [Header("Post-dungeon one")]
+    [SerializeField] OverworldNode loonaNode;
 
     [Space(20)]
     [Header("Klipsol Rock Stuff")]
@@ -27,7 +31,24 @@ public class NovasLandingOverworld : Overworld
     [SerializeField] float klipsolRockMoveSpeed;
     [SerializeField] SpriteRenderer klipsolRockReceiver;
     [SerializeField] Sprite klipsolRockInserted;
+    [SerializeField] OverworldNode d2Node;
+    [SerializeField] OverworldNode rockPlacingNode;
+
+    [Space(20)]
+    [Header("Post-dungeon two")]
+    [SerializeField] OverworldNode kleptorNode;
     [SerializeField] OverworldNode d3Node;
+
+    [Space(20)]
+    [Header("Post Kleptor cutscene")]
+    [SerializeField] OverworldNode smallDogNode;
+    [SerializeField] OverworldNode smallDogDestinationNode;
+
+    [Space(20)]
+    [Header("Post Kleptor Loona")]
+    [SerializeField] OverworldNode kleptorLoonaNode;
+    [SerializeField] OverworldNode noseNode;
+    [SerializeField] OverworldNode d4Node;
 
     DimensionOneLevelData data;
 
@@ -54,22 +75,9 @@ public class NovasLandingOverworld : Overworld
             PreludeYed();
         }
 
-        else if(data.PreludeYedTalkedTo)
+        else if(data.PreludeYedTalkedTo && !data.DungeonsCompleted[0])
         {
-            yedNodeToEnable.Active = true;
-            yedNodeToEnable.DetermineState();
-            dungeonOneNode.ActivateNode();
-        }
-
-        //Post cutscene
-        /*
-         * Interact with Yed node. Yed edges out window and takes ticket. Unlocks train
-         * Make node no longer interactable
-         */
-
-        else if (!data.DungeonsCompleted[0])
-        {
-
+            d1Node.ActivateNode();
         }
 
         //Post dungeon 1
@@ -81,17 +89,17 @@ public class NovasLandingOverworld : Overworld
 
         else if (!data.LoonaTalkedToPostDungeonOne)
         {
-
+            loonaNode.ActivateNode();
         }
 
         else if (!data.MoonStonePlaced)
         {
-
+            rockPlacingNode.ActivateNode();
         }
 
-        else if (!data.DungeonsCompleted[1])
+        else if (!data.MoonStonePlaced && !data.DungeonsCompleted[1])
         {
-
+            d2Node.ActivateNode();
         }
 
         //Post dungeon 2
@@ -103,17 +111,17 @@ public class NovasLandingOverworld : Overworld
 
         else if (!data.KleptorTalkedToPostDungeonTwo)
         {
-
+            kleptorNode.ActivateNode();
         }
 
         else if (!data.SmallDogStretched)
         {
-
+            smallDogNode.ActivateNode();
         }
 
-        else if (!data.DungeonsCompleted[2])
+        else if(!data.DungeonsCompleted[2])
         {
-
+            d3Node.ActivateNode();
         }
 
         //Post dungeon 3
@@ -123,14 +131,15 @@ public class NovasLandingOverworld : Overworld
          * Loon-dog :penguin-dance: south of ldg node SW of D3. Unlocks D4 *cutscene*
          */
 
-        else if (!data.LoonaTalkedToPostDungeonThree)
+        else if (!data.LoonaTalkedToPostDungeonThree && data.DungeonsCompleted[2])
         {
-
+            //do nose stuff??
+            kleptorLoonaNode.ActivateNode();
         }
 
-        else if (!data.DungeonsCompleted[3])
+        else if (data.LoonaTalkedToPostDungeonThree && !data.DungeonsCompleted[3])
         {
-
+            d4Node.ActivateNode();
         }
 
         //Post dungeon 4
@@ -143,13 +152,68 @@ public class NovasLandingOverworld : Overworld
 
         else if(!data.AfterPartyAttended)
         {
-
+            //TODO get fucked Cole
         }
 
         else
         {
-
+            //TODO continued to get fucked Cole
         }
+
+        SetupStartNodes();
+    }
+
+    private void SetupStartNodes()
+    {
+        if(data.PreludeYedTalkedTo)
+        {
+            yedNodeToEnable.Active = true;
+            yedNodeToEnable.DetermineState();
+        }
+
+        if(data.MoonStonePlaced)
+        {
+            klipsolRock.position = klipsolRockDesination.position;
+            d2Node.Active = true;
+            d2Node.DetermineState();
+        }
+
+        if(data.SmallDogStretched)
+        {
+            //kill the dog LOL
+            smallDogDestinationNode.Active = true;
+            smallDogDestinationNode.DetermineState();
+        }
+
+        if(data.DungeonsCompleted[2])
+        {
+            noseNode.Active = true;
+            noseNode.DetermineState();
+        }
+
+        if(data.LoonaTalkedToPostDungeonThree)
+        {
+            d4Node.Active = true;
+            d4Node.DetermineState();
+        }
+
+        if(!data.AfterPartyAttended)
+        {
+            //Activate party node. Might need to override selection event
+        }
+    }
+
+    public void DebugDungeonComplete(int dungeonNumber)
+    {
+        data.DungeonsCompleted[dungeonNumber] = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+
+        //funny haha clean up
+        d1Node.LookAtMeSprite.SetActive(false);
+        d2Node.LookAtMeSprite.SetActive(false);
+        d3Node.LookAtMeSprite.SetActive(false);
+        d4Node.LookAtMeSprite.SetActive(false);
     }
 
     private void Update()
@@ -234,6 +298,40 @@ public class NovasLandingOverworld : Overworld
         OverworldInitialize();
     }
 
+    public void SaveLoonaDungeonOne()
+    {
+        loonaNode.DeactiveNode();
+        data.LoonaTalkedToPostDungeonOne = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+    }
+
+    public void SaveKleptorDungeonTwo()
+    {
+        kleptorNode.DeactiveNode();
+        data.KleptorTalkedToPostDungeonTwo = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+    }
+
+    public void SaveLoonaKleptorDungeonThree()
+    {
+        kleptorLoonaNode.DeactiveNode();
+        data.LoonaTalkedToPostDungeonThree = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+    }
+
+    public void SaveSmallDog()
+    {
+        smallDogDestinationNode.Active = true;
+        smallDogNode.DetermineState();
+        smallDogNode.DeactiveNode();
+        data.SmallDogStretched = true;
+        data.SaveLevelData();
+        OverworldInitialize();
+    }
+
     private void PreludeYed()
     {
         yedNode.ActivateNode();
@@ -257,8 +355,7 @@ public class NovasLandingOverworld : Overworld
 
     IEnumerator KlippsolRockCoroutine()
     {
-        CurrentNode.Interactive = false;
-        CurrentNode.DetermineState();
+        CurrentNode.DeactiveNode();
         klipsolRockReceiver.sprite = klipsolRockInserted;
 
         OverworldCharacter character = FindObjectOfType<OverworldCharacter>();
@@ -270,8 +367,8 @@ public class NovasLandingOverworld : Overworld
             yield return null;
         }
 
-        d3Node.Active = true;
-        d3Node.DetermineState();
+        d2Node.Active = true;
+        d2Node.ActivateNode();
         CurrentNode.SetupNode();
 
         character.enabled = true;
