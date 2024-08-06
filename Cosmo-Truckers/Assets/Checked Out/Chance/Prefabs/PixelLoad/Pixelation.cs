@@ -15,6 +15,7 @@ public class Pixelation : MonoBehaviour
     [SerializeField] float pixelSpeed = .05f;
 
     private float localScale;
+    [ContextMenu("Test")]
     public void LoadScene() => StartCoroutine(LoadingOut());
 
     public IEnumerator LoadingInto()
@@ -32,6 +33,7 @@ public class Pixelation : MonoBehaviour
 
         localScale = scale;
         urpAsset.renderScale = localScale;
+        urpAsset.supportsHDR = true;
     }
 
     public IEnumerator LoadingOut()
@@ -48,6 +50,7 @@ public class Pixelation : MonoBehaviour
 
         localScale = minScale;
         urpAsset.renderScale = localScale;
+        urpAsset.supportsHDR = false;
         CameraController.Instance.CommandsExecuting--;
     }
 
@@ -55,5 +58,6 @@ public class Pixelation : MonoBehaviour
     {
         //To ensure that scale is set to one when closing
         urpAsset.renderScale = scale;
+        urpAsset.supportsHDR = true;
     }
 }
