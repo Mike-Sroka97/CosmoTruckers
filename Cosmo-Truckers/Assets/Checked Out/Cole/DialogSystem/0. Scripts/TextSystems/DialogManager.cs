@@ -492,6 +492,7 @@ public class DialogManager : MonoBehaviour
                     AdvanceSceneCalls--; 
                     StartCoroutine(AdvanceScene());
                 }
+                else { AdvanceSceneCalls--; }
 
                 yield break; 
             }

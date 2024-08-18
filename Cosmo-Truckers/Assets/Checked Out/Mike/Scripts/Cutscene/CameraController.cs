@@ -93,20 +93,24 @@ public class CameraController : MonoBehaviour
 
     public IEnumerator FadeVignette(bool FadeIn)
     {
-        CommandsExecuting++; 
+        CommandsExecuting++;
+
+        int vignetteChildCount = vignette.transform.childCount; 
 
         if (FadeIn)
             while (vignette.color.a > 0)
             {
                 vignette.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-                vignette.GetComponentsInChildren<SpriteRenderer>()[1].color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                if (vignetteChildCount > 0)
+                    vignette.GetComponentsInChildren<SpriteRenderer>()[1].color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
         else
             while (vignette.color.a < 1)
             {
                 vignette.color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-                vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                if (vignetteChildCount > 0)
+                    vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
 
