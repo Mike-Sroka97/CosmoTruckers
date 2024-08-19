@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -46,12 +47,20 @@ public class AudioManager : MonoBehaviour
     //if song is over switch songs/reset
     private void Update()
     {
-        if (AudioSettings.dspTime > currentSongEndingTime)
+        if (AudioSettings.dspTime > currentSongEndingTime && SceneManager.GetActiveScene().name != "Menu")
         {
             CheckLevelSong();
         }
     }
 
+    public void MenuMusicSwap(float time)
+    {
+        currentMusicIndex = 1;
+
+        musicAudioSource.clip = levelMusic[1];
+        musicAudioSource.Play();
+        musicAudioSource.time = time;
+    }
     public void CheckLevelSong()
     {
         currentMusicIndex++;

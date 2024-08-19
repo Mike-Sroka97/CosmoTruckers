@@ -285,6 +285,8 @@ public class MainMenu : MonoBehaviour
         foreach (GameObject obj in MainMenuScreen)
             obj.SetActive(true);
 
+        AudioManager.Instance.MenuMusicSwap(Time.timeSinceLevelLoad);
+
         //Fade out of black
         while (Camera.main.orthographicSize < 5)
         {
