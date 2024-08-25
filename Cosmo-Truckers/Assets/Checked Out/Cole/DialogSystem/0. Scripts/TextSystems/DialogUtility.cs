@@ -40,15 +40,6 @@ public class DialogUtility : MonoBehaviour
         {"longest", 2f},
     };
 
-    private static readonly Dictionary<string, float> sizeDictionary = new Dictionary<string, float>
-    {
-        {"mini", 0.25f},
-        {"small", 0.5f},
-        {"normal", 1f},
-        {"large", 2f},
-        {"huge", 3f},
-    };
-
     private static readonly Dictionary<string, Color32> colorDictionary = new Dictionary<string, Color32>
     {
         {"yellowlight", new Color32(237,232,197,255)},
@@ -141,17 +132,15 @@ public class DialogUtility : MonoBehaviour
     /// <returns></returns>
     private static string HandleSpeedTags(string processedMessage, List<DialogCommand> result)
     {
-        MatchCollection speedMatches = speedRegex.Matches(processedMessage);
+         MatchCollection speedMatches = speedRegex.Matches(processedMessage);
 
         foreach (Match match in speedMatches)
         {
             string stringValue = match.Groups["speed"].Value; 
 
-            //If you can't get a float from the speed value, just default to 150f
+            //If you can't get a float from the speed value, just default to 25f
             if (!float.TryParse(stringValue, out float val))
-            {
-                val = 150f; 
-            }
+                val = 25f;
 
             result.Add(new DialogCommand
             {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class DialogTextAnimations
     private readonly TMP_Text textBox;
     private readonly float textAnimationScale;
     private int previousCharacterCount;
+    float currentEndPunctuationTime = 0;
 
     private int countSinceLastBark = 0;
     private int previousBarkPosition = -1;
@@ -25,8 +27,8 @@ public class DialogTextAnimations
     List<AudioClip> vcBarks = new List<AudioClip>();
     bool vcFluctuate = true;
 
-    private static readonly char[] EndPunctuation = new char[] {'.', '!', '?'};
-    private static readonly float endPunctuationTime = 0.75f; 
+    private static readonly char[] EndPunctuation = new char[] {'.', '!', '?', ';', ':'};
+    private static readonly float endPunctuationTime = 0.5f; 
     private static readonly float maxCharacterWaitTime = 1f; 
 
     // Initializer
@@ -40,7 +42,8 @@ public class DialogTextAnimations
     #region DEFAULT ANIMATION VARIABLES
     private static readonly Color32 clear = new Color32(0, 0, 0, 0);
     private const float CHAR_ANIM_TIME = 0.07f;
-    private float secondsPerCharacterNormal = 150f;
+    // Normal text speed feels good around 20-25f
+    private float secondsPerCharacterNormal = 25f;
     private float secondsPerCharacterSpeedMultiplier = 1.5f;
     private float secondsPerCharacter;
     private bool NormalSpeed = false; 
@@ -131,23 +134,24 @@ public class DialogTextAnimations
                 currentCharacterIndex = characterCount;
                 FinishAnimating(indicatorAction); 
             }
-            if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
+
+            if (CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter, currentEndPunctuationTime))
             {
                 // If we're not at the end of the characterCount 
                 if (currentCharacterIndex <= characterCount)
                 {
                     // Make sure every character talks
                     if (currentCharacterIndex == 0)
-                        UpdateDialogSound("normal", -1); 
-                    
+                        UpdateDialogSound("normal", -1);
+
                     if (IsTextPlaying)
-                        ExecuteRemainingCommandsAtIndex(commands, currentCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                        ExecuteRemainingCommandsAtIndex(commands, currentCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter, ref currentEndPunctuationTime);
 
                     if (currentCharacterIndex > 0)
                         CanSkipText = true; 
 
                     // Check again because we've updated the secondsPerCharacter and timeOfLastCharacter
-                    if ((currentCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter)))
+                    if ((currentCharacterIndex < characterCount && CanShowNextCharacter(secondsPerCharacter, timeOfLastCharacter, currentEndPunctuationTime)))
                     {
                         // set the animation start time to now
                         characterAnimStartTimes[currentCharacterIndex] = Time.unscaledTime;
@@ -155,6 +159,7 @@ public class DialogTextAnimations
                         // progress visible character index
                         currentCharacterIndex++; 
                         timeOfLastCharacter = Time.unscaledTime; // set time of last character to now
+                        currentEndPunctuationTime = 0; // reset the current end punctuation time
 
                         // progress last dialog bark count
                         countSinceLastBark++; 
@@ -248,33 +253,46 @@ public class DialogTextAnimations
 
         textBox.text = string.Empty;
     }
-    private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter)
+    private static bool CanShowNextCharacter(float secondsPerCharacter, float timeOfLastCharacter, float currentEndPunctuationTime)
     {
         // If the difference in the unscaled time and the time the last character played is greater than seconds per character, show next character
-        return (Time.unscaledTime - timeOfLastCharacter) > secondsPerCharacter;         
+        // Also if the difference in current end punctuation time and the current time is less than zero, which by default it is, but otherwise it would wait
+        return ((Time.unscaledTime - timeOfLastCharacter) > secondsPerCharacter) && ((currentEndPunctuationTime - Time.unscaledTime) <= 0);         
     }
 
-    private void ExecuteRemainingCommandsAtIndex(List<DialogCommand> commands, int currentCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
+    /// <summary>
+    /// Execute the Dialog Commands at this character index, including seoncs between characters, any pauses, and currrent voice bark
+    /// </summary>
+    /// <param name="commands"></param>
+    /// <param name="currentCharacterIndex"></param>
+    /// <param name="secondsPerCharacter"></param>
+    /// <param name="timeOfLastCharacter"></param>
+    private void ExecuteRemainingCommandsAtIndex(List<DialogCommand> commands, int currentCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter, ref float currentEndPunctuationTime)
     {
         bool isEndPunctuation = false;
 
-        // 5 seems like a good minimum count to check this
+        // Text needs to be more than 5 characters to check end punctuation
         if (textBox.text.Length > 5)
         {
-            if (currentCharacterIndex <= (textBox.text.Length - 5))
+            // Make sure it's not at the end of the text or the very first character
+            if (currentCharacterIndex <= (textBox.text.Length - 5) && (currentCharacterIndex > 0))
             {
+                char previousChar = textBox.text[currentCharacterIndex - 1];
                 char currentChar = textBox.text[currentCharacterIndex];
-                char nextChar = textBox.text[currentCharacterIndex + 1];
 
+                // If the previous character was a punctuation and this is a space, end punctuation is true
                 foreach (char punctuation in EndPunctuation)
                 {
-                    if (punctuation == currentChar && nextChar == ' ')
+                    if (punctuation == previousChar && currentChar == ' ')
                     {
                         isEndPunctuation = true;
+                        break; 
                     }
                 }
             }
         }
+
+        float pauseDurationAfterCharacter = 0; 
 
         // At the current index, go through the remaining DialogCommands and apply the effects if they are at the current index
         for (int i = 0; i < commands.Count; i++)
@@ -284,12 +302,10 @@ public class DialogTextAnimations
             {
                 switch (currentCommand.type)
                 {
-                    // Add a pause between characters using timeOfLastCharacter
+                    // Use this value to compare if the current position is an end punctuation
                     case TextCommandType.Pause:
-                        if (isEndPunctuation && currentCommand.floatValue < endPunctuationTime)
-                            timeOfLastCharacter = Time.unscaledTime + endPunctuationTime; 
-                        else
-                            timeOfLastCharacter = Time.unscaledTime + currentCommand.floatValue;
+                        timeOfLastCharacter = Time.unscaledTime + currentCommand.floatValue;
+                        pauseDurationAfterCharacter = currentCommand.floatValue; 
                         break;
                     // Set the text speed with seconds per character
                     case TextCommandType.TextSpeedChange: 
@@ -304,6 +320,10 @@ public class DialogTextAnimations
                 i--; 
             }
         }
+
+        // Check if this is the end punctuation and it is greater than the pause duration
+        if (isEndPunctuation && (pauseDurationAfterCharacter < endPunctuationTime) && (currentEndPunctuationTime == 0))
+             currentEndPunctuationTime = Time.unscaledTime + endPunctuationTime;
     }
 
     private Color32[] RetrieveDestinationColors(int characterCount, TMP_TextInfo textInfo, TextColorInfo[] textColorInfo, TMP_MeshInfo[] cachedMeshInfo)
@@ -483,7 +503,7 @@ public class DialogTextAnimations
         indicatorAction(true); 
     }
     public void FinishCurrentAnimation()
-    {
+     {
         secondsPerCharacter = 0;
 
         if (IsTextPlaying)

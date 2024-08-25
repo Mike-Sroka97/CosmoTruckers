@@ -58,7 +58,7 @@ public class DialogManager : MonoBehaviour
     public ActorList ActorList;
 
     private List<BaseActor> currentActorsToAnimate;
-    private BaseActor[] actors;
+    private BaseActor[] actors; 
     private string[] dialogs;
     private string baseDialog;
     private int currentLineIndex = 0;
@@ -699,7 +699,8 @@ public class DialogManager : MonoBehaviour
         CurrentTextFile++; 
 
         DialogIsPlaying = false;
-        FirstTimeSetupComplete = false; 
+        FirstTimeSetupComplete = false;
+        actors = null; 
     }
     #endregion
 

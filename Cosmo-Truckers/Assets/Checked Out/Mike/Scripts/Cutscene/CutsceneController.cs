@@ -12,6 +12,7 @@ public abstract class CutsceneController : MonoBehaviour
 
     // Dialog Scene Setup Variables
     [SerializeField] TextAsset[] textFiles;
+    public bool spawnedInActors { get; private set; } = false; 
 
     protected CameraController cameraController;
 
@@ -26,7 +27,7 @@ public abstract class CutsceneController : MonoBehaviour
         SceneManager.LoadScene(sceneToLoad);
     }
 
-    IEnumerator Buffer()
+    protected virtual IEnumerator Buffer()
     {
         yield return new WaitForSeconds(bufferTime);
         StartCoroutine(cameraController.FadeVignette(true));
@@ -233,6 +234,8 @@ public abstract class CutsceneController : MonoBehaviour
                     Debug.LogError("Prefab couldn't find an actor spot to spawn at!");
             }
         }
+
+        spawnedInActors = true; 
 
         return actors;
     }

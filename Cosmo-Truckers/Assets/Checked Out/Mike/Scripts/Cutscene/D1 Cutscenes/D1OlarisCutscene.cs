@@ -8,20 +8,31 @@ public class D1OlarisCutscene : CutsceneController
 {
     [SerializeField] BaseActor[] playerActors;
 
-    protected override IEnumerator CutsceneCommands()
+
+    protected override IEnumerator Buffer()
     {
         // Set the actors at the beginning so when the vignette fades they are there
         // We want the cutscene to be interactable, so set isCutscene to false, even though it is a "cutscene"
         DialogManager.Instance.SetPlayerActors(GetActorsFromCurrentPlayers(), isCutscene: false);
+
         // Setup Dialog
         DialogSetup();
 
-        //Fae out vignette
+        // wait until actors are spawned in
+        while (!spawnedInActors)
+            yield return null;
+
+        yield return new WaitForSeconds(bufferTime);
         StartCoroutine(cameraController.FadeVignette(true));
 
         while (cameraController.CommandsExecuting > 0)
             yield return null;
 
+        StartCoroutine(CutsceneCommands());
+    }
+
+    protected override IEnumerator CutsceneCommands()
+    {
         // give a second before starting the dialog
         yield return new WaitForSeconds(1f);
 
