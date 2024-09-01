@@ -17,13 +17,10 @@ public class OverworldCharacter : MonoBehaviour
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         overworld = FindObjectOfType<Overworld>();
-        transform.position = overworld.CurrentNode.transform.position;
-
         enabled = false;
 
         CameraController.Instance.InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, overworld.minCameraY, overworld.maxCameraY, transform);
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
-        overworld.CurrentNode.SetupNode();
     }
 
     private void Update()

@@ -42,7 +42,7 @@ public class D1OlarisCutscene : CutsceneController
         while (DialogManager.Instance.DialogIsPlaying)
             yield return null;
 
-        End();
+        StartCoroutine(EndWithFade()); 
     }
 
     private void Update()

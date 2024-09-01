@@ -27,5 +27,7 @@ public abstract class Overworld : MonoBehaviour
 
     protected abstract void OverworldInitialize();
 
+    protected abstract void SetupStartingNode(); 
+
     protected abstract void DebugInput();
 }

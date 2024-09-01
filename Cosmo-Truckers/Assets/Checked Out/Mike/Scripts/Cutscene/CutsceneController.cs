@@ -22,6 +22,16 @@ public abstract class CutsceneController : MonoBehaviour
         StartCoroutine(Buffer());
     }
 
+    protected virtual IEnumerator EndWithFade()
+    {
+        StartCoroutine(cameraController.FadeVignette(false));
+
+        while (cameraController.CommandsExecuting > 0)
+            yield return null;
+
+        End(); 
+    }
+
     protected virtual void End()
     {
         SceneManager.LoadScene(sceneToLoad);

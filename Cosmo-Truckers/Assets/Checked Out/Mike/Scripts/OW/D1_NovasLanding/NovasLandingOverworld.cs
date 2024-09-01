@@ -10,6 +10,7 @@ public class NovasLandingOverworld : Overworld
     [SerializeField] float olarisFadeSpeed;
     [SerializeField] OverworldNode olarisHomeNode;
     [SerializeField] float olarisMoveSpeed;
+    bool firstTimeSetup = true; 
 
     [Space(20)]
     [Header("Yed Stuff")]
@@ -58,6 +59,8 @@ public class NovasLandingOverworld : Overworld
             data = SaveManager.LoadDimensionOne();
 
         StartCoroutine(WaitAFrame());
+
+        SetupStartingNode(); 
 
         //Pre cutscene
         /*
@@ -161,6 +164,29 @@ public class NovasLandingOverworld : Overworld
         }
 
         SetupStartNodes();
+    }
+
+    /// <summary>
+    /// Set the node that the player actually spawns onto and 
+    /// </summary>
+    protected override void SetupStartingNode()
+    {
+        // Only call this portion when loading into the scene
+        if (firstTimeSetup)
+        {
+            firstTimeSetup = false;
+
+            // Get the previous node and set the current node to it
+            OverworldNode startNode = GameObject.Find(data.PreviousNode).GetComponent<OverworldNode>();
+            CurrentNode = startNode != null ? startNode : CurrentNode;
+
+            // Set the player to the position of the previous node
+            OverworldCharacter mapPlayer = GameObject.Find("OW_ControllerCharacter").GetComponent<OverworldCharacter>();
+            mapPlayer.transform.position = CurrentNode.transform.position;
+        }
+
+        // Setup the current node 
+        CurrentNode.SetupNode();
     }
 
     private void SetupStartNodes()
@@ -290,10 +316,11 @@ public class NovasLandingOverworld : Overworld
         StartCoroutine(FadeOlaris(olaris.GetComponent<SpriteRenderer>(), false));
     }
 
-    public void SaveOlarisPrelude()
+    public void SaveOlarisPrelude(OverworldNode node)
     {
         olarisHomeNode.DeactiveNode();
         data.PreludeOlarisTalkedTo = true;
+        data.PreviousNode = node.name;
         data.SaveLevelData();
         OverworldInitialize();
     }
