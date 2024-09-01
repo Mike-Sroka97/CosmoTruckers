@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class CameraController : MonoBehaviour
@@ -72,7 +73,7 @@ public class CameraController : MonoBehaviour
         Leader = leaderTransform;
     }
 
-    public IEnumerator OwCharacterActionSelect(string sceneToLoad)
+    public IEnumerator OwCharacterActionSelect(string sceneToLoad, UnityEvent eventToInvoke)
     {
         CommandsExecuting++;
 
@@ -87,6 +88,8 @@ public class CameraController : MonoBehaviour
 
         while (CommandsExecuting > 0)
             yield return null;
+
+        eventToInvoke?.Invoke();
 
         SceneManager.LoadScene(sceneToLoad);
     }

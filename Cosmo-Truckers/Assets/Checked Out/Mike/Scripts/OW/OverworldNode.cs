@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+
 
 public class OverworldNode : MonoBehaviour
 {
@@ -88,11 +90,9 @@ public class OverworldNode : MonoBehaviour
             foreach(OverworldCharacter character in FindObjectsOfType<OverworldCharacter>())
                 character.enabled = false;
 
-            StartCoroutine(CameraController.Instance.OwCharacterActionSelect(sceneToLoad));
+            StartCoroutine(CameraController.Instance.OwCharacterActionSelect(sceneToLoad, MapEventInteraction));
         }
-
-        else
-            MapEventInteraction?.Invoke();
+        else { MapEventInteraction?.Invoke();}
     }
 
     public void ActivateNode()
