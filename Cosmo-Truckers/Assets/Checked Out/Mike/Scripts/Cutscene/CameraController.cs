@@ -115,7 +115,13 @@ public class CameraController : MonoBehaviour
             }
 
         if (Leader)
-            FindObjectOfType<Overworld>().CameraFadeFinished();
+        {
+            if (FindObjectOfType<Overworld>())
+                FindObjectOfType<Overworld>().CameraFadeFinished();
+            else
+                FindObjectOfType<DungeonController>().CameraFadeFinished();
+        }
+
 
         CommandsExecuting--;
     }

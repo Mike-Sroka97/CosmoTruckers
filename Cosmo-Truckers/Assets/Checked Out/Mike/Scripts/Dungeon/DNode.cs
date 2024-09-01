@@ -18,46 +18,53 @@ public class DNode : MonoBehaviour
     //Nodes that the player can move to
     [Space(20)]
     [Header("Node Assignment")]
-    public OverworldNode UpNode;
-    public OverworldNode LeftNode;
-    public OverworldNode DownNode;
-    public OverworldNode RightNode;
+    public List<DNode> SelectableNodes = new List<DNode>();
 
     //Interactivity of the node
     [Space(20)]
     [Header("Data")]
-    [SerializeField] GameObject nodeData;
+    public GameObject NodeData;
+    public List<Transform> AdderTransforms;
+    public int Group;
+    public bool StartNode;
+    public bool EndNode;
 
     //Transforms for player to traverse per direction
-    public Transform[] UpTransforms;
-    public Transform[] LeftTransforms;
-    public Transform[] DownTransforms;
-    public Transform[] RightTransforms;
+    public List<Transform> SelectedTransforms = new List<Transform>();
+
+    public bool Active;
 
     protected SpriteRenderer myRenderer;
-    private bool chooseable;
+    private DungeonCharacter character;
+    private DNode currentlySelectedNode;
+    private LineRenderer currentLine;
+    private DungeonController dungeon;
+    int currentSelectedIndex = 0;
 
     protected virtual void Start()
     {
-        myRenderer = GetComponent<SpriteRenderer>();
-
         DetermineState();
+        character = FindObjectOfType<DungeonCharacter>();
+        currentLine = transform.Find("LineRenderer").GetComponent<LineRenderer>();
+        dungeon = FindObjectOfType<DungeonController>();
     }
 
     public void DetermineState()
     {
-        if(nodeData.GetComponent<DungeonCombatNode>())
+        myRenderer = GetComponent<SpriteRenderer>();
+
+        if (NodeData.GetComponent<DungeonCombatNode>())
         {
-            DungeonCombatNode node = nodeData.GetComponent<DungeonCombatNode>();
+            DungeonCombatNode node = NodeData.GetComponent<DungeonCombatNode>();
 
             if (node.Boss)
                 myRenderer.sprite = bossNode;
             else
                 myRenderer.sprite = combatNode;
         }
-        else if(nodeData.GetComponent<DungeonEventNode>())
+        else if(NodeData.GetComponent<DungeonEventNode>())
         {
-            DungeonEventNode node = nodeData.GetComponent<DungeonEventNode>();
+            DungeonEventNode node = NodeData.GetComponent<DungeonEventNode>();
 
             if (node.Bad)
                 myRenderer.sprite = badNode;
@@ -76,123 +83,104 @@ public class DNode : MonoBehaviour
 
     public void Interact()
     {
-        if (nodeData.GetComponent<DungeonCombatNode>())
+        if(Active)
+        {
+            CleanupLineRenderers();
+            MoveToNode();
+            return;
+        }
+
+        if (NodeData.GetComponent<DungeonCombatNode>())
         {
             //TODO do something with the data
         }
-        if(nodeData.GetComponent<DungeonEventNode>())
+        if(NodeData.GetComponent<DungeonEventNode>())
         {
             //TODO do something with the data
         }
     }
 
-    public void ActivateNode()
+    private void MoveToNode()
     {
-        chooseable = true;
+        Active = false;
+        StartCoroutine(character.Move(currentlySelectedNode, currentlySelectedNode.SelectedTransforms.ToArray()));
     }
-
-    public void DeactiveNode()
+    public void SelectNode(bool left)
     {
-        chooseable = false;
+        if(left)
+        {
+            if(currentSelectedIndex - 1 >= 0)
+                currentSelectedIndex--;
+            else
+                currentSelectedIndex = SelectableNodes.Count - 1;
+        }
+        else
+        {
+            if (currentSelectedIndex + 1 < SelectableNodes.Count)
+                currentSelectedIndex++;
+            else
+                currentSelectedIndex = 0;
+        }
+
+        currentlySelectedNode = SelectableNodes[currentSelectedIndex];
+        SetupLineRendererers();
     }
 
     protected virtual void SetupLineRendererers()
     {
-        LineRenderer currentLine;
+        currentLine = transform.Find("LineRenderer").GetComponent<LineRenderer>();
 
-        //Up line
-        currentLine = transform.Find("LineRendererUp").GetComponent<LineRenderer>();
+        if (!currentlySelectedNode && SelectableNodes.Count > 0)
+            currentlySelectedNode = SelectableNodes[currentSelectedIndex];
 
-        if (UpNode && UpNode.Active)
-        {
-            if (UpNode.transform.position.x < transform.position.x)
-                SetLinePositions(RightTransforms, currentLine, UpNode);
-            else if (UpNode.transform.position.x > transform.position.x)
-                SetLinePositions(LeftTransforms, currentLine, UpNode);
-            else
-                SetLinePositions(DownTransforms, currentLine, UpNode);
-        }
-
-        //Left line
-        currentLine = transform.Find("LineRendererLeft").GetComponent<LineRenderer>();
-
-        if (LeftNode && LeftNode.Active)
-        {
-            if (LeftNode.transform.position.y < transform.position.y)
-                SetLinePositions(UpTransforms, currentLine, LeftNode);
-            else if (LeftNode.transform.position.y > transform.position.y)
-                SetLinePositions(DownTransforms, currentLine, LeftNode);
-            else
-                SetLinePositions(RightTransforms, currentLine, LeftNode);
-        }
-
-        //Down line
-        currentLine = transform.Find("LineRendererDown").GetComponent<LineRenderer>();
-
-        if (DownNode && DownNode.Active)
-        {
-            if (DownNode.transform.position.x < transform.position.x)
-                SetLinePositions(RightTransforms, currentLine, DownNode);
-            else if (DownNode.transform.position.x > transform.position.x)
-                SetLinePositions(LeftTransforms, currentLine, DownNode);
-            else
-                SetLinePositions(UpTransforms, currentLine, DownNode);
-        }
-
-        //Right line
-        currentLine = transform.Find("LineRendererRight").GetComponent<LineRenderer>();
-
-        if (RightNode && RightNode.Active)
-        {
-            if (RightNode.transform.position.y < transform.position.y)
-                SetLinePositions(DownTransforms, currentLine, RightNode);
-            else if (RightNode.transform.position.y > transform.position.y)
-                SetLinePositions(UpTransforms, currentLine, RightNode);
-            else
-                SetLinePositions(LeftTransforms, currentLine, RightNode);
-        }
+        if (currentlySelectedNode)
+         SetLinePositions(currentlySelectedNode.SelectedTransforms.ToArray(), currentLine);
     }
 
-    protected void SetLinePositions(Transform[] points, LineRenderer currentLine, OverworldNode node)
+    protected void SetLinePositions(Transform[] points, LineRenderer currentLine)
     {
-        currentLine.positionCount = points.Length + 1;
+        currentLine.positionCount = points.Length;
 
         int i = 0;
 
-        currentLine.SetPosition(i, node.transform.position);
-        i++;
-
         foreach (Transform nodePoint in points)
         {
-            currentLine.SetPosition(i, nodePoint.position);
+            currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y - 0.45f, nodePoint.transform.position.z));
             i++;
         }
     }
 
     private void CleanupLineRenderers()
     {
-        LineRenderer currentLine;
-
-        //Up line
-        currentLine = transform.Find("LineRendererUp").GetComponent<LineRenderer>();
-        currentLine.positionCount = 0;
-
-        //Left line
-        currentLine = transform.Find("LineRendererLeft").GetComponent<LineRenderer>();
-        currentLine.positionCount = 0;
-
-        //Down line
-        currentLine = transform.Find("LineRendererDown").GetComponent<LineRenderer>();
-        currentLine.positionCount = 0;
-
-        //Right line
-        currentLine = transform.Find("LineRendererRight").GetComponent<LineRenderer>();
         currentLine.positionCount = 0;
     }
 
     //handles line renderers and active State
     public void SetupNode()
     {
+        if (AdderTransforms.Count > 0)
+            foreach (DNode node in SelectableNodes)
+                node.SelectedTransforms.InsertRange(0, AdderTransforms);
+
+        if(EndNode)
+        {
+            DNode currentCombatNode;
+
+            if (dungeon.transform.Find($"Constant Nodes/Combat ({Group + 2})"))
+            {
+                currentCombatNode = dungeon.transform.Find($"Constant Nodes/Combat ({Group + 2})").GetComponent<DNode>();
+
+
+            }
+            else
+            {
+                currentCombatNode = dungeon.transform.Find("Constant Nodes/Rest Node").GetComponent<DNode>();
+            }
+
+            currentCombatNode.SelectedTransforms.InsertRange(0, AdderTransforms);
+            SelectableNodes.Add(currentCombatNode);
+        }
+
         SetupLineRendererers();
     }
 

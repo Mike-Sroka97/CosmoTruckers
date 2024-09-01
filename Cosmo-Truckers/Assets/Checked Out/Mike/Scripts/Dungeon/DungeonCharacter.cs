@@ -6,7 +6,7 @@ public class DungeonCharacter : MonoBehaviour
 {
     [SerializeField] protected float moveSpeed;
 
-    protected DungeonController overworld;
+    protected DungeonController dungeon;
     protected bool moving;
     SpriteRenderer myRenderer;
 
@@ -16,14 +16,14 @@ public class DungeonCharacter : MonoBehaviour
     protected virtual void Start()
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
-        overworld = FindObjectOfType<DungeonController>();
-        transform.position = overworld.CurrentNode.transform.position;
+        dungeon = FindObjectOfType<DungeonController>();
+        transform.position = dungeon.CurrentNode.transform.position;
 
         enabled = false;
 
-        CameraController.Instance.InitializeOwCamera(overworld.minCameraX, overworld.maxCameraX, overworld.minCameraY, overworld.maxCameraY, transform);
+        CameraController.Instance.InitializeOwCamera(dungeon.minCameraX, dungeon.maxCameraX, dungeon.minCameraY, dungeon.maxCameraY, transform);
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
-        overworld.CurrentNode.SetupNode();
+        dungeon.CurrentNode.SetupNode();
     }
 
     private void Update()
@@ -44,48 +44,28 @@ public class DungeonCharacter : MonoBehaviour
             myRenderer.flipX = false;
 
         //Interact
-        if (Input.GetKeyDown(KeyCode.Space) && overworld.CurrentNode.Interactive && overworld.CurrentNode.Active)
-            overworld.CurrentNode.Interact();
-
-        //Up
-        else if (Input.GetKeyDown(KeyCode.W) && overworld.CurrentNode.UpNode && overworld.CurrentNode.UpNode.Active)
-        {
-            overworld.CurrentNode.MoveUpEvent?.Invoke();
-            overworld.CurrentNode.LeavingNodeCleanup();
-            overworld.CurrentNode = overworld.CurrentNode.UpNode;
-            StartCoroutine(Move(overworld.CurrentNode.UpTransforms));
-        }
+        if (Input.GetKeyDown(KeyCode.Space) && dungeon.CurrentNode.Active)
+            dungeon.CurrentNode.Interact();
 
         //Left
-        else if (Input.GetKeyDown(KeyCode.A) && overworld.CurrentNode.LeftNode && overworld.CurrentNode.LeftNode.Active)
+        else if (Input.GetKeyDown(KeyCode.A))
         {
-            overworld.CurrentNode.MoveLeftEvent?.Invoke();
-            overworld.CurrentNode.LeavingNodeCleanup();
-            overworld.CurrentNode = overworld.CurrentNode.LeftNode;
-            StartCoroutine(Move(overworld.CurrentNode.LeftTransforms));
-        }
-
-        //Down
-        else if (Input.GetKeyDown(KeyCode.S) && overworld.CurrentNode.DownNode && overworld.CurrentNode.DownNode.Active)
-        {
-            overworld.CurrentNode.MoveDownEvent?.Invoke();
-            overworld.CurrentNode.LeavingNodeCleanup();
-            overworld.CurrentNode = overworld.CurrentNode.DownNode;
-            StartCoroutine(Move(overworld.CurrentNode.DownTransforms));
+            dungeon.CurrentNode.SelectNode(true);
+            //dungeon.CurrentNode = dungeon.CurrentNode.LeftNode;
+            //StartCoroutine(Move(dungeon.CurrentNode.LeftTransforms));
         }
 
         //Right
-        else if (Input.GetKeyDown(KeyCode.D) && overworld.CurrentNode.RightNode && overworld.CurrentNode.RightNode.Active)
+        else if (Input.GetKeyDown(KeyCode.D))
         {
-            overworld.CurrentNode.MoveRightEvent?.Invoke();
-            overworld.CurrentNode.LeavingNodeCleanup();
-            overworld.CurrentNode = overworld.CurrentNode.RightNode;
-            StartCoroutine(Move(overworld.CurrentNode.RightTransforms));
+            dungeon.CurrentNode.SelectNode(false);
         }
     }
 
-    public virtual IEnumerator Move(Transform[] pointsToTraverse)
+    public virtual IEnumerator Move(DNode newCurrentNode, Transform[] pointsToTraverse)
     {
+        dungeon.CurrentNode = newCurrentNode;
+
         moving = true;
         int currentPoint = 0;
 
@@ -110,7 +90,7 @@ public class DungeonCharacter : MonoBehaviour
             currentPoint++;
         }
 
-        overworld.CurrentNode.SetupNode();
+        dungeon.CurrentNode.SetupNode();
 
         moving = false;
     }

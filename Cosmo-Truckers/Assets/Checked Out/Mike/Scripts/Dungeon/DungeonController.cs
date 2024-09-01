@@ -9,8 +9,9 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] protected GameObject[] combatNodes;
     [SerializeField] int totalEventNodes = 24;
+    [SerializeField] GameObject[] nodeLayouts;
 
-    public OverworldNode CurrentNode;
+    public DNode CurrentNode;
     public float minCameraX;
     public float maxCameraX;
     public float minCameraY;
@@ -20,31 +21,41 @@ public abstract class DungeonController : MonoBehaviour
     protected List<GameObject> negativeNodes;
     protected List<GameObject> neutralNodes;
     protected List<GameObject> positiveNodes;
+    protected List<GameObject> determinedEventNodes;
+
 
     private void Start()
     {
+        SetStartNode();
         DungeonInitialize();
         DetermineNodeTypes();
+        DetermineNodeLayouts();
     }
 
     public void CameraFadeFinished()
     {
         if (enableLeaderOnFade)
-            CameraController.Instance.Leader.GetComponent<OverworldCharacter>().enabled = true;
+            CameraController.Instance.Leader.GetComponent<DungeonCharacter>().enabled = true;
+    }
+
+    private void SetStartNode()
+    {
+        CurrentNode = transform.Find("Constant Nodes/Start Node").GetComponent<DNode>();
     }
 
     protected abstract void DungeonInitialize();
 
-    protected void DetermineNodeTypes()
+    private void DetermineNodeTypes()
     {
         negativeNodes = new List<GameObject>();
         neutralNodes = new List<GameObject>();
         positiveNodes = new List<GameObject>();
+        determinedEventNodes = new List<GameObject>();
 
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        for(int i = 0; i < nonCombatNodes.Length; i++)
+        for (int i = 0; i < nonCombatNodes.Length; i++)
         {
             if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
             {
@@ -57,7 +68,7 @@ public abstract class DungeonController : MonoBehaviour
                 currentNodeCount++;
 
             }
-            else if(nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
+            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
             {
                 negativeNodes.Add(nonCombatNodes[i]);
                 currentNodeCount++;
@@ -67,8 +78,61 @@ public abstract class DungeonController : MonoBehaviour
                 break;
         }
 
-        Debug.Log("Positive Count: " + positiveNodes.Count);
-        Debug.Log("Neutral Count: " + neutralNodes.Count);
-        Debug.Log("Negative Count: " + negativeNodes.Count);
+        determinedEventNodes.AddRange(positiveNodes);
+        determinedEventNodes.AddRange(neutralNodes);
+        determinedEventNodes.AddRange(negativeNodes);
+    }
+
+    private void DetermineNodeLayouts()
+    {
+        List<Transform> nodeLayoutPositions = new List<Transform>();
+        Transform[] nodeLayoutTransforms = transform.Find("NodeLayoutTransforms").GetComponentsInChildren<Transform>();
+
+        for (int i = 0; i < nodeLayoutTransforms.Length; i++)
+        {
+            if (i == 0)
+                continue;
+
+            nodeLayoutPositions.Add(nodeLayoutTransforms[i]);
+        }
+
+        MathCC.Shuffle(nodeLayouts);
+
+        List<DNode> allEventNodes = new List<DNode>();
+
+        for(int i = 0; i < nodeLayoutPositions.Count; i++)
+        {
+            GameObject layoutInstance = Instantiate(nodeLayouts[i], nodeLayoutPositions[i]);
+
+            DNode[] nodes = layoutInstance.GetComponentsInChildren<DNode>();
+            allEventNodes.AddRange(nodes);
+
+            if (i % 2 != 0)
+                foreach (DNode node in nodes)
+                    node.transform.Rotate(new Vector3(180, 0, 0));
+
+            //determine combat node attachement stuffs
+            foreach(DNode node in nodes)
+            {
+                node.Group = i;
+
+                if(node.StartNode)
+                {
+                    DNode currentCombatNode = transform.Find($"Constant Nodes/Combat ({i + 1})").GetComponent<DNode>();
+
+                    node.SelectedTransforms.Insert(0, currentCombatNode.transform);
+                    currentCombatNode.SelectableNodes.Add(node);
+                }
+            }
+        }
+
+        MathCC.Shuffle(determinedEventNodes);
+
+        for(int i = 0; i < determinedEventNodes.Count; i++)
+        {
+            allEventNodes[i].NodeData = determinedEventNodes[i];
+            allEventNodes[i].DetermineState();
+        }
     }
 }
+
