@@ -51,7 +51,7 @@ public class DNode : MonoBehaviour
 
     public void DetermineState()
     {
-        myRenderer = GetComponent<SpriteRenderer>();
+        myRenderer = transform.Find("Sprite").GetComponent<SpriteRenderer>();
 
         if (NodeData.GetComponent<DungeonCombatNode>())
         {

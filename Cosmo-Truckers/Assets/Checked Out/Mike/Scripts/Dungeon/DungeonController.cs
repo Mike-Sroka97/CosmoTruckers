@@ -109,10 +109,11 @@ public abstract class DungeonController : MonoBehaviour
 
             if (i % 2 != 0)
                 foreach (DNode node in nodes)
-                    node.transform.Rotate(new Vector3(180, 0, 0));
+                    node.transform.Find("Sprite").transform.Rotate(new Vector3(180, 0, 0));
+
 
             //determine combat node attachement stuffs
-            foreach(DNode node in nodes)
+            foreach (DNode node in nodes)
             {
                 node.Group = i;
 
