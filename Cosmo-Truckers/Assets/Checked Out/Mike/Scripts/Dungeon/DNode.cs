@@ -167,15 +167,9 @@ public class DNode : MonoBehaviour
             DNode currentCombatNode;
 
             if (dungeon.transform.Find($"Constant Nodes/Combat ({Group + 2})"))
-            {
                 currentCombatNode = dungeon.transform.Find($"Constant Nodes/Combat ({Group + 2})").GetComponent<DNode>();
-
-
-            }
             else
-            {
                 currentCombatNode = dungeon.transform.Find("Constant Nodes/Rest Node").GetComponent<DNode>();
-            }
 
             currentCombatNode.SelectedTransforms.InsertRange(0, AdderTransforms);
             SelectableNodes.Add(currentCombatNode);
