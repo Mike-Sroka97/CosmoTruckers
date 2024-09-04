@@ -87,7 +87,6 @@ namespace Mirror
         {
             // set not ready and handle clientscene disconnect in any case
             // (might be client or host mode here)
-            // TODO remove redundant state. have one source of truth for .ready!
             isReady = false;
             NetworkClient.ready = false;
         }
@@ -100,7 +99,6 @@ namespace Mirror
 
             // simulate what a true remote connection would do:
             // first, the server should remove it:
-            // TODO should probably be in connectionToClient.DisconnectInternal
             //      because that's the NetworkServer's connection!
             NetworkServer.RemoveLocalConnection();
 

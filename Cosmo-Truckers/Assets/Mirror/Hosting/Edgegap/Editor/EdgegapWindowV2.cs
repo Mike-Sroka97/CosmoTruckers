@@ -35,12 +35,11 @@ namespace Edgegap.Editor
         private Sprite _appIconSpriteObj;
         private string _appIconBase64Str;
  #pragma warning disable CS0414 // MIRROR CHANGE: hide unused warning
-        private ApiEnvironment _apiEnvironment; // TODO: Swap out hard-coding with UI element?
+        private ApiEnvironment _apiEnvironment;
  #pragma warning restore CS0414 // END MIRROR CHANGE
         private GetRegistryCredentialsResult _credentials;
         private static readonly Regex _appNameAllowedCharsRegex = new Regex(@"^[a-zA-Z0-9_\-+\.]*$"); // MIRROR CHANGE: 'new()' not supported in Unity 2020
         private GetCreateAppResult _loadedApp;
-        /// <summary>TODO: Make this a list</summary>
         private GetDeploymentStatusResult _lastKnownDeployment;
         private string _deploymentRequestId;
         private string _userExternalIp;
@@ -266,7 +265,7 @@ namespace Edgegap.Editor
             _footerDocumentationBtn = rootVisualElement.Q<Button>(EdgegapWindowMetadata.FOOTER_DOCUMENTATION_BTN_ID);
             _footerNeedMoreGameServersBtn = rootVisualElement.Q<Button>(EdgegapWindowMetadata.FOOTER_NEED_MORE_GAME_SERVERS_BTN_ID);
 
-            _apiEnvironment = EdgegapWindowMetadata.API_ENVIRONMENT; // (!) TODO: Hard-coded while unused in UI
+            _apiEnvironment = EdgegapWindowMetadata.API_ENVIRONMENT;
         }
 
         /// <summary>
@@ -380,7 +379,6 @@ namespace Edgegap.Editor
                     $"Expected {nameof(_footerNeedMoreGameServersBtn)} via #{EdgegapWindowMetadata.FOOTER_NEED_MORE_GAME_SERVERS_BTN_ID}");
 
 
-                // // TODO: Explicitly set, for now in v2 - but remember to assert later if we stop hard-coding these >>
                 // _apiEnvironment
                 // _appVersionName
             }
@@ -638,7 +636,6 @@ namespace Edgegap.Editor
             _appIconSpriteObj = _appIconSpriteObjInput.value as Sprite;
         }
 
-        /// <summary>TODO: Load persistent data?</summary>
         private void syncFormWithObjectStatic()
         {
             // Only show the rest of the form if apiToken is verified
@@ -889,7 +886,6 @@ namespace Edgegap.Editor
 
         /// <summary>
         /// Verifies token => apps/container groups -> gets registry creds (if any).
-        /// TODO: UX - Show loading spinner.
         /// </summary>
         private async Task verifyApiTokenGetRegistryCredsAsync()
         {
@@ -913,7 +909,7 @@ namespace Edgegap.Editor
                 return;
             }
 
-            // Verified: Let's see if we have active registry credentials // TODO: This will later be a result model
+            // Verified: Let's see if we have active registry credentials
             EdgegapHttpResult<GetRegistryCredentialsResult> getRegistryCredentialsResult = await wizardApi.GetRegistryCredentials();
 
             if (getRegistryCredentialsResult.IsResultCode200)
@@ -1028,7 +1024,6 @@ namespace Edgegap.Editor
         }
 
         /// <summary>
-        /// TODO: Add err handling for reaching app limit (max 2 for free tier).
         /// </summary>
         private async Task createAppAsync()
         {
@@ -1145,7 +1140,6 @@ namespace Edgegap.Editor
 
         /// <summary>
         /// Currently only refreshes an existing deployment. AKA "OnRefresh".
-        /// TODO: Consider dynamically adding the entire list via GET all deployments.
         /// </summary>
         private async Task refreshDeploymentsAsync()
         {
@@ -1283,7 +1277,6 @@ namespace Edgegap.Editor
 
             // ------------
             // Set the static connection row label data >>
-            // TODO: This will be dynamically inserted via MVC-style template when we support multiple deployments >>
 
             // Get external port
             // BUG(WORKAROUND): Expected `ports` to be List<AppPortsData>, but received Dictionary<string, AppPortsData>
@@ -1334,7 +1327,6 @@ namespace Edgegap.Editor
         }
 
         /// <summary>
-        /// This is triggered from a dynamic button, so we need to pass in the event info (TODO: Use evt info later).
         /// </summary>
         /// <param name="evt"></param>
         private void onDynamicStopServerBtnAsync(EventBase evt) =>
@@ -1342,7 +1334,6 @@ namespace Edgegap.Editor
 
         /// <summary>
         /// Stops the deployment, updating the UI accordingly.
-        /// TODO: Cache a list of deployments and/or store a hidden field for requestId.
         /// </summary>
         private async Task onDynamicStopServerAsync()
         {
@@ -1388,7 +1379,6 @@ namespace Edgegap.Editor
                 return;
             }
 
-            // Success: Hide the static row // TODO: Delete the template row, when dynamic
             // clearDeploymentConnections(); // Use this if you don't want to show the last connection info
             string stoppedStr = getConnectionStoppedRichStr();
             _deploymentsStatusLabel.text = ""; // Overrides any previous errs, in case we attempted to created a new deployment while deleting
@@ -1526,7 +1516,6 @@ namespace Edgegap.Editor
                 }
                 // END MIRROR CHANGE ///////////////////////////////////////////
 
-                // // increment tag for quicker iteration // TODO? `_autoIncrementTag` !exists in V2.
                 // if (_autoIncrementTag)
                 // {
                 //     tag = EdgegapBuildUtils.IncrementTag(tag);
@@ -1658,7 +1647,6 @@ namespace Edgegap.Editor
 
         private void onBuildAndPushSuccess(string tag)
         {
-            // _containerImageTag = tag; // TODO?
             syncFormWithObjectStatic();
             EditorUtility.ClearProgressBar();
 
@@ -1707,7 +1695,6 @@ namespace Edgegap.Editor
                     _deploymentRequestId = _deploymentsConnectionUrlReadonlyInput.value.Split('.')[0];
                     EditorPrefs.SetString(EdgegapWindowMetadata.DEPLOYMENT_REQUEST_ID_KEY_STR, _deploymentRequestId);
                 }
-                // TODO (Optional): Show a status label to remind these are cached vals; refresh for live?
             }
 
             // DeploymentConnectionStatus

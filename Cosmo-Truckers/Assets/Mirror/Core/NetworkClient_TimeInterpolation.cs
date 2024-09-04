@@ -7,7 +7,6 @@ namespace Mirror
     public static partial class NetworkClient
     {
         // snapshot interpolation settings /////////////////////////////////////
-        // TODO expose the settings to the user later.
         // via NetMan or NetworkClientConfig or NetworkClient as component etc.
         public static SnapshotInterpolationSettings snapshotSettings = new SnapshotInterpolationSettings();
 

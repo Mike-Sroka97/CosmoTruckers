@@ -10,15 +10,8 @@ public class CombatData : MonoBehaviour
     public bool TESTING = true;
 
     public static CombatData Instance;
-    public Vector2 combatLocation = new Vector2(0, 0);
-    public int dungeonSeed = 0;
-    public GameObject EnemysToSpawn = null;
-    public List<GameObject> EnemySummonsToSpawn = new();
     public List<PlayerManager> PlayersToSpawn = new();
-    public bool lastNode = false;
-
-    public bool skipNCNode = false;
-
+    public List<GameObject> EnemySummonsToSpawn = new();
 
     private void Awake()
     {

@@ -167,7 +167,6 @@ namespace Mirror
         internal bool destroyCalled;
 
         /// <summary>Client's network connection to the server. This is only valid for player objects on the client.</summary>
-        // TODO change to NetworkConnectionToServer, but might cause some breaking
         public NetworkConnection connectionToServer { get; internal set; }
 
         /// <summary>Server's network connection to the client. This is only valid for client-owned objects (including the Player object) on the server.</summary>
@@ -1005,7 +1004,6 @@ namespace Mirror
             //   7 components fit into 1 byte.  (previously  7 bytes)
             //  11 components fit into 2 bytes. (previously 11 bytes)
             //  16 components fit into 3 bytes. (previously 16 bytes)
-            // TODO imer: server knows amount of comps, write N bytes instead
 
             // if nothing dirty, then don't even write the mask.
             // otherwise, every unchanged object would send a 1 byte dirty mask!
@@ -1172,7 +1170,6 @@ namespace Mirror
             //      expensive. doing it when adding the first observer has the
             //      same result, without the O(N) iteration in Broadcast().
             //
-            // TODO remove this after moving spawning into Broadcast()!
             if (observers.Count == 0)
             {
                 ClearAllComponentsDirtyBits();

@@ -350,7 +350,6 @@ namespace Mirror
                 // may still slide or move slightly due to gravity, physics etc.
                 // and those still need to get corrected if not moving on server.
                 //
-                // TODO
                 // next round of optimizations: if client received nothing for 1s,
                 // force correct to last received state. then server doesn't need
                 // to send once per second anymore.
@@ -431,7 +430,6 @@ namespace Mirror
                 // we check in here instead of in RecordState() because RecordState() should definitely record if we call it!
                 if (onlyRecordChanges)
                 {
-                    // TODO maybe don't reuse the correction thresholds?
                     Vector3 position = tf.position;
                     Quaternion rotation = tf.rotation;
                     if (Vector3.Distance(lastRecorded.position, position) < positionCorrectionThreshold &&
@@ -576,7 +574,6 @@ namespace Mirror
             OnBeforeApplyState();
 
             // Rigidbody .position teleports, while .MovePosition interpolates
-            // TODO is this a good idea? what about next capture while it's interpolating?
             if (correctionMode == CorrectionMode.Move)
             {
                 predictedRigidbody.MovePosition(position);
@@ -679,7 +676,6 @@ namespace Mirror
                 // the correction is for a state in the future.
                 // we clamp it to 'now'.
                 // but only correct if off by threshold.
-                // TODO maybe we should interpolate this back to 'now'?
                 if (Vector3.Distance(state.position, predictedRigidbody.position) >= positionCorrectionThreshold)
                 {
                     double ahead = state.timestamp - newest.timestamp;
@@ -703,7 +699,6 @@ namespace Mirror
             RigidbodyState interpolated = RigidbodyState.Interpolate(before, after, (float)t);
 
             // calculate the difference between where we were and where we should be
-            // TODO only position for now. consider rotation etc. too later
             float positionDifference = Vector3.Distance(state.position, interpolated.position);
             float rotationDifference = Quaternion.Angle(state.rotation, interpolated.rotation);
             // Debug.Log($"Sampled history of size={stateHistory.Count} @ {timestamp:F3}: client={interpolated.position} server={state.position} difference={difference:F3} / {correctionThreshold:F3}");
@@ -737,7 +732,6 @@ namespace Mirror
 
         // send state to clients every sendInterval.
         // reliable for now.
-        // TODO we should use the one from FixedUpdate
         public override void OnSerialize(NetworkWriter writer, bool initialState)
         {
             // Time.time was at the beginning of this frame.

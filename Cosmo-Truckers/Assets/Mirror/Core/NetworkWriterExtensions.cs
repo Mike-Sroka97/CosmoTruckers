@@ -335,7 +335,6 @@ namespace Mirror
         // structs may have .Set<T> members which weaver needs to be able to
         // fully serialize for NetworkMessages etc.
         // note that Weaver/Writers/GenerateWriter() handles this manually.
-        // TODO writer not found. need to adjust weaver first. see tests.
         /*
         public static void WriteHashSet<T>(this NetworkWriter writer, HashSet<T> hashSet)
         {
@@ -375,7 +374,6 @@ namespace Mirror
 
         public static void WriteTexture2D(this NetworkWriter writer, Texture2D texture2D)
         {
-            // TODO allocation protection when sending textures to server.
             //      currently can allocate 32k x 32k x 4 byte = 3.8 GB
 
             // support 'null' textures for [SyncVar]s etc.

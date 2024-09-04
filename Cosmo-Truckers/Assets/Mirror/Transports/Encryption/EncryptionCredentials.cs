@@ -26,8 +26,6 @@ namespace Mirror.Transports.Encryption
         public string PublicKeyFingerprint;
 
         EncryptionCredentials() {}
-
-        // TODO: load from file
         public static EncryptionCredentials Generate()
         {
             var generator = new ECKeyPairGenerator();

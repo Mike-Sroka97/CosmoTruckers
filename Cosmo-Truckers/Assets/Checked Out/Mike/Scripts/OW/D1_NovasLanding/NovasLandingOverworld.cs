@@ -155,12 +155,12 @@ public class NovasLandingOverworld : Overworld
 
         else if(!data.AfterPartyAttended)
         {
-            //TODO get fucked Cole
+            //get fucked Cole
         }
 
         else
         {
-            //TODO continued to get fucked Cole
+            //continued to get fucked Cole
         }
 
         SetupStartNodes();

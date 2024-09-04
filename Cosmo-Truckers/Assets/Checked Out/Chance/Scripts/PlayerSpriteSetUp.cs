@@ -5,7 +5,6 @@ using Mirror;
 
 public class PlayerSpriteSetUp : NetworkBehaviour
 {
-    //TODO
     //This is really long and really ugly
     //Would like to come back and work on this at some point
     #region Show All Players Sprites

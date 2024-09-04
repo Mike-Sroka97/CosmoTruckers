@@ -92,11 +92,11 @@ public class DNode : MonoBehaviour
 
         if (NodeData.GetComponent<DungeonCombatNode>())
         {
-            //TODO do something with the data
+
         }
         if(NodeData.GetComponent<DungeonEventNode>())
         {
-            //TODO do something with the data
+
         }
     }
 

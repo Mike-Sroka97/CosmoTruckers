@@ -6,7 +6,6 @@ public class StarStormBlock : MonoBehaviour
 {
     [HideInInspector] bool IsBreakable = false;
 
-    //TODO make this a sprite later
     [SerializeField] Sprite breakableSprite;
     [SerializeField] Material breakableMaterial;
 

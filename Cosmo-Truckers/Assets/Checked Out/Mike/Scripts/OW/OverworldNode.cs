@@ -45,8 +45,6 @@ public class OverworldNode : MonoBehaviour
     protected virtual void Start()
     {
         myRenderer = GetComponent<SpriteRenderer>();
-
-        //TODO call from dimension OW script
         DetermineState();
     }
 

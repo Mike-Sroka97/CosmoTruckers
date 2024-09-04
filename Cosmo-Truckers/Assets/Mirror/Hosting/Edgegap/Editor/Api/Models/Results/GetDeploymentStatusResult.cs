@@ -73,7 +73,6 @@ namespace Edgegap.Editor.Api.Models.Results
         public string Arguments { get; set; }
         
         /// <summary>
-        /// TODO: Server should swap `ports` to an array of DeploymentPortsData (instead of an object of dynamic unknown objects).
         /// <example>
         /// {
         ///     "7777", {}

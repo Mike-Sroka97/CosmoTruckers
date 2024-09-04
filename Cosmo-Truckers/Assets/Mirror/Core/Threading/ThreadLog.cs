@@ -52,11 +52,11 @@ namespace Mirror
             mainThreadId = Thread.CurrentThread.ManagedThreadId;
 
             // receive threaded log calls
-            Application.logMessageReceivedThreaded -= OnLog; // remove old first. TODO unnecessary?
+            Application.logMessageReceivedThreaded -= OnLog; // remove old first.
             Application.logMessageReceivedThreaded += OnLog;
 
             // process logs on main thread Update
-            NetworkLoop.OnLateUpdate -= OnLateUpdate; // remove old first. TODO unnecessary?
+            NetworkLoop.OnLateUpdate -= OnLateUpdate; // remove old first.
             NetworkLoop.OnLateUpdate += OnLateUpdate;
 
             // log for debugging

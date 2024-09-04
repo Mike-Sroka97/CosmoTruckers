@@ -128,7 +128,7 @@ public class TutorialTurnOrder : TurnOrder
                 proto.StartTurn();
                 CombatManager.Instance.MyTargeting.ForcedTarget = malites[1];
 
-                //INA listener for Aug list open (TODO: reenable combat button)
+                //INA listener for Aug list open
                 proto.AUGListOpenedEvent.AddListener(EnableCurrentPlayerAttackUI);
 
                 //INA listener to yap when attack wheel opened (2)

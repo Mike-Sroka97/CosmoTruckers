@@ -124,13 +124,11 @@ namespace Mirror
         // main thread's event queue.
         // worker thread puts events in, main thread processes them.
         // client & server separate because EarlyUpdate is separate too.
-        // TODO nonalloc
         readonly ConcurrentQueue<ClientMainEvent> clientMainQueue = new ConcurrentQueue<ClientMainEvent>();
         readonly ConcurrentQueue<ServerMainEvent> serverMainQueue = new ConcurrentQueue<ServerMainEvent>();
 
         // worker thread's event queue
         // main thread puts events in, worker thread processes them.
-        // TODO nonalloc
         readonly ConcurrentQueue<ThreadEvent> threadQueue = new ConcurrentQueue<ThreadEvent>();
 
         // active flags, since we can't access server/client from main thread
@@ -183,13 +181,11 @@ namespace Mirror
             // stop thread fully
             Shutdown();
 
-            // TODO recycle writers.
         }
 
         // worker thread ///////////////////////////////////////////////////////
         void ProcessThreadQueue()
         {
-            // TODO deadlock protection. worker thread may be to slow to process all.
             while (threadQueue.TryDequeue(out ThreadEvent elem))
             {
                 switch (elem.type)
@@ -276,7 +272,6 @@ namespace Mirror
             ThreadedServerLateUpdate();
 
             // save some cpu power.
-            // TODO update interval and sleep extra time would be ideal
             Thread.Sleep(1);
         }
 
@@ -516,7 +511,6 @@ namespace Mirror
                     case ServerMainEventType.OnServerConnected:
                     {
                         // call original transport event
-                        // TODO pass client address in OnConnect here later
                         OnServerConnected?.Invoke(elem.connectionId.Value);//, (string)elem.param);
                         break;
                     }
@@ -608,7 +602,6 @@ namespace Mirror
             EnqueueThread(ThreadEventType.DoServerDisconnect, null, null, connectionId);
         }
 
-        // TODO pass address in OnConnected.
         // querying this at runtime won't work for threaded transports.
         public override string ServerGetClientAddress(int connectionId)
         {
@@ -638,7 +631,6 @@ namespace Mirror
             // and then started, a warning would be shown when starting again
             // about an old connection not being found because it wasn't cleared
             // in KCP
-            // TODO cleaner
             Thread.Sleep(100);
 
             // stop thread fully, with timeout

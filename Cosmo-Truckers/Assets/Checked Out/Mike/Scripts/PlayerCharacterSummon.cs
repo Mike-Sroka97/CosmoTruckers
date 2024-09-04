@@ -56,7 +56,6 @@ public class PlayerCharacterSummon : PlayerCharacter
         base.Die();
         EnemyManager.Instance.PlayerCombatSpots[CombatSpot] = null;
         TurnOrder.Instance.RemoveFromSpeedList(Stats);
-        //TODO ANIMATIONS AND SFX??
         Destroy(gameObject);
     }
 
@@ -107,7 +106,6 @@ public class PlayerCharacterSummon : PlayerCharacter
             damageTextStartPosition = damageText.transform.localPosition;
             healingTextStartPosition = healingText.transform.localPosition;
 
-            //COLE TODO replace color with SFX
             if (damage)
             {
                 damageText.text = text;
@@ -128,7 +126,6 @@ public class PlayerCharacterSummon : PlayerCharacter
                 }
             }
 
-            //COLE TODO replace color with SFX
             else if (!damage)
             {
                 healingText.text = text;

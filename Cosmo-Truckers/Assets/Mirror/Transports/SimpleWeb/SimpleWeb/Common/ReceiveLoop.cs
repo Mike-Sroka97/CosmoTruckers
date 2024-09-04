@@ -131,7 +131,6 @@ namespace Mirror.SimpleWeb
             }
             else
             {
-                // todo cache this to avoid allocations
                 Queue<ArrayBuffer> fragments = new Queue<ArrayBuffer>();
                 fragments.Enqueue(CopyMessageToBuffer(bufferPool, expectMask, buffer, msgOffset, header.payloadLength));
                 int totalSize = header.payloadLength;

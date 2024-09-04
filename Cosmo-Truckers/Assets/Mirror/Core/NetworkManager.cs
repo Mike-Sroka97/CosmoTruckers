@@ -158,7 +158,6 @@ namespace Mirror
         /// <summary>True if the server is running or client is connected/connecting.</summary>
         public bool isNetworkActive => NetworkServer.active || NetworkClient.active;
 
-        // TODO remove this
         // internal for tests
         internal static NetworkConnection clientReadyConnection;
 
@@ -559,7 +558,6 @@ namespace Mirror
             //          -> localClientActive needs to be true, otherwise the hook
             //             isn't called in host mode!
             //
-            // TODO call this after spawnobjects and worry about the syncvar hook fix later?
             NetworkClient.ConnectHost();
 
             // invoke user callbacks AFTER ConnectHost has set .activeHost.
@@ -569,7 +567,6 @@ namespace Mirror
             // where [SyncVar] hooks wouldn't be called for objects spawned in
             // NetworkManager.OnStartServer, because .activeHost was still false.
             //
-            // TODO is there a risk of someone connecting between Listen() and FinishStartHost()?
             OnStartServer();
 
             // call OnStartHost AFTER SetupServer. this way we can use
@@ -676,7 +673,6 @@ namespace Mirror
 
             // UNET invoked OnDisconnected cleanup immediately.
             // let's keep it for now, in case any projects depend on it.
-            // TODO simply remove this in the future.
             OnClientDisconnectInternal();
         }
 
@@ -971,14 +967,12 @@ namespace Mirror
         //     client after the server sends ObjectSpawnStartedMessage to client
         //     in SpawnObserversForConnection. this is only called when the
         //     client joins, so we need to rebuild scene objects manually again
-        // TODO merge this with FinishLoadScene()?
         void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (mode == LoadSceneMode.Additive)
             {
                 if (NetworkServer.active)
                 {
-                    // TODO only respawn the server objects from that scene later!
                     NetworkServer.SpawnObjects();
                     // Debug.Log($"Respawned Server objects after additive scene load: {scene.name}");
                 }
@@ -1184,7 +1178,6 @@ namespace Mirror
         }
 
         // called after successful authentication
-        // TODO do the NetworkServer.OnAuthenticated thing from x branch
         void OnServerAuthenticated(NetworkConnectionToClient conn)
         {
             //Debug.Log("NetworkManager.OnServerAuthenticated");

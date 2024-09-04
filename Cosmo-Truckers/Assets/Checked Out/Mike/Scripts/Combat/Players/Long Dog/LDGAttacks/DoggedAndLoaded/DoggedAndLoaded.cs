@@ -75,7 +75,7 @@ public class DoggedAndLoaded : CombatMove
                     CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), 2, true);
                     break;
                 case 2:
-                    //TODO CHANCE ADD 2 STACKS OF LONGEVITY
+                    CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, 2);
                     CombatManager.Instance.GetCharactersSelected[0].TakeMultiHitHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), 2, true);
                     break;
             }

@@ -55,10 +55,6 @@ namespace Mirror
         public static NetworkConnection connection { get; internal set; }
 
         /// <summary>True if client is ready (= joined world).</summary>
-        // TODO redundant state. point it to .connection.isReady instead (& test)
-        // TODO OR remove NetworkConnection.isReady? unless it's used on server
-        //
-        // TODO maybe ClientState.Connected/Ready/AddedPlayer/etc.?
         //      way better for security if we can check states in callbacks
         public static bool ready;
 
@@ -213,7 +209,6 @@ namespace Mirror
             connection = new NetworkConnectionToServer();
         }
 
-        // TODO why are there two connect host methods?
         // called from NetworkManager.FinishStartHost()
         public static void ConnectHost()
         {
@@ -237,7 +232,6 @@ namespace Mirror
             // setting state to Disconnected would stop OnTransportDisconnected
             // from calling cleanup code because it would think we are already
             // disconnected fully.
-            // TODO move to 'cleanup' code below if safe
             connectState = ConnectState.Disconnecting;
             ready = false;
 
@@ -642,7 +636,6 @@ namespace Mirror
             }
 
             // disallow child NetworkIdentities.
-            // TODO likely not necessary anymore due to the new check in
             // NetworkIdentity.OnValidate.
             NetworkIdentity[] identities = prefab.GetComponentsInChildren<NetworkIdentity>();
             if (identities.Length > 1)
@@ -723,7 +716,6 @@ namespace Mirror
         // Note: newAssetId can not be set on GameObjects that already have an assetId
         // Note: registering with assetId is useful for assetbundles etc. a lot
         //       of people use this.
-        // TODO why do we have one with SpawnDelegate and one with SpawnHandlerDelegate?
         public static void RegisterPrefab(GameObject prefab, uint newAssetId, SpawnDelegate spawnHandler, UnSpawnDelegate unspawnHandler)
         {
             // We need this check here because we don't want a null handler in the lambda expression below
@@ -737,7 +729,6 @@ namespace Mirror
         }
 
         /// <summary>Register a spawnable prefab with custom spawn/unspawn handlers.</summary>
-        // TODO why do we have one with SpawnDelegate and one with SpawnHandlerDelegate?
         public static void RegisterPrefab(GameObject prefab, SpawnDelegate spawnHandler, UnSpawnDelegate unspawnHandler)
         {
             if (prefab == null)
@@ -778,7 +769,6 @@ namespace Mirror
         // Note: newAssetId can not be set on GameObjects that already have an assetId
         // Note: registering with assetId is useful for assetbundles etc. a lot
         //       of people use this.
-        // TODO why do we have one with SpawnDelegate and one with SpawnHandlerDelegate?
         public static void RegisterPrefab(GameObject prefab, uint newAssetId, SpawnHandlerDelegate spawnHandler, UnSpawnDelegate unspawnHandler)
         {
             if (newAssetId == 0)
@@ -850,7 +840,6 @@ namespace Mirror
         }
 
         /// <summary>Register a spawnable prefab with custom spawn/unspawn handlers.</summary>
-        // TODO why do we have one with SpawnDelegate and one with SpawnHandlerDelegate?
         public static void RegisterPrefab(GameObject prefab, SpawnHandlerDelegate spawnHandler, UnSpawnDelegate unspawnHandler)
         {
             if (prefab == null)
@@ -1047,7 +1036,6 @@ namespace Mirror
 
             // Set these before sending the ReadyMessage, otherwise host client
             // will fail in InternalAddPlayer with null readyConnection.
-            // TODO this is redundant. have one source of truth for .ready
             ready = true;
             connection.isReady = true;
 
@@ -1070,7 +1058,6 @@ namespace Mirror
             // is called before OnStartLocalPlayer, hence it's already set.
             // localPlayer.isClient = true;
 
-            // TODO this check might not be necessary
             //if (readyConnection != null)
             if (ready && connection != null)
             {
@@ -1453,7 +1440,6 @@ namespace Mirror
             else if (localPlayer == identity)
             {
                 localPlayer = null;
-                // TODO set .connectionToServer to null for old local player?
                 // since we set it in the above 'if' case too.
             }
         }

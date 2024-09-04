@@ -27,7 +27,6 @@ namespace Mirror
     public abstract class NetworkTransformBase : NetworkBehaviour
     {
         // target transform to sync. can be on a child.
-        // TODO this field is kind of unnecessary since we now support child NetworkBehaviours
         [Header("Target")]
         [Tooltip("The Transform component to sync. May be on on this GameObject, or on a child.")]
         public Transform target;
@@ -160,7 +159,7 @@ namespace Mirror
             // Unity doesn't support setting world scale.
             // OnValidate disables syncScale in world mode.
             // else
-            // target.lossyScale = scale; // TODO
+            // target.lossyScale = scale;
         }
 
         // construct a snapshot of the current state
@@ -243,14 +242,11 @@ namespace Mirror
             // client can only teleport objects that it has authority over.
             if (syncDirection != SyncDirection.ClientToServer) return;
 
-            // TODO what about host mode?
             OnTeleport(destination);
 
             // if a client teleports, we need to broadcast to everyone else too
-            // TODO the teleported client should ignore the rpc though.
             //      otherwise if it already moved again after teleporting,
             //      the rpc would come a little bit later and reset it once.
-            // TODO or not? if client ONLY calls Teleport(pos), the position
             //      would only be set after the rpc. unless the client calls
             //      BOTH Teleport(pos) and target.position=pos
             RpcTeleport(destination);
@@ -265,14 +261,11 @@ namespace Mirror
             // client can only teleport objects that it has authority over.
             if (syncDirection != SyncDirection.ClientToServer) return;
 
-            // TODO what about host mode?
             OnTeleport(destination, rotation);
 
             // if a client teleports, we need to broadcast to everyone else too
-            // TODO the teleported client should ignore the rpc though.
             //      otherwise if it already moved again after teleporting,
             //      the rpc would come a little bit later and reset it once.
-            // TODO or not? if client ONLY calls Teleport(pos), the position
             //      would only be set after the rpc. unless the client calls
             //      BOTH Teleport(pos) and target.position=pos
             RpcTeleport(destination, rotation);
@@ -290,7 +283,6 @@ namespace Mirror
             //       * Some people use client authority with server sided checks
             //         so the server should be able to reset position if needed.
 
-            // TODO what about host mode?
             OnTeleport(destination);
         }
 
@@ -306,7 +298,6 @@ namespace Mirror
             //       * Some people use client authority with server sided checks
             //         so the server should be able to reset position if needed.
 
-            // TODO what about host mode?
             OnTeleport(destination, rotation);
         }
 
@@ -335,7 +326,6 @@ namespace Mirror
             serverSnapshots.Clear();
             clientSnapshots.Clear();
 
-            // TODO
             // what if we still receive a snapshot from before the interpolation?
             // it could easily happen over unreliable.
             // -> maybe add destination as first entry?
@@ -361,7 +351,6 @@ namespace Mirror
             serverSnapshots.Clear();
             clientSnapshots.Clear();
 
-            // TODO
             // what if we still receive a snapshot from before the interpolation?
             // it could easily happen over unreliable.
             // -> maybe add destination as first entry?

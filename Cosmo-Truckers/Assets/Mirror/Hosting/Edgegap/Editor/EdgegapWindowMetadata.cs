@@ -25,7 +25,6 @@ namespace Edgegap.Editor
         /// <summary>
         /// Set to Debug to show more logs. Default `Error`.
         /// - Error level includes "potentially-intentional" (!fatal) errors logged with Debug.Log
-        /// - TODO: Move opt to UI?
         /// </summary>
         public const LogLevel LOG_LEVEL = LogLevel.Error;
         
@@ -166,7 +165,6 @@ namespace Edgegap.Editor
         
 
 
-        //[Obsolete("Hard-coded; not from UI. TODO: Get from UI")] // MIRROR CHANGE: comment this out to avoid import warnings
         public const ApiEnvironment API_ENVIRONMENT = ApiEnvironment.Console;
     }
 }

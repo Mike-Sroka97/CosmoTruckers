@@ -168,7 +168,6 @@ namespace Mirror
                 finally
                 {
                     int endPos = reader.Position;
-                    // TODO: Figure out the correct channel
                     NetworkDiagnostics.OnReceive(message, channelId, endPos - startPos);
                 }
 
@@ -195,7 +194,6 @@ namespace Mirror
             };
 
         // version for handlers without channelId
-        // TODO obsolete this some day to always use the channelId version.
         //      all handlers in this version are wrapped with 1 extra action.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static NetworkMessageDelegate WrapHandler<T, C>(Action<C, T> handler, bool requireAuthentication, bool exceptionsDisconnect)

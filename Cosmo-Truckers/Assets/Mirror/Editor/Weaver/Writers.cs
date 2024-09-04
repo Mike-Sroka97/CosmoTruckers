@@ -35,7 +35,6 @@ namespace Mirror.Weaver
         {
             if (writeFuncs.ContainsKey(dataType))
             {
-                // TODO enable this again later.
                 // Writer has some obsolete functions that were renamed.
                 // Don't want weaver warnings for all of them.
                 //Log.Warning($"Registering a Write method for {dataType.FullName} when one already exists", methodReference);

@@ -5,7 +5,6 @@ namespace Edgegap.Editor.Api.Models.Requests
     /// <summary>
     /// Request model for `PATCH v1/app/{app_name}/version/{version_name}`.
     /// Request model for https://docs.edgegap.com/api/#tag/Applications/operation/app-versions-patch
-    /// TODO: Split "Create" and "Update" into their own, separate models: CTRL+F for "(!)" for more info.
     /// </summary>
     public class UpdateAppVersionRequest
     {
@@ -102,7 +101,6 @@ namespace Edgegap.Editor.Api.Models.Requests
        
         // /// <summary>
         // /// (!) Setting this will trigger a very specific type of game that will affect the AppVersion.
-        // /// TODO: Is leaving as null the same as commenting out?
         // /// </summary>
         // [JsonProperty("session_config")]
         // public SessionConfigData SessionConfig { get; set; }

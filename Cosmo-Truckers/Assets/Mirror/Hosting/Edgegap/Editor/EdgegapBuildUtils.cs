@@ -231,7 +231,6 @@ RUN chmod +x /root/build/ServerBuild
 ENTRYPOINT [ ""/root/build/ServerBuild"", ""-batchmode"", ""-nographics""]
 ";
 
-        /// <summary>Run a Docker cmd with streaming log response. TODO: Plugin to other Docker cmds</summary>
         /// <returns>Throws if logs contain "ERROR"</returns>
         ///
         /// <param name="registryUrl">ex: "registry.edgegap.com"</param>
@@ -245,7 +244,6 @@ ENTRYPOINT [ ""/root/build/ServerBuild"", ""-batchmode"", ""-nographics""]
             string repoPasswordToken,
             Action<string> outputReciever = null, Action<string> errorReciever = null)
         {
-            // TODO: Use --password-stdin for security (!) This is no easy task for child Process | https://stackoverflow.com/q/51489359/6541639
             // (!) Don't use single quotes for cross-platform support (works unexpectedly in `cmd`).
 
             try

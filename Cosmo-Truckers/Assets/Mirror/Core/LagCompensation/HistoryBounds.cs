@@ -119,7 +119,6 @@ namespace Mirror
 
                     // recompute total bounds
                     // instead of iterating N buckets, we iterate N / boundsPerBucket buckets.
-                    // TODO technically we could reuse 'currentBucket' before clearing instead of encapsulating again
                     totalMinMax = minmax;
                     foreach (MinMaxBounds bucket in fullBuckets)
                         totalMinMax.Encapsulate(bucket);

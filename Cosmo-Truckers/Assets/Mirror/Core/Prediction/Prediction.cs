@@ -54,7 +54,6 @@ namespace Mirror
             }
 
             // iterate through the history
-            // TODO this needs to be faster than O(N)
             //      search around that area.
             //      should be O(1) most of the time, unless sampling was off.
             int index = 0; // manually count when iterating. easier than for-int loop.
@@ -101,7 +100,6 @@ namespace Mirror
             where T: PredictedState
         {
             // respect the limit
-            // TODO unit test to check if it respects max size
             if (stateHistory.Count >= stateHistoryLimit)
                 stateHistory.RemoveAt(0);
 

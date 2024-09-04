@@ -101,7 +101,6 @@ namespace Mirror
         public uint netId => netIdentity.netId;
 
         /// <summary>Client's network connection to the server. This is only valid for player objects on the client.</summary>
-        // TODO change to NetworkConnectionToServer, but might cause some breaking
         public NetworkConnection connectionToServer => netIdentity.connectionToServer;
 
         /// <summary>Server's network connection to the client. This is only valid for player objects on the server.</summary>
@@ -139,7 +138,6 @@ namespace Mirror
         protected ulong syncVarDirtyBits;
         // 64 bit mask, tracking up to 64 sync collections.
         // internal for tests, field for faster access (instead of property)
-        // TODO 64 SyncLists are too much. consider smaller mask later.
         internal ulong syncObjectDirtyBits;
 
         // Weaver replaces '[SyncVar] int health' with 'Networkhealth' property.
@@ -476,7 +474,6 @@ namespace Mirror
                 return;
             }
 
-            // TODO change conn type to NetworkConnectionToClient to begin with.
             if (!(conn is NetworkConnectionToClient connToClient))
             {
                 Debug.LogError($"TargetRPC {functionFullName} called on {name} requires a NetworkConnectionToClient but was given {conn.GetType().Name}", gameObject);

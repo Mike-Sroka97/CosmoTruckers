@@ -109,7 +109,6 @@ namespace Mirror
 
         void LoadPassword()
         {
-            // TODO only load once, not for all players?
             // let's avoid static state for now.
 
             // load the password
@@ -205,8 +204,8 @@ namespace Mirror
                     NetworkServer.fullUpdateDuration.average,
                     NetworkServer.earlyUpdateDuration.average,
                     NetworkServer.lateUpdateDuration.average,
-                    0, // TODO ServerTransport.earlyUpdateDuration.average,
-                    0 // TODO ServerTransport.lateUpdateDuration.average
+                    0,
+                    0
                 ));
             }
         }
@@ -310,7 +309,7 @@ namespace Mirror
             GUILayout_TextAndValue("Connections:", $"<b>{connections}</b>");
 
             // uptime
-            GUILayout_TextAndValue("Uptime:", $"<b>{Utils.PrettySeconds(uptime)}</b>"); // TODO
+            GUILayout_TextAndValue("Uptime:", $"<b>{Utils.PrettySeconds(uptime)}</b>");
 
             // tick rate
             // might be lower under heavy load.
@@ -397,7 +396,7 @@ namespace Mirror
             // notice = GUILayout.TextField(notice);
             // if (GUILayout.Button("Send"))
             // {
-            //     // TODO
+            //  
             // }
             // GUILayout.EndVertical();
         }

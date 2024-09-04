@@ -64,7 +64,6 @@ public class PlayerSelectionManager : NetworkBehaviour
             //  NetworkManager.singleton.ServerChangeScene(TutorialSceneName);
             //else
 
-            //TODO  TODO    TODO    TODO    TODO
             //This has been modified for testing the net code in combat
 
             //If this is not the testing network

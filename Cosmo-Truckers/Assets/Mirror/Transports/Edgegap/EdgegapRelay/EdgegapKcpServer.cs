@@ -33,7 +33,6 @@ namespace Edgegap
             Action<int> OnDisconnected,
             Action<int, ErrorCode, string> OnError,
             KcpConfig config)
-              // TODO don't call base. don't listen to local UdpServer at all?
               : base(OnConnected, OnData, OnDisconnected, OnError, config)
         {
             relayReceiveBuffer = new byte[config.Mtu + Protocol.Overhead];
@@ -83,7 +82,6 @@ namespace Edgegap
 
             try
             {
-                // TODO need separate buffer. don't write into result yet. only payload
 
                 if (relaySocket.ReceiveNonBlocking(relayReceiveBuffer, out ArraySegment<byte> content))
                 {

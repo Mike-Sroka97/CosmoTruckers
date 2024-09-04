@@ -68,9 +68,5 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
             return;
 
         selectedGO.SetActive(true);
-
-        //TODO actual code
     }
-
-
 }

@@ -402,7 +402,6 @@ namespace Mirror
             // before calling OnDeserialize so components can use
             // NetworkTime.time and NetworkTime.timeStamp.
 
-            // TODO validation?
             // maybe we shouldn't allow timeline to deviate more than a certain %.
             // for now, this is only used for client authority movement.
 
@@ -434,7 +433,6 @@ namespace Mirror
             connections.Remove(connectionId);
 
         // called by LocalClient to add itself. don't call directly.
-        // TODO consider internal setter instead?
         internal static void SetLocalConnection(LocalConnectionToClient conn)
         {
             if (localConnection != null)
@@ -521,7 +519,6 @@ namespace Mirror
         }
 
         /// <summary>Send a message to all clients which have joined the world (are ready).</summary>
-        // TODO put rpcs into NetworkServer.Update WorldState packet, then finally remove SendToReady!
         public static void SendToReady<T>(T message, int channelId = Channels.Reliable)
             where T : struct, NetworkMessage
         {
@@ -571,7 +568,6 @@ namespace Mirror
         }
 
         /// <summary>Send a message to only clients which are ready with option to include the owner of the object identity</summary>
-        // TODO obsolete this later. it's not used anymore
         public static void SendToReadyObservers<T>(NetworkIdentity identity, T message, bool includeOwner = true, int channelId = Channels.Reliable)
             where T : struct, NetworkMessage
         {
@@ -613,7 +609,6 @@ namespace Mirror
         }
 
         /// <summary>Send a message to only clients which are ready including the owner of the NetworkIdentity</summary>
-        // TODO obsolete this later. it's not used anymore
         public static void SendToReadyObservers<T>(NetworkIdentity identity, T message, int channelId)
             where T : struct, NetworkMessage
         {
@@ -869,7 +864,6 @@ namespace Mirror
 
         // message handlers ////////////////////////////////////////////////////
         /// <summary>Register a handler for message type T. Most should require authentication.</summary>
-        // TODO obsolete this some day to always use the channelId version.
         //      all handlers in this version are wrapped with 1 extra action.
         public static void RegisterHandler<T>(Action<NetworkConnectionToClient, T> handler, bool requireAuthentication = true)
             where T : struct, NetworkMessage
@@ -983,7 +977,6 @@ namespace Mirror
                 // -> it has checks to only run once.
 
                 // call OnDisconnected unless local player in host mod
-                // TODO unnecessary check?
                 if (conn.connectionId != NetworkConnection.LocalConnectionId)
                     OnTransportDisconnected(conn.connectionId);
             }
@@ -1187,7 +1180,7 @@ namespace Mirror
             foreach (NetworkIdentity identity in spawned.Values)
             {
                 // try with far away ones in ummorpg!
-                if (identity.gameObject.activeSelf) //TODO this is different
+                if (identity.gameObject.activeSelf)
                 {
                     //Debug.Log($"Sending spawn message for current server objects name:{identity.name} netId:{identity.netId} sceneId:{identity.sceneId:X}");
 
@@ -1840,7 +1833,6 @@ namespace Mirror
             // -> which would throw 'can't modify while iterating' errors
             // => see also: https://github.com/vis2k/Mirror/issues/2739
             // (copy nonalloc)
-            // TODO remove this when we move to 'lite' transports with only
             //      socket send/recv later.
             connectionsCopy.Clear();
             connections.Values.CopyTo(connectionsCopy);
@@ -1876,8 +1868,6 @@ namespace Mirror
                 connection.Update();
             }
 
-            // TODO this is way too slow because we iterate ALL spawned :/
-            // TODO this is way too complicated :/
             // to understand what this tries to prevent, consider this example:
             //   monster has health=100
             //   we change health=200, dirty bit is set
@@ -1898,7 +1888,6 @@ namespace Mirror
             //
             // this was moved to NetworkIdentity.AddObserver!
             // same result, but no more O(N) loop in here!
-            // TODO remove this comment after moving spawning into Broadcast()!
         }
 
         // update //////////////////////////////////////////////////////////////

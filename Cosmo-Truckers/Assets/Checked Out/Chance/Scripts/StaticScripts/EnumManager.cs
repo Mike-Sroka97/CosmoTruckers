@@ -24,12 +24,10 @@ public class EnumManager
         RestNode, //Reset players HP
         BossNode, //Same as combat node
 
-        //TODO
         NCNode_PlayerDependent,
         NCNode_PartyVoting,
         NCNode_PartyDistribution,
         NCNode_Auto
-
     }
 
     public enum NCNodeValue

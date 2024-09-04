@@ -44,8 +44,6 @@ public class RecklessConductorAhoy : NCNodePopUpOptions
                 else
                     player.TakeDamage(player.Health / 2, true);
             }
-
-            CombatData.Instance.skipNCNode = true;
         }
 
         StartCoroutine(EndWait(taken));

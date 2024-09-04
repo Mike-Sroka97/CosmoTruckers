@@ -129,7 +129,6 @@ namespace Mirror.Examples.CharacterSelection
             }
         }
 
-        // TODO: Turning works while airborne...feature?
         void HandleTurning()
         {
             // Q and E cancel each other out, reducing the turn to zero.
@@ -184,7 +183,6 @@ namespace Mirror.Examples.CharacterSelection
                 jumpSpeed = Physics.gravity.y * Time.deltaTime;
         }
 
-        // TODO: Directional input works while airborne...feature?
         void HandleMove()
         {
             // Capture inputs

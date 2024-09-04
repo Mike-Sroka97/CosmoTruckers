@@ -17,7 +17,6 @@ namespace Mirror
         public virtual string address => Transport.active.ServerGetClientAddress(connectionId);
 
         /// <summary>NetworkIdentities that this connection can see</summary>
-        // TODO move to server's NetworkConnectionToClient?
         public readonly HashSet<NetworkIdentity> observing = new HashSet<NetworkIdentity>();
 
         // unbatcher
@@ -26,7 +25,6 @@ namespace Mirror
         // server runs a time snapshot interpolation for each client's local time.
         // this is necessary for client auth movement to still be smooth on the
         // server for host mode.
-        // TODO move them along server's timeline in the future.
         //      perhaps with an offset.
         //      for now, keep compatibility by manually constructing a timeline.
         ExponentialMovingAverage driftEma;
@@ -125,7 +123,6 @@ namespace Mirror
             // localTime (double) instead of Time.time for accuracy over days
             if (NetworkTime.localTime >= lastPingTime + NetworkTime.PingInterval)
             {
-                // TODO it would be safer for the server to store the last N
                 // messages' timestamp and only send a message number.
                 // This way client's can't just modify the timestamp.
                 // predictedTime parameter is 0 because the server doesn't predict.

@@ -136,8 +136,7 @@ namespace Mirror
             {
                 // now that we know where the other player was at that time,
                 // we can see if the hit point was within tolerance of it.
-                // TODO consider rotations???
-                // TODO consider original collider shape??
+
                 Bounds bounds = new Bounds(capture.position, capture.size);
                 nearest = bounds.ClosestPoint(hitPoint);
                 distance = Vector3.Distance(nearest, hitPoint);
@@ -172,8 +171,6 @@ namespace Mirror
             if (Sample(viewer, out Capture3D capture))
             {
                 // instantiate a real physics collider on demand.
-                // TODO rotation??
-                // TODO different collier types??
                 GameObject temp = new GameObject("LagCompensatorTest");
                 temp.transform.position = capture.position;
                 BoxCollider tempCollider = temp.AddComponent<BoxCollider>();

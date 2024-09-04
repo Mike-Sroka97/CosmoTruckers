@@ -247,7 +247,6 @@ namespace kcp2k
 
         protected virtual void OnGUIStatistics()
         {
-            // TODO not thread safe
             /*
             GUILayout.BeginArea(new Rect(5, 110, 300, 300));
 
@@ -292,7 +291,6 @@ namespace kcp2k
 
         protected virtual void OnLogStatistics()
         {
-            // TODO not thread safe
             /*
             if (ServerActive())
             {

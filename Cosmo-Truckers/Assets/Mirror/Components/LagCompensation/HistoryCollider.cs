@@ -60,7 +60,6 @@ namespace Mirror
         {
             // grab current collider bounds
             // this is in world space coordinates, and axis aligned
-            // TODO double check
             Bounds bounds = actualCollider.bounds;
 
             // insert into history
@@ -89,10 +88,9 @@ namespace Mirror
 
             // project world space bounds to collider's local space
             boundsCollider.center = boundsCollider.transform.InverseTransformPoint(total.center);
-            boundsCollider.size   = total.size; // TODO projection?
+            boundsCollider.size   = total.size;
         }
 
-        // TODO runtime drawing for debugging?
         protected virtual void OnDrawGizmos()
         {
             // draw total bounds

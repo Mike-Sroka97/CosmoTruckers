@@ -63,7 +63,6 @@ namespace Edgegap.Editor.Api.Models.Results
 
             try
             {
-                // TODO: This can be read async with `await`, but can't do this in a Constructor.
                 //       Instead, make a factory builder Task =>
                 this.Json = httpResponse.Content.ReadAsStringAsync().Result;
 

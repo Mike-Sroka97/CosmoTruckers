@@ -57,10 +57,10 @@ public class INAcombat : MonoBehaviour
             if (EnemyManager.Instance.Enemies.Count <= 0)
                 EnemyManager.Instance.InitializeEnemys();
         }
-        else
-        {
-            StartCoroutine(MoveINADungeon(true));
-        }
+        //else
+        //{
+        //    StartCoroutine(MoveINADungeon(true));
+        //}
     }
 
     private void OnDisable()
@@ -68,83 +68,83 @@ public class INAcombat : MonoBehaviour
         AttackStarted.RemoveAllListeners();
     }
 
-    public void CloseDungeonPage()
-    {
-        StartCoroutine(MoveINADungeon(false));
-    }
+    //public void CloseDungeonPage()
+    //{
+    //    StartCoroutine(MoveINADungeon(false));
+    //}
 
-    public void OpenDungeonPage()
-    {
-        StartCoroutine(MoveINADungeon(true));
-    }
+    //public void OpenDungeonPage()
+    //{
+    //    StartCoroutine(MoveINADungeon(true));
+    //}
 
-    IEnumerator MoveINADungeon(bool moveUp)
-    {
-        countDownTimer.enabled = false;
-        timer.enabled = false;
+    //IEnumerator MoveINADungeon(bool moveUp)
+    //{
+    //    countDownTimer.enabled = false;
+    //    timer.enabled = false;
 
-        if (moveUp)
-        {
-            face.gameObject.SetActive(false);
+    //    if (moveUp)
+    //    {
+    //        face.gameObject.SetActive(false);
 
-            //Wait a frame to fix renderer threading issues
-            yield return null;
+    //        //Wait a frame to fix renderer threading issues
+    //        yield return null;
 
-            //Move up
-            while (transform.position.y < goalPosition.y)
-            {
-                transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
-                yield return null;
-            }
+    //        //Move up
+    //        while (transform.position.y < goalPosition.y)
+    //        {
+    //            transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+    //            yield return null;
+    //        }
 
-            transform.localPosition = goalPosition;
+    //        transform.localPosition = goalPosition;
 
-            yield return new WaitForSeconds(faceWaitTime);
+    //        yield return new WaitForSeconds(faceWaitTime);
 
-            //OpenScreen
-            while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
-            {
-                topMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
-                bottomMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+    //        //OpenScreen
+    //        while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
+    //        {
+    //            topMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+    //            bottomMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
 
-                yield return null;
-            }
+    //            yield return null;
+    //        }
 
-            topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
-            bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+    //        topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+    //        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
 
-            DungeonGen.SetActive(true);
-            FindObjectOfType<DungeonGen>().RegenMap();
-        }
-        else
-        {
-            face.gameObject.SetActive(false);
+    //        DungeonGen.SetActive(true);
+    //        FindObjectOfType<DungeonGen>().RegenMap();
+    //    }
+    //    else
+    //    {
+    //        face.gameObject.SetActive(false);
 
-            DungeonGen.SetActive(false);
+    //        DungeonGen.SetActive(false);
 
-            //CloseScreen
-            while (topMask.localPosition.y > topMaskStartingY)
-            {
-                topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
-                bottomMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+    //        //CloseScreen
+    //        while (topMask.localPosition.y > topMaskStartingY)
+    //        {
+    //            topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+    //            bottomMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
 
-                yield return null;
-            }
+    //            yield return null;
+    //        }
 
-            topMask.localPosition = new Vector3(0, topMaskStartingY, 0);
-            bottomMask.localPosition = new Vector3(0, bottomMaskStartingY, 0);
+    //        topMask.localPosition = new Vector3(0, topMaskStartingY, 0);
+    //        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY, 0);
 
-            //Move Down
-            while (transform.position.y > startingPosition.y)
-            {
-                transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
-                yield return null;
-            }
-            transform.localPosition = startingPosition;
-        }
+    //        //Move Down
+    //        while (transform.position.y > startingPosition.y)
+    //        {
+    //            transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+    //            yield return null;
+    //        }
+    //        transform.localPosition = startingPosition;
+    //    }
 
-        countDownTimer.enabled = false;
-    }
+    //    countDownTimer.enabled = false;
+    //}
 
     public IEnumerator MoveINACombat(bool moveUp)
     {

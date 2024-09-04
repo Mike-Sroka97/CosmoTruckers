@@ -102,7 +102,6 @@ namespace Mirror.Examples.AdditiveLevels
             velocity = Vector3Int.FloorToInt(characterController.velocity);
         }
 
-        // TODO: Turning works while airborne...feature?
         void HandleTurning()
         {
             // Q and E cancel each other out, reducing the turn to zero.
@@ -157,7 +156,6 @@ namespace Mirror.Examples.AdditiveLevels
                 jumpSpeed = Physics.gravity.y * Time.deltaTime;
         }
 
-        // TODO: Directional input works while airborne...feature?
         void HandleMove()
         {
             // Capture inputs

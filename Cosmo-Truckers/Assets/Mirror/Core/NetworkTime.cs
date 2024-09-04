@@ -115,7 +115,6 @@ namespace Mirror
 
         /// <summary>Clock difference in seconds between the client and the server. Always 0 on server.</summary>
         // original implementation used 'client - server' time. keep it this way.
-        // TODO obsolete later. people shouldn't worry about this.
         public static double offset => localTime - time;
 
         /// <summary>Round trip time (in seconds) that it takes a message to go client->server->client.</summary>

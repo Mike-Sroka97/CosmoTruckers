@@ -75,10 +75,8 @@ namespace Mirror.Examples.BilliardsPredicted
         // this way we can latency free yet cheat safe movement.
         // this should include a certain tolerance so players aren't hard corrected
         // for their local movement all the time.
-        // TODO this should be on some kind of base class for reuse, but perhaps independent of parameters?
         bool IsValidMove(Vector3 force) => true;
 
-        // TODO send over unreliable with ack, notify, etc. later
         [Command]
         void CmdApplyForce(Vector3 force, double predictedTime)
         {
@@ -104,7 +102,7 @@ namespace Mirror.Examples.BilliardsPredicted
             }
             else if (delta > 0.010)
             {
-                // TODO consider buffering inputs which are ahead, apply next frame
+
                 Debug.LogWarning($"Cmd predictedTime was {(delta*1000):F0}ms ahead of the server time. This could occasionally happen if the time prediction is off. If it happens consistently, check that unreliable NetworkTime and reliable [Command]s have the same latency. If they are off, this will cause heavy jitter. If reliable & unreliable latency are similar and this still happens a lot, consider buffering inputs for the next frame.");
             }
             else

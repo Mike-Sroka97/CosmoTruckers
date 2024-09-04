@@ -22,7 +22,6 @@ namespace Mirror
         public object authenticationData;
 
         /// <summary>A server connection is ready after joining the game world.</summary>
-        // TODO move this to ConnectionToClient so the flag only lives on server
         // connections? clients could use NetworkClient.ready to avoid redundant
         // state.
         public bool isReady;
@@ -73,7 +72,6 @@ namespace Mirror
             connectionId = networkConnectionId;
         }
 
-        // TODO if we only have Reliable/Unreliable, then we could initialize
         // two batches and avoid this code
         protected Batcher GetBatchForChannelId(int channelId)
         {

@@ -124,8 +124,6 @@ namespace Mirror
         }
 
         // get the next batch which is available for sending (if any).
-        // TODO safely get & return a batch instead of copying to writer?
-        // TODO could return pooled writer & use GetBatch in a 'using' statement!
         public bool GetBatch(NetworkWriter writer)
         {
             // get first batch from queue (if any)

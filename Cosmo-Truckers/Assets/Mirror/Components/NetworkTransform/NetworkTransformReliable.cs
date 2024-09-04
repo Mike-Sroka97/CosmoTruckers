@@ -174,7 +174,6 @@ namespace Mirror
             // always broadcast the latest known snapshot so other clients can
             // interpolate immediately instead of catching up too
 
-            // TODO dirty mask? [compression is very good w/o it already]
             // each vector's component is delta compressed.
             // an unchanged component would still require 1 byte.
             // let's use a dirty bit mask to filter those out as well.

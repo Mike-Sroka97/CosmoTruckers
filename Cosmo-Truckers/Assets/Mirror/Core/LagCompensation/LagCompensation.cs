@@ -62,7 +62,6 @@ namespace Mirror
             }
 
             // iterate through the history
-            // TODO faster version: guess start index by how many 'intervals' we are behind.
             //      search around that area.
             //      should be O(1) most of the time, unless sampling was off.
             KeyValuePair<double, T> prev = new KeyValuePair<double, T>();

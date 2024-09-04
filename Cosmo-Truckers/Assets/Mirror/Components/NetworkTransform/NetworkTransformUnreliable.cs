@@ -106,7 +106,6 @@ namespace Mirror
             // since host does not send anything to update the server, any client
             // authoritative movement done by the host will have to be broadcasted
             // here by checking IsClientWithAuthority.
-            // TODO send same time that NetworkServer sends time snapshot?
             CheckLastSendTime();
 
             if (sendIntervalCounter == sendIntervalMultiplier && // same interval as time interpolation!
