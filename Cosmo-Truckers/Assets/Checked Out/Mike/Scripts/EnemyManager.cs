@@ -85,7 +85,6 @@ public class EnemyManager : MonoBehaviour
         if (CombatData.Instance.PlayersToSpawn.Count > 0)
         {
             PlayersToSpawn.Clear();
-            //TODO ?? PlayerSummonsToSpawn.Clear();
             foreach (var player in CombatData.Instance.PlayersToSpawn)
                 PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }
@@ -128,7 +127,6 @@ public class EnemyManager : MonoBehaviour
                 foreach (SpriteRenderer renderer in spriteRenderers)
                     renderer.sortingOrder += enemyCount;
 
-                //TODO Figure out enemy spacing
                 for (int i = enemyCount; i < prefab.GetComponent<Character>().GetSpaceTaken + enemyCount; i++)
                 {
                     if (prefab.GetComponent<Enemy>().TakesCombatSpot)

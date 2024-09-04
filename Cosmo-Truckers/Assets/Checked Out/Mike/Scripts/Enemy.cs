@@ -210,7 +210,6 @@ public class Enemy : Character
             damageTextStartPosition = damageText.transform.localPosition;
             healingTextStartPosition = healingText.transform.localPosition;
 
-            //COLE TODO replace color with SFX
             if (damage)
             {
                 damageText.text = text;
@@ -231,7 +230,6 @@ public class Enemy : Character
                 }
             }
 
-            //COLE TODO replace color with SFX
             else if (!damage)
             {
                 healingText.text = text;
