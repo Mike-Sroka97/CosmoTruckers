@@ -221,6 +221,30 @@ public class DialogManager : MonoBehaviour
         actorDirection.position = newPosition.position;
     }
 
+    /// <summary>
+    /// Set the Dialog Box Offset's size
+    /// </summary>
+    /// <param name="maxSize"></param>
+    public void SetDialogBoxOffsetMaxSize(float dialogBoxMaxSize = 1f, float dialogBoxOffsetMaxSize = 0.75f)
+    {
+        // Dialog Box
+        dialogBox.localScale = new Vector3(dialogBoxMaxSize, dialogBoxMaxSize, dialogBoxMaxSize);
+        
+        // Dialog Box Offset
+        dialogBox.GetChild(0).localScale = new Vector3(dialogBoxOffsetMaxSize, dialogBoxOffsetMaxSize, dialogBoxOffsetMaxSize);
+    }
+
+    /// <summary>
+    /// Animation process of the Dialog Box 
+    /// </summary>
+    /// <param name="timeToAnimate"></param>
+    /// <param name="minVal"></param>
+    /// <param name="maxVal"></param>
+    /// <param name="grow"></param>
+    /// <param name="actDirection"></param>
+    /// <param name="actPosition"></param>
+    /// <param name="firstTimeDialog"></param>
+    /// <returns></returns>
     private IEnumerator AnimateUIToSize(float timeToAnimate = 0.25f, float minVal = 0.1f, float maxVal = 1f, bool grow = true, 
         bool actDirection = false, Transform actPosition = null, bool firstTimeDialog = false)
     {

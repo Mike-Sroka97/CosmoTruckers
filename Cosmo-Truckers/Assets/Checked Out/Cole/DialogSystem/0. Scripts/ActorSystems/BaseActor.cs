@@ -44,9 +44,7 @@ public class BaseActor : MonoBehaviour
         SetSpriteSorting(sortingLayerOrder); 
 
         if (!isFacingRight)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z); 
-        }
+            transform.eulerAngles = new Vector3(transform.rotation.x, 180f, transform.rotation.z);
 
         myAnimator = GetComponentInChildren<Animator>();
     }

@@ -7,10 +7,13 @@ using UnityEngine;
 public class D1OlarisCutscene : CutsceneController
 {
     [SerializeField] BaseActor[] playerActors;
-
+    [SerializeField] float dialogBoxOffsetMaxSize = 1f; 
 
     protected override IEnumerator Buffer()
     {
+        // Set the dialog box's max size to be 1 instead of 0.75
+        DialogManager.Instance.SetDialogBoxOffsetMaxSize(dialogBoxOffsetMaxSize: dialogBoxOffsetMaxSize); 
+
         // Set the actors at the beginning so when the vignette fades they are there
         // We want the cutscene to be interactable, so set isCutscene to false, even though it is a "cutscene"
         DialogManager.Instance.SetPlayerActors(GetActorsFromCurrentPlayers(), isCutscene: false);
