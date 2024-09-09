@@ -43,6 +43,9 @@ public class CombatManager : MonoBehaviour
     public bool PauseAttack = false;
 
     public GameObject IntentionChange;
+    public Vector3 LastCameraPosition;
+    public Transform DungeonCharacterInstance;
+    public DNode CurrentNode;
 
     bool inTrashEndMove = false;
     INAcombat INA;

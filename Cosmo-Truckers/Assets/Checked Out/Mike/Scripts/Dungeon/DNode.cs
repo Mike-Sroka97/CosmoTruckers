@@ -83,20 +83,19 @@ public class DNode : MonoBehaviour
 
     public void Interact()
     {
-        if(Active)
+        if (NodeData.GetComponent<DungeonCombatNode>() && !NodeData.GetComponent<DungeonCombatNode>().CombatDone)
+        {
+            NodeData.GetComponent<DungeonCombatNode>().StartCombat(this);
+        }
+        else if(NodeData.GetComponent<DungeonEventNode>())
+        {
+
+        }
+        else if (Active)
         {
             CleanupLineRenderers();
             MoveToNode();
             return;
-        }
-
-        if (NodeData.GetComponent<DungeonCombatNode>())
-        {
-
-        }
-        if(NodeData.GetComponent<DungeonEventNode>())
-        {
-
         }
     }
 
@@ -175,7 +174,8 @@ public class DNode : MonoBehaviour
             SelectableNodes.Add(currentCombatNode);
         }
 
-        SetupLineRendererers();
+        if(!NodeData.GetComponent<DungeonCombatNode>())
+            SetupLineRendererers();
     }
 
     public void LeavingNodeCleanup()

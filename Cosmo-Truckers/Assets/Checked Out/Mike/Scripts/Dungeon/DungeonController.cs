@@ -7,7 +7,6 @@ public abstract class DungeonController : MonoBehaviour
 {
     [SerializeField] protected bool debugging;
     [SerializeField] protected GameObject[] nonCombatNodes;
-    [SerializeField] protected GameObject[] combatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
 
@@ -16,6 +15,7 @@ public abstract class DungeonController : MonoBehaviour
     public float maxCameraX;
     public float minCameraY;
     public float maxCameraY;
+    public Transform CombatCameraPosition;
 
     protected bool enableLeaderOnFade = true;
     protected List<GameObject> negativeNodes;
@@ -112,7 +112,7 @@ public abstract class DungeonController : MonoBehaviour
                     node.transform.Find("Sprite").transform.Rotate(new Vector3(180, 0, 0));
 
 
-            //determine combat node attachement stuffs
+            //determine combat node attachment stuffs
             foreach (DNode node in nodes)
             {
                 node.Group = i;
