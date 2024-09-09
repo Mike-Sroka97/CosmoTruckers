@@ -52,7 +52,7 @@ public class LostDulaxy : NCNodePopUpOptions
     void YouGetANewSummon(PlayerCharacter player)
     {
         currentPlayer.text = $"{player.CharacterName} has a new Dulaxy pet";
-        //TODO set this up
+        
         EnemyManager.Instance.UpdatePlayerSummons(miniDulaxy, player);
     }
 
