@@ -193,7 +193,6 @@ public class CombatManager : MonoBehaviour
         }
         else
         {
-            //TODO Finish at some point
             switch (attack.TargetingType)
             {
                 #region No Target

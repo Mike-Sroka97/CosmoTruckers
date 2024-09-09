@@ -369,8 +369,6 @@ public class MainMenu : MonoBehaviour
         Confirm = -1;
     }
 
-    //TODO 
-    //Will need to refactor this area, I hate the way it runs
     private bool CheckForChanges()
     {
         bool value = false;
@@ -382,7 +380,6 @@ public class MainMenu : MonoBehaviour
 
         print(PlayerPrefs.GetInt("WindowedMode"));
 
-        //TODO find a better way
         if (PlayerPrefs.GetInt("WindowedMode", 0) == 0 && WindowedToggle.isOn ||
             PlayerPrefs.GetInt("WindowedMode", 0) == 1 && !WindowedToggle.isOn)
             value = true;
