@@ -11,7 +11,6 @@ public class INAcombat : MonoBehaviour
 
     [Space(20)]
     [Header("Screen Variables")]
-    [SerializeField] GameObject DungeonGen;
     [SerializeField] float screenOpenSpeed;
     [SerializeField] float screenGoalDistance;
     [SerializeField] Transform aboveMask;
@@ -52,8 +51,6 @@ public class INAcombat : MonoBehaviour
 
         if (CombatData.Instance.TESTING)
         {
-            DungeonGen.SetActive(false);
-
             if (EnemyManager.Instance.Enemies.Count <= 0)
                 EnemyManager.Instance.InitializeEnemys();
         }

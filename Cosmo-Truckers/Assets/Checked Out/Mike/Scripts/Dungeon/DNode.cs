@@ -125,7 +125,7 @@ public class DNode : MonoBehaviour
         SetupLineRendererers();
     }
 
-    protected virtual void SetupLineRendererers()
+    public virtual void SetupLineRendererers()
     {
         currentLine = transform.Find("LineRenderer").GetComponent<LineRenderer>();
 

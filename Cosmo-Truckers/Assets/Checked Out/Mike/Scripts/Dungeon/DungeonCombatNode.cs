@@ -17,6 +17,7 @@ public class DungeonCombatNode : MonoBehaviour
         CombatManager.Instance.LastCameraPosition = CameraController.Instance.transform.position;
         CombatManager.Instance.DungeonCharacterInstance = CameraController.Instance.Leader;
         CombatManager.Instance.CurrentNode = currentNode;
+        CombatManager.Instance.InCombat = true;
 
         //Setup combat refs
         CameraController.Instance.Leader = null;

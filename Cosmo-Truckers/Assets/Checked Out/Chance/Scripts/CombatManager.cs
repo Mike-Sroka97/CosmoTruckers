@@ -46,6 +46,7 @@ public class CombatManager : MonoBehaviour
     public Vector3 LastCameraPosition;
     public Transform DungeonCharacterInstance;
     public DNode CurrentNode;
+    public bool InCombat;
 
     bool inTrashEndMove = false;
     INAcombat INA;

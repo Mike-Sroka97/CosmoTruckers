@@ -89,7 +89,6 @@ public class EnemyManager : MonoBehaviour
                 PlayersToSpawn.Add(player.GetPlayer.CombatPlayerSpawn);
         }
 
-
         PlayerCombatSpots = new Character[8];
 
         SetPlayerSpawns();
@@ -107,7 +106,6 @@ public class EnemyManager : MonoBehaviour
             {
                 PlayerSummons.Add(player.GetComponent<PlayerCharacterSummon>());
             }
-
 
         PlayerVesselManager.Instance.Initialize();
     }

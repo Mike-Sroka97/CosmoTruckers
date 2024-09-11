@@ -225,25 +225,27 @@ public class TurnOrder : MonoBehaviour
     //everything for combat that will be on a delay
     IEnumerator EndCombatDelay()
     {
-        yield return new WaitForSeconds(2.0f);
-
-        //If testing the game in real play mode
-        if (NetworkManager.singleton)
+        if (CombatManager.Instance.InCombat)
         {
-            //TODO IF DUNGEONCONTROLLER.CURRENTNODE == BOSS
-            //if (CombatData.Instance.lastNode)
-            //{
-            //    //Currently only dungeon map
-            //    //Will need to change scene based on the last galaxy that the player was in
-            //    //Also need to mark this current dungeon as compleated if nessisarry
-            //    PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
-            //    NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
-            //}
-        }
+            yield return new WaitForSeconds(2.0f);
 
-        //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
-        if (CombatData.Instance)
-        {
+            //If testing the game in real play mode
+            if (NetworkManager.singleton)
+            {
+                //TODO IF DUNGEONCONTROLLER.CURRENTNODE == BOSS
+                //if (CombatData.Instance.lastNode)
+                //{
+                //    //Currently only dungeon map
+                //    //Will need to change scene based on the last galaxy that the player was in
+                //    //Also need to mark this current dungeon as compleated if nessisarry
+                //    PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
+                //    NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
+                //}
+            }
+
+            //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
+            if (CombatData.Instance)
+            {
                 foreach (var character in FindObjectsOfType<PlayerCharacter>())
                 {
                     EnemyManager.Instance.SavePlayerData(character);
@@ -253,18 +255,26 @@ public class TurnOrder : MonoBehaviour
                 //No change scene
                 //Bring up INA and redraw the dungeon
                 combatOver = false;
-                //FindObjectOfType<INAcombat>().OpenDungeonPage(); //TODO CHANCE DUNGEON PLEASE GOD CHANGE THIS TO FLIPPY FLOPPY
 
                 //TODO
                 //Reset sheild and Mana
                 CombatData.Instance.EnemySummonsToSpawn.Clear();
-        }
-        else
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
 
-        endCombatText.text = "";
+                //FindObjectOfType<INAcombat>().OpenDungeonPage(); //TODO CHANCE DUNGEON PLEASE GOD CHANGE THIS TO FLIPPY FLOPPY
+                CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
+                CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
+                CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
+                CombatManager.Instance.CurrentNode.Active = true;
+                CombatManager.Instance.CurrentNode.SetupLineRendererers();
+                CombatManager.Instance.InCombat = false;
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+
+            endCombatText.text = "";
+        }
     }
 
     private void DetermineCombatEnd()
