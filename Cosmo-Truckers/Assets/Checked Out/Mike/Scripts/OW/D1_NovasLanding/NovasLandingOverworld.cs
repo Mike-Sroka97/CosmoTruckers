@@ -177,7 +177,9 @@ public class NovasLandingOverworld : Overworld
             firstTimeSetup = false;
 
             // Get the previous node and set the current node to it
-            OverworldNode startNode = GameObject.Find(data.PreviousNode).GetComponent<OverworldNode>();
+            OverworldNode startNode = null;
+            if (GameObject.Find(data.PreviousNode))
+                startNode = GameObject.Find(data.PreviousNode).GetComponent<OverworldNode>();
             CurrentNode = startNode != null ? startNode : CurrentNode;
 
             // Set the player to the position of the previous node
@@ -318,7 +320,7 @@ public class NovasLandingOverworld : Overworld
 
     public void SaveOlarisPrelude(OverworldNode node)
     {
-        olarisHomeNode.DeactiveNode();
+        olarisHomeNode.DeactivateNode();
         data.PreludeOlarisTalkedTo = true;
         data.PreviousNode = node.name;
         data.SaveLevelData();
@@ -327,7 +329,7 @@ public class NovasLandingOverworld : Overworld
 
     public void SaveLoonaDungeonOne()
     {
-        loonaNode.DeactiveNode();
+        loonaNode.DeactivateNode();
         data.LoonaTalkedToPostDungeonOne = true;
         data.SaveLevelData();
         OverworldInitialize();
@@ -335,7 +337,7 @@ public class NovasLandingOverworld : Overworld
 
     public void SaveKleptorDungeonTwo()
     {
-        kleptorNode.DeactiveNode();
+        kleptorNode.DeactivateNode();
         data.KleptorTalkedToPostDungeonTwo = true;
         data.SaveLevelData();
         OverworldInitialize();
@@ -343,7 +345,7 @@ public class NovasLandingOverworld : Overworld
 
     public void SaveLoonaKleptorDungeonThree()
     {
-        kleptorLoonaNode.DeactiveNode();
+        kleptorLoonaNode.DeactivateNode();
         data.LoonaTalkedToPostDungeonThree = true;
         data.SaveLevelData();
         OverworldInitialize();
@@ -353,7 +355,7 @@ public class NovasLandingOverworld : Overworld
     {
         smallDogDestinationNode.Active = true;
         smallDogNode.DetermineState();
-        smallDogNode.DeactiveNode();
+        smallDogNode.DeactivateNode();
         data.SmallDogStretched = true;
         data.SaveLevelData();
         OverworldInitialize();
@@ -368,7 +370,7 @@ public class NovasLandingOverworld : Overworld
     {
         yedNodeToEnable.Active = true;
         yedNodeToEnable.DetermineState();
-        yedNode.DeactiveNode();
+        yedNode.DeactivateNode();
 
         data.PreludeYedTalkedTo = true;
         data.SaveLevelData();
@@ -382,7 +384,7 @@ public class NovasLandingOverworld : Overworld
 
     IEnumerator KlippsolRockCoroutine()
     {
-        CurrentNode.DeactiveNode();
+        CurrentNode.DeactivateNode();
         klipsolRockReceiver.sprite = klipsolRockInserted;
 
         OverworldCharacter character = FindObjectOfType<OverworldCharacter>();

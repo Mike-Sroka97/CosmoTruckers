@@ -88,6 +88,7 @@ public class OverworldNode : MonoBehaviour
             foreach(OverworldCharacter character in FindObjectsOfType<OverworldCharacter>())
                 character.enabled = false;
 
+            FindObjectOfType<Overworld>().LoadingScene = true;
             StartCoroutine(CameraController.Instance.OwCharacterActionSelect(sceneToLoad, MapEventInteraction));
         }
         else { MapEventInteraction?.Invoke();}
@@ -100,7 +101,7 @@ public class OverworldNode : MonoBehaviour
         DetermineState();
     }
 
-    public void DeactiveNode()
+    public void DeactivateNode()
     {
         Interactive = false;
         LookAtMeSprite.SetActive(false);
