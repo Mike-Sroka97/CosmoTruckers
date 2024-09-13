@@ -40,7 +40,8 @@ public abstract class DungeonController : MonoBehaviour
 
     private void SetStartNode()
     {
-        CurrentNode = transform.Find("Constant Nodes/Start Node").GetComponent<DNode>();
+        if(!CurrentNode)
+            CurrentNode = transform.Find("Constant Nodes/Start Node").GetComponent<DNode>();
     }
 
     protected abstract void DungeonInitialize();

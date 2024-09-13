@@ -87,6 +87,10 @@ public class DNode : MonoBehaviour
         {
             NodeData.GetComponent<DungeonCombatNode>().StartCombat(this);
         }
+        else if(NodeData.GetComponent<DungeonCombatNode>() && NodeData.GetComponent<DungeonCombatNode>().Boss && NodeData.GetComponent<DungeonCombatNode>().CombatDone)
+        {
+            StartCoroutine(CameraController.Instance.DungeonEnd(NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
+        }
         else if(NodeData.GetComponent<DungeonEventNode>())
         {
 

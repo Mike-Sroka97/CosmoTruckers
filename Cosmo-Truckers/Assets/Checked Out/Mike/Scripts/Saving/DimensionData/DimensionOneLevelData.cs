@@ -24,7 +24,6 @@ public class DimensionOneLevelData : DimensionData
     {
         DimensionOneLevelData loadData = SaveManager.LoadDimensionOne();
 
-        PreviousNode = loadData.PreviousNode; 
         DungeonsCompleted = loadData.DungeonsCompleted;
         PreludeOlarisTalkedTo = loadData.PreludeOlarisTalkedTo;
         PreludeYedTalkedTo = loadData.PreludeYedTalkedTo;
@@ -50,7 +49,6 @@ public class DimensionOneLevelData : DimensionData
         SmallDogStretched = false;
         LoonaTalkedToPostDungeonThree = false;
         AfterPartyAttended = false;
-        PreviousNode = "Node Spawn";
 
         SaveLevelData();
     }

@@ -89,6 +89,7 @@ public class OverworldNode : MonoBehaviour
                 character.enabled = false;
 
             FindObjectOfType<Overworld>().LoadingScene = true;
+            CameraController.Instance.LastNode = gameObject.name;
             StartCoroutine(CameraController.Instance.OwCharacterActionSelect(sceneToLoad, MapEventInteraction));
         }
         else { MapEventInteraction?.Invoke();}
@@ -205,7 +206,10 @@ public class OverworldNode : MonoBehaviour
     //handles line renderers and active State
     public void SetupNode()
     {
-        if(Active && Interactive)
+        if(!myRenderer)
+            myRenderer = GetComponent<SpriteRenderer>();
+
+        if (Active && Interactive)
             myRenderer.sprite = activeInteractiveUsedNode;
 
         SetupLineRendererers();

@@ -16,7 +16,9 @@ public class Pixelation : MonoBehaviour
 
     private float localScale;
     [ContextMenu("Test")]
-    public void LoadScene() => StartCoroutine(LoadingOut());
+
+    public void Unpixelate() => StartCoroutine(LoadingInto());
+    public void Pixelate() => StartCoroutine(LoadingOut());
 
     public IEnumerator LoadingInto()
     {

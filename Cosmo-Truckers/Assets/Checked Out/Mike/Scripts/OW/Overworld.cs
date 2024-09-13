@@ -29,7 +29,21 @@ public abstract class Overworld : MonoBehaviour
 
     protected abstract void OverworldInitialize();
 
-    protected abstract void SetupStartingNode(); 
+    protected virtual void SetupStartingNode()
+    {
+        string lastNodeName = CameraController.Instance.LastNode;
+        GameObject startNode = GameObject.Find(lastNodeName);
+
+        // Only call this portion when loading into the scene
+        CurrentNode = startNode != null ? startNode.GetComponent<OverworldNode>() : CurrentNode;
+
+        // Set the player to the position of the previous node
+        OverworldCharacter mapPlayer = GameObject.Find("OW_ControllerCharacter").GetComponent<OverworldCharacter>();
+        mapPlayer.transform.position = CurrentNode.transform.position;
+
+        // Setup the current node 
+        CurrentNode.SetupNode();
+    }
 
     protected abstract void DebugInput();
 }

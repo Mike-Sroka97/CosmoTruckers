@@ -263,10 +263,19 @@ public class TurnOrder : MonoBehaviour
                 //FindObjectOfType<INAcombat>().OpenDungeonPage(); //TODO CHANCE DUNGEON PLEASE GOD CHANGE THIS TO FLIPPY FLOPPY
                 CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
                 CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
-                CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
-                CombatManager.Instance.CurrentNode.Active = true;
-                CombatManager.Instance.CurrentNode.SetupLineRendererers();
-                CombatManager.Instance.InCombat = false;
+
+                if(CombatManager.Instance.CurrentNode.GetComponent<DungeonCombatNode>().Boss)
+                {
+                    //TODO do sicko mode post boss
+                    StartCoroutine(CameraController.Instance.DungeonEnd(CombatManager.Instance.CurrentNode.GetComponent<DungeonCombatNode>().SceneToLoad));
+                }
+                else
+                {
+                    CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
+                    CombatManager.Instance.CurrentNode.Active = true;
+                    CombatManager.Instance.CurrentNode.SetupLineRendererers();
+                    CombatManager.Instance.InCombat = false;
+                }
             }
             else
             {

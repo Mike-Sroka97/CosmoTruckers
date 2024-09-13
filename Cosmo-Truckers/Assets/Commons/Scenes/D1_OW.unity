@@ -4098,6 +4098,7 @@ MonoBehaviour:
   maxCameraX: 50
   minCameraY: -2
   maxCameraY: 2.05
+  LoadingScene: 0
   olaris: {fileID: 162781934}
   olarisPointsToMove:
   - {fileID: 1966242120348509854}
@@ -4379,6 +4380,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
+      propertyPath: sceneToLoad
+      value: D1_D1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: LeftTransforms.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -4400,18 +4405,30 @@ PrefabInstance:
       objectReference: {fileID: 1276225335}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
+      propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1154231758}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
+      propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1154231755}
+    - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
+      propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
@@ -4420,6 +4437,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
       propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: NovasLandingOverworld, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}
+      propertyPath: MapEventInteraction.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: NovasLandingOverworld, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 7454546426237117870, guid: 4de8d78971dd5554493a39f0ef9577c7, type: 3}

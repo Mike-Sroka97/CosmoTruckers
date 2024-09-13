@@ -26,16 +26,28 @@ public class CameraController : MonoBehaviour
     Pixelation myPixelator;
 
     [HideInInspector] public Transform Leader;
-
+    public string LastNode;
     [HideInInspector] public static CameraController Instance;
 
     private void Awake()
     {
-        Instance = this;
+        CameraController[] objs = FindObjectsOfType<CameraController>();
+
+        if (objs.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+        if(!Instance)
+            Instance = this;
+
         vignette = transform.Find("CameraVignette").GetComponent<SpriteRenderer>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();
         myPixelator = GetComponent<Pixelation>();
+        myPixelator.Unpixelate();
     }
 
     private void Update()
@@ -77,7 +89,7 @@ public class CameraController : MonoBehaviour
     {
         CommandsExecuting++;
 
-        myPixelator.LoadScene();
+        myPixelator.Pixelate();
 
         while (CommandsExecuting > 0)
             yield return null;
@@ -91,6 +103,16 @@ public class CameraController : MonoBehaviour
 
         eventToInvoke?.Invoke();
 
+        SceneManager.LoadScene(sceneToLoad);
+    }
+
+    public IEnumerator DungeonEnd(string sceneToLoad)
+    {
+        CommandsExecuting++;
+
+        yield return new WaitForSeconds(2f);
+
+        CommandsExecuting--;
         SceneManager.LoadScene(sceneToLoad);
     }
 

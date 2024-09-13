@@ -6,6 +6,7 @@ public class DungeonCombatNode : MonoBehaviour
 {
     public bool Boss;
     public bool CombatDone;
+    public string SceneToLoad;
 
     [SerializeField] List<GameObject> enemiesToSpawn;
 
