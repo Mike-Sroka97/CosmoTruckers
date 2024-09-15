@@ -9,6 +9,8 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
+    [SerializeField] float timeToEscapeDungeon = 2f;
+    [SerializeField] string sceneToLoad;
 
     public DNode CurrentNode;
     public float minCameraX;
@@ -23,6 +25,8 @@ public abstract class DungeonController : MonoBehaviour
     protected List<GameObject> positiveNodes;
     protected List<GameObject> determinedEventNodes;
 
+    private float currentTimeHeld = 0f;
+
 
     private void Start()
     {
@@ -30,6 +34,21 @@ public abstract class DungeonController : MonoBehaviour
         DungeonInitialize();
         DetermineNodeTypes();
         DetermineNodeLayouts();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            currentTimeHeld += Time.deltaTime;
+
+            if (currentTimeHeld >= timeToEscapeDungeon)
+                StartCoroutine(CameraController.Instance.DungeonEnd(sceneToLoad));
+        }
+        else
+        {
+            currentTimeHeld = 0;
+        }
     }
 
     public void CameraFadeFinished()
