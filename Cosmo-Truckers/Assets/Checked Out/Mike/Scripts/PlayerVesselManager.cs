@@ -13,6 +13,7 @@ public class PlayerVesselManager : MonoBehaviour
 
     Vector3 startPos;
     public bool IsMoving;
+    private bool cameraFollow = true;
 
     private void Awake() => Instance = this;
 
@@ -32,6 +33,12 @@ public class PlayerVesselManager : MonoBehaviour
         PlayerVessels = GetComponentsInChildren<PlayerVessel>();
     }
 
+    private void Update()
+    {
+        if(cameraFollow)
+            transform.position = new Vector3(CameraController.Instance.transform.position.x, CameraController.Instance.transform.position.y, transform.position.z);
+    }
+
     public IEnumerator MoveMe(bool up)
     {
         IsMoving = true;
@@ -45,9 +52,13 @@ public class PlayerVesselManager : MonoBehaviour
             }
 
              transform.position = startPos;
+
+            cameraFollow = true;
         }
         else
         {
+            cameraFollow = false;
+
             while (transform.position.y > lowerPos.position.y)
             {
                 transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);

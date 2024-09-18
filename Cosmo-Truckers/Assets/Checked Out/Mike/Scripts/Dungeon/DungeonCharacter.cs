@@ -52,17 +52,11 @@ public class DungeonCharacter : MonoBehaviour
 
         //Left
         else if (Input.GetKeyDown(KeyCode.A))
-        {
             dungeon.CurrentNode.SelectNode(true);
-            //dungeon.CurrentNode = dungeon.CurrentNode.LeftNode;
-            //StartCoroutine(Move(dungeon.CurrentNode.LeftTransforms));
-        }
 
         //Right
         else if (Input.GetKeyDown(KeyCode.D))
-        {
             dungeon.CurrentNode.SelectNode(false);
-        }
     }
 
     public virtual IEnumerator Move(DNode newCurrentNode, Transform[] pointsToTraverse)

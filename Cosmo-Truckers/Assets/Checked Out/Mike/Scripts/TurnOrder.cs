@@ -264,10 +264,10 @@ public class TurnOrder : MonoBehaviour
                 CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
                 CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
 
-                if(CombatManager.Instance.CurrentNode.GetComponent<DungeonCombatNode>().Boss)
+                if(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {
                     //TODO do sicko mode post boss
-                    StartCoroutine(CameraController.Instance.DungeonEnd(CombatManager.Instance.CurrentNode.GetComponent<DungeonCombatNode>().SceneToLoad));
+                    StartCoroutine(CameraController.Instance.DungeonEnd(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
                 }
                 else
                 {
