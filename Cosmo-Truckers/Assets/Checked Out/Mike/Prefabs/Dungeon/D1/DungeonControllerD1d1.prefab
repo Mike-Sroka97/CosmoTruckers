@@ -165,7 +165,7 @@ SpriteRenderer:
   m_Size: {x: 10, y: 6.6666665}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1086479504
@@ -333,7 +333,7 @@ SpriteRenderer:
   m_Size: {x: 10, y: 6.6666665}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1569670373
@@ -585,7 +585,7 @@ SpriteRenderer:
   m_Size: {x: 10, y: 6.6666665}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &2028482149
@@ -754,23 +754,20 @@ MonoBehaviour:
   - {fileID: 5969586680089113587, guid: 7d7d3963e8041584d9a518a55c0aa784, type: 3}
   - {fileID: 5969586680089113587, guid: adc0d8f793f5f9f44b9fdb83f76b0937, type: 3}
   - {fileID: 5969586680089113587, guid: 60a3ce14bb06710419544d2ffa37dec8, type: 3}
-  combatNodes:
-  - {fileID: 3759816822169626827, guid: 89be6d6ddb59d9b47b08fb022d01b78f, type: 3}
-  - {fileID: 3759816822169626827, guid: 4f068dcb2b87c7342be3aa1c9f900e83, type: 3}
-  - {fileID: 3759816822169626827, guid: fd0342654dede3847b6667ca436a79fe, type: 3}
-  - {fileID: 3759816822169626827, guid: 460a137136ada3c44a37c86938d0160c, type: 3}
-  - {fileID: 3759816822169626827, guid: c4de847e1fddfbc4698928d9cb343cd0, type: 3}
   totalEventNodes: 24
   nodeLayouts:
   - {fileID: 6111589385733955432, guid: 0d163cb414d2a124ea43dd8bfd81652c, type: 3}
   - {fileID: 6111589385733955432, guid: 0d163cb414d2a124ea43dd8bfd81652c, type: 3}
   - {fileID: 6111589385733955432, guid: 0d163cb414d2a124ea43dd8bfd81652c, type: 3}
   - {fileID: 6111589385733955432, guid: 0d163cb414d2a124ea43dd8bfd81652c, type: 3}
+  timeToEscapeDungeon: 2
+  sceneToLoad: 
   CurrentNode: {fileID: 9097550702025703720}
   minCameraX: -100
   maxCameraX: 100
-  minCameraY: -100
-  maxCameraY: 100
+  minCameraY: -2
+  maxCameraY: 2
+  CombatCameraPosition: {fileID: 0}
 --- !u!1001 &1896695788561874858
 PrefabInstance:
   m_ObjectHideFlags: 0
