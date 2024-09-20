@@ -14,7 +14,7 @@ public class PlayerManager : NetworkBehaviour
     [SyncVar] int playerNumber = 0;
 
     //The current character the player has selected to play
-    [SerializeField] [SyncVar] int PlayerID;
+    public int PlayerID;
     CharacterSO Player;
     [SerializeField] SaveData PlayerData;
     public SaveData GetPlayerData { get => PlayerData; }

@@ -1,9 +1,5 @@
-using Mirror;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Linq;
 
 public class CombatData : MonoBehaviour
 {
@@ -15,13 +11,16 @@ public class CombatData : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        CombatData[] objs = FindObjectsOfType<CombatData>();
 
-        //If Network is active will get the current players
-        //Other wise needs to be set manually
-        if(NetworkManager.singleton)
+        if (objs.Length > 1)
         {
-            PlayersToSpawn = FindObjectsOfType<PlayerManager>().ToList();
+            Destroy(gameObject);
         }
+
+        DontDestroyOnLoad(gameObject);
+
+        if (!Instance)
+            Instance = this;
     }
 }

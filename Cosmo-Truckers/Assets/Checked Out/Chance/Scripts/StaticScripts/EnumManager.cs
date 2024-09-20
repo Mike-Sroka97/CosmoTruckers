@@ -45,4 +45,13 @@ public class EnumManager
         Down,
         Right
     }
+
+    public enum CharacterID
+    {
+        Aeglar,
+        Proto,
+        SafeT,
+        SixFace,
+        LongDog,
+    }
 }

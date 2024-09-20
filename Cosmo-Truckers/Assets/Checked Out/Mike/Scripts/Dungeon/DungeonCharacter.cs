@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DungeonCharacter : MonoBehaviour
 {
+    [SerializeField] Sprite[] characterControllerSprites;
     [SerializeField] protected float moveSpeed;
 
     protected DungeonController dungeon;
@@ -24,6 +25,8 @@ public class DungeonCharacter : MonoBehaviour
         CameraController.Instance.InitializeOwCamera(dungeon.minCameraX, dungeon.maxCameraX, dungeon.minCameraY, dungeon.maxCameraY, transform);
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
         dungeon.CurrentNode.SetupNode();
+
+        myRenderer.sprite = characterControllerSprites[CombatData.Instance.PlayersToSpawn[0].PlayerID];
     }
 
     private void Update()
