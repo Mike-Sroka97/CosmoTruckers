@@ -54,7 +54,7 @@ public class DungeonCharacter : MonoBehaviour
             myRenderer.flipX = false;
 
         //Left
-        else if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))
             dungeon.CurrentNode.SelectNode(true);
 
         //Right

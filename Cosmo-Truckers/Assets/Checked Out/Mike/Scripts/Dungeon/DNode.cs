@@ -91,10 +91,10 @@ public class DNode : MonoBehaviour
         {
             StartCoroutine(CameraController.Instance.DungeonEnd(NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
         }
-        else if(NodeData.GetComponent<DungeonEventNode>())
-        {
+        //else if(NodeData.GetComponent<DungeonEventNode>())
+        //{
 
-        }
+        //}
         else if (Active)
         {
             CleanupLineRenderers();
@@ -178,8 +178,10 @@ public class DNode : MonoBehaviour
             SelectableNodes.Add(currentCombatNode);
         }
 
-        if(!NodeData.GetComponent<DungeonCombatNode>())
+        if (!NodeData.GetComponent<DungeonCombatNode>())
             SetupLineRendererers();
+        else
+            NodeData.GetComponent<DungeonCombatNode>().CombatDone = false;
     }
 
     public void LeavingNodeCleanup()
