@@ -10,9 +10,17 @@ public class DungeonCombatNode : MonoBehaviour
 
     [SerializeField] List<GameObject> enemiesToSpawn;
 
-    public void StartCombat(DNode currentNode)
+    public IEnumerator StartCombat(DNode currentNode)
     {
         DungeonController controller = FindObjectOfType<DungeonController>();
+
+        //Start the flippy floppy as long as it is in scene
+        FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
+        if (flip)
+        {
+            flip.InitFlip();
+            yield return new WaitUntil(() => !flip.IsFlipping);
+        }
 
         //Set dungeon refs
         CombatManager.Instance.LastCameraPosition = CameraController.Instance.transform.position;

@@ -225,6 +225,7 @@ public class TurnOrder : MonoBehaviour
     //everything for combat that will be on a delay
     IEnumerator EndCombatDelay()
     {
+        //TODO Combat is not being set to true when loading into test and by passing the combat node selection
         if (CombatManager.Instance.InCombat)
         {
             yield return new WaitForSeconds(2.0f);
@@ -261,20 +262,17 @@ public class TurnOrder : MonoBehaviour
                 CombatData.Instance.EnemySummonsToSpawn.Clear();
 
                 //FindObjectOfType<INAcombat>().OpenDungeonPage(); //TODO CHANCE DUNGEON PLEASE GOD CHANGE THIS TO FLIPPY FLOPPY
-                CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
-                CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
 
                 if(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {
                     //TODO do sicko mode post boss
                     StartCoroutine(CameraController.Instance.DungeonEnd(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
+                    CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
+                    CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
                 }
                 else
                 {
-                    CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
-                    CombatManager.Instance.CurrentNode.Active = true;
-                    CombatManager.Instance.CurrentNode.SetupLineRendererers();
-                    CombatManager.Instance.InCombat = false;
+                    StartCoroutine(FlipScreenWait());
                 }
             }
             else
@@ -284,6 +282,25 @@ public class TurnOrder : MonoBehaviour
 
             endCombatText.text = "";
         }
+    }
+
+    IEnumerator FlipScreenWait()
+    {
+        //Start the flippy floppy as long as it is in scene
+        FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
+        if (flip)
+        {
+            flip.InitFlip();
+            yield return new WaitUntil(() => !flip.IsFlipping);
+        }
+
+        CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
+        CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
+
+        CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
+        CombatManager.Instance.CurrentNode.Active = true;
+        CombatManager.Instance.CurrentNode.SetupLineRendererers();
+        CombatManager.Instance.InCombat = false;
     }
 
     private void DetermineCombatEnd()
@@ -312,14 +329,17 @@ public class TurnOrder : MonoBehaviour
         if (allPlayersDead)
         {
             //kill all player summons?
-            endCombatText.text = lossText;
+            if (CombatManager.Instance.InCombat)
+                endCombatText.text = lossText;
+
             combatOver = true;
             return;
         }
         else if (allEnemiesDead)
         {
             //kill all enemy summons?
-            endCombatText.text = victoryText;
+            if (CombatManager.Instance.InCombat)
+                endCombatText.text = victoryText;
             combatOver = true;
             return;
         }   

@@ -14,6 +14,9 @@ public class FlipLoadAnimation : MonoBehaviour
     [SerializeField] Sprite[] flipSprites;
 
     int[] flipDirection = new int[20] { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19 };
+    bool flipping = false;
+
+    public bool IsFlipping { get => flipping; }
 
     [ContextMenu("Test")]
     public void InitFlip()
@@ -32,9 +35,12 @@ public class FlipLoadAnimation : MonoBehaviour
 
     void SetUp()
     {
+        flipping = true;
+        flipTiles[20].gameObject.SetActive(true);
+
         MathCC.Shuffle(flipDirection);
 
-        for(int i = 0; i< flipTiles.Length; i++)
+        for(int i = 0; i< flipTiles.Length - 1; i++)
         {
             flipTiles[i].sprite = flipSprites[Random.Range(0, flipSprites.Length)];
             flipTiles[i].transform.rotation = Quaternion.Euler(0, 90, 0);
@@ -45,7 +51,7 @@ public class FlipLoadAnimation : MonoBehaviour
 
     IEnumerator FlipAnimation()
     {
-        for(int i = 0; i < flipDirection.Length; i++)
+        for (int i = 0; i < flipDirection.Length; i++)
         {
             flipTiles[flipDirection[i]].gameObject.SetActive(true);
 
@@ -60,6 +66,8 @@ public class FlipLoadAnimation : MonoBehaviour
 
         //Wait while screen changes
         yield return new WaitForSeconds(1.5f);
+
+        flipping = false;
 
         for (int i = flipDirection.Length - 1; i >= 0; i--)
         {
