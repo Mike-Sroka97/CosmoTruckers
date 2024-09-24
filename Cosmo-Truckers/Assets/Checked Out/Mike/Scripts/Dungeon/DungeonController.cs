@@ -160,6 +160,12 @@ public abstract class DungeonController : MonoBehaviour
             {
                 nodeArt.transform.localPosition -= new Vector3(0, 1f, 0);
                 nodeArt.transform.Rotate(new Vector3(0, 0, 180));
+
+                nodeArt.GetComponent<SpriteRenderer>().sortingOrder = 100 - allEventNodes[i].Row;
+            }
+            else
+            {
+                nodeArt.GetComponent<SpriteRenderer>().sortingOrder = allEventNodes[i].Row + 100;
             }
         }
     }
