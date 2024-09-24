@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     float shakeMinDistance = 0.05f;
 
     [HideInInspector] public int CommandsExecuting;
+    [HideInInspector] public bool CurrentlyExecutingCommand => CommandsExecuting > 0;
 
     SpriteRenderer vignette;
     TextMeshProUGUI text;

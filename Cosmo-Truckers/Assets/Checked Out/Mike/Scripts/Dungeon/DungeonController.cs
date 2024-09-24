@@ -12,6 +12,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
 
+    public Transform PlayerStartPosition;
     public DNode CurrentNode;
     public float minCameraX;
     public float maxCameraX;
@@ -153,6 +154,13 @@ public abstract class DungeonController : MonoBehaviour
         {
             allEventNodes[i].NodeData = determinedEventNodes[i];
             allEventNodes[i].DetermineState();
+            GameObject nodeArt = Instantiate(allEventNodes[i].NodeData, allEventNodes[i].transform);
+
+            if(allEventNodes[i].Group % 2 != 0)
+            {
+                nodeArt.transform.localPosition -= new Vector3(0, 1f, 0);
+                nodeArt.transform.Rotate(new Vector3(0, 0, 180));
+            }
         }
     }
 }

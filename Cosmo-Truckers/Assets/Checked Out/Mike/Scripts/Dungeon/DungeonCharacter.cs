@@ -10,6 +10,7 @@ public class DungeonCharacter : MonoBehaviour
     protected DungeonController dungeon;
     protected bool moving;
     SpriteRenderer myRenderer;
+    bool startup = true;
 
     /// <summary>
     /// Probably want Overworld.cs to handle the initial node at some point
@@ -18,15 +19,16 @@ public class DungeonCharacter : MonoBehaviour
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         dungeon = FindObjectOfType<DungeonController>();
-        transform.position = dungeon.CurrentNode.transform.position;
+        transform.position = dungeon.PlayerStartPosition.position;
 
         enabled = false;
 
         CameraController.Instance.InitializeOwCamera(dungeon.minCameraX, dungeon.maxCameraX, dungeon.minCameraY, dungeon.maxCameraY, transform);
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
-        dungeon.CurrentNode.SetupNode();
 
         myRenderer.sprite = characterControllerSprites[CombatData.Instance.PlayersToSpawn[0].PlayerID];
+
+        StartCoroutine(MoveToStart());
     }
 
     private void Update()
@@ -36,7 +38,7 @@ public class DungeonCharacter : MonoBehaviour
 
     private void TrackInput()
     {
-        if (moving)
+        if (moving || startup)
             return;
 
         //Interact
@@ -93,5 +95,20 @@ public class DungeonCharacter : MonoBehaviour
         dungeon.CurrentNode.SetupNode();
 
         moving = false;
+    }
+
+    private IEnumerator MoveToStart()
+    {
+        while (CameraController.Instance.CurrentlyExecutingCommand)
+            yield return null;
+
+        while (transform.position != dungeon.CurrentNode.transform.position)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, dungeon.CurrentNode.transform.position, Time.deltaTime * moveSpeed / 2);
+            yield return null;
+        }
+
+        startup = false;
+        dungeon.CurrentNode.SetupNode();
     }
 }
