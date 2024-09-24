@@ -38,7 +38,7 @@ public abstract class DungeonController : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if(Input.GetKey(KeyCode.Escape) && !CombatManager.Instance.InCombat)
         {
             currentTimeHeld += Time.deltaTime;
 
