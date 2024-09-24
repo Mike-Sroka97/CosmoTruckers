@@ -32,6 +32,8 @@ public class DNode : MonoBehaviour
     //Transforms for player to traverse per direction
     public List<Transform> SelectedTransforms = new List<Transform>();
 
+    public int Row;
+
     public bool Active;
 
     protected SpriteRenderer myRenderer;
