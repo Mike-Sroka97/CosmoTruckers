@@ -48,7 +48,9 @@ public class CameraController : MonoBehaviour
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();
         myPixelator = GetComponent<Pixelation>();
-        myPixelator.Unpixelate();
+        
+        if (myPixelator != null)
+            myPixelator.Unpixelate();
     }
 
     private void Update()
