@@ -11,6 +11,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] GameObject[] nodeLayouts;
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
+    public EventNodeHandler NodeHandler;
 
     public Transform PlayerStartPosition;
     public DNode CurrentNode;
@@ -31,6 +32,7 @@ public abstract class DungeonController : MonoBehaviour
 
     private void Start()
     {
+        NodeHandler = GetComponentInChildren<EventNodeHandler>();
         SetStartNode();
         DungeonInitialize();
         DetermineNodeTypes();

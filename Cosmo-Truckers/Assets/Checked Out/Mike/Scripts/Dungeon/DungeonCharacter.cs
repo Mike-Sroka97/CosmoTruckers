@@ -45,7 +45,7 @@ public class DungeonCharacter : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && dungeon.CurrentNode.Active)
             dungeon.CurrentNode.Interact();
 
-        if (dungeon.CurrentNode.NodeData.GetComponent<DungeonCombatNode>() && !dungeon.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone)
+        if (dungeon.CurrentNode.NodeData.GetComponent<DungeonCombatNode>() && !dungeon.CurrentNode.CombatDone)
             return;
 
         //flip sprite

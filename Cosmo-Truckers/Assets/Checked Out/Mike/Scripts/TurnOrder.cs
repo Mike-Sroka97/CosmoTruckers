@@ -294,7 +294,7 @@ public class TurnOrder : MonoBehaviour
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
 
-        CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
+        CombatManager.Instance.CurrentNode.CombatDone = true;
         CombatManager.Instance.CurrentNode.Active = true;
         CombatManager.Instance.CurrentNode.SetupLineRendererers();
     }

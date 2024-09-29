@@ -28,6 +28,8 @@ public class DNode : MonoBehaviour
     public int Group;
     public bool StartNode;
     public bool EndNode;
+    public bool EventFinished;
+    public bool CombatDone;
 
     //Transforms for player to traverse per direction
     public List<Transform> SelectedTransforms = new List<Transform>();
@@ -85,18 +87,18 @@ public class DNode : MonoBehaviour
 
     public void Interact()
     {
-        if (NodeData.GetComponent<DungeonCombatNode>() && !NodeData.GetComponent<DungeonCombatNode>().CombatDone)
+        if (NodeData.GetComponent<DungeonCombatNode>() && !CombatDone)
         {
             StartCoroutine(NodeData.GetComponent<DungeonCombatNode>().StartCombat(this));
         }
-        else if(NodeData.GetComponent<DungeonCombatNode>() && NodeData.GetComponent<DungeonCombatNode>().Boss && NodeData.GetComponent<DungeonCombatNode>().CombatDone)
+        else if(NodeData.GetComponent<DungeonCombatNode>() && NodeData.GetComponent<DungeonCombatNode>().Boss && CombatDone)
         {
             StartCoroutine(CameraController.Instance.DungeonEnd(NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
         }
-        //else if(NodeData.GetComponent<DungeonEventNode>())
-        //{
-
-        //}
+        else if (NodeData.GetComponent<DungeonEventNode>() && !EventFinished)
+        {
+            StartCoroutine(dungeon.NodeHandler.Move(true, this));
+        }
         else if (Active)
         {
             CleanupLineRenderers();
@@ -112,6 +114,9 @@ public class DNode : MonoBehaviour
     }
     public void SelectNode(bool left)
     {
+        if (NodeData.GetComponent<DungeonEventNode>() && !EventFinished)
+            return;
+
         if(left)
         {
             if(currentSelectedIndex - 1 >= 0)
@@ -180,10 +185,8 @@ public class DNode : MonoBehaviour
             SelectableNodes.Add(currentCombatNode);
         }
 
-        if (!NodeData.GetComponent<DungeonCombatNode>())
+        if (!NodeData.GetComponent<DungeonCombatNode>() && !NodeData.GetComponent<DungeonEventNode>())
             SetupLineRendererers();
-        else
-            NodeData.GetComponent<DungeonCombatNode>().CombatDone = false;
     }
 
     public void LeavingNodeCleanup()
