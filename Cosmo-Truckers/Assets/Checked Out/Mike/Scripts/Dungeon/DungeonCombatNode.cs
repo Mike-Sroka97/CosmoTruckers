@@ -12,7 +12,17 @@ public class DungeonCombatNode : MonoBehaviour
 
     public IEnumerator StartCombat(DNode currentNode)
     {
-        DungeonController controller = FindObjectOfType<DungeonController>();
+        //Set dungeon refs
+        CombatManager.Instance.LastCameraPosition = CameraController.Instance.transform.position;
+        CombatManager.Instance.DungeonCharacterInstance = CameraController.Instance.Leader;
+        CombatManager.Instance.CurrentNode = currentNode;
+        CombatManager.Instance.InCombat = true;
+        CameraController.Instance.Leader = null;
+        currentNode.Active = false;
+
+        //Set Enemies
+        EnemyManager.Instance.EnemiesToSpawn = enemiesToSpawn;
+        EnemyManager.Instance.InitializeEnemys();
 
         //Start the flippy floppy as long as it is in scene
         FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
@@ -22,19 +32,7 @@ public class DungeonCombatNode : MonoBehaviour
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
 
-        //Set dungeon refs
-        CombatManager.Instance.LastCameraPosition = CameraController.Instance.transform.position;
-        CombatManager.Instance.DungeonCharacterInstance = CameraController.Instance.Leader;
-        CombatManager.Instance.CurrentNode = currentNode;
-        CombatManager.Instance.InCombat = true;
-
-        //Setup combat refs
-        CameraController.Instance.Leader = null;
-        CameraController.Instance.transform.position = new Vector3(controller.CombatCameraPosition.position.x, controller.CombatCameraPosition.position.y, CameraController.Instance.transform.position.z);
-
-        //Start combat
-        currentNode.Active = false;
-        EnemyManager.Instance.EnemiesToSpawn = enemiesToSpawn;
-        EnemyManager.Instance.InitializeEnemys();
+        //Start 
+        TurnOrder.Instance.StartTurnOrder();
     }
 }
