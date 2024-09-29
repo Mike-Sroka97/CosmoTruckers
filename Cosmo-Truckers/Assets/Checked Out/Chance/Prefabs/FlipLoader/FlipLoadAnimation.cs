@@ -9,6 +9,7 @@ public class FlipLoadAnimation : MonoBehaviour
     [SerializeField] float flipSpeed = 5;
     [SerializeField] Image[] flipTiles;
     [SerializeField] GameObject flipTileHolder;
+    [SerializeField] float waitTime = 1f;
 
     [Header("Flip Images")]
     [SerializeField] Sprite[] flipSprites;
@@ -36,7 +37,7 @@ public class FlipLoadAnimation : MonoBehaviour
     void SetUp()
     {
         flipping = true;
-        flipTiles[20].gameObject.SetActive(true);
+        flipTiles[flipTiles.Length - 1].gameObject.SetActive(true);
 
         MathCC.Shuffle(flipDirection);
 
@@ -64,10 +65,18 @@ public class FlipLoadAnimation : MonoBehaviour
             flipTiles[flipDirection[i]].transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
-        //Wait while screen changes
-        yield return new WaitForSeconds(1.5f);
+        //Setup combat refs
+        DungeonController controller = FindObjectOfType<DungeonController>();
+        CameraController.Instance.transform.position = new Vector3(controller.CombatCameraPosition.position.x, controller.CombatCameraPosition.position.y, CameraController.Instance.transform.position.z);
 
-        flipping = false;
+        if(!CombatManager.Instance.InCombat)
+        {
+            CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
+            CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
+        }
+
+        //Wait while screen changes
+        yield return new WaitForSeconds(waitTime);
 
         for (int i = flipDirection.Length - 1; i >= 0; i--)
         {
@@ -79,6 +88,8 @@ public class FlipLoadAnimation : MonoBehaviour
 
             flipTiles[flipDirection[i]].transform.rotation = Quaternion.Euler(0, 90, 0);
         }
+
+        flipping = false;
 
         CleanUp();
     }

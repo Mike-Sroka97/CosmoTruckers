@@ -75,9 +75,6 @@ public class EnemyManager : MonoBehaviour
         CombatManager.Instance.StartCharacterCombatEffects();
 
         UpdateTrashMobList();
-
-        TurnOrder.Instance.StartTurnOrder();
-
     }
 
     void Start()

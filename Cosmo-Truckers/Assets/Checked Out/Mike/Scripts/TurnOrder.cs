@@ -258,10 +258,8 @@ public class TurnOrder : MonoBehaviour
                 combatOver = false;
 
                 //TODO
-                //Reset sheild and Mana
+                //Reset shield and Mana
                 CombatData.Instance.EnemySummonsToSpawn.Clear();
-
-                //FindObjectOfType<INAcombat>().OpenDungeonPage(); //TODO CHANCE DUNGEON PLEASE GOD CHANGE THIS TO FLIPPY FLOPPY
 
                 if(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {
@@ -286,6 +284,8 @@ public class TurnOrder : MonoBehaviour
 
     IEnumerator FlipScreenWait()
     {
+        CombatManager.Instance.InCombat = false;
+
         //Start the flippy floppy as long as it is in scene
         FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
         if (flip)
@@ -294,13 +294,9 @@ public class TurnOrder : MonoBehaviour
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
 
-        CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
-        CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
-
         CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().CombatDone = true;
         CombatManager.Instance.CurrentNode.Active = true;
         CombatManager.Instance.CurrentNode.SetupLineRendererers();
-        CombatManager.Instance.InCombat = false;
     }
 
     private void DetermineCombatEnd()
