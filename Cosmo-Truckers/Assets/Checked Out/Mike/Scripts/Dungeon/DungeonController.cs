@@ -2,9 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class DungeonController : MonoBehaviour
 {
+    [Header("Escape wheel")]
+    [SerializeField] protected GameObject escapeWheel;
+    [SerializeField] protected GameObject escapeMan;
+    [SerializeField] protected float shakeSpeed = 2.0f;
+    protected Vector2 shakeStart;
+
     [SerializeField] protected bool debugging;
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
@@ -32,6 +39,10 @@ public abstract class DungeonController : MonoBehaviour
 
     private void Start()
     {
+        //Get initial pos of escape wheel
+        shakeStart.x = escapeWheel.transform.position.x;
+        shakeStart.y = escapeWheel.transform.position.y;
+
         NodeHandler = GetComponentInChildren<EventNodeHandler>();
         SetStartNode();
         DungeonInitialize();
@@ -45,12 +56,41 @@ public abstract class DungeonController : MonoBehaviour
         {
             currentTimeHeld += Time.deltaTime;
 
+            //Set the fill amount for the radial
+            escapeWheel.GetComponent<Image>().fillAmount = currentTimeHeld / timeToEscapeDungeon;
+
+            //Set both image colors to become more red
+            Color newColor = new Color(escapeWheel.GetComponent<Image>().color.r, escapeWheel.GetComponent<Image>().color.g - (Time.deltaTime / 2), escapeWheel.GetComponent<Image>().color.b - (Time.deltaTime / 2));
+            escapeWheel.GetComponent<Image>().color = newColor;
+            escapeMan.GetComponent<Image>().color = newColor;
+
+            //Shake the wheel
+            Vector3 shake = new Vector3(shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f, shakeStart.y + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f);
+
+            escapeWheel.transform.position = shake;
+            escapeMan.transform.position = shake;
+
             if (currentTimeHeld >= timeToEscapeDungeon)
                 StartCoroutine(CameraController.Instance.DungeonEnd(sceneToLoad));
         }
         else
         {
-            currentTimeHeld = 0;
+            currentTimeHeld -= Time.deltaTime;
+            currentTimeHeld = Mathf.Clamp(currentTimeHeld, 0, timeToEscapeDungeon);
+
+            //Set the fill amount for the radial
+            escapeWheel.GetComponent<Image>().fillAmount = currentTimeHeld / timeToEscapeDungeon;
+
+            if (currentTimeHeld > 0)
+            {
+                //Set both image colors to become less red
+                Color newColor = new Color(escapeWheel.GetComponent<Image>().color.r, escapeWheel.GetComponent<Image>().color.g + (Time.deltaTime / 2), escapeWheel.GetComponent<Image>().color.b + (Time.deltaTime / 2));
+                escapeWheel.GetComponent<Image>().color = newColor;
+                escapeMan.GetComponent<Image>().color = newColor;
+
+                escapeWheel.transform.position = shakeStart;
+                escapeMan.transform.position = shakeStart;
+            }
         }
     }
 
