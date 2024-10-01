@@ -41,7 +41,10 @@ public class EventNodeHandler : MonoBehaviour
                 yield return null;
             }
 
-            //TODO REMOVE THIS SHIT
+            //TODO enable event
+        }
+        else
+        {
             swishGoal = swishStartPos;
             swoshGoal = swoshStartPos;
 
@@ -60,25 +63,6 @@ public class EventNodeHandler : MonoBehaviour
             node.Active = true;
             node.EventFinished = true;
             node.SetupLineRendererers();
-
-            //END REMOVE SECTOR
-        }
-        else
-        {
-            swishGoal = swishStartPos;
-            swoshGoal = swoshStartPos;
-
-            while (swosh.localPosition != swoshGoal)
-            {
-                swosh.localPosition = Vector3.MoveTowards(swosh.localPosition, swoshGoal, swishSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            while (swish.localPosition != swishGoal)
-            {
-                swish.localPosition = Vector3.MoveTowards(swish.localPosition, swishGoal, swishSpeed * Time.deltaTime);
-                yield return null;
-            }
         }
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class ElectroWhipEnemy : MonoBehaviour
 {
     [Header("Leashed Attributes")]
-    [SerializeField] Vector3 centerLinePoint;
     [SerializeField] float leashedSpeed;
     [SerializeField] float rotationLimit;
     [SerializeField] float rotationSpeed;
@@ -66,7 +65,6 @@ public class ElectroWhipEnemy : MonoBehaviour
         //other init stuff
         leash = GetComponentInChildren<LineRenderer>();
         leashPoints = new Vector3[2];
-        leashPoints[0] = centerLinePoint;
         minigame = FindObjectOfType<ElectroWhip>();
         myBody = GetComponent<Rigidbody2D>();
         myCollider = GetComponent<Collider2D>();
@@ -226,6 +224,7 @@ public class ElectroWhipEnemy : MonoBehaviour
     
     private void UpdateLeash()
     {
+        leashPoints[0] = box.transform.position;
         leashPoints[1] = transform.position;
         leash.SetPositions(leashPoints);
     }

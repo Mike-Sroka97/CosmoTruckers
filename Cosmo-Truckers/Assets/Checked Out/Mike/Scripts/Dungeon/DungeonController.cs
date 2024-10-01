@@ -78,28 +78,41 @@ public abstract class DungeonController : MonoBehaviour
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        for (int i = 0; i < nonCombatNodes.Length; i++)
+        if(debugging)
         {
-            if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
-            {
-                positiveNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+            for (int i = 0; i < nonCombatNodes.Length; i++)
             {
                 neutralNodes.Add(nonCombatNodes[i]);
                 currentNodeCount++;
-
+                if (currentNodeCount >= totalEventNodes)
+                    break;
             }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
-            {
-                negativeNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-
-            if (currentNodeCount >= totalEventNodes)
-                break;
         }
+        else
+        {
+            for (int i = 0; i < nonCombatNodes.Length; i++)
+            {
+                if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
+                {
+                    positiveNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+                {
+                    neutralNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
+                {
+                    negativeNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+
+                if (currentNodeCount >= totalEventNodes)
+                    break;
+            }
+        }
+
 
         determinedEventNodes.AddRange(positiveNodes);
         determinedEventNodes.AddRange(neutralNodes);

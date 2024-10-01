@@ -45,7 +45,7 @@ public class INAcombat : MonoBehaviour
     private void Start()
     {
         HoldCountDown = false;
-        startingPosition = transform.position;
+        startingPosition = transform.localPosition;
         topMaskStartingY = topMask.localPosition.y;
         bottomMaskStartingY = bottomMask.localPosition.y;
 
@@ -96,7 +96,7 @@ public class INAcombat : MonoBehaviour
                 trail.enabled = false;
 
             //Move up
-            while (transform.position.y < goalPosition.y)
+            while (transform.localPosition.y < goalPosition.y)
             {
                 transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
                 yield return null;
@@ -124,7 +124,6 @@ public class INAcombat : MonoBehaviour
 
                 yield return null;
             }
-
 
             face.gameObject.SetActive(false);
 
@@ -176,7 +175,7 @@ public class INAcombat : MonoBehaviour
 
             while (currentTime > 0)
             {
-                countDownTimer.transform.position = new Vector3(Mathf.Sin(Time.time * shakeSpeedX) * shakeOffsetX, INAoffset + (Mathf.Sin(Time.time * shakeSpeedY) * shakeOffsetY), 0);
+                countDownTimer.transform.localPosition = new Vector3(Mathf.Sin(Time.time * shakeSpeedX) * shakeOffsetX, INAoffset + (Mathf.Sin(Time.time * shakeSpeedY) * shakeOffsetY), 0);
                 currentTime -= Time.deltaTime;
                 countDownTimer.color = new Color(1, 1, 1, currentTime);
                 countDownTimer.transform.localScale = new Vector3(1 + (1 - currentTime), 1 + (1 - currentTime), 1 + (1 - currentTime));
@@ -208,7 +207,7 @@ public class INAcombat : MonoBehaviour
             bottomMask.localPosition = new Vector3(0, bottomMaskStartingY, 0);
 
             //Move Down
-            while (transform.position.y > startingPosition.y)
+            while (transform.localPosition.y > startingPosition.y)
             {
                 transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
                 yield return null;

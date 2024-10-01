@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DungeonEventNode : MonoBehaviour
 {
+    public GameObject EventToGenerate;
+
     public bool Good;
     public bool Neutral;
     public bool Bad;
