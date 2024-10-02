@@ -9,10 +9,14 @@ public class CombatStar : MonoBehaviour
     [SerializeField] AnimationClip animationToPlay;
     Animator animator;
 
-    public float SpawnStar(string textToDisplay, int sortingLayer = 0)
+    public float SetupStar(string textToDisplay, Material newMaterial, int sortingLayer = 0)
     {
+        SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
+        renderer.material = newMaterial;
+        renderer.material.SetFloat("_Instance", sortingLayer); 
+
         // Increment the sorting layer for multi hit combat stars
-        GetComponentInChildren<SpriteRenderer>().sortingOrder += sortingLayer; 
+        renderer.sortingOrder += sortingLayer; 
         GetComponentInChildren<Canvas>().sortingOrder += sortingLayer;
 
         animator = GetComponent<Animator>();

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4371932306896336572}
   - component: {fileID: 5951822635046834818}
   - component: {fileID: 6171027518752882955}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: -343228155
+  m_SortingLayerID: 1233702457
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &5951822635046834818
@@ -83,7 +83,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6171027518752882955
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +112,9 @@ GameObject:
   - component: {fileID: 3157498064011080145}
   - component: {fileID: 6425510145772717286}
   - component: {fileID: 790839749363067724}
-  m_Layer: 0
-  m_Name: CombatStar-Damage
+  - component: {fileID: 8100867289190214769}
+  m_Layer: 12
+  m_Name: CombatStarBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,6 +169,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &8100867289190214769
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036245936412917031}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.35
 --- !u!1 &2340191087277769067
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,7 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1406897688854300345}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: StarAnimator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +229,7 @@ GameObject:
   - component: {fileID: 3321578823633840070}
   - component: {fileID: 7395135389833606799}
   - component: {fileID: 5977241939754609135}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: DamageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +363,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3005829292719504627}
   - component: {fileID: 3005829292719504626}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: StarSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,7 +405,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fe7044b30c0c3df4f9ef9a9f292f0de9, type: 2}
+  - {fileID: 2100000, guid: 608edb5a9c0b2fe4db7d672cfc6023df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

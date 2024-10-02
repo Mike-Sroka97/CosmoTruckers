@@ -48,11 +48,21 @@ public class CombatManager : MonoBehaviour
     public DNode CurrentNode;
     public bool InCombat;
 
+    [Space(20)]
+    [Header("Combat Visual Effects")]
+    public GameObject BaseCombatStar;
+    public Material DamageStarMaterial;
+    public Material HealingStarMaterial; 
+    public float CombatStarSpawnWaitTime = 0.25f; 
+    public float CombatStarMaxOffset = 0.5f;
+    public float CombatStarSpawnCheckRadius = 0.2f;
+
     bool inTrashEndMove = false;
     INAcombat INA;
 
     private void Awake() => Instance = this;
     [HideInInspector] public bool TargetsSelected = true;
+    [HideInInspector] public int CommandsExecuting;
 
     private void Start()
     {
