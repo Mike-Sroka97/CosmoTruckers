@@ -40,8 +40,8 @@ public abstract class DungeonController : MonoBehaviour
     private void Start()
     {
         //Get initial pos of escape wheel
-        shakeStart.x = escapeWheel.transform.position.x;
-        shakeStart.y = escapeWheel.transform.position.y;
+        //shakeStart.x = escapeWheel.transform.position.x;
+        //shakeStart.y = escapeWheel.transform.position.y;
 
         NodeHandler = GetComponentInChildren<EventNodeHandler>();
         SetStartNode();
@@ -79,7 +79,7 @@ public abstract class DungeonController : MonoBehaviour
             currentTimeHeld = Mathf.Clamp(currentTimeHeld, 0, timeToEscapeDungeon);
 
             //Set the fill amount for the radial
-            escapeWheel.GetComponent<Image>().fillAmount = currentTimeHeld / timeToEscapeDungeon;
+            //escapeWheel.GetComponent<Image>().fillAmount = currentTimeHeld / timeToEscapeDungeon;
 
             if (currentTimeHeld > 0)
             {

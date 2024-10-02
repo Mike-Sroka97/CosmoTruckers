@@ -26,6 +26,8 @@ public class EventNodeHandler : MonoBehaviour
 
         if(intoCamera)
         {
+            Instantiate(node.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh);
+
             swishGoal = new Vector3(0, swishStartPos.y, swishStartPos.z);
             swoshGoal = new Vector3(0, swoshStartPos.y, swoshStartPos.z);
 
