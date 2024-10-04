@@ -61,5 +61,6 @@ public class EnumManager
         Healing, 
         MultiDamage, 
         MultiHealing,
+        Shield, 
     }
 }

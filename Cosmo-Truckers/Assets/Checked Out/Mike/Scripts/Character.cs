@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.TextCore.Text;
 
 public abstract class Character : MonoBehaviour
 {
@@ -289,6 +290,30 @@ public abstract class Character : MonoBehaviour
 
         // After taking shield damage, subtract Command Executing
         CombatManager.Instance.CommandsExecuting--;
+    }
+
+    // Coroutine needs to be called on object that isn't inactive
+    public void SingleHealThenDamage(int currentHealing, int currentDamage, bool piercing = true)
+    {
+        StartCoroutine(SingleHealingThenDamage(currentHealing, currentDamage, true));
+    }
+
+    // Heal, wait for healing combat star, and then deal damage
+    public IEnumerator SingleHealingThenDamage(int currentHealing, int currentDamage, bool piercing = true)
+    {
+        // Heal first and spawn healing star
+        TakeHealing(currentHealing, piercing);
+
+        // Wait until healing has started spawning in visual effects
+        while (CombatManager.Instance.CommandsExecuting < 1)
+            yield return null;
+
+        // Wait until combat stars are finished
+        while (CombatManager.Instance.CommandsExecuting > 0)
+            yield return null;
+
+        // Take damage and spawn damage star after healing is done
+        TakeDamage(currentDamage, piercing); //pierce defense cause technically healing
     }
 
     protected virtual float SpawnCombatStar(bool damage, string text, int spawnNumber)

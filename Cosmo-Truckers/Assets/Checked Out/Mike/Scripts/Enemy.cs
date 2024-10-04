@@ -198,18 +198,22 @@ public class Enemy : Character
             base.Energize(energize);
     }
 
-    IEnumerator DamageHealingEffect(bool damage, string text, EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
+    protected virtual IEnumerator DamageHealingEffect(bool damage, string text, EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
     {
         CombatManager.Instance.CommandsExecuting++;
 
-        float finalStarAnimationWaitTime = 0f; 
+        float finalStarAnimationWaitTime = 0f;
 
-        for(int i = 0; i < numberOfHits; i++)
+        for (int i = 0; i < numberOfHits; i++)
         {
-            SpawnCombatStar(damage, text, i); 
+            // When at the last star, get the time of the animation for that star
+            if (numberOfHits == 1 || i == (numberOfHits - 1))
+            {
+                finalStarAnimationWaitTime = SpawnCombatStar(damage, text, i);
+            }
 
             // Allow the stars to wait a small period of time between spawning each one
-            yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime); 
+            yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
         }
 
         // Wait for the final star to finish animating before actually dealing damage
@@ -219,21 +223,22 @@ public class Enemy : Character
         switch (outcome)
         {
             case EnumManager.CombatOutcome.Damage:
-                base.TakeDamage(originalValue, piercing); 
+                base.TakeDamage(originalValue, piercing);
                 break;
             case EnumManager.CombatOutcome.Healing:
-                base.TakeHealing(originalValue, piercing); 
+                base.TakeHealing(originalValue, piercing);
                 break;
             case EnumManager.CombatOutcome.MultiDamage:
-                base.TakeMultiHitDamage(originalValue, numberOfHits, piercing); 
-                break; 
-            case EnumManager.CombatOutcome.MultiHealing:
-                base.TakeMultiHitHealing(originalValue, numberOfHits, piercing); 
+                base.TakeMultiHitDamage(originalValue, numberOfHits, piercing);
                 break;
-            default: 
+            case EnumManager.CombatOutcome.MultiHealing:
+                base.TakeMultiHitHealing(originalValue, numberOfHits, piercing);
+                break;
+            default:
                 break;
         }
     }
+
     public override void Die()
     {
         // An additional add to Commands Executing for Die
