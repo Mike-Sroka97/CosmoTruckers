@@ -43,7 +43,7 @@ public class TurnOrder : MonoBehaviour
         }
 
         DetermineTurnOrder();
-        StartTurn();
+        StartCoroutine(DetermineCombatEnd());
     }
 
     public void DetermineTurnOrder()
@@ -53,9 +53,6 @@ public class TurnOrder : MonoBehaviour
 
     protected virtual void StartTurn()
     {
-        //Determine if the combat is won/lost
-        DetermineCombatEnd();
-
         if (!combatOver)
         {
             //give player control if player
@@ -118,7 +115,7 @@ public class TurnOrder : MonoBehaviour
         if (currentCharactersTurn >= livingCharacters.Length)
             currentCharactersTurn = 0;
 
-        StartTurn();
+        StartCoroutine(DetermineCombatEnd());
     }
 
     public bool AdjustSpeed(CharacterStats characterSpeed, bool increase)
@@ -299,8 +296,13 @@ public class TurnOrder : MonoBehaviour
         CombatManager.Instance.CurrentNode.SetupLineRendererers();
     }
 
-    private void DetermineCombatEnd()
+    private IEnumerator DetermineCombatEnd()
     {
+        while (CombatManager.Instance.CommandsExecuting > 0)
+        {
+            yield return null; 
+        }
+
         bool allEnemiesDead = true;
         bool allPlayersDead = true;
 
@@ -329,7 +331,6 @@ public class TurnOrder : MonoBehaviour
                 endCombatText.text = lossText;
 
             combatOver = true;
-            return;
         }
         else if (allEnemiesDead)
         {
@@ -337,7 +338,9 @@ public class TurnOrder : MonoBehaviour
             if (CombatManager.Instance.InCombat)
                 endCombatText.text = victoryText;
             combatOver = true;
-            return;
-        }   
+        }
+
+        // Start the turn after determining if combat is over
+        StartTurn(); 
     }
 }
