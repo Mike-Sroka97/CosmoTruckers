@@ -28,45 +28,45 @@ public class PlayerVessel : MonoBehaviour
     protected const float fadeSpeed = 2f;
     protected const float moveSpeed = 0.5f;
 
-    protected PlayerCharacter myCharacter;
+    public PlayerCharacter MyCharacter;
     [HideInInspector] public Mana MyMana;
     Transform myINAvessel;
 
     public virtual void Initialize(PlayerCharacter player)
     {
         //set player
-        myCharacter = player;
-        myCharacter.MyVessel = this;
+        MyCharacter = player;
+        MyCharacter.MyVessel = this;
 
         //set image
-        characterImage.sprite = myCharacter.VesselImage;
+        characterImage.sprite = MyCharacter.VesselImage;
 
         //set vessel outline
-        characterImage.material = playerOutlineMaterials[myCharacter.PlayerNumber - 1];
+        characterImage.material = playerOutlineMaterials[MyCharacter.PlayerNumber - 1];
 
         //set shield
         TrackShield();
 
         //set health
-        maxHealth.text = myCharacter.Health.ToString();
-        currentHealth.text = myCharacter.CurrentHealth.ToString();
+        maxHealth.text = MyCharacter.Health.ToString();
+        currentHealth.text = MyCharacter.CurrentHealth.ToString();
 
         //assign vessel to mana
-        MyMana = myCharacter.GetComponent<Mana>();
+        MyMana = MyCharacter.GetComponent<Mana>();
         MyMana.SetVessel(this);
 
         //assign INA vessel
-        myINAvessel = FindObjectOfType<INAcombat>().transform.Find("Health Vessels").GetChild(myCharacter.PlayerNumber - 1).transform;
+        myINAvessel = FindObjectOfType<INAcombat>().transform.Find("Health Vessels").GetChild(MyCharacter.PlayerNumber - 1).transform;
         UpdateHealthText();
 
-        myCharacter.HealthChangeEvent.AddListener(UpdateHealthText);
+        MyCharacter.HealthChangeEvent.AddListener(UpdateHealthText);
     }
 
     public void UpdateHealthText()
     {
-        myINAvessel.GetComponentInChildren<TextMeshPro>().text = myCharacter.CurrentHealth.ToString();
+        myINAvessel.GetComponentInChildren<TextMeshPro>().text = MyCharacter.CurrentHealth.ToString();
 
-        if(myCharacter.CurrentHealth > 0)
+        if(MyCharacter.CurrentHealth > 0)
             myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = aliveSprite;
         else
             myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = deadSprite;
@@ -82,11 +82,11 @@ public class PlayerVessel : MonoBehaviour
 
     public void AdjustFill()
     {
-        maxHealth.text = myCharacter.Health.ToString();
-        currentHealth.text = myCharacter.CurrentHealth.ToString();
+        maxHealth.text = MyCharacter.Health.ToString();
+        currentHealth.text = MyCharacter.CurrentHealth.ToString();
 
-        float newMaxHealth = myCharacter.Health;
-        float healthRatio = myCharacter.CurrentHealth / newMaxHealth;
+        float newMaxHealth = MyCharacter.Health;
+        float healthRatio = MyCharacter.CurrentHealth / newMaxHealth;
 
         currentHealthBar.fillAmount = healthRatio;
     }
@@ -109,7 +109,7 @@ public class PlayerVessel : MonoBehaviour
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
 
-        float maxHealth = myCharacter.Health;
+        float maxHealth = MyCharacter.Health;
         float healthRatio = newHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
@@ -126,7 +126,7 @@ public class PlayerVessel : MonoBehaviour
         damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
 
-        float maxHealth = myCharacter.Health;
+        float maxHealth = MyCharacter.Health;
         float healthRatio = newHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
@@ -135,14 +135,14 @@ public class PlayerVessel : MonoBehaviour
 
     protected virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
-        int currentCharacterHealth = myCharacter.CurrentHealth;
+        int currentCharacterHealth = MyCharacter.CurrentHealth;
         shieldText.text = currentShield.ToString();
 
         for (int i = 0; i < numberOfHits; i++)
         {
             if(damage)
             {
-                if (currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+                if (currentCharacterHealth > MyCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
                 {
                     int newShield = int.Parse(currentShield.text) - damageHealingAmount;
                     currentShield.text = newShield.ToString();
@@ -181,18 +181,18 @@ public class PlayerVessel : MonoBehaviour
 
     protected void TrackShield()
     {
-        currentShield.text = myCharacter.Shield.ToString();
+        currentShield.text = MyCharacter.Shield.ToString();
 
-        float currentShieldValue = myCharacter.Shield;
+        float currentShieldValue = MyCharacter.Shield;
         float shieldRatio = currentShieldValue / 60; //60 is max shields
         currentShieldBar.fillAmount = shieldRatio;
     }
 
     public void AdjustShieldDisplay(int newShield, int shieldAmount)
     {
-        currentShield.text = myCharacter.Shield.ToString();
+        currentShield.text = MyCharacter.Shield.ToString();
 
-        float currentShieldValue = myCharacter.Shield;
+        float currentShieldValue = MyCharacter.Shield;
         float shieldRatio = currentShieldValue / 60; //60 is max shields
         currentShieldBar.fillAmount = shieldRatio;
 
@@ -216,7 +216,8 @@ public class PlayerVessel : MonoBehaviour
 
     public void ManuallySetShield(int shield)
     {
-        currentShield.text = myCharacter.Shield.ToString();
+        MyCharacter.BubbleShielded = false;
+        currentShield.text = MyCharacter.Shield.ToString();
         currentShieldBar.fillAmount = shield / 60;
         TrackShield();
     }
@@ -225,6 +226,6 @@ public class PlayerVessel : MonoBehaviour
 
     private void OnDestroy()
     {
-        myCharacter.HealthChangeEvent.RemoveListener(UpdateHealthText);
+        MyCharacter.HealthChangeEvent.RemoveListener(UpdateHealthText);
     }
 }

@@ -256,7 +256,12 @@ public class TurnOrder : MonoBehaviour
 
                 //TODO
                 //Reset shield and Mana
-                CombatData.Instance.EnemySummonsToSpawn.Clear();
+                foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
+                {
+                    character.MyCharacter.GetManaBase.ResetMana();
+                    character.ManuallySetShield(0);
+                }
+
 
                 if(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {

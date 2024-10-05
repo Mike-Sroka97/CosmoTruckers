@@ -7,7 +7,6 @@ public class CombatData : MonoBehaviour
 
     public static CombatData Instance;
     public List<PlayerManager> PlayersToSpawn = new();
-    public List<GameObject> EnemySummonsToSpawn = new();
 
     private void Awake()
     {

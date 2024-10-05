@@ -16,7 +16,7 @@ public class LongDogVessel : PlayerVessel
     {
         base.Initialize(player);
         mana = MyMana.GetComponent<LongDogMana>();
-        character = myCharacter.GetComponent<LongDogCharacter>();
+        character = MyCharacter.GetComponent<LongDogCharacter>();
         DisplayBullets();
     }
 
@@ -59,7 +59,7 @@ public class LongDogVessel : PlayerVessel
 
     public IEnumerator LongDogDamageHealingEffect(List<int> damageValues, bool damage = true)
     {
-        int currentCharacterHealth = myCharacter.CurrentHealth;
+        int currentCharacterHealth = MyCharacter.CurrentHealth;
         shieldText.text = currentShield.ToString();
 
         if (currentCharacterHealth < 0)
@@ -72,7 +72,7 @@ public class LongDogVessel : PlayerVessel
 
         currentHealth.text = currentCharacterHealth.ToString();
 
-        float maxHealth = myCharacter.Health;
+        float maxHealth = MyCharacter.Health;
         float healthRatio = (float)currentCharacterHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
 
@@ -82,7 +82,7 @@ public class LongDogVessel : PlayerVessel
 
             if (damage)
             {
-                if (currentCharacterHealth > myCharacter.Health - (totalDamage - currentTotalDamageDisplayed))
+                if (currentCharacterHealth > MyCharacter.Health - (totalDamage - currentTotalDamageDisplayed))
                 {
                     int newShield = int.Parse(currentShield.text) - damageValues[i];
                     currentShield.text = newShield.ToString();

@@ -140,4 +140,17 @@ public class LongDogMana : Mana
 
         MyVessel.GetComponent<LongDogVessel>().DisplayBullets();
     }
+
+    public override void ResetMana()
+    {
+        ReserveBullets.Clear();
+        LoadedBullets.Clear();
+
+        for (int i = 0; i < 5; i++)
+        {
+            LoadedBullets.Add(0);
+        }
+
+        MyVessel.GetComponent<LongDogVessel>().DisplayBullets();
+    }
 }
