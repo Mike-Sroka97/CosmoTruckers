@@ -12,7 +12,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected float shakeSpeed = 2.0f;
     protected Vector2 shakeStart;
 
-    [SerializeField] protected bool debugging;
+    public bool Debugging;
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
@@ -118,7 +118,7 @@ public abstract class DungeonController : MonoBehaviour
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        if(debugging)
+        if(Debugging)
         {
             for (int i = 0; i < nonCombatNodes.Length; i++)
             {

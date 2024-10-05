@@ -517,6 +517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7431735864509144011}
   - component: {fileID: 7431735864509144012}
+  - component: {fileID: 4913454342591981469}
   m_Layer: 0
   m_Name: AngryWalkingNoise
   m_TagString: Untagged
@@ -569,6 +570,19 @@ Canvas:
   m_SortingLayerID: 1233702457
   m_SortingOrder: 6
   m_TargetDisplay: 0
+--- !u!114 &4913454342591981469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7431735864509144013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 764c252edf8226349b5b269c4ce33870, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 2.6
 --- !u!1 &7431735864828018398
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +667,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7431735864306747322}
     m_Modifications:
+    - target: {fileID: 1362021815502887554, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4913454342591981469}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -755,6 +773,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7431735864306747322}
     m_Modifications:
+    - target: {fileID: 672925890, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 672925892, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_text
       value: '"We really don''t have the time"'
@@ -777,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.x
@@ -785,7 +807,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -825,11 +847,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 694.4
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -252.78749
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -846,6 +868,10 @@ PrefabInstance:
     - target: {fileID: 5698755545322356394, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_Name
       value: Event Node Button (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5698755545322356394, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cde16bc908986244ca75b86be401855c, type: 3}
@@ -879,7 +905,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.x
@@ -887,7 +913,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -927,11 +953,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 694.4
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -589.83746
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -949,6 +975,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Event Node Button (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5698755545322356394, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cde16bc908986244ca75b86be401855c, type: 3}
 --- !u!224 &2897186326055863290 stripped
@@ -963,6 +993,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7431735864306747322}
     m_Modifications:
+    - target: {fileID: 672925890, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 672925892, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_text
       value: '"We won''t hear the muses of our enemy"'
@@ -985,7 +1019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.x
@@ -993,7 +1027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1033,11 +1067,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 694.4
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -421.3125
       objectReference: {fileID: 0}
     - target: {fileID: 5698755545322356393, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1054,6 +1088,10 @@ PrefabInstance:
     - target: {fileID: 5698755545322356394, guid: cde16bc908986244ca75b86be401855c, type: 3}
       propertyPath: m_Name
       value: Event Node Button (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5698755545322356394, guid: cde16bc908986244ca75b86be401855c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cde16bc908986244ca75b86be401855c, type: 3}

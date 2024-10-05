@@ -8,6 +8,7 @@ public class EventNodeHandler : MonoBehaviour
     [SerializeField] RectTransform swosh;
     [SerializeField] float swishSpeed;
 
+    DNode currentNode;
     Vector3 swishStartPos;
     Vector3 swoshStartPos;
 
@@ -17,16 +18,21 @@ public class EventNodeHandler : MonoBehaviour
         swoshStartPos = swosh.localPosition;
     }
 
-    public IEnumerator Move(bool intoCamera, DNode node)
+    public IEnumerator Move(bool intoCamera, DNode node = null)
     {
-        node.Active = false;
+        if(node)
+        {
+            currentNode = node;
+            currentNode.Active = false;
+        }
+
 
         Vector3 swishGoal;
         Vector3 swoshGoal;
 
         if(intoCamera)
         {
-            Instantiate(node.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh);
+            EventNodeBase nodeData = Instantiate(currentNode.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh).GetComponent<EventNodeBase>();
 
             swishGoal = new Vector3(0, swishStartPos.y, swishStartPos.z);
             swoshGoal = new Vector3(0, swoshStartPos.y, swoshStartPos.z);
@@ -43,7 +49,7 @@ public class EventNodeHandler : MonoBehaviour
                 yield return null;
             }
 
-            //TODO enable event
+            nodeData.Initialize(this);
         }
         else
         {
@@ -62,9 +68,9 @@ public class EventNodeHandler : MonoBehaviour
                 yield return null;
             }
 
-            node.Active = true;
-            node.EventFinished = true;
-            node.SetupLineRendererers();
+            currentNode.Active = true;
+            currentNode.EventFinished = true;
+            currentNode.SetupLineRendererers();
         }
     }
 }
