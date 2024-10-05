@@ -11,6 +11,7 @@ public class EventNodeHandler : MonoBehaviour
     DNode currentNode;
     Vector3 swishStartPos;
     Vector3 swoshStartPos;
+    EventNodeBase nodeData;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class EventNodeHandler : MonoBehaviour
 
         if(intoCamera)
         {
-            EventNodeBase nodeData = Instantiate(currentNode.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh).GetComponent<EventNodeBase>();
+            nodeData = Instantiate(currentNode.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh).GetComponent<EventNodeBase>();
 
             swishGoal = new Vector3(0, swishStartPos.y, swishStartPos.z);
             swoshGoal = new Vector3(0, swoshStartPos.y, swoshStartPos.z);
@@ -71,6 +72,8 @@ public class EventNodeHandler : MonoBehaviour
             currentNode.Active = true;
             currentNode.EventFinished = true;
             currentNode.SetupLineRendererers();
+
+            Destroy(nodeData.gameObject);
         }
     }
 }
