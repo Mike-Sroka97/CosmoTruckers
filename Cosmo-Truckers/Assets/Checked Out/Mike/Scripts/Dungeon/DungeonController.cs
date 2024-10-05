@@ -19,6 +19,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
     public EventNodeHandler NodeHandler;
+    public List<DNode> CombatNodes = new List<DNode>();
 
     public Transform PlayerStartPosition;
     public DNode CurrentNode;
@@ -39,15 +40,12 @@ public abstract class DungeonController : MonoBehaviour
 
     private void Start()
     {
-        //Get initial pos of escape wheel
-        //shakeStart.x = escapeWheel.transform.position.x;
-        //shakeStart.y = escapeWheel.transform.position.y;
-
         NodeHandler = GetComponentInChildren<EventNodeHandler>();
         SetStartNode();
         DungeonInitialize();
         DetermineNodeTypes();
         DetermineNodeLayouts();
+        SetupCombatNodes();
     }
 
     private void Update()
@@ -223,6 +221,15 @@ public abstract class DungeonController : MonoBehaviour
                 nodeArt.GetComponent<SpriteRenderer>().sortingOrder = allEventNodes[i].Row + 100;
             }
         }
+    }
+
+    private void SetupCombatNodes()
+    {
+        DNode[] nodes = GetComponentsInChildren<DNode>();
+
+        foreach (DNode node in nodes)
+            if (node.NodeData.GetComponent<DungeonCombatNode>())
+                CombatNodes.Add(node);
     }
 }
 
