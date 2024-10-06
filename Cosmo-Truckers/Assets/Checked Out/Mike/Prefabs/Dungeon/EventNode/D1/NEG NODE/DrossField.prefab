@@ -7,9 +7,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 189381898750184241, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -361792069, guid: a55a4f8f181bc39418ea1c55b62c845e, type: 3}
     - target: {fileID: 2104110815545156568, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_Name
-      value: AngryWalkingNoise Variant
+      value: DrossField
       objectReference: {fileID: 0}
     - target: {fileID: 2104110815545156574, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_Pivot.x
@@ -111,30 +115,40 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2104110815731569501, guid: 16752890a708cff458a9916467081cc5, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Timothy the walking noise asks if your party wants to hear a joke...
+      value: A cluster of Dutiful Dross intercepts the party. The magnetic pull of
+        the dross permanently reassigns your party's turn order randomly as well
+        as inflict a defense reducing augment.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Angry Walking Noise
+      value: Dross Field
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: -7002753353517771712}
+      objectReference: {fileID: 7076334123308577084}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: NoOption
+      value: AcceptOption
+      objectReference: {fileID: 0}
+    - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: DrossField, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: '"No" <color=red>Summons Timothy as an enemy</color>'
+      value: <color=red>Gain (1) stack of Magnetic Reversal</color>
       objectReference: {fileID: 0}
+    - target: {fileID: 5970733237032595044, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: sprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -361792069, guid: a55a4f8f181bc39418ea1c55b62c845e, type: 3}
+    - target: {fileID: 5970733237032595044, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: sprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1738993943, guid: a55a4f8f181bc39418ea1c55b62c845e, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16752890a708cff458a9916467081cc5, type: 3}
 --- !u!1 &1357892514989675591 stripped
@@ -142,7 +156,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2104110815545156568, guid: 16752890a708cff458a9916467081cc5, type: 3}
   m_PrefabInstance: {fileID: 1147144325973374879}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &-7002753353517771712
+--- !u!114 &7076334123308577084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,9 +165,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 1357892514989675591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 764c252edf8226349b5b269c4ce33870, type: 3}
+  m_Script: {fileID: 11500000, guid: 960f2623340227049bbb7423735a3a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2.6
-  Timmy: {fileID: 5489096831715301656, guid: 0d146ac8a6af9a2499aeeda2042e5f9a, type: 3}
-  responseText: Timothy will remember this transgression...
+  responseText: The dross field slowly clears...

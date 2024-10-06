@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AngryWalkingNoise : EventNodeBase
+public class DrossField : EventNodeBase
 {
-    [SerializeField] GameObject Timmy;
     [SerializeField] string responseText;
 
-    public void NoOption()
-    {
-        EnemyManager.Instance.EnemySummonsToSpawn.Add(Timmy);
+    public void AcceptOption()
+    {        
         descriptionText.text = responseText;
-        IteratePlayerReference();
         StartCoroutine(SelectionChosen());
     }
 }

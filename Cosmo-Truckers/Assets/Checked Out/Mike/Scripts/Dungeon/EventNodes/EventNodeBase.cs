@@ -30,4 +30,11 @@ public class EventNodeBase : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartCoroutine(nodeHandler.Move(false));
     }
+
+    protected void IteratePlayerReference()
+    {
+        nodeHandler.Player++;
+        if (nodeHandler.Player > 3)
+            nodeHandler.Player = 0;
+    }
 }

@@ -7,7 +7,9 @@ public class EventNodeHandler : MonoBehaviour
     [SerializeField] RectTransform swish;
     [SerializeField] RectTransform swosh;
     [SerializeField] float swishSpeed;
+    public Material[] OutlineMaterials;
 
+    public int Player = -1;
     DNode currentNode;
     Vector3 swishStartPos;
     Vector3 swoshStartPos;
@@ -21,12 +23,14 @@ public class EventNodeHandler : MonoBehaviour
 
     public IEnumerator Move(bool intoCamera, DNode node = null)
     {
-        if(node)
+        if(Player == -1)
+            Player = Random.Range(0, 4);
+
+        if (node)
         {
             currentNode = node;
             currentNode.Active = false;
         }
-
 
         Vector3 swishGoal;
         Vector3 swoshGoal;
