@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class EventNodeBase : MonoBehaviour
 {
     [SerializeField] protected float delay = 2.6f;
+    [SerializeField] protected DebuffStackSO[] augmentsToAdd;
 
     private EventNodeHandler nodeHandler;
     protected TextMeshProUGUI descriptionText;
