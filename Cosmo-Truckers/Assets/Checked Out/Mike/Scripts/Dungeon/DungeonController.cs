@@ -40,8 +40,6 @@ public abstract class DungeonController : MonoBehaviour
     private float currentTimeHeld = 0f;
     bool loading = false;
 
-    private bool loading = false;
-
     private void Start()
     {
         //Get initial pos of escape wheel
@@ -139,7 +137,7 @@ public abstract class DungeonController : MonoBehaviour
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        if(Debugging)
+        if(debugging)
         {
             for (int i = 0; i < nonCombatNodes.Length; i++)
             {
