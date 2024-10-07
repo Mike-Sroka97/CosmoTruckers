@@ -104,4 +104,11 @@ public class SafeTMana : Mana
         currentRage = 3;
         MyVessel.ManaTracking();
     }
+
+    public override void ResetMana()
+    {
+        currentAnger = 0;
+        currentRage = 0;
+        MyVessel.ManaTracking();
+    }
 }

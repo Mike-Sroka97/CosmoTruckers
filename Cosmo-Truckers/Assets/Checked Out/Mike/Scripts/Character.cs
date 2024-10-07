@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.TextCore.Text;
 
 public abstract class Character : MonoBehaviour
 {
@@ -43,6 +44,10 @@ public abstract class Character : MonoBehaviour
     //Augment stuffs
     TextMeshProUGUI augmentText;
     bool augmenting = false;
+
+    [Space(20)]
+    [Header("Combat Star")]
+    [SerializeField] Transform combatStarSpawn;
 
     public int CurrentHealth
     {
@@ -163,8 +168,10 @@ public abstract class Character : MonoBehaviour
                 AdjustAugs(false, augment);
                 Destroy(augment);
             }
-
         }
+
+        // After damage is done, subtract Command Executing
+        CombatManager.Instance.CommandsExecuting--;
     }
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
@@ -217,6 +224,9 @@ public abstract class Character : MonoBehaviour
                     AdjustAugs(false, augment);
             }
         }
+
+        // After damage is done, subtract Command Executing
+        CombatManager.Instance.CommandsExecuting--;
     }
 
     protected void AdjustAugs(bool add, DebuffStackSO stack)
@@ -238,12 +248,19 @@ public abstract class Character : MonoBehaviour
             healing = AdjustAttackHealing(healing);
 
         CurrentHealth = healing;
+
+        // After healing is done, subtract Command Executing
+        CombatManager.Instance.CommandsExecuting--;
     }
 
     public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
         if (Dead)
+        {
+            // If character is dead, subtract Command Executing
+            CombatManager.Instance.CommandsExecuting--;
             return;
+        }
 
         for (int i = 0; i < numberOfHeals; i++)
         {
@@ -252,17 +269,97 @@ public abstract class Character : MonoBehaviour
 
             CurrentHealth = healing;
         }
+
+        // After healing, subtract Command Executing
+        CombatManager.Instance.CommandsExecuting--;
     }
 
     public virtual void TakeShielding(int shieldAmount)
     {
         if (Dead)
+        {
+            // If character is dead, subtract Command Executing
+            CombatManager.Instance.CommandsExecuting--;
             return;
+        }
 
         if (Shield + shieldAmount > maxShield)
             Shield = maxShield;
         else
             Shield += shieldAmount;
+
+        // After taking shield damage, subtract Command Executing
+        CombatManager.Instance.CommandsExecuting--;
+    }
+
+    // Coroutine needs to be called on object that isn't inactive
+    public void SingleHealThenDamage(int currentHealing, int currentDamage, bool piercing = true)
+    {
+        StartCoroutine(SingleHealingThenDamage(currentHealing, currentDamage, true));
+    }
+
+    // Heal, wait for healing combat star, and then deal damage
+    public IEnumerator SingleHealingThenDamage(int currentHealing, int currentDamage, bool piercing = true)
+    {
+        // Heal first and spawn healing star
+        TakeHealing(currentHealing, piercing);
+
+        // Wait until healing has started spawning in visual effects
+        while (CombatManager.Instance.CommandsExecuting < 1)
+            yield return null;
+
+        // Wait until combat stars are finished
+        while (CombatManager.Instance.CommandsExecuting > 0)
+            yield return null;
+
+        // Take damage and spawn damage star after healing is done
+        TakeDamage(currentDamage, piercing); //pierce defense cause technically healing
+    }
+
+    protected virtual float SpawnCombatStar(bool damage, string text, int spawnNumber)
+    {
+        Material combatStarMaterial = damage ? CombatManager.Instance.DamageStarMaterial : CombatManager.Instance.HealingStarMaterial;
+
+        // Send error message in case of null combat star spawn
+        if (combatStarSpawn == null)
+        {
+            Debug.LogError($"Warning: The Combat Star Spawn transform has not been locally set on {gameObject.name} enemy!");
+            combatStarSpawn = gameObject.transform;
+        }
+
+        // Create the Combat Star at the star spwan position
+        GameObject star = Instantiate(CombatManager.Instance.BaseCombatStar, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
+
+        Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
+            UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
+        Vector3 newPosition = star.transform.position + offset;
+
+        // Determine if the Combat Star can be created at this position or if it is overlapping with another star
+        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition))
+        {
+            Debug.Log("Star couldn't be created at previous spot! Creating new position!"); 
+            offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
+                UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
+            newPosition = star.transform.position + offset; 
+        }
+
+        star.transform.position = newPosition;
+        return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, spawnNumber);
+    }
+
+    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint, CombatManager.Instance.CombatStarSpawnCheckRadius);
+        if (colliders.Length > 0)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.gameObject.GetComponent<CombatStar>() != null)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public void AdjustBubbleShield(bool active = false)
@@ -355,6 +452,7 @@ public abstract class Character : MonoBehaviour
     public virtual void Die()
     {
         DieEvent.Invoke();
+        
         //play death animation
         Dead = true;
         GetComponent<CharacterStats>().enabled = false;
@@ -373,6 +471,9 @@ public abstract class Character : MonoBehaviour
                 AugmentsToRemove.Add(aug);
         foreach (DebuffStackSO aug in AugmentsToRemove)
             AdjustAugs(false, aug);
+
+        // An additional subtract to Commands Executing for Die
+        CombatManager.Instance.CommandsExecuting--;
     }
 
     public virtual void Resurrect(int newHealth, bool ignoreVigor = false)

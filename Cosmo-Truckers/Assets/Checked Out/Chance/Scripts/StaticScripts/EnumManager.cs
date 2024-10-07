@@ -54,4 +54,13 @@ public class EnumManager
         SixFace,
         LongDog,
     }
+
+    public enum CombatOutcome
+    {
+        Damage, 
+        Healing, 
+        MultiDamage, 
+        MultiHealing,
+        Shield, 
+    }
 }

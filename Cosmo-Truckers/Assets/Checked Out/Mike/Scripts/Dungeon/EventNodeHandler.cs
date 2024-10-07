@@ -7,9 +7,13 @@ public class EventNodeHandler : MonoBehaviour
     [SerializeField] RectTransform swish;
     [SerializeField] RectTransform swosh;
     [SerializeField] float swishSpeed;
+    public Material[] OutlineMaterials;
 
+    public int Player = -1;
+    DNode currentNode;
     Vector3 swishStartPos;
     Vector3 swoshStartPos;
+    EventNodeBase nodeData;
 
     private void Start()
     {
@@ -17,15 +21,24 @@ public class EventNodeHandler : MonoBehaviour
         swoshStartPos = swosh.localPosition;
     }
 
-    public IEnumerator Move(bool intoCamera, DNode node)
+    public IEnumerator Move(bool intoCamera, DNode node = null)
     {
-        node.Active = false;
+        if(Player == -1)
+            Player = Random.Range(0, 4);
+
+        if (node)
+        {
+            currentNode = node;
+            currentNode.Active = false;
+        }
 
         Vector3 swishGoal;
         Vector3 swoshGoal;
 
         if(intoCamera)
         {
+            nodeData = Instantiate(currentNode.NodeData.GetComponent<DungeonEventNode>().EventToGenerate, swosh).GetComponent<EventNodeBase>();
+
             swishGoal = new Vector3(0, swishStartPos.y, swishStartPos.z);
             swoshGoal = new Vector3(0, swoshStartPos.y, swoshStartPos.z);
 
@@ -41,27 +54,7 @@ public class EventNodeHandler : MonoBehaviour
                 yield return null;
             }
 
-            //TODO REMOVE THIS SHIT
-            swishGoal = swishStartPos;
-            swoshGoal = swoshStartPos;
-
-            while (swosh.localPosition != swoshGoal)
-            {
-                swosh.localPosition = Vector3.MoveTowards(swosh.localPosition, swoshGoal, swishSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            while (swish.localPosition != swishGoal)
-            {
-                swish.localPosition = Vector3.MoveTowards(swish.localPosition, swishGoal, swishSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            node.Active = true;
-            node.EventFinished = true;
-            node.SetupLineRendererers();
-
-            //END REMOVE SECTOR
+            nodeData.Initialize(this);
         }
         else
         {
@@ -79,6 +72,12 @@ public class EventNodeHandler : MonoBehaviour
                 swish.localPosition = Vector3.MoveTowards(swish.localPosition, swishGoal, swishSpeed * Time.deltaTime);
                 yield return null;
             }
+
+            currentNode.Active = true;
+            currentNode.EventFinished = true;
+            currentNode.SetupLineRendererers();
+
+            Destroy(nodeData.gameObject);
         }
     }
 }

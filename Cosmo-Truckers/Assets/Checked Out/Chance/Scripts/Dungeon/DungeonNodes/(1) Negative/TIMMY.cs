@@ -10,7 +10,7 @@ public class TIMMY : NCNodePopUpOptions
 
     public override void SetUp(DebuffStackSO[] augs)
     {
-        CombatData.Instance.EnemySummonsToSpawn.Add(Timmy);
+        //CombatData.Instance.EnemySummonsToSpawn.Add(Timmy);
 
         currentPlayer.text = "Would you like to hear a joke?";
 

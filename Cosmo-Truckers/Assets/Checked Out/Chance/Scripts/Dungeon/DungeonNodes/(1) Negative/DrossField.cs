@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrossField : NCNodePopUpOptions
+public class DrossFieldOBSOLETE : NCNodePopUpOptions
 {
     public override void SetUp(DebuffStackSO[] augs)
     {

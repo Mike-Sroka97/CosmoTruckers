@@ -21,6 +21,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
     public EventNodeHandler NodeHandler;
+    public List<DNode> CombatNodes = new List<DNode>();
 
     public Transform PlayerStartPosition;
     public DNode CurrentNode;
@@ -37,6 +38,7 @@ public abstract class DungeonController : MonoBehaviour
     protected List<GameObject> determinedEventNodes;
 
     private float currentTimeHeld = 0f;
+    bool loading = false;
 
     private bool loading = false;
 
@@ -51,6 +53,7 @@ public abstract class DungeonController : MonoBehaviour
         DungeonInitialize();
         DetermineNodeTypes();
         DetermineNodeLayouts();
+        SetupCombatNodes();
     }
 
     private void Update()
@@ -84,8 +87,6 @@ public abstract class DungeonController : MonoBehaviour
             escapeWheel.transform.position = new Vector3(shakeX, shakeY);
             escapeMan.transform.position = new Vector3(shakeX, shakeY);
 
-            if (Vector3.Distance(escapeWheel.transform.position, targetPos) < 0.02f)
-                targetPos = Vector3.zero;
 
             if (currentTimeHeld >= timeToEscapeDungeon)
             {
@@ -138,28 +139,41 @@ public abstract class DungeonController : MonoBehaviour
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        for (int i = 0; i < nonCombatNodes.Length; i++)
+        if(Debugging)
         {
-            if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
-            {
-                positiveNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+            for (int i = 0; i < nonCombatNodes.Length; i++)
             {
                 neutralNodes.Add(nonCombatNodes[i]);
                 currentNodeCount++;
-
+                if (currentNodeCount >= totalEventNodes)
+                    break;
             }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
-            {
-                negativeNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-
-            if (currentNodeCount >= totalEventNodes)
-                break;
         }
+        else
+        {
+            for (int i = 0; i < nonCombatNodes.Length; i++)
+            {
+                if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
+                {
+                    positiveNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+                {
+                    neutralNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
+                {
+                    negativeNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+
+                if (currentNodeCount >= totalEventNodes)
+                    break;
+            }
+        }
+
 
         determinedEventNodes.AddRange(positiveNodes);
         determinedEventNodes.AddRange(neutralNodes);
@@ -230,6 +244,15 @@ public abstract class DungeonController : MonoBehaviour
                 nodeArt.GetComponent<SpriteRenderer>().sortingOrder = allEventNodes[i].Row + 100;
             }
         }
+    }
+
+    private void SetupCombatNodes()
+    {
+        DNode[] nodes = GetComponentsInChildren<DNode>();
+
+        foreach (DNode node in nodes)
+            if (node.NodeData.GetComponent<DungeonCombatNode>())
+                CombatNodes.Add(node);
     }
 }
 

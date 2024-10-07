@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AstroDog : NCNodePopUpOptions
+public class AstroDogOBSOLETE : NCNodePopUpOptions
 {
     public override void SetUp(DebuffStackSO[] augs)
     {

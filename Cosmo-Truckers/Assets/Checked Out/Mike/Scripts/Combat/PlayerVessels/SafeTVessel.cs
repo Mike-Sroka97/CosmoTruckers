@@ -39,7 +39,7 @@ public class SafeTVessel : PlayerVessel
 
     protected override IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
     {
-        int currentCharacterHealth = myCharacter.CurrentHealth;
+        int currentCharacterHealth = MyCharacter.CurrentHealth;
 
         for (int i = 0; i < numberOfHits; i++)
         {
@@ -48,7 +48,7 @@ public class SafeTVessel : PlayerVessel
 
             safeTMana.SetCurrentAnger(1);
 
-            if(currentCharacterHealth > myCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+            if(currentCharacterHealth > MyCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
             {
                 int newShield = int.Parse(currentShield.text) - damageHealingAmount;
                 currentShield.text = newShield.ToString();

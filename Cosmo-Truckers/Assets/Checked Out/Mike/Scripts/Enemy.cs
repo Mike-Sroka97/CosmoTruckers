@@ -16,11 +16,7 @@ public class Enemy : Character
     [Header("Special Effects")]
     [SerializeField] TextMeshProUGUI damageText;
     [SerializeField] TextMeshProUGUI healingText;
-    [SerializeField] Color damageColor;
-    [SerializeField] Color healingColor;
     public bool IsBoss = false;
-    Vector3 damageTextStartPosition;
-    Vector3 healingTextStartPosition;
 
     public BaseAttackSO[] GetAllAttacks { get => attacks; }
     public bool SpecialTargetConditions = false;
@@ -33,6 +29,7 @@ public class Enemy : Character
     [SerializeField] string characterName;
 
     Animator enemyAnimation;
+    [SerializeField] protected AnimationClip deathAnimation; 
 
     private PlayerCharacter tauntedBy;
     protected UnityEvent tauntedByChanged = new UnityEvent();
@@ -144,28 +141,26 @@ public class Enemy : Character
     public override void TakeDamage(int damage, bool defensePiercing = false)
     {
         bool bubble = false;
+        int originalDamage = damage; 
 
         if (BubbleShielded)
             bubble = true;
-
-        base.TakeDamage(damage, defensePiercing);
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
         if (bubble)
             damage = 0;
 
-        StartCoroutine(DamageHealingEffect(true, damage.ToString()));
+        StartCoroutine(DamageHealingEffect(true, damage.ToString(), EnumManager.CombatOutcome.Damage, originalDamage, defensePiercing));
     }
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
     {
         bool bubble = false;
+        int originalDamage = damage;
 
         if (BubbleShielded)
             bubble = true;
-
-        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
 
         if (!defensePiercing)
             damage = AdjustAttackDamage(damage);
@@ -173,27 +168,27 @@ public class Enemy : Character
         if (bubble)
             numberOfHits--;
 
-        StartCoroutine(DamageHealingEffect(true, damage.ToString(), numberOfHits));
+        StartCoroutine(DamageHealingEffect(true, damage.ToString(), EnumManager.CombatOutcome.MultiDamage, originalDamage, defensePiercing, numberOfHits));
     }
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
     {
-        base.TakeHealing(healing, ignoreVigor);
+        int originalHealing = healing;
 
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
-        StartCoroutine(DamageHealingEffect(false, healing.ToString()));
+        StartCoroutine(DamageHealingEffect(false, healing.ToString(), EnumManager.CombatOutcome.Healing, originalHealing, ignoreVigor));
     }
 
     public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
-        base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+        int originalHealing = healing;
 
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
-        StartCoroutine(DamageHealingEffect(false, healing.ToString(), numberOfHeals));
+        StartCoroutine(DamageHealingEffect(false, healing.ToString(), EnumManager.CombatOutcome.MultiHealing, originalHealing, ignoreVigor, numberOfHeals));
     }
 
     public override void Energize(bool energize)
@@ -203,56 +198,70 @@ public class Enemy : Character
             base.Energize(energize);
     }
 
-    IEnumerator DamageHealingEffect(bool damage, string text = null, int numberOfHits = 1)
+    protected virtual IEnumerator DamageHealingEffect(bool damage, string text, EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
     {
-        for(int i = 0; i < numberOfHits; i++)
+        CombatManager.Instance.CommandsExecuting++;
+
+        float finalStarAnimationWaitTime = 0f;
+
+        for (int i = 0; i < numberOfHits; i++)
         {
-            damageTextStartPosition = damageText.transform.localPosition;
-            healingTextStartPosition = healingText.transform.localPosition;
-
-            if (damage)
+            // When at the last star, get the time of the animation for that star
+            if (numberOfHits == 1 || i == (numberOfHits - 1))
             {
-                damageText.text = text;
-
-                foreach (SpriteRenderer renderer in TargetingSprites)
-                    renderer.color = damageColor;
-
-                damageText.color = damageColor;
-                while (damageText.color.a > 0)
-                {
-                    damageText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-                    damageText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-
-                    foreach (SpriteRenderer renderer in TargetingSprites)
-                        renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
-
-                    yield return null;
-                }
+                finalStarAnimationWaitTime = SpawnCombatStar(damage, text, i);
             }
 
-            else if (!damage)
-            {
-                healingText.text = text;
-
-                foreach (SpriteRenderer renderer in TargetingSprites)
-                    renderer.color = healingColor;
-
-                healingText.color = healingColor;
-                while (healingText.color.a > 0)
-                {
-                    healingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-                    healingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-
-                    foreach (SpriteRenderer renderer in TargetingSprites)
-                        renderer.color += new Color(fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, fadeSpeed * Time.deltaTime, 1);
-
-                    yield return null;
-                }
-            }
-
-            damageText.transform.localPosition = damageTextStartPosition;
-            healingText.transform.localPosition = healingTextStartPosition;
+            // Allow the stars to wait a small period of time between spawning each one
+            yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
         }
+
+        // Wait for the final star to finish animating before actually dealing damage
+        yield return new WaitForSeconds(finalStarAnimationWaitTime);
+
+        // Call the Damage / Healing base method after so death occurs visually after damage numbers have shown up
+        switch (outcome)
+        {
+            case EnumManager.CombatOutcome.Damage:
+                base.TakeDamage(originalValue, piercing);
+                break;
+            case EnumManager.CombatOutcome.Healing:
+                base.TakeHealing(originalValue, piercing);
+                break;
+            case EnumManager.CombatOutcome.MultiDamage:
+                base.TakeMultiHitDamage(originalValue, numberOfHits, piercing);
+                break;
+            case EnumManager.CombatOutcome.MultiHealing:
+                base.TakeMultiHitHealing(originalValue, numberOfHits, piercing);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public override void Die()
+    {
+        // An additional add to Commands Executing for Die
+        CombatManager.Instance.CommandsExecuting++;
+
+        // Start the Death Animation, which calls base.Die()
+        StartCoroutine(DeathAnimation()); 
+    }
+
+    IEnumerator DeathAnimation()
+    {
+        float waitTime = 0; 
+
+        if (deathAnimation != null)
+        {
+            enemyAnimation.Play(deathAnimation.name);
+            waitTime = deathAnimation.length;
+        }
+        else { Debug.LogError("Warning: No Death animation assigned to enemy!"); }
+
+        yield return new WaitForSeconds(waitTime);
+
+        base.Die();
     }
 
     public void QueueNextMove()

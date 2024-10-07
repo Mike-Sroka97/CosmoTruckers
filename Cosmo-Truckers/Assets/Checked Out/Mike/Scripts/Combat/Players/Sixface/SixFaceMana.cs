@@ -74,4 +74,13 @@ public class SixFaceMana : Mana
         if (vessel.CheckMegalomanicMode())
             FaceType = FaceTypes.Megalomanic;
     }
+
+    public override void ResetMana()
+    {
+        SixFaceVessel vessel = MyVessel.GetComponent<SixFaceVessel>();
+
+        FaceType = FaceTypes.Smug;
+        vessel.ClearFaceBG();
+        vessel.UpdateFace(FaceTypes.Smug);
+    }
 }
