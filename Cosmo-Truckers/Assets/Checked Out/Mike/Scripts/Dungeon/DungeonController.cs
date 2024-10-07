@@ -12,7 +12,9 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected float shakeSpeed = 2.0f;
     protected Vector2 shakeStart;
 
-    public bool Debugging;
+    protected Vector3 targetPos = Vector3.zero;
+
+    [SerializeField] protected bool debugging;
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
@@ -38,6 +40,8 @@ public abstract class DungeonController : MonoBehaviour
     private float currentTimeHeld = 0f;
     bool loading = false;
 
+    private bool loading = false;
+
     private void Start()
     {
         //Get initial pos of escape wheel
@@ -56,7 +60,7 @@ public abstract class DungeonController : MonoBehaviour
     {
         if (loading) return;
 
-        if (Input.GetKey(KeyCode.Escape) && !CombatManager.Instance.InCombat)
+        if(Input.GetKey(KeyCode.Escape) && !CombatManager.Instance.InCombat)
         {
             currentTimeHeld += Time.deltaTime;
 
@@ -72,16 +76,17 @@ public abstract class DungeonController : MonoBehaviour
             float shakeX = shakeStart.x;
             float shakeY = shakeStart.y;
 
-            //if (currentTimeHeld < .75f)
-            //    shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
-            //else
+            if (currentTimeHeld < .75f)
+                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
+            else
             {
-                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * -0.1f;
+                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
                 shakeY = shakeStart.y + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
             }
 
             escapeWheel.transform.position = new Vector3(shakeX, shakeY);
             escapeMan.transform.position = new Vector3(shakeX, shakeY);
+
 
             if (currentTimeHeld >= timeToEscapeDungeon)
             {
