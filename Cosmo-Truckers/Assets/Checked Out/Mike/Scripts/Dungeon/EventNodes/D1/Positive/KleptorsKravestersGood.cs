@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KleptorsKravestersBad : EventNodeBase
+public class KleptorsKravestersGood : EventNodeBase
 {
     Button[] myButtons;
-    int badKravester;
+    int goodKravester;
 
     private void Start()
     {
         myButtons = GetComponentsInChildren<Button>();
-        badKravester = Random.Range(0, 4);
+        goodKravester = Random.Range(0, 4);
     }
 
     public void EatKravester(int buttonID)
@@ -30,15 +30,10 @@ public class KleptorsKravestersBad : EventNodeBase
             }
 
         //Handles good/bad kravesters
-        if (buttonID == badKravester)
-        {
-            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.Stun(true);
-        }
+        if (buttonID == goodKravester)
+            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.Energize(true);
         else
-        {
-            if(PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.CurrentHealth > 1)
-                PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.TakeDamage(1, true);
-        }
+            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.TakeHealing(1, true);
 
         //don't end minigame while any buttons are active
         foreach (Button button in myButtons)
