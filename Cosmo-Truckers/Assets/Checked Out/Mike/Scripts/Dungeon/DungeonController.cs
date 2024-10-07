@@ -12,13 +12,14 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected float shakeSpeed = 2.0f;
     protected Vector2 shakeStart;
 
-    [SerializeField] protected bool debugging;
+    public bool Debugging;
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
     public EventNodeHandler NodeHandler;
+    public List<DNode> CombatNodes = new List<DNode>();
 
     public Transform PlayerStartPosition;
     public DNode CurrentNode;
@@ -48,6 +49,7 @@ public abstract class DungeonController : MonoBehaviour
         DungeonInitialize();
         DetermineNodeTypes();
         DetermineNodeLayouts();
+        SetupCombatNodes();
     }
 
     private void Update()
@@ -70,11 +72,11 @@ public abstract class DungeonController : MonoBehaviour
             float shakeX = shakeStart.x;
             float shakeY = shakeStart.y;
 
-            if (currentTimeHeld < .75f)
-                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
-            else
+            //if (currentTimeHeld < .75f)
+            //    shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
+            //else
             {
-                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
+                shakeX = shakeStart.x + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * -0.1f;
                 shakeY = shakeStart.y + Mathf.Sin(currentTimeHeld * currentTimeHeld / timeToEscapeDungeon * shakeSpeed) * 0.1f;
             }
 
@@ -132,28 +134,41 @@ public abstract class DungeonController : MonoBehaviour
         MathCC.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
-        for (int i = 0; i < nonCombatNodes.Length; i++)
+        if(Debugging)
         {
-            if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
-            {
-                positiveNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+            for (int i = 0; i < nonCombatNodes.Length; i++)
             {
                 neutralNodes.Add(nonCombatNodes[i]);
                 currentNodeCount++;
-
+                if (currentNodeCount >= totalEventNodes)
+                    break;
             }
-            else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
-            {
-                negativeNodes.Add(nonCombatNodes[i]);
-                currentNodeCount++;
-            }
-
-            if (currentNodeCount >= totalEventNodes)
-                break;
         }
+        else
+        {
+            for (int i = 0; i < nonCombatNodes.Length; i++)
+            {
+                if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Good && positiveNodes.Count < totalEventNodes / 4)
+                {
+                    positiveNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Neutral && neutralNodes.Count < totalEventNodes / 2)
+                {
+                    neutralNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+                else if (nonCombatNodes[i].GetComponent<DungeonEventNode>().Bad && negativeNodes.Count < totalEventNodes / 4)
+                {
+                    negativeNodes.Add(nonCombatNodes[i]);
+                    currentNodeCount++;
+                }
+
+                if (currentNodeCount >= totalEventNodes)
+                    break;
+            }
+        }
+
 
         determinedEventNodes.AddRange(positiveNodes);
         determinedEventNodes.AddRange(neutralNodes);
@@ -224,6 +239,15 @@ public abstract class DungeonController : MonoBehaviour
                 nodeArt.GetComponent<SpriteRenderer>().sortingOrder = allEventNodes[i].Row + 100;
             }
         }
+    }
+
+    private void SetupCombatNodes()
+    {
+        DNode[] nodes = GetComponentsInChildren<DNode>();
+
+        foreach (DNode node in nodes)
+            if (node.NodeData.GetComponent<DungeonCombatNode>())
+                CombatNodes.Add(node);
     }
 }
 

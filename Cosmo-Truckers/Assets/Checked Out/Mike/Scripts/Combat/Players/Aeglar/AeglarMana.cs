@@ -93,4 +93,15 @@ public class AeglarMana : Mana
 
         MyVessel.ManaTracking();
     }
+
+    public override void ResetMana()
+    {
+        VeggieMana = 0;
+        MeatMana = 0;
+        SweetMana = 0;
+
+        AdjustMana(3, 0);
+        AdjustMana(2, 1);
+        AdjustMana(1, 2);
+    }
 }

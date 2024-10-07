@@ -1,5 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1060354021361379069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1101409998062209832}
+  m_Layer: 5
+  m_Name: CombatStarSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1101409998062209832
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060354021361379069}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5603782182012581805}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1.3}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2106634719138383157
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +408,7 @@ RectTransform:
   - {fileID: 6103878837190407605}
   - {fileID: 2855096989714854294}
   - {fileID: 2855096988539367102}
+  - {fileID: 1101409998062209832}
   - {fileID: 3026968316556869060}
   - {fileID: 9043230414794244687}
   - {fileID: 7545821388134921804}
@@ -440,6 +477,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f5c1334b1db067c419d6f9a2c9a8459b, type: 2}
   - {fileID: 11400000, guid: a6734439af4c83942a59b5defd440e8f, type: 2}
   damageText: {fileID: 3832297972307061947}
+  combatStar: {fileID: 2036245936412917031, guid: 24fd4a9cbd0755148a73238cc7d58870, type: 3}
+  combatStarSpawn: {fileID: 1101409998062209832}
   healingText: {fileID: 7258721426580457925}
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   healingColor: {r: 0, g: 1, b: 0, a: 1}
@@ -927,7 +966,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_LocalPosition.x
@@ -997,7 +1036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1091,7 +1130,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_LocalPosition.x

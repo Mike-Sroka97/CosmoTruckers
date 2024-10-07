@@ -157,6 +157,42 @@ Canvas:
   m_SortingLayerID: 1233702457
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &2777553863992940844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5358168873891908474}
+  m_Layer: 5
+  m_Name: CombatStarSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5358168873891908474
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2777553863992940844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3105286010299707273}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0.63}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2951554304146549120
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +392,7 @@ RectTransform:
   - {fileID: 8168016856736732414}
   - {fileID: 1807720758733121119}
   - {fileID: 8079106610738233643}
+  - {fileID: 5358168873891908474}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -382,7 +419,7 @@ MonoBehaviour:
   AugmentsToRemove: []
   maxShield: 60
   Stats: {fileID: 3105286010299706996}
-  Health: 35
+  Health: 1
   TargetingSprites:
   - {fileID: 8121223236178758319}
   ShieldSprites:
@@ -411,6 +448,7 @@ MonoBehaviour:
       m_Calls: []
   Stunned: 0
   Tireless: 0
+  combatStarSpawn: {fileID: 5358168873891908474}
   BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
@@ -419,8 +457,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7651351e5bdd3c94eb6a7f006ad3d6d0, type: 2}
   damageText: {fileID: 6049352083405894815}
   healingText: {fileID: 171343172150677985}
-  damageColor: {r: 1, g: 0, b: 0, a: 1}
-  healingColor: {r: 0, g: 1, b: 0, a: 1}
   IsBoss: 0
   SpecialTargetConditions: 0
   CurrentTargets: []
@@ -428,6 +464,7 @@ MonoBehaviour:
   TakesCombatSpot: 1
   IsTrash: 1
   characterName: Amber Star
+  deathAnimation: {fileID: 7400000, guid: 5b90353bb45abd44783903d8fa16b467, type: 2}
 --- !u!114 &3105286010299706996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,9 +498,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3105286010299706999}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c4389b088bf880a48bb4c824ced8b33d, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4aa669b2d13a00a4a97ebcab605d3cb6, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

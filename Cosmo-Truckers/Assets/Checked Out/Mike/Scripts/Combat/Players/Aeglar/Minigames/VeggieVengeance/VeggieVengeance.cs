@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class VeggieVengeance : CombatMove
 {
@@ -45,8 +46,8 @@ public class VeggieVengeance : CombatMove
             {                
                 int currentDamage = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
                 currentHealing = character.Health - character.CurrentHealth;
-                character.GetComponent<Character>().TakeHealing(currentHealing, true); //heal to full first
-                character.TakeDamage(currentDamage, true); //pierce defense cause technically healing
+                
+                character.SingleHealThenDamage(currentHealing, currentDamage, true); 
             }
             else
             {

@@ -9,12 +9,15 @@ public class EventNodeBase : MonoBehaviour
     [SerializeField] protected float delay = 2.6f;
     [SerializeField] protected DebuffStackSO[] augmentsToAdd;
 
+    protected Button[] myButtons;
     protected EventNodeHandler nodeHandler;
     protected TextMeshProUGUI descriptionText;
+    protected int currentTurns = 0;
 
-    private void Start()
+    protected virtual void Start()
     {
         descriptionText = transform.Find("Description/Description Text").GetComponent<TextMeshProUGUI>();
+        myButtons = GetComponentsInChildren<Button>();
     }
 
     public virtual void Initialize(EventNodeHandler handler)
@@ -37,5 +40,29 @@ public class EventNodeBase : MonoBehaviour
         nodeHandler.Player++;
         if (nodeHandler.Player > 3)
             nodeHandler.Player = 0;
+    }
+
+    protected void CheckEndEvent()
+    {
+        currentTurns++;
+
+        if (currentTurns > 3)
+            StartCoroutine(SelectionChosen());
+    }
+
+    protected void MultiplayerSelection(int buttonID)
+    {
+        //Disable button and iterate player
+        myButtons[buttonID].GetComponent<EventNodeButton>().MultiplayerSelected = true;
+        myButtons[buttonID].enabled = false;
+        IteratePlayerReference();
+
+        //Selects next available button
+        foreach (Button button in myButtons)
+            if (button.enabled)
+            {
+                button.Select();
+                break;
+            }
     }
 }

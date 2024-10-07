@@ -107,4 +107,9 @@ public class ProtoMana : Mana
         CurrentBattery = maxBattery;
         MyVessel.ManaTracking();
     }
+
+    public override void ResetMana()
+    {
+        SetMaxMana(); //needed for abstract method. Don't you dare cast judgement upon me sinner
+    }
 }
