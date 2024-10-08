@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class EventNodeBase : MonoBehaviour
@@ -28,8 +29,11 @@ public class EventNodeBase : MonoBehaviour
 
     protected virtual IEnumerator SelectionChosen()
     {
-        foreach (Button button in GetComponentsInChildren<Button>())
+        foreach (Button button in myButtons)
+        {
             button.enabled = false;
+            button.GetComponent<EventNodeButton>().DeleteMaterial();
+        }
         
         yield return new WaitForSeconds(delay);
         StartCoroutine(nodeHandler.Move(false));
@@ -47,7 +51,9 @@ public class EventNodeBase : MonoBehaviour
         currentTurns++;
 
         if (currentTurns > 3)
+        {
             StartCoroutine(SelectionChosen());
+        }
     }
 
     protected void MultiplayerSelection(int buttonID)
@@ -56,13 +62,33 @@ public class EventNodeBase : MonoBehaviour
         myButtons[buttonID].GetComponent<EventNodeButton>().MultiplayerSelected = true;
         myButtons[buttonID].enabled = false;
         IteratePlayerReference();
+        AutoSelectNextButton();
+    }
 
+    public void IgnoreOption()
+    {
+        IteratePlayerReference();
+        AutoSelectNextButton();
+        CheckEndEvent();
+    }
+
+    private void AutoSelectNextButton()
+    {
         //Selects next available button
         foreach (Button button in myButtons)
             if (button.enabled)
             {
-                button.Select();
+                if (FindObjectOfType<EventSystem>().currentSelectedGameObject == button.gameObject)
+                    button.GetComponent<EventNodeButton>().ResetMaterial();
+                else
+                    button.Select();
+
                 break;
             }
+    }
+
+    protected void AddAugmentToPlayer(DebuffStackSO augment, int amount = 1)
+    {
+        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augment, amount);
     }
 }
