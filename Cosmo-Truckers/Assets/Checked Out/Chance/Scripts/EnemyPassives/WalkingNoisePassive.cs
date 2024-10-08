@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Obsolete]
-public class WalkingNoicePassive : EnemyPassiveBase
+public class WalkingNoisePassive : EnemyPassiveBase
 {
     public override void Activate(int val) 
     {

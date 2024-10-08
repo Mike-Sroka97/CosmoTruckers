@@ -382,6 +382,8 @@ MonoBehaviour:
   TargetingSprites:
   - {fileID: 8121223236178758319}
   ShieldSprites: []
+  MiniAugSprite: {fileID: 0}
+  BigAugSprite: {fileID: 0}
   shieldedMaterial: {fileID: 0}
   bubbleShieldMaterial: {fileID: 0}
   CombatSpot: 0
@@ -404,16 +406,15 @@ MonoBehaviour:
       m_Calls: []
   Stunned: 0
   Tireless: 0
+  CombatStarSpawn: {fileID: 0}
   BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
   test: {fileID: 0}
   attacks:
-  - {fileID: 11400000, guid: eb676a00efaccf54586e3885cc82b05f, type: 2}
+  - {fileID: 11400000, guid: 03292e5cd7de19e4aa08f9e43d512473, type: 2}
   damageText: {fileID: 6049352083405894815}
   healingText: {fileID: 171343172150677985}
-  damageColor: {r: 1, g: 0, b: 0, a: 1}
-  healingColor: {r: 0, g: 1, b: 0, a: 1}
   IsBoss: 0
   SpecialTargetConditions: 0
   CurrentTargets: []
@@ -421,6 +422,7 @@ MonoBehaviour:
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: 
+  deathAnimation: {fileID: 0}
 --- !u!114 &3105286010299706996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +435,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a7920bc20607448a6320223ade3714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Reflex: 1
+  Reflex: 1001
   Defense: 0
   TrueDefense: 0
   Vigor: 100

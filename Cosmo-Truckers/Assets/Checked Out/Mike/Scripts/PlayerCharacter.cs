@@ -274,12 +274,13 @@ public class PlayerCharacter : Character
 
     public override void Resurrect(int newHealth, bool ignoreVigor = false)
     {
-        base.Resurrect(newHealth, ignoreVigor);
+        //base.Resurrect(newHealth, ignoreVigor);
 
         if (!ignoreVigor)
             newHealth = AdjustAttackHealing(newHealth);
 
-        MyVessel.AdjustCurrentHealthDisplay(Health, newHealth, false);
+        MyVessel.StartCoroutine(MyVessel.DamageHealingEffect(false, newHealth, EnumManager.CombatOutcome.Resurrect));
+        //MyVessel.AdjustCurrentHealthDisplay(Health, newHealth, EnumManager.CombatOutcome.Resurrect, false);
     }
 
     public override void TakeDamage(int damage, bool defensePiercing = false)
@@ -289,7 +290,7 @@ public class PlayerCharacter : Character
         if (BubbleShielded)
             bubble = true;
 
-        base.TakeDamage(damage, defensePiercing);
+        //base.TakeDamage(damage, defensePiercing);
 
         if (GetComponent<PlayerCharacterSummon>())
             return;
@@ -299,7 +300,9 @@ public class PlayerCharacter : Character
         if (bubble)
             damage = 0;
 
-        MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, damage);
+
+        MyVessel.StartCoroutine(MyVessel.DamageHealingEffect(true, damage, EnumManager.CombatOutcome.Damage));
+        //MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, damage, EnumManager.CombatOutcome.Damage);
     }
 
     public override void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
@@ -309,7 +312,7 @@ public class PlayerCharacter : Character
         if (BubbleShielded)
             bubble = true;
 
-        base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
+        //base.TakeMultiHitDamage(damage, numberOfHits, defensePiercing);
 
         if (GetComponent<PlayerCharacterSummon>())
             return;
@@ -320,12 +323,13 @@ public class PlayerCharacter : Character
         if (bubble)
             numberOfHits--;
 
-        MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits);
+        MyVessel.StartCoroutine(MyVessel.DamageHealingEffect(true, damage, EnumManager.CombatOutcome.MultiDamage, numberOfHits));
+        //MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, damage, numberOfHits, EnumManager.CombatOutcome.MultiDamage);
     }
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
     {
-        base.TakeHealing(healing, ignoreVigor);
+        //base.TakeHealing(healing, ignoreVigor);
 
         if (GetComponent<PlayerCharacterSummon>())
             return;
@@ -333,12 +337,13 @@ public class PlayerCharacter : Character
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
-        MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, healing, false);
+        MyVessel.StartCoroutine(MyVessel.DamageHealingEffect(false, healing, EnumManager.CombatOutcome.Healing));
+        //MyVessel.AdjustCurrentHealthDisplay(CurrentHealth, healing, EnumManager.CombatOutcome.Healing, false);
     }
 
     public override void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
     {
-        base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
+        //base.TakeMultiHitHealing(healing, numberOfHeals, ignoreVigor);
 
         if (GetComponent<PlayerCharacterSummon>())
             return;
@@ -346,17 +351,45 @@ public class PlayerCharacter : Character
         if (!ignoreVigor)
             healing = AdjustAttackHealing(healing);
 
-        MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, healing, numberOfHeals, false);
+        MyVessel.StartCoroutine(MyVessel.DamageHealingEffect(false, healing, EnumManager.CombatOutcome.MultiHealing, numberOfHeals));
+        //MyVessel.AdjustMultiHitHealthDisplay(CurrentHealth, healing, numberOfHeals, EnumManager.CombatOutcome.MultiHealing, false);
     }
-
 
     public override void TakeShielding(int shieldAmount)
     {
-        base.TakeShielding(shieldAmount);
+        //base.TakeShielding(shieldAmount);
 
         if (GetComponent<PlayerCharacterSummon>())
             return;
 
-        MyVessel.AdjustShieldDisplay(Shield, shieldAmount);
+        MyVessel.StartCoroutine(MyVessel.ShieldEffect(shieldAmount)); 
+    }
+
+    public virtual void SwitchCombatOutcomes(EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
+    {
+        // Call the Damage / Healing base method after so death occurs visually after damage numbers have shown up
+        switch (outcome)
+        {
+            case EnumManager.CombatOutcome.Damage:
+                base.TakeDamage(originalValue, piercing);
+                break;
+            case EnumManager.CombatOutcome.Healing:
+                base.TakeHealing(originalValue, piercing);
+                break;
+            case EnumManager.CombatOutcome.MultiDamage:
+                base.TakeMultiHitDamage(originalValue, numberOfHits, piercing);
+                break;
+            case EnumManager.CombatOutcome.MultiHealing:
+                base.TakeMultiHitHealing(originalValue, numberOfHits, piercing);
+                break;
+            case EnumManager.CombatOutcome.Resurrect:
+                base.Resurrect(originalValue, piercing);
+                break;
+            case EnumManager.CombatOutcome.Shield:
+                base.TakeShielding(originalValue);
+                break; 
+            default:
+                break;
+        }
     }
 }

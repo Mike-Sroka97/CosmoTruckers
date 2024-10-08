@@ -62,5 +62,6 @@ public class EnumManager
         MultiDamage, 
         MultiHealing,
         Shield, 
+        Resurrect, 
     }
 }

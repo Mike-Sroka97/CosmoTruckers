@@ -47,7 +47,7 @@ public abstract class Character : MonoBehaviour
 
     [Space(20)]
     [Header("Combat Star")]
-    [SerializeField] Transform combatStarSpawn;
+    [SerializeField] Transform CombatStarSpawn;
 
     public int CurrentHealth
     {
@@ -316,27 +316,44 @@ public abstract class Character : MonoBehaviour
         TakeDamage(currentDamage, piercing); //pierce defense cause technically healing
     }
 
-    protected virtual float SpawnCombatStar(bool damage, string text, int spawnNumber)
+    public virtual float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnNumber)
     {
-        Material combatStarMaterial = damage ? CombatManager.Instance.DamageStarMaterial : CombatManager.Instance.HealingStarMaterial;
+        // Set combat star material to damage by default
+        Material combatStarMaterial = CombatManager.Instance.DamageStarMaterial; 
+
+        switch (outcome)
+        {
+            case EnumManager.CombatOutcome.MultiHealing:
+            case EnumManager.CombatOutcome.Healing:
+                combatStarMaterial = CombatManager.Instance.HealingStarMaterial;
+                break; 
+            case EnumManager.CombatOutcome.Shield:
+                combatStarMaterial = CombatManager.Instance.ShieldStarMaterial;
+                break;
+            default:
+                break; 
+        }
 
         // Send error message in case of null combat star spawn
-        if (combatStarSpawn == null)
+        if (CombatStarSpawn == null)
         {
             Debug.LogError($"Warning: The Combat Star Spawn transform has not been locally set on {gameObject.name} enemy!");
-            combatStarSpawn = gameObject.transform;
+            CombatStarSpawn = gameObject.transform;
         }
 
         // Create the Combat Star at the star spwan position
-        GameObject star = Instantiate(CombatManager.Instance.BaseCombatStar, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
+        GameObject star = Instantiate(CombatManager.Instance.BaseCombatStar, CombatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
 
         Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
             UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
         Vector3 newPosition = star.transform.position + offset;
 
+        int triesPerStar = 0; 
+
         // Determine if the Combat Star can be created at this position or if it is overlapping with another star
-        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition))
+        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition, triesPerStar))
         {
+            triesPerStar++; 
             Debug.Log("Star couldn't be created at previous spot! Creating new position!"); 
             offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
                 UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
@@ -347,10 +364,12 @@ public abstract class Character : MonoBehaviour
         return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, spawnNumber);
     }
 
-    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint)
+    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint, int triesPerStar)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint, CombatManager.Instance.CombatStarSpawnCheckRadius);
-        if (colliders.Length > 0)
+        
+        // If it's the first star or it's tried to spawn over 10 times, just spawn it
+        if (colliders.Length > 1 && triesPerStar < 10)
         {
             foreach (Collider2D collider in colliders)
             {

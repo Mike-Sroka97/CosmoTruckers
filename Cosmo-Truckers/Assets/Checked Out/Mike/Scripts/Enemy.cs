@@ -206,11 +206,7 @@ public class Enemy : Character
 
         for (int i = 0; i < numberOfHits; i++)
         {
-            // When at the last star, get the time of the animation for that star
-            if (numberOfHits == 1 || i == (numberOfHits - 1))
-            {
-                finalStarAnimationWaitTime = SpawnCombatStar(damage, text, i);
-            }
+            finalStarAnimationWaitTime = SpawnCombatStar(outcome, text, i);
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);

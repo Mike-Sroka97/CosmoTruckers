@@ -17,14 +17,6 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] Sprite deadSprite;
     [SerializeField] Material[] playerOutlineMaterials;
 
-    [Space(20)]
-    [Header("Special Effects")]
-    [SerializeField] protected TextMeshProUGUI damageHealingText;
-    [SerializeField] protected TextMeshProUGUI shieldText;
-    [SerializeField] protected Color damageColor;
-    [SerializeField] protected Color healingColor;
-    [SerializeField] protected Color shieldColor;
-
     protected const float fadeSpeed = 2f;
     protected const float moveSpeed = 0.5f;
 
@@ -99,84 +91,100 @@ public class PlayerVessel : MonoBehaviour
             characterImage.sprite = aliveSprite;
     }
 
-    public void AdjustCurrentHealthDisplay(int newHealth, int damageHealingAmount, bool damage = true)
+    public void AdjustCurrentHealthDisplay(int newHealth)
     {
         if (newHealth < 0)
             newHealth = 0;
 
         AdjustPlayerIcon(newHealth);
 
-        damageHealingText.text = damageHealingAmount.ToString();
+        //damageHealingText.text = damageHealingAmount.ToString();
         currentHealth.text = newHealth.ToString();
 
         float maxHealth = MyCharacter.Health;
         float healthRatio = newHealth / maxHealth;
         currentHealthBar.fillAmount = healthRatio;
-
-        StartCoroutine(DamageHealingEffect(damage, damageHealingAmount));
     }
 
-    public void AdjustMultiHitHealthDisplay(int newHealth, int damageHealingAmount, int numberOfHits, bool damage = true)
+    public virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, EnumManager.CombatOutcome outcome, int numberOfHits = 1)
     {
-        if (newHealth < 0)
-            newHealth = 0;
+        CombatManager.Instance.CommandsExecuting++;
 
-        AdjustPlayerIcon(newHealth);
+        float finalStarAnimationWaitTime = 0f;
+        string text = damageHealingAmount.ToString();
 
-        damageHealingText.text = damageHealingAmount.ToString();
-        currentHealth.text = newHealth.ToString();
+        int currentHealthDisplay = MyCharacter.CurrentHealth;
+        int currentShieldDisplay = MyCharacter.Shield; 
 
-        float maxHealth = MyCharacter.Health;
-        float healthRatio = newHealth / maxHealth;
-        currentHealthBar.fillAmount = healthRatio;
+        // If this is a multi-hit damage attack with a bubble shield: display 0 dmg, deal the dmg that removes the bubble, and then continue
+        if (damage && MyCharacter.BubbleShielded && numberOfHits > 1)
+        {
+            // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
+            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, "0", -1);
 
-        StartCoroutine(DamageHealingEffect(damage, damageHealingAmount, numberOfHits));
-    }
+            // Allow the stars to wait a small period of time between spawning each one
+            yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
 
-    protected virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, int numberOfHits = 1)
-    {
-        int currentCharacterHealth = MyCharacter.CurrentHealth;
-        shieldText.text = currentShield.ToString();
+            // Make sure the turn doesn't end prematurely
+            CombatManager.Instance.CommandsExecuting++; 
 
+            // Call the TakeDamage method to destroy the bubble shield
+            MyCharacter.SwitchCombatOutcomes(EnumManager.CombatOutcome.Damage, damageHealingAmount, piercing: false);
+
+            // Wait until damage is done 
+            while (CombatManager.Instance.CommandsExecuting > 1)
+                yield return null;
+
+            // Make sure to subtract number of hits so we don't call an additional hit later
+            numberOfHits--; 
+        }
+
+        // Spawn combat stars like normal
         for (int i = 0; i < numberOfHits; i++)
         {
-            if(damage)
+            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, text, i);
+
+            // Allow the stars to wait a small period of time between spawning each one
+            yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
+
+            // Deal damage / healing to the health bars themselves after combat stars have beens spawned
+            if (damage)
             {
-                if (currentCharacterHealth > MyCharacter.Health - (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1))))
+                // Subtract damage healing amount for every hit to character's "current" shield / health
+                if (currentShieldDisplay > 0)
                 {
-                    int newShield = int.Parse(currentShield.text) - damageHealingAmount;
-                    currentShield.text = newShield.ToString();
+                    currentShieldDisplay -= damageHealingAmount;
+
+                    // If current shield is now below 0, take that remaining amount from health and then set it to 0
+                    if (currentShieldDisplay < 0)
+                    {
+                        currentHealthDisplay += currentShieldDisplay;
+                        currentShieldDisplay = 0;
+                    }
+                }
+                else { currentHealthDisplay -= damageHealingAmount; }
+
+                // If "current" character shield is greater than 0 or the text isn't 0, update the shield text
+                if (currentShieldDisplay > 0 || (currentShieldDisplay == 0 && currentShield.text != "0"))
+                {
+                    AdjustShieldDisplay(currentShieldDisplay);
                 }
                 else
                 {
-                    currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
-                    TrackShield();
+                    AdjustCurrentHealthDisplay(currentHealthDisplay);
                 }
             }
             else
             {
-                currentHealth.text = (currentCharacterHealth + (damageHealingAmount * numberOfHits - (damageHealingAmount * (i + 1)))).ToString();
-            }
-
-            if (damage)
-                damageHealingText.color = damageColor;
-            else
-                damageHealingText.color = healingColor;
-
-            while (damageHealingText.color.a > 0)
-            {
-                damageHealingText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-                damageHealingText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-                yield return null;
-            }
-
-            damageHealingText.transform.localPosition = Vector3.zero;
-
-            if (int.Parse(currentShield.text) <= 0)
-            {
-                TrackShield();
+                currentHealthDisplay += damageHealingAmount;
+                AdjustCurrentHealthDisplay(currentHealthDisplay);
             }
         }
+
+        // Wait for the final star to finish animating before actually dealing damage
+        yield return new WaitForSeconds(finalStarAnimationWaitTime);
+
+        MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false);
     }
 
     protected void TrackShield()
@@ -188,38 +196,31 @@ public class PlayerVessel : MonoBehaviour
         currentShieldBar.fillAmount = shieldRatio;
     }
 
-    public void AdjustShieldDisplay(int newShield, int shieldAmount)
+    public void AdjustShieldDisplay(int shieldAmount)
     {
-        currentShield.text = MyCharacter.Shield.ToString();
+        currentShield.text = shieldAmount.ToString();
 
-        float currentShieldValue = MyCharacter.Shield;
-        float shieldRatio = currentShieldValue / 60; //60 is max shields
+        float shieldRatio = (float)shieldAmount / 60; //60 is max shields
         currentShieldBar.fillAmount = shieldRatio;
-
-        StartCoroutine(ShieldEffect(shieldAmount));
     }
 
-    protected virtual IEnumerator ShieldEffect(int shieldAmount)
+    public virtual IEnumerator ShieldEffect(int shieldAmount)
     {
-        shieldText.text = shieldAmount.ToString();
-        shieldText.color = shieldColor;
+        string text = shieldAmount.ToString(); 
+        float finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(EnumManager.CombatOutcome.Shield, text, 1);
 
-        while (shieldText.color.a > 0)
-        {
-            shieldText.transform.position += new Vector3(moveSpeed * Time.deltaTime, moveSpeed * Time.deltaTime, 0);
-            shieldText.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
-            yield return null;
-        }
+        AdjustShieldDisplay(shieldAmount); 
 
-        shieldText.transform.localPosition = Vector3.zero;
+        // Wait for the final star to finish animating before actually dealing 
+        yield return new WaitForSeconds(finalStarAnimationWaitTime);
+
+        MyCharacter.SwitchCombatOutcomes(EnumManager.CombatOutcome.Shield, shieldAmount, piercing: false);
     }
 
     public void ManuallySetShield(int shield)
     {
-        MyCharacter.BubbleShielded = false;
-        currentShield.text = MyCharacter.Shield.ToString();
-        currentShieldBar.fillAmount = shield / 60;
-        TrackShield();
+        currentShield.text = shield.ToString();
+        currentShieldBar.fillAmount = (float)shield / 60;
     }
 
     public virtual void ManaTracking() { }

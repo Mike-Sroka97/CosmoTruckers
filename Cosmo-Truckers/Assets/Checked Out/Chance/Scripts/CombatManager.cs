@@ -53,9 +53,10 @@ public class CombatManager : MonoBehaviour
     public GameObject BaseCombatStar;
     public Material DamageStarMaterial;
     public Material HealingStarMaterial; 
+    public Material ShieldStarMaterial; 
     public float CombatStarSpawnWaitTime = 0.25f; 
-    public float CombatStarMaxOffset = 0.5f;
-    public float CombatStarSpawnCheckRadius = 0.2f;
+    public float CombatStarMaxOffset = 0.3f;
+    public float CombatStarSpawnCheckRadius = 0.05f;
 
     bool inTrashEndMove = false;
     INAcombat INA;
