@@ -12,9 +12,6 @@ public class MysteriousCane : Augment
             AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
         }
 
-        if (firstGo)
-            firstGo = false;
-
         base.Activate(stack);
 
         AugmentSO.MyCharacter.AdjustAttackDamage((int)StatusEffect);

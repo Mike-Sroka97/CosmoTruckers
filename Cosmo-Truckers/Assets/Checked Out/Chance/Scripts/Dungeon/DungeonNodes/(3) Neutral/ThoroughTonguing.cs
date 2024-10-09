@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ThoroughTonguing : NCNodePopUpOptions
+public class ThoroughTonguingOBSOLETE : NCNodePopUpOptions
 {
     public string header = "One of you must get tounged, who will it be??";
 

@@ -15,7 +15,6 @@ public class DefenseAdjustmentAugment : Augment
 
         if (!defenseIncrease && firstGo)
         {
-            firstGo = false;
             baseStatusEffect = -baseStatusEffect;
             additionalStatusEffect = -additionalStatusEffect;
         }

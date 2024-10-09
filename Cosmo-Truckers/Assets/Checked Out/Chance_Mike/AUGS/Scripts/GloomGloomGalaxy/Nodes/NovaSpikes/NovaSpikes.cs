@@ -10,7 +10,6 @@ public class NovaSpikes : Augment
             return;
 
         base.Activate(stack);
-        firstGo = false;
     }
 
     public override void StopEffect()

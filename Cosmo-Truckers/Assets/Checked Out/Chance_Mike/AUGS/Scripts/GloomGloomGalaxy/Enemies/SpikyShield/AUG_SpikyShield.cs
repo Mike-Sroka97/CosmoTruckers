@@ -13,7 +13,6 @@ public class AUG_SpikyShield : Augment
 
         base.Activate(stack);
         AugmentSO.MyCharacter.Shield += shieldAmount;
-        firstGo = false;
     }
 
     public override void StopEffect()

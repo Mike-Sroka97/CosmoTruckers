@@ -15,7 +15,6 @@ public class DamageAdjustmentAugment : Augment
 
         if (!damageIncrease && firstGo)
         {
-            firstGo = false;
             baseStatusEffect = -baseStatusEffect;
             additionalStatusEffect = -additionalStatusEffect;
         }

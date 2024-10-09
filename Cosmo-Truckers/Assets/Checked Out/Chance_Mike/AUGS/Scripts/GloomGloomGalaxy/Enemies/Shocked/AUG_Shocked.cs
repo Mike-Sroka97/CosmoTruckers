@@ -8,8 +8,6 @@ public class AUG_Shocked : Augment
     {
         if (!firstGo)
             StopEffect();
-        else
-            firstGo = false;
 
         base.Activate(stack);
         AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);

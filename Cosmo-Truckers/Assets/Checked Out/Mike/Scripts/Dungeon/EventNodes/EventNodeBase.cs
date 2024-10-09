@@ -72,6 +72,14 @@ public class EventNodeBase : MonoBehaviour
         CheckEndEvent();
     }
 
+    public void IgnoreAndCheckDisable(int buttonToDisable = 1)
+    {
+        IgnoreOption();
+
+        if (currentTurns == 3)
+            myButtons[buttonToDisable].enabled = false;
+    }
+
     private void AutoSelectNextButton()
     {
         //Selects next available button

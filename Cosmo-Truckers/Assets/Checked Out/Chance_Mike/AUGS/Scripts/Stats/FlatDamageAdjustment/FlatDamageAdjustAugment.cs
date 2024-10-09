@@ -15,7 +15,6 @@ public class FlatDamageAdjustAugment : Augment
 
         if (!flatDamageIncrease && firstGo)
         {
-            firstGo = false;
             baseStatusEffect = -baseStatusEffect;
             additionalStatusEffect = -additionalStatusEffect;
         }

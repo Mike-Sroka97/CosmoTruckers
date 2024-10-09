@@ -14,7 +14,6 @@ public class AUG_NovaSword : Augment
         base.Activate(stack);
         AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
         AugmentSO.MyCharacter.Shield += shieldAmount;
-        firstGo = false;
     }
 
     public override void StopEffect()

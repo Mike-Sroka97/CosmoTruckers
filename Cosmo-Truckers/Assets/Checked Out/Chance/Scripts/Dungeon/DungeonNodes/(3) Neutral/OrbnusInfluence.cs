@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrbnusInfluence : NCNodePopUpOptions
+public class OrbnusInfluenceOBSOLETE : NCNodePopUpOptions
 {
     public string header = "You feel the presure of Orbnus upon you. . .";
 

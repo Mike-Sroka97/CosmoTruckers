@@ -12,7 +12,6 @@ public class AUG_ToughCrust : Augment
         base.Activate(stack);
         AugmentSO.MyCharacter.AdjustDefense((int)StatusEffect);
         AugmentSO.LastStacks = AugmentSO.CurrentStacks;
-        firstGo = false;
     }
 
     public override void StopEffect()

@@ -12,8 +12,6 @@ public class AUG_PorkedUp : Augment
             AugmentSO.MyCharacter.FlatHealingAdjustment -= AugmentSO.LastStacks;
         }
 
-        firstGo = false;
-
         base.Activate(stack);
 
         AugmentSO.MyCharacter.FlatDamageAdjustment += (int)StatusEffect;

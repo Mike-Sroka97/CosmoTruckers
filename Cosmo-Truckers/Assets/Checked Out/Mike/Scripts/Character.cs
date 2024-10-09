@@ -644,14 +644,16 @@ public abstract class Character : MonoBehaviour
             //remove debuffs
             case 0:
                 foreach(DebuffStackSO debuff in tempAUGS)
-                    if(debuff.IsDebuff)
+                    if(debuff.IsDebuff && debuff.Removable)
                     {
                         if (currentAmount >= debuff.CurrentStacks)
                         {
+                            int currentStacks = debuff.CurrentStacks;
+
                             StartCoroutine(DisplayAugment(debuff, true));
-                            RemoveDebuffStack(debuff, currentAmount);
+                            RemoveDebuffStack(debuff, currentStacks);
                             debuff.DestroyAugment();
-                            currentAmount -= debuff.CurrentStacks;
+                            currentAmount -= currentStacks;
                         }
                         else if(currentAmount > 0)
                         {
@@ -669,14 +671,16 @@ public abstract class Character : MonoBehaviour
             //remove buffs
             case 1:
                 foreach (DebuffStackSO buff in tempAUGS)
-                    if (buff.IsBuff)
+                    if (buff.IsBuff && buff.Removable)
                     {
                         if (currentAmount >= buff.CurrentStacks)
                         {
+                            int currentStacks = buff.CurrentStacks;
+
                             StartCoroutine(DisplayAugment(buff, true));
-                            RemoveDebuffStack(buff, currentAmount);
+                            RemoveDebuffStack(buff, currentStacks);
                             buff.DestroyAugment();
-                            currentAmount -= buff.CurrentStacks;
+                            currentAmount -= currentStacks;
                         }
                         else if (currentAmount > 0)
                         {
@@ -693,25 +697,31 @@ public abstract class Character : MonoBehaviour
             //remove augments
             case 2:
                 foreach (DebuffStackSO augment in tempAUGS)
-                    if (currentAmount >= augment.CurrentStacks)
+                    if(augment.Removable)
                     {
-                        StartCoroutine(DisplayAugment(augment, true));
+                        if (currentAmount >= augment.CurrentStacks)
+                        {
+                            int currentStacks = augment.CurrentStacks;
 
-                        RemoveDebuffStack(augment, currentAmount);
-                        augment.DestroyAugment();
-                        currentAmount -= augment.CurrentStacks;
-                    }
-                    else if (currentAmount > 0)
-                    {
-                        StartCoroutine(DisplayAugment(augment, true));
+                            StartCoroutine(DisplayAugment(augment, true));
 
-                        RemoveDebuffStack(augment, currentAmount);
-                        currentAmount = 0;
+                            RemoveDebuffStack(augment, currentStacks);
+                            augment.DestroyAugment();
+                            currentAmount -= currentStacks;
+                        }
+                        else if (currentAmount > 0)
+                        {
+                            StartCoroutine(DisplayAugment(augment, true));
+
+                            RemoveDebuffStack(augment, currentAmount);
+                            currentAmount = 0;
+                        }
+                        else
+                        {
+                            return; //no more stacks to remove
+                        }
                     }
-                    else
-                    {
-                        return; //no more stacks to remove
-                    }
+
                 break;
             default:
                 break;

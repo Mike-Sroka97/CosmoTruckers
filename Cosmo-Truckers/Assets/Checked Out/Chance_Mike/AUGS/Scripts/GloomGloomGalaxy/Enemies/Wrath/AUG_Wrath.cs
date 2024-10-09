@@ -12,7 +12,6 @@ public class AUG_Wrath : Augment
         AugmentSO.CurrentStacks++;
         Activate();
         AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
-        firstGo = false;
     }
 
     public override void StopEffect()

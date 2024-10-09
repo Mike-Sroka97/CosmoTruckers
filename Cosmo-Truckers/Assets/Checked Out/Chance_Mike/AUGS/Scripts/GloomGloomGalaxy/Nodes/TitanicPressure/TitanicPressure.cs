@@ -7,10 +7,11 @@ public class TitanicPressure : Augment
     [SerializeField] int damagePerTurn;
     public override void Activate(DebuffStackSO stack = null)
     {
-        base.Activate(stack);
-
         if (firstGo)
+        {
+            base.Activate(stack);
             AugmentSO.MyCharacter.AdjustAttackDamage((int)StatusEffect);
+        }
         else
             AugmentSO.MyCharacter.TakeDamage(damagePerTurn);
     }

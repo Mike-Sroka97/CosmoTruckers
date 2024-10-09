@@ -8,8 +8,6 @@ public class AUG_Strength : Augment
     {
         if (!firstGo)
             StopEffect();
-        else
-            firstGo = false;
 
         base.Activate(stack);
 

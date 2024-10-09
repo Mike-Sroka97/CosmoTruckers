@@ -15,7 +15,6 @@ public class VigorAdjustmentAugment : Augment
 
         if (!vigorIncrease && firstGo)
         {
-            firstGo = false;
             baseStatusEffect = -baseStatusEffect;
             additionalStatusEffect = -additionalStatusEffect;
         }
