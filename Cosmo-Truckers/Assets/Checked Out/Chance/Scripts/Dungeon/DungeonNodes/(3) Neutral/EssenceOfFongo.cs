@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EssenceOfFongo : NCNodePopUpOptions
+public class EssenceOfFongoOBSOLETE : NCNodePopUpOptions
 {
     public string dilemmaHeader = "Will you accept the Essence??";
 
