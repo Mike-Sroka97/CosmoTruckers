@@ -10,7 +10,7 @@ public class DamageAdjustmentAugment : Augment
     {
         if (!firstGo)
         {
-            AugmentSO.MyCharacter.AdjustAttackDamage(-(int)StatusEffect);
+            AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
         }
 
         if (!damageIncrease && firstGo)
@@ -21,10 +21,10 @@ public class DamageAdjustmentAugment : Augment
 
         base.Activate(stack);
 
-        AugmentSO.MyCharacter.AdjustAttackDamage((int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
     }
     public override void StopEffect()
     {
-        AugmentSO.MyCharacter.AdjustAttackDamage(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
     }
 }
