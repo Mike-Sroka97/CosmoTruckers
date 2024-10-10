@@ -27,7 +27,14 @@ public class EventNodeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
         if(!MultiplayerSelected)
             myImage.material = null;
         else
-            myImage.material = nodeHandler.OutlineMaterials[nodeHandler.Player];
+        {
+            int adjustedPlayer = nodeHandler.Player - 1;
+            if (adjustedPlayer < 0)
+                adjustedPlayer = 3;
+
+            myImage.material = nodeHandler.OutlineMaterials[adjustedPlayer];
+        }
+
     }
 
     public void ResetMaterial()

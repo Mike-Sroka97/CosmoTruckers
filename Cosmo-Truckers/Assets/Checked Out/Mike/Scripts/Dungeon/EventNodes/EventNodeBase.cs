@@ -90,7 +90,6 @@ public class EventNodeBase : MonoBehaviour
                     button.GetComponent<EventNodeButton>().ResetMaterial();
                 else
                     button.Select();
-
                 break;
             }
     }

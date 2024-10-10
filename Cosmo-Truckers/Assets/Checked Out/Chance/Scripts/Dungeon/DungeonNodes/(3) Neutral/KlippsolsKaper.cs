@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KlippsolsKaper : NCNodePopUpOptions
+public class KlippsolsKaperOBSOLETE : NCNodePopUpOptions
 {
     public string dilemmaHeader = "Choice your fate. . .";
     int[] votes = new int[4];

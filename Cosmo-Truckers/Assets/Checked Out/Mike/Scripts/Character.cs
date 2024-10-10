@@ -601,23 +601,26 @@ public abstract class Character : MonoBehaviour
         augmenting = false;
     }
 
-    public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100)
+    public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100, bool cleanUp = true)
     {
         StartCoroutine(DisplayAugment(stack, true));
-
-        if (stack == null || !stack.Removable)
-            return;
 
         //Remove stacks
         foreach (DebuffStackSO aug in AUGS)
         {
-            if (String.Equals(aug.DebuffName, stack.DebuffName))
+            if (string.Equals(aug.DebuffName, stack.DebuffName))
             {
                 aug.CurrentStacks -= stackToRemove;
                 aug.DestroyAugment();
             }
         }
 
+        if(cleanUp)
+            CleanUpAUGs();
+    }
+
+    public void CleanUpAUGs()
+    {
         //Clean up augs if they need to be removed
         foreach (DebuffStackSO augment in AugmentsToRemove)
         {
@@ -651,8 +654,7 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = debuff.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(debuff, true));
-                            RemoveDebuffStack(debuff, currentStacks);
-                            debuff.DestroyAugment();
+                            RemoveDebuffStack(debuff, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if(currentAmount > 0)
@@ -664,7 +666,7 @@ public abstract class Character : MonoBehaviour
                         }                        
                         else
                         {
-                            return; //no more stacks to remove
+                            break; //no more stacks to remove
                         }
                     }
                 break;
@@ -678,8 +680,7 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = buff.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(buff, true));
-                            RemoveDebuffStack(buff, currentStacks);
-                            buff.DestroyAugment();
+                            RemoveDebuffStack(buff, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if (currentAmount > 0)
@@ -690,7 +691,7 @@ public abstract class Character : MonoBehaviour
                         }
                         else
                         {
-                            return; //no more stacks to remove
+                            break; //no more stacks to remove
                         }
                     }
                 break;
@@ -704,28 +705,26 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = augment.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(augment, true));
-
-                            RemoveDebuffStack(augment, currentStacks);
-                            augment.DestroyAugment();
+                            RemoveDebuffStack(augment, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(augment, true));
-
                             RemoveDebuffStack(augment, currentAmount);
                             currentAmount = 0;
                         }
                         else
                         {
-                            return; //no more stacks to remove
+                            break; //no more stacks to remove
                         }
                     }
-
                 break;
             default:
                 break;
         }
+
+        CleanUpAUGs();
     }
 
     /// <summary>

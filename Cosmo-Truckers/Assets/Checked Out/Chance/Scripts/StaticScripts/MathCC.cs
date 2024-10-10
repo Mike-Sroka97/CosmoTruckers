@@ -29,6 +29,16 @@ public static class MathCC
         return index;
     }
 
+    /// <summary>
+    /// Essentially flips a coin
+    /// </summary>
+    /// <returns></returns>
+    public static bool RandomBool()
+    {
+        int random = Random.Range(0, 2);
+        return random == 0;
+    }
+
     private static System.Random rng = new System.Random();
     /// <summary>
     /// Randomize list

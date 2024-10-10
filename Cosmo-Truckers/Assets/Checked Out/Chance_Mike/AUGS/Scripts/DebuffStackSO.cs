@@ -82,7 +82,7 @@ public class DebuffStackSO : ScriptableObject
         SetTemp();
         temp.GetComponent<Augment>().Activate(this);
     }
-
+     
     public Augment GetAugment()
     {
         if (!temp)
@@ -111,6 +111,8 @@ public class DebuffStackSO : ScriptableObject
         if (CurrentStacks <= 0)
         {
             MyCharacter.AugmentsToRemove.Add(this);
+            if (!temp)
+                SetTemp();
             temp.GetComponent<Augment>().StopEffect();
             Destroy(temp);
         }
