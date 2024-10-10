@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ public class PlayerVessel : MonoBehaviour
     public PlayerCharacter MyCharacter;
     [HideInInspector] public Mana MyMana;
     Transform myINAvessel;
+    public Transform CombatStarSpawn { get; private set; }
 
     public virtual void Initialize(PlayerCharacter player)
     {
@@ -120,7 +122,7 @@ public class PlayerVessel : MonoBehaviour
         if (damage && MyCharacter.BubbleShielded && numberOfHits > 1)
         {
             // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
-            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, "0", -1);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", -1);
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -142,7 +144,7 @@ public class PlayerVessel : MonoBehaviour
         // Spawn combat stars like normal
         for (int i = 0; i < numberOfHits; i++)
         {
-            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, text, i);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, i);
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -160,12 +162,13 @@ public class PlayerVessel : MonoBehaviour
                     {
                         currentHealthDisplay += currentShieldDisplay;
                         currentShieldDisplay = 0;
+                        AdjustShieldDisplay(currentShieldDisplay);
                     }
                 }
                 else { currentHealthDisplay -= damageHealingAmount; }
 
                 // If "current" character shield is greater than 0 or the text isn't 0, update the shield text
-                if (currentShieldDisplay > 0 || (currentShieldDisplay == 0 && currentShield.text != "0"))
+                if (currentShieldDisplay > 0)
                 {
                     AdjustShieldDisplay(currentShieldDisplay);
                 }
@@ -184,7 +187,7 @@ public class PlayerVessel : MonoBehaviour
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
 
-        MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false);
+        MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false, numberOfHits);
     }
 
     protected void TrackShield()
@@ -206,8 +209,9 @@ public class PlayerVessel : MonoBehaviour
 
     public virtual IEnumerator ShieldEffect(int shieldAmount)
     {
-        string text = shieldAmount.ToString(); 
-        float finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(EnumManager.CombatOutcome.Shield, text, 1);
+        string text = shieldAmount.ToString();
+        
+        float finalStarAnimationWaitTime = CallSpawnCombatStar(EnumManager.CombatOutcome.Shield, text, 1);
 
         AdjustShieldDisplay(shieldAmount); 
 
@@ -215,6 +219,42 @@ public class PlayerVessel : MonoBehaviour
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
 
         MyCharacter.SwitchCombatOutcomes(EnumManager.CombatOutcome.Shield, shieldAmount, piercing: false);
+    }
+
+    /// <summary>
+    /// Spawns the combat star and returns the time for its animation to be over
+    /// </summary>
+    /// <returns></returns>
+    /// <summary>
+    /// Spawns the combat star and returns the time for its animation to be over
+    /// </summary>
+    /// <returns></returns>
+    public float CallSpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnLayer)
+    {
+        // Determine if InCombat or outside so CombatStar is spawned properly
+        Transform combatStarSpawn;
+        if (CombatManager.Instance.InCombat)
+        {
+            if (MyCharacter.CombatStarSpawn != null)
+                combatStarSpawn = MyCharacter.CombatStarSpawn;
+            else
+            {
+                Debug.LogError($"{MyCharacter.name} has a null Combat Star Spawn! Using their position instead!");
+                combatStarSpawn = MyCharacter.transform;
+            }
+        }
+        else
+        {
+            if (CombatStarSpawn != null)
+                combatStarSpawn = CombatStarSpawn;
+            else
+            {
+                Debug.LogError($"{gameObject.name} has a null Combat Star Spawn! Using its position instead!");
+                combatStarSpawn = transform;
+            }
+        }
+
+        return CombatManager.Instance.SpawnCombatStar(outcome, text, spawnLayer, combatStarSpawn);
     }
 
     public void ManuallySetShield(int shield)
