@@ -189,51 +189,90 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    public void UpdateEnemySummons(GameObject summon)
-    {        
-        for(int i = 8; i < 12; i++)
+    public void UpdateEnemySummons(GameObject summon, int spawnIndex = -1)
+    {  
+        if(spawnIndex == -1)
+            for (int i = 8; i < 12; i++)
+            {
+                if (EnemyCombatSpots[i] == null)
+                {
+                    GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
+                    EnemySummons.Add(newSummon.GetComponent<EnemySummon>());
+                    newSummon.name += GetAliveEnemySummons().Count;
+                    EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
+                    newSummon.transform.position = EnemySummonLocations[i - 8].position;
+                    foreach (SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
+                        spriteRenderer.sortingOrder += i;
+                    EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
+                    EnemyCombatSpots[i].CombatSpot = i;
+                    CharacterStats stats = newSummon.GetComponent<CharacterStats>();
+                    TurnOrder.Instance.AddToSpeedList(stats);
+                    SummonSpawnedEvent.Invoke();
+                    break;
+                }
+            }
+        else
         {
-            if(EnemyCombatSpots[i] == null)
+            if (EnemyCombatSpots[spawnIndex] == null)
             {
                 GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
                 EnemySummons.Add(newSummon.GetComponent<EnemySummon>());
                 newSummon.name += GetAliveEnemySummons().Count;
-                EnemyCombatSpots[i] = newSummon.GetComponent<EnemySummon>();
-                newSummon.transform.position = EnemySummonLocations[i - 8].position;
-                foreach(SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
-                    spriteRenderer.sortingOrder += i;
-                EnemyCombatSpots[i] = newSummon.GetComponent<Character>();
-                EnemyCombatSpots[i].CombatSpot = i;
+                EnemyCombatSpots[spawnIndex] = newSummon.GetComponent<EnemySummon>();
+                newSummon.transform.position = EnemySummonLocations[spawnIndex - 8].position;
+                foreach (SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
+                    spriteRenderer.sortingOrder += spawnIndex;
+                EnemyCombatSpots[spawnIndex] = newSummon.GetComponent<Character>();
+                EnemyCombatSpots[spawnIndex].CombatSpot = spawnIndex;
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
                 TurnOrder.Instance.AddToSpeedList(stats);
                 SummonSpawnedEvent.Invoke();
-                break;
             }
         }
 
         TurnOrder.Instance.DetermineTurnOrder();
     }
 
-    public void UpdatePlayerSummons(GameObject summon, PlayerCharacter summonParent)
+    public void UpdatePlayerSummons(GameObject summon, PlayerCharacter summonParent, int spawnIndex = -1)
     {
-        for (int i = 4; i < 8; i++)
-        {
-            if (PlayerCombatSpots[i] == null)
+        if(spawnIndex == -1)
+            for (int i = 4; i < 8; i++)
             {
-                GameObject newSummon = Instantiate(summon, EnemySummonPrefabLocation);
+                if (PlayerCombatSpots[i] == null)
+                {
+                    GameObject newSummon = Instantiate(summon, PlayerSummonPrefabLocation);
+                    PlayerSummons.Add(newSummon.GetComponent<PlayerCharacterSummon>());
+                    newSummon.name += GetAlivePlayerSummons().Count; //helps turn order
+                    PlayerCombatSpots[i] = newSummon.GetComponent<PlayerCharacterSummon>();
+                    newSummon.transform.position = PlayerSummonLocations[i - 4].position;
+                    foreach (SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
+                        spriteRenderer.sortingOrder += i;
+                    PlayerCombatSpots[i] = newSummon.GetComponent<Character>();
+                    PlayerCombatSpots[i].CombatSpot = i;
+                    CharacterStats stats = newSummon.GetComponent<CharacterStats>();
+                    TurnOrder.Instance.AddToSpeedList(stats);
+                    newSummon.GetComponent<PlayerCharacterSummon>().Summoner = summonParent;
+                    SummonSpawnedEvent.Invoke();
+                    break;
+                }
+            }
+        else
+        {
+            if (PlayerCombatSpots[spawnIndex] == null)
+            {
+                GameObject newSummon = Instantiate(summon, PlayerSummonPrefabLocation);
                 PlayerSummons.Add(newSummon.GetComponent<PlayerCharacterSummon>());
-                newSummon.name += GetAliveEnemySummons().Count; //helps turn order
-                PlayerCombatSpots[i] = newSummon.GetComponent<PlayerCharacterSummon>();
-                newSummon.transform.position = EnemySummonLocations[i - 4].position;
+                newSummon.name += GetAlivePlayerSummons().Count; //helps turn order
+                PlayerCombatSpots[spawnIndex] = newSummon.GetComponent<PlayerCharacterSummon>();
+                newSummon.transform.position = PlayerSummonLocations[spawnIndex - 4].position;
                 foreach (SpriteRenderer spriteRenderer in newSummon.GetComponentsInChildren<SpriteRenderer>())
-                    spriteRenderer.sortingOrder += i;
-                PlayerCombatSpots[i] = newSummon.GetComponent<Character>();
-                PlayerCombatSpots[i].CombatSpot = i;
+                    spriteRenderer.sortingOrder += spawnIndex;
+                PlayerCombatSpots[spawnIndex] = newSummon.GetComponent<Character>();
+                PlayerCombatSpots[spawnIndex].CombatSpot = spawnIndex;
                 CharacterStats stats = newSummon.GetComponent<CharacterStats>();
                 TurnOrder.Instance.AddToSpeedList(stats);
                 newSummon.GetComponent<PlayerCharacterSummon>().Summoner = summonParent;
                 SummonSpawnedEvent.Invoke();
-                break;
             }
         }
 
@@ -353,5 +392,16 @@ public class EnemyManager : MonoBehaviour
                 SaveManager.Save(player.GetPlayerData, player.GetPlayer.PlayerID);
             }
         }
+    }
+
+    public bool CheckForSummon(PlayerCharacter player)
+    {
+        foreach (PlayerCharacterSummon sum in EnemyManager.Instance.PlayerSummons)
+        {
+            if (sum.CombatSpot + 4 == player.CombatSpot)
+                return true;
+        }
+
+        return false;
     }
 }

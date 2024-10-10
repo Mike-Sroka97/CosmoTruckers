@@ -6,6 +6,7 @@ using UnityEngine;
 public class LoonasDiscovery : EventNodeBase
 {
     [SerializeField] int remainingStacks = 5;
+    [SerializeField] GameObject emptyNova;
     TextMeshProUGUI textToAdjust;
     string buttonString;
     int[] playerVotes = new int[4];
@@ -60,10 +61,10 @@ public class LoonasDiscovery : EventNodeBase
                 playerWithMostVotes = i;
         }
 
-        //if (EnemyManager.Instance.PlayerSummons.Count >= EnemyManager.Instance.Players.Count || CheckForSummon(allPlayersSorted[mostVotes]))
-        //    NoSummonForYou();
-        //else
-        //    SummonForYou(mostVotes);
+        if (EnemyManager.Instance.PlayerSummons.Count >= EnemyManager.Instance.Players.Count || EnemyManager.Instance.CheckForSummon(PlayerVesselManager.Instance.PlayerVessels[playerWithMostVotes].MyCharacter))
+            ;
+        else
+            EnemyManager.Instance.UpdatePlayerSummons(emptyNova, PlayerVesselManager.Instance.PlayerVessels[playerWithMostVotes].MyCharacter, PlayerVesselManager.Instance.PlayerVessels[playerWithMostVotes].MyCharacter.CombatSpot + 4);
 
         return base.SelectionChosen();
     }
