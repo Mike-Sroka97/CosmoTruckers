@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoonasDiscovery : NCNodePopUpOptions
+public class LoonasDiscoveryOBSOLETE : NCNodePopUpOptions
 {
     public string dilemmaHeader = "Loona has found tiny empty Nova";
     public string dilemmaHeaderTwo = "There is a limit amount of Solar SHOCK to take";

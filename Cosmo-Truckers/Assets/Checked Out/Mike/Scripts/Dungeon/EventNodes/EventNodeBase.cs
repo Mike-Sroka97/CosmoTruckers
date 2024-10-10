@@ -80,7 +80,7 @@ public class EventNodeBase : MonoBehaviour
             myButtons[buttonToDisable].enabled = false;
     }
 
-    private void AutoSelectNextButton()
+    protected void AutoSelectNextButton()
     {
         //Selects next available button
         foreach (Button button in myButtons)
