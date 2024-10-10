@@ -51,7 +51,7 @@ public class SafeTVessel : PlayerVessel
         if (damage && MyCharacter.BubbleShielded && numberOfHits > 1)
         {
             // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
-            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, "0", -1);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", -1);
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -73,7 +73,7 @@ public class SafeTVessel : PlayerVessel
         // Spawn combat stars like normal
         for (int i = 0; i < numberOfHits; i++)
         {
-            finalStarAnimationWaitTime = MyCharacter.SpawnCombatStar(outcome, text, i);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, i);
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -120,6 +120,6 @@ public class SafeTVessel : PlayerVessel
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
 
-        MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false);
+        MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false, numberOfHits);
     }
 }

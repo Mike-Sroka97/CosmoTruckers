@@ -357,8 +357,6 @@ public class PlayerCharacter : Character
 
     public override void TakeShielding(int shieldAmount)
     {
-        //base.TakeShielding(shieldAmount);
-
         if (GetComponent<PlayerCharacterSummon>())
             return;
 

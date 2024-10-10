@@ -744,4 +744,64 @@ public class CombatManager : MonoBehaviour
         foreach (Character character in FindObjectsOfType<Character>())
             character.EndCombatEffect();
     }
+
+    #region Combat Star
+    public float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnNumber, Transform combatStarSpawn)
+    {
+        // Set combat star material to damage by default
+        Material combatStarMaterial = DamageStarMaterial;
+
+        switch (outcome)
+        {
+            case EnumManager.CombatOutcome.MultiHealing:
+            case EnumManager.CombatOutcome.Healing:
+                combatStarMaterial = HealingStarMaterial;
+                break;
+            case EnumManager.CombatOutcome.Shield:
+                combatStarMaterial = ShieldStarMaterial;
+                break;
+            default:
+                break;
+        }
+
+        // Create the Combat Star at the star spwan position
+        GameObject star = Instantiate(BaseCombatStar, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
+
+        Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset),
+            UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset), 0);
+        Vector3 newPosition = star.transform.position + offset;
+
+        int triesPerStar = 0;
+
+        // Determine if the Combat Star can be created at this position or if it is overlapping with another star
+        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition, triesPerStar))
+        {
+            triesPerStar++;
+            Debug.Log("Star couldn't be created at previous spot! Creating new position!");
+            offset = new Vector3(UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset),
+                UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset), 0);
+            newPosition = star.transform.position + offset;
+        }
+
+        star.transform.position = newPosition;
+        return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, spawnNumber);
+    }
+
+    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint, int triesPerStar)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint, CombatStarSpawnCheckRadius);
+
+        // If it's the first star or it's tried to spawn over 10 times, just spawn it
+        if (colliders.Length > 1 && triesPerStar < 10)
+        {
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.gameObject.GetComponent<CombatStar>() != null)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+    #endregion
 }

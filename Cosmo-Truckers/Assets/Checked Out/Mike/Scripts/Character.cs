@@ -45,9 +45,7 @@ public abstract class Character : MonoBehaviour
     TextMeshProUGUI augmentText;
     bool augmenting = false;
 
-    [Space(20)]
-    [Header("Combat Star")]
-    [SerializeField] Transform CombatStarSpawn;
+    public Transform CombatStarSpawn { get; private set; }
 
     public int CurrentHealth
     {
@@ -84,7 +82,7 @@ public abstract class Character : MonoBehaviour
                 shield = maxShield;
                 AdjustShieldMaterial(true);
             }
-            else if (shield + value < 0)
+            else if (shield + value <= 0)
             {
                 shield = 0;
                 AdjustShieldMaterial(false);
@@ -136,9 +134,9 @@ public abstract class Character : MonoBehaviour
         else if (Shield > 0)
         {
             //calculate overrage damage
-            int overageDamage = damage - shield;
+            int overageDamage = damage - Shield;
 
-            shield = shield - damage <= 0 ? 0 : shield - damage;
+            Shield = -damage;
 
             if (overageDamage > 0)
                 CurrentHealth = -overageDamage;
@@ -196,7 +194,7 @@ public abstract class Character : MonoBehaviour
                 //calculate overrage damage
                 int overageDamage = damage - Shield;
 
-                Shield = Shield - damage <= 0 ? 0 : Shield - damage;
+                Shield = -damage; 
 
                 if (overageDamage > 0)
                     CurrentHealth = -overageDamage;
@@ -295,7 +293,7 @@ public abstract class Character : MonoBehaviour
     // Coroutine needs to be called on object that isn't inactive
     public void SingleHealThenDamage(int currentHealing, int currentDamage, bool piercing = true)
     {
-        StartCoroutine(SingleHealingThenDamage(currentHealing, currentDamage, true));
+        StartCoroutine(SingleHealingThenDamage(currentHealing, currentDamage, piercing));
     }
 
     // Heal, wait for healing combat star, and then deal damage
@@ -316,69 +314,27 @@ public abstract class Character : MonoBehaviour
         TakeDamage(currentDamage, piercing); //pierce defense cause technically healing
     }
 
-    public virtual float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnNumber)
+    /// <summary>
+    /// Spawns the combat star and returns the time for its animation to be over
+    /// </summary>
+    /// <returns></returns>
+    /// <summary>
+    /// Spawns the combat star and returns the time for its animation to be over
+    /// </summary>
+    /// <returns></returns>
+    public float CallSpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnLayer)
     {
-        // Set combat star material to damage by default
-        Material combatStarMaterial = CombatManager.Instance.DamageStarMaterial; 
+        Transform combatStarSpawn;
 
-        switch (outcome)
+        if (CombatStarSpawn != null)
+            combatStarSpawn = CombatStarSpawn;
+        else
         {
-            case EnumManager.CombatOutcome.MultiHealing:
-            case EnumManager.CombatOutcome.Healing:
-                combatStarMaterial = CombatManager.Instance.HealingStarMaterial;
-                break; 
-            case EnumManager.CombatOutcome.Shield:
-                combatStarMaterial = CombatManager.Instance.ShieldStarMaterial;
-                break;
-            default:
-                break; 
+            Debug.LogError($"{gameObject.name} has a null Combat Star Spawn! Using its position instead!");
+            combatStarSpawn = transform;
         }
 
-        // Send error message in case of null combat star spawn
-        if (CombatStarSpawn == null)
-        {
-            Debug.LogError($"Warning: The Combat Star Spawn transform has not been locally set on {gameObject.name} enemy!");
-            CombatStarSpawn = gameObject.transform;
-        }
-
-        // Create the Combat Star at the star spwan position
-        GameObject star = Instantiate(CombatManager.Instance.BaseCombatStar, CombatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
-
-        Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
-            UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
-        Vector3 newPosition = star.transform.position + offset;
-
-        int triesPerStar = 0; 
-
-        // Determine if the Combat Star can be created at this position or if it is overlapping with another star
-        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition, triesPerStar))
-        {
-            triesPerStar++; 
-            Debug.Log("Star couldn't be created at previous spot! Creating new position!"); 
-            offset = new Vector3(UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 
-                UnityEngine.Random.Range(-CombatManager.Instance.CombatStarMaxOffset, CombatManager.Instance.CombatStarMaxOffset), 0);
-            newPosition = star.transform.position + offset; 
-        }
-
-        star.transform.position = newPosition;
-        return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, spawnNumber);
-    }
-
-    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint, int triesPerStar)
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint, CombatManager.Instance.CombatStarSpawnCheckRadius);
-        
-        // If it's the first star or it's tried to spawn over 10 times, just spawn it
-        if (colliders.Length > 1 && triesPerStar < 10)
-        {
-            foreach (Collider2D collider in colliders)
-            {
-                if (collider.gameObject.GetComponent<CombatStar>() != null)
-                    return false;
-            }
-        }
-
-        return true;
+        return CombatManager.Instance.SpawnCombatStar(outcome, text, spawnLayer, combatStarSpawn);
     }
 
     public void AdjustBubbleShield(bool active = false)
