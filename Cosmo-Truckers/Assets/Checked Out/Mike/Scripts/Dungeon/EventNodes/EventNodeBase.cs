@@ -15,6 +15,8 @@ public class EventNodeBase : MonoBehaviour
     protected TextMeshProUGUI descriptionText;
     protected int currentTurns = 0;
 
+    protected PlayerCharacter currentCharacter => PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter;
+
     protected virtual void Start()
     {
         descriptionText = transform.Find("Description/Description Text").GetComponent<TextMeshProUGUI>();
@@ -65,7 +67,7 @@ public class EventNodeBase : MonoBehaviour
         AutoSelectNextButton();
     }
 
-    public void IgnoreOption()
+    public virtual void IgnoreOption()
     {
         IteratePlayerReference();
         AutoSelectNextButton();

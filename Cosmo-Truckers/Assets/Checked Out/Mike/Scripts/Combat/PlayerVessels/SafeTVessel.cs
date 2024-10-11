@@ -31,8 +31,8 @@ public class SafeTVessel : PlayerVessel
 
         for (int i = 0; i < totalAnger; i++)
         {
-            angerNodesLeft[i].sprite = pipSprites[totalRage + 1];
-            angerNodesRight[i].sprite = pipSprites[totalRage + 1];
+            angerNodesLeft[i].sprite = pipSprites[totalRage];
+            angerNodesRight[i].sprite = pipSprites[totalRage];
             angerFace.sprite = angerFaceSprites[totalRage];
         }
     }
