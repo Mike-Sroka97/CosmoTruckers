@@ -51,6 +51,7 @@ public class CombatManager : MonoBehaviour
     [Space(20)]
     [Header("Combat Visual Effects")]
     public GameObject BaseCombatStar;
+    public GameObject UiCombatStar;
     public Material DamageStarMaterial;
     public Material HealingStarMaterial; 
     public Material ShieldStarMaterial; 
@@ -751,6 +752,7 @@ public class CombatManager : MonoBehaviour
         // Set combat star material to damage by default
         Material combatStarMaterial = DamageStarMaterial;
 
+        // Choose what material to use
         switch (outcome)
         {
             case EnumManager.CombatOutcome.MultiHealing:
@@ -764,8 +766,11 @@ public class CombatManager : MonoBehaviour
                 break;
         }
 
+        // Choose either the base combat star or the UI Combat Star
+        GameObject starToSpawn = InCombat ? BaseCombatStar : UiCombatStar; 
+
         // Create the Combat Star at the star spwan position
-        GameObject star = Instantiate(BaseCombatStar, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
+        GameObject star = Instantiate(starToSpawn, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
 
         Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset),
             UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset), 0);
