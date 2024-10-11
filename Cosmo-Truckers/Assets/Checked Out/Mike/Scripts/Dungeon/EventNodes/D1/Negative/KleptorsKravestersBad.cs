@@ -27,12 +27,6 @@ public class KleptorsKravestersBad : EventNodeBase
         }
 
         MultiplayerSelection(buttonID);
-
-        //don't end minigame while any buttons are active
-        foreach (Button button in myButtons)
-            if (button.enabled)
-                return;
-
-        StartCoroutine(SelectionChosen());
+        CheckEndEvent();
     }
 }

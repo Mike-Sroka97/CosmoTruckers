@@ -22,12 +22,6 @@ public class KleptorsKravestersGood : EventNodeBase
             PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.TakeHealing(1, true);
 
         MultiplayerSelection(buttonID);
-
-        //don't end minigame while any buttons are active
-        foreach (Button button in myButtons)
-            if (button.enabled)
-                return;
-
-        StartCoroutine(SelectionChosen());
+        CheckEndEvent();
     }
 }
