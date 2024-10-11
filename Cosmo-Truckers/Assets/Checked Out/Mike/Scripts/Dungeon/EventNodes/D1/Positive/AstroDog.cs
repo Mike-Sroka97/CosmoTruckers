@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class AstroDog : EventNodeBase
 {
-    [SerializeField] DebuffStackSO doggyInspiration;
-
     public void PetTheDog(int buttonID)
     {
         PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.ProliferateAugment(1, 1);
@@ -23,7 +21,7 @@ public class AstroDog : EventNodeBase
 
     public void ShakeTheDogsPaw(int buttonID)
     {
-        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(doggyInspiration);
+        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augmentsToAdd[0]);
         MultiplayerSelection(buttonID);
         CheckEndEvent();
     }
