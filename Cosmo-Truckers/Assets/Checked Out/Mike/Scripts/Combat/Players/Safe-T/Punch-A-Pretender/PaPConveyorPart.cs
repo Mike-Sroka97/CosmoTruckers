@@ -36,18 +36,20 @@ public class PaPConveyorPart : MonoBehaviour
 
     private void DestinationCheck()
     {
-        if(myConveyor.GetMoveSpeed() > 0)
+        Vector3 truePosition = transform.position - myConveyor.transform.parent.position; 
+
+        if (myConveyor.GetMoveSpeed() > 0)
         {
-            if(transform.position.x >= swapPositionX)
+            if(truePosition.x >= swapPositionX)
             {
-                transform.position = new Vector3(startPositionX, transform.position.y, transform.position.z);
+                transform.position = new Vector3(myConveyor.transform.parent.position.x + startPositionX, transform.position.y, transform.position.z);
             }
         }
         else
         {
-            if (transform.position.x <= swapPositionX)
+            if (truePosition.x <= swapPositionX)
             {
-                transform.position = new Vector3(startPositionX, transform.position.y, transform.position.z);
+                transform.position = new Vector3(myConveyor.transform.parent.position.x + startPositionX, transform.position.y, transform.position.z);
             }
         }
     }

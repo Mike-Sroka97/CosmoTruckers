@@ -81,23 +81,23 @@ public class COKOhand : MonoBehaviour
     {
         if(horizontalMatters && right)
         {
-            if (transform.position.x > resetPosition)
+            if (transform.localPosition.x > resetPosition)
             {
-                transform.position = startingPosition;
+                transform.localPosition = startingPosition;
             }
         }
         else if(horizontalMatters && !right)
         {
-            if(transform.position.x < resetPosition)
+            if(transform.localPosition.x < resetPosition)
             {
-                transform.position = startingPosition;
+                transform.localPosition = startingPosition;
             }
         }
         else if(!horizontalMatters)
         {
-            if(transform.position.y < resetPosition)
+            if(transform.localPosition.y < resetPosition)
             {
-                transform.position = startingPosition;
+                transform.localPosition = startingPosition;
             }
         }
     }
