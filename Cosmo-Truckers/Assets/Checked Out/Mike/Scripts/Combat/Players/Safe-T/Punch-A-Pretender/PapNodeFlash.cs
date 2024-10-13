@@ -30,32 +30,34 @@ public class PapNodeFlash : MonoBehaviour
 
         if(badFlash)
         {
+            myRenderer.sprite = badSprite;
+
             while (currentFlash < numberOfFlashes)
             {
                 myRenderer.color = badColorFlash;
-                myRenderer.sprite = badSprite; 
                 yield return new WaitForSeconds(flashTime);
 
                 myRenderer.color = startingColor;
-                myRenderer.sprite = startingSprite; 
                 currentFlash++;
                 yield return new WaitForSeconds(flashTime);
             }
         }
         else
         {
+            myRenderer.sprite = goodSprite;
+
             while (currentFlash < numberOfFlashes)
             {
                 myRenderer.color = hittableColorFlash;
-                myRenderer.sprite = goodSprite;
                 yield return new WaitForSeconds(flashTime);
 
                 myRenderer.color = startingColor;
-                myRenderer.sprite = startingSprite;
                 currentFlash++;
                 yield return new WaitForSeconds(flashTime);
             }
         }
+
+        myRenderer.sprite = startingSprite;
 
         StartCoroutine(myConveyorPart.ActivateNode(badFlash));
     }
