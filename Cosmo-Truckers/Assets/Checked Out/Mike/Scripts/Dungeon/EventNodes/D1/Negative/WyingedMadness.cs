@@ -10,7 +10,7 @@ public class WyingedMadness : EventNodeBase
     {
         base.Start();
         for(int i = 0; i < myButtons.Length; i++)
-            myButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Give {PlayerVesselManager.Instance.PlayerVessels[i].MyCharacter.CharacterName} (1) Nitemare";
+            myButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Give <color={characterNameColor}>{PlayerVesselManager.Instance.PlayerVessels[i].MyCharacter.CharacterName}</color> (1) Nitemare";
     }
 
     public void GiveMadness(int buttonID)

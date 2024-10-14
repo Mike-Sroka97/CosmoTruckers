@@ -14,6 +14,7 @@ public class EventNodeBase : MonoBehaviour
     protected EventNodeHandler nodeHandler;
     protected TextMeshProUGUI descriptionText;
     protected int currentTurns = 0;
+    protected string characterNameColor = EnumManager.ColorsHex[EnumManager.ColorPalette.Purple];
 
     protected PlayerCharacter currentCharacter => PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter;
 

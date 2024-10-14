@@ -94,7 +94,7 @@ public class EnumManager
         NeonWhite,
     }
 
-    public static readonly Dictionary<ColorPalette, Color32> Colors = new Dictionary<ColorPalette, Color32>
+    public static readonly Dictionary<ColorPalette, Color32> ColorsRGB = new Dictionary<ColorPalette, Color32>
     {
         //Color palette colors
         {ColorPalette.White, new Color32(237,232,197,255)},
@@ -107,7 +107,7 @@ public class EnumManager
         {ColorPalette.Yellow, new Color32(240,211,117,255)},
         {ColorPalette.Orange, new Color32(235,148,101,255)},
         {ColorPalette.DarkOrange, new Color32(189,104,91,255)},
-        {ColorPalette.DarkBlue, new Color32(120,182,204,255)},
+        {ColorPalette.DarkBlue, new Color32(100,80,148,255)},
         {ColorPalette.DarkPurple, new Color32(87,51,89,255)},
         {ColorPalette.Magenta, new Color32(212,76,121,255)},
         {ColorPalette.Pink, new Color32(250,150,170,255)},
@@ -115,7 +115,7 @@ public class EnumManager
         {ColorPalette.Purple, new Color32(145,83,163,255)},
         {ColorPalette.Orchid, new Color32(138,59,102,255)},
         {ColorPalette.Beige, new Color32(240,179,149,255)},
-        {ColorPalette.LightBlue, new Color32(100,80,148,255)},
+        {ColorPalette.LightBlue, new Color32(120,182,204,255)},
         {ColorPalette.LightPurple, new Color32(182,137,204,255)},
 
         //Combat colors
@@ -124,5 +124,37 @@ public class EnumManager
         {ColorPalette.NeonOrange, new Color32(255,95,31,255)},
         {ColorPalette.NeonYellow, new Color32(255,234,0,255)},
         {ColorPalette.NeonWhite, new Color32(191,191,191,255)},
+    };
+
+    public static readonly Dictionary<ColorPalette, string> ColorsHex = new Dictionary<ColorPalette, string>
+    {
+        //Color palette colors
+        {ColorPalette.White, "#EDE8C5"},
+        {ColorPalette.Gray, "#BD9D9D"},
+        {ColorPalette.DarkGray, "#825B70"},
+        {ColorPalette.Black, "#30111C"},
+        {ColorPalette.Lime, "#9DBD5C"},
+        {ColorPalette.Green, "#5D995C"},
+        {ColorPalette.DarkGreen, "#4D6963"},
+        {ColorPalette.Yellow, "#F0D375"},
+        {ColorPalette.Orange, "#EB9465"},
+        {ColorPalette.DarkOrange, "#BD685B"},
+        {ColorPalette.DarkBlue, "#645094"},
+        {ColorPalette.DarkPurple, "#573359"},
+        {ColorPalette.Magenta, "#D44C79"},
+        {ColorPalette.Pink, "#FA96AA"},
+        {ColorPalette.Blue, "#727FB5"},
+        {ColorPalette.Purple, "#9153A3"},
+        {ColorPalette.Orchid, "#8A3B66"},
+        {ColorPalette.Beige, "#F0B395"},
+        {ColorPalette.LightBlue, "#78B6CC"},
+        {ColorPalette.LightPurple, "#B689CC"},
+
+        //Combat colors
+        {ColorPalette.NeonRed, "#BF0000"},
+        {ColorPalette.NeonGreen, "#39FF14"},
+        {ColorPalette.NeonOrange, "#FF5F1F"},
+        {ColorPalette.NeonYellow, "#FFEA00"},
+        {ColorPalette.NeonWhite, "#BFBFBF"},
     };
 }

@@ -11,10 +11,10 @@ public class StarCandy : EventNodeBase
     {
         base.Start();
         for (int i = 0; i < myButtons.Length; i++)
-            myButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = $"Give {PlayerVesselManager.Instance.PlayerVessels[i].MyCharacter.CharacterName} a <color=green>candy</color>.";
+            myButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = $"Give <color={characterNameColor}>{PlayerVesselManager.Instance.PlayerVessels[i].MyCharacter.CharacterName}</color> a <color=green>candy</color>.";
     }
 
-    public void GiveMadness(int buttonID)
+    public void GiveCandy(int buttonID)
     {
         PlayerVesselManager.Instance.PlayerVessels[buttonID].MyCharacter.TakeHealing(healingAmount);
         IgnoreOption();
