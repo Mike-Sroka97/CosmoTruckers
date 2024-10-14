@@ -32,6 +32,6 @@ public class HeavyWeight : CombatMove
 
         ironFurStacks += CombatManager.Instance.GetCharactersSelected.Count - 5; //in case there is not 4 players added to the minigame
 
-        CombatManager.Instance.GetCharactersSelected[CombatManager.Instance.GetCharactersSelected.Count - 1].AddDebuffStack(DebuffToAdd, ironFurStacks);
+        CombatManager.Instance.GetCharactersSelected[CombatManager.Instance.GetCharactersSelected.Count - 1].AddAugmentStack(DebuffToAdd, ironFurStacks);
     }
 }

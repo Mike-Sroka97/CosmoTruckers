@@ -15,7 +15,7 @@ public class WyingedMadness : EventNodeBase
 
     public void GiveMadness(int buttonID)
     {
-        PlayerVesselManager.Instance.PlayerVessels[buttonID].MyCharacter.AddDebuffStack(augmentsToAdd[0]);
+        PlayerVesselManager.Instance.PlayerVessels[buttonID].MyCharacter.AddAugmentStack(augmentsToAdd[0]);
         IgnoreOption();
     }
 }

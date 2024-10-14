@@ -90,7 +90,7 @@ public class SugarPillPlacebo : CombatMove
             character.TakeHealing((int)(currentHealing * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
 
             //Apply augment
-            character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+            character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
         }
     }
 }

@@ -9,7 +9,7 @@ public class VisualAugment : Augment
 
     protected GameObject tempAugment;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (maxVisualStacks == 0)
             maxVisualStacks = stack.MaxStacks;

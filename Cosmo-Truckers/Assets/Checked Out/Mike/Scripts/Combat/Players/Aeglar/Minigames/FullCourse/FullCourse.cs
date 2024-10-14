@@ -57,7 +57,7 @@ public class FullCourse : CombatMove
             }
 
             //Apply augment
-            character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+            character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
         }
     }
 }

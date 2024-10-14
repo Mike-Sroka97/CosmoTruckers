@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Bribery : CombatMove
 {
-    [SerializeField] DebuffStackSO bribery;
+    [SerializeField] AugmentStackSO bribery;
     [SerializeField] float[] startDelays;
     [SerializeField] float moneySpawnDelay;
     [SerializeField] float delayIncrement;
@@ -125,7 +125,7 @@ public class Bribery : CombatMove
 
     public override void EndMove()
     {
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(bribery);
+        CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(bribery);
 
         if (FindObjectOfType<SixFaceMana>().FaceType == SixFaceMana.FaceTypes.Hype)
             AugmentScore++;

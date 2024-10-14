@@ -7,7 +7,7 @@ public class AUG_SeedSprout : Augment
     bool firstTurn = true;
     int numberOfAugsToRemove = 0;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Porkanator : CombatMove
 {
-    [SerializeField] DebuffStackSO hogwild;
+    [SerializeField] AugmentStackSO hogwild;
     [SerializeField] int hogwildStacks = 1;
 
     private void Start()
@@ -23,7 +23,7 @@ public class Porkanator : CombatMove
                 if (character.GetAUGS[i].DebuffName == "Pork'd Up" && character.GetAUGS[i].CurrentStacks >= hogwildStacks)
                 {
                     character.RemoveDebuffStack(character.GetAUGS[i], character.GetAUGS[i].CurrentStacks);
-                    character.AddDebuffStack(hogwild);
+                    character.AddAugmentStack(hogwild);
                 }
             }
         }

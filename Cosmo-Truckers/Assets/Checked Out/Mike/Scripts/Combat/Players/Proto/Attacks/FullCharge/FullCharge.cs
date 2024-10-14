@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FullCharge : CombatMove
 {
-    [SerializeField] DebuffStackSO megawatt;
+    [SerializeField] AugmentStackSO megawatt;
 
     private void Start()
     {
@@ -20,8 +20,8 @@ public class FullCharge : CombatMove
             augmentStacks = maxAugmentStacks;
 
         //Apply augment
-        CombatManager.Instance.GetCurrentPlayer.AddDebuffStack(megawatt, augmentStacks);
-        CombatManager.Instance.GetCurrentPlayer.AddDebuffStack(DebuffToAdd, 2); //always two on device in use
+        CombatManager.Instance.GetCurrentPlayer.AddAugmentStack(megawatt, augmentStacks);
+        CombatManager.Instance.GetCurrentPlayer.AddAugmentStack(DebuffToAdd, 2); //always two on device in use
         FindObjectOfType<ProtoMana>().InUse = true;
     }
 }

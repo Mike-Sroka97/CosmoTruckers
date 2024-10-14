@@ -8,7 +8,7 @@ public class ModerateDefense : Augment
     const int moderateBaseStatusEffect = 12;
     const int moderateAdditionalStatusEffect = 3;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         baseStatusEffect = moderateBaseStatusEffect;
         additionalStatusEffect = moderateAdditionalStatusEffect;

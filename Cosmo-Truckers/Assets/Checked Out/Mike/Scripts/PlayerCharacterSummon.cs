@@ -18,7 +18,7 @@ public class PlayerCharacterSummon : PlayerCharacter
 
     public override void StartTurn()
     {
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
         {
             if (aug.TurnStart)
             {

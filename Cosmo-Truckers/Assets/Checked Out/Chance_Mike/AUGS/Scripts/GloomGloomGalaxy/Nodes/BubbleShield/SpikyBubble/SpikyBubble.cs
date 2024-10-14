@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpikyBubble : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
         AugmentSO.MyCharacter.BubbleShieldBrokenEvent.AddListener(StopEffect);

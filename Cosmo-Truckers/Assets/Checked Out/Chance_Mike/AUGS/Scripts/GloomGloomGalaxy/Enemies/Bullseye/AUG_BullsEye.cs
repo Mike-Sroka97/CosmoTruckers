@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AUG_BullsEye : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         foreach(Enemy enemy in FindObjectsOfType<Enemy>())
         {

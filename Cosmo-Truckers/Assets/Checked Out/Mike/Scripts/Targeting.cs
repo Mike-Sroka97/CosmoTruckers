@@ -284,7 +284,7 @@ public class Targeting : MonoBehaviour
             {
                 foreach(Enemy enemy in EnemyManager.Instance.TrashMobCollection[CombatManager.Instance.GetCurrentCharacter.GetComponent<Enemy>().CharacterName])
                 {
-                    foreach (DebuffStackSO aug in enemy.GetAUGS)
+                    foreach (AugmentStackSO aug in enemy.GetAUGS)
                     {
                         if (aug.OnSpellCast)
                             aug.DebuffEffect();
@@ -293,7 +293,7 @@ public class Targeting : MonoBehaviour
             }
             else
             {
-                foreach (DebuffStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
+                foreach (AugmentStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
                 {
                     if (aug.OnSpellCast)
                         aug.DebuffEffect();

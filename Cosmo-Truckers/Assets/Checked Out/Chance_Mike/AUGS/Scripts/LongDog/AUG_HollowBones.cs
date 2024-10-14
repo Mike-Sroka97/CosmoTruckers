@@ -11,7 +11,7 @@ public class AUG_HollowBones : Augment
         baseStatusEffect = superNegaativeStatusEffect;
     }
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 

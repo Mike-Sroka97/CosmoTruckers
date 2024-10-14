@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CumuloLickus : CombatMove
 {
-    [SerializeField] DebuffStackSO moistAug;
-    [SerializeField] DebuffStackSO shloppedAug;
+    [SerializeField] AugmentStackSO moistAug;
+    [SerializeField] AugmentStackSO shloppedAug;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class CumuloLickus : CombatMove
         {
             if (CombatManager.Instance.GetCharactersSelected[i].GetComponent<Enemy>())
             {
-                CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(moistAug);
+                CombatManager.Instance.GetCharactersSelected[i].AddAugmentStack(moistAug);
                 DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[i], baseDamage);
             }
             else if (!CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacterSummon>())
@@ -36,7 +36,7 @@ public class CumuloLickus : CombatMove
                 int tempScore = PlayerAugmentScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()];
                 tempScore = CalculateMultiplayerAugmentScore(tempScore);
                 ApplyAugment(CombatManager.Instance.GetCharactersSelected[i], tempScore);
-                CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(shloppedAug, tempScore);
+                CombatManager.Instance.GetCharactersSelected[i].AddAugmentStack(shloppedAug, tempScore);
             }
         }
     }

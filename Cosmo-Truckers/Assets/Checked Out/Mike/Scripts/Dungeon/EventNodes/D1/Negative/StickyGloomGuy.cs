@@ -14,7 +14,7 @@ public class StickyGloomGuy : EventNodeBase
 
     public void SwallowTheGloop()
     {
-        currentCharacter.AddDebuffStack(augmentsToAdd[0]);
+        currentCharacter.AddAugmentStack(augmentsToAdd[0]);
         IteratePlayerReference();
         CheckDissolveStatus();
         AutoSelectNextButton();

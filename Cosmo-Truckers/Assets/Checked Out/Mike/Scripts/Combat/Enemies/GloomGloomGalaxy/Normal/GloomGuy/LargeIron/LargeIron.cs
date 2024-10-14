@@ -20,6 +20,6 @@ public class LargeIron : CombatMove
         int damage = CalculateScore();
 
         DealMultiHitDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage, 2);
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, baseAugmentStacks);
+        CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, baseAugmentStacks);
     }
 }

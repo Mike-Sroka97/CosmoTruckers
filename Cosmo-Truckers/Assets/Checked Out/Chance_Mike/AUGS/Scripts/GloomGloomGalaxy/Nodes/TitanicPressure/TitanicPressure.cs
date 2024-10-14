@@ -5,7 +5,7 @@ using UnityEngine;
 public class TitanicPressure : Augment
 {
     [SerializeField] int damagePerTurn;
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (firstGo)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProtoCharacter : PlayerCharacter
 {
-    public DebuffStackSO Megawatt;
+    public AugmentStackSO Megawatt;
 
     public override void StartTurn()
     {

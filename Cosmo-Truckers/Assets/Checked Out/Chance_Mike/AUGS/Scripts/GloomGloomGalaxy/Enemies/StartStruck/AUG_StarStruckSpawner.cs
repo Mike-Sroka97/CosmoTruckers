@@ -13,7 +13,7 @@ public class AUG_StarStruckSpawner : Augment
     float spawnSpeed;
     bool firstStar;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
         spawnSpeed = minSpawn - StatusEffect;

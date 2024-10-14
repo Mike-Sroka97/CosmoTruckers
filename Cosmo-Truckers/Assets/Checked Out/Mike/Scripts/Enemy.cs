@@ -84,7 +84,7 @@ public class Enemy : Character
 
     public override void StartTurn()
     {
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
         {
             if (aug.TurnStart)
             {

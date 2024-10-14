@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToTongueOrNotToTongue : CombatMove
 {
-    [SerializeField] DebuffStackSO shloppedAug;
+    [SerializeField] AugmentStackSO shloppedAug;
 
     Rotator myRotator;
     float rotatorSpeed;
@@ -36,6 +36,6 @@ public class ToTongueOrNotToTongue : CombatMove
     public override void EndMove()
     {
         base.EndMove();
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(shloppedAug, CalculateAugmentScore());
+        CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(shloppedAug, CalculateAugmentScore());
     }
 }

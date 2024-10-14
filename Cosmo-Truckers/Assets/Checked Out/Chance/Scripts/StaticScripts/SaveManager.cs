@@ -100,7 +100,7 @@ public class SaveData
 
     [Header("Combat data")]
     public int PlayerCurrentHP;
-    public List<DebuffStackSO> PlayerCurrentDebuffs;
+    public List<AugmentStackSO> PlayerCurrentDebuffs;
 
     [Header("Other vars")]
     public bool TutorialFinished;

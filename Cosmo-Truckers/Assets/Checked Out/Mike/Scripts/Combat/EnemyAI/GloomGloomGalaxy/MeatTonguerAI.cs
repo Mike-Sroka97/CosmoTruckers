@@ -60,7 +60,7 @@ public class MeatTonguerAI : Enemy
         {
             foreach(Enemy enemy in enemies)
             {
-                foreach(DebuffStackSO augment in enemy.GetAUGS)
+                foreach(AugmentStackSO augment in enemy.GetAUGS)
                 {
                     if(augment.IsDebuff)
                     {

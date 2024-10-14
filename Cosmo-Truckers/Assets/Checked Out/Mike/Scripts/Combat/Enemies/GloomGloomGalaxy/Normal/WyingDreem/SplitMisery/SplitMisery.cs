@@ -38,7 +38,7 @@ public class SplitMisery : CombatMove
         int damage = CalculateScore();
 
         DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], damage);
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, baseAugmentStacks);
+        CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, baseAugmentStacks);
 
         //Player Two Damage
         if (CombatManager.Instance.GetCharactersSelected.Count == 1)
@@ -46,7 +46,7 @@ public class SplitMisery : CombatMove
 
         int stacksOfNitemare = 0;
 
-        foreach (DebuffStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
+        foreach (AugmentStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
             if (aug.DebuffName == DebuffToAdd.DebuffName)
                 stacksOfNitemare = aug.CurrentStacks;
 

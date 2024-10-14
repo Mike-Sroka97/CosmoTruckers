@@ -52,11 +52,11 @@ public class PlayerCharacter : Character
 
     private void Start()
     {
-        foreach (DebuffStackSO augment in passiveAugments)
+        foreach (AugmentStackSO augment in passiveAugments)
             if (!AUGS.Contains(augment))
-                AddDebuffStack(augment);
+                AddAugmentStack(augment);
 
-        foreach (DebuffStackSO augment in AUGS)
+        foreach (AugmentStackSO augment in AUGS)
             augment.MyCharacter = this;
 
         foreach (var atk in attacks)
@@ -171,11 +171,11 @@ public class PlayerCharacter : Character
 
         CombatManager.Instance.CurrentCharacter = this;
 
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
             if (aug.TurnStart)
                 aug.DebuffEffect();
 
-        foreach (DebuffStackSO augment in AugmentsToRemove)
+        foreach (AugmentStackSO augment in AugmentsToRemove)
             AdjustAugs(false, augment);
 
         AugmentsToRemove.Clear();

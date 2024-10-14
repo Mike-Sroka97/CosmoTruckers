@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AmberStarPassive : EnemyPassiveBase
 {
-    [SerializeField] DebuffStackSO debuffToAdd;
+    [SerializeField] AugmentStackSO debuffToAdd;
 
     public override void Activate(Enemy enemy)
     {
@@ -16,7 +16,7 @@ public class AmberStarPassive : EnemyPassiveBase
             {
                 debuffToAdd.AugSpawner.GetComponent<AUG_Resinated>().enemyToCheck = enemy;
                 debuffToAdd.AugSpawner.GetComponent<AUG_Resinated>().playerToCheck = players[i];
-                players[i].AddDebuffStack(debuffToAdd);
+                players[i].AddAugmentStack(debuffToAdd);
                 print($"{players[i].CharacterName} has been debuffed");
                 return;
             }

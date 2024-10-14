@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NovaSpikes : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (!firstGo)
             return;

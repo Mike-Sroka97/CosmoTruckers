@@ -6,7 +6,7 @@ public class TralaxyAI : Enemy
 {
     [SerializeField] int phaseTwoHealth;
     [SerializeField] int phaseThreeHealth;
-    [SerializeField] DebuffStackSO wrath;
+    [SerializeField] AugmentStackSO wrath;
 
     [SerializeField] int tallyYourSinWeight = 1;
     [SerializeField] int absolutionWeight = 3;
@@ -16,7 +16,7 @@ public class TralaxyAI : Enemy
     bool phaseTwo = false;
     bool justEnteredPhaseTwo = false;
     bool phaseThree = false;
-    DebuffStackSO wrathReference;
+    AugmentStackSO wrathReference;
 
     protected override void Start()
     {
@@ -105,18 +105,18 @@ public class TralaxyAI : Enemy
         //Tally Your Sin
         else if (attackIndex == 2)
         {
-            List<DebuffStackSO> sinfulCharacters = new List<DebuffStackSO>();
+            List<AugmentStackSO> sinfulCharacters = new List<AugmentStackSO>();
 
             foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.GetAlivePlayerCharacters())
-                foreach (DebuffStackSO aug in playerCharacter.GetAUGS)
+                foreach (AugmentStackSO aug in playerCharacter.GetAUGS)
                     if (aug.DebuffName == "Sin")
                         sinfulCharacters.Add(aug);
 
             if (sinfulCharacters.Count > 0)
             {
-                DebuffStackSO mostSin = sinfulCharacters[0];
+                AugmentStackSO mostSin = sinfulCharacters[0];
 
-                foreach (DebuffStackSO sinMan in sinfulCharacters)
+                foreach (AugmentStackSO sinMan in sinfulCharacters)
                     if (sinMan.CurrentStacks > mostSin.CurrentStacks)
                         mostSin = sinMan;
 

@@ -78,7 +78,7 @@ public class FunGun : CombatMove
                     CombatManager.Instance.GetCharactersSelected[0].TakeDamage((int)(currentDamage * DamageAdj + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment), true);
                     break;
                 case 2:
-                    CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, 2);
+                    CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, 2);
                     CombatManager.Instance.GetCharactersSelected[0].TakeHealing((int)(currentDamage * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), true);
                     break;
             }

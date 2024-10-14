@@ -580,7 +580,7 @@ public class CombatManager : MonoBehaviour
 
             if (CurrentCharacter.GetComponent<Enemy>())
             {
-                foreach (DebuffStackSO augment in CurrentCharacter.GetAUGS)
+                foreach (AugmentStackSO augment in CurrentCharacter.GetAUGS)
                 {
                     if (augment.InCombat)
                         augment.DebuffEffect();
@@ -697,9 +697,9 @@ public class CombatManager : MonoBehaviour
         CharactersSelected.Clear();
 
         //Handle EoT augments (store this data and display visuals in EndCombat()?
-        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+        AugmentStackSO[] allAugments = FindObjectsOfType<AugmentStackSO>();
 
-        foreach (DebuffStackSO augment in allAugments)
+        foreach (AugmentStackSO augment in allAugments)
         {
             if (augment.EveryTurnEnd)
                 augment.DebuffEffect();

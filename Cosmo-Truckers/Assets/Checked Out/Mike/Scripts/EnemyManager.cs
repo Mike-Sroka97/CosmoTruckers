@@ -357,7 +357,7 @@ public class EnemyManager : MonoBehaviour
 
                     foreach (var aug in playerData.PlayerCurrentDebuffs)
                     {
-                        character.AddDebuffStack(aug);
+                        character.AddAugmentStack(aug);
                     }
 
                     //If the players health has changed from last combat

@@ -17,6 +17,6 @@ public class CraggyCoating : CombatMove
 
         foreach(Character character in CombatManager.Instance.GetCharactersSelected)
             if (character.GetComponent<Enemy>())
-                character.AddDebuffStack(DebuffToAdd, AugmentScore);
+                character.AddAugmentStack(DebuffToAdd, AugmentScore);
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class EventNodeBase : MonoBehaviour
 {
     [SerializeField] protected float delay = 2.6f;
-    [SerializeField] protected DebuffStackSO[] augmentsToAdd;
+    [SerializeField] protected AugmentStackSO[] augmentsToAdd;
 
     protected Button[] myButtons;
     protected EventNodeHandler nodeHandler;
@@ -97,8 +97,8 @@ public class EventNodeBase : MonoBehaviour
             }
     }
 
-    protected void AddAugmentToPlayer(DebuffStackSO augment, int amount = 1)
+    protected void AddAugmentToPlayer(AugmentStackSO augment, int amount = 1)
     {
-        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augment, amount);
+        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augment, amount);
     }
 }

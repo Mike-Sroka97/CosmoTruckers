@@ -10,14 +10,14 @@ public class BabyAugment : MonoBehaviour
     Image bg;
     Image augImage;
 
-    public void UpdateSlot(DebuffStackSO aug)
+    public void UpdateSlot(AugmentStackSO aug)
     {
         gameObject.SetActive(true);
         SetBG(aug);
         augImage.sprite = aug.AugmentSprite;
     }
 
-    private void SetBG(DebuffStackSO aug)
+    private void SetBG(AugmentStackSO aug)
     {
         if(!bg)
         {

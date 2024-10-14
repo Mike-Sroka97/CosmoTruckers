@@ -6,7 +6,7 @@ public class DamageAdjustmentAugment : Augment
 {
     [SerializeField] bool damageIncrease = true;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (!firstGo)
         {

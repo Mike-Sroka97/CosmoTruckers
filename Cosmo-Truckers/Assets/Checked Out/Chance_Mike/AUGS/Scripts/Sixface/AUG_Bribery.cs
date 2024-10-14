@@ -9,7 +9,7 @@ public class AUG_Bribery : Augment
     const float yBounds = 3.25f;
     const float xBounds = 5.25f;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 

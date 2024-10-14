@@ -10,7 +10,7 @@ public class CombatMove : MonoBehaviour
     [SerializeField] protected GameObject[] layouts;
     //For games that can deal player damage
     [SerializeField] public int Damage;
-    [SerializeField] protected DebuffStackSO DebuffToAdd;
+    [SerializeField] protected AugmentStackSO DebuffToAdd;
     [SerializeField] protected bool playerEnemyTargetDifference = false;
     public float MinigameDuration;
 
@@ -155,7 +155,7 @@ public class CombatMove : MonoBehaviour
 
     protected void ApplyAugment(Character character, int augmentStacks)
     {
-        character.AddDebuffStack(DebuffToAdd, augmentStacks);
+        character.AddAugmentStack(DebuffToAdd, augmentStacks);
     }
 
     public void DealDamageOrHealing(Character character, int currentDamage, int damage = 0)

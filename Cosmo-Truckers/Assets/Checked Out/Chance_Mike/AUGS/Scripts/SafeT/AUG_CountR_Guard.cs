@@ -7,7 +7,7 @@ public class AUG_CountR_Guard : Augment
     int currentShield = 0;
     int lastHealth;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
         //Get the current shield level of character at start of combat

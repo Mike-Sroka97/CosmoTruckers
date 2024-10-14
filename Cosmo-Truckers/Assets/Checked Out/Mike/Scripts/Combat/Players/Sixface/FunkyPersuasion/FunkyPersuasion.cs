@@ -19,7 +19,7 @@ public class FunkyPersuasion : CombatMove
         Character target = CombatManager.Instance.CharactersSelected[0];
         int subductionToAdd = 2; //base augment to add. Reduce if they are already subdued
 
-        foreach(DebuffStackSO augment in target.GetAUGS)
+        foreach(AugmentStackSO augment in target.GetAUGS)
         {
             if(augment.DebuffName == "Subduction")
             {
@@ -28,7 +28,7 @@ public class FunkyPersuasion : CombatMove
             }
         }
 
-        target.AddDebuffStack(DebuffToAdd, subductionToAdd);
+        target.AddAugmentStack(DebuffToAdd, subductionToAdd);
 
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }

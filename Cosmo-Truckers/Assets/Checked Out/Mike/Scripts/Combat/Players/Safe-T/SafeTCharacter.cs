@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SafeTCharacter : PlayerCharacter
 {
-    [SerializeField] DebuffStackSO strength;
+    [SerializeField] AugmentStackSO strength;
 
     private void OnEnable()
     {
@@ -43,6 +43,6 @@ public class SafeTCharacter : PlayerCharacter
     private void HandleStrengthGainPassive()
     {
         if (CombatManager.Instance.GetCurrentCharacter.GetComponent<SafeTCharacter>())
-            AddDebuffStack(strength);
+            AddAugmentStack(strength);
     }
 }

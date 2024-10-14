@@ -6,7 +6,7 @@ public class AUG_SweetPlacebo : Augment
 {
     [SerializeField] int healingAmount = 3;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 

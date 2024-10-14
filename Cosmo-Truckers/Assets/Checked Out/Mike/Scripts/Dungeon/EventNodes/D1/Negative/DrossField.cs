@@ -14,7 +14,7 @@ public class DrossField : EventNodeBase
 
         foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
         {
-            player.MyCharacter.AddDebuffStack(augmentsToAdd[0]);
+            player.MyCharacter.AddAugmentStack(augmentsToAdd[0]);
             player.MyCharacter.Stats.Reflex = randomOrder[0].MyCharacter.Stats.Reflex;
 
             randomOrder.RemoveAt(0);

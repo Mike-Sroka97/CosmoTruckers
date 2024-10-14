@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MysteriousCane : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (!firstGo)
         {

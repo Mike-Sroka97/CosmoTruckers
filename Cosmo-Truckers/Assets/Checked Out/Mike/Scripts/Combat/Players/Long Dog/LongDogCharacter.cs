@@ -5,7 +5,7 @@ using UnityEngine.UIElements.Experimental;
 
 public class LongDogCharacter : PlayerCharacter
 {
-    [SerializeField] DebuffStackSO hollowBones;
+    [SerializeField] AugmentStackSO hollowBones;
 
     public bool ResetCombatPosition = false;
 
@@ -99,7 +99,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 AugmentsToRemove.Clear();
 
-                foreach (DebuffStackSO aug in AUGS)
+                foreach (AugmentStackSO aug in AUGS)
                 {
                     if (aug.OnDamage)
                     {
@@ -107,7 +107,7 @@ public class LongDogCharacter : PlayerCharacter
                     }
                 }
 
-                foreach (DebuffStackSO augment in AugmentsToRemove)
+                foreach (AugmentStackSO augment in AugmentsToRemove)
                     AdjustAugs(false, augment);
             }
         }
@@ -179,7 +179,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if(currentHealth - amount < bodyAndLegHealth)
                 {
-                    AddDebuffStack(hollowBones);
+                    AddAugmentStack(hollowBones);
                     amount = currentHealth - bodyAndLegHealth;
                 }
             }
@@ -188,7 +188,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth - amount < legOnlyHealth)
                 {
-                    AddDebuffStack(hollowBones);
+                    AddAugmentStack(hollowBones);
                     amount = currentHealth - legOnlyHealth;
                 }
             }
@@ -200,7 +200,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth + amount > bodyAndLegHealth)
                 {
-                    AddDebuffStack(hollowBones);
+                    AddAugmentStack(hollowBones);
                     amount = bodyAndLegHealth - currentHealth;
                 }
             }
@@ -209,7 +209,7 @@ public class LongDogCharacter : PlayerCharacter
             {
                 if (currentHealth + amount > legOnlyHealth)
                 {
-                    AddDebuffStack(hollowBones);
+                    AddAugmentStack(hollowBones);
                     amount = legOnlyHealth - currentHealth;
                 }
             }

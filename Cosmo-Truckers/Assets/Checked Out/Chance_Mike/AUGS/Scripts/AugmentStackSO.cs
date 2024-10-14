@@ -6,7 +6,7 @@ using UnityEngine.UI;
 //Base class for all debuffs
 [CreateAssetMenu(fileName = "Debuff", menuName = "ScriptableObjects/Debuff/EmptyBase")]
 [System.Serializable]
-public class DebuffStackSO : ScriptableObject
+public class AugmentStackSO : ScriptableObject
 {
     [Header("Types")]
     public bool InCombat;

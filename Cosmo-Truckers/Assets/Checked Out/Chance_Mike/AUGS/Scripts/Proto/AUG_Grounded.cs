@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class AUG_Grounded : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 
         //just in case someone else gets this for some reason
         if(AugmentSO.MyCharacter.GetComponent<ProtoCharacter>())
-            AugmentSO.MyCharacter.AddDebuffStack(AugmentSO.MyCharacter.GetComponent<ProtoCharacter>().Megawatt, (int)StatusEffect);
+            AugmentSO.MyCharacter.AddAugmentStack(AugmentSO.MyCharacter.GetComponent<ProtoCharacter>().Megawatt, (int)StatusEffect);
     }
 
     public override void StopEffect()

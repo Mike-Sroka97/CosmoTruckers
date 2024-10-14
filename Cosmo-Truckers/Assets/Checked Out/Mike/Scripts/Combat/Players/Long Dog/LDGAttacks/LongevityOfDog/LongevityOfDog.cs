@@ -66,6 +66,6 @@ public class LongevityOfDog : CombatMove
             augmentStacks *= 2;
 
         //Apply augment
-        CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
+        CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, augmentStacks);
     }
 }

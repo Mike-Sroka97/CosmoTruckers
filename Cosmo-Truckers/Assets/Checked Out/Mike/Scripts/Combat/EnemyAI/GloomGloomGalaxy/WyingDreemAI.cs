@@ -24,7 +24,7 @@ public class WyingDreemAI : Enemy
         //kill a player if they have too much nitemare
         foreach (PlayerCharacter player in players)
         {
-            foreach (DebuffStackSO augment in player.GetAUGS)
+            foreach (AugmentStackSO augment in player.GetAUGS)
             {
                 if (augment.DebuffName == debuffName && augment.CurrentStacks >= nitemareStacksToKill && !player.Dead)
                 {
@@ -139,7 +139,7 @@ public class WyingDreemAI : Enemy
 
             foreach(PlayerCharacter player in players)
             {
-                foreach (DebuffStackSO augment in player.GetAUGS)
+                foreach (AugmentStackSO augment in player.GetAUGS)
                 {
                     if (augment.DebuffName == debuffName && augment.CurrentStacks >= currentMostNitemare)
                     {
@@ -173,7 +173,7 @@ public class WyingDreemAI : Enemy
 
         foreach (PlayerCharacter player in players)
         {
-            foreach (DebuffStackSO augment in player.GetAUGS)
+            foreach (AugmentStackSO augment in player.GetAUGS)
             {
                 if (augment.DebuffName == "Nitemare" && augment.CurrentStacks == stacks)
                 {

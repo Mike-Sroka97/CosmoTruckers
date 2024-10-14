@@ -7,7 +7,7 @@ public class LunarLight : Augment
     [SerializeField] int maxHealthIncrease = 18;
     [SerializeField] int damageDecrease = 12;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (!firstGo)
         {

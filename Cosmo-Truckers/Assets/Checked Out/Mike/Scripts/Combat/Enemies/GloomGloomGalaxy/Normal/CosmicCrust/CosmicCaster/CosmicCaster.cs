@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CosmicCaster : CombatMove
 {
-    [SerializeField] DebuffStackSO novaSword;
-    [SerializeField] DebuffStackSO spikyShield;
+    [SerializeField] AugmentStackSO novaSword;
+    [SerializeField] AugmentStackSO spikyShield;
 
     CosmicCasterCollectable[] collectables;
 
@@ -56,8 +56,8 @@ public class CosmicCaster : CombatMove
         MoveEnded = true;
 
         int damage = CalculateScore();
-        CombatManager.Instance.CharactersSelected[0].AddDebuffStack(novaSword);
-        CombatManager.Instance.CharactersSelected[1].AddDebuffStack(spikyShield);
+        CombatManager.Instance.CharactersSelected[0].AddAugmentStack(novaSword);
+        CombatManager.Instance.CharactersSelected[1].AddAugmentStack(spikyShield);
         DealDamageOrHealing(CombatManager.Instance.CharactersSelected[2], damage); //2 is always Crust
     }
 }

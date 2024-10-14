@@ -6,7 +6,7 @@ public class AUG_SpikyShield : Augment
 {
     [SerializeField] int shieldAmount = 35;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (!firstGo)
             return;

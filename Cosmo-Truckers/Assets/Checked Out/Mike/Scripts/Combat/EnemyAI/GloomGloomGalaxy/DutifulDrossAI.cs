@@ -14,7 +14,7 @@ public class DutifulDrossAI : Enemy
         {
             bool maxCrust = false;
 
-            foreach (DebuffStackSO aug in ProtectedEnemy.GetAUGS)
+            foreach (AugmentStackSO aug in ProtectedEnemy.GetAUGS)
                 if (aug.DebuffName == "Crust" && aug.CurrentStacks == aug.MaxStacks)
                     maxCrust = true;
 

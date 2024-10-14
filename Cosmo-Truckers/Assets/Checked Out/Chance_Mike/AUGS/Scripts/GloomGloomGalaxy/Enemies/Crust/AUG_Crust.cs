@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AUG_Crust : Augment
 {
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstGo)
             StopEffect();

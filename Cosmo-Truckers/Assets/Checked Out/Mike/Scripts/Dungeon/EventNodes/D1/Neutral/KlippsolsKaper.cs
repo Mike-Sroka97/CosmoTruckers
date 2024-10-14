@@ -25,7 +25,7 @@ public class KlippsolsKaper : EventNodeBase
         }
         else
         {
-            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augmentsToAdd[0], 2);
+            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augmentsToAdd[0], 2);
             myButtons[buttonID].GetComponentInChildren<TextMeshProUGUI>().text = badText;
         }
 
@@ -37,7 +37,7 @@ public class KlippsolsKaper : EventNodeBase
     {
         if (redGood)
         {
-            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augmentsToAdd[0], 2);
+            PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augmentsToAdd[0], 2);
             myButtons[buttonID].GetComponentInChildren<TextMeshProUGUI>().text = badText;
         }
         else

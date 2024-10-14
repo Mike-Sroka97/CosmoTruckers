@@ -9,12 +9,12 @@ using UnityEngine.TextCore.Text;
 public abstract class Character : MonoBehaviour
 {
     [SerializeField] protected EnemyPassiveBase passiveMove;
-    [SerializeField] protected DebuffStackSO[] passiveAugments;
-    [SerializeField] protected List<DebuffStackSO> AUGS = new List<DebuffStackSO>();
-    public List<DebuffStackSO> AugmentsToRemove = new List<DebuffStackSO>();
+    [SerializeField] protected AugmentStackSO[] passiveAugments;
+    [SerializeField] protected List<AugmentStackSO> AUGS = new List<AugmentStackSO>();
+    public List<AugmentStackSO> AugmentsToRemove = new List<AugmentStackSO>();
     [SerializeField] protected int maxShield = 60;
     private int shield = 0;
-    public List<DebuffStackSO> GetAUGS { get => AUGS; }
+    public List<AugmentStackSO> GetAUGS { get => AUGS; }
     public CharacterStats Stats;
     public int Health;
     public SpriteRenderer[] TargetingSprites;
@@ -153,7 +153,7 @@ public abstract class Character : MonoBehaviour
         {
             AugmentsToRemove.Clear();
 
-            foreach (DebuffStackSO aug in AUGS)
+            foreach (AugmentStackSO aug in AUGS)
             {
                 if (aug.OnDamage)
                 {
@@ -161,7 +161,7 @@ public abstract class Character : MonoBehaviour
                 }
             }
 
-            foreach (DebuffStackSO augment in AugmentsToRemove)
+            foreach (AugmentStackSO augment in AugmentsToRemove)
             {
                 AdjustAugs(false, augment);
                 Destroy(augment);
@@ -210,7 +210,7 @@ public abstract class Character : MonoBehaviour
             {
                 AugmentsToRemove.Clear();
 
-                foreach (DebuffStackSO aug in AUGS)
+                foreach (AugmentStackSO aug in AUGS)
                 {
                     if (aug.OnDamage)
                     {
@@ -218,7 +218,7 @@ public abstract class Character : MonoBehaviour
                     }
                 }
 
-                foreach (DebuffStackSO augment in AugmentsToRemove)
+                foreach (AugmentStackSO augment in AugmentsToRemove)
                     AdjustAugs(false, augment);
             }
         }
@@ -227,7 +227,7 @@ public abstract class Character : MonoBehaviour
         CombatManager.Instance.CommandsExecuting--;
     }
 
-    protected void AdjustAugs(bool add, DebuffStackSO stack)
+    protected void AdjustAugs(bool add, AugmentStackSO stack)
     {
         if (add)
             AUGS.Add(stack);
@@ -441,10 +441,10 @@ public abstract class Character : MonoBehaviour
         //Remove AUGs
         AugmentsToRemove.Clear();
 
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
             if (aug.RemoveOnDeath)
                 AugmentsToRemove.Add(aug);
-        foreach (DebuffStackSO aug in AugmentsToRemove)
+        foreach (AugmentStackSO aug in AugmentsToRemove)
             AdjustAugs(false, aug);
 
         // An additional subtract to Commands Executing for Die
@@ -467,13 +467,13 @@ public abstract class Character : MonoBehaviour
         turnOrder.AddToSpeedList(GetComponent<CharacterStats>());
         turnOrder.DetermineTurnOrder();
     }
-    public void AddDebuffStack(DebuffStackSO stack, int stacksToAdd = 1, bool test = false)
+    public void AddAugmentStack(AugmentStackSO stack, int stacksToAdd = 1, bool test = false)
     {
         if (stacksToAdd == 0) return;
 
         StartCoroutine(DisplayAugment(stack));
 
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
         {
             if (string.Equals(aug.DebuffName, stack.DebuffName))
             {
@@ -485,7 +485,7 @@ public abstract class Character : MonoBehaviour
             }
         }
 
-        DebuffStackSO tempAUG = Instantiate(stack, transform);
+        AugmentStackSO tempAUG = Instantiate(stack, transform);
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
@@ -502,11 +502,11 @@ public abstract class Character : MonoBehaviour
     /// <param name="stacksToAdd"></param>
     /// <param name="test"></param>
     /// <returns></returns>
-    public DebuffStackSO AddDebuffStackAndReturnReference(DebuffStackSO stack, int stacksToAdd = 1, bool test = false)
+    public AugmentStackSO AddDebuffStackAndReturnReference(AugmentStackSO stack, int stacksToAdd = 1, bool test = false)
     {
         StartCoroutine(DisplayAugment(stack));
 
-        DebuffStackSO tempAUG = Instantiate(stack, transform);
+        AugmentStackSO tempAUG = Instantiate(stack, transform);
         tempAUG.CurrentStacks = stacksToAdd;
         tempAUG.MyCharacter = this;
 
@@ -518,12 +518,12 @@ public abstract class Character : MonoBehaviour
     }
 
     //Since SOs can't start the coroutine
-    public void CallDisplayAugment(DebuffStackSO aug, bool removed = false)
+    public void CallDisplayAugment(AugmentStackSO aug, bool removed = false)
     {
         StartCoroutine(DisplayAugment(aug, removed));
     }
 
-    IEnumerator DisplayAugment(DebuffStackSO aug, bool removed = false)
+    IEnumerator DisplayAugment(AugmentStackSO aug, bool removed = false)
     {
         //wait until the last augment finished
         while (augmenting)
@@ -557,12 +557,12 @@ public abstract class Character : MonoBehaviour
         augmenting = false;
     }
 
-    public void RemoveDebuffStack(DebuffStackSO stack, int stackToRemove = 100, bool cleanUp = true)
+    public void RemoveDebuffStack(AugmentStackSO stack, int stackToRemove = 100, bool cleanUp = true)
     {
         StartCoroutine(DisplayAugment(stack, true));
 
         //Remove stacks
-        foreach (DebuffStackSO aug in AUGS)
+        foreach (AugmentStackSO aug in AUGS)
         {
             if (string.Equals(aug.DebuffName, stack.DebuffName))
             {
@@ -578,7 +578,7 @@ public abstract class Character : MonoBehaviour
     public void CleanUpAUGs()
     {
         //Clean up augs if they need to be removed
-        foreach (DebuffStackSO augment in AugmentsToRemove)
+        foreach (AugmentStackSO augment in AugmentsToRemove)
         {
             AdjustAugs(false, augment);
             Destroy(augment);
@@ -596,13 +596,13 @@ public abstract class Character : MonoBehaviour
     {
         int currentAmount = amount;
 
-        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+        List<AugmentStackSO> tempAUGS = RandomizeAugments();
 
         switch (type)
         {
             //remove debuffs
             case 0:
-                foreach(DebuffStackSO debuff in tempAUGS)
+                foreach(AugmentStackSO debuff in tempAUGS)
                     if(debuff.IsDebuff && debuff.Removable)
                     {
                         if (currentAmount >= debuff.CurrentStacks)
@@ -628,7 +628,7 @@ public abstract class Character : MonoBehaviour
                 break;
             //remove buffs
             case 1:
-                foreach (DebuffStackSO buff in tempAUGS)
+                foreach (AugmentStackSO buff in tempAUGS)
                     if (buff.IsBuff && buff.Removable)
                     {
                         if (currentAmount >= buff.CurrentStacks)
@@ -653,7 +653,7 @@ public abstract class Character : MonoBehaviour
                 break;
             //remove augments
             case 2:
-                foreach (DebuffStackSO augment in tempAUGS)
+                foreach (AugmentStackSO augment in tempAUGS)
                     if(augment.Removable)
                     {
                         if (currentAmount >= augment.CurrentStacks)
@@ -694,13 +694,13 @@ public abstract class Character : MonoBehaviour
     {
         int currentAmount = amount;
 
-        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+        List<AugmentStackSO> tempAUGS = RandomizeAugments();
 
         switch (type)
         {
             //proliferate debuffs
             case 0:
-                foreach (DebuffStackSO debuff in tempAUGS)
+                foreach (AugmentStackSO debuff in tempAUGS)
                     if (debuff.IsDebuff && debuff.CurrentStacks < debuff.MaxStacks)
                     {
                         int amountToProliferate = debuff.MaxStacks - debuff.CurrentStacks;
@@ -708,13 +708,13 @@ public abstract class Character : MonoBehaviour
                         if (currentAmount >= amountToProliferate)
                         {
                             StartCoroutine(DisplayAugment(debuff, false));
-                            AddDebuffStack(debuff, amountToProliferate);
+                            AddAugmentStack(debuff, amountToProliferate);
                             currentAmount -= amountToProliferate;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(debuff, false));
-                            AddDebuffStack(debuff, currentAmount);
+                            AddAugmentStack(debuff, currentAmount);
                             currentAmount -= currentAmount;
                         }
                         else
@@ -725,7 +725,7 @@ public abstract class Character : MonoBehaviour
                 break;
             //proliferate buffs
             case 1:
-                foreach (DebuffStackSO buff in tempAUGS)
+                foreach (AugmentStackSO buff in tempAUGS)
                     if (buff.IsBuff && buff.CurrentStacks < buff.MaxStacks)
                     {
                         int amountToProliferate = buff.MaxStacks - buff.CurrentStacks;
@@ -733,13 +733,13 @@ public abstract class Character : MonoBehaviour
                         if (currentAmount >= amountToProliferate)
                         {
                             StartCoroutine(DisplayAugment(buff, false));
-                            AddDebuffStack(buff, amountToProliferate);
+                            AddAugmentStack(buff, amountToProliferate);
                             currentAmount -= amountToProliferate;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(buff, false));
-                            AddDebuffStack(buff, currentAmount);
+                            AddAugmentStack(buff, currentAmount);
                             currentAmount -= currentAmount;
                         }
                         else
@@ -750,7 +750,7 @@ public abstract class Character : MonoBehaviour
                 break;
             //proliferate augments
             case 2:
-                foreach (DebuffStackSO augment in tempAUGS)
+                foreach (AugmentStackSO augment in tempAUGS)
                 {
                     if (augment.CurrentStacks < augment.MaxStacks)
                     {
@@ -759,13 +759,13 @@ public abstract class Character : MonoBehaviour
                         if (currentAmount >= amountToProliferate)
                         {
                             StartCoroutine(DisplayAugment(augment, false));
-                            AddDebuffStack(augment, amountToProliferate);
+                            AddAugmentStack(augment, amountToProliferate);
                             currentAmount -= amountToProliferate;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(augment, false));
-                            AddDebuffStack(augment, currentAmount);
+                            AddAugmentStack(augment, currentAmount);
                             currentAmount -= currentAmount;
                         }
                         else
@@ -780,16 +780,16 @@ public abstract class Character : MonoBehaviour
         }
     }
 
-    private List<DebuffStackSO> RandomizeAugments()
+    private List<AugmentStackSO> RandomizeAugments()
     {
         //Randomize AUGS
         System.Random random = new System.Random();
-        List<DebuffStackSO> tempAUGS = AUGS;
+        List<AugmentStackSO> tempAUGS = AUGS;
 
         for (int i = 0; i < tempAUGS.Count - 1; i++)
         {
             int j = random.Next(i, tempAUGS.Count);
-            DebuffStackSO temp = tempAUGS[i];
+            AugmentStackSO temp = tempAUGS[i];
             tempAUGS[i] = tempAUGS[j];
             tempAUGS[j] = temp;
         }
@@ -806,35 +806,35 @@ public abstract class Character : MonoBehaviour
     /// <param name="type"></param>
     public void DoubleAugment(int type)
     {
-        List<DebuffStackSO> tempAUGS = RandomizeAugments();
+        List<AugmentStackSO> tempAUGS = RandomizeAugments();
 
         switch (type)
         {
             //double debuffs
             case 0:
-                foreach (DebuffStackSO debuff in tempAUGS)
+                foreach (AugmentStackSO debuff in tempAUGS)
                     if (debuff.IsDebuff && debuff.CurrentStacks < debuff.MaxStacks)
                     {
-                        AddDebuffStack(debuff, debuff.CurrentStacks);
+                        AddAugmentStack(debuff, debuff.CurrentStacks);
                         return;
                     }
                 break;
             //double buffs
             case 1:
-                foreach (DebuffStackSO buff in tempAUGS)
+                foreach (AugmentStackSO buff in tempAUGS)
                     if (buff.IsBuff && buff.CurrentStacks < buff.MaxStacks)
                     {
-                        AddDebuffStack(buff, buff.CurrentStacks);
+                        AddAugmentStack(buff, buff.CurrentStacks);
                         return;
                     }
                 break;
             //double augments
             case 2:
-                foreach (DebuffStackSO augment in tempAUGS)
+                foreach (AugmentStackSO augment in tempAUGS)
                 {
                     if(augment.CurrentStacks < augment.MaxStacks)
                     {
-                        AddDebuffStack(augment, augment.CurrentStacks);
+                        AddAugmentStack(augment, augment.CurrentStacks);
                         return;
                     }
                 }
@@ -1028,21 +1028,21 @@ public abstract class Character : MonoBehaviour
 
     [Space(10)]
     [Header("Test AUG")]
-    [SerializeField] DebuffStackSO test;
+    [SerializeField] AugmentStackSO test;
 
     [ContextMenu("Test AUG")]
     public void TestAUG()
     {
-        AddDebuffStack(test, 1, true);
+        AddAugmentStack(test, 1, true);
     }
 
     public void FadeAugments()
     {
         AugmentsToRemove.Clear();
 
-        foreach (DebuffStackSO augment in AUGS)
+        foreach (AugmentStackSO augment in AUGS)
             augment.Fade();
-        foreach (DebuffStackSO augment in AugmentsToRemove)
+        foreach (AugmentStackSO augment in AugmentsToRemove)
             AdjustAugs(false, augment);
     }
 }

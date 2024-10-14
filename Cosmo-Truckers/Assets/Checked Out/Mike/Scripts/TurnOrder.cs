@@ -209,10 +209,10 @@ public class TurnOrder : MonoBehaviour
 
     private void HandleEOCaugments()
     {
-        DebuffStackSO[] allAugments = FindObjectsOfType<DebuffStackSO>();
+        AugmentStackSO[] allAugments = FindObjectsOfType<AugmentStackSO>();
 
         //Remove all end of combat augs
-        foreach (DebuffStackSO augment in allAugments)
+        foreach (AugmentStackSO augment in allAugments)
         {
             if (augment.RemoveOnEndCombat)
                 augment.MyCharacter.RemoveDebuffStack(augment);

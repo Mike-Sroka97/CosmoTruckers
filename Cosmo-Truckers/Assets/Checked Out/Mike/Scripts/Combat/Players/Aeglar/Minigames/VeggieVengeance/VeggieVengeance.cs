@@ -56,7 +56,7 @@ public class VeggieVengeance : CombatMove
 
             //Apply augment
             if (playerEnemyTargetDifference && character.GetComponent<Enemy>())
-                character.GetComponent<Character>().AddDebuffStack(DebuffToAdd, augmentStacks);
+                character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
         }
     }
 }

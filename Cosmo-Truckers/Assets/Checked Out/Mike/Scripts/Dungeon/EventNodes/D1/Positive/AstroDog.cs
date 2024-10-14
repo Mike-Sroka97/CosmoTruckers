@@ -21,7 +21,7 @@ public class AstroDog : EventNodeBase
 
     public void ShakeTheDogsPaw(int buttonID)
     {
-        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddDebuffStack(augmentsToAdd[0]);
+        PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augmentsToAdd[0]);
         MultiplayerSelection(buttonID);
         CheckEndEvent();
     }

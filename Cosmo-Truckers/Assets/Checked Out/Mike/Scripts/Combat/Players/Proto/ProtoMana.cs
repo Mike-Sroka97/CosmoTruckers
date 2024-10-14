@@ -68,7 +68,7 @@ public class ProtoMana : Mana
 
         //Triggers Grounded if you had more than 0 battery 
         if(CurrentBattery == 0 && tempBattery > 0)
-            foreach (DebuffStackSO aug in myCharacter.GetAUGS)
+            foreach (AugmentStackSO aug in myCharacter.GetAUGS)
                 if (aug.name == "Grounded(Clone)")
                 {
                     aug.DebuffEffect();

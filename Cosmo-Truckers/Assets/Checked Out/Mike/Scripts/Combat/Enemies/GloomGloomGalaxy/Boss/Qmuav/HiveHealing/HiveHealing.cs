@@ -24,6 +24,6 @@ public class HiveHealing : CombatMove
         DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], healing);
 
         //Player
-        CombatManager.Instance.GetCharactersSelected[1].AddDebuffStack(DebuffToAdd, baseAugmentStacks);
+        CombatManager.Instance.GetCharactersSelected[1].AddAugmentStack(DebuffToAdd, baseAugmentStacks);
     }
 }

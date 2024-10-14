@@ -6,7 +6,7 @@ public class AUG_Longevity : Augment
 {
     const int healingModifier = 2;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (stack.LastStacks != -1)
         {

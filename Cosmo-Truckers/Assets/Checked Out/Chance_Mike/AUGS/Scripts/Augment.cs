@@ -6,7 +6,7 @@ public abstract class Augment : MonoBehaviour
 {
     [SerializeField] protected float baseStatusEffect;
     [SerializeField] protected float additionalStatusEffect;
-    [HideInInspector] public DebuffStackSO AugmentSO;
+    [HideInInspector] public AugmentStackSO AugmentSO;
     protected float StatusEffect;
     protected float MaxStatusEffect;
     protected bool firstGo = true;
@@ -18,7 +18,7 @@ public abstract class Augment : MonoBehaviour
     /// Called when the debuff is started
     /// </summary>
     /// <param name="stack"></param>
-    public virtual void Activate(DebuffStackSO stack = null) //Just in case we test without the SO
+    public virtual void Activate(AugmentStackSO stack = null) //Just in case we test without the SO
     {
         if (stack)
             InitializeAugment(stack);
@@ -45,7 +45,7 @@ public abstract class Augment : MonoBehaviour
         AdjustMaxStatusEffect();
     }
 
-    public void InitializeAugment(DebuffStackSO stack)
+    public void InitializeAugment(AugmentStackSO stack)
     {
         if (initialized)
             return;

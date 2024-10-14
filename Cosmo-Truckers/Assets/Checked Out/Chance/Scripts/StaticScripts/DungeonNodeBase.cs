@@ -36,6 +36,6 @@ namespace Node
         public GameObject EnemyHolder;
 
         [Header("NC Nodes")]
-        public DebuffStackSO[] AugToAdd;
+        public AugmentStackSO[] AugToAdd;
     }
 }

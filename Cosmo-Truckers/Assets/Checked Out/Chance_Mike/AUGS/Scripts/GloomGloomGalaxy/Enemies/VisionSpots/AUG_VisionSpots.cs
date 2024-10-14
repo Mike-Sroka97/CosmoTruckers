@@ -8,7 +8,7 @@ public class AUG_VisionSpots : Augment
     [SerializeField] GameObject augment;
 
     GameObject tempAugment;
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 

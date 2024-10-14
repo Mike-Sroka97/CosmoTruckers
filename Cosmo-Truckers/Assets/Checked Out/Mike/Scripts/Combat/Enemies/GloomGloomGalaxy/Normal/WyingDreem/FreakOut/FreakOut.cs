@@ -66,7 +66,7 @@ public class FreakOut : CombatMove
             if (i == 0)
                 nitemareStacks++;
 
-                 CombatManager.Instance.GetCharactersSelected[i].AddDebuffStack(DebuffToAdd, nitemareStacks);
+                 CombatManager.Instance.GetCharactersSelected[i].AddAugmentStack(DebuffToAdd, nitemareStacks);
         }
     }
 }

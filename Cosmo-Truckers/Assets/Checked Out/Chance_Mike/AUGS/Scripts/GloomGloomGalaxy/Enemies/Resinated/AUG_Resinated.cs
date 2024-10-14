@@ -9,7 +9,7 @@ public class AUG_Resinated : Augment
 
     BaseAttackSO toRemove;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         toRemove = playerToCheck.GetAllAttacks[Random.Range(0, playerToCheck.GetAllAttacks.Count)];
 

@@ -8,7 +8,7 @@ public class MajorVigor : Augment
     const int majorBaseStatusEffect = 50;
     const int majorAdditionalStatusEffect = 10;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         baseStatusEffect = majorBaseStatusEffect;
         additionalStatusEffect = majorAdditionalStatusEffect;

@@ -37,7 +37,7 @@ public class CounterBop : CombatMove
         character.TakeShielding(totalShields);
 
         //Add CountR Guard augment
-        character.AddDebuffStack(DebuffToAdd, baseAugmentStacks);
+        character.AddAugmentStack(DebuffToAdd, baseAugmentStacks);
 
         //Taunt random enemy
         List<Enemy> aliveEnemies = new List<Enemy>();

@@ -99,7 +99,7 @@ public class ShockingShock : CombatMove
         }
 
         int stacksToRemove = 0;
-        foreach(DebuffStackSO aug in player.GetAUGS)
+        foreach(AugmentStackSO aug in player.GetAUGS)
         {
             if (aug.DebuffName == "Shocked")
                 stacksToRemove = aug.CurrentStacks;

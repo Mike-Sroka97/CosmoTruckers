@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UI_AUG_DESCRIPTION : MonoBehaviour
 {
     Character currentChar;
-    List<DebuffStackSO> charactersAUGS;
+    List<AugmentStackSO> charactersAUGS;
 
 
     [SerializeField] List<GameObject> selectable;

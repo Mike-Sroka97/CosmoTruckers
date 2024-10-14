@@ -41,14 +41,14 @@ public class PawnStar : CombatMove
                 if (!enemy.Dead && highestSubductionEnemy == null)
                 {
                     highestSubductionEnemy = enemy;
-                    foreach (DebuffStackSO augment in enemy.GetAUGS)
+                    foreach (AugmentStackSO augment in enemy.GetAUGS)
                         if (augment.DebuffName == "Subduction")
                             highestSubduction = augment.CurrentStacks;
                 }
 
                 else if (!enemy.Dead)
                 {
-                    foreach(DebuffStackSO augment in enemy.GetAUGS)
+                    foreach(AugmentStackSO augment in enemy.GetAUGS)
                         if(augment.DebuffName == "Subduction" && augment.CurrentStacks > highestSubduction)
                         {
                             highestSubduction = augment.CurrentStacks;
@@ -113,11 +113,11 @@ public class PawnStar : CombatMove
             augmentStacks++;
         
         if(sixFaceMana.FaceType != SixFaceMana.FaceTypes.Sad)
-            CombatManager.Instance.GetCharactersSelected[0].AddDebuffStack(DebuffToAdd, augmentStacks);
+            CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, augmentStacks);
 
         float stacksOfSubduction = 0;
 
-        foreach(DebuffStackSO augment in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
+        foreach(AugmentStackSO augment in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
             if (augment.DebuffName == "Subduction")
                 stacksOfSubduction = augment.CurrentStacks;
 

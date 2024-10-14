@@ -17,7 +17,7 @@ public class DeathKill : CombatMove
         int augStacks = CalculateAugmentScore();
 
         CombatManager.Instance.CharactersSelected[0].TakeDamage(999, true);
-        CombatManager.Instance.CharactersSelected[0].AddDebuffStack(DebuffToAdd, augStacks);
+        CombatManager.Instance.CharactersSelected[0].AddAugmentStack(DebuffToAdd, augStacks);
 
         //Heal Wying Dreem
         int healing = CalculateScore();

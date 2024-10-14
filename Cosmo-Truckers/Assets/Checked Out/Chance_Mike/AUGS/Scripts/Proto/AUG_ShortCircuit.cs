@@ -6,7 +6,7 @@ public class AUG_ShortCircuit : Augment
 {
     bool activated = false;
 
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
 
@@ -26,7 +26,7 @@ public class AUG_ShortCircuit : Augment
         {
             foreach (Character character in CombatManager.Instance.CharactersSelected)
                 if(character != AugmentSO.MyCharacter)
-                    character.AddDebuffStack(AugmentSO, AugmentSO.CurrentStacks);
+                    character.AddAugmentStack(AugmentSO, AugmentSO.CurrentStacks);
             AugmentSO.SetFade(60);
         }
     }

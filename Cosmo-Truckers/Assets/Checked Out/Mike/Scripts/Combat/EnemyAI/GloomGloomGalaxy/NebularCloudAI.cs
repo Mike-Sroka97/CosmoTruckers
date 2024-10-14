@@ -51,8 +51,8 @@ public class NebularCloudAI : Enemy
         //find shocked players and number of stacks
         foreach (PlayerCharacter player in players)
         {
-            List<DebuffStackSO> playerAUGs = player.GetAUGS;
-            foreach (DebuffStackSO aug in playerAUGs)
+            List<AugmentStackSO> playerAUGs = player.GetAUGS;
+            foreach (AugmentStackSO aug in playerAUGs)
             {
                 if (aug.AugSpawner.GetComponent<AUG_Shocked>() && !player.Dead)
                 {
@@ -141,7 +141,7 @@ public class NebularCloudAI : Enemy
             {
                 if(!enemies[i].Dead)
                 {
-                    foreach(DebuffStackSO augment in enemies[i].GetAUGS)
+                    foreach(AugmentStackSO augment in enemies[i].GetAUGS)
                     {
                         if (augment.IsDebuff)
                             enemiesDebuffCounter[i] += augment.CurrentStacks;

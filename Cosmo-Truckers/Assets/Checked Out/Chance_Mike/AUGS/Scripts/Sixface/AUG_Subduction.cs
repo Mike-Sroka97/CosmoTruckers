@@ -5,7 +5,7 @@ using UnityEngine;
 public class AUG_Subduction : Augment
 {
     bool firstRun = true;
-    public override void Activate(DebuffStackSO stack = null)
+    public override void Activate(AugmentStackSO stack = null)
     {
         if (AugmentSO != null && AugmentSO.LastStacks != -1 && !firstRun)
             StopEffect();
