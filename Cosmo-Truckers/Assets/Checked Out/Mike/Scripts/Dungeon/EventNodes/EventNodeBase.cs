@@ -49,14 +49,12 @@ public class EventNodeBase : MonoBehaviour
             nodeHandler.Player = 0;
     }
 
-    protected void CheckEndEvent()
+    protected virtual void CheckEndEvent()
     {
         currentTurns++;
 
         if (currentTurns > 3)
-        {
             StartCoroutine(SelectionChosen());
-        }
     }
 
     protected void MultiplayerSelection(int buttonID)
