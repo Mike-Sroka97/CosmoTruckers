@@ -18,7 +18,7 @@ public class COKOweakSpot : MonoBehaviour
         if(collision.tag == "PlayerAttack")
         {
             minigame.Score++;
-            minigame.CheckScore(); 
+            minigame.CheckSuccess(); 
             gonzor.Hurt(); 
             Debug.Log(minigame.Score);
             Destroy(gameObject);

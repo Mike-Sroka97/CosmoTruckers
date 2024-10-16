@@ -25,7 +25,7 @@ public class FanTheHammerHurt : MonoBehaviour
                 minigame.Score--;
             }
 
-            minigame.CheckScore();
+            minigame.CheckSuccess();
             Debug.Log(minigame.Score);
         }
     }

@@ -37,7 +37,7 @@ public class PPhittable : MonoBehaviour
                 StartCoroutine(UpdateSprite());
                 minigame.Score++;
                 Debug.Log(minigame.Score);
-                minigame.CheckScore(); 
+                minigame.CheckSuccess(); 
             }
         }
     }

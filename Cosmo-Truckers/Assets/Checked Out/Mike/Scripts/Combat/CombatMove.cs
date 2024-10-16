@@ -293,7 +293,12 @@ public class CombatMove : MonoBehaviour
         }
     }
 
-    public void CheckScore()
+    /// <summary>
+    /// Checks if Score >= MaxScore
+    /// Ends minigame if it is, otherwise returns false
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckSuccess()
     {
         if (Score >= maxScore)
         {
@@ -302,11 +307,15 @@ public class CombatMove : MonoBehaviour
             if (timeRemaining > timeToEndMove)
             {
                 if (MoveEnded)
-                    return;
+                    return false;
 
                 StartCoroutine(DelayedCallEndMove());
             }
+
+            return true;
         }
+
+        return false; 
     }
 
     private IEnumerator DelayedCallEndMove()
