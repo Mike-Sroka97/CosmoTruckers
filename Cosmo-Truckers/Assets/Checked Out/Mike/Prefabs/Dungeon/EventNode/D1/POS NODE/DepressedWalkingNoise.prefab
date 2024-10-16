@@ -229,7 +229,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Guh
+      value: Timmy asks the party to guess the number he is thinking of (1-10). He
+        promises to fully cleanse the party member who guesses correctly. And if
+        no one guesses correctly, he promises to become fully depressed. He then
+        says he is thinking of the number
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -237,23 +240,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 592256082760748471}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: GuessNumber
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: DepressedWalkingNoise, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: <color=red>Timmy is sad no one guessed his number.
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474422, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -309,23 +312,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 694.4
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -257.35773
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647123, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5970733237032595044, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: sprites.Array.data[0]
@@ -337,6 +340,17 @@ PrefabInstance:
       objectReference: {fileID: 1555328258, guid: 0102921fa2f0a61448b190344cd462ce, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16752890a708cff458a9916467081cc5, type: 3}
+--- !u!114 &1357892514851940860 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
+  m_PrefabInstance: {fileID: 1147144325973374879}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1357892514989675591 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2104110815545156568, guid: 16752890a708cff458a9916467081cc5, type: 3}
@@ -356,3 +370,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 2.6
   augmentsToAdd: []
+  waitTime: 0.1
+  failureText: <color=red>Timmy is sad no one guessed his number.
+  descriptionText: {fileID: 1357892514851940860}
+  description: Timmy asks the party to guess the number he is thinking of (1-10).
+    He promises to fully cleanse the party member who guesses correctly. And if no
+    one guesses correctly, he promises to become fully depressed. He then says he
+    is thinking of the number
