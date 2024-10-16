@@ -81,7 +81,7 @@ public class SSPostule : MonoBehaviour
         {
             myRenderer.material = offMaterial; 
             gozor.EarlyEndMinigame(offMaterial);
-            superSlam.CheckScore();
+            superSlam.CheckSuccess();
         }
     }
 }

@@ -19,6 +19,7 @@ public class aLaCarteCollectible : MonoBehaviour
         {
             myParticleSpawner.SpawnParticle(transform); 
             minigame.Score++;
+            minigame.CheckSuccess(); 
             minigame.GenerateCurrentLayout();
             Debug.Log(minigame.Score);
         }

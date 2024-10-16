@@ -31,7 +31,7 @@ public class RageBlastLoop : MonoBehaviour
             minigame.Score++;
             Debug.Log(minigame.Score);
             addedScore = true;
-            minigame.CheckScore();
+            minigame.CheckSuccess();
         }
 
         myCollider.enabled = false;
