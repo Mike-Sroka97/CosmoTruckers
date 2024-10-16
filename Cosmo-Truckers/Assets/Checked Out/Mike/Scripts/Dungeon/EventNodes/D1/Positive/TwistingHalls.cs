@@ -39,7 +39,6 @@ public class TwistingHalls : EventNodeBase
         {
             if (leftHallGood)
             {
-                PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augmentsToAdd[0], 2);
                 myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = goodText;
                 myButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = goodText;
                 myButtons[2].GetComponentInChildren<TextMeshProUGUI>().text = badText;
@@ -51,7 +50,6 @@ public class TwistingHalls : EventNodeBase
             }
             else
             {
-                PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.RemoveAmountOfAugments(2, 0);
                 myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = badText;
                 myButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = badText;
                 myButtons[2].GetComponentInChildren<TextMeshProUGUI>().text = goodText;
