@@ -26,6 +26,7 @@ public class PorkanatorPig : MonoBehaviour
         {
             minigame.AugmentScore += scoreValue;
             myParticleSpawner.SpawnDeathParticle(transform);
+            minigame.CheckAugmentSuccess(); 
             StartCoroutine(Die());
         }
     }

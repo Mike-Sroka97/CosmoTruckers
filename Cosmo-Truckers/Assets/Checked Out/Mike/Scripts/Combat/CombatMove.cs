@@ -318,6 +318,31 @@ public class CombatMove : MonoBehaviour
         return false; 
     }
 
+    /// <summary>
+    /// Checks if AugmentScore >= MaxAugmentStacks
+    /// Ends minigame if it is, otherwise returns false
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckAugmentSuccess()
+    {
+        if (AugmentScore >= maxAugmentStacks)
+        {
+            float timeRemaining = MinigameDuration - currentTime;
+
+            if (timeRemaining > timeToEndMove)
+            {
+                if (MoveEnded)
+                    return false;
+
+                StartCoroutine(DelayedCallEndMove());
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     private IEnumerator DelayedCallEndMove()
     {
         endMoveCalled = true; 
