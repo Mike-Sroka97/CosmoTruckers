@@ -57,21 +57,33 @@ public class PlayerPickup : MonoBehaviour
             {
                 Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
                 if (givesScore)
+                {
                     minigame.PlayerScores[player.MyCharacter] += score;
+                }
                 if (givesAugmentScore)
+                {
                     minigame.PlayerAugmentScores[player.MyCharacter] += score;
+                }
             }
             else
             {
                 if (givesScore)
+                {
                     minigame.Score += score;
+                    minigame.CheckSuccess();
+                }
+
                 if (givesAugmentScore)
+                {
                     minigame.AugmentScore += score;
+                    minigame.CheckAugmentSuccess();
+                }
+
             }
 
             if (collectParticle != null)
             {
-                ParticleSystem particle = Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.gameObject.transform);
+                Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.gameObject.transform);
             }
 
             Destroy(gameObject);
