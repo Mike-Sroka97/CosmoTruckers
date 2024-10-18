@@ -13,7 +13,7 @@ public class TwistingHalls : EventNodeBase
 
     protected override void Start()
     {
-        leftHallGood = MathCC.RandomBool();
+        leftHallGood = MathHelpers.RandomBool();
         base.Start();
     }
 

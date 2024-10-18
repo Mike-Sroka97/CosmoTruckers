@@ -12,7 +12,7 @@ public class KlippsolsKaper : EventNodeBase
 
     protected override void Start()
     {
-        redGood = MathCC.RandomBool();
+        redGood = MathHelpers.RandomBool();
         base.Start();
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class MathCC
+public static class MathHelpers
 {
     public static int GetRandomWeightedIndex(List<int> weights)
     {

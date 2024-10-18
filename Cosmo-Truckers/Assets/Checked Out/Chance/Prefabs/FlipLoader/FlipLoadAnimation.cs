@@ -39,7 +39,7 @@ public class FlipLoadAnimation : MonoBehaviour
         flipping = true;
         flipTiles[flipTiles.Length - 1].gameObject.SetActive(true);
 
-        MathCC.Shuffle(flipDirection);
+        MathHelpers.Shuffle(flipDirection);
 
         for(int i = 0; i< flipTiles.Length - 1; i++)
         {

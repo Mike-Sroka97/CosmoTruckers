@@ -13,19 +13,19 @@ PrefabInstance:
       objectReference: {fileID: -1409864327, guid: c0ca659fa5676f042bb6ae943d03226b, type: 3}
     - target: {fileID: 1140978867092889540, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867092889540, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3321506595968685673}
     - target: {fileID: 1140978867092889540, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickBlueBucket
+      value: IgnoreOption
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867092889540, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: EventNodeBase, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867092889540, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -38,14 +38,14 @@ PrefabInstance:
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3321506595968685673}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: PickCurse
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: CosmicCurse, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -58,14 +58,14 @@ PrefabInstance:
     - target: {fileID: 1140978869004976668, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3321506595968685673}
     - target: {fileID: 1140978869004976668, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickBlueBucket
+      value: PickCurse
       objectReference: {fileID: 0}
     - target: {fileID: 1140978869004976668, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: CosmicCurse, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978869004976668, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110815747620783, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 343.14365
+      value: 686.2872
       objectReference: {fileID: 0}
     - target: {fileID: 2104110815747620783, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -201,7 +201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110816175919194, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the blue bucket.
+      value: guh.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110816175919196, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_IsActive
@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110816947162498, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the blue bucket.
+      value: Pass the flame.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817237167738, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -225,11 +225,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817237167741, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: guh.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Guh
+      value: A cosmic flame enters a party members hand. It offers power in exchange
+        for a curse.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -242,18 +243,18 @@ PrefabInstance:
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3321506595968685673}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: PickCurse
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: CosmicCurse, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: guh.
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474422, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -265,23 +266,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5919214638324311604, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5919214638324311607, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214638324311607, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214638324311607, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 694.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214638324311607, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -428.92957
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528209, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -289,23 +290,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528428, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528431, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528431, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528431, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 694.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639095528431, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -600.50134
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchorMax.y
@@ -356,3 +357,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 2.6
   augmentsToAdd: []
+  buffs:
+  - {fileID: 11400000, guid: 7c64817cdd508464c98a1c082ef14abb, type: 2}
+  - {fileID: 11400000, guid: b8b3eb03e8cfbc74c9ba6a27b3fd8388, type: 2}
+  - {fileID: 11400000, guid: 08368d0a07a9ed1429290e0e428033e4, type: 2}
+  - {fileID: 11400000, guid: c2903431221476f458532d21f9af1f86, type: 2}
+  - {fileID: 11400000, guid: d1fcb77aee4a5a144a630cb77195d75d, type: 2}
+  debuffs:
+  - {fileID: 11400000, guid: 55390431225efd040a3f34254745ee02, type: 2}
+  - {fileID: 11400000, guid: 816227394289cea4fad13b9f8806cd01, type: 2}
+  - {fileID: 11400000, guid: 36a80b2b3b3d12e4e87606cfd7eb2001, type: 2}
+  - {fileID: 11400000, guid: aaf6c7f4dda86cc429341ede43a2eace, type: 2}
+  - {fileID: 11400000, guid: 7b97e0b340e2e424f81e43946007891d, type: 2}
+  - {fileID: 11400000, guid: 0c4b8d676111b4544ae015e71dda2e4e, type: 2}
