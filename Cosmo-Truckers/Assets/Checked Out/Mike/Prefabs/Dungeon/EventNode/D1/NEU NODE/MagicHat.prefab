@@ -38,14 +38,14 @@ PrefabInstance:
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6629323504654002402}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: IgnoreAndCheckDisable
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: EventNodeBase, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -225,11 +225,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817237167741, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: Pass the hat.
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Guh
+      value: "A mischievious spirit corners the party. He doesn't seem to be looking
+        to hurt anyone, but he insists on someone taking something from his magical
+        hat before he will leave. Which member is reaching into \nthe bag?"
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -237,23 +239,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6629323504654002402}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: ReachInside
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: MagicHat, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: Reach deep inside the hat.
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474422, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -355,4 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2.6
-  augmentsToAdd: []
+  augmentsToAdd:
+  - {fileID: 11400000, guid: 04d187c9961bfc84fad07c2e084e0a2a, type: 2}
+  - {fileID: 11400000, guid: 904e6a9c5a087f64781789d8973aac4a, type: 2}
+  - {fileID: 11400000, guid: 39f62336734c3c3408f451164bbbd200, type: 2}
