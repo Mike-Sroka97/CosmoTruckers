@@ -36,6 +36,7 @@ public class FullCourseProjectile : MonoBehaviour
         if(goodProjectile && collision.tag == "Player")
         {
             minigame.Score++;
+            minigame.CheckSuccess(); 
             Debug.Log(minigame.Score);
             Destroy(gameObject);
         }

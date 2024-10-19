@@ -72,13 +72,13 @@ public class PotentPattyMech : MonoBehaviour
 
     private void Jump()
     {
-        if(aeglar.DashingUp && !isJumping && transform.position.y < 0)
+        if(aeglar.DashingUp && !isJumping && transform.localPosition.y < 0)
         {
             StartCoroutine(DashUp());
         }
         else if(!aeglar.DashingUp &&!isJumping)
         {
-            if(transform.position.y > yClamp)
+            if(transform.localPosition.y > yClamp)
             {
                 myBody.velocity = new Vector2(myBody.velocity.x, fallVelocity);
             }
@@ -108,11 +108,11 @@ public class PotentPattyMech : MonoBehaviour
         if (isDashing)
             return;
 
-        if(aeglarBody.velocity.x > 0 && transform.position.x < xClamp)
+        if(aeglarBody.velocity.x > 0 && transform.localPosition.x < xClamp)
         {
             myBody.velocity = new Vector2(moveSpeed, myBody.velocity.y);
         }
-        else if(aeglarBody.velocity.x < 0 && transform.position.x > -xClamp)
+        else if(aeglarBody.velocity.x < 0 && transform.localPosition.x > -xClamp)
         {
             myBody.velocity = new Vector2(-moveSpeed, myBody.velocity.y);
         }
@@ -124,7 +124,7 @@ public class PotentPattyMech : MonoBehaviour
 
     private void ClampCheck()
     {
-        if(transform.position.x > xClamp || transform.position.x < -xClamp)
+        if(transform.localPosition.x > xClamp || transform.localPosition.x < -xClamp)
         {
             myBody.velocity = new Vector2(0, myBody.velocity.y);
         }

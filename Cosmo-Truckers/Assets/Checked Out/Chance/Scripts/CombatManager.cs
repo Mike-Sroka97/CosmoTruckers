@@ -747,8 +747,19 @@ public class CombatManager : MonoBehaviour
     }
 
     #region Combat Star
-    public float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int spawnNumber, Transform combatStarSpawn)
+
+    /// <summary>
+    /// Use this to spawn damage stars layered on top of another star which is spawning at the exact same time
+    /// Pass in the number to start the layer at
+    /// </summary>
+    public int SpawnDamageStarsAfterOthersLayer = 0; 
+
+    public float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int sortingLayer, Transform combatStarSpawn)
     {
+        // These stars needs to be higher layer than other stars
+        if (SpawnDamageStarsAfterOthersLayer > 0 && (outcome == EnumManager.CombatOutcome.Damage || outcome == EnumManager.CombatOutcome.MultiDamage))
+            sortingLayer += SpawnDamageStarsAfterOthersLayer; 
+
         // Set combat star material to damage by default
         Material combatStarMaterial = DamageStarMaterial;
 
@@ -771,6 +782,7 @@ public class CombatManager : MonoBehaviour
 
         // Create the Combat Star at the star spwan position
         GameObject star = Instantiate(starToSpawn, combatStarSpawn.position, Quaternion.identity, GameObject.Find("DungeonCombat").transform);
+        star.name = outcome.ToString() + star.name; 
 
         Vector3 offset = new Vector3(UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset),
             UnityEngine.Random.Range(-CombatStarMaxOffset, CombatStarMaxOffset), 0);
@@ -779,7 +791,7 @@ public class CombatManager : MonoBehaviour
         int triesPerStar = 0;
 
         // Determine if the Combat Star can be created at this position or if it is overlapping with another star
-        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition, triesPerStar))
+        while (!CanSpawnCombatStarAtLocation((Vector2)newPosition, triesPerStar, star))
         {
             triesPerStar++;
             Debug.Log("Star couldn't be created at previous spot! Creating new position!");
@@ -789,10 +801,10 @@ public class CombatManager : MonoBehaviour
         }
 
         star.transform.position = newPosition;
-        return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, spawnNumber);
+        return star.GetComponent<CombatStar>().SetupStar(text, combatStarMaterial, sortingLayer);
     }
 
-    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint, int triesPerStar)
+    private bool CanSpawnCombatStarAtLocation(Vector2 spawnPoint, int triesPerStar, GameObject star)
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint, CombatStarSpawnCheckRadius);
 
@@ -801,7 +813,7 @@ public class CombatManager : MonoBehaviour
         {
             foreach (Collider2D collider in colliders)
             {
-                if (collider.gameObject.GetComponent<CombatStar>() != null)
+                if (collider.gameObject.GetComponent<CombatStar>() != null && collider.gameObject != star)
                     return false;
             }
         }
