@@ -71,7 +71,7 @@ public class TralaxyAI : Enemy
         {
             if (wrathReference == null)
             {
-                wrathReference = AddDebuffStackAndReturnReference(wrath);
+                wrathReference = AddAugmentStackAndReturnReference(wrath);
             }
 
             //golden fury

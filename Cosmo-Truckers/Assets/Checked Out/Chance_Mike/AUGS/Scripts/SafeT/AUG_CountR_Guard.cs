@@ -38,6 +38,6 @@ public class AUG_CountR_Guard : Augment
 
         //Remove after activation
         AugmentSO.MyCharacter.HealthChangeEvent.RemoveListener(UpdateLastHealth);
-        AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO);
+        AugmentSO.MyCharacter.RemoveAugmentStack(AugmentSO);
     }
 }

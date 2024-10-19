@@ -215,7 +215,7 @@ public class TurnOrder : MonoBehaviour
         foreach (AugmentStackSO augment in allAugments)
         {
             if (augment.RemoveOnEndCombat)
-                augment.MyCharacter.RemoveDebuffStack(augment);
+                augment.MyCharacter.RemoveAugmentStack(augment);
         }
     }
 

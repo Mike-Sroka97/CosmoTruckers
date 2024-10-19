@@ -14,7 +14,7 @@ public class AUG_SeedSprout : Augment
         numberOfAugsToRemove = (int)StatusEffect;
 
         if (!firstTurn)
-            AugmentSO.MyCharacter.RemoveDebuffStack(AugmentSO);
+            AugmentSO.MyCharacter.RemoveAugmentStack(AugmentSO);
         else
             firstTurn = false;
     }

@@ -503,7 +503,7 @@ public abstract class Character : MonoBehaviour
     /// <param name="stacksToAdd"></param>
     /// <param name="test"></param>
     /// <returns></returns>
-    public AugmentStackSO AddDebuffStackAndReturnReference(AugmentStackSO stack, int stacksToAdd = 1, bool test = false)
+    public AugmentStackSO AddAugmentStackAndReturnReference(AugmentStackSO stack, int stacksToAdd = 1, bool test = false)
     {
         StartCoroutine(DisplayAugment(stack));
 
@@ -558,7 +558,7 @@ public abstract class Character : MonoBehaviour
         augmenting = false;
     }
 
-    public void RemoveDebuffStack(AugmentStackSO stack, int stackToRemove = 100, bool cleanUp = true)
+    public void RemoveAugmentStack(AugmentStackSO stack, int stackToRemove = 999, bool cleanUp = true)
     {
         StartCoroutine(DisplayAugment(stack, true));
 
@@ -611,14 +611,14 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = debuff.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(debuff, true));
-                            RemoveDebuffStack(debuff, currentStacks, false);
+                            RemoveAugmentStack(debuff, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if(currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(debuff, true));
                             DisplayAugment(debuff, true);
-                            RemoveDebuffStack(debuff, currentAmount);
+                            RemoveAugmentStack(debuff, currentAmount);
                             currentAmount = 0;
                         }                        
                         else
@@ -637,13 +637,13 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = buff.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(buff, true));
-                            RemoveDebuffStack(buff, currentStacks, false);
+                            RemoveAugmentStack(buff, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(buff, true));
-                            RemoveDebuffStack(buff, currentAmount);
+                            RemoveAugmentStack(buff, currentAmount);
                             currentAmount = 0;
                         }
                         else
@@ -662,13 +662,13 @@ public abstract class Character : MonoBehaviour
                             int currentStacks = augment.CurrentStacks;
 
                             StartCoroutine(DisplayAugment(augment, true));
-                            RemoveDebuffStack(augment, currentStacks, false);
+                            RemoveAugmentStack(augment, currentStacks, false);
                             currentAmount -= currentStacks;
                         }
                         else if (currentAmount > 0)
                         {
                             StartCoroutine(DisplayAugment(augment, true));
-                            RemoveDebuffStack(augment, currentAmount);
+                            RemoveAugmentStack(augment, currentAmount);
                             currentAmount = 0;
                         }
                         else
@@ -904,10 +904,10 @@ public abstract class Character : MonoBehaviour
     public virtual void AdjustMaxHealth(int adjuster)
     {
         Health += adjuster;
+        if (Health <= 0)
+            Health = 1;
         if (CurrentHealth > Health)
             CurrentHealth = Health;
-        else if(Health <= 0)
-                Health = 1;
     }
 
     public abstract void AdjustDefense(int defense);
