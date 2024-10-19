@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class EclipseEvent : EventNodeBase
 {
-
+    public void Stare()
+    {
+        AddAugmentToPlayer(augmentsToAdd[0]);
+        IgnoreOption();
+    }
 }
