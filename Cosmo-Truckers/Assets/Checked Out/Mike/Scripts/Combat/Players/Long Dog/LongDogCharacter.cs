@@ -101,14 +101,14 @@ public class LongDogCharacter : PlayerCharacter
 
                 foreach (AugmentStackSO aug in AUGS)
                 {
-                    if (aug.OnDamage)
+                    if (aug.OnDamage && damageList[i] > 0)
                     {
                         aug.GetAugment().Trigger();
                     }
                 }
 
                 foreach (AugmentStackSO augment in AugmentsToRemove)
-                    AdjustAugs(false, augment);
+                    CleanUpAUGs();
             }
         }
 

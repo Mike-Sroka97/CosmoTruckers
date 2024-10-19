@@ -39,6 +39,7 @@ public class CBWaveEnemy : MonoBehaviour
         if (collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+            minigame.CheckSuccess(); 
 
             GameObject particle = Instantiate(deathParticle, transform.position, deathParticle.transform.rotation);
             particle.transform.parent = minigame.transform;

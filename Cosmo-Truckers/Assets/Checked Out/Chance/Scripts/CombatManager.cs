@@ -748,18 +748,8 @@ public class CombatManager : MonoBehaviour
 
     #region Combat Star
 
-    /// <summary>
-    /// Use this to spawn damage stars layered on top of another star which is spawning from another coroutine and can't track layers
-    /// Pass in the number to start the layer at. 
-    /// </summary>
-    public int DamageStarsStartLayer = 0; 
-
     public float SpawnCombatStar(EnumManager.CombatOutcome outcome, string text, int sortingLayer, Transform combatStarSpawn)
     {
-        // These stars needs to be higher layer than other stars
-        if (DamageStarsStartLayer > 0 && (outcome == EnumManager.CombatOutcome.Damage || outcome == EnumManager.CombatOutcome.MultiDamage))
-            sortingLayer += DamageStarsStartLayer; 
-
         // Set combat star material to damage by default
         Material combatStarMaterial = DamageStarMaterial;
 

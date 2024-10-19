@@ -41,6 +41,12 @@ public class SafeTVessel : PlayerVessel
     {
         CombatManager.Instance.CommandsExecuting++;
 
+        // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
+        while (LocalCommandsExecuting > 0)
+            yield return null;
+
+        LocalCommandsExecuting++;
+
         float finalStarAnimationWaitTime = 0f;
         string text = damageHealingAmount.ToString();
 
@@ -51,7 +57,8 @@ public class SafeTVessel : PlayerVessel
         if (damage && MyCharacter.BubbleShielded && numberOfHits > 1)
         {
             // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", -1);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", MyCharacter.CombatStarsCurrentLayer);
+            MyCharacter.CombatStarsCurrentLayer++;
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -116,6 +123,8 @@ public class SafeTVessel : PlayerVessel
                 AdjustCurrentHealthDisplay(currentHealthDisplay);
             }
         }
+
+        LocalCommandsExecuting--;
 
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);

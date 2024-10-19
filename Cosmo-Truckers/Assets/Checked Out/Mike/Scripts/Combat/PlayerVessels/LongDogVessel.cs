@@ -60,8 +60,15 @@ public class LongDogVessel : PlayerVessel
     public IEnumerator LongDogDamageHealingEffect(List<int> damageHealingValues, EnumManager.CombatOutcome outcome, bool damage = true)
     {
         CombatManager.Instance.CommandsExecuting++;
+
+        // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
+        while (LocalCommandsExecuting > 0)
+            yield return null;
+
+        LocalCommandsExecuting++;
+
         float finalStarAnimationWaitTime = 0f;
-        int totalDamageHealing = 0; 
+        int totalDamageHealing = 0;
 
         List<string> text = new List<string>();
         foreach (int i in damageHealingValues)
@@ -83,7 +90,8 @@ public class LongDogVessel : PlayerVessel
         if (damage && MyCharacter.BubbleShielded && damageValuesToIterate > 1)
         {
             // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", -1);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", MyCharacter.CombatStarsCurrentLayer);
+            MyCharacter.CombatStarsCurrentLayer++; 
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -105,7 +113,8 @@ public class LongDogVessel : PlayerVessel
         // Spawn combat stars like normal
         for (int i = 0; i < damageValuesToIterate; i++)
         {
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text[i], i);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text[i], MyCharacter.CombatStarsCurrentLayer);
+            MyCharacter.CombatStarsCurrentLayer++;
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -144,20 +153,17 @@ public class LongDogVessel : PlayerVessel
             }
         }
 
+        LocalCommandsExecuting--;
+
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
 
         if (outcome == EnumManager.CombatOutcome.MultiDamage)
-        {
             MyCharacter.GetComponent<LongDogCharacter>().LongDogTakeMultiHitDamage(damageHealingValues, false);
-        }
+
         else if (outcome == EnumManager.CombatOutcome.MultiHealing)
-        {
             MyCharacter.GetComponent<LongDogCharacter>().LongDogTakeMultiHitHealing(damageHealingValues, false);
-        }
-        else
-        {
-            MyCharacter.SwitchCombatOutcomes(outcome, totalDamageHealing, piercing: false);
-        }
+
+        else { MyCharacter.SwitchCombatOutcomes(outcome, totalDamageHealing, piercing: false); }
     }
 }

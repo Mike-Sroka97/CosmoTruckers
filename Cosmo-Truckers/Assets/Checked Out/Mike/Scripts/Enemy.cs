@@ -202,15 +202,24 @@ public class Enemy : Character
     {
         CombatManager.Instance.CommandsExecuting++;
 
+        // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
+        while (LocalCommandsExecuting > 0)
+            yield return null; 
+
+        LocalCommandsExecuting++; 
+
         float finalStarAnimationWaitTime = 0f;
 
         for (int i = 0; i < numberOfHits; i++)
         {
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, i);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, CombatStarsCurrentLayer);
+            CombatStarsCurrentLayer++; 
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
         }
+
+        LocalCommandsExecuting--;
 
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);

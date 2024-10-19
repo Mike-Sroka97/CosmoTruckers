@@ -26,6 +26,13 @@ public class PlayerVessel : MonoBehaviour
     Transform myINAvessel;
     public Transform CombatStarSpawn { get; private set; }
 
+    /// <summary>
+    /// For local assistance when multiple damage/healing visual effects are happening simultaneously
+    /// Wait for the first call to be finished, then progress to the next, etc
+    /// Exists for multi-target functionality. Prevents each character in combat for waiting for another to be done when iterating through their own visuals
+    /// </summary>
+    protected int LocalCommandsExecuting = 0;
+
     public virtual void Initialize(PlayerCharacter player)
     {
         //set player
@@ -115,6 +122,12 @@ public class PlayerVessel : MonoBehaviour
     {
         CombatManager.Instance.CommandsExecuting++;
 
+        // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
+        while (LocalCommandsExecuting > 0)
+            yield return null;
+
+        LocalCommandsExecuting++;
+
         float finalStarAnimationWaitTime = 0f;
         string text = damageHealingAmount.ToString();
 
@@ -125,7 +138,8 @@ public class PlayerVessel : MonoBehaviour
         if (damage && MyCharacter.BubbleShielded && numberOfHits > 1)
         {
             // Spawn a combat star with "0" as the number and -1 sorting layer so future stars don't overlap
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", -1);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, "0", MyCharacter.CombatStarsCurrentLayer);
+            MyCharacter.CombatStarsCurrentLayer++;
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
@@ -165,17 +179,14 @@ public class PlayerVessel : MonoBehaviour
                     {
                         currentHealthDisplay += currentShieldDisplay;
                         currentShieldDisplay = 0;
-                        AdjustShieldDisplay(currentShieldDisplay);
                     }
+
+                    AdjustShieldDisplay(currentShieldDisplay);
                 }
                 else { currentHealthDisplay -= damageHealingAmount; }
 
                 // If "current" character shield is greater than 0 or the text isn't 0, update the shield text
-                if (currentShieldDisplay > 0)
-                {
-                    AdjustShieldDisplay(currentShieldDisplay);
-                }
-                else
+                if (currentShieldDisplay == 0)
                 {
                     AdjustCurrentHealthDisplay(currentHealthDisplay);
                 }
@@ -189,6 +200,8 @@ public class PlayerVessel : MonoBehaviour
 
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
+
+        LocalCommandsExecuting--; 
 
         MyCharacter.SwitchCombatOutcomes(outcome, damageHealingAmount, piercing: false, numberOfHits);
     }
@@ -212,11 +225,22 @@ public class PlayerVessel : MonoBehaviour
 
     public virtual IEnumerator ShieldEffect(int shieldAmount)
     {
+        CombatManager.Instance.CommandsExecuting++;
+
+        // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
+        while (LocalCommandsExecuting > 0)
+            yield return null;
+
+        LocalCommandsExecuting++;
+
         string text = shieldAmount.ToString();
         
-        float finalStarAnimationWaitTime = CallSpawnCombatStar(EnumManager.CombatOutcome.Shield, text, 1);
+        float finalStarAnimationWaitTime = CallSpawnCombatStar(EnumManager.CombatOutcome.Shield, text, MyCharacter.CombatStarsCurrentLayer);
+        MyCharacter.CombatStarsCurrentLayer++;
 
-        AdjustShieldDisplay(shieldAmount); 
+        AdjustShieldDisplay(shieldAmount);
+
+        LocalCommandsExecuting--;
 
         // Wait for the final star to finish animating before actually dealing 
         yield return new WaitForSeconds(finalStarAnimationWaitTime);

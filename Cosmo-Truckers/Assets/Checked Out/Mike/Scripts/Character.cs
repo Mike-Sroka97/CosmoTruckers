@@ -41,6 +41,18 @@ public abstract class Character : MonoBehaviour
     protected const float moveSpeed = 0.5f;
     protected const int maxAugs = 6;
 
+    /// <summary>
+    /// Each character should track their own combat stars layer
+    /// </summary>
+    [HideInInspector] public int CombatStarsCurrentLayer = 0; 
+
+    /// <summary>
+    /// For local assistance when multiple damage/healing visual effects are happening simultaneously
+    /// Wait for the first call to be finished, then progress to the next, etc
+    /// Exists for multi-target functionality. Prevents each character in combat for waiting for another to be done when iterating through their own visuals
+    /// </summary>
+    protected int LocalCommandsExecuting = 0; 
+
     //Augment stuffs
     TextMeshProUGUI augmentText;
     bool augmenting = false;
@@ -155,17 +167,14 @@ public abstract class Character : MonoBehaviour
 
             foreach (AugmentStackSO aug in AUGS)
             {
-                if (aug.OnDamage)
+                if (aug.OnDamage && damage > 0)
                 {
                     aug.GetAugment().Trigger();
                 }
             }
 
             foreach (AugmentStackSO augment in AugmentsToRemove)
-            {
-                AdjustAugs(false, augment);
-                Destroy(augment);
-            }
+                CleanUpAUGs();
         }
 
         // After damage is done, subtract Command Executing
@@ -212,14 +221,14 @@ public abstract class Character : MonoBehaviour
 
                 foreach (AugmentStackSO aug in AUGS)
                 {
-                    if (aug.OnDamage)
+                    if (aug.OnDamage && damage > 0)
                     {
                         aug.GetAugment().Trigger();
                     }
                 }
 
                 foreach (AugmentStackSO augment in AugmentsToRemove)
-                    AdjustAugs(false, augment);
+                    CleanUpAUGs(); 
             }
         }
 
@@ -284,7 +293,7 @@ public abstract class Character : MonoBehaviour
         if (Shield + shieldAmount > maxShield)
             Shield = maxShield;
         else
-            Shield += shieldAmount;
+            Shield = shieldAmount;
 
         // After taking shield damage, subtract Command Executing
         CombatManager.Instance.CommandsExecuting--;
@@ -305,8 +314,6 @@ public abstract class Character : MonoBehaviour
         // Wait until healing has started spawning in visual effects
         while (CombatManager.Instance.CommandsExecuting < 1)
             yield return null;
-
-        CombatManager.Instance.DamageStarsStartLayer = 1; 
 
         // Wait until the star has been actually spawned in
         yield return new WaitForSeconds(0.25f); 

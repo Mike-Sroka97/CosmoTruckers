@@ -55,6 +55,10 @@ public class TurnOrder : MonoBehaviour
     {
         if (!combatOver)
         {
+            // Set each living character's combat stars layer to 0 at the beginning of a turn 
+            foreach (CharacterStats character in livingCharacters)
+                character.GetComponent<Character>().CombatStarsCurrentLayer = 0; 
+
             //give player control if player
             //give ai control if AI
             if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>())
