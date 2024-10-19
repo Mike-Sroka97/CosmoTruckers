@@ -4,5 +4,46 @@ using UnityEngine;
 
 public class CrustyCorridor : EventNodeBase
 {
+    [SerializeField] int damage = 30;
 
+    bool safePath;
+
+    protected override void Start()
+    {
+        base.Start();
+        safePath = MathHelpers.RandomBool();
+    }
+
+    public void TraverseTheCrustyCorridor()
+    {
+        if(safePath)
+        {
+            foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
+            {
+                player.MyCharacter.AddAugmentStack(augmentsToAdd[0], 3);
+                player.MyCharacter.AddAugmentStack(augmentsToAdd[1], 3);
+            }
+        }
+        else
+        {
+            foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
+            {
+                int currentDamage = damage;
+                if (currentDamage >= player.MyCharacter.CurrentHealth)
+                    currentDamage = player.MyCharacter.CurrentHealth - 1;
+
+                player.MyCharacter.TakeDamage(currentDamage, true);
+            }
+        }
+
+        IteratePlayerReference();
+        StartCoroutine(SelectionChosen());
+    }
+
+    public override void IgnoreOption()
+    {
+        IteratePlayerReference();
+        currentTurns = 69;
+        CheckEndEvent();
+    }
 }
