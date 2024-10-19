@@ -4,5 +4,12 @@ using UnityEngine;
 
 public class NebularCharge : EventNodeBase
 {
-
+    public void GetShocked()
+    {
+        AddAugmentToPlayer(augmentsToAdd[0]);
+        AddAugmentToPlayer(augmentsToAdd[1]);
+        IteratePlayerReference();
+        currentTurns = 4;
+        CheckEndEvent();
+    }
 }
