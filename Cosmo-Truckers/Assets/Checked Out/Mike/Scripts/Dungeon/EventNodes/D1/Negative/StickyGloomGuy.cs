@@ -23,7 +23,7 @@ public class StickyGloomGuy : EventNodeBase
 
     public void Dissolve()
     {
-        currentCharacter.TakeDamage(dissolveDamage);
+        currentCharacter.TakeDamage(dissolveDamage, true);
         IteratePlayerReference();
         CheckDissolveStatus();
         AutoSelectNextButton();
