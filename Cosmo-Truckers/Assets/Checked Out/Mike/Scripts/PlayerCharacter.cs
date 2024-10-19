@@ -351,10 +351,6 @@ public class PlayerCharacter : Character
 
     public virtual void SwitchCombatOutcomes(EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
     {
-        // Reset this after all the stars are spawned
-        if (outcome == EnumManager.CombatOutcome.Damage || outcome == EnumManager.CombatOutcome.MultiDamage)
-            CombatManager.Instance.SpawnDamageStarsAfterOthersLayer = 0;
-
         // Call the Damage / Healing base method after so death occurs visually after damage numbers have shown up
         switch (outcome)
         {

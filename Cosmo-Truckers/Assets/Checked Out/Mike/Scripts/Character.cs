@@ -297,7 +297,7 @@ public abstract class Character : MonoBehaviour
     }
 
     // Heal, wait for healing combat star, and then deal damage
-    public IEnumerator SingleHealingThenDamage(int currentHealing, int currentDamage, bool piercing = true)
+    private IEnumerator SingleHealingThenDamage(int currentHealing, int currentDamage, bool piercing = true)
     {
         // Heal first and spawn healing star
         TakeHealing(currentHealing, piercing);
@@ -306,9 +306,10 @@ public abstract class Character : MonoBehaviour
         while (CombatManager.Instance.CommandsExecuting < 1)
             yield return null;
 
-        // Wait until combat stars are finished
-        while (CombatManager.Instance.CommandsExecuting > 0)
-            yield return null;
+        CombatManager.Instance.DamageStarsStartLayer = 1; 
+
+        // Wait until the star has been actually spawned in
+        yield return new WaitForSeconds(0.25f); 
 
         // Take damage and spawn damage star after healing is done
         TakeDamage(currentDamage, piercing); //pierce defense cause technically healing

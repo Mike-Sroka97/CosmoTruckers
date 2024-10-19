@@ -48,9 +48,7 @@ public class FullCourse : CombatMove
             {
                 int currentDamage = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
                 currentHealing = character.Health - character.CurrentHealth;
-                character.GetComponent<Character>().TakeHealing(currentHealing, true); //heal to full first
-                CombatManager.Instance.SpawnDamageStarsAfterOthersLayer = 1; // helps with combat stars because we're doing healing and damage at same time
-                character.TakeDamage(currentDamage, true); //pierce defense cause technically healing
+                character.SingleHealThenDamage(currentHealing, currentDamage, true); 
             }
             else
             {

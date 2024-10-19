@@ -215,10 +215,6 @@ public class Enemy : Character
         // Wait for the final star to finish animating before actually dealing damage
         yield return new WaitForSeconds(finalStarAnimationWaitTime);
 
-        // Reset this after all the stars are spawned
-        if (outcome == EnumManager.CombatOutcome.Damage || outcome == EnumManager.CombatOutcome.MultiDamage)
-            CombatManager.Instance.SpawnDamageStarsAfterOthersLayer = 0;
-
         // Call the Damage / Healing base method after so death occurs visually after damage numbers have shown up
         switch (outcome)
         {
