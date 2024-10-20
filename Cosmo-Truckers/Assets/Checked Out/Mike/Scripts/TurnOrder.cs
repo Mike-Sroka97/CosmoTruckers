@@ -301,6 +301,7 @@ public class TurnOrder : MonoBehaviour
         }
 
         CombatManager.Instance.CurrentNode.CombatDone = true;
+        FindObjectOfType<DungeonController>().CurrentCombat++;
         CombatManager.Instance.CurrentNode.Active = true;
         CombatManager.Instance.CurrentNode.SetupLineRendererers();
     }

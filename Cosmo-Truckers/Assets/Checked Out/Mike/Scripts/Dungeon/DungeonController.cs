@@ -36,6 +36,7 @@ public abstract class DungeonController : MonoBehaviour
     protected List<GameObject> neutralNodes;
     protected List<GameObject> positiveNodes;
     protected List<GameObject> determinedEventNodes;
+    public int CurrentCombat = 0;
 
     private float currentTimeHeld = 0f;
     bool loading = false;
