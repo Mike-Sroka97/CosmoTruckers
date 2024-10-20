@@ -33,19 +33,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5742033464029292330}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: PassCane
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: TheOneCane, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -225,11 +225,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817237167741, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: 'Pass the cane. It grows stronger...
+
+        <color=red>[Take (10)
+        damage]'
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Guh
+      value: A powerful cane comes into the possesion of the party from a nomadic
+        star. It pains the user to give it to another member, but also grows in strength
+        when doing so. What is each member doing?
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -237,23 +242,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5742033464029292330}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: TakeCane
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: TheOneCane, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: <color=yellow> [Gain (x) Mysterious Cane]
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474422, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -316,6 +321,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 271.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5919214639385647120, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -323,6 +332,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5919214639385647121, guid: 16752890a708cff458a9916467081cc5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c4bd6e864656dba47a9076d510ee3fc5, type: 3}
     - target: {fileID: 5919214639385647123, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -355,4 +368,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2.6
-  augmentsToAdd: []
+  augmentsToAdd:
+  - {fileID: 11400000, guid: 4ebd3fab21dd11e4aa6f6fd9a8f4ba7c, type: 2}
+  passDamage: 10
