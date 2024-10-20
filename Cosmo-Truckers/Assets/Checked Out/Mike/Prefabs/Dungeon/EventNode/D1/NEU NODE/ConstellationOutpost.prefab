@@ -33,19 +33,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4317329454103104515}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: RiskyBet
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: ConstellationOutpost, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1140978867876903995, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110815747620783, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 928.58093
+      value: 804
       objectReference: {fileID: 0}
     - target: {fileID: 2104110816175919194, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -225,11 +225,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817237167741, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: Risky path (x%).
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817570332259, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Guh
+      value: The party reaches an outpost with cryptic notes all over the walls about
+        different constellations. The party determines that these notes determine
+        the difficulty of the path forward. One with higher rewards with higher risk.
+        Which path does the party choose?
       objectReference: {fileID: 0}
     - target: {fileID: 2104110817645599293, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
@@ -237,23 +240,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4317329454103104515}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickRedBucket
+      value: SafeBet
       objectReference: {fileID: 0}
     - target: {fileID: 4666742713870514039, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: KlippsolsKaper, Assembly-CSharp
+      value: ConstellationOutpost, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474417, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_text
-      value: Pick from the red bucket.
+      value: Safe path (x%).
       objectReference: {fileID: 0}
     - target: {fileID: 5919214637728474422, guid: 16752890a708cff458a9916467081cc5, type: 3}
       propertyPath: m_SizeDelta.y
@@ -356,3 +359,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   delay: 2.6
   augmentsToAdd: []
+  minSafeChance: 60
+  maxSafeChance: 80
+  victoryAugments:
+  - {fileID: 11400000, guid: 36697cbd813364447a1f141bf36c85cd, type: 2}
+  - {fileID: 11400000, guid: d1e71cfc83490e54aa9d84e5f25cff23, type: 2}
+  - {fileID: 11400000, guid: 6cb5e756f7d73cb4ca1ed5e4a56ce6bf, type: 2}
+  - {fileID: 11400000, guid: c0116795a2e9ab14d80417a8acddbab3, type: 2}
+  failureAugments:
+  - {fileID: 11400000, guid: 15d747d4f078c594fad1ecd7776fb9ff, type: 2}
+  - {fileID: 11400000, guid: 55390431225efd040a3f34254745ee02, type: 2}
+  - {fileID: 11400000, guid: 0c4b8d676111b4544ae015e71dda2e4e, type: 2}
+  - {fileID: 11400000, guid: 7b97e0b340e2e424f81e43946007891d, type: 2}
+  riskyAmount: 3
