@@ -42,6 +42,8 @@ public class EnemyManager : MonoBehaviour
 
     public void InitializeEnemys()
     {
+        RemoveOldEnemies();
+
         if (testMockup != null)
         {
             GameObject mockUp = Instantiate(testMockup);
@@ -75,6 +77,13 @@ public class EnemyManager : MonoBehaviour
         CombatManager.Instance.StartCharacterCombatEffects();
 
         UpdateTrashMobList();
+    }
+
+    void RemoveOldEnemies()
+    {
+        Enemy[] spawnedEnemys = FindObjectsOfType<Enemy>();
+        foreach (Enemy enemy in spawnedEnemys)
+            Destroy(enemy.gameObject);
     }
 
     void Start()
