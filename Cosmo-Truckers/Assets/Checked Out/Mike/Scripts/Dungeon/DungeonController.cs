@@ -47,6 +47,8 @@ public abstract class DungeonController : MonoBehaviour
         shakeStart.x = escapeWheel.transform.position.x;
         shakeStart.y = escapeWheel.transform.position.y;
 
+        escapeWheel.gameObject.GetComponentInParent<Canvas>().worldCamera = Camera.main;
+
         NodeHandler = GetComponentInChildren<EventNodeHandler>();
         SetStartNode();
         DungeonInitialize();

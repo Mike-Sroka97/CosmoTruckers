@@ -49,8 +49,7 @@ public class CameraController : MonoBehaviour
         myCamera = GetComponent<Camera>();
         myPixelator = GetComponent<Pixelation>();
         
-        if (myPixelator != null)
-            myPixelator.Unpixelate();
+        myPixelator.Unpixelate();
     }
 
     private void Update()
@@ -140,12 +139,17 @@ public class CameraController : MonoBehaviour
                 if (vignetteChildCount > 0)
                     vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
+
+                myPixelator.Unpixelate();
             }
 
         if (Leader)
         {
             if (FindObjectOfType<Overworld>())
+            { 
                 FindObjectOfType<Overworld>().CameraFadeFinished();
+                myPixelator.Unpixelate();
+            }
             else
                 FindObjectOfType<DungeonController>().CameraFadeFinished();
         }
