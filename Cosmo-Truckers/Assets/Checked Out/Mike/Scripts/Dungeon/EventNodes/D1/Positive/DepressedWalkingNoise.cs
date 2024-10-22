@@ -37,6 +37,7 @@ public class DepressedWalkingNoise : EventNodeBase
         {
             StopAllCoroutines();
             IgnoreOption();
+            StartCoroutine(ChangeNumber());
         }
     }
 
@@ -53,6 +54,8 @@ public class DepressedWalkingNoise : EventNodeBase
 
     IEnumerator ChangeNumber()
     {
+        yield return new WaitForSeconds(1f);
+
         //update number
         buttonText.text = lastNumber.ToString();
         int textNumber = int.Parse(buttonText.text);

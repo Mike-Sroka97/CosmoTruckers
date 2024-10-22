@@ -185,7 +185,7 @@ public class DNode : MonoBehaviour
             SelectableNodes.Add(currentCombatNode);
         }
 
-        if (((!NodeData.GetComponent<DungeonCombatNode>()) && !NodeData.GetComponent<DungeonEventNode>()) || CombatDone)
+         if (((!NodeData.GetComponent<DungeonCombatNode>()) && !NodeData.GetComponent<DungeonEventNode>()) || CombatDone)
             SetupLineRendererers();
     }
 
