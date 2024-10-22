@@ -285,6 +285,7 @@ public class TurnOrder : MonoBehaviour
             }
 
             endCombatText.text = "";
+            currentCharactersTurn = 0;
         }
     }
 
