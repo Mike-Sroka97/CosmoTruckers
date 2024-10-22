@@ -11,6 +11,7 @@ public class PPhittable : MonoBehaviour
     [SerializeField] Sprite hitSprite; 
     [SerializeField] float timeBetweenSprites = 0.2f;
     [SerializeField] Material hurtMaterial;
+    [SerializeField] GameObject onHitParticle; 
 
     Material startingMaterial; 
     PowerPummel minigame;
@@ -32,6 +33,10 @@ public class PPhittable : MonoBehaviour
         {
             if (!isHit)
             {
+                // Create a particle effect if desired
+                if (onHitParticle != null)
+                    Instantiate(onHitParticle, transform.position, Quaternion.identity, minigame.transform); 
+
                 myBody.velocity = -myBody.velocity;
                 UpdateSpeed();
                 StartCoroutine(UpdateSprite());
