@@ -136,7 +136,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 11
   m_Sprite: {fileID: 1916636138, guid: 713d67e6ff37bbe4295a96886eac3e57, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -273,7 +273,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 3ca86af8282f8174ba5afd4f568ae8c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -334,6 +334,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!1 &8317903466270180624
 GameObject:
@@ -518,7 +523,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 908195533, guid: 6b1a38cf8305bc14683f961f494aea3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -551,6 +556,7 @@ MonoBehaviour:
   - {fileID: 1852941805, guid: 6b1a38cf8305bc14683f961f494aea3e, type: 3}
   - {fileID: 922962762, guid: 6b1a38cf8305bc14683f961f494aea3e, type: 3}
   offMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  hitParticle: {fileID: 7154444071458331925, guid: a46ee832f19b567469a483b772821be4, type: 3}
 --- !u!70 &5934747609418708927
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

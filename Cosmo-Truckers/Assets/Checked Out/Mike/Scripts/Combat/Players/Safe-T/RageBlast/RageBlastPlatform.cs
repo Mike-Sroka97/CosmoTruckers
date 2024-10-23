@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class RageBlastPlatform : MonoBehaviour
 {
-    [SerializeField] Color disablingColor;
+    [SerializeField] Color[] disablingColors;
     [SerializeField] float timeBeforeDisable;
     [SerializeField] float timeToStayDisabled;
+    [SerializeField] int numberOfBlinks = 10;
 
     RageBlast minigame;
     Collider2D myCollider;
     SpriteRenderer myRenderer;
     Color startingColor;
+    
+    bool disableMe;
+    float timeBetweenEachBlink = 0.1f;
+    float disableTimer; 
 
     private void Start()
     {
@@ -19,12 +24,29 @@ public class RageBlastPlatform : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
         startingColor = myRenderer.color;
+        timeBetweenEachBlink = timeBeforeDisable / numberOfBlinks; 
     }
 
     public void DisableMe()
     {
-        myRenderer.color = disablingColor;
+        disableMe = true;
+        myRenderer.color = disablingColors[0]; 
         StartCoroutine(EnableMe());
+    }
+
+    public void Update()
+    {
+        if (disableMe)
+        {
+            disableTimer += Time.deltaTime; 
+
+            // Set it to one of the disabling colors
+            if (disableTimer > timeBetweenEachBlink)
+            {
+                myRenderer.color = myRenderer.color == disablingColors[0] ? disablingColors[1] : disablingColors[0];
+                disableTimer = 0; 
+            }
+        }       
     }
 
     private IEnumerator EnableMe()
@@ -32,6 +54,7 @@ public class RageBlastPlatform : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeDisable);
         myCollider.enabled = false;
         myRenderer.enabled = false;
+        disableMe = false; 
 
         yield return new WaitForSeconds(timeToStayDisabled);
         myRenderer.enabled = true;

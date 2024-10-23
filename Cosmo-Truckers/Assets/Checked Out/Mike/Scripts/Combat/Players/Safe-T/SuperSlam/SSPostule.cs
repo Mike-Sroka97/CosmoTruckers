@@ -6,7 +6,8 @@ public class SSPostule : MonoBehaviour
 {
     [SerializeField] float upForce;
     [SerializeField] Sprite[] buttonSprites;
-    [SerializeField] Material offMaterial; 
+    [SerializeField] Material offMaterial;
+    [SerializeField] GameObject hitParticle; 
 
     SuperSlam superSlam;
     SSGozorMovement gozor;
@@ -60,6 +61,9 @@ public class SSPostule : MonoBehaviour
     {
         superSlam.Score++;
         currentSpriteNumber++;
+
+        // Spawn the hit particle
+        Instantiate(hitParticle, transform.position, Quaternion.identity, superSlam.transform); 
 
         //Play success sound
         myRenderer.sprite = buttonSprites[currentSpriteNumber];
