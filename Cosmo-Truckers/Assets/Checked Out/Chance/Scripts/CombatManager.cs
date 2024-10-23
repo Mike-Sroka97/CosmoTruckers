@@ -555,15 +555,16 @@ public class CombatManager : MonoBehaviour
 
         if (!attack.AutoCast)
         {
-            float miniGameTime = attack.MiniGameTime;
+            PauseManager = true;
+            miniGame = Instantiate(attack.CombatPrefab, INA.transform);
+
+            float miniGameTime = miniGame.GetComponent<CombatMove>().MinigameDuration; 
 
             if (attack.BossMove)
                 Timer.text = "";
             else
                 Timer.text = miniGameTime.ToString();
 
-            PauseManager = true;
-            miniGame = Instantiate(attack.CombatPrefab, INA.transform);
             StartCoroutine(INA.MoveINACombat(true));
 
             if (ActivePlayers.Count > 0)
