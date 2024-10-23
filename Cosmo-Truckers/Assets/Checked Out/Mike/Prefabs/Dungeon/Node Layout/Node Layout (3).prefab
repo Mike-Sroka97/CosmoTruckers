@@ -31,6 +31,37 @@ Transform:
   m_Father: {fileID: 3556007289222845393}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1274010358019563056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1368883627337359905}
+  m_Layer: 0
+  m_Name: Helper Transform Bottom Right
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1368883627337359905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274010358019563056}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3556007289222845393}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3556007289222845392
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,6 +103,8 @@ Transform:
   - {fileID: 740578870320381730}
   - {fileID: 2819204714592638941}
   - {fileID: 4655357856815392358}
+  - {fileID: 1368883627337359905}
+  - {fileID: 1452015700231711581}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -252,6 +285,37 @@ Transform:
   m_Father: {fileID: 3556007289222845393}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7410845398458620012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1452015700231711581}
+  m_Layer: 0
+  m_Name: Helper Transform Bottom Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1452015700231711581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410845398458620012}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5, y: -3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3556007289222845393}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7605368668909787067
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2819204714592638941}
   m_Layer: 0
-  m_Name: Helper Transform Bottom Right
+  m_Name: Helper Transform Bottom Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,7 +501,7 @@ PrefabInstance:
       objectReference: {fileID: 6064933139244124740, guid: f88aeedb377039f4b997801d5bb27c30, type: 3}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: AdderTransforms.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectableNodes.Array.size
@@ -447,6 +511,10 @@ PrefabInstance:
       propertyPath: AdderTransforms.Array.data[0]
       value: 
       objectReference: {fileID: 6711730336642701074}
+    - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
+      propertyPath: AdderTransforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 1452015700231711581}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectableNodes.Array.data[0]
       value: 
@@ -570,12 +638,12 @@ PrefabInstance:
       objectReference: {fileID: 4655357856815392358}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectedTransforms.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectedTransforms.Array.data[0]
       value: 
-      objectReference: {fileID: 740578870320381730}
+      objectReference: {fileID: 6711730336883317713}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectedTransforms.Array.data[1]
       value: 
@@ -769,7 +837,7 @@ PrefabInstance:
       objectReference: {fileID: 6064933139244124740, guid: f88aeedb377039f4b997801d5bb27c30, type: 3}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: AdderTransforms.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectableNodes.Array.size
@@ -779,6 +847,10 @@ PrefabInstance:
       propertyPath: AdderTransforms.Array.data[0]
       value: 
       objectReference: {fileID: 6711730336086225286}
+    - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
+      propertyPath: AdderTransforms.Array.data[1]
+      value: 
+      objectReference: {fileID: 1368883627337359905}
     - target: {fileID: 4120423179814630660, guid: 1da74560f9434a042b8473ccff07dbb3, type: 3}
       propertyPath: SelectableNodes.Array.data[0]
       value: 
