@@ -118,7 +118,7 @@ public class SafeTINA : Player
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && !isJumping)
         {
-            playerAnimator.ChangeAnimation(myAnimator, punchRight);
+            playerAnimator.ChangeAnimation(myAnimator, punchRight, speed: 2);
             StartCoroutine(SafeTAttack(horizontalAttackArea));
         }
     }
@@ -143,7 +143,7 @@ public class SafeTINA : Player
         if (IsGrounded(raycastHopHelper) && !damaged && !dead)
             canJump = true;
 
-        if (Input.GetKeyDown("space") && canJump && !isJumping)
+        if (Input.GetKey("space") && canJump && !isJumping)
         {
             canMove = false;
             canJump = false;
@@ -152,6 +152,9 @@ public class SafeTINA : Player
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
+            if (!playerAnimator.IsCurrentAnimationPlaying(myAnimator, coil))
+                playerAnimator.ChangeAnimation(myAnimator, coil);
+
             currentJumpHoldTime += Time.deltaTime;
             iFrames = true;
             if(currentJumpHoldTime > jumpMaxHoldTime) 
