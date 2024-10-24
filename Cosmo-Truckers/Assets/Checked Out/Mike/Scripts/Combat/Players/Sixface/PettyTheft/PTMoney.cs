@@ -30,6 +30,7 @@ public class PTMoney : MonoBehaviour
         if(collision.tag == "Player")
         {
             minigame.Score++;
+            minigame.CheckSuccess(); 
             Debug.Log(minigame.Score);
             Destroy(transform.parent.gameObject);
         }
