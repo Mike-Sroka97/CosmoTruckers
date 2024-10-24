@@ -302,20 +302,26 @@ public class CombatMove : MonoBehaviour
     {
         if (Score >= maxScore)
         {
-            float timeRemaining = MinigameDuration - currentTime;
-
-            if (timeRemaining > timeToEndMove)
-            {
-                if (MoveEnded)
-                    return false;
-
-                StartCoroutine(DelayedCallEndMove());
-            }
-
-            return true;
+            return CallDelayedEndMove();
         }
 
         return false; 
+    }
+
+    /// <summary>
+    /// Checks if Score <= MaxScore
+    /// Ends minigame if it is, otherwise returns false
+    /// This is for minigames which start off in full success
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckFailure()
+    {
+        if (Score <= maxScore)
+        {
+            return CallDelayedEndMove();
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -327,20 +333,25 @@ public class CombatMove : MonoBehaviour
     {
         if (AugmentScore >= maxAugmentStacks)
         {
-            float timeRemaining = MinigameDuration - currentTime;
-
-            if (timeRemaining > timeToEndMove)
-            {
-                if (MoveEnded)
-                    return false;
-
-                StartCoroutine(DelayedCallEndMove());
-            }
-
-            return true;
+            return CallDelayedEndMove();
         }
 
         return false;
+    }
+
+    private bool CallDelayedEndMove()
+    {
+        float timeRemaining = MinigameDuration - currentTime;
+
+        if (timeRemaining > timeToEndMove)
+        {
+            if (MoveEnded)
+                return false;
+
+            StartCoroutine(DelayedCallEndMove());
+        }
+
+        return true; 
     }
 
     private IEnumerator DelayedCallEndMove()
