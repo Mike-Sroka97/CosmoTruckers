@@ -44,6 +44,7 @@ public class DNode : MonoBehaviour
     private LineRenderer currentLine;
     private DungeonController dungeon;
     int currentSelectedIndex = 0;
+    List<Vector3> linePositions = new List<Vector3>();
 
     protected virtual void Start()
     {
@@ -110,7 +111,8 @@ public class DNode : MonoBehaviour
     private void MoveToNode()
     {
         Active = false;
-        StartCoroutine(character.Move(currentlySelectedNode, currentlySelectedNode.SelectedTransforms.ToArray()));
+        StartCoroutine(character.Move(currentlySelectedNode, linePositions));
+        linePositions.Clear();
     }
     public void SelectNode(bool left)
     {
@@ -133,6 +135,7 @@ public class DNode : MonoBehaviour
         }
 
         currentlySelectedNode = SelectableNodes[currentSelectedIndex];
+        linePositions.Clear();
         SetupLineRendererers();
     }
 
@@ -155,7 +158,17 @@ public class DNode : MonoBehaviour
 
         foreach (Transform nodePoint in points)
         {
-            currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y - 0.45f, nodePoint.transform.position.z));
+            if(Group % 2 == 0)
+            {
+                currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y - 0.45f, nodePoint.transform.position.z));
+                linePositions.Add(new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y, nodePoint.transform.position.z));
+            }
+            else
+            {
+                currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.45f, nodePoint.transform.position.z));
+                linePositions.Add(new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.9f, nodePoint.transform.position.z));
+            }
+
             i++;
         }
     }

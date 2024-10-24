@@ -251,9 +251,15 @@ public abstract class DungeonController : MonoBehaviour
     {
         DNode[] nodes = GetComponentsInChildren<DNode>();
 
+        int currentCombatNode = 0;
+
         foreach (DNode node in nodes)
             if (node.NodeData.GetComponent<DungeonCombatNode>())
+            {
                 CombatNodes.Add(node);
+                CombatNodes[currentCombatNode].Group = currentCombatNode;
+                currentCombatNode++;
+            }
     }
 }
 

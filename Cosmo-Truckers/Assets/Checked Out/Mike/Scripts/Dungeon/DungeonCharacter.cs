@@ -61,21 +61,25 @@ public class DungeonCharacter : MonoBehaviour
             dungeon.CurrentNode.SelectNode(false);
     }
 
-    public virtual IEnumerator Move(DNode newCurrentNode, Transform[] pointsToTraverse)
+    public virtual IEnumerator Move(DNode newCurrentNode, List<Vector3> positions)
     {
+        List<Vector3> tempPositions = new List<Vector3>();
+        foreach (Vector3 vertex in positions)
+            tempPositions.Add(vertex);
+
         dungeon.CurrentNode = newCurrentNode;
 
         moving = true;
         int currentPoint = 0;
 
-        while (currentPoint < pointsToTraverse.Length)
+        while (currentPoint < tempPositions.Count)
         {
             //Move toward each point one by one
-            while (transform.position != pointsToTraverse[currentPoint].transform.position)
+            while (transform.position != tempPositions[currentPoint])
             {
                 float lastX = transform.position.x;
 
-                transform.position = Vector3.MoveTowards(transform.position, pointsToTraverse[currentPoint].transform.position, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, tempPositions[currentPoint], moveSpeed * Time.deltaTime);
 
                 //Flip on complex up / down movements
                 if (lastX > transform.position.x)
