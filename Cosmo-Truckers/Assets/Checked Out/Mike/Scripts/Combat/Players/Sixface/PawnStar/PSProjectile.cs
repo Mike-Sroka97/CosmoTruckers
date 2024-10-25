@@ -28,6 +28,7 @@ public class PSProjectile : MonoBehaviour
         player = FindObjectOfType<SixfaceINA>().transform;
         minigame = FindObjectOfType<PawnStar>();
         mySpriteObject = GetComponentInChildren<Transform>();
+        startPosition = transform.localPosition; 
     }
 
     private void RandomDistance()
@@ -38,7 +39,7 @@ public class PSProjectile : MonoBehaviour
         {
             random = -random;
         }
-        startPosition = new Vector3(random, transform.position.y, transform.position.z);
+        startPosition = new Vector3(random, transform.localPosition.y, transform.localPosition.z);
     }
 
     private void Update()
@@ -76,10 +77,10 @@ public class PSProjectile : MonoBehaviour
 
             RandomDistance();
 
-            startPosition = transform.position;
-            distance = Mathf.Abs(xSpawns) - Mathf.Abs(transform.position.x);
+            startPosition = transform.localPosition;
+            distance = Mathf.Abs(xSpawns) - Mathf.Abs(transform.localPosition.x);
 
-            if (player.position.x < startPosition.x)
+            if (player.localPosition.x < startPosition.x)
             {
                 movingRight = false;
             }
@@ -113,12 +114,12 @@ public class PSProjectile : MonoBehaviour
         float nextY = startPosition.y + height * Mathf.Sin(normalizedTime * Mathf.PI);
 
 
-        transform.position = new Vector3(nextX, nextY, transform.position.z);
+        transform.localPosition = new Vector3(nextX, nextY, transform.localPosition.z);
 
         //Set Z to angle, y angle should be based on moving left or right
         mySpriteObject.localEulerAngles = new Vector3(mySpriteObject.localEulerAngles.x, yAngle, angle);
 
-        if (transform.position.y < startPosition.y)
+        if (transform.localPosition.y < startPosition.y)
         {
             ResetParabola();
         }
@@ -132,8 +133,8 @@ public class PSProjectile : MonoBehaviour
         RandomDistance();
         //distance = Mathf.Abs(xSpawns) - Mathf.Abs(transform.position.x);
         mySpriteObject.eulerAngles = new Vector3(mySpriteObject.eulerAngles.x, mySpriteObject.eulerAngles.y, 0f); //reset y rotation
-        height = Mathf.Abs(player.position.y) + Mathf.Abs(startPosition.y); //offset from starting negative y value
-        if (player.position.x < startPosition.x)
+        height = Mathf.Abs(player.localPosition.y) + Mathf.Abs(startPosition.y); //offset from starting negative y value
+        if (player.localPosition.x < startPosition.x)
         {
             movingRight = false;
         }

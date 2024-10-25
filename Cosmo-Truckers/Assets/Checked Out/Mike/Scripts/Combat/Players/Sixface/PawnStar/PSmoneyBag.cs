@@ -43,7 +43,7 @@ public class PSmoneyBag : MonoBehaviour
     {
         if(movingRight)
         {
-            transform.position += new Vector3(movementSpeed * Time.deltaTime, 0, 0);
+            transform.localPosition += new Vector3(movementSpeed * Time.deltaTime, 0, 0);
             if(Mathf.Abs(transform.localPosition.x) > xBounds)
             {
                 movingRight = !movingRight;
@@ -52,7 +52,7 @@ public class PSmoneyBag : MonoBehaviour
         }
         else
         {
-            transform.position -= new Vector3(movementSpeed * Time.deltaTime, 0, 0);
+            transform.localPosition -= new Vector3(movementSpeed * Time.deltaTime, 0, 0);
             if (Mathf.Abs(transform.localPosition.x) > xBounds)
             {
                 movingRight = !movingRight;
@@ -64,7 +64,7 @@ public class PSmoneyBag : MonoBehaviour
     private void Oscillate()
     {
         float newY = startingPosition.y + Mathf.Sin(Time.time * frequency) * amplitude;
-        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, newY, transform.localPosition.z);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -72,6 +72,7 @@ public class PSmoneyBag : MonoBehaviour
         if(collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+            minigame.CheckSuccess(); 
             Debug.Log(minigame.Score);
             StartCoroutine(ResetHitbox());
         }

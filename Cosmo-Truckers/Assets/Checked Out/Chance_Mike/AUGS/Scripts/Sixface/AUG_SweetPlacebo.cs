@@ -8,6 +8,8 @@ public class AUG_SweetPlacebo : Augment
 
     public override void Activate(AugmentStackSO stack = null)
     {
+        Debug.Log("Sweet Placebo!"); 
+
         base.Activate(stack);
 
         //1 being base damage
