@@ -10,4 +10,16 @@ public class DungeonEventNode : MonoBehaviour
     public bool Neutral;
     public bool Bad;
     public bool Healing;
+
+    [SerializeField] int healingModifier = 2;
+
+    [HideInInspector] public bool Healed;
+
+    public void Heal()
+    {
+        foreach(PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
+            player.MyCharacter.TakeHealing(player.MyCharacter.Health / healingModifier, true);
+
+        Healed = true;
+    }
 }

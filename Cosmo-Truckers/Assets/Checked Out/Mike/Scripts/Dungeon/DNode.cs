@@ -96,7 +96,13 @@ public class DNode : MonoBehaviour
         {
             StartCoroutine(CameraController.Instance.DungeonEnd(NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
         }
-        else if (NodeData.GetComponent<DungeonEventNode>() && !EventFinished)
+        else if(NodeData.GetComponent<DungeonEventNode>() && NodeData.GetComponent<DungeonEventNode>().Healing && !NodeData.GetComponent<DungeonEventNode>().Healed)
+        {
+            NodeData.GetComponent<DungeonEventNode>().Heal();
+            NodeData.GetComponent<DungeonEventNode>().Healed = true;
+            SetupLineRendererers();
+        }
+        else if (NodeData.GetComponent<DungeonEventNode>() && !EventFinished && !NodeData.GetComponent<DungeonEventNode>().Healing)
         {
             StartCoroutine(dungeon.NodeHandler.Move(true, this));
         }
@@ -165,8 +171,17 @@ public class DNode : MonoBehaviour
             }
             else
             {
-                currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.45f, nodePoint.transform.position.z));
-                linePositions.Add(new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.9f, nodePoint.transform.position.z));
+                if(SelectableNodes[currentSelectedIndex].Group % 2 == 0 && nodePoint == points[points.Length - 1])
+                {
+                    currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y -0.45f, nodePoint.transform.position.z));
+                    linePositions.Add(new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y, nodePoint.transform.position.z));
+                }
+                else
+                {
+                    currentLine.SetPosition(i, new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.45f, nodePoint.transform.position.z));
+                    linePositions.Add(new Vector3(nodePoint.transform.position.x, nodePoint.transform.position.y + 0.9f, nodePoint.transform.position.z));
+                }
+
             }
 
             i++;
