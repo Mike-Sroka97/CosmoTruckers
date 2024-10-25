@@ -6,11 +6,7 @@ public class QDpufferFish : MonoBehaviour
 {
     [SerializeField] float rotationSpeed;
     [SerializeField] float movementSpeed;
-
-    //Cole added this to instantiate feather PS
-    [SerializeField] GameObject featherParticleSystem; 
-
-    //End of Cole additions
+    [SerializeField] GameObject deathParticle; 
 
     Transform target;
     GameObject gust;
@@ -45,8 +41,7 @@ public class QDpufferFish : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
-            //Instantiate feather particle system on hit (will delete itself)
-            Instantiate(featherParticleSystem, transform.position, Quaternion.identity);
+            Instantiate(deathParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().gameObject.transform);
 
             myRenderer.enabled = false;
             myCollider.enabled = false;

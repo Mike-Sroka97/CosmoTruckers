@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3191623999234133353}
   - component: {fileID: 6888270672460819076}
   - component: {fileID: 3395044649989575312}
+  - component: {fileID: 4604353826161936717}
   m_Layer: 0
   m_Name: PM_SIX_SharkDeathBottom
   m_TagString: EnemyDamaging
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 987b7becc846a234eb2ec66bc73ed32d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -111,3 +112,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 53.55, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4604353826161936717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344573407291440050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
+  TrackingDamage: 1
