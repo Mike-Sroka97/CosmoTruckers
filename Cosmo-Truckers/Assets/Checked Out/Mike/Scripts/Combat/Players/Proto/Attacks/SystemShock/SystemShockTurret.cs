@@ -47,9 +47,8 @@ public class SystemShockTurret : MonoBehaviour
         if(currentTime >= fireDelay)
         {
             currentTime = 0;
-            GameObject zapTemp = Instantiate(zap, barrel);
+            GameObject zapTemp = Instantiate(zap, barrel.position, transform.rotation, minigame.transform);
             myAnimator.Play(fireAnimation.name);
-            zapTemp.gameObject.transform.parent = minigame.transform;
             zapTemp.transform.localScale = new Vector3(1f, 1f, 1f); 
         }
     }

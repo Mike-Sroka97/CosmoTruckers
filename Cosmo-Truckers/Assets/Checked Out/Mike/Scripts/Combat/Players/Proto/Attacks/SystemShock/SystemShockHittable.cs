@@ -42,6 +42,7 @@ public class SystemShockHittable : MonoBehaviour
         if (collision.tag == "PlayerAttack" && !Hit)
         {
             minigame.AugmentScore++;
+            minigame.CheckAugmentSuccess(); 
             minigame.GetComponent<SystemShock>().HittablesHit++;
             Hit = true;
             myRenderer.sprite = hitSprite;
