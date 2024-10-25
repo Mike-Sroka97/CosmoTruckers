@@ -6,6 +6,7 @@ public class BriberyCollectable : MonoBehaviour
 {
     [SerializeField] BriberyEnemy myEnemy;
     [SerializeField] int row;
+    [SerializeField] GameObject moneyParticle; 
 
     Bribery minigame;
     Collider2D myCollider;
@@ -44,6 +45,7 @@ public class BriberyCollectable : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            Instantiate(moneyParticle, transform.position, Quaternion.identity, minigame.transform); 
             myEnemy.SendBack();
             DeactiveMe();
         }

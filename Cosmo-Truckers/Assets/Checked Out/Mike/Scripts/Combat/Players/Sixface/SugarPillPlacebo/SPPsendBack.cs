@@ -5,6 +5,7 @@ using UnityEngine;
 public class SPPsendBack : MonoBehaviour
 {
     [SerializeField] float moveDelay = 0.1f;
+    [SerializeField] GameObject sendBackParticle; 
 
     Transform player;
     SugarPillPlacebo minigame;
@@ -34,6 +35,7 @@ public class SPPsendBack : MonoBehaviour
             layoutGenerator.DestroyMe();
         }
 
+        Instantiate(sendBackParticle, player.position, Quaternion.identity, minigame.transform);
         player.position = minigame.CurrentCheckPointLocation;
     }
 }

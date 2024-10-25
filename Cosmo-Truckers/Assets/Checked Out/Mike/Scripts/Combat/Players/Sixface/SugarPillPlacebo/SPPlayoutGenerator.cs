@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SPPlayoutGenerator : MonoBehaviour
@@ -13,6 +14,7 @@ public class SPPlayoutGenerator : MonoBehaviour
     int random = -1;
     int lastRandom = -1;
     GameObject currentActiveLayout;
+    TMP_Text timerText; 
 
     private void Update()
     {
@@ -23,19 +25,25 @@ public class SPPlayoutGenerator : MonoBehaviour
             {
                 DestroyMe();
             }
+            else
+            {
+                timerText.text = (Mathf.RoundToInt(layoutDuration - currentTime)).ToString();
+            }
         }
     }
 
     public void DestroyMe()
     {
+        timerText.text = ""; 
         currentTime = 0;
         activeLayout = false;
         mySwitch.ResetMe();
         Destroy(currentActiveLayout);
     }
 
-    public void GenerateLayout()
+    public void GenerateLayout(TMP_Text text)
     {
+        timerText = text;
         activeLayout = true;
 
         while(random == lastRandom)
