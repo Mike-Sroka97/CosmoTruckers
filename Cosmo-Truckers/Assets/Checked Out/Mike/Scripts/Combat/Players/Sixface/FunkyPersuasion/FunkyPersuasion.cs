@@ -6,9 +6,10 @@ public class FunkyPersuasion : CombatMove
 {
     private void Start()
     {
-        StartMove();
         GenerateLayout();
-
+    }
+    public override void StartMove()
+    {
         base.StartMove();
     }
 
