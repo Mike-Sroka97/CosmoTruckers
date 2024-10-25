@@ -339,6 +339,16 @@ public class CombatMove : MonoBehaviour
         return false;
     }
 
+    public bool CheckScoreAndAugmentSuccess()
+    {
+        if (Score >= maxScore && AugmentScore >= maxAugmentStacks)
+        {
+            return CallDelayedEndMove();
+        }
+
+        return false;
+    }
+
     private bool CallDelayedEndMove()
     {
         float timeRemaining = MinigameDuration - currentTime;

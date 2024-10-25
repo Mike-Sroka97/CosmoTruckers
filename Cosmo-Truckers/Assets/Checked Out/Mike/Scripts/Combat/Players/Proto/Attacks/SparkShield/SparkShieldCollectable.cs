@@ -42,10 +42,12 @@ public class SparkShieldCollectable : MonoBehaviour
                 return;
 
             miniGame.Score += score;
+            miniGame.CheckScoreAndAugmentSuccess(); 
         }
         else if(isNeutron)
         {
             miniGame.AugmentScore++;
+            miniGame.CheckScoreAndAugmentSuccess();
         }
         else if(isElectron)
         {

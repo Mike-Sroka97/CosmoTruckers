@@ -104,7 +104,12 @@ public class INAcombat : MonoBehaviour
 
             //Enable Line/Trail Renderers
             foreach (LineRenderer line in GetComponentsInChildren<LineRenderer>())
-                line.enabled = true;
+            {
+                if (line.GetComponent<SetupMinigameLineRenderer>() != null)
+                    line.GetComponent<SetupMinigameLineRenderer>().SetLineLocalPositions(minigame); 
+                else
+                    line.enabled = true;
+            }
 
             foreach (TrailRenderer trail in GetComponentsInChildren<TrailRenderer>())
                 trail.enabled = true;

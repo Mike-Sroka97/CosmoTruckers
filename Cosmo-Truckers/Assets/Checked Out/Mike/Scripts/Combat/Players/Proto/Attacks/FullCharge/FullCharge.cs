@@ -11,6 +11,11 @@ public class FullCharge : CombatMove
         GenerateLayout();
     }
 
+    public override void StartMove()
+    {
+        base.StartMove();
+    }
+
     public override void EndMove()
     {
         //Calculate Augment Stacks

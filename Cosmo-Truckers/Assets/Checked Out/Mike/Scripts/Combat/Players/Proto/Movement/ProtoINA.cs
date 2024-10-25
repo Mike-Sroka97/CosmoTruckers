@@ -62,6 +62,10 @@ public class ProtoINA : Player
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = GetComponentsInChildren<Collider2D>()[0];
+
+        // Set Proto's boundaries using the new INA position
+        CombatMove minigame = FindObjectOfType<CombatMove>();
+        SetTelportBoundaries(positiveXBoundary + minigame.transform.position.x, positiveYBoundary + minigame.transform.position.y, negativeXBoundary + minigame.transform.position.x, negativeYBoundary + minigame.transform.position.y); 
     }
 
     private void Update()
