@@ -13,11 +13,13 @@ public class EnergonJabDVD : DVDlogoMovement
     SpriteRenderer myRenderer;
     Material startMaterial;  
     EnergonJab minigame;
+    AdvancedFrameAnimation myAnimation; 
 
     private void Start()
     {
         minigame = GetComponentInParent<EnergonJab>();
         myRenderer = GetComponent<SpriteRenderer>();
+        myAnimation= GetComponent<AdvancedFrameAnimation>();
         startMaterial = myRenderer.material;
         Initialize();
         RandomStartVelocity();
@@ -40,7 +42,6 @@ public class EnergonJabDVD : DVDlogoMovement
         {
             currentTime = 0;
             trackTime = false;
-            myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 1);
             myRenderer.material = startMaterial;
         }
     }
@@ -51,7 +52,9 @@ public class EnergonJabDVD : DVDlogoMovement
         {
             trackTime = true;
             minigame.Score++;
-            myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, alpha);
+            minigame.CheckSuccess();
+            // Start the hit animation and then it will automatically swap back
+            myAnimation.StartAnimationWithUniqueTime(disableTime);
             myRenderer.material = disabledMaterial;
         }
     }

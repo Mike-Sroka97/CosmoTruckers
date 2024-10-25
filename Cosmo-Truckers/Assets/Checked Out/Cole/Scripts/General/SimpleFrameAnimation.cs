@@ -25,6 +25,10 @@ public class SimpleFrameAnimation : MonoBehaviour
             StartCoroutine(ChangeImages());
     }
     
+    /// <summary>
+    /// Default sprite swapping
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator ChangeSprites()
     {
         if (currentSprite >= sprites.Length)

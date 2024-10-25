@@ -13,8 +13,8 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     [SerializeField] float happyTimeBeforeSwapping = 1f;
     [SerializeField] bool playerHitHurts = false; 
 
-    bool startHurt = false;
-    bool startHappy = false; 
+    bool hurt = false;
+    bool happy = false; 
     float timer = 0f;
     float frameTimer = 0f;
     int currentFrame = -1; 
@@ -22,29 +22,46 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     public void SwitchToHurtAnimation()
     {
         StopAllCoroutines();
-        startHurt = true;
-        startHappy = false;
+        hurt = true;
+        happy = false;
         ResetValues();
+    }
+
+    /// <summary>
+    /// Pass in a unique amount of time to the animation before swapping back to default
+    /// </summary>
+    /// <param name="timeBeforeSwapping"></param>
+    /// <param name="isHurt"></param>
+    public void StartAnimationWithUniqueTime(float timeBeforeSwapping, bool isHurt = true)
+    {
+        if (isHurt)
+        {
+            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, timeBeforeSwapping, ref hurt);
+        }
+        else
+        {
+            ChangeAnimation(happySprites, timeBetweenHappySprites, timeBeforeSwapping, ref happy);
+        }
     }
 
     public void SwitchToHappyAnimation()
     {
         StopAllCoroutines();
-        startHappy = true;
-        startHurt = false;
+        happy = true;
+        hurt = false;
         ResetValues(); 
     }
 
     private void Update()
     {
-        if (startHurt)
+        if (hurt)
         {
-            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, hurtTimeBeforeSwapping, ref startHurt); 
+            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, hurtTimeBeforeSwapping, ref hurt); 
         }
 
-        if (startHappy)
+        if (happy)
         {
-            ChangeAnimation(happySprites, timeBetweenHappySprites, happyTimeBeforeSwapping, ref startHappy);
+            ChangeAnimation(happySprites, timeBetweenHappySprites, happyTimeBeforeSwapping, ref happy);
         }
     }
 
@@ -86,7 +103,7 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerAttack") && !startHurt)
+        if (collision.CompareTag("PlayerAttack") && !hurt)
         {
             SwitchToHurtAnimation(); 
         }
