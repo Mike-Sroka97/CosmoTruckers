@@ -43,6 +43,7 @@ public class ProtoINA : Player
     bool isTeleporting = false;
     bool canAttack = true;
     bool canTeleport = true;
+    bool isGrounded = false; 
 
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
@@ -116,8 +117,7 @@ public class ProtoINA : Player
     {
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
-
-            if(!damaged && !dead && Input.GetKey("space") && canMove)
+            if (!damaged && !dead && Input.GetKey("space") && canMove)
             {
                 if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(jump.name) && currentJumpHoldTime >= jumpMaxHoldTime)
                     playerAnimator.ChangeAnimation(myAnimator, idle);
@@ -129,10 +129,13 @@ public class ProtoINA : Player
                 currentJumpHoldTime = 0;
                 currentCoyoteTime = 0;
             }
+
+            isGrounded = true; 
         }
         else if(currentCoyoteTime > coyoteTime)
         {
             canJump = false;
+            isGrounded = false;
         }
         else
         {
@@ -255,7 +258,7 @@ public class ProtoINA : Player
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-            if(myBody.velocity == Vector2.zero && !IsTeleporting && canAttack)
+            if(myBody.velocity.x == 0 && myBody.velocity.y <= 0 && !IsTeleporting && canAttack && !isJumping && isGrounded)
                 playerAnimator.ChangeAnimation(myAnimator, idle);
         }
     }

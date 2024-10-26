@@ -267,10 +267,8 @@ public class SixfaceINA : Player
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
-            if (!IsHovering && canAttack && !isJumping && !iFrames && canAttack)
-            {
+            if (!IsHovering && canAttack && !isJumping && !iFrames)
                 playerAnimator.ChangeAnimation(bodyAnimator, idle);
-            }
         }
     }
 

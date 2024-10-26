@@ -19,6 +19,7 @@ public class PlayerBasedParabolaMovement : MonoBehaviour
     Rigidbody2D myBody;
     float startTime;
     Player player;
+    CombatMove minigame; 
 
     bool moving = false;
     bool trackTime = true;
@@ -28,6 +29,7 @@ public class PlayerBasedParabolaMovement : MonoBehaviour
     private void Start()
     {
         myBody = GetComponent<Rigidbody2D>();
+        minigame = FindObjectOfType<CombatMove>(); 
         startTime = Time.time;
     }
 
@@ -82,8 +84,8 @@ public class PlayerBasedParabolaMovement : MonoBehaviour
         }
 
         // Set the object's position
-        Vector3 newPosition = new Vector3(horizontalPosition, verticalPosition, transform.position.z);
-        myBody.MovePosition(newPosition);
+        Vector3 newPosition = new Vector3(horizontalPosition, verticalPosition, transform.localPosition.z);
+        myBody.MovePosition(newPosition + minigame.transform.position);
 
         if(trackY && transform.localPosition.y >= yToCheck && yToCheck > 0)
         {
@@ -103,16 +105,25 @@ public class PlayerBasedParabolaMovement : MonoBehaviour
         trackTime = false;
 
         int random = UnityEngine.Random.Range(0, spawns.Length);
-        transform.position = spawns[random].position;
+        transform.localPosition = spawns[random].localPosition;
         startTime = Time.time;
 
         //check player x greater or less than and flip sprite
+        Transform sprite = transform.GetChild(0);
+        if (player.transform.localPosition.x < transform.localPosition.x)
+        {
+            sprite.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else
+        {
+            sprite.eulerAngles = new Vector3(0, 180, 0);
+        }
 
-        height = transform.position.y - player.transform.position.y;
-        vertexX = player.transform.position.x / 2;
-        vertexY = transform.position.y;
+        height = transform.localPosition.y - player.transform.localPosition.y;
+        vertexX = player.transform.localPosition.x / 2;
+        vertexY = transform.localPosition.y;
 
-        if(player.transform.position.x > transform.position.x)
+        if(player.transform.localPosition.x > transform.localPosition.x)
         {
             if(yToCheck < 0)
             {
