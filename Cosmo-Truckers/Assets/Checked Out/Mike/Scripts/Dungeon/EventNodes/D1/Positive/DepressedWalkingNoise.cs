@@ -21,7 +21,7 @@ public class DepressedWalkingNoise : EventNodeBase
         timmysNumber = Random.Range(1, 11); //1-10
         descriptionText.text = $"{description} <color=green>{timmysNumber}</color>.";
         buttonText.text = timmysNumber.ToString();
-        StartCoroutine(ChangeNumber());
+        StartCoroutine(StartChangeNummber());
     }
 
     public void GuessNumber()
@@ -37,7 +37,9 @@ public class DepressedWalkingNoise : EventNodeBase
         {
             StopAllCoroutines();
             IgnoreOption();
-            StartCoroutine(ChangeNumber());
+
+            if(currentTurns <= 3)
+                StartCoroutine(ChangeNumber());
         }
     }
 
@@ -52,10 +54,14 @@ public class DepressedWalkingNoise : EventNodeBase
         }
     }
 
-    IEnumerator ChangeNumber()
+    IEnumerator StartChangeNummber()
     {
         yield return new WaitForSeconds(1f);
+        StartCoroutine(ChangeNumber());
+    }
 
+    IEnumerator ChangeNumber()
+    {
         //update number
         buttonText.text = lastNumber.ToString();
         int textNumber = int.Parse(buttonText.text);
