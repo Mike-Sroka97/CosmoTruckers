@@ -24,7 +24,7 @@ public class GeneralProjectile : MonoBehaviour
 
     private void BoundsCheck()
     {
-        if(transform.position.x > xBound || transform.position.x < -xBound || transform.position.y > yBound || transform.position.y < -yBound)
+        if(transform.localPosition.x > xBound || transform.localPosition.x < -xBound || transform.localPosition.y > yBound || transform.localPosition.y < -yBound)
         {
             Destroy(gameObject);
         }
