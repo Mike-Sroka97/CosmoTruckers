@@ -10,7 +10,9 @@ public class FullCourse : CombatMove
     }
     public override void StartMove()
     {
-        FindObjectOfType<FullCoursePlatformMovement>().StartMove();
+        FullCoursePlatformMovement[] platforms = FindObjectsOfType<FullCoursePlatformMovement>();
+        foreach (FullCoursePlatformMovement platform in platforms)
+            platform.StartMove(); 
 
         base.StartMove();
     }

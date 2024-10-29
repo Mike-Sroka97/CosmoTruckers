@@ -14,8 +14,13 @@ public class FullCoursePlatformMovement : MonoBehaviour
 
     public void StartMove()
     {
-        foreach (GameObject gO in startMoveObjects)
-            gO.SetActive(true);
+        // TODO: Chance - delete this and use random objects instead please!
+        if (startMoveObjects != null)
+        {
+            foreach (GameObject gO in startMoveObjects)
+                gO.SetActive(true);
+        }
+
         trackTime = true;
     }
 
