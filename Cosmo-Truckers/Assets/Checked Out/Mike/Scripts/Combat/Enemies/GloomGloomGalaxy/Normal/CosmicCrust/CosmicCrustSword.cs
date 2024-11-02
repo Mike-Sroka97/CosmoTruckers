@@ -36,7 +36,7 @@ public class CosmicCrustSword : MonoBehaviour
         currentTime = 0;
         while(currentTime <= rotateTowardsTime)
         {
-            float angle = Mathf.Atan2(target.transform.position.y - transform.position.y, target.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(target.transform.localPosition.y - transform.localPosition.y, target.transform.localPosition.x - transform.localPosition.x) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateTowardsSpeed * Time.deltaTime);
             currentTime += Time.deltaTime;
@@ -46,7 +46,7 @@ public class CosmicCrustSword : MonoBehaviour
         currentTime = 0;
         while (currentTime <= chargeTime)
         {
-            transform.position += transform.right * chargeSpeed * Time.deltaTime;
+            transform.localPosition += transform.right * chargeSpeed * Time.deltaTime;
             bool clampCheck = ClampCheck();
             if (clampCheck)
                 currentTime = chargeTime;
@@ -59,10 +59,10 @@ public class CosmicCrustSword : MonoBehaviour
 
     private bool ClampCheck()
     {
-        if(transform.position.x >= xClamp
-            || transform.position.x <= -xClamp
-            || transform.position.y >= yClamp
-            || transform.position.y <= -yClamp)
+        if(transform.localPosition.x >= xClamp
+            || transform.localPosition.x <= -xClamp
+            || transform.localPosition.y >= yClamp
+            || transform.localPosition.y <= -yClamp)
         {
             return true;
         }

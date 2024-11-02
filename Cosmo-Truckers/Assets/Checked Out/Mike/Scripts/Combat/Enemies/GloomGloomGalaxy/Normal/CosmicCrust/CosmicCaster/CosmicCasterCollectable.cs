@@ -9,6 +9,8 @@ public class CosmicCasterCollectable : MonoBehaviour
     CosmicCaster minigame;
     Collider2D myCollider;
     SpriteRenderer myRenderer;
+    [SerializeField] GameObject particle; 
+
     public void ActivateMe()
     {
         minigame = FindObjectOfType<CosmicCaster>();
@@ -24,6 +26,7 @@ public class CosmicCasterCollectable : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            Instantiate(particle, transform.position, Quaternion.identity, minigame.transform);
             myCollider.enabled = false;
             myRenderer.enabled = false;
             minigame.Score++;
