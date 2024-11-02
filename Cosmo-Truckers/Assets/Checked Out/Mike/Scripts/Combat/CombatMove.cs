@@ -24,6 +24,7 @@ public class CombatMove : MonoBehaviour
     [SerializeField] protected int maxScore;
     [SerializeField] protected int augmentStacksPerScore;
     [SerializeField] protected int maxAugmentStacks;
+    [SerializeField] protected int minAugmentStacks;
     [SerializeField] protected int baseDamage;
     [SerializeField] protected int baseAugmentStacks;
     [SerializeField] protected float timeToEndMove = 1f;
@@ -333,6 +334,21 @@ public class CombatMove : MonoBehaviour
     {
         if (AugmentScore >= maxAugmentStacks)
         {
+            return CallDelayedEndMove();
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Opposite of regular augment success, checks if the augment score is at the minAugmentScore instead
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckAugmentSuccessForEnemyAttack()
+    {
+        if (AugmentScore <= minAugmentStacks)
+        {
+            AugmentScore = minAugmentStacks;
             return CallDelayedEndMove();
         }
 
