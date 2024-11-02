@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] GameObject particle; 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         DestroyMe(collision);
@@ -13,7 +15,13 @@ public class Block : MonoBehaviour
     {
         if (collision.tag == "PlayerAttack")
         {
+            SpawnParticle(); 
             Destroy(gameObject);
         }
+    }
+
+    protected void SpawnParticle()
+    {
+        Instantiate(particle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().transform);
     }
 }

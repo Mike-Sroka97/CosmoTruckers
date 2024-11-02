@@ -18,7 +18,7 @@ public class EncrustableBombBlock : Block
     IEnumerator Blast()
     {
         blastZone.enabled = true;
-        blastZone.GetComponent<SpriteRenderer>().enabled = true;
+        SpawnParticle(); 
         yield return new WaitForSeconds(explosionDuration);
         Destroy(gameObject);
     }
