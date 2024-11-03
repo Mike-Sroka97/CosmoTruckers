@@ -137,7 +137,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8e1ec2acaad12a24da900c9717b56581, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,7 +156,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 137e127fdad01ad49804acca414c99d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -167,7 +167,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &8459594822627697996
 GameObject:
@@ -216,6 +216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ground: 0
+  noHurtMaterial: {fileID: 2100000, guid: 3604faa0473041040ac7e279266b3c26, type: 2}
+  deathParticle: {fileID: 2001451144461790626, guid: 54a3187c0e63031428a764aed496abf1, type: 3}
 --- !u!60 &4641203208589719998
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -226,7 +228,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -241,11 +243,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.016562145, y: 0.13876826}
-      - {x: -0.029377699, y: 0.14058827}
+    - - {x: 0.0013686717, y: 0.17719142}
+      - {x: -0.035577033, y: 0.17604084}
       - {x: -0.3339258, y: -1.0535194}
       - {x: 0.34449953, y: -1.0569813}
-      - {x: 0.012534797, y: 0.1378749}
+      - {x: 0.032769002, y: 0.17696527}
 --- !u!114 &3566691078635806112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,5 +263,7 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 1
-  multiplayer: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
