@@ -6,16 +6,13 @@ public class SplitMiserySpike : MonoBehaviour
 {
     [SerializeField] float amplitude = .875f;
     [SerializeField] float frequency = 1.0f;
-    [SerializeField] bool upSideDown = false;
-    [SerializeField] bool useX;
-    [SerializeField] bool left;
 
     private Vector3 initialPosition;
     Collider2D myCollider;
     bool initialized = false;
     public void Initialize()
     {
-        initialPosition = transform.position;
+        initialPosition = transform.localPosition;
         myCollider = GetComponentInChildren<Collider2D>();
         initialized = true;
     }
@@ -31,69 +28,19 @@ public class SplitMiserySpike : MonoBehaviour
 
     private void TrackPosition()
     {
-        if(!useX)
+        if (transform.localPosition.y > initialPosition.y)
         {
-            if (!upSideDown)
-            {
-                if (transform.position.y < initialPosition.y)
-                {
-                    myCollider.enabled = false;
-                }
-                else
-                {
-                    myCollider.enabled = true;
-                }
-            }
-            else
-            {
-                if (transform.position.y > initialPosition.y)
-                {
-                    myCollider.enabled = false;
-                }
-                else
-                {
-                    myCollider.enabled = true;
-                }
-            }
+            myCollider.enabled = true;
         }
         else
         {
-            if (!left)
-            {
-                if (transform.position.x < initialPosition.x)
-                {
-                    myCollider.enabled = false;
-                }
-                else
-                {
-                    myCollider.enabled = true;
-                }
-            }
-            else
-            {
-                if (transform.position.x > initialPosition.x)
-                {
-                    myCollider.enabled = false;
-                }
-                else
-                {
-                    myCollider.enabled = true;
-                }
-            }
+            myCollider.enabled = false;
         }
     }
 
     private void MoveMe()
     {
-        if(!useX)
-        {
-            float newY = initialPosition.y + amplitude * Mathf.Cos(Time.time * frequency);
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-        }
-        else
-        {
-            float newX = initialPosition.x + amplitude * Mathf.Cos(Time.time * frequency);
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
-        }
+        float newY = initialPosition.y + amplitude * Mathf.Cos(Time.time * frequency);
+        transform.localPosition = new Vector3(transform.localPosition.x, newY, transform.localPosition.z);
     }
 }

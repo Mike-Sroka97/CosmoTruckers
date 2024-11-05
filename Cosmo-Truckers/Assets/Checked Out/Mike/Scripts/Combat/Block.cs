@@ -22,6 +22,9 @@ public class Block : MonoBehaviour
 
     protected void SpawnParticle()
     {
-        Instantiate(particle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().transform);
+        if (particle != null)
+        {
+            Instantiate(particle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().transform);
+        }
     }
 }

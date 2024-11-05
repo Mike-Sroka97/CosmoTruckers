@@ -27,7 +27,7 @@ public class BriberyGoodGuy : MonoBehaviour
                 minigame.AugmentScore--;
 
                 if (minigame.AugmentScore <= 0)
-                    minigame.CheckFailure(); // This will always return true since Score = 0 and maxScore = 0
+                    minigame.CheckSuccess(true); // This will always return true since Score = 0 and maxScore = 0
 
                 Destroy(gameObject);
             }

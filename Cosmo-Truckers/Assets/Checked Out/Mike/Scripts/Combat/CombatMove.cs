@@ -297,31 +297,35 @@ public class CombatMove : MonoBehaviour
     /// <summary>
     /// Checks if Score >= MaxScore
     /// Ends minigame if it is, otherwise returns false
+    /// Bool checks if Score <= MaxScore
+    /// Ends minigame if it is, otherwise returns false
+    /// This is for minigames which start off in full success
     /// </summary>
     /// <returns></returns>
-    public bool CheckSuccess()
+    public bool CheckSuccess(bool oppositeCheck = false)
     {
-        if (Score >= maxScore)
+        if (!oppositeCheck)
         {
-            return CallDelayedEndMove();
+            if (Score >= maxScore)
+                return CallDelayedEndMove();
+        }
+        else
+        {
+            if (Score <= maxScore)
+                return CallDelayedEndMove();
         }
 
         return false; 
     }
 
     /// <summary>
-    /// Checks if Score <= MaxScore
-    /// Ends minigame if it is, otherwise returns false
-    /// This is for minigames which start off in full success
+    /// Check Success for unique circumstances
+    /// Only checks if Score is equivalent to a specified value
     /// </summary>
     /// <returns></returns>
-    public bool CheckFailure()
+    public bool CheckScoreEqualsValue(int value)
     {
-        if (Score <= maxScore)
-        {
-            return CallDelayedEndMove();
-        }
-
+        if (Score == value) return CallDelayedEndMove();
         return false;
     }
 

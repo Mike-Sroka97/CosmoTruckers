@@ -55,12 +55,12 @@ public class SplitMiserySkeleton : MonoBehaviour
         if (dead)
             return;
 
-        if(transform.position.x > maxX)
+        if(transform.localPosition.x > maxX)
         {
             myBody.velocity = new Vector2(-moveVelocity, 0);
             myRenderer.flipX = false;
         }
-        else if(transform.position.x < minX)
+        else if(transform.localPosition.x < minX)
         {
             myBody.velocity = new Vector2(moveVelocity, 0);
             myRenderer.flipX = true;
@@ -83,7 +83,11 @@ public class SplitMiserySkeleton : MonoBehaviour
         myAnimator.Play(skeletonDeath.name); 
 
         if (!minigame.MoveEnded)
+        {
             minigame.Score--;
+            minigame.CheckScoreEqualsValue(0); 
+        }
+
         myCollider.enabled = false;
 
         yield return new WaitForSeconds(deadTime);
@@ -96,12 +100,12 @@ public class SplitMiserySkeleton : MonoBehaviour
         myRenderer.material = defaultMaterial;
         myAnimator.Play(skeletonRevive.name);
 
-        if (transform.position.x < maxX)
+        if (transform.localPosition.x < maxX)
         {
             myBody.velocity = new Vector2(moveVelocity, 0);
             myRenderer.flipX = true;
         }
-        else if (transform.position.x > minX)
+        else if (transform.localPosition.x > minX)
         {
             myBody.velocity = new Vector2(-moveVelocity, 0);
             myRenderer.flipX = false;
