@@ -24,6 +24,7 @@ public class CombatMove : MonoBehaviour
     [SerializeField] protected int maxScore;
     [SerializeField] protected int augmentStacksPerScore;
     [SerializeField] protected int maxAugmentStacks;
+    [SerializeField] protected int minAugmentStacks;
     [SerializeField] protected int baseDamage;
     [SerializeField] protected int baseAugmentStacks;
     [SerializeField] protected float timeToEndMove = 1f;
@@ -296,31 +297,35 @@ public class CombatMove : MonoBehaviour
     /// <summary>
     /// Checks if Score >= MaxScore
     /// Ends minigame if it is, otherwise returns false
+    /// Bool checks if Score <= MaxScore
+    /// Ends minigame if it is, otherwise returns false
+    /// This is for minigames which start off in full success
     /// </summary>
     /// <returns></returns>
-    public bool CheckSuccess()
+    public bool CheckSuccess(bool oppositeCheck = false)
     {
-        if (Score >= maxScore)
+        if (!oppositeCheck)
         {
-            return CallDelayedEndMove();
+            if (Score >= maxScore)
+                return CallDelayedEndMove();
+        }
+        else
+        {
+            if (Score <= maxScore)
+                return CallDelayedEndMove();
         }
 
         return false; 
     }
 
     /// <summary>
-    /// Checks if Score <= MaxScore
-    /// Ends minigame if it is, otherwise returns false
-    /// This is for minigames which start off in full success
+    /// Check Success for unique circumstances
+    /// Only checks if Score is equivalent to a specified value
     /// </summary>
     /// <returns></returns>
-    public bool CheckFailure()
+    public bool CheckScoreEqualsValue(int value)
     {
-        if (Score <= maxScore)
-        {
-            return CallDelayedEndMove();
-        }
-
+        if (Score == value) return CallDelayedEndMove();
         return false;
     }
 
@@ -333,6 +338,21 @@ public class CombatMove : MonoBehaviour
     {
         if (AugmentScore >= maxAugmentStacks)
         {
+            return CallDelayedEndMove();
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Opposite of regular augment success, checks if the augment score is at the minAugmentScore instead
+    /// </summary>
+    /// <returns></returns>
+    public bool CheckAugmentSuccessForEnemyAttack()
+    {
+        if (AugmentScore <= minAugmentStacks)
+        {
+            AugmentScore = minAugmentStacks;
             return CallDelayedEndMove();
         }
 

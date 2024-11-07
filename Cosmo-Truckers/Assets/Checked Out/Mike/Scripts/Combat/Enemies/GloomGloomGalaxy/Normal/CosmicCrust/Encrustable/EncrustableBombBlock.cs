@@ -6,6 +6,7 @@ public class EncrustableBombBlock : Block
 {
     [SerializeField] Collider2D blastZone;
     [SerializeField] float explosionDuration;
+    [SerializeField] SpriteRenderer blockSprite;
 
     protected override void DestroyMe(Collider2D collision)
     {
@@ -17,8 +18,9 @@ public class EncrustableBombBlock : Block
 
     IEnumerator Blast()
     {
+        blockSprite.enabled = false; 
         blastZone.enabled = true;
-        blastZone.GetComponent<SpriteRenderer>().enabled = true;
+        SpawnParticle(); 
         yield return new WaitForSeconds(explosionDuration);
         Destroy(gameObject);
     }

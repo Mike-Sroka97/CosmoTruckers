@@ -49,6 +49,10 @@ public class CosmicCaster : CombatMove
 
             collectables[random].ActivateMe();
         }
+        else
+        {
+            CheckSuccess();
+        }
     }
 
     public override void EndMove()

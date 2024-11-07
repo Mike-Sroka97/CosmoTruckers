@@ -16,6 +16,7 @@ public class EncrustableSuccessBlock : Block
         if(collision.tag == "PlayerAttack")
         {
             minigame.AugmentScore--;
+            minigame.CheckAugmentSuccessForEnemyAttack(); 
         }
         base.DestroyMe(collision);
     }

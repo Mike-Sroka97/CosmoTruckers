@@ -28,16 +28,16 @@ public class CosmicCrustShield : MonoBehaviour
         {
             if(directionOppositePositive)
             {
-                transform.position += new Vector3(0, oppositeMoveSpeed * Time.deltaTime, 0);
-                if(transform.position.y >= oppositeClampUpper)
+                transform.localPosition += new Vector3(0, oppositeMoveSpeed * Time.deltaTime, 0);
+                if(transform.localPosition.y >= oppositeClampUpper)
                 {
                     directionOppositePositive = !directionOppositePositive;
                 }
             }
             else
             {
-                transform.position -= new Vector3(0, oppositeMoveSpeed * Time.deltaTime, 0);
-                if (transform.position.y <= oppositeClampLower)
+                transform.localPosition -= new Vector3(0, oppositeMoveSpeed * Time.deltaTime, 0);
+                if (transform.localPosition.y <= oppositeClampLower)
                 {
                     directionOppositePositive = !directionOppositePositive;
                 }
@@ -47,16 +47,16 @@ public class CosmicCrustShield : MonoBehaviour
         {
             if (directionOppositePositive)
             {
-                transform.position += new Vector3(oppositeMoveSpeed * Time.deltaTime, 0, 0);
-                if (transform.position.x >= oppositeClampUpper)
+                transform.localPosition += new Vector3(oppositeMoveSpeed * Time.deltaTime, 0, 0);
+                if (transform.localPosition.x >= oppositeClampUpper)
                 {
                     directionOppositePositive = !directionOppositePositive;
                 }
             }
             else
             {
-                transform.position -= new Vector3(oppositeMoveSpeed * Time.deltaTime, 0, 0);
-                if (transform.position.x <= oppositeClampLower)
+                transform.localPosition -= new Vector3(oppositeMoveSpeed * Time.deltaTime, 0, 0);
+                if (transform.localPosition.x <= oppositeClampLower)
                 {
                     directionOppositePositive = !directionOppositePositive;
                 }
@@ -70,16 +70,16 @@ public class CosmicCrustShield : MonoBehaviour
         {
             if(directionRight)
             {
-                transform.position += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
-                if(transform.position.x >= upperClamp)
+                transform.localPosition += new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                if(transform.localPosition.x >= upperClamp)
                 {
                     directionRight = !directionRight;
                 }
             }
             else
             {
-                transform.position -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
-                if (transform.position.x <= lowerClamp)
+                transform.localPosition -= new Vector3(moveSpeed * Time.deltaTime, 0, 0);
+                if (transform.localPosition.x <= lowerClamp)
                 {
                     directionRight = !directionRight;
                 }
@@ -89,16 +89,16 @@ public class CosmicCrustShield : MonoBehaviour
         {
             if(directionRight)
             {
-                transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
-                if (transform.position.y >= upperClamp)
+                transform.localPosition += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                if (transform.localPosition.y >= upperClamp)
                 {
                     directionRight = !directionRight;
                 }
             }
             else
             {
-                transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
-                if (transform.position.y <= lowerClamp)
+                transform.localPosition -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
+                if (transform.localPosition.y <= lowerClamp)
                 {
                     directionRight = !directionRight;
                 }
