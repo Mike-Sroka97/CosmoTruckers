@@ -7,19 +7,23 @@ public class DeathKillHeart : MonoBehaviour
 {
     [SerializeField] Transform[] nodes;
     [SerializeField] float moveSpeed;
-    [SerializeField] Material successHitMaterial, iFrameMaterial; 
+    [SerializeField] Material successHitMaterial, iFrameMaterial;
+    [SerializeField] AnimationClip hurtAnimation; 
 
     int currentIndex;
     Collider2D myCollider;
     DeathKill minigame;
+    Animator myAnimator; 
 
     bool isMoving = false;
 
     private void Start()
     {
-        transform.position = nodes[0].position;
+        currentIndex = UnityEngine.Random.Range(0, 2); 
+        transform.position = nodes[currentIndex].position;
         myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<DeathKill>();
+        myAnimator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -51,15 +55,7 @@ public class DeathKillHeart : MonoBehaviour
 
             myCollider.enabled = false;
             gameObject.GetComponent<SpriteRenderer>().material = iFrameMaterial;
-
-            if (currentIndex + 1 == nodes.Length)
-            {
-                currentIndex = 0;
-            }
-            else
-            {
-                currentIndex++;
-            }
+            myAnimator.Play(hurtAnimation.name); 
 
             if (minigame.Score == 0)
             {
@@ -67,6 +63,7 @@ public class DeathKillHeart : MonoBehaviour
             }
             else
             {
+                currentIndex += 2;
                 isMoving = true;
             }
         }
