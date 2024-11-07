@@ -11,11 +11,13 @@ public class FreakOutSpike : MonoBehaviour
 
     SpriteRenderer myRenderer;
     Animator myAnimator;
+    CombatMove minigame; 
 
     private void Start()
     {
         myRenderer = GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
+        minigame = FindObjectOfType<CombatMove>(); 
     }
 
     private void Update()
@@ -28,7 +30,7 @@ public class FreakOutSpike : MonoBehaviour
 
     private void MoveMe()
     {
-        transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, minigame.transform.position, moveSpeed * Time.deltaTime);
     }
 
     public void RemoveOutline()
