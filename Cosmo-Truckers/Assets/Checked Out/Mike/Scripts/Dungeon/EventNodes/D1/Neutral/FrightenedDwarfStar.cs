@@ -12,11 +12,15 @@ public class FrightenedDwarfStar : EventNodeBase
     {
         base.Start();
         evilStar = MathHelpers.RandomBool();
+    }
+
+    public override void Initialize(EventNodeHandler handler)
+    {
+        base.Initialize(handler);
         if (currentCharacter.CurrentHealth <= damage)
             myButtons[0].enabled = false;
         else
             myButtons[0].enabled = true;
-
     }
 
     public void HelpTheStar()

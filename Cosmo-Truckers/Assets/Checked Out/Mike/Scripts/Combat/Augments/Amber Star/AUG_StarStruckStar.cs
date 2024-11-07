@@ -18,7 +18,7 @@ public class AUG_StarStruckStar : TrackPlayerDeath
 
     private void TrackYPosition()
     {
-        if (transform.position.y <= minY && !dying)
+        if (transform.localPosition.y <= minY && !dying)
         {
             dying = true;
             GameObject star = Instantiate(starExplosion, transform);

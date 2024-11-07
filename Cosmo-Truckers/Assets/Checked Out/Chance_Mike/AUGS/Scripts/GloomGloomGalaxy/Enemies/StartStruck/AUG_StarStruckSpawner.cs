@@ -58,12 +58,12 @@ public class AUG_StarStruckSpawner : Augment
 
         if (randomX >= 0)
         {
-            tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
+            tempStar = Instantiate(star, new Vector3(randomX + CombatManager.Instance.GetMiniGame.transform.position.x, CombatManager.Instance.GetMiniGame.transform.position.y, CombatManager.Instance.GetMiniGame.transform.position.z), star.transform.rotation);
             tempStar.transform.eulerAngles = new Vector3(0, 0, 225);
         }
         else
         {
-            tempStar = Instantiate(star, new Vector3(randomX, transform.position.y, transform.position.z), star.transform.rotation);
+            tempStar = Instantiate(star, new Vector3(randomX + CombatManager.Instance.GetMiniGame.transform.position.x, CombatManager.Instance.GetMiniGame.transform.position.y, CombatManager.Instance.GetMiniGame.transform.position.z), star.transform.rotation);
         }
 
         tempStar.transform.parent = CombatManager.Instance.GetMiniGame.transform; // this.gameObject.transform;
