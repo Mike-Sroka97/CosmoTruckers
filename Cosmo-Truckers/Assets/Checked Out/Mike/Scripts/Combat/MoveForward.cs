@@ -21,7 +21,7 @@ public class MoveForward : MonoBehaviour
         {
             if (particleTrail != null)
             {
-                particleTrail.transform.parent = null;
+                particleTrail.transform.parent = FindObjectOfType<CombatMove>().transform;
 
                 mainModule = particleTrail.main; 
 
@@ -54,10 +54,10 @@ public class MoveForward : MonoBehaviour
         if (!checkClamps)
             return;
 
-        if(transform.position.y > yClamp 
-            || transform.position.y < -yClamp 
-            || transform.position.x > xClamp 
-            || transform.position.x < -xClamp)
+        if(transform.localPosition.y > yClamp 
+            || transform.localPosition.y < -yClamp 
+            || transform.localPosition.x > xClamp 
+            || transform.localPosition.x < -xClamp)
         {
             if(destroyParent)
                 Destroy(transform.parent.gameObject);
