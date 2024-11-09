@@ -12,6 +12,7 @@ public class LargeIronClock : MonoBehaviour
     [SerializeField] SpriteRenderer gunSpriteRender;
     [SerializeField] Sprite firedSprite;
     [SerializeField] GameObject smokeParticles;
+    [SerializeField] GameObject gunBreakParticles;
     Transform trigger;
 
     [Header("Gloom Guy")]
@@ -23,6 +24,7 @@ public class LargeIronClock : MonoBehaviour
     float rotationSpeed; //randomize
     float currentDegreesRotated = 0;
     float currentTime = 0;
+    float waitBeforeEnding = 2f; 
 
     bool spinning = true;
     bool trackTime = false;
@@ -61,12 +63,17 @@ public class LargeIronClock : MonoBehaviour
         {
             if(!PlayerFired)
             {
-                GameObject bulletTemp = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
-                GameObject spokeParticle = Instantiate(smokeParticles, barrel.position, barrel.rotation, minigame.transform);
+                Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
+                Instantiate(smokeParticles, barrel.position, barrel.rotation, minigame.transform);
                 gunSpriteRender.sprite = firedSprite;
                 gloomGuy.sprite = happySprite; 
                 trigger.localEulerAngles = new Vector3(0f, 0f, -35f);
-                trigger.localPosition = new Vector3(trigger.localPosition.x, -0.325f, trigger.localPosition.z); 
+                trigger.localPosition = new Vector3(trigger.localPosition.x, -0.325f, trigger.localPosition.z);
+
+                // Max Score = Most Damage to Player
+                minigame.Score += 6; 
+
+                StartCoroutine(WaitBeforeEnding());
             }
 
             trackTime = false;
@@ -98,7 +105,7 @@ public class LargeIronClock : MonoBehaviour
         {
             scoreTime = 0;
             gloomGuy.sprite = happySprite;
-            GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.gameObject.transform.position, gloomGuy.gameObject.transform.rotation, minigame.transform);
+            GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.transform.position, gloomGuy.transform.rotation, minigame.transform);
             tempFader.GetComponent<SpawnFadeObject>().StartFading(happySprite); 
         }
         else
@@ -110,14 +117,14 @@ public class LargeIronClock : MonoBehaviour
 
         }
 
-        CombatMove spell = FindObjectOfType<CombatMove>();
-
         //max 6
         while (scoreTime > 0)
         {
-            spell.Score += 1;
+            minigame.Score += 1;
             scoreTime -= .1f;
         }
+
+        StartCoroutine(WaitBeforeEnding()); 
     }
 
     public bool TooEarly()
@@ -130,8 +137,15 @@ public class LargeIronClock : MonoBehaviour
 
     public void GloomGuySad()
     {
+        Instantiate(gunBreakParticles, barrel.position, barrel.rotation, minigame.transform);
         gloomGuy.sprite = sadSprite;
-        GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.gameObject.transform.position, gloomGuy.gameObject.transform.rotation, minigame.transform);
+        GameObject tempFader = Instantiate(gloomGuyFader, gloomGuy.transform.position, gloomGuy.transform.rotation, minigame.transform);
         tempFader.GetComponent<SpawnFadeObject>().StartFading(sadSprite, 0);
+    }
+
+    private IEnumerator WaitBeforeEnding()
+    {
+        yield return new WaitForSeconds(waitBeforeEnding);
+        minigame.CheckSuccess(true);
     }
 }

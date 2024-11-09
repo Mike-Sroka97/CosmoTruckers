@@ -295,11 +295,8 @@ public class CombatMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if Score >= MaxScore
-    /// Ends minigame if it is, otherwise returns false
-    /// Bool checks if Score <= MaxScore
-    /// Ends minigame if it is, otherwise returns false
-    /// This is for minigames which start off in full success
+    /// Checks if Score >= MaxScore. Ends minigame if it is, otherwise returns false <br></br>
+    /// Bool checks if Score <= MaxScore. Ends minigame if it is, otherwise returns false. This is for minigames which start off in full success
     /// </summary>
     /// <returns></returns>
     public bool CheckSuccess(bool oppositeCheck = false)
@@ -330,8 +327,7 @@ public class CombatMove : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if AugmentScore >= MaxAugmentStacks
-    /// Ends minigame if it is, otherwise returns false
+    /// Checks if AugmentScore >= MaxAugmentStacks. Ends minigame if it is, otherwise returns false <br></br>
     /// </summary>
     /// <returns></returns>
     public bool CheckAugmentSuccess()
