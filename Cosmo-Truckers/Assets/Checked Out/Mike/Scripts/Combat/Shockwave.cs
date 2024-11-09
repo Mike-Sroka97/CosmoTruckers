@@ -34,11 +34,11 @@ public class Shockwave : MonoBehaviour
     {
         if(transform.eulerAngles.y == 0)
         {
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            transform.localPosition += Vector3.left * moveSpeed * Time.deltaTime;
         }
         else
         {
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            transform.localPosition += Vector3.right * moveSpeed * Time.deltaTime;
         }
     }
 
@@ -62,7 +62,7 @@ public class Shockwave : MonoBehaviour
 
     private void ClampCheck()
     {
-        if(transform.position.x > destroyClamp || transform.position.x < -destroyClamp)
+        if(transform.localPosition.x > destroyClamp || transform.localPosition.x < -destroyClamp)
         {
             Destroy(gameObject);
         }
