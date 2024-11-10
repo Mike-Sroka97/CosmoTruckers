@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PTMoney : MonoBehaviour
 {
+    [SerializeField] GameObject particle; 
     PettyTheft minigame;
     SpriteRenderer myRenderer;
 
@@ -32,6 +33,7 @@ public class PTMoney : MonoBehaviour
             minigame.Score++;
             minigame.CheckSuccess(); 
             Debug.Log(minigame.Score);
+            Instantiate(particle, transform.position, Quaternion.identity, minigame.transform);
             Destroy(transform.parent.gameObject);
         }
     }
