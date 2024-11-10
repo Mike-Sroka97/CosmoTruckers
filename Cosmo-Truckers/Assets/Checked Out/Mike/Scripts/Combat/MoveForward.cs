@@ -6,7 +6,7 @@ public class MoveForward : MonoBehaviour
 {
     [SerializeField] bool destroyParent = true;
     [SerializeField] bool destroyOnContact = true;
-    [SerializeField] bool checkClamps = true;
+    [SerializeField] protected bool checkClamps = true;
     [SerializeField] ParticleSystem particleTrail; 
     private ParticleSystem.MainModule mainModule;
 
@@ -54,10 +54,10 @@ public class MoveForward : MonoBehaviour
         if (!checkClamps)
             return;
 
-        if(transform.position.y > yClamp 
-            || transform.position.y < -yClamp 
-            || transform.position.x > xClamp 
-            || transform.position.x < -xClamp)
+        if(transform.localPosition.y > yClamp 
+            || transform.localPosition.y < -yClamp 
+            || transform.localPosition.x > xClamp 
+            || transform.localPosition.x < -xClamp)
         {
             if(destroyParent)
                 Destroy(transform.parent.gameObject);

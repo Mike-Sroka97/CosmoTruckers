@@ -28,7 +28,7 @@ public class MelancholyPrecipitationRaindrop : MonoBehaviour
     {
         transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
 
-        if(transform.position.y < minY)
+        if(transform.localPosition.y < minY)
         {
             DetermineSpawn();
         }
@@ -42,6 +42,6 @@ public class MelancholyPrecipitationRaindrop : MonoBehaviour
             random = UnityEngine.Random.Range(0, spawns.Length);
         }
         lastRandom = random;
-        transform.position = spawns[random].position;
+        transform.localPosition = spawns[random].localPosition;
     }
 }
