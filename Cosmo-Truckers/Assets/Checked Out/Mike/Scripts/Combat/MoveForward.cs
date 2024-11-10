@@ -21,7 +21,7 @@ public class MoveForward : MonoBehaviour
         {
             if (particleTrail != null)
             {
-                particleTrail.transform.parent = null;
+                particleTrail.transform.parent = FindObjectOfType<CombatMove>().transform;
 
                 mainModule = particleTrail.main; 
 

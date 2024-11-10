@@ -56,6 +56,7 @@ public class PlayerPickup : MonoBehaviour
             if(multiplayer)
             {
                 Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
+                
                 if (givesScore)
                 {
                     minigame.PlayerScores[player.MyCharacter] += score;

@@ -102,7 +102,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: aa3c6110eca86f54298fb3b70f041a91, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -303,7 +303,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3c81ccfdc39026642829db84a7493bd8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -425,6 +425,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayerGun: 1
   damagedSprite: {fileID: 21300000, guid: 3a540c5127f51ac4796e679f7fd631eb, type: 3}
+  gunBreakParticles: {fileID: 7388918606312063006, guid: 3ae01588a4ee9214898808139bedf47c, type: 3}
+  barrel: {fileID: 5267313848624353816}
 --- !u!50 &3594697990506859324
 Rigidbody2D:
   serializedVersion: 4
@@ -608,6 +610,7 @@ MonoBehaviour:
   maxScore: 6
   augmentStacksPerScore: 0
   maxAugmentStacks: 0
+  minAugmentStacks: 0
   baseDamage: 14
   baseAugmentStacks: 1
   timeToEndMove: 1
@@ -748,7 +751,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 20
   m_Sprite: {fileID: -1506648508, guid: 24bbcd2b3b2ffe54babfe8e40ea3392f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -931,7 +934,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9b038a0f88a52f24093636bb809354f3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -950,7 +953,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: aa3c6110eca86f54298fb3b70f041a91, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1004,8 +1007,10 @@ MonoBehaviour:
   bullet: {fileID: 8587796697069866048, guid: 269646f3831725f4f92438e454f2c03b, type: 3}
   barrel: {fileID: 5267313848624353816}
   smokeParticles: {fileID: 1522076157622616811, guid: a119252e7c9484940b820e59a745d031, type: 3}
+  gunBreakParticles: {fileID: 7388918606312063006, guid: 3ae01588a4ee9214898808139bedf47c, type: 3}
   gunSpriteRender: {fileID: 8889267901787154069}
   firedSprite: {fileID: 21300000, guid: f63e2d6f8867cd440a68ae46be6a180b, type: 3}
+  toggledMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
   playerGun: {fileID: 4365852045247720601}
 --- !u!1 &3600428382669423324
 GameObject:
@@ -1113,6 +1118,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayerGun: 0
   damagedSprite: {fileID: 21300000, guid: 3a540c5127f51ac4796e679f7fd631eb, type: 3}
+  gunBreakParticles: {fileID: 7388918606312063006, guid: 3ae01588a4ee9214898808139bedf47c, type: 3}
+  barrel: {fileID: 2168375654434748771}
 --- !u!50 &3257934164057162194
 Rigidbody2D:
   serializedVersion: 4
@@ -1205,7 +1212,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: aa12d7e1726b15a4d84ee3a3784a5b6f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1290,7 +1297,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 0397b5b5841a2ae41af83130cbfc247a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1375,7 +1382,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 0397b5b5841a2ae41af83130cbfc247a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1459,7 +1466,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: da5959bbddc23ec44a1b735fd515e36a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1763,6 +1770,7 @@ MonoBehaviour:
   gunSpriteRender: {fileID: 8314331949173284970}
   firedSprite: {fileID: 21300000, guid: f63e2d6f8867cd440a68ae46be6a180b, type: 3}
   smokeParticles: {fileID: 1522076157622616811, guid: a119252e7c9484940b820e59a745d031, type: 3}
+  gunBreakParticles: {fileID: 7388918606312063006, guid: 3ae01588a4ee9214898808139bedf47c, type: 3}
   gloomGuyFader: {fileID: 5414010671606946654, guid: b2995ae5f9fc31944bf0babc6b174ddd, type: 3}
   happySprite: {fileID: 21300000, guid: aed2dde7ec770ea409644897d621bb00, type: 3}
   sadSprite: {fileID: 21300000, guid: 7d058437d8a571f4d9b5cf34c966ac49, type: 3}

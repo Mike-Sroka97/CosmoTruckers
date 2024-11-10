@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class LargeIronGun : MonoBehaviour
 {
     [SerializeField] bool isPlayerGun = false;
     [SerializeField] Sprite damagedSprite;
+    [SerializeField] GameObject gunBreakParticles;
+    [SerializeField] Transform barrel;
     SpriteRenderer gunRenderer;
 
     // Start is called before the first frame update
@@ -42,6 +45,8 @@ public class LargeIronGun : MonoBehaviour
                 gunRenderer.sprite = damagedSprite;
                 Destroy(collision.gameObject);
             }
+
+            Instantiate(gunBreakParticles, barrel.position, barrel.rotation, FindObjectOfType<CombatMove>().transform);
         }
     }
 

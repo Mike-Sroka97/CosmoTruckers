@@ -40,7 +40,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
     private void Start()
     {
         float random = UnityEngine.Random.Range(-xClamp, xClamp);
-        transform.position = new Vector3(random, transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(random, transform.localPosition.y, transform.localPosition.z);
     }
 
     public void Initialize(CombatMove cb)
@@ -52,7 +52,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
 
         animatorGloomGuy = GetComponent<Animator>();
 
-        if (transform.position.x <= 0)
+        if (transform.localPosition.x <= 0)
         {
             goingLeft = true;
         }
@@ -102,8 +102,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
         while(currentBulletsFired < numberOfTimesToFire)
         {
             animatorGun.Play(gunShoot.name, -1, 0f);
-            GameObject tempSmoke = Instantiate(smokeParticle, smokePoint.position, gun.rotation, minigame.transform);
-            tempSmoke.transform.parent = null; 
+            Instantiate(smokeParticle, smokePoint.position, gun.rotation, minigame.transform);
 
             if (fan)
             {
@@ -112,7 +111,6 @@ public class FanTheHammerGloomGuy : MonoBehaviour
             else
             {
                 GameObject tempBullet = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
-                tempBullet.transform.parent = null;
                 tempBullet.transform.localScale = new Vector3(1, 1, 1);
             }
 
@@ -134,8 +132,7 @@ public class FanTheHammerGloomGuy : MonoBehaviour
 
         for(int i = 0; i <= 6; i++)
         {
-            GameObject tempBullet = Instantiate(bullet, barrel);
-            tempBullet.transform.parent = null;
+            GameObject tempBullet = Instantiate(bullet, barrel.position, barrel.rotation, minigame.transform);
             tempBullet.transform.localScale = new Vector3(1, 1, 1);
             tempBullet.transform.Rotate(new Vector3(0, 0, startingRotation));
 

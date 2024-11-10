@@ -45,9 +45,9 @@ public class HorsingAroundHorse : MonoBehaviour
         myColliders = GetComponentsInChildren<Collider2D>();
         float randomX = UnityEngine.Random.Range(-xClamps, xClamps);
         goalPosition = new Vector3(randomX, 0, 0);
-        startingPosition = transform.position;
+        startingPosition = transform.localPosition;
         myBody = GetComponent<Rigidbody2D>();
-        speed = Vector3.Distance(transform.position, goalPosition) / time;
+        speed = Vector3.Distance(transform.localPosition, goalPosition) / time;
     }
 
     private void Update()
@@ -121,11 +121,11 @@ public class HorsingAroundHorse : MonoBehaviour
             goalPosition = new Vector3(randomX, 0, 0);
         }
 
-        speed = Vector3.Distance(transform.position, goalPosition) / time;
+        speed = Vector3.Distance(transform.localPosition, goalPosition) / time;
 
         while (elapsedTime < time)
         {
-            transform.position = Vector2.MoveTowards(transform.position, goalPosition, Time.deltaTime * speed);
+            transform.localPosition = Vector2.MoveTowards(transform.localPosition, goalPosition, Time.deltaTime * speed);
             float t = elapsedTime / time;
             transform.localEulerAngles = Vector3.Lerp(startRotation, targetRotation, t);
             elapsedTime += Time.deltaTime;
@@ -145,7 +145,7 @@ public class HorsingAroundHorse : MonoBehaviour
             myBody.gravityScale = 5;
             myBody.constraints = RigidbodyConstraints2D.FreezePositionX;
 
-            while(transform.position.y > shockYValue)
+            while(transform.localPosition.y > shockYValue)
             {
                 yield return null;
             }
@@ -155,8 +155,7 @@ public class HorsingAroundHorse : MonoBehaviour
 
             foreach(Transform spawn in fireSpawns)
             {
-                GameObject fireObject = Instantiate(fire, spawn.position, Quaternion.identity);
-                fireObject.transform.parent = spawnedFiresParent; 
+                GameObject fireObject = Instantiate(fire, spawn.position, Quaternion.identity, transform.parent); 
                 fireObject.GetComponent<SpriteRenderer>().sortingOrder = orderInLayer;
                 orderInLayer++; 
             }
@@ -171,7 +170,7 @@ public class HorsingAroundHorse : MonoBehaviour
         }
         else
         {
-            transform.position = startingPosition;
+            transform.localPosition = startingPosition;
             currentFlips++;
             foreach (Collider2D collider in myColliders)
             {
