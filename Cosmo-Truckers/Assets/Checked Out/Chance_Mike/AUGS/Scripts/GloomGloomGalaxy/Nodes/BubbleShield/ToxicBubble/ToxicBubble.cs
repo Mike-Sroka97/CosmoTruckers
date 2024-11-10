@@ -8,6 +8,7 @@ public class ToxicBubble : Augment
     {
         base.Activate(stack);
         AugmentSO.MyCharacter.AdjustVigor(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustBubbleShield(true);
         AugmentSO.MyCharacter.BubbleShieldBrokenEvent.AddListener(StopEffect);
     }
 

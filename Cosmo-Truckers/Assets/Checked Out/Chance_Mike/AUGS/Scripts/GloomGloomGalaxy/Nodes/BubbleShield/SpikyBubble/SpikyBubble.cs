@@ -8,6 +8,7 @@ public class SpikyBubble : Augment
     {
         base.Activate(stack);
         AugmentSO.MyCharacter.BubbleShieldBrokenEvent.AddListener(StopEffect);
+        AugmentSO.MyCharacter.AdjustBubbleShield(true);
     }
 
     public override void StopEffect()
