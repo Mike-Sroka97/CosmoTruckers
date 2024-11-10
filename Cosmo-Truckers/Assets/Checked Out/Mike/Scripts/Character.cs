@@ -166,12 +166,8 @@ public abstract class Character : MonoBehaviour
             AugmentsToRemove.Clear();
 
             foreach (AugmentStackSO aug in AUGS)
-            {
                 if (aug.OnDamage && damage > 0)
-                {
                     aug.GetAugment().Trigger();
-                }
-            }
 
             foreach (AugmentStackSO augment in AugmentsToRemove)
                 CleanUpAUGs();

@@ -31,14 +31,24 @@ public class ConstellationOutpost : EventNodeBase
         
         //success
         if(random <= safeChance)
+        {
             foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
                 player.MyCharacter.AddAugmentStack(victoryAugments[Random.Range(0, victoryAugments.Length)]);
+
+            myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=green>The low risk path yields rewards";
+        }
+
         //failure
         else
+        {
             foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
                 player.MyCharacter.AddAugmentStack(failureAugments[Random.Range(0, victoryAugments.Length)]);
+            myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>The low risk path yields debuffs";
+        }
+
 
         IteratePlayerReference();
+
         StartCoroutine(SelectionChosen());
     }
 
@@ -48,12 +58,22 @@ public class ConstellationOutpost : EventNodeBase
 
         //success
         if (random <= riskyChance)
+        {
             foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
                 player.MyCharacter.AddAugmentStack(victoryAugments[Random.Range(0, victoryAugments.Length)], riskyAmount);
+
+            myButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=green>The high risk path yields rewards";
+        }
+
         //failure
         else
+        {
             foreach (PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
                 player.MyCharacter.AddAugmentStack(failureAugments[Random.Range(0, victoryAugments.Length)], riskyAmount);
+
+            myButtons[1].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>The high risk path yields debuffs";
+        }
+
 
         IteratePlayerReference();
         StartCoroutine(SelectionChosen());

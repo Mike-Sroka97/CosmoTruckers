@@ -23,7 +23,7 @@ public class AUG_SweetPlacebo : Augment
 
     public override void Trigger()
     {
-        AugmentSO.MyCharacter.RemoveAugmentStack(AugmentSO);
+        AugmentSO.MyCharacter.AugmentsToRemove.Add(AugmentSO);
     }
 
     public override void StopEffect()
