@@ -27,6 +27,8 @@ public class PettyTheftEnemy : MonoBehaviour
     [SerializeField] bool movingUp = true;
     [SerializeField] bool movingRight = true;
     [SerializeField] bool rotatingRight = true;
+    [SerializeField] GameObject deathParticle;
+    [SerializeField] Transform deathParticleSpawn;
     float currentDistanceVertical = 0;
     float currentDistanceHorizontal = 0;
     Transform child;
@@ -142,6 +144,8 @@ public class PettyTheftEnemy : MonoBehaviour
         {
             _object.SetActive(false);
         }
+
+        Instantiate(deathParticle, deathParticleSpawn.position, Quaternion.identity, minigame.transform); 
 
         minigame.Score++;
         Debug.Log(minigame.Score);
