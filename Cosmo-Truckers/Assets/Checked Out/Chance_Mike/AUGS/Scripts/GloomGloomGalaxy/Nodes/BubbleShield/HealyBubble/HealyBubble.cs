@@ -11,6 +11,7 @@ public class HealyBubble : Augment
         {
             base.Activate(stack);
             AugmentSO.MyCharacter.BubbleShieldBrokenEvent.AddListener(StopEffect);
+            AugmentSO.MyCharacter.AdjustBubbleShield(true);
         }
         else
         {
