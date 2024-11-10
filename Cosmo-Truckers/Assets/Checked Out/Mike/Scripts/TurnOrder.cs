@@ -267,7 +267,7 @@ public class TurnOrder : MonoBehaviour
                 }
 
 
-                if(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
+                if (CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {
                     //TODO do sicko mode post boss
                     StartCoroutine(CameraController.Instance.DungeonEnd(CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().SceneToLoad));
@@ -300,6 +300,10 @@ public class TurnOrder : MonoBehaviour
             flip.InitFlip();
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
+
+        //clean up enemy summons
+        while (EnemyManager.Instance.EnemySummons.Count > 0)
+            EnemyManager.Instance.EnemySummons[0].Die();
 
         CombatManager.Instance.CurrentNode.CombatDone = true;
         FindObjectOfType<DungeonController>().CurrentCombat++;
