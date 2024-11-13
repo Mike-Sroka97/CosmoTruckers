@@ -33,6 +33,9 @@ public class PlayerVessel : MonoBehaviour
     /// </summary>
     protected int LocalCommandsExecuting = 0;
 
+    //don't laugh
+    public Image GetCharacterImage() { return characterImage; }
+
     public virtual void Initialize(PlayerCharacter player)
     {
         //set player

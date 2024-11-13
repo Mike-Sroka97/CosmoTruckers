@@ -7,7 +7,6 @@ public class EventNodeHandler : MonoBehaviour
     [SerializeField] RectTransform swish;
     [SerializeField] RectTransform swosh;
     [SerializeField] float swishSpeed;
-    public Material[] OutlineMaterials;
 
     public int Player = -1;
     DNode currentNode;

@@ -19,7 +19,7 @@ public class EventNodeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        myImage.material = nodeHandler.OutlineMaterials[nodeHandler.Player];
+        myImage.material = PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].GetCharacterImage().material;
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -32,14 +32,14 @@ public class EventNodeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
             if (adjustedPlayer < 0)
                 adjustedPlayer = 3;
 
-            myImage.material = nodeHandler.OutlineMaterials[adjustedPlayer];
+            myImage.material = PlayerVesselManager.Instance.PlayerVessels[adjustedPlayer].GetCharacterImage().material;
         }
 
     }
 
     public void ResetMaterial()
     {
-        myImage.material = nodeHandler.OutlineMaterials[nodeHandler.Player];
+        myImage.material = PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].GetCharacterImage().material;
     }
 
     public void DeleteMaterial()
