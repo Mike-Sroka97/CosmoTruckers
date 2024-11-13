@@ -8,11 +8,10 @@ public class AstorIncubation : CombatMove
     [SerializeField] GameObject[] platformsToDisable;
     [SerializeField] SpriteRenderer[] ballRenderers;
     [SerializeField] Material defaultMaterial, selectedMaterial;
-    [SerializeField] Material defaultButtonMaterial, buttonToggleMaterial;
     [SerializeField] GameObject astron;
 
     int currentSelection = -1;
-    SpriteRenderer currentButtonRenderer = null;
+    AstorIncubatorChoiceButton currentButton = null;
     public bool platformsDisabled { get; private set; }
 
     private void Start()
@@ -39,7 +38,7 @@ public class AstorIncubation : CombatMove
         }
     }
 
-    public void ButtonInteraction(int score, int ballNumber, SpriteRenderer buttonRenderer)
+    public void ButtonInteraction(int score, int ballNumber, AstorIncubatorChoiceButton button)
     {
         if (!platformsDisabled)
         {
@@ -51,21 +50,16 @@ public class AstorIncubation : CombatMove
                 if (currentSelection > -1)
                 {
                     ballRenderers[currentSelection].material = defaultMaterial;
-                    currentButtonRenderer.material = defaultButtonMaterial;
+                    currentButton.NotPressed(); 
                 }
 
                 ballRenderers[ballNumber].material = selectedMaterial;
                 currentSelection = ballNumber;
 
-                buttonRenderer.material = buttonToggleMaterial;
-                currentButtonRenderer = buttonRenderer;
+                currentButton = button;
+                currentButton.Pressed();
             }
         }
-    }
-
-    public Material GetDefaultMaterial()
-    {
-        return defaultMaterial; 
     }
 
     public override void EndMove()
