@@ -25,16 +25,16 @@ public class GoldenFuryBall : MonoBehaviour
     {
         if(goingUp)
         {
-            if(transform.position.y >= yClamp)
+            if(transform.localPosition.y >= yClamp)
             {
-                transform.position = new Vector3(transform.position.x, -yClamp, transform.position.z);
+                transform.localPosition = new Vector3(transform.localPosition.x, -yClamp, transform.localPosition.z);
             }
         }
         else
         {
-            if (transform.position.y <= -yClamp)
+            if (transform.localPosition.y <= -yClamp)
             {
-                transform.position = new Vector3(transform.position.x, yClamp, transform.position.z);
+                transform.localPosition = new Vector3(transform.localPosition.x, yClamp, transform.localPosition.z);
             }
         }
     }
