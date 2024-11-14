@@ -69,12 +69,22 @@ public class FlipLoadAnimation : MonoBehaviour
         DungeonController controller = FindObjectOfType<DungeonController>();
         CameraController.Instance.transform.position = new Vector3(controller.CombatCameraPosition.position.x, controller.CombatCameraPosition.position.y, CameraController.Instance.transform.position.z);
 
+        //Combat over
         if(!CombatManager.Instance.InCombat)
         {
             CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
             CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
-        }
 
+                        //Reset shield and Mana
+            foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
+            {
+                character.MyCharacter.GetManaBase.ResetMana();
+                character.ManuallySetShield(0);
+            }
+            //clean up enemy summons
+            while (EnemyManager.Instance.EnemySummons.Count > 0)
+                EnemyManager.Instance.EnemySummons[0].Die();
+        }
         //Wait while screen changes
         yield return new WaitForSeconds(waitTime);
 

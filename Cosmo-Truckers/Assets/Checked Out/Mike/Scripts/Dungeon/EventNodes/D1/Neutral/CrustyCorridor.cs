@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CrustyCorridor : EventNodeBase
@@ -23,6 +24,8 @@ public class CrustyCorridor : EventNodeBase
                 player.MyCharacter.AddAugmentStack(augmentsToAdd[0], 3);
                 player.MyCharacter.AddAugmentStack(augmentsToAdd[1], 3);
             }
+
+            myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = "<color=green>The path yields great rewards.";
         }
         else
         {
@@ -34,6 +37,8 @@ public class CrustyCorridor : EventNodeBase
 
                 player.MyCharacter.TakeDamage(currentDamage, true);
             }
+
+            myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = "<color=red>The path crumbles injuring the party.";
         }
 
         IteratePlayerReference();

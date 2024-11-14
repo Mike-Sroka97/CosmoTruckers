@@ -258,15 +258,6 @@ public class TurnOrder : MonoBehaviour
                 //Bring up INA and redraw the dungeon
                 combatOver = false;
 
-                //TODO
-                //Reset shield and Mana
-                foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
-                {
-                    character.MyCharacter.GetManaBase.ResetMana();
-                    character.ManuallySetShield(0);
-                }
-
-
                 if (CombatManager.Instance.CurrentNode.NodeData.GetComponent<DungeonCombatNode>().Boss)
                 {
                     //TODO do sicko mode post boss
@@ -300,10 +291,6 @@ public class TurnOrder : MonoBehaviour
             flip.InitFlip();
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
-
-        //clean up enemy summons
-        while (EnemyManager.Instance.EnemySummons.Count > 0)
-            EnemyManager.Instance.EnemySummons[0].Die();
 
         CombatManager.Instance.CurrentNode.CombatDone = true;
         FindObjectOfType<DungeonController>().CurrentCombat++;
