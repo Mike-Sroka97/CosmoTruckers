@@ -22,7 +22,7 @@ public class MagicHat : EventNodeBase
     {
         AddAugmentToPlayer(augmentsToAdd[random]);
         AddAugmentToPlayer(augmentsToAdd[random]);
-        myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = $"{color}Gained (1) {augmentsToAdd[random].DebuffName}";
+        myButtons[0].GetComponentInChildren<TextMeshProUGUI>().text = $"{color}Gained (1) {augmentsToAdd[random].AugmentName}";
         IteratePlayerReference();
         currentTurns = 4;
         CheckEndEvent();

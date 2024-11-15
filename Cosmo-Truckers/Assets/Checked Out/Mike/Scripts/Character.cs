@@ -479,12 +479,12 @@ public abstract class Character : MonoBehaviour
 
         foreach (AugmentStackSO aug in AUGS)
         {
-            if (string.Equals(aug.DebuffName, stack.DebuffName))
+            if (string.Equals(aug.AugmentName, stack.AugmentName))
             {
                 if (aug.CurrentStacks < aug.MaxStacks)
                     aug.CurrentStacks += stacksToAdd;
                 if (stack.StartUp || stack.StatChange || test)
-                    aug.DebuffEffect();
+                    aug.AugmentEffect();
                 return;
             }
         }
@@ -496,7 +496,7 @@ public abstract class Character : MonoBehaviour
         AdjustAugs(true, tempAUG);
 
         if (stack.StartUp || stack.StatChange || test)
-            tempAUG.DebuffEffect();
+            tempAUG.AugmentEffect();
     }
 
     /// <summary>
@@ -516,7 +516,7 @@ public abstract class Character : MonoBehaviour
 
         AdjustAugs(true, tempAUG);
 
-        tempAUG.DebuffEffect();
+        tempAUG.AugmentEffect();
 
         return tempAUG;
     }
@@ -540,7 +540,7 @@ public abstract class Character : MonoBehaviour
             augmentText = transform.Find("TertiaryText").GetComponent<TextMeshProUGUI>();
 
         //setup text
-        augmentText.text = aug.DebuffName;
+        augmentText.text = aug.AugmentName;
         if (removed)
             augmentText.text = "-" + augmentText.text;
         else
@@ -568,7 +568,7 @@ public abstract class Character : MonoBehaviour
         //Remove stacks
         foreach (AugmentStackSO aug in AUGS)
         {
-            if (string.Equals(aug.DebuffName, stack.DebuffName))
+            if (string.Equals(aug.AugmentName, stack.AugmentName))
             {
                 aug.CurrentStacks -= stackToRemove;
                 aug.DestroyAugment();

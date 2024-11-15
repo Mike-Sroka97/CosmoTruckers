@@ -574,17 +574,36 @@ public class CombatManager : MonoBehaviour
                     for (int i = 0; i < character.GetAUGS.Count; i++)
                     {
                         if (character.GetAUGS[i].InCombat)
-                            character.GetAUGS[i].DebuffEffect();
+                            character.GetAUGS[i].AugmentEffect();
                     }
                 }
             }
 
             if (CurrentCharacter.GetComponent<Enemy>())
             {
-                foreach (AugmentStackSO augment in CurrentCharacter.GetAUGS)
+                if(CurrentCharacter.GetComponent<Enemy>().IsTrash)
                 {
-                    if (augment.InCombat)
-                        augment.DebuffEffect();
+                    List<string> augmentsAlreadyUsed = new List<string>();
+
+                    foreach (Enemy enemy in EnemyManager.Instance.TrashMobCollection[GetCurrentCharacter.GetComponent<Enemy>().CharacterName])
+                    {
+                        foreach (AugmentStackSO aug in enemy.GetAUGS)
+                        {
+                            if (aug.InCombat && !augmentsAlreadyUsed.Contains(aug.AugmentName))
+                            {
+                                aug.AugmentEffect();
+                                augmentsAlreadyUsed.Add(aug.AugmentName);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (AugmentStackSO augment in CurrentCharacter.GetAUGS)
+                    {
+                        if (augment.InCombat)
+                            augment.AugmentEffect();
+                    }
                 }
             }
 
@@ -703,7 +722,7 @@ public class CombatManager : MonoBehaviour
         foreach (AugmentStackSO augment in allAugments)
         {
             if (augment.EveryTurnEnd)
-                augment.DebuffEffect();
+                augment.AugmentEffect();
             if (augment.InCombat && augment.GetAugment() != null)
                 augment.GetAugment().StopEffect();
         }

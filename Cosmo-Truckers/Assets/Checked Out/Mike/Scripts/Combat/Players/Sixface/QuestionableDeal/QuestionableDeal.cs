@@ -59,7 +59,7 @@ public class QuestionableDeal : CombatMove
         //Check if not boss and has subduction for instant kill
         if(Score > 0 && !CombatManager.Instance.CharactersSelected[0].GetComponent<Enemy>().IsBoss)
             foreach (AugmentStackSO augment in CombatManager.Instance.CharactersSelected[0].GetAUGS)
-                if (augment.DebuffName == "Subduction")
+                if (augment.AugmentName == "Subduction")
                     currentDamage = 999;
 
         //Apply augment

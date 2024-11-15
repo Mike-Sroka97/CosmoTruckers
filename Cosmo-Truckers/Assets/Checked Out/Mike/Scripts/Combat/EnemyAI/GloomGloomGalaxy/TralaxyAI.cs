@@ -109,7 +109,7 @@ public class TralaxyAI : Enemy
 
             foreach (PlayerCharacter playerCharacter in EnemyManager.Instance.GetAlivePlayerCharacters())
                 foreach (AugmentStackSO aug in playerCharacter.GetAUGS)
-                    if (aug.DebuffName == "Sin")
+                    if (aug.AugmentName == "Sin")
                         sinfulCharacters.Add(aug);
 
             if (sinfulCharacters.Count > 0)

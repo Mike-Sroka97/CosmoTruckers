@@ -173,7 +173,7 @@ public class PlayerCharacter : Character
 
         foreach (AugmentStackSO aug in AUGS)
             if (aug.TurnStart)
-                aug.DebuffEffect();
+                aug.AugmentEffect();
 
         foreach (AugmentStackSO augment in AugmentsToRemove)
             AdjustAugs(false, augment);
@@ -375,5 +375,7 @@ public class PlayerCharacter : Character
             default:
                 break;
         }
+
+        MyVessel.UpdateHealthText();
     }
 }

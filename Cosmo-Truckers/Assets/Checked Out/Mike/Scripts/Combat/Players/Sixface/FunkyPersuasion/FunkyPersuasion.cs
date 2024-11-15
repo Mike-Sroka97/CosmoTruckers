@@ -22,7 +22,7 @@ public class FunkyPersuasion : CombatMove
 
         foreach(AugmentStackSO augment in target.GetAUGS)
         {
-            if(augment.DebuffName == "Subduction")
+            if(augment.AugmentName == "Subduction")
             {
                 subductionToAdd--;
                 break;

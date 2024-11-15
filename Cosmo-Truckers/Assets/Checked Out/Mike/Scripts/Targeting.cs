@@ -287,7 +287,7 @@ public class Targeting : MonoBehaviour
                     foreach (AugmentStackSO aug in enemy.GetAUGS)
                     {
                         if (aug.OnSpellCast)
-                            aug.DebuffEffect();
+                            aug.AugmentEffect();
                     }
                 }
             }
@@ -296,7 +296,7 @@ public class Targeting : MonoBehaviour
                 foreach (AugmentStackSO aug in CombatManager.Instance.GetCurrentCharacter.GetAUGS)
                 {
                     if (aug.OnSpellCast)
-                        aug.DebuffEffect();
+                        aug.AugmentEffect();
                 }
             }
 

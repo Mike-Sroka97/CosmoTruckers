@@ -22,7 +22,7 @@ public class PlayerCharacterSummon : PlayerCharacter
         {
             if (aug.TurnStart)
             {
-                aug.DebuffEffect();
+                aug.AugmentEffect();
             }
         }
 

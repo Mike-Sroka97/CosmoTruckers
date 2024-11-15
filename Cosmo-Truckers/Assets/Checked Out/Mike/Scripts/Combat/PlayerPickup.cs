@@ -12,9 +12,9 @@ public class PlayerPickup : MonoBehaviour
     [HideInInspector] public bool multiplayer;
 
     [Header("PS on Collect (can be empty)")]
-    [SerializeField] ParticleSystem collectParticle; 
+    [SerializeField] protected ParticleSystem collectParticle; 
 
-    CombatMove minigame;
+    protected CombatMove minigame;
     bool movingUp = true;
     float startingY;
 
@@ -49,7 +49,7 @@ public class PlayerPickup : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {

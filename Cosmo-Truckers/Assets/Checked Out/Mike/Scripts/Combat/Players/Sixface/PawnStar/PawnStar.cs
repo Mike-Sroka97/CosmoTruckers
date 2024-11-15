@@ -42,14 +42,14 @@ public class PawnStar : CombatMove
                 {
                     highestSubductionEnemy = enemy;
                     foreach (AugmentStackSO augment in enemy.GetAUGS)
-                        if (augment.DebuffName == "Subduction")
+                        if (augment.AugmentName == "Subduction")
                             highestSubduction = augment.CurrentStacks;
                 }
 
                 else if (!enemy.Dead)
                 {
                     foreach(AugmentStackSO augment in enemy.GetAUGS)
-                        if(augment.DebuffName == "Subduction" && augment.CurrentStacks > highestSubduction)
+                        if(augment.AugmentName == "Subduction" && augment.CurrentStacks > highestSubduction)
                         {
                             highestSubduction = augment.CurrentStacks;
                             highestSubductionEnemy = enemy;
@@ -118,7 +118,7 @@ public class PawnStar : CombatMove
         float stacksOfSubduction = 0;
 
         foreach(AugmentStackSO augment in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
-            if (augment.DebuffName == "Subduction")
+            if (augment.AugmentName == "Subduction")
                 stacksOfSubduction = augment.CurrentStacks;
 
         double tempDamage = currentDamage;

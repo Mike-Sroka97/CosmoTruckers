@@ -88,7 +88,7 @@ public class Enemy : Character
         {
             if (aug.TurnStart)
             {
-                aug.DebuffEffect();
+                aug.AugmentEffect();
             }
         }
 

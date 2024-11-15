@@ -28,7 +28,7 @@ public class TallyYourSin : CombatMove
         int sorrowStacks = CalculateAugmentScore();
 
         foreach (AugmentStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
-            if (aug.DebuffName == "Sin")
+            if (aug.AugmentName == "Sin")
                 sorrowStacks += aug.CurrentStacks;
 
         CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(sorrow, sorrowStacks);

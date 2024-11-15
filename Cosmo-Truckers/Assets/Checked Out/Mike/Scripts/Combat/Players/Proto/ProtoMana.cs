@@ -71,7 +71,7 @@ public class ProtoMana : Mana
             foreach (AugmentStackSO aug in myCharacter.GetAUGS)
                 if (aug.name == "Grounded(Clone)")
                 {
-                    aug.DebuffEffect();
+                    aug.AugmentEffect();
                     break;
                 }
 

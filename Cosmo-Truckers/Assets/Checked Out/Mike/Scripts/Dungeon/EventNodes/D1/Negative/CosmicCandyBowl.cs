@@ -17,7 +17,7 @@ public class CosmicCandyBowl : EventNodeBase
     private void SetupDictionary()
     {
         int random = Random.Range(0, augmentsToAdd.Length);
-        myButtons[randomIndeces.Count].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Gain (1) {augmentsToAdd[random].DebuffName}</color>";
+        myButtons[randomIndeces.Count].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Gain (1) {augmentsToAdd[random].AugmentName}</color>";
         randomIndeces.Add(randomIndeces.Count, random);
 
         while(randomIndeces.Count < 4)
@@ -25,7 +25,7 @@ public class CosmicCandyBowl : EventNodeBase
             while(randomIndeces.ContainsValue(random))
                 random = Random.Range(0, augmentsToAdd.Length);
 
-            myButtons[randomIndeces.Count].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Gain (1) {augmentsToAdd[random].DebuffName}</color>";
+            myButtons[randomIndeces.Count].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=red>Gain (1) {augmentsToAdd[random].AugmentName}</color>";
             randomIndeces.Add(randomIndeces.Count, random);
         }
     }

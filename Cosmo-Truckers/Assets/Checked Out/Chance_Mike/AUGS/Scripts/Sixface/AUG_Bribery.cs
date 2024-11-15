@@ -16,7 +16,7 @@ public class AUG_Bribery : Augment
         float randomX = Random.Range(-xBounds, xBounds);
         float randomY = Random.Range(-yBounds, yBounds);
 
-        transform.position = Vector3.zero;
+        transform.position = GameObject.Find("DungeonCombat").transform.position;
         GameObject briberyTemp = Instantiate(briberyNode, transform);
         briberyTemp.transform.localPosition = new Vector3(randomX, randomY, 0);
     }

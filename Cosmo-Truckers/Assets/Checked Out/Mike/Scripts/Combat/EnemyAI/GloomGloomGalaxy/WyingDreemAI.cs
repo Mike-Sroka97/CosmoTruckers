@@ -26,7 +26,7 @@ public class WyingDreemAI : Enemy
         {
             foreach (AugmentStackSO augment in player.GetAUGS)
             {
-                if (augment.DebuffName == debuffName && augment.CurrentStacks >= nitemareStacksToKill && !player.Dead)
+                if (augment.AugmentName == debuffName && augment.CurrentStacks >= nitemareStacksToKill && !player.Dead)
                 {
                     //Taunt check
                     if (TauntedBy && TauntedBy != player && !TauntedBy.Dead)
@@ -141,7 +141,7 @@ public class WyingDreemAI : Enemy
             {
                 foreach (AugmentStackSO augment in player.GetAUGS)
                 {
-                    if (augment.DebuffName == debuffName && augment.CurrentStacks >= currentMostNitemare)
+                    if (augment.AugmentName == debuffName && augment.CurrentStacks >= currentMostNitemare)
                     {
                         currentMostNitemare = augment.CurrentStacks;
                         playerWithMostNitemare = player;
@@ -175,7 +175,7 @@ public class WyingDreemAI : Enemy
         {
             foreach (AugmentStackSO augment in player.GetAUGS)
             {
-                if (augment.DebuffName == "Nitemare" && augment.CurrentStacks == stacks)
+                if (augment.AugmentName == "Nitemare" && augment.CurrentStacks == stacks)
                 {
                     nitemaredCharacters.Add(player);
                 }

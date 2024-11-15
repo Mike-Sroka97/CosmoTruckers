@@ -20,7 +20,7 @@ public class Porkanator : CombatMove
         {
             for (int i = 0; i < character.GetAUGS.Count; i++)
             {
-                if (character.GetAUGS[i].DebuffName == "Pork'd Up" && character.GetAUGS[i].CurrentStacks >= hogwildStacks)
+                if (character.GetAUGS[i].AugmentName == "Pork'd Up" && character.GetAUGS[i].CurrentStacks >= hogwildStacks)
                 {
                     character.RemoveAugmentStack(character.GetAUGS[i], character.GetAUGS[i].CurrentStacks);
                     character.AddAugmentStack(hogwild);

@@ -47,7 +47,7 @@ public class SplitMisery : CombatMove
         int stacksOfNitemare = 0;
 
         foreach (AugmentStackSO aug in CombatManager.Instance.GetCharactersSelected[0].GetAUGS)
-            if (aug.DebuffName == DebuffToAdd.DebuffName)
+            if (aug.AugmentName == DebuffToAdd.AugmentName)
                 stacksOfNitemare = aug.CurrentStacks;
 
         int scaledDamage = damage + (nitemareDamageModifier * stacksOfNitemare);

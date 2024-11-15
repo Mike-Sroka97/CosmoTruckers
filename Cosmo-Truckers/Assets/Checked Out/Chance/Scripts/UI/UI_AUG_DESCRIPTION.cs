@@ -121,7 +121,7 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
     void SetDescription()
     {
-        string AUGName = charactersAUGS.Count > currentLocation ? charactersAUGS[currentLocation].DebuffName : "Empty";
+        string AUGName = charactersAUGS.Count > currentLocation ? charactersAUGS[currentLocation].AugmentName : "Empty";
         string AUGDes = charactersAUGS.Count > currentLocation ? charactersAUGS[currentLocation].DebuffDescription : "";
 
         AUGNameText.text = $"<b>{AUGName}</b>"; 

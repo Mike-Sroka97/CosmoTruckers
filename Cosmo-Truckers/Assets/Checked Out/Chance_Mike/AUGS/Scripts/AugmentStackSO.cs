@@ -20,7 +20,7 @@ public class AugmentStackSO : ScriptableObject
     public bool OnSpellCast;
 
     [Header("Base Variables")]
-    public string DebuffName;
+    public string AugmentName;
     [TextArea(5, 10)]public string DebuffDescription;
     [HideInInspector] public Character MyCharacter;
     public bool IsBuff;
@@ -77,7 +77,7 @@ public class AugmentStackSO : ScriptableObject
         }
     }
 
-    public virtual void DebuffEffect() 
+    public virtual void AugmentEffect() 
     {
         SetTemp();
         temp.GetComponent<Augment>().Activate(this);
