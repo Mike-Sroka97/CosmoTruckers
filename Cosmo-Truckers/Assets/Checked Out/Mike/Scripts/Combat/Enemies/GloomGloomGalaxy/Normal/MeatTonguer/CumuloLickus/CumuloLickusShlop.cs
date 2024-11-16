@@ -37,12 +37,12 @@ public class CumuloLickusShlop : MonoBehaviour
         if (!move)
             return;
 
-        transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+        transform.localPosition += new Vector3(0, moveSpeed * Time.deltaTime, 0);
 
-        if(transform.position.y >= maxHeight)
+        if(transform.localPosition.y >= maxHeight)
         {
             move = false;
-            transform.position = new Vector3(0, maxHeight, 0);
+            transform.localPosition = new Vector3(0, maxHeight, 0);
         }
     }
 }
