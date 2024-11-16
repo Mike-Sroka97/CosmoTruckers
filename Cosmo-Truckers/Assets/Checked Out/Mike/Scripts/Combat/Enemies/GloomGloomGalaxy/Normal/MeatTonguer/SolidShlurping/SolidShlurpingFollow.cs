@@ -18,6 +18,6 @@ public class SolidShlurpingFollow : MonoBehaviour
         if (!initialized)
             return;
 
-        transform.position = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
+        transform.localPosition = new Vector3(player.transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
     }
 }

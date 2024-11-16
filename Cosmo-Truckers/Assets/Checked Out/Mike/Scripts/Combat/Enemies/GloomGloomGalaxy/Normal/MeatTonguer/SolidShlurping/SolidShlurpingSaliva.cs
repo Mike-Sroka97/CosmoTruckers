@@ -32,7 +32,7 @@ public class SolidShlurpingSaliva : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     GameObject tempSaliva = Instantiate(childSaliva, transform);
-                    tempSaliva.transform.parent = null;
+                    tempSaliva.transform.parent = FindObjectOfType<CombatMove>().transform;
                     if(i == 0)
                     {
                         tempSaliva.GetComponent<Rigidbody2D>().AddForce(new Vector2(-xForce, yForce), ForceMode2D.Impulse);

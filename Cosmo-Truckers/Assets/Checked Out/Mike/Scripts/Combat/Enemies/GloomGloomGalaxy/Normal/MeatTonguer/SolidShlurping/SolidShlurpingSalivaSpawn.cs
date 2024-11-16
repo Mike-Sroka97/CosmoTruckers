@@ -30,7 +30,7 @@ public class SolidShlurpingSalivaSpawn : MonoBehaviour
             currentTime = 0;
             CalculateSpawnDelay();
             GameObject tempBullet = Instantiate(bullet, transform);
-            tempBullet.transform.parent = transform.parent;
+            tempBullet.transform.parent = FindObjectOfType<CombatMove>().transform;
         }
     }
 

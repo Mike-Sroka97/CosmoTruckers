@@ -8,6 +8,7 @@ public class SolidShlurping : CombatMove
     [Space(20)]
     [Header("Minigame Specifics")]
     [SerializeField] float alternateDelay;
+    [SerializeField] float blinkBeforeAlternateTime;
     [SerializeField] Transform tongue;
     [SerializeField] float tongueMoveSpeed;
     [SerializeField] float tongueMinY;
@@ -21,6 +22,7 @@ public class SolidShlurping : CombatMove
     float currentAlternateTime = 3; //sue me
     float currentScoreTime = 0;
     bool firstSide = true;
+    bool blinkStarted = false; 
 
     private void Start()
     {
@@ -39,8 +41,6 @@ public class SolidShlurping : CombatMove
         SolidShlurpingSalivaSpawn[] spawns = GetComponentsInChildren<SolidShlurpingSalivaSpawn>();
         foreach (SolidShlurpingSalivaSpawn spawn in spawns)
             spawn.enabled = true;
-
-        base.StartMove();
     }
 
     protected override void Update()
@@ -56,6 +56,20 @@ public class SolidShlurping : CombatMove
 
         currentAlternateTime += Time.deltaTime;
 
+        if (currentAlternateTime >= blinkBeforeAlternateTime && !blinkStarted)
+        {
+            blinkStarted = true; 
+
+            if (firstSide)
+            {
+                platforms[0].StartBlinking(); 
+            }
+            else
+            {
+                platforms[1].StartBlinking();
+            }
+        }
+
         if(currentAlternateTime >= alternateDelay)
         {
             StartCoroutine(Alternate());
@@ -65,7 +79,7 @@ public class SolidShlurping : CombatMove
     IEnumerator Alternate()
     {
         trackTime = false;
-        currentAlternateTime = 0;
+        currentAlternateTime = 0; 
         tongueBody.velocity = new Vector2(0, -tongueMoveSpeed);
 
         foreach (SolidShlurpingPlatforms platform in platforms)
@@ -77,24 +91,24 @@ public class SolidShlurping : CombatMove
             platform.gameObject.SetActive(true);
         }
 
-        while (tongue.position.y > tongueMinY)
+        while (tongue.localPosition.y > tongueMinY)
         {
             yield return null;
         }
 
-        tongue.position = new Vector3(tongue.position.x, tongueMinY, tongue.position.z);
+        tongue.localPosition = new Vector3(tongue.localPosition.x, tongueMinY, tongue.localPosition.z);
         tongueBody.velocity = Vector2.zero;
 
         yield return new WaitForSeconds(pause);
 
         tongueBody.velocity = new Vector2(0, tongueMoveSpeed);
 
-        while(tongue.position.y < tongueMaxY)
+        while(tongue.localPosition.y < tongueMaxY)
         {
             yield return null;
         }
 
-        tongue.position = new Vector3(tongue.position.x, tongueMaxY, tongue.position.z);
+        tongue.localPosition = new Vector3(tongue.localPosition.x, tongueMaxY, tongue.localPosition.z);
         tongueBody.velocity = Vector2.zero;
 
         if (firstSide)
@@ -106,6 +120,7 @@ public class SolidShlurping : CombatMove
             platforms[1].gameObject.SetActive(false);
         }
 
+        blinkStarted = false;
         firstSide = !firstSide;
         trackTime = true;
     }

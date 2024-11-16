@@ -325,8 +325,9 @@ MonoBehaviour:
   - {fileID: 9117481877556964455}
   - {fileID: 9117481878180142261}
   - {fileID: 9117481878760023460}
-  phaseOutColor: {r: 0.7843138, g: 0.7254902, b: 0.46274513, a: 0.5882353}
-  startingColor: {r: 0.7843138, g: 0.7254902, b: 0.46274513, a: 1}
+  phaseOutColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0.5882353}
+  startingColor: {r: 1, g: 1, b: 1, a: 1}
+  blinkSpeed: 0.25
 --- !u!1 &4889457263510702011
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,8 +378,9 @@ MonoBehaviour:
   - {fileID: 9117481877887630844}
   - {fileID: 9117481878534088817}
   - {fileID: 9117481879062910980}
-  phaseOutColor: {r: 0.7843138, g: 0.7254902, b: 0.46274513, a: 0.5882353}
-  startingColor: {r: 0.7843138, g: 0.7254902, b: 0.46274513, a: 1}
+  phaseOutColor: {r: 0.5176471, g: 0.5176471, b: 0.5176471, a: 0.5882353}
+  startingColor: {r: 1, g: 1, b: 1, a: 1}
+  blinkSpeed: 0.25
 --- !u!1 &4889457263819531451
 GameObject:
   m_ObjectHideFlags: 0
@@ -742,6 +744,18 @@ PrefabInstance:
     - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_Size.x
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4421719064218284080, guid: 18d6732a17c596c4da2477450d6f98df, type: 3}
       propertyPath: m_SpriteTileMode
