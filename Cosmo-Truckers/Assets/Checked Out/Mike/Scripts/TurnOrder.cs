@@ -286,6 +286,7 @@ public class TurnOrder : MonoBehaviour
 
         //Start the flippy floppy as long as it is in scene
         FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
+
         if (flip)
         {
             flip.InitFlip();
@@ -294,6 +295,12 @@ public class TurnOrder : MonoBehaviour
 
         CombatManager.Instance.CurrentNode.CombatDone = true;
         FindObjectOfType<DungeonController>().CurrentCombat++;
+
+        DungeonCharacter inaCharacter = FindObjectOfType<DungeonCharacter>();
+        inaCharacter.SetAnimator("Win");
+        yield return new WaitForSeconds(2f);
+        inaCharacter.SetAnimator("Idle");
+
         CombatManager.Instance.CurrentNode.Active = true;
         CombatManager.Instance.CurrentNode.SetupLineRendererers();
     }

@@ -75,7 +75,7 @@ public class FlipLoadAnimation : MonoBehaviour
             CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
             CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
 
-                        //Reset shield and Mana
+            //Reset shield and Mana
             foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
             {
                 character.MyCharacter.GetManaBase.ResetMana();

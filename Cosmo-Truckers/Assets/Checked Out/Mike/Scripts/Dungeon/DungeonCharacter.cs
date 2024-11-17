@@ -10,6 +10,12 @@ public class DungeonCharacter : MonoBehaviour
     protected bool moving;
     SpriteRenderer myRenderer;
     bool startup = true;
+    Animator myAnimator;
+
+    const string idle = "Idle";
+    const string move = "Move";
+    const string win = "Win";
+    const string death = "Death";
 
     /// <summary>
     /// Probably want Overworld.cs to handle the initial node at some point
@@ -18,6 +24,8 @@ public class DungeonCharacter : MonoBehaviour
     {
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         dungeon = FindObjectOfType<DungeonController>();
+        myAnimator = GetComponentInChildren<Animator>();
+        myAnimator.Play(move);
         transform.position = dungeon.PlayerStartPosition.position;
 
         enabled = false;
@@ -70,6 +78,7 @@ public class DungeonCharacter : MonoBehaviour
         dungeon.CurrentNode = newCurrentNode;
 
         moving = true;
+        myAnimator.Play(move);
         int currentPoint = 0;
 
         while (currentPoint < tempPositions.Count)
@@ -95,6 +104,7 @@ public class DungeonCharacter : MonoBehaviour
 
         dungeon.CurrentNode.SetupNode();
 
+        myAnimator.Play(idle);
         moving = false;
     }
 
@@ -110,6 +120,12 @@ public class DungeonCharacter : MonoBehaviour
         }
 
         startup = false;
+        myAnimator.Play(idle);
         dungeon.CurrentNode.SetupNode();
+    }
+
+    public void SetAnimator(string animation)
+    {
+        myAnimator.Play(animation);
     }
 }
