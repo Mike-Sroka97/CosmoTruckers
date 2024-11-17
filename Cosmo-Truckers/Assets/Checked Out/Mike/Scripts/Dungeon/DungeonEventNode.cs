@@ -15,6 +15,11 @@ public class DungeonEventNode : MonoBehaviour
 
     [HideInInspector] public bool Healed;
 
+    private void Start()
+    {
+        gameObject.AddComponent<DistanceToInaTransparency>();
+    }
+
     public void Heal()
     {
         foreach(PlayerVessel player in PlayerVesselManager.Instance.PlayerVessels)
