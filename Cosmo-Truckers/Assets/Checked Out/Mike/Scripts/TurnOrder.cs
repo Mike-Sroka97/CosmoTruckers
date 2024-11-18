@@ -18,6 +18,7 @@ public class TurnOrder : MonoBehaviour
     protected CharacterStats[] livingCharacters;
     protected int currentCharactersTurn = 0;
     bool combatOver = false;
+    bool truckerLoss = false;
 
     private void Awake()
     {
@@ -297,12 +298,21 @@ public class TurnOrder : MonoBehaviour
         FindObjectOfType<DungeonController>().CurrentCombat++;
 
         DungeonCharacter inaCharacter = FindObjectOfType<DungeonCharacter>();
-        inaCharacter.SetAnimator("Win");
-        yield return new WaitForSeconds(2f);
-        inaCharacter.SetAnimator("Idle");
 
-        CombatManager.Instance.CurrentNode.Active = true;
-        CombatManager.Instance.CurrentNode.SetupLineRendererers();
+        if (!truckerLoss)
+            inaCharacter.SetAnimator("Win");
+        else
+            inaCharacter.SetAnimator("Death"); //TODO load out after visuals
+
+        yield return new WaitForSeconds(2f);
+
+        if(!truckerLoss)
+        {
+            inaCharacter.SetAnimator("Idle");
+
+            CombatManager.Instance.CurrentNode.Active = true;
+            CombatManager.Instance.CurrentNode.SetupLineRendererers();
+        }
     }
 
     private IEnumerator DetermineCombatEnd()
@@ -335,15 +345,14 @@ public class TurnOrder : MonoBehaviour
 
         if (allPlayersDead)
         {
-            //kill all player summons?
             if (CombatManager.Instance.InCombat)
                 endCombatText.text = lossText;
 
             combatOver = true;
+            truckerLoss = true;
         }
         else if (allEnemiesDead)
         {
-            //kill all enemy summons?
             if (CombatManager.Instance.InCombat)
                 endCombatText.text = victoryText;
             combatOver = true;
