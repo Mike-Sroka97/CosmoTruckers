@@ -49,8 +49,8 @@ public class TTONTTbulletExplode : MonoBehaviour
         {
             for(int i = 0; i < numberOfChildren; i++)
             {
-                GameObject tempBullet = Instantiate(nonExplodingBullet, child.position, child.rotation, transform.parent.parent);
-                Instantiate(burstParticle, child.position, child.rotation, transform.parent.parent);
+                GameObject tempBullet = Instantiate(nonExplodingBullet, child.position, child.rotation, FindObjectOfType<CombatMove>().transform);
+                Instantiate(burstParticle, child.position, child.rotation, FindObjectOfType<CombatMove>().transform);
                 tempBullet.transform.Rotate(new Vector3(0, 0, degreeIncrease * i));
             }
             Destroy(gameObject);

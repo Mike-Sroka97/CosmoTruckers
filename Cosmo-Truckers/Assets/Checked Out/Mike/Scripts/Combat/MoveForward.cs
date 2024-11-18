@@ -8,6 +8,7 @@ public class MoveForward : MonoBehaviour
     [SerializeField] bool destroyOnContact = true;
     [SerializeField] protected bool checkClamps = true;
     [SerializeField] ParticleSystem particleTrail; 
+    [SerializeField] GameObject destroyParticle; 
     private ParticleSystem.MainModule mainModule;
 
     public float MoveSpeed;
@@ -22,7 +23,6 @@ public class MoveForward : MonoBehaviour
             if (particleTrail != null)
             {
                 particleTrail.transform.parent = FindObjectOfType<CombatMove>().transform;
-
                 mainModule = particleTrail.main; 
 
                 //Stop it from looping and set it to destroy itself when it's done
@@ -30,15 +30,15 @@ public class MoveForward : MonoBehaviour
                 mainModule.stopAction = ParticleSystemStopAction.Destroy; 
             }
 
+            if (destroyParticle != null) 
+            {
+                Instantiate(destroyParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().transform);
+            }
 
             if(destroyParent)
-            {
                 Destroy(transform.parent.gameObject);
-            }
             else
-            {
                 Destroy(gameObject);
-            }
         }
     }
 
