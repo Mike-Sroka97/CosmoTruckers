@@ -8,6 +8,8 @@ public class StarStormStar : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] int numberOfFlashes;
     [SerializeField] float flashDuration;
+    [SerializeField] GameObject babyStar;
+    [SerializeField] float spawnInterval = 0.2f;
     [Header("0 = right, 1 = left, 2 = up, 3 = down")]
     [SerializeField] int direction;
 
@@ -37,6 +39,17 @@ public class StarStormStar : MonoBehaviour
 
         arrow.enabled = false;
         isMoving = true;
+
+        StartCoroutine(SpawnStar());
+    }
+
+    IEnumerator SpawnStar()
+    {
+        Instantiate(babyStar, transform.position, transform.rotation, transform.parent);
+
+        yield return new WaitForSeconds(spawnInterval);
+
+        StartCoroutine(SpawnStar());
     }
 
     private void Update()

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4743257109023634854}
   - component: {fileID: 3610663344547598824}
-  - component: {fileID: 2181720446641312478}
   - component: {fileID: 5153985981183787826}
   - component: {fileID: 502598555448902310}
   - component: {fileID: 7354322842584726324}
@@ -90,19 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &2181720446641312478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2248144577868615251}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RotateSpeed: 0
 --- !u!114 &5153985981183787826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,9 +102,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  rotateSpeed: 0
+  rotateSpeed: -360
   numberOfFlashes: 10
   flashDuration: 0
+  babyStar: {fileID: 1546698671713814899, guid: 0470269c5d1f64e4cb10bcc606b1d943, type: 3}
+  spawnInterval: 0.2
   direction: 0
 --- !u!50 &502598555448902310
 Rigidbody2D:
@@ -168,7 +156,7 @@ GameObject:
   - component: {fileID: 2303314689520438603}
   - component: {fileID: 6961061365657562941}
   m_Layer: 0
-  m_Name: Arrow (1)
+  m_Name: Crust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
