@@ -24,6 +24,7 @@ public class PlayerVessel : MonoBehaviour
     public PlayerCharacter MyCharacter;
     [HideInInspector] public Mana MyMana;
     Transform myINAvessel;
+    public GameObject MyBabyAugmentList;
     public Transform CombatStarSpawn { get; private set; }
 
     /// <summary>
@@ -62,6 +63,9 @@ public class PlayerVessel : MonoBehaviour
         //assign INA vessel
         myINAvessel = FindObjectOfType<INAcombat>().transform.Find("Health Vessels").GetChild(MyCharacter.PlayerNumber - 1).transform;
         UpdateHealthText();
+
+        //Assign Baby Augment List
+        MyBabyAugmentList = transform.Find("VesselAugDisplay").gameObject;
 
         MyCharacter.HealthChangeEvent.AddListener(UpdateHealthText);
     }

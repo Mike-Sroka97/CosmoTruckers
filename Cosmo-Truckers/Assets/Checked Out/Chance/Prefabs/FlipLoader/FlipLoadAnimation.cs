@@ -75,15 +75,25 @@ public class FlipLoadAnimation : MonoBehaviour
             CameraController.Instance.transform.position = CombatManager.Instance.LastCameraPosition;
             CameraController.Instance.Leader = CombatManager.Instance.DungeonCharacterInstance;
 
-            //Reset shield and Mana
+            //Reset shield and Mana and activate baby aug list
             foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
             {
                 character.MyCharacter.GetManaBase.ResetMana();
                 character.ManuallySetShield(0);
+                character.MyBabyAugmentList.gameObject.SetActive(true);
             }
             //clean up enemy summons
             while (EnemyManager.Instance.EnemySummons.Count > 0)
                 EnemyManager.Instance.EnemySummons[0].Die();
+        }
+        //Combat starting
+        else
+        {
+            //disable baby aug list
+            foreach (PlayerVessel character in PlayerVesselManager.Instance.PlayerVessels)
+            {
+                character.MyBabyAugmentList.gameObject.SetActive(false);
+            }
         }
         //Wait while screen changes
         yield return new WaitForSeconds(waitTime);

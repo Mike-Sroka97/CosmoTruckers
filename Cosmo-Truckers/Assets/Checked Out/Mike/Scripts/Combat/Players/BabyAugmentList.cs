@@ -6,11 +6,16 @@ public class BabyAugmentList : MonoBehaviour
 {
     Character myCharacter;
     BabyAugment[] babyAugments;
+    BabyAugment[] vesselAugments;
 
     private void Start()
     {
         myCharacter = GetComponentInParent<Character>();
         babyAugments = GetComponentsInChildren<BabyAugment>();
+
+        if (myCharacter.GetComponent<PlayerCharacter>())
+            vesselAugments = myCharacter.GetComponent<PlayerCharacter>().MyVessel.GetComponentsInChildren<BabyAugment>();
+
         myCharacter.AugmentCountChangeEvent.AddListener(UpdateBabies);
         UpdateBabies();
     }
@@ -22,9 +27,19 @@ public class BabyAugmentList : MonoBehaviour
         for(int i = 0; i < babyAugments.Length; i++)
         {
             if (i < numberOfAugments)
+            {
                 babyAugments[i].UpdateSlot(myCharacter.GetAUGS[i]);
+
+                if(vesselAugments.Length > 0)
+                    vesselAugments[i].UpdateSlot(myCharacter.GetAUGS[i]);
+            }
             else
+            {
                 babyAugments[i].gameObject.SetActive(false);
+
+                if (vesselAugments.Length > 0)
+                    vesselAugments[i].gameObject.SetActive(false);
+            }
         }
     }
 
