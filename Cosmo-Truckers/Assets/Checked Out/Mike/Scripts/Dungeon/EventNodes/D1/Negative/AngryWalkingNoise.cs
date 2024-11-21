@@ -6,7 +6,7 @@ public class AngryWalkingNoise : EventNodeBase
 {
     [SerializeField] GameObject Timmy;
     [SerializeField] string responseText;
-    [SerializeField] string popupText = "Timmy is a Walking Noise enemy with (25) health who spawns in the enemy summon layer\n next combat.";
+    [SerializeField] string popupText = "Timothy is a Walking Noise enemy with (25) health who spawns in the enemy summon layer\n next combat.";
 
     protected override void Start()
     {

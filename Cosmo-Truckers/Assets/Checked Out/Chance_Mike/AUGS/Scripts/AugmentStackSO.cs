@@ -21,7 +21,7 @@ public class AugmentStackSO : ScriptableObject
 
     [Header("Base Variables")]
     public string AugmentName;
-    [TextArea(5, 10)]public string DebuffDescription;
+    [TextArea(5, 10)]public string AugmentDescription;
     [HideInInspector] public Character MyCharacter;
     public bool IsBuff;
     public bool IsDebuff;

@@ -19,7 +19,8 @@ public class EventNodeBase : MonoBehaviour
     protected string characterNameColor = EnumManager.ColorsHex[EnumManager.ColorPalette.Purple];
 
 
-    protected PlayerCharacter currentCharacter => PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter; 
+    protected PlayerCharacter currentCharacter => PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter;
+    protected EventNodeAugBG augBgDeterminer;
 
     protected virtual void Start()
     {
@@ -27,6 +28,7 @@ public class EventNodeBase : MonoBehaviour
         myButtons = GetComponentsInChildren<Button>();
         PopupOne = transform.Find("Popups/Event Node Info (1)").GetComponent<EventNodePopupInfo>();
         PopupTwo = transform.Find("Popups/Event Node Info (2)").GetComponent<EventNodePopupInfo>();
+        augBgDeterminer = GetComponent<EventNodeAugBG>();
         HandleButtonDeselect();
     }
 
@@ -106,7 +108,7 @@ public class EventNodeBase : MonoBehaviour
         PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augment, amount);
     }
 
-    public virtual void HandleButtonSelect(int buttonId)
+    public virtual void HandleButtonSelect(int buttonID)
     {
 
     }
@@ -115,5 +117,21 @@ public class EventNodeBase : MonoBehaviour
     {
         PopupOne.gameObject.SetActive(false);
         PopupTwo.gameObject.SetActive(false);
+    }
+
+    protected void SetButtonWithAugInfo(AugmentStackSO augment, bool one = true)
+    {
+        if(one)
+        {
+            PopupOne.PopupText.text = augment.AugmentName + ": " + augment.AugmentDescription;
+            PopupOne.AugmentImage.sprite = augment.AugmentSprite;
+            PopupOne.AugmentBackground.sprite = augBgDeterminer.SetBG(augment);
+        }
+        else
+        {
+            PopupTwo.PopupText.text = augment.AugmentName + ": " + augment.AugmentDescription;
+            PopupTwo.AugmentImage.sprite = augment.AugmentSprite;
+            PopupTwo.AugmentBackground.sprite = augBgDeterminer.SetBG(augment);
+        }
     }
 }

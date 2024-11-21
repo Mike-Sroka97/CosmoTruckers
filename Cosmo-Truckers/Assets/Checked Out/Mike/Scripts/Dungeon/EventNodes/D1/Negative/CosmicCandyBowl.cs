@@ -36,4 +36,11 @@ public class CosmicCandyBowl : EventNodeBase
         MultiplayerSelection(buttonID);
         CheckEndEvent();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        PopupOne.gameObject.SetActive(true);
+
+        SetButtonWithAugInfo(augmentsToAdd[randomIndeces[buttonId]]);
+    }
 }
