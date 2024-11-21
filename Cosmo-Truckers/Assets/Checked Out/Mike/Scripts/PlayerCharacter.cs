@@ -264,8 +264,8 @@ public class PlayerCharacter : Character
     {
         Stats.TrueDefense += defense;
 
-        if (Stats.TrueDefense > 50)
-            Stats.Defense = 50;
+        if (Stats.TrueDefense > 90)
+            Stats.Defense = 90;
         else if (Stats.TrueDefense < -100)
             Stats.Defense = -100;
         else

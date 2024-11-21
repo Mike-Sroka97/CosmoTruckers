@@ -9,6 +9,8 @@ public class EventNodeBase : MonoBehaviour
 {
     [SerializeField] protected float delay = 2.6f;
     [SerializeField] protected AugmentStackSO[] augmentsToAdd;
+    [HideInInspector] public EventNodePopupInfo PopupOne;
+    [HideInInspector] public EventNodePopupInfo PopupTwo;
 
     protected Button[] myButtons;
     protected EventNodeHandler nodeHandler;
@@ -16,12 +18,16 @@ public class EventNodeBase : MonoBehaviour
     protected int currentTurns = 0;
     protected string characterNameColor = EnumManager.ColorsHex[EnumManager.ColorPalette.Purple];
 
+
     protected PlayerCharacter currentCharacter => PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter; 
 
     protected virtual void Start()
     {
         descriptionText = transform.Find("Description/Description Text").GetComponent<TextMeshProUGUI>();
         myButtons = GetComponentsInChildren<Button>();
+        PopupOne = transform.Find("Popups/Event Node Info (1)").GetComponent<EventNodePopupInfo>();
+        PopupTwo = transform.Find("Popups/Event Node Info (2)").GetComponent<EventNodePopupInfo>();
+        HandleButtonDeselect();
     }
 
     public virtual void Initialize(EventNodeHandler handler)
@@ -98,5 +104,16 @@ public class EventNodeBase : MonoBehaviour
     protected void AddAugmentToPlayer(AugmentStackSO augment, int amount = 1)
     {
         PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].MyCharacter.AddAugmentStack(augment, amount);
+    }
+
+    public virtual void HandleButtonSelect(int buttonId)
+    {
+
+    }
+
+    public void HandleButtonDeselect()
+    {
+        PopupOne.gameObject.SetActive(false);
+        PopupTwo.gameObject.SetActive(false);
     }
 }

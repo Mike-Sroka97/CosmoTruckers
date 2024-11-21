@@ -501,6 +501,7 @@ MonoBehaviour:
       m_Calls: []
   Stunned: 0
   Tireless: 0
+  CombatStarsCurrentLayer: 0
   BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
@@ -511,8 +512,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19b3530b4fae4cc4ea6cb325f22b835c, type: 2}
   damageText: {fileID: 6608158820392899181}
   healingText: {fileID: 731768358041925395}
-  damageColor: {r: 1, g: 0, b: 0, a: 1}
-  healingColor: {r: 0, g: 1, b: 0, a: 1}
   IsBoss: 0
   SpecialTargetConditions: 0
   CurrentTargets: []
@@ -520,6 +519,7 @@ MonoBehaviour:
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: Orbnus
+  deathAnimation: {fileID: 0}
   baseDefense: 25
   EyeOneKilled: 0
   EyeTwoKilled: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Reflex: 1
-  Defense: 1000
+  Defense: 999
   TrueDefense: 0
   Vigor: 100
   TrueVigor: 0

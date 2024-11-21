@@ -10,16 +10,28 @@ public class EventNodeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 
     EventNodeHandler nodeHandler;
     Image myImage;
+    EventNodeBase node;
+    int buttonID;
 
     private void Awake()
     {
         nodeHandler = FindObjectOfType<EventNodeHandler>();
         myImage = GetComponent<Image>();
+        node = transform.parent.parent.GetComponent<EventNodeBase>();
+        if (name.Contains("3"))
+            buttonID = 3;
+        else if (name.Contains("2"))
+            buttonID = 2;
+        else if (name.Contains("1"))
+            buttonID = 1;
+        else
+            buttonID = 0;
     }
 
     public void OnSelect(BaseEventData eventData)
     {
         myImage.material = PlayerVesselManager.Instance.PlayerVessels[nodeHandler.Player].GetCharacterImage().material;
+        node.HandleButtonSelect(buttonID);
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -35,6 +47,7 @@ public class EventNodeButton : MonoBehaviour, ISelectHandler, IDeselectHandler
             myImage.material = PlayerVesselManager.Instance.PlayerVessels[adjustedPlayer].GetCharacterImage().material;
         }
 
+        node.HandleButtonDeselect();
     }
 
     public void ResetMaterial()

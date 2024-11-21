@@ -21,6 +21,18 @@ public class OrbnusAI : Enemy
         return GetAttackIndex();
     }
 
+    public override void AdjustDefense(int defense)
+    {
+        Stats.TrueDefense += defense;
+
+        if (Stats.TrueDefense > 999)
+            Stats.Defense = 999;
+        else if (Stats.TrueDefense < -200)
+            Stats.Defense = -200;
+        else
+            Stats.Defense = Stats.TrueDefense;
+    }
+
     protected override void SpecialTarget(int attackIndex)
     {
         //Behold, Death!
