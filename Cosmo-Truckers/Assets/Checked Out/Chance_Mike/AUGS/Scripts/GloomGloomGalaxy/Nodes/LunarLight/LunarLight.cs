@@ -9,12 +9,6 @@ public class LunarLight : Augment
 
     public override void Activate(AugmentStackSO stack = null)
     {
-        if (!firstGo)
-        {
-            AugmentSO.MyCharacter.AdjustDamage(-damageDecrease);
-            AugmentSO.MyCharacter.AdjustMaxHealth(-maxHealthIncrease);
-        }
-
         firstGo = false;
 
         AugmentSO.MyCharacter.AdjustDamage(-damageDecrease);
@@ -23,7 +17,7 @@ public class LunarLight : Augment
     }
     public override void StopEffect()
     {
-        AugmentSO.MyCharacter.AdjustDamage(-damageDecrease);
+        AugmentSO.MyCharacter.AdjustDamage(damageDecrease);
         AugmentSO.MyCharacter.AdjustMaxHealth(-maxHealthIncrease);
     }
 }

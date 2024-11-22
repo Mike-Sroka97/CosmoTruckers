@@ -42,4 +42,16 @@ public class TheOneCane : EventNodeBase
             myButtons[1].enabled = false;
         AutoSelectNextButton();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

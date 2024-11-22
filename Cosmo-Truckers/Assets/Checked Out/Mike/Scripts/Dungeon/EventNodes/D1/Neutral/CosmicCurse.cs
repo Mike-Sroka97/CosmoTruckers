@@ -27,4 +27,18 @@ public class CosmicCurse : EventNodeBase
         MultiplayerSelection(buttonIndex);
         CheckEndEvent();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId != 3)
+        {
+            PopupOne.gameObject.SetActive(true);
+            PopupTwo.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(buffs[buttonId]);
+            SetButtonWithAugInfo(debuffs[buttonId], false);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

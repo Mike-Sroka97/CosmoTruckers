@@ -73,4 +73,12 @@ public class LunarLuck : EventNodeBase
             StartCoroutine(SelectionChosen());
         }
     }
+    public override void HandleButtonSelect(int buttonId)
+    {
+        PopupOne.gameObject.SetActive(true);
+        PopupTwo.gameObject.SetActive(true);
+
+        SetButtonWithAugInfo(augmentsToAdd[0]);
+        SetButtonWithAugInfo(augmentsToAdd[1], false);
+    }
 }

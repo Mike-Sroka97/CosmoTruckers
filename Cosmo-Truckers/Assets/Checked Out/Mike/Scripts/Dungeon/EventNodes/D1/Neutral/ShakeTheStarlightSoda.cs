@@ -39,4 +39,16 @@ public class ShakeTheStarlightSoda : EventNodeBase
             AddAugmentToPlayer(augmentsToAdd[0]);
         }
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

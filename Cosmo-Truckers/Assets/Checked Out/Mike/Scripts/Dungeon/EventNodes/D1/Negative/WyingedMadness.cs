@@ -18,4 +18,11 @@ public class WyingedMadness : EventNodeBase
         PlayerVesselManager.Instance.PlayerVessels[buttonID].MyCharacter.AddAugmentStack(augmentsToAdd[0]);
         IgnoreOption();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        PopupOne.gameObject.SetActive(true);
+
+        SetButtonWithAugInfo(augmentsToAdd[0]);
+    }
 }

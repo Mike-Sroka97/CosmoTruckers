@@ -12,4 +12,16 @@ public class ThoroughTonguing : EventNodeBase
         currentTurns = 4;
         CheckEndEvent();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

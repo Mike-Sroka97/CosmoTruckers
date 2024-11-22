@@ -12,4 +12,16 @@ public class AmberDilemma : EventNodeBase
         AddAugmentToPlayer(augmentsToAdd[0], 4);
         IgnoreOption();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

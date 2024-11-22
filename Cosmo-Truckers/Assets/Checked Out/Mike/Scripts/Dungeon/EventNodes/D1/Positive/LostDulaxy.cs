@@ -6,6 +6,7 @@ public class LostDulaxy : EventNodeBase
 {
     [SerializeField] GameObject dulaxy;
     [SerializeField] int healthThreshold;
+    [SerializeField] string popupText = "A Dulaxy is a (15) health player summon that restores health to the party on its turn.";
 
     public void DulaxyAttraction()
     {
@@ -19,5 +20,15 @@ public class LostDulaxy : EventNodeBase
 
         IteratePlayerReference();
         StartCoroutine(SelectionChosen());
+    }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            PopupOne.PopupText.text = popupText;
+        }
     }
 }
