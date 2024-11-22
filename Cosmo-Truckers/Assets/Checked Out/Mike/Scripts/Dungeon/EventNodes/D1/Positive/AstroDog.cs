@@ -32,4 +32,16 @@ public class AstroDog : EventNodeBase
         MultiplayerSelection(buttonID);
         CheckEndEvent();
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 2)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[0]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }

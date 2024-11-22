@@ -9,17 +9,17 @@ public class MysteriousCane : Augment
         if (!firstGo)
         {
             AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
-            AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
+            AugmentSO.MyCharacter.AdjustSpeed((int)StatusEffect);
         }
 
         base.Activate(stack);
 
         AugmentSO.MyCharacter.AdjustDamage((int)StatusEffect);
-        AugmentSO.MyCharacter.AdjustSpeed((int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
     }
     public override void StopEffect()
     {
         AugmentSO.MyCharacter.AdjustDamage(-(int)StatusEffect);
-        AugmentSO.MyCharacter.AdjustSpeed(-(int)StatusEffect);
+        AugmentSO.MyCharacter.AdjustSpeed((int)StatusEffect);
     }
 }

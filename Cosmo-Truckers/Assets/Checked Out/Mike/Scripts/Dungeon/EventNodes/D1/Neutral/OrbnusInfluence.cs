@@ -12,4 +12,11 @@ public class OrbnusInfluence : EventNodeBase
         IteratePlayerReference();
         StartCoroutine(SelectionChosen());
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        PopupOne.gameObject.SetActive(true);
+
+        SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+    }
 }

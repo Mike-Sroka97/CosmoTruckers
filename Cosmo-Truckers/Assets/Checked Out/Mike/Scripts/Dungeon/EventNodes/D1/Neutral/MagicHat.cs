@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MagicHat : EventNodeBase
 {
+    [SerializeField] string popupText = "The hat will always give the character a bubble shield with a varying effect.";
+
     int random;
     string color;
 
@@ -26,5 +28,17 @@ public class MagicHat : EventNodeBase
         IteratePlayerReference();
         currentTurns = 4;
         CheckEndEvent();
+    }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            PopupOne.PopupText.text = popupText;
+        }
+        else
+            HandleButtonDeselect();
     }
 }

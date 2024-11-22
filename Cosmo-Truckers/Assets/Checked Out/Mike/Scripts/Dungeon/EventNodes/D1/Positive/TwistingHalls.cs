@@ -63,4 +63,11 @@ public class TwistingHalls : EventNodeBase
             StartCoroutine(SelectionChosen());
         }
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        PopupOne.gameObject.SetActive(true);
+
+        SetButtonWithAugInfo(augmentsToAdd[0]);
+    }
 }

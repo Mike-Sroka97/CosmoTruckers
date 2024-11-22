@@ -7,6 +7,7 @@ public class LoonasDiscovery : EventNodeBase
 {
     [SerializeField] int remainingStacks = 5;
     [SerializeField] GameObject emptyNova;
+    [SerializeField] string popupText = "An Empty Nova is a (20) health player summon that deals damage to an enemy on its turn.";
     TextMeshProUGUI textToAdjust;
     string buttonString;
     int[] playerVotes = new int[4];
@@ -55,7 +56,7 @@ public class LoonasDiscovery : EventNodeBase
     {
         int playerWithMostVotes = 0;
 
-        for(int i = 0; i < playerVotes.Length; i++)
+        for (int i = 0; i < playerVotes.Length; i++)
         {
             if (playerVotes[i] > playerVotes[playerWithMostVotes])
                 playerWithMostVotes = i;
@@ -65,5 +66,19 @@ public class LoonasDiscovery : EventNodeBase
             EnemyManager.Instance.UpdatePlayerSummons(emptyNova, PlayerVesselManager.Instance.PlayerVessels[playerWithMostVotes].MyCharacter, PlayerVesselManager.Instance.PlayerVessels[playerWithMostVotes].MyCharacter.CombatSpot + 4);
 
         return base.SelectionChosen();
+    }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+            PopupTwo.gameObject.SetActive(true);
+
+            PopupOne.PopupText.text = popupText;
+            SetButtonWithAugInfo(augmentsToAdd[1], false);
+        }
+        else
+            HandleButtonDeselect();
     }
 }

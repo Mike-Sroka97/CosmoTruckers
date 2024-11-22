@@ -37,4 +37,16 @@ public class StickyGloomGuy : EventNodeBase
         else
             myButtons[1].enabled = true;
     }
+
+    public override void HandleButtonSelect(int buttonId)
+    {
+        if (buttonId == 0)
+        {
+            PopupOne.gameObject.SetActive(true);
+
+            SetButtonWithAugInfo(augmentsToAdd[buttonId]);
+        }
+        else
+            HandleButtonDeselect();
+    }
 }
