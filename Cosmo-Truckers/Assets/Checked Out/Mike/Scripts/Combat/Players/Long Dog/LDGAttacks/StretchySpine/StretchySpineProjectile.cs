@@ -58,6 +58,8 @@ public class StretchySpineProjectile : MonoBehaviour
                 minigame.Score -= 1;
                 frameAnimation.SwitchToHurtAnimation(); 
             }
+
+            GetComponent<ParticleSpawner>().SpawnParticle(transform); 
             Destroy(gameObject);
         }
     }

@@ -13,8 +13,9 @@ public class CatGunProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name != "CatGun")
+        if (!collision.gameObject.name.Contains("CatGun"))
         {
+            GetComponent<ParticleSpawner>().SpawnParticle(transform); 
             Destroy(gameObject);
         }
     }
