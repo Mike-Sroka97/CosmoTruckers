@@ -7,6 +7,9 @@ public class LongevityOfDog : CombatMove
     [SerializeField] GameObject[] touchableShapes;
     [SerializeField] int maxLayouts;
     [SerializeField] GameObject[] shapesToMake;
+    public Color wrongShapeColor; 
+    public Color correctShapeColor;
+    public Material offMaterial; 
 
     List<int> generatedLayouts = new List<int>();
     LoDShapeGenerator shapeGenerator;
@@ -15,7 +18,6 @@ public class LongevityOfDog : CombatMove
 
     private void Start()
     {
-        StartMove();
         shapeGenerator = GetComponentInChildren<LoDShapeGenerator>();
         ResetShapes();
     }
