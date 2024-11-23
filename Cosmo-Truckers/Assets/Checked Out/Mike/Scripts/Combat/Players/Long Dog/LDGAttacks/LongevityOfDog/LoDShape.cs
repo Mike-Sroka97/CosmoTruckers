@@ -7,10 +7,10 @@ public class LoDShape : MonoBehaviour
 {
     [SerializeField] bool goodShape;
     [SerializeField] float colliderTime = 0.5f;
-    [SerializeField] float resetTime = 0.5f;
+    [SerializeField] float resetTime = 0.15f;
     // This is for layouts where there are two of the same shape, but one is false. Allows player to choose either one first
     public bool SecondShapeFalse; 
-    int scoreToAdd = 1;
+    int scoreToAdd = 3;
 
     SpriteRenderer myRenderer; 
     LongevityOfDog minigame;
@@ -25,8 +25,8 @@ public class LoDShape : MonoBehaviour
         myCollider = GetComponent<Collider2D>();
         StartCoroutine(ColliderDelay());
 
-        // Set the score
-        scoreToAdd = goodShape? 3 : -1;
+        if (!goodShape)
+            SetThisShapeFalse(); 
     }
 
     IEnumerator ColliderDelay()
@@ -38,20 +38,25 @@ public class LoDShape : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.name == "Attack Zone")
+        if((collision.name == "Attack Zone" || collision.tag == "Player") && minigame.Score == 0)
         {
             myRenderer.material = minigame.offMaterial;
             myCollider.enabled = false;
 
             if (goodShape)
             {
+                // Because they're being instantiated, we do it this way
                 if (SecondShapeFalse)
                 {
                     LoDShape[] shapes = FindObjectsOfType<LoDShape>();
                     foreach (LoDShape shape in shapes)
                     {
                         if (shape.SecondShapeFalse && shape.gameObject != gameObject)
-                            shape.SetThisShapeFalse(); 
+                        {
+                            shape.SetThisShapeFalse();
+                            break; 
+                        }
+
                     }
                 }
 
@@ -66,9 +71,12 @@ public class LoDShape : MonoBehaviour
             }
             else
             {
-                FindObjectOfType<LongDogINA>().SetDamaged(true);
+                if (collision.name == "Attack Zone")
+                    FindObjectOfType<LongDogINA>().SetDamaged(true);
+
                 myRenderer.color = minigame.wrongShapeColor;
                 FindObjectOfType<LoDShapeToMake>().UpdateShapeColors(minigame.wrongShapeColor);
+                minigame.PlayerDead = true;
                 StartCoroutine(ResetWait());
             }
         }
@@ -76,17 +84,15 @@ public class LoDShape : MonoBehaviour
 
     public void SetThisShapeFalse()
     {
-        this.goodShape = false;
-        scoreToAdd = 0; 
+        gameObject.AddComponent<TrackPlayerDeath>();
+        goodShape = false;
+        scoreToAdd = -3; 
     }
 
     IEnumerator ResetWait()
     {
         minigame.Score += scoreToAdd;
-        FindObjectOfType<LongDogINA>().SetDamaged(false);
         yield return new WaitForSeconds(resetTime);
-        minigame.CheckSuccess(); 
-        Destroy(transform.parent.gameObject);
-        minigame.ResetShapes();
+        minigame.CheckScoreEqualsValue(scoreToAdd); // Always call it here
     }
 }
