@@ -5,46 +5,24 @@ using UnityEngine;
 public class LongevityOfDog : CombatMove
 {
     [SerializeField] GameObject[] touchableShapes;
-    [SerializeField] int maxLayouts;
     [SerializeField] GameObject[] shapesToMake;
+    public Color wrongShapeColor; 
+    public Color correctShapeColor;
+    public Material offMaterial; 
 
-    List<int> generatedLayouts = new List<int>();
     LoDShapeGenerator shapeGenerator;
     int currentLayout = -1;
-    int numberOfLayouts = 0;
 
     private void Start()
     {
-        StartMove();
         shapeGenerator = GetComponentInChildren<LoDShapeGenerator>();
         ResetShapes();
     }
 
     public void ResetShapes()
     {
-        if(numberOfLayouts < maxLayouts)
-        {
-            RandomLayout();
-            shapeGenerator.GenerateLayout(touchableShapes[currentLayout], shapesToMake[currentLayout]);
-        }
-    }
-
-    private void RandomLayout()
-    {
-        if(currentLayout == -1)
-        {
-            currentLayout = UnityEngine.Random.Range(0, touchableShapes.Length);
-            generatedLayouts.Add(currentLayout);
-        }
-        else
-        {
-            while(generatedLayouts.Contains(currentLayout))
-            {
-                currentLayout = UnityEngine.Random.Range(0, touchableShapes.Length);
-            }
-            generatedLayouts.Add(currentLayout);
-        }
-        numberOfLayouts++;
+        currentLayout = UnityEngine.Random.Range(0, touchableShapes.Length);
+        shapeGenerator.GenerateLayout(touchableShapes[currentLayout], shapesToMake[currentLayout]);
     }
 
     public override void EndMove()

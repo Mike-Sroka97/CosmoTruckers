@@ -22,6 +22,9 @@ public class LoDShapeGenerator : MonoBehaviour
             Destroy(currentShapeToMake);
         }
         currentShapeToMake = Instantiate(shapeToMake, transform);
+        int rotation = UnityEngine.Random.Range(1, 5);
+        currentShapeToMake.transform.eulerAngles = new Vector3(0, 0, rotation * 90); // Rotate shape to make randomly by increments of 90 degrees
+
         Transform[] currentShapes = shapes.GetComponentsInChildren<Transform>();
         RandomIndices();
         for(int i = 0; i < shapeSpawns.Length; i++)

@@ -20,10 +20,11 @@ public class HeadRushSuccess : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!hasInteracted)
+        if ((collision.gameObject.tag == "Player" || collision.name == "Attack Zone") && !hasInteracted)
         {
-            hasInteracted = true; 
+            hasInteracted = true;
             myMinigame.Score += successToGive;
+            myMinigame.CheckSuccess();
             Destroy(gameObject);
         }
 
@@ -35,6 +36,7 @@ public class HeadRushSuccess : MonoBehaviour
         {
             hasInteracted = true;
             myMinigame.Score += successToGive;
+            myMinigame.CheckSuccess(); 
             Destroy(gameObject);
         }
     }

@@ -12,12 +12,14 @@ public class CatGun : MonoBehaviour
     [SerializeField] float spriteWaitTime = 1f;   
 
     SpriteRenderer myRenderer;
-    Sprite startingSprite; 
+    Sprite startingSprite;
+    CombatMove minigame; 
 
     float currentTime = 0;
 
     private void Start()
     {
+        minigame = FindObjectOfType<CombatMove>();
         myRenderer = GetComponent<SpriteRenderer>();
         startingSprite = myRenderer.sprite; 
         float randomOffset = Random.Range(0.0f, fireOffset);
@@ -37,7 +39,7 @@ public class CatGun : MonoBehaviour
     IEnumerator Fire()
     {
         myRenderer.sprite = fireMouth;
-        Instantiate(projectile, projectileSpawn.transform, transform.parent);
+        Instantiate(projectile, projectileSpawn.transform.position, Quaternion.identity, minigame.transform);
         yield return new WaitForSeconds(spriteWaitTime);
         myRenderer.sprite = startingSprite; 
     }  

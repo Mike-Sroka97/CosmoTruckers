@@ -117,32 +117,11 @@ MonoBehaviour:
   TypeOfAttack: 2
   spawnPoints:
   - {fileID: 7505014451420625301}
-  layouts:
-  - {fileID: 4900271189392543210, guid: e44c43421f3d5ff45ad3c0bf557582a3, type: 3}
-  - {fileID: 7391767157706205396, guid: 0bc74c485f90b4747b3968399e95899f, type: 3}
-  - {fileID: 8856683976982377218, guid: d2bf14eef5cdf11429813f8982022f62, type: 3}
-  - {fileID: 5763126464987232256, guid: f18d8ab025f51f04cb97eef88d26b778, type: 3}
-  - {fileID: 1972391220493172820, guid: 8e437f7b9cb4fb24b9ee593542a52fe2, type: 3}
-  - {fileID: 9132490205965260657, guid: 07e1a489496da5b49bc0580b57884544, type: 3}
-  - {fileID: 2175321758522755554, guid: 69627cf813b01344894372d677a1c2ac, type: 3}
-  - {fileID: 6537016315957152614, guid: f32f30ae2ac94b94ea607b0e046d7d01, type: 3}
-  - {fileID: 4176655482868895946, guid: 06414602b38308e45902a737059417ef, type: 3}
-  - {fileID: 5030603920087780005, guid: 9208ababd154d2e41b3b332c7b5fe898, type: 3}
-  - {fileID: 13221086115004900, guid: 6858aeefbe289a946b3931cee029983f, type: 3}
-  - {fileID: 4378279526130522113, guid: 2d2f4b4d9271fd24f847af9b9f2f40e8, type: 3}
-  - {fileID: 1321242040595888670, guid: 1017aa5e1275167439f7f5a86a23d417, type: 3}
-  - {fileID: 4851148792709425318, guid: 29d59040a44aa8f4388797b7c9e647c4, type: 3}
-  - {fileID: 801342250383589478, guid: 3ac9ab08da1ab51468ece7b45d148f9e, type: 3}
-  - {fileID: 7231722416053201100, guid: 7f24eb9a86cf11e40b2b4a4522601611, type: 3}
-  - {fileID: 7226954550907683983, guid: ca6377d3ef2741f49837905bff05387d, type: 3}
-  - {fileID: 5638502862403521559, guid: f04ef4fde73abe94e8b99c8c2ad0f2a9, type: 3}
-  - {fileID: 5428355426375214429, guid: 9ff7c631775df134c9fde343062f050b, type: 3}
-  - {fileID: 3536984997319271685, guid: 69da30863649ed040985800750e80e95, type: 3}
-  - {fileID: 5630605714086250829, guid: 34c2623aec390144c923be4a595017bf, type: 3}
+  layouts: []
   Damage: 0
   DebuffToAdd: {fileID: 11400000, guid: 61f270b2feca403439c51990cbe0b57c, type: 2}
   playerEnemyTargetDifference: 0
-  MinigameDuration: 15
+  MinigameDuration: 10
   Score: 0
   PlayerDead: 0
   MoveEnded: 0
@@ -150,6 +129,7 @@ MonoBehaviour:
   maxScore: 3
   augmentStacksPerScore: 1
   maxAugmentStacks: 10
+  minAugmentStacks: 0
   baseDamage: 0
   baseAugmentStacks: 2
   timeToEndMove: 1
@@ -166,12 +146,14 @@ MonoBehaviour:
   - {fileID: 3257197674576180187, guid: 43346ce36a439954189ebcca18667ed6, type: 3}
   - {fileID: 9216882905548241346, guid: afa423bbc5444b84dbe8c5d269c92444, type: 3}
   - {fileID: 7547528658174084156, guid: b89e6dda6663674449b713a18d76dbbf, type: 3}
-  maxLayouts: 3
   shapesToMake:
   - {fileID: 917261849612330514, guid: 58f6bec74f0f2e648a62c54051995bc1, type: 3}
   - {fileID: 1405378803883927499, guid: bed0c7e8b7f14db4aa701e5e9dc3d3aa, type: 3}
   - {fileID: 1686001924661171319, guid: dd5dc0972515bec439cc4b50806bf4d6, type: 3}
   - {fileID: 5504876520441759594, guid: b5c3500e6322dc049a7a11dd27407449, type: 3}
+  wrongShapeColor: {r: 0.83137256, g: 0.29411766, b: 0.4745098, a: 1}
+  correctShapeColor: {r: 0.6156863, g: 0.7411765, b: 0.36078432, a: 1}
+  offMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
 --- !u!1 &9197433156852719549
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +225,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: abc77f0bb0515774a87cb6ee82dee00f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
