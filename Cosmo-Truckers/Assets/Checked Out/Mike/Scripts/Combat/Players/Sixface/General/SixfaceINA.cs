@@ -11,6 +11,7 @@ public class SixfaceINA : Player
     [SerializeField] GameObject horizontalAttackArea;
     [SerializeField] GameObject downAttackArea;
     [SerializeField] GameObject upAttackArea;
+    [SerializeField] GameObject pogoAttackArea;
 
     //Jump variables
     [SerializeField] float jumpMaxHoldTime;
@@ -26,6 +27,7 @@ public class SixfaceINA : Player
     [Header("0 - Smug, 1 - Question, 2 - Dizzy, 3 - Money, 4 - Sad, 5 - Hype")]
     [SerializeField] AnimationClip[] sixFaceFaces;
     [SerializeField] AnimationClip downAttack;
+    [SerializeField] AnimationClip pogoDownAttack;
     [SerializeField] AnimationClip upAttack;
     [SerializeField] AnimationClip horizontalAttack;
     [SerializeField] AnimationClip changeFace;
@@ -42,7 +44,7 @@ public class SixfaceINA : Player
     bool isJumping = true;
     bool canAttack = true;
     bool canHover = true;
-    bool canDownAttack = true;
+    bool canPogo = true;
 
     float currentJumpHoldTime = 0;
     float currentCoyoteTime = 0;
@@ -86,7 +88,7 @@ public class SixfaceINA : Player
             if(!damaged && !dead && !Input.GetKey("space"))
             {
                 canJump = true;
-                canDownAttack = true;
+                canPogo = true;
                 canHover = false;
                 currentJumpHoldTime = 0;
                 currentCoyoteTime = 0;
@@ -153,7 +155,7 @@ public class SixfaceINA : Player
 
     #region Attack
     /// <summary>
-    /// Aeglar's attack will be a dash where he is an active hitbox during the process
+    /// Six faces attack is traditional left, right, and up attack. His down attack creates an upward force the first time it is used in midair
     /// </summary>
     public void Attack()
     {
@@ -163,13 +165,22 @@ public class SixfaceINA : Player
             SetSixFacesFace(sixFaceFaces[1]);
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover) && canDownAttack)
+        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover))
         {
-            canDownAttack = false;
-            playerAnimator.ChangeAnimation(bodyAnimator, downAttack);
-            SetSixFacesFace(sixFaceFaces[5]);
-            StartCoroutine(SixFaceAttack(downAttackArea));
-            Pogo();
+            if(canPogo)
+            {
+                canPogo = false;
+                playerAnimator.ChangeAnimation(bodyAnimator, pogoDownAttack);
+                SetSixFacesFace(sixFaceFaces[5]);
+                StartCoroutine(SixFaceAttack(pogoAttackArea));
+                Pogo();
+            }
+            else
+            {
+                playerAnimator.ChangeAnimation(bodyAnimator, downAttack);
+                SetSixFacesFace(sixFaceFaces[5]);
+                StartCoroutine(SixFaceAttack(downAttackArea));
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {

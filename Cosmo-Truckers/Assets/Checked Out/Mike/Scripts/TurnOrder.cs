@@ -66,6 +66,7 @@ public class TurnOrder : MonoBehaviour
             {
                 if (livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().Stunned)
                 {
+                    CombatManager.Instance.CurrentCharacter = livingCharacters[currentCharactersTurn].GetComponent<Character>();
                     livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().Stun(false);
                     livingCharacters[currentCharactersTurn].GetComponent<PlayerCharacter>().EndTurn();
                     CombatManager.Instance.HandleEndOfTurn();

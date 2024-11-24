@@ -16,6 +16,8 @@ public class PlayerVessel : MonoBehaviour
     [SerializeField] Image currentShieldBar;
     [SerializeField] Sprite aliveSprite;
     [SerializeField] Sprite deadSprite;
+    [SerializeField] Sprite stunnedSprite;
+    [SerializeField] Sprite energizedSprite;
     [SerializeField] Material[] playerOutlineMaterials;
 
     protected const float fadeSpeed = 2f;
@@ -43,9 +45,6 @@ public class PlayerVessel : MonoBehaviour
         MyCharacter = player;
         MyCharacter.MyVessel = this;
 
-        //set image
-        characterImage.sprite = MyCharacter.VesselImage;
-
         //set vessel outline
         characterImage.material = playerOutlineMaterials[MyCharacter.PlayerNumber - 1];
 
@@ -68,25 +67,52 @@ public class PlayerVessel : MonoBehaviour
         MyBabyAugmentList = transform.Find("VesselAugDisplay").gameObject;
 
         MyCharacter.HealthChangeEvent.AddListener(UpdateHealthText);
+
+        //set image
+        UpdateHealthText();
     }
 
     public void UpdateHealthText()
     {
         myINAvessel.GetComponentInChildren<TextMeshPro>().text = MyCharacter.CurrentHealth.ToString();
 
-        if(MyCharacter.CurrentHealth > 0)
-            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = aliveSprite;
-        else
-            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = deadSprite;
+        UpdateSprites();
     }
 
-    public void SetINAvesselSprite(bool alive)
+    /// <summary>
+    /// Handles vessel and ina vessel sprites
+    /// </summary>
+    public void UpdateSprites()
     {
-        if (alive)
+        //Conditions for energized
+        if (MyCharacter.CurrentHealth > 0 && MyCharacter.Tireless)
+        {
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = energizedSprite;
+            characterImage.sprite = energizedSprite;
+        }
+
+        //Conditions for stun
+        else if (MyCharacter.CurrentHealth > 0 && MyCharacter.Stunned)
+        {
+            myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = stunnedSprite;
+            characterImage.sprite = stunnedSprite;
+        }
+
+        //Conditions for normal state
+        else if (MyCharacter.CurrentHealth > 0)
+        {
             myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = aliveSprite;
+            characterImage.sprite = aliveSprite;
+        }
+
+        //Default dead
         else
+        {
             myINAvessel.Find("PlayerIcon").GetComponent<SpriteRenderer>().sprite = deadSprite;
+            characterImage.sprite = deadSprite;
+        }
     }
+
 
     public void AdjustFill()
     {
@@ -101,10 +127,7 @@ public class PlayerVessel : MonoBehaviour
 
     protected void AdjustPlayerIcon(int health)
     {
-        if (health == 0)
-            characterImage.sprite = deadSprite;
-        else
-            characterImage.sprite = aliveSprite;
+        UpdateSprites();
     }
 
     public void AdjustCurrentHealthDisplay(int newHealth)

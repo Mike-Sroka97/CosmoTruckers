@@ -9,7 +9,6 @@ public class PlayerCharacter : Character
 {
     [HideInInspector] public Player MyPlayer;
     [SerializeField] string Name;
-    public Sprite VesselImage; //will be able to remove
     public bool IsDPS;
     public bool IsTank;
     public bool IsSupport;

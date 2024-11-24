@@ -37,7 +37,7 @@ public class BabyAugmentList : MonoBehaviour
             {
                 babyAugments[i].gameObject.SetActive(false);
 
-                if (vesselAugments.Length > 0)
+                if (vesselAugments != null && vesselAugments.Length > 0)
                     vesselAugments[i].gameObject.SetActive(false);
             }
         }

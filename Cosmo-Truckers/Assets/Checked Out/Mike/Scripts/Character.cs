@@ -412,20 +412,40 @@ public abstract class Character : MonoBehaviour
 
     public void Stun(bool stunned)
     {
+        //find renderer if you haven't already
         if (stunnedRenderer == null)
             stunnedRenderer = transform.Find("StunSprite").GetComponent<SpriteRenderer>();
 
+        //Overrides tireless status
+        if (Tireless)
+            Tireless = false;
+
+        //update sprite
         stunnedRenderer.enabled = stunned;
         Stunned = stunned;
+
+        //if this is a player, update their vessel
+        if (GetComponent<PlayerCharacter>())
+            GetComponent<PlayerCharacter>().MyVessel.UpdateHealthText();
     }
 
     public virtual void Energize(bool energize)
     {
+        //find renderer if you haven't already
         if (tirelessRenderer == null)
             tirelessRenderer = transform.Find("TirelessSprite").GetComponent<SpriteRenderer>();
 
+        //Overrides stunned status
+        if (Stunned)
+            Stunned = false;
+
+        //update sprite
         tirelessRenderer.enabled = energize;
         Tireless = energize;
+
+        //if this is a player, update their vessel
+        if (GetComponent<PlayerCharacter>())
+            GetComponent<PlayerCharacter>().MyVessel.UpdateHealthText();
     }
 
     public virtual void Die()

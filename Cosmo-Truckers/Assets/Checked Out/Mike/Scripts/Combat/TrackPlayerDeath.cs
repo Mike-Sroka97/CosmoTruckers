@@ -28,7 +28,7 @@ public class TrackPlayerDeath : MonoBehaviour
     {
         if (trackDeath && minigame)
         {
-            player.MyCharacter.MyVessel.SetINAvesselSprite(false);
+            player.MyCharacter.MyVessel.UpdateSprites();
 
             if (Multiplayer)
             {

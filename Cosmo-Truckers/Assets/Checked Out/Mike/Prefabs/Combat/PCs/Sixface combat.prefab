@@ -33,9 +33,6 @@ Transform:
   m_Children:
   - {fileID: 4047908488017488142}
   - {fileID: 7851998967678521719}
-  - {fileID: 375630005095500427}
-  - {fileID: 4047908489195972587}
-  - {fileID: 4047908487932905820}
   - {fileID: 2690606526998642712}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -74,6 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveSpeed: 2.4
+  jumpSpeed: 4.5
   xVelocityAdjuster: 0
   yVelocityAdjuster: 0
   damageFlashSpeed: 0.2
@@ -87,6 +85,7 @@ MonoBehaviour:
   - {fileID: 8247801404126920770}
   - {fileID: 5969286037449176693}
   iFrameMaterial: {fileID: 2100000, guid: 6ce2845b53937504c8e449e680ce1522, type: 2}
+  StartingMaterial: {fileID: 0}
   MyCharacter: {fileID: 0}
   attackDuration: 0.2
   attackCD: 0.2
@@ -94,7 +93,7 @@ MonoBehaviour:
   horizontalAttackArea: {fileID: 375630005095500425}
   downAttackArea: {fileID: 4047908487932905823}
   upAttackArea: {fileID: 4047908489195972586}
-  jumpSpeed: 4.5
+  pogoAttackArea: {fileID: 8095236064283703996}
   jumpMaxHoldTime: 0.3
   pogoStrength: 200
   coyoteTime: 0.25
@@ -108,6 +107,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 83bdecb194671e245bc1558a849981c5, type: 2}
   - {fileID: 7400000, guid: 89ad76c927633524e806adbe62dc587e, type: 2}
   downAttack: {fileID: 7400000, guid: 65d48c0f2c10c8542a7a05befd82c540, type: 2}
+  pogoDownAttack: {fileID: 7400000, guid: 08f8e86418dfba34f9f29c86b192f5dd, type: 2}
   upAttack: {fileID: 7400000, guid: 66748f080bb782b489cf474f8f2caf6a, type: 2}
   horizontalAttack: {fileID: 7400000, guid: 308a6d8aadda5504c8789e08baf82c50, type: 2}
   changeFace: {fileID: 7400000, guid: cbc8081d9072c604187fd4cdead75b13, type: 2}
@@ -159,8 +159,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 375630004211662623}
-  m_RootOrder: 2
+  m_Father: {fileID: 4047908488017488142}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4047908487716941934
 BoxCollider2D:
@@ -218,7 +218,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 375630004211662623}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4483007647761783034
 BoxCollider2D:
@@ -318,7 +318,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1946958227
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -869048494, guid: 65ff4a6a563072c49b428dfe630803ad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -376,12 +376,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4047908487932905823}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.417, z: 0}
+  m_LocalPosition: {x: 0, y: -0.41700006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 375630004211662623}
-  m_RootOrder: 4
+  m_Father: {fileID: 4047908488017488142}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &4047908488634372594
 BoxCollider2D:
@@ -396,7 +396,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.014338255, y: 0.058681905}
+  m_Offset: {x: 0.014338255, y: 0.08651906}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -407,7 +407,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.15054369, y: 0.39553607}
+  m_Size: {x: 0.15054369, y: 0.33986175}
   m_EdgeRadius: 0
 --- !u!1 &4047908488017488129
 GameObject:
@@ -441,7 +441,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 375630005095500427}
+  - {fileID: 4047908489195972587}
+  - {fileID: 4047908487932905820}
+  - {fileID: 2351830002962549006}
   m_Father: {fileID: 375630004211662623}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -523,7 +527,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1946958227
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -1978883473, guid: 60231ee671e86a74dbd54423c23e30c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -597,8 +601,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 375630004211662623}
-  m_RootOrder: 3
+  m_Father: {fileID: 4047908488017488142}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &1054038616991647292
 CapsuleCollider2D:
@@ -689,7 +693,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1946958227
-  m_SortingLayer: 5
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 586652058, guid: 95d811f8d4cae3c42b6e12de8a30e4f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -722,3 +726,61 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &8095236064283703996
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2351830002962549006}
+  - component: {fileID: 7649960323153986498}
+  m_Layer: 6
+  m_Name: PogoDownAttackArea
+  m_TagString: PlayerAttack
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2351830002962549006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095236064283703996}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.41700006, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 4047908488017488142}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &7649960323153986498
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095236064283703996}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.021297455, y: 0.058681905}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.3523631, y: 0.39553607}
+  m_EdgeRadius: 0
