@@ -27,11 +27,13 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
     Image leftArrow;
     Image rightArrow;
+    INAstatDisplay statDisplay;
 
     private void OnEnable()
     {
         leftArrow = transform.Find("Canvas/Arrows/Left Arrow").GetComponent<Image>();
         rightArrow = transform.Find("Canvas/Arrows/Right Arrow").GetComponent<Image>();
+        statDisplay = GetComponentInChildren<INAstatDisplay>();
     }
 
     private void OnDisable()
@@ -201,6 +203,8 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
 
         currentLocation = newLocation;
         SetDescription();
+
+        statDisplay.UpdateStatDisplay(currentChar);
     }
 
     private void DetermineBG(int currentSlot)

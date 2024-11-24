@@ -920,10 +920,10 @@ public abstract class Character : MonoBehaviour
         Stats.TrueSpeed += speed;
 
         //max double speed and min 40% reduction
-        if (Stats.TrueSpeed > 100)
-            Stats.Speed = 100;
-        else if (Stats.TrueSpeed < -40)
-            Stats.Speed = -40;
+        if (Stats.TrueSpeed > 200)
+            Stats.Speed = 200;
+        else if (Stats.TrueSpeed < 60)
+            Stats.Speed = 60;
         else
             Stats.Speed = Stats.TrueSpeed;
     }
