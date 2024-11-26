@@ -319,7 +319,6 @@ public class PlayerCharacter : Character
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
     {
-
         if (GetComponent<PlayerCharacterSummon>())
             return;
 

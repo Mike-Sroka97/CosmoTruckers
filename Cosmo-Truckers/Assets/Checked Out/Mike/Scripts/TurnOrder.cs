@@ -296,6 +296,7 @@ public class TurnOrder : MonoBehaviour
         }
 
         CombatManager.Instance.CurrentNode.CombatDone = true;
+        CombatManager.Instance.AttackingCharacter = null;
         FindObjectOfType<DungeonController>().CurrentCombat++;
 
         DungeonCharacter inaCharacter = FindObjectOfType<DungeonCharacter>();

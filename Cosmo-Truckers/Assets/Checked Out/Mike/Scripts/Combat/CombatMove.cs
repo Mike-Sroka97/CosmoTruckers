@@ -161,6 +161,8 @@ public class CombatMove : MonoBehaviour
 
     public void DealDamageOrHealing(Character character, int currentDamage, int damage = 0)
     {
+        CombatManager.Instance.AttackingCharacter = CombatManager.Instance.CurrentCharacter;
+
         //can be used to set if the move is damaging or healing end move
         if(damage != 0)
         {

@@ -25,7 +25,8 @@ public class AUG_SpikyShield : Augment
 
     public override void Trigger()
     {
-        CombatManager.Instance.GetCurrentCharacter.TakeDamage((int)StatusEffect);
+        if(CombatManager.Instance.AttackingCharacter != AugmentSO.MyCharacter)
+            CombatManager.Instance.AttackingCharacter.TakeDamage((int)StatusEffect);
 
         if (AugmentSO.MyCharacter.Shield <= 0)
             StopEffect();

@@ -10,7 +10,6 @@ public class AUG_CountR_Guard : Augment
     public override void Activate(AugmentStackSO stack = null)
     {
         base.Activate(stack);
-
     }
 
     public override void StopEffect()
@@ -20,8 +19,11 @@ public class AUG_CountR_Guard : Augment
 
     public override void Trigger()
     {
+        if (CombatManager.Instance.AttackingCharacter == AugmentSO.MyCharacter)
+            return;
+
         // Damage the enemy every time SafeT is hit when they have Count-R Guard
-        CombatManager.Instance.GetCurrentEnemy.TakeDamage(damageToDeal);
+        CombatManager.Instance.AttackingCharacter.TakeDamage(damageToDeal);
 
         // Give SafeT one ang-r every time SafeT hits the enemy
         FindObjectOfType<SafeTMana>().SetCurrentAnger(1);

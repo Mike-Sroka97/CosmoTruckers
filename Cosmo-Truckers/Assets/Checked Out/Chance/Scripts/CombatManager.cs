@@ -65,6 +65,7 @@ public class CombatManager : MonoBehaviour
     private void Awake() => Instance = this;
     [HideInInspector] public bool TargetsSelected = true;
     [HideInInspector] public int CommandsExecuting;
+    [HideInInspector] public Character AttackingCharacter;
 
     private void Start()
     {

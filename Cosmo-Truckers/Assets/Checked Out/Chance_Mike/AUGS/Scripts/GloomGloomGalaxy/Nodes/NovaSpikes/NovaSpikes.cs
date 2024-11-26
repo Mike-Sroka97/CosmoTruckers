@@ -19,6 +19,7 @@ public class NovaSpikes : Augment
 
     public override void Trigger()
     {
-        CombatManager.Instance.GetCurrentCharacter.TakeDamage((int)StatusEffect);
+        if(CombatManager.Instance.AttackingCharacter != AugmentSO.MyCharacter)
+            CombatManager.Instance.AttackingCharacter.TakeDamage((int)StatusEffect);
     }
 }

@@ -13,9 +13,12 @@ public class SpikyBubble : Augment
 
     public override void StopEffect()
     {
+        if (CombatManager.Instance.AttackingCharacter == AugmentSO.MyCharacter)
+            return;
+
         if(AugmentSO.MyCharacter.BubbleShielded)
             AugmentSO.MyCharacter.AdjustBubbleShield(false);
 
-        CombatManager.Instance.GetCurrentCharacter.TakeDamage((int)StatusEffect, true);
+        CombatManager.Instance.AttackingCharacter.TakeDamage((int)StatusEffect, true);
     }
 }

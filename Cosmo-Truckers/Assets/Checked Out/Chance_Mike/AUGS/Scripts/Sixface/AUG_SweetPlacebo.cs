@@ -16,9 +16,9 @@ public class AUG_SweetPlacebo : Augment
         float HealingAdj = 1;
 
         //Damage on players must be divided by 100 to multiply the final
-        HealingAdj = CombatManager.Instance.GetCurrentCharacter.Stats.Restoration / 100;
+        HealingAdj = AugmentSO.MyCharacter.Stats.Restoration / 100;
 
-        AugmentSO.MyCharacter.TakeHealing((int)(healingAmount * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment));
+        AugmentSO.MyCharacter.TakeHealing((int)(healingAmount * HealingAdj + AugmentSO.MyCharacter.FlatHealingAdjustment));
     }
 
     public override void Trigger()
