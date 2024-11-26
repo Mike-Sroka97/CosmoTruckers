@@ -31,6 +31,7 @@ public class Devastation : CombatMove
 
         GetComponentInChildren<DevastationCentralBall>().enabled = true;
         GetComponentInChildren<DevastationCentralBall>().GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        FindObjectOfType<BasicProjectileSpawner>().StartSpawning(); 
 
         base.StartMove();
         SetupMultiplayer();

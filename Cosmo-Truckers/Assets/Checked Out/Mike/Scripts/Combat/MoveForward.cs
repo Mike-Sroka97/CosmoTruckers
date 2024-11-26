@@ -7,6 +7,7 @@ public class MoveForward : MonoBehaviour
     [SerializeField] bool destroyParent = true;
     [SerializeField] bool destroyOnContact = true;
     [SerializeField] protected bool checkClamps = true;
+    [SerializeField] bool moveHorizontal = true; 
     [SerializeField] ParticleSystem particleTrail; 
     [SerializeField] GameObject destroyParticle; 
     private ParticleSystem.MainModule mainModule;
@@ -49,7 +50,10 @@ public class MoveForward : MonoBehaviour
 
     private void MoveMe()
     {
-        transform.Translate(Vector3.right * MoveSpeed * Time.deltaTime);
+        if (moveHorizontal)
+            transform.Translate(Vector3.right * MoveSpeed * Time.deltaTime);
+        else
+            transform.Translate(Vector3.up * MoveSpeed * Time.deltaTime);
 
         if (!checkClamps)
             return;
