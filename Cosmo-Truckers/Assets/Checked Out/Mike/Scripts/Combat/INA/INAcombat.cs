@@ -6,21 +6,21 @@ using UnityEngine.Events;
 
 public class INAcombat : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
-    [SerializeField] Vector3 goalPosition;
+    [SerializeField] protected float moveSpeed;
+    [SerializeField] protected Vector3 goalPosition;
 
     [Space(20)]
     [Header("Screen Variables")]
     [SerializeField] float screenOpenSpeed;
     [SerializeField] float screenGoalDistance;
-    [SerializeField] Transform aboveMask;
+    [SerializeField] protected Transform aboveMask;
     [SerializeField] Transform topMask;
     [SerializeField] Transform bottomMask;
 
     [Space(20)]
     [Header("Timer Variables")]
-    [SerializeField] TextMeshProUGUI countDownTimer;
-    [SerializeField] TextMeshProUGUI timer;
+    [SerializeField] protected TextMeshProUGUI countDownTimer;
+    [SerializeField] protected TextMeshProUGUI timer;
     [SerializeField] int maxTime = 3;
     [SerializeField] int shakeDuration;
     [SerializeField] float shakeSpeedX;
@@ -33,38 +33,34 @@ public class INAcombat : MonoBehaviour
     [Space(20)]
     [Header("Face Variables")]
     [SerializeField] float faceWaitTime = 1f;
-    [SerializeField] Animator face;
+    [SerializeField] protected Animator face;
 
     string goText = "GO!";
     const float INAoffset = -0.5f;
 
-    Vector3 startingPosition;
+    protected Vector3 startingPosition;
     float topMaskStartingY;
     float bottomMaskStartingY;
 
-    private void Start()
+    protected virtual void Start()
     {
         HoldCountDown = false;
         startingPosition = transform.localPosition;
         topMaskStartingY = topMask.localPosition.y;
         bottomMaskStartingY = bottomMask.localPosition.y;
 
-        if (CombatData.Instance.TESTING)
+        if (CombatData.Instance && CombatData.Instance.TESTING)
         {
             if (EnemyManager.Instance.Enemies.Count <= 0)
                 EnemyManager.Instance.InitializeEnemys();
         }
-        //else
-        //{
-        //    StartCoroutine(MoveINADungeon(true));
-        //}
     }
 
     private void OnDisable()
     {
         AttackStarted.RemoveAllListeners();
     }
-    public IEnumerator MoveINACombat(bool moveUp)
+    public virtual IEnumerator MoveINACombat(bool moveUp)
     {
         countDownTimer.enabled = false;
         timer.enabled = false;

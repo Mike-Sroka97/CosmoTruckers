@@ -8,9 +8,10 @@ public class HUBController : MonoBehaviour
     [SerializeField] GameObject dimensionVoteGO;
     [SerializeField] GameObject characterSwapGO;
     [SerializeField] GameObject spellCraftingGO;
-    [SerializeField] GameObject trainingGO;
+    [SerializeField] InaPractice trainingIna;
     [SerializeField] GameObject emotesGO;
     [SerializeField] GameObject dataLogGO;
+    [SerializeField] MainHubButton[] mainHubButtons;
 
     int playersLockedIn;
 
@@ -28,6 +29,7 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
+            CloseButtons();
             dimensionVoteGO.SetActive(true);
             mainOptionsGO.SetActive(false);
         }
@@ -42,6 +44,7 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
+            CloseButtons();
             characterSwapGO.SetActive(true);
             mainOptionsGO.SetActive(false);
         }
@@ -56,6 +59,7 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
+            CloseButtons();
             spellCraftingGO.SetActive(true);
             mainOptionsGO.SetActive(false);
         }
@@ -70,12 +74,13 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
-            trainingGO.SetActive(true);
+            CloseButtons();
             mainOptionsGO.SetActive(false);
+            trainingIna.Hub = this;
+            StartCoroutine(trainingIna.MoveINACombat(true));
         }
         else
         {
-            trainingGO.SetActive(false);
             mainOptionsGO.SetActive(true);
         }
     }
@@ -84,6 +89,7 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
+            CloseButtons();
             emotesGO.SetActive(true);
             mainOptionsGO.SetActive(false);
         }
@@ -98,6 +104,7 @@ public class HUBController : MonoBehaviour
     {
         if (open)
         {
+            CloseButtons();
             dataLogGO.SetActive(true);
             mainOptionsGO.SetActive(false);
         }
@@ -106,5 +113,11 @@ public class HUBController : MonoBehaviour
             dataLogGO.SetActive(false);
             mainOptionsGO.SetActive(true);
         }
+    }
+
+    private void CloseButtons()
+    {
+        foreach (MainHubButton button in mainHubButtons)
+            StartCoroutine(button.MoveMe(false));
     }
 }
