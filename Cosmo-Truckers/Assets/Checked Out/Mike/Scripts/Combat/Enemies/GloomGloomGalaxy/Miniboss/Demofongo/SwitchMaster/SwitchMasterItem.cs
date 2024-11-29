@@ -14,13 +14,14 @@ public class SwitchMasterItem : MonoBehaviour
     [SerializeField] SpriteRenderer[] myDiscRenderers;
     [SerializeField] Color neutralColor, negativeColor, positiveColor;
 
-    [HideInInspector] public int CurrentValue;
+    public int CurrentValue;
 
     SpriteRenderer myRenderer;
     SwitchMasterHand hand;
     int currentRenderer = 0;
     int lastRandom = -1;
     int random;
+    private bool canFlicker = true;
 
     private void Start()
     {
@@ -37,97 +38,75 @@ public class SwitchMasterItem : MonoBehaviour
 
     public void ActivateMe()
     {
+        StartCoroutine(Flicker());
+
         foreach (SwitchMasterItem item in items)
         {
             item.GetComponent<SpriteRenderer>().enabled = true;
             StartCoroutine(item.Flicker());
         }
-
-        StartCoroutine(Flicker());
     }
 
     private void ItemSmoothing()
     {
+        // Stop the flickering on the items
+        foreach (SwitchMasterItem item in items)
+        {
+            item.StopFlicker(); 
+        }
+
         int currentItem0 = 0;
         int currentItem1 = 0;
         int currentItem2 = 0;
         int currentItem3 = 0;
 
-        //Count up what items we have
+
+        // Count up what items we have
         foreach(SwitchMasterItem item in items)
         {
             if(item.GetComponent<SpriteRenderer>().sprite == differentItems[0])
             {
                 currentItem0++;
+                item.CurrentValue = 0; 
             }
             else if(item.GetComponent<SpriteRenderer>().sprite == differentItems[1])
             {
                 currentItem1++;
+                item.CurrentValue = 1;
             }
             else if(item.GetComponent<SpriteRenderer>().sprite == differentItems[2])
             {
                 currentItem2++;
+                item.CurrentValue = 2;
             }
             else
             {
                 currentItem3++;
+                item.CurrentValue = 3;
             }
         }
 
-        //Smooth out those items
-        if(currentItem0 == 0)
-        {
-            int highestNumberItem = GreatestNumber(currentItem0, currentItem1, currentItem2, currentItem3);
+        int[] currentItems = new int[] { currentItem0, currentItem1, currentItem2, currentItem3 };
 
-            foreach (SwitchMasterItem item in items)
+        // Smooth out the item count
+        for (int i = 0; i < 4; i++)
+        {
+            if (currentItems[i] == 0)
             {
-                if(item.GetComponent<SpriteRenderer>().sprite == differentItems[highestNumberItem])
+                // Get the highest number of items for one shape 
+                int highestNumberItem = GreatestNumber(currentItems[0], currentItems[1], currentItems[2], currentItems[3]);
+                
+                // The highest number should never be 1
+                if (currentItems[highestNumberItem] != 1)
                 {
-                    item.GetComponent<SpriteRenderer>().sprite = differentItems[0];
-                    item.CurrentValue = 0;
-                    break; 
+                    SetItemValues(highestNumberItem, i);
+                    // Make sure to decrease the count of this item and increase the count of the other item
+                    currentItems[highestNumberItem]--;
+                    currentItems[i]++;
                 }
-            }
-        }
-        if(currentItem1 == 0)
-        {
-            int highestNumberItem = GreatestNumber(currentItem0, currentItem1, currentItem2, currentItem3);
-
-            foreach (SwitchMasterItem item in items)
-            {
-                if (item.GetComponent<SpriteRenderer>().sprite == differentItems[highestNumberItem])
+                else
                 {
-                    item.GetComponent<SpriteRenderer>().sprite = differentItems[1];
-                    item.CurrentValue = 1;
-                    break; 
-                }
-            }
-        }
-        if(currentItem2 == 0)
-        {
-            int highestNumberItem = GreatestNumber(currentItem0, currentItem1, currentItem2, currentItem3);
-
-            foreach (SwitchMasterItem item in items)
-            {
-                if (item.GetComponent<SpriteRenderer>().sprite == differentItems[highestNumberItem])
-                {
-                    item.GetComponent<SpriteRenderer>().sprite = differentItems[2];
-                    item.CurrentValue = 2;
-                    break; 
-                }
-            }
-        }
-        if(currentItem3 == 0)
-        {
-            int highestNumberItem = GreatestNumber(currentItem0, currentItem1, currentItem2, currentItem3);
-
-            foreach (SwitchMasterItem item in items)
-            {
-                if (item.GetComponent<SpriteRenderer>().sprite == differentItems[highestNumberItem])
-                {
-                    item.GetComponent<SpriteRenderer>().sprite = differentItems[3];
-                    item.CurrentValue = 3;
-                    break; 
+                    Debug.Log("Current Item count is 1, but 1 is the highest item count!"); 
                 }
             }
         }
@@ -158,6 +137,25 @@ public class SwitchMasterItem : MonoBehaviour
         return numberToReturn;
     }
 
+    // Smooth out the item count by setting this item to a new item
+    private void SetItemValues(int highestNumberItem, int newItemValue)
+    {
+        foreach (SwitchMasterItem item in items)
+        {
+            if (item.CurrentValue == highestNumberItem)
+            {
+                item.GetComponent<SpriteRenderer>().sprite = differentItems[newItemValue];
+                item.CurrentValue = newItemValue;
+                break; 
+            }
+        }
+    }
+
+    public void StopFlicker()
+    {
+        canFlicker = false; 
+    }
+
     private IEnumerator Flicker()
     {
         if (masterItem)
@@ -167,8 +165,9 @@ public class SwitchMasterItem : MonoBehaviour
         }
 
         float currentTime = 0;
+        canFlicker = true; 
 
-        while(currentTime < totalFlickerDuration)
+        while(currentTime < totalFlickerDuration && canFlicker)
         {
             while(lastRandom == random)
             {
@@ -194,15 +193,16 @@ public class SwitchMasterItem : MonoBehaviour
             yield return null;
         }
 
-        CurrentValue = random;
-
         if (masterItem)
+        {
+            CurrentValue = random;
             ItemSmoothing();
 
-        yield return new WaitForSeconds(itemDecisionDuration);
+            yield return new WaitForSeconds(itemDecisionDuration);
 
-        if(masterItem)
-            StartCoroutine(hand.Grab());
+            if (masterItem)
+                StartCoroutine(hand.Grab());
+        }
     }
 
     public void IncrementToNextRenderer(bool correctChoice)
