@@ -12,7 +12,9 @@ public class PainfulPresentsPresent : MonoBehaviour
     [Header("Collectable Variables")]
     [SerializeField] Material badMaterial;
     [SerializeField] Material goodMaterial;
-    [SerializeField] Sprite goodSprite, badSprite, healSprite; 
+    [SerializeField] Sprite goodSprite, badSprite, healSprite;
+    // Easier to do this and use PlayerPickup for good and neutral
+    [SerializeField] GameObject badParticle; 
 
     SpriteRenderer myRenderer;
     bool movingInward = true;
@@ -79,6 +81,15 @@ public class PainfulPresentsPresent : MonoBehaviour
                 GetComponent<PlayerPickup>().SetScoringTypes(false, true);
                 Destroy(GetComponent<TrackPlayerDeath>());
                 break;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (myRenderer.sprite == badSprite && collision.tag == "Player")
+        {
+            Instantiate(badParticle, transform.position, badParticle.transform.rotation, FindObjectOfType<CombatMove>().transform);
+            Destroy(gameObject);
         }
     }
 }
