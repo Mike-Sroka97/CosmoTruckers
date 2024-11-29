@@ -18,6 +18,7 @@ public abstract class DungeonController : MonoBehaviour
     [SerializeField] protected GameObject[] nonCombatNodes;
     [SerializeField] int totalEventNodes = 24;
     [SerializeField] GameObject[] nodeLayouts;
+    [SerializeField] protected Color nodeLayoutsColor; 
     [SerializeField] float timeToEscapeDungeon = 2f;
     [SerializeField] string sceneToLoad;
     public EventNodeHandler NodeHandler;
@@ -202,6 +203,9 @@ public abstract class DungeonController : MonoBehaviour
         {
             GameObject layoutInstance = Instantiate(nodeLayouts[i], nodeLayoutPositions[i]);
 
+            // Set the color of every layout spawned here. The actual graphic is white
+            layoutInstance.transform.Find("Node Path Graphic").GetComponent<SpriteRenderer>().color = nodeLayoutsColor;
+
             DNode[] nodes = layoutInstance.GetComponentsInChildren<DNode>();
             allEventNodes.AddRange(nodes);
 
@@ -213,6 +217,9 @@ public abstract class DungeonController : MonoBehaviour
             //determine combat node attachment stuffs
             foreach (DNode node in nodes)
             {
+                // Set the color of every node's path spawned here. The actual graphic is white
+                node.transform.Find("Event Node Path Sprite").GetComponent<SpriteRenderer>().color = nodeLayoutsColor;
+
                 node.Group = i;
 
                 if(node.StartNode)
