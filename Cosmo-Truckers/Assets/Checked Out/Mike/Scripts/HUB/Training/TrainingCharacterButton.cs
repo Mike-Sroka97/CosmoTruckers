@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TrainingCharacterButton : Button
+public class TrainingCharacterButton : Button, ISelectHandler
 {
     InaPractice ina;
 
@@ -14,6 +15,12 @@ public class TrainingCharacterButton : Button
 
     public void SetTrainingCharacter(int traineeIndex)
     {
-        ina.SetPlayer(traineeIndex);
+        ina.SetPlayer(traineeIndex, GetComponent<TrainingButtonInfo>().CharacterName);
+    }
+
+    public override void OnSelect(BaseEventData eventData)
+    {
+        base.OnSelect(eventData);
+        ina.TypeCharacterName(GetComponent<TrainingButtonInfo>().CharacterName);
     }
 }

@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InaPractice : INAcombat
 {
+    [Space(100)]
+    [Header("TrainingInaStuffs")]
+
+    [Space(40)]
     [Header("CharacterSelectStuffs")]
     [SerializeField] GameObject characterSelectGo;
     [SerializeField] TextMeshProUGUI[] characterSelectTMPs;
@@ -13,19 +18,29 @@ public class InaPractice : INAcombat
     [SerializeField] GameObject[] characterSelectButtonGOs;
     [SerializeField] float characterSelectButtonsWaitTime;
     [SerializeField] GameObject[] trainees;
+    [SerializeField] TextMeshProUGUI characterNameText;
 
+    [Space(40)]
     [Header("CharacterSelectStuffs")]
-    [Space(20)]
     [SerializeField] GameObject minigameCharacterSelectGo;
+    [SerializeField] string minigameCharacterSelectText;
+    [SerializeField] TextMeshProUGUI minigameCharacterSelectTMP;
+    [SerializeField] GameObject[] minigameCharacterSelectButtonGOs;
+    [SerializeField] float minigameCharacterSelectButtonsWaitTime = 0.1f;
+    [SerializeField] Sprite[] characterImages;
 
     AutoSelectMeButton firstCharacterButton;
+    AutoSelectMeButton firstMinigameCharacterButton;
     GameObject currentTrainee;
     [HideInInspector] public HUBController Hub;
+    int traineeID;
+    string traineeName;
     protected override void Start()
     {
         base.Start();
 
         firstCharacterButton = transform.Find("CharacterSelectStuffs/Buttons/AeglarButton").GetComponent<AutoSelectMeButton>();
+        firstMinigameCharacterButton = transform.Find("MinigameCharacterSelect/Buttons/MinigameCharacterButton").GetComponent<AutoSelectMeButton>();
     }
 
     public void StartPracticeShutDown()
@@ -96,6 +111,35 @@ public class InaPractice : INAcombat
         firstCharacterButton.enabled = true;
     }
 
+    private IEnumerator PrintMinigameCharacterSelect()
+    {
+        minigameCharacterSelectGo.SetActive(true);
+
+        int currentCharacter = 0;
+
+        while (currentCharacter < minigameCharacterSelectText.Length)
+        {
+            minigameCharacterSelectTMP.text += minigameCharacterSelectText[currentCharacter];
+
+            currentCharacter++;
+
+            yield return new WaitForSeconds(characterWaitTime);
+        }
+
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+
+        foreach (GameObject minigameCharacterSelectButton in minigameCharacterSelectButtonGOs)
+        {
+            minigameCharacterSelectButton.SetActive(true);
+            yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        }
+
+        //TODO set buttons up
+
+        //TODO select first button
+        firstMinigameCharacterButton.enabled = true;
+    }
+
     private void CleanUp()
     {
         foreach (TextMeshProUGUI tmp in characterSelectTMPs)
@@ -120,12 +164,42 @@ public class InaPractice : INAcombat
         StartCoroutine(PrintCharacterSelectText());
     }
 
-    public void SetPlayer(int traineeIndex)
+    public void SetPlayer(int traineeIndex, string characterName)
     {
+        traineeID = traineeIndex;
+        traineeName = characterName;
         currentTrainee = trainees[traineeIndex];
-        Debug.Log("Current trainee = " + currentTrainee.name);
         characterSelectGo.SetActive(false);
-        minigameCharacterSelectGo.SetActive(true);
-        //TODO open next Ina screen
+        StartCoroutine(PrintMinigameCharacterSelect());
+    }
+
+    public void TypeCharacterName(string characterName)
+    {
+        StartCoroutine(PrintString(characterName, characterNameText));
+    }
+
+    private IEnumerator PrintString(string stringToPrint, TextMeshProUGUI textElementToPrintTo)
+    {
+        textElementToPrintTo.text = "";
+
+        int currentCharacter = 0;
+
+        while (currentCharacter < stringToPrint.Length)
+        {
+            textElementToPrintTo.text += stringToPrint[currentCharacter];
+
+            currentCharacter++;
+
+            yield return new WaitForSeconds(characterWaitTime);
+        }
+    }
+
+    public void SetPlayerMinigameButton(GameObject characterButton)
+    {
+        Image characterImage = characterButton.transform.Find("CharacterImage").GetComponent<Image>();
+        TextMeshProUGUI textElement = characterButton.transform.Find("GameObject").GetComponent<TextMeshProUGUI>();
+
+        characterImage.sprite = characterImages[traineeID];
+        textElement.text = traineeName;
     }
 }
