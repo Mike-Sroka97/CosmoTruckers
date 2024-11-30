@@ -10,7 +10,7 @@ public class TrainingCharacterButton : Button, ISelectHandler
 
     protected override void Start()
     {
-        ina = transform.parent.parent.parent.GetComponent<InaPractice>();
+        ina = FindObjectOfType<InaPractice>();
     }
 
     public void SetTrainingCharacter(int traineeIndex)

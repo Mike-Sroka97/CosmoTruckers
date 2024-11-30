@@ -29,18 +29,37 @@ public class InaPractice : INAcombat
     [SerializeField] float minigameCharacterSelectButtonsWaitTime = 0.1f;
     [SerializeField] Sprite[] characterImages;
 
+    [Space(40)]
+    [Header("EnemySelectStuffs")]
+    [SerializeField] GameObject enemySelectGo;
+    [SerializeField] TextMeshProUGUI[] enemySelectTMPs;
+    [SerializeField] string[] enemySelectTextLines;
+    [SerializeField] GameObject[] enemySelectButtons;
+    [SerializeField] TextMeshProUGUI enemyNameText;
+
+    [Space(20)]
+    [Header("EnemySprites")] //ID starts with 0 for dimension 1 feeble foe 1. +8 to id based on dimension ID
+    [SerializeField] Sprite[] enemySprites;
+    [SerializeField] string[] enemyNames;
+    [SerializeField] Sprite[] otherSprites;
+    [SerializeField] string[] otherNames;
+
     AutoSelectMeButton firstCharacterButton;
     AutoSelectMeButton firstMinigameCharacterButton;
+    AutoSelectMeButton firstEnemySelectButton;
     GameObject currentTrainee;
     [HideInInspector] public HUBController Hub;
     int traineeID;
     string traineeName;
+    int dimensionID;
+    bool printingString;
     protected override void Start()
     {
         base.Start();
 
         firstCharacterButton = transform.Find("CharacterSelectStuffs/Buttons/AeglarButton").GetComponent<AutoSelectMeButton>();
         firstMinigameCharacterButton = transform.Find("MinigameCharacterSelect/Buttons/MinigameCharacterButton").GetComponent<AutoSelectMeButton>();
+        firstEnemySelectButton = transform.Find("EnemySelectStuffs/Buttons/ReturnButton").GetComponent<AutoSelectMeButton>();
     }
 
     public void StartPracticeShutDown()
@@ -48,6 +67,11 @@ public class InaPractice : INAcombat
         StartCoroutine(MoveINACombat(false));
     }
 
+    /// <summary>
+    /// Handles moving and setup/cleanup for training ina
+    /// </summary>
+    /// <param name="moveUp"></param>
+    /// <returns></returns>
     public override IEnumerator MoveINACombat(bool moveUp)
     {
         if (moveUp)
@@ -84,6 +108,10 @@ public class InaPractice : INAcombat
         }
     }
 
+    /// <summary>
+    /// pretty setup for character select screen
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PrintCharacterSelectText()
     {
         for(int i = 0; i < characterSelectTMPs.Length; i++)
@@ -111,6 +139,10 @@ public class InaPractice : INAcombat
         firstCharacterButton.enabled = true;
     }
 
+    /// <summary>
+    /// Pretty setup for minigame character select screen
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PrintMinigameCharacterSelect()
     {
         minigameCharacterSelectGo.SetActive(true);
@@ -134,11 +166,95 @@ public class InaPractice : INAcombat
             yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         }
 
-        //TODO set buttons up
-
         //TODO select first button
         firstMinigameCharacterButton.enabled = true;
     }
+
+    /// <summary>
+    /// God help me
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PrintEnemySelect()
+    {
+        enemySelectGo.SetActive(true);
+
+        //Print title text
+        StartCoroutine(PrintString(enemySelectTextLines[0], enemySelectTMPs[0]));
+        while (printingString)
+            yield return null;
+
+        //Enable return button
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        enemySelectButtons[0].SetActive(true);
+
+        //Print Feeble foes and enable buttons
+        StartCoroutine(PrintString(enemySelectTextLines[1], enemySelectTMPs[1]));
+        while (printingString)
+            yield return null;
+
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(1);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(2);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(3);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(4);
+
+        //Print Fierce foes and enable buttons
+        StartCoroutine(PrintString(enemySelectTextLines[2], enemySelectTMPs[2]));
+        while (printingString)
+            yield return null;
+
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(5);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(6);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(7);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(8);
+
+        //Print Minibosses and enable buttons
+        StartCoroutine(PrintString(enemySelectTextLines[3], enemySelectTMPs[3]));
+        while (printingString)
+            yield return null;
+
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(9);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(10);
+
+        //Print Bosses and enable buttons
+        StartCoroutine(PrintString(enemySelectTextLines[4], enemySelectTMPs[4]));
+        while (printingString)
+            yield return null;
+
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(11);
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        SetupEnemyButton(12);
+
+        //Enable player interaction
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        firstEnemySelectButton.enabled = true;
+    }
+
+    /// <summary>
+    /// Setups up the necessary data for dimension buttons
+    /// </summary>
+    /// <param name="buttonID"></param>
+    private void SetupEnemyButton(int buttonID)
+    {
+        enemySelectButtons[buttonID].SetActive(true);
+        enemySelectButtons[buttonID].GetComponent<TrainingButtonInfo>().CharacterName = enemyNames[buttonID - 1 + getEnemyIdModifier];
+        enemySelectButtons[buttonID].transform.Find("Mask/GameObject").GetComponent<Image>().sprite = enemySprites[buttonID - 1 + getEnemyIdModifier];
+    }
+
+    /// <summary>
+    /// Clean version of accessing your enemy ID mod
+    /// </summary>
+    private int getEnemyIdModifier => dimensionID * 12;
 
     /// <summary>
     /// Clears all text field and resets GOs
@@ -165,6 +281,21 @@ public class InaPractice : INAcombat
 
         firstMinigameCharacterButton.enabled = false;
 
+        //Screen 3 - Minigame Character Select Secondary (Dimension)
+        foreach (TextMeshProUGUI tmp in enemySelectTMPs)
+            tmp.text = "";
+
+        enemyNameText.text = "";
+
+        foreach (GameObject characterSelectButton in enemySelectButtons)
+            characterSelectButton.SetActive(false);
+
+        firstEnemySelectButton.enabled = false;
+
+        //Screen 4 - Minigame Character Select Secondary (Other)
+
+        //Screen 5 - Minigame Select
+
         //Set all screens off
         SetAllScreensDisabled();
     }
@@ -187,8 +318,20 @@ public class InaPractice : INAcombat
         traineeID = traineeIndex;
         traineeName = characterName;
         currentTrainee = trainees[traineeIndex];
-        characterSelectGo.SetActive(false);
+        SetMinigameCharacterSelectScreen();
+    }
+
+    public void SetMinigameCharacterSelectScreen()
+    {
+        CleanUp();
         StartCoroutine(PrintMinigameCharacterSelect());
+    }
+
+    public void SetEnemySelectScreen(int dimension)
+    {
+        CleanUp();
+        dimensionID = dimension;
+        StartCoroutine(PrintEnemySelect());
     }
 
     public void TypeCharacterName(string characterName)
@@ -196,9 +339,19 @@ public class InaPractice : INAcombat
         StartCoroutine(PrintString(characterName, characterNameText));
     }
 
-    private IEnumerator PrintString(string stringToPrint, TextMeshProUGUI textElementToPrintTo)
+    public void TypeEnemyName(string enemyName)
     {
+        StartCoroutine(PrintString(enemyName, enemyNameText, true));
+    }
+
+    private IEnumerator PrintString(string stringToPrint, TextMeshProUGUI textElementToPrintTo, bool replaceSpaces = false)
+    {
+        printingString = true;
+
         textElementToPrintTo.text = "";
+
+        if(replaceSpaces)
+            stringToPrint = stringToPrint.Replace(" ", "\n");
 
         int currentCharacter = 0;
 
@@ -210,6 +363,8 @@ public class InaPractice : INAcombat
 
             yield return new WaitForSeconds(characterWaitTime);
         }
+
+        printingString = false;
     }
 
     public void SetPlayerMinigameButton(GameObject characterButton)
