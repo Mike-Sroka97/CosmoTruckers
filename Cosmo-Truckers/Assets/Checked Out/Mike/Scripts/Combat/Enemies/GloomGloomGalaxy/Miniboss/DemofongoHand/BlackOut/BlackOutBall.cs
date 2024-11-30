@@ -50,9 +50,7 @@ public class BlackOutBall : MonoBehaviour
         StartCoroutine(myRotator.RotateAlteration());
 
         while(myRotator.Rotating)
-        {
             yield return null;
-        }
 
         myCollider.enabled = true;
     }
@@ -64,7 +62,11 @@ public class BlackOutBall : MonoBehaviour
             minigame.Score++;
             myRenderer.material = successMaterial;
             myCollider.enabled = false;
-            GameObject particle = Instantiate(successParticles, transform.position, successParticles.transform.rotation, null);
+            Instantiate(successParticles, transform.position, successParticles.transform.rotation, minigame.transform);
+        }
+        else
+        {
+            GetComponent<Rotator>().RotateSpeed = 300f; 
         }
     }
 }
