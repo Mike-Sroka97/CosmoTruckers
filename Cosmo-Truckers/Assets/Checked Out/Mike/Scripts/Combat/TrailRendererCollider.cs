@@ -6,7 +6,8 @@ public class TrailRendererCollider : MonoBehaviour
 {
     TrailRenderer myTrail;
     [SerializeField] EdgeCollider2D myCollider;
-    [SerializeField] int colliderBuffer; 
+    [SerializeField] int colliderBuffer;
+    [SerializeField] Vector2 inaPosition = new Vector2(100, 100); 
 
     private void Awake()
     {
@@ -24,7 +25,7 @@ public class TrailRendererCollider : MonoBehaviour
         
         for(int i = 0; i < trail.positionCount; i++)
         {
-            points.Add(trail.GetPosition(i));
+            points.Add(trail.GetPosition(i) - (Vector3)inaPosition);
         }
 
         for (int i = 0; i < colliderBuffer; i++)
