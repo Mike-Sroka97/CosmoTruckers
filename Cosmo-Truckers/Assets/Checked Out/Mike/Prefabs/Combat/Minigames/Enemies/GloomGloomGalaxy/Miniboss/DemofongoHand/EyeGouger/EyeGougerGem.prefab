@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4836630019230075673}
   - component: {fileID: 4836630019230075675}
   - component: {fileID: 3408468112528201256}
+  - component: {fileID: 6196397062331499699}
   m_Layer: 0
   m_Name: EyeGougerGem
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 9face26b21c59e74f917c3257a2ee9b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -105,7 +106,7 @@ MonoBehaviour:
   givesAugmentScore: 1
   givesScore: 1
   multiplayer: 0
-  collectParticle: {fileID: 0}
+  collectParticle: {fileID: 397175137435282232, guid: acf1de25ffc42cb4889b3a378670a185, type: 3}
 --- !u!58 &3408468112528201256
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -122,6 +123,26 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5416666
+--- !u!95 &6196397062331499699
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4836630019230075672}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc649d2922b4af94e9e01a11cbc6ddbe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &2796120758388036752
 PrefabInstance:
   m_ObjectHideFlags: 0

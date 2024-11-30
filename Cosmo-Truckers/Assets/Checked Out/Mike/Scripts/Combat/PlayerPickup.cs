@@ -84,11 +84,25 @@ public class PlayerPickup : MonoBehaviour
 
             if (collectParticle != null)
             {
-                Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.gameObject.transform);
+                Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.transform);
             }
 
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// Destroy the pickup even if it hasn't been touched, and still spawn the destroy particle
+    /// Gives move visual indication that it is gone
+    /// </summary>
+    public void DestroyPickup()
+    {
+        if (collectParticle != null)
+        {
+            Instantiate(collectParticle, transform.position, collectParticle.transform.rotation, minigame.transform);
+        }
+
+        Destroy(gameObject);
     }
 
     public void SetScoringTypes(bool score, bool augScore)
