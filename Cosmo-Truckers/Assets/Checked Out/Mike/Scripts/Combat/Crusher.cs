@@ -42,7 +42,7 @@ public class Crusher : MonoBehaviour
         while(currentTime < engageDuration)
         {
             engaging = true; 
-            transform.position -= new Vector3(0, engageSpeed * Time.deltaTime, 0);
+            transform.localPosition -= new Vector3(0, engageSpeed * Time.deltaTime, 0);
             currentTime += Time.deltaTime;
             yield return null;
         }
@@ -52,25 +52,25 @@ public class Crusher : MonoBehaviour
 
         engaging = false;
 
-        while (transform.position.y > minCrushY)
+        while (transform.localPosition.y > minCrushY)
         {
-            transform.position -= new Vector3(0, crushSpeed * Time.deltaTime, 0);
+            transform.localPosition -= new Vector3(0, crushSpeed * Time.deltaTime, 0);
             yield return null;
         }
 
-        transform.position = new Vector3(transform.position.x, minCrushY, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, minCrushY, transform.localPosition.z);
 
         //Retract code
         yield return new WaitForSeconds(retractDelay);
 
-        while(transform.position.y < startingY)
+        while(transform.localPosition.y < startingY)
         {
             retracting = true; 
             transform.position += new Vector3(0, retractSpeed * Time.deltaTime, 0);
             yield return null;
         }
 
-        transform.position = new Vector3(transform.position.x, startingY, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, startingY, transform.localPosition.z);
 
         //Recursion code
         if(recursive)
