@@ -15,7 +15,7 @@ public class MoveForward : MonoBehaviour
     public float MoveSpeed;
 
     const int xClamp = 10;
-    const int yClamp = 8;
+    const int yClamp = 10;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

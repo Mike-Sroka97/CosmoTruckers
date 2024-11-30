@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3084732742294351693}
   - component: {fileID: 3084732742294351682}
   - component: {fileID: 3084732742294351683}
+  - component: {fileID: 6620577160018479480}
   m_Layer: 0
   m_Name: OrbnusDross
   m_TagString: Untagged
@@ -76,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 1236704235, guid: c3ed4d349986c48409e21f83e2779e95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -104,7 +105,9 @@ MonoBehaviour:
   destroyParent: 0
   destroyOnContact: 0
   checkClamps: 0
+  moveHorizontal: 1
   particleTrail: {fileID: 0}
+  destroyParticle: {fileID: 0}
   MoveSpeed: 0.8
 --- !u!114 &3084732742294351692
 MonoBehaviour:
@@ -166,5 +169,23 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
+--- !u!114 &6620577160018479480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3084732742294351689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 1236704235, guid: c3ed4d349986c48409e21f83e2779e95, type: 3}
+  - {fileID: 1866327021, guid: c3ed4d349986c48409e21f83e2779e95, type: 3}
+  timeBetweenEachSprite: 0.5

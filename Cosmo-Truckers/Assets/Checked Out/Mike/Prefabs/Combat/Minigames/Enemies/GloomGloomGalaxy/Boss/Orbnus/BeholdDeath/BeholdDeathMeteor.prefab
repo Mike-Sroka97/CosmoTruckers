@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5394771406180640381}
   - component: {fileID: 5394771406180640378}
   - component: {fileID: 5394771406180640379}
-  - component: {fileID: 1874460408203499129}
+  - component: {fileID: 1008863001178792693}
   m_Layer: 0
   m_Name: BeholdDeathMeteor
   m_TagString: Untagged
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 2
   m_Sprite: {fileID: -420760356, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -121,7 +121,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 1
   augmentScoreIncrease: 0
-  multiplayer: 0
+  overrideDamage: 0
+  Multiplayer: 0
+  Boss: 0
   TrackingDamage: 1
 --- !u!114 &5394771406180640379
 MonoBehaviour:
@@ -138,28 +140,26 @@ MonoBehaviour:
   destroyParent: 0
   destroyOnContact: 0
   checkClamps: 1
+  moveHorizontal: 1
   particleTrail: {fileID: 0}
+  destroyParticle: {fileID: 0}
   MoveSpeed: 3.2
---- !u!95 &1874460408203499129
-Animator:
-  serializedVersion: 4
+--- !u!114 &1008863001178792693
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5394771406180640376}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: aa1eb9deedb3a8b4492fadea8caa3706, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -420760356, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
+  - {fileID: -2021707213, guid: 438bda1295a29ea448d804243e7d7b65, type: 3}
+  timeBetweenEachSprite: 0.5
 --- !u!1001 &2207346885146522504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 548896142482418288, guid: c9814bbb65bf5fb47abd2d0dd311c31a, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 548896142482418288, guid: c9814bbb65bf5fb47abd2d0dd311c31a, type: 3}
       propertyPath: m_SortingOrder
@@ -339,7 +339,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 580111840666611795, guid: 75b27b746a892c0499a93d51d8b79b34, type: 3}
       propertyPath: m_SortingLayer
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 580111840666611795, guid: 75b27b746a892c0499a93d51d8b79b34, type: 3}
       propertyPath: m_SortingOrder
