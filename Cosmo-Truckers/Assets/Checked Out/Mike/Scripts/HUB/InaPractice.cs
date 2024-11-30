@@ -140,14 +140,32 @@ public class InaPractice : INAcombat
         firstMinigameCharacterButton.enabled = true;
     }
 
+    /// <summary>
+    /// Clears all text field and resets GOs
+    /// </summary>
     private void CleanUp()
     {
+        //Screen 1 - Character Select
         foreach (TextMeshProUGUI tmp in characterSelectTMPs)
             tmp.text = "";
+
+        characterNameText.text = "";
 
         foreach (GameObject characterSelectButton in characterSelectButtonGOs)
             characterSelectButton.SetActive(false);
 
+        firstCharacterButton.enabled = false;
+
+
+        //Screen 2 - Minigame Character Select Primary
+        minigameCharacterSelectTMP.text = "";
+
+        foreach (GameObject minigameCharacterButton in minigameCharacterSelectButtonGOs)
+            minigameCharacterButton.SetActive(false);
+
+        firstMinigameCharacterButton.enabled = false;
+
+        //Set all screens off
         SetAllScreensDisabled();
     }
 
@@ -159,7 +177,7 @@ public class InaPractice : INAcombat
 
     public void SetCharacterSelectScreen()
     {
-        SetAllScreensDisabled();
+        CleanUp();
         characterSelectGo.SetActive(true);
         StartCoroutine(PrintCharacterSelectText());
     }
