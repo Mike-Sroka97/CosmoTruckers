@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using UnityEngine.Video;
 
 public class InaPractice : INAcombat
 {
@@ -54,11 +56,16 @@ public class InaPractice : INAcombat
     [SerializeField] TextMeshProUGUI minigameSelectMinigameDescription;
     [SerializeField] TextMeshProUGUI minigameSelectMinigameName;
     [SerializeField] GameObject[] minigameSelectButtons;
+    [SerializeField] TextMeshProUGUI[] miniGameCountTmps;
+    [SerializeField] VideoPlayer videoPlayer;
 
     [Space(20)]
     [Header("EnemySprites")] //ID starts with 0 for dimension 1 feeble foe 1. +8 to id based on dimension ID
     [SerializeField] Sprite[] enemySprites;
     [SerializeField] string[] enemyNames;
+    [SerializeField] GameObject[] playerPrefabs;
+    [SerializeField] GameObject[] enemyPrefabs;
+    [SerializeField] GameObject[] otherPrefabs;
 
     AutoSelectMeButton firstCharacterButton;
     AutoSelectMeButton firstMinigameCharacterButton;
@@ -68,10 +75,13 @@ public class InaPractice : INAcombat
     GameObject currentTrainee;
     [HideInInspector] public HUBController Hub;
     int traineeID;
+    int enemyID;
     string traineeName;
     int dimensionID;
     bool printingString;
     int inCharacterMinigameSelect; //0 == player, 1 == enemy, 2 == other
+    int currentMinigameIndex = 0;
+    List<BaseAttackSO> currentCharacterAttacks = new List<BaseAttackSO>();
     protected override void Start()
     {
         base.Start();
@@ -298,7 +308,7 @@ public class InaPractice : INAcombat
     /// Pretty stuffs for minigame select screen
     /// </summary>
     /// <returns></returns>
-    private IEnumerator PrintMinigameSelect()
+    private IEnumerator PrintMinigameSelect(int type)
     {
         minigameSelectGo.SetActive(true);
 
@@ -316,6 +326,32 @@ public class InaPractice : INAcombat
         //Enable player interaction
         yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         firstMinigameSelectButton.enabled = true;
+
+        //Setup minigame count stuffs
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        currentMinigameIndex = 0;
+        miniGameCountTmps[0].text = "1";
+        miniGameCountTmps[1].text = "/";
+
+        //Setup up minigame info based on type
+        if (type == 0)
+        {
+            currentCharacterAttacks = playerPrefabs[traineeID].GetComponent<PlayerCharacter>().GetAllBaseAttacks;
+        }
+        else if(type == 1)
+        {
+            currentCharacterAttacks = enemyPrefabs[traineeID].GetComponent<Enemy>().GetAllAttacks.ToList();
+        }
+        else
+        {
+            currentCharacterAttacks = otherPrefabs[traineeID].GetComponent<Enemy>().GetAllAttacks.ToList();
+        }
+
+        videoPlayer.targetTexture.Release();
+        videoPlayer.targetTexture.Create();
+
+        miniGameCountTmps[2].text = $"{currentCharacterAttacks.Count}";
+        SetupMinigameDisplay();
     }
 
     /// <summary>
@@ -327,6 +363,40 @@ public class InaPractice : INAcombat
         enemySelectButtons[buttonID].SetActive(true);
         enemySelectButtons[buttonID].GetComponent<TrainingButtonInfo>().CharacterName = enemyNames[buttonID - 1 + getEnemyIdModifier];
         enemySelectButtons[buttonID].transform.Find("Mask/GameObject").GetComponent<Image>().sprite = enemySprites[buttonID - 1 + getEnemyIdModifier];
+    }
+
+    //Displays minigame stuffs
+    private void SetupMinigameDisplay()
+    {
+        StartCoroutine(PrintString(currentCharacterAttacks[currentMinigameIndex].AttackName, minigameSelectMinigameName));
+        StartCoroutine(PrintString(currentCharacterAttacks[currentMinigameIndex].AttackDescription, minigameSelectMinigameDescription));
+        videoPlayer.clip = currentCharacterAttacks[currentMinigameIndex].MinigameDemo;
+    }
+
+    /// <summary>
+    /// Handles the index of the minigames
+    /// </summary>
+    /// <param name="increment"></param>
+    public void HandleMinigameChange(bool increment)
+    {
+        StopAllCoroutines();
+
+        if(increment)
+        {
+            currentMinigameIndex++;
+            if (currentMinigameIndex >= currentCharacterAttacks.Count)
+                currentMinigameIndex = 0;
+        }
+        else
+        {
+            currentMinigameIndex--;
+            if (currentMinigameIndex < 0)
+                currentMinigameIndex = currentCharacterAttacks.Count - 1;
+        }
+
+        miniGameCountTmps[0].text = $"{currentMinigameIndex + 1}";
+
+        SetupMinigameDisplay();
     }
 
     /// <summary>
@@ -385,6 +455,9 @@ public class InaPractice : INAcombat
 
         foreach (GameObject characterSelectButton in minigameSelectButtons)
             characterSelectButton.SetActive(false);
+
+        foreach (TextMeshProUGUI tmp in miniGameCountTmps)
+            tmp.text = "";
 
         //Set all screens off
         SetAllScreensDisabled();
@@ -461,7 +534,7 @@ public class InaPractice : INAcombat
     {
         CleanUp();
         inCharacterMinigameSelect = 0;
-        StartCoroutine(PrintMinigameSelect());
+        StartCoroutine(PrintMinigameSelect(0));
     }
 
     /// <summary>
@@ -471,7 +544,7 @@ public class InaPractice : INAcombat
     {
         CleanUp();
         inCharacterMinigameSelect = 1;
-        StartCoroutine(PrintMinigameSelect());
+        StartCoroutine(PrintMinigameSelect(1));
     }
 
     /// <summary>
@@ -481,7 +554,7 @@ public class InaPractice : INAcombat
     {
         CleanUp();
         inCharacterMinigameSelect = 2;
-        StartCoroutine(PrintMinigameSelect());
+        StartCoroutine(PrintMinigameSelect(2));
     }
 
     /// <summary>
@@ -495,6 +568,11 @@ public class InaPractice : INAcombat
             SetOtherEnemySelectScreen();
         else
             SetEnemySelectScreen(dimensionID);
+    }
+
+    public void StartMinigame()
+    {
+        //TODO
     }
 
     public void TypeCharacterName(string characterName)

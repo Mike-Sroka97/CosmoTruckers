@@ -29,6 +29,7 @@ public class PlayerCharacter : Character
     [SerializeField] GameObject MiniGameControllerPrefab;
     public GameObject GetCharacterController { get => MiniGameControllerPrefab; }
     public List<BaseAttackSO> GetAllAttacks { get => attackClones; }
+    public List<BaseAttackSO> GetAllBaseAttacks { get => attacks; } //Dont look at me like that. Trust me
 
     protected Mana manaBase;
     public Mana GetManaBase { get => manaBase; }
