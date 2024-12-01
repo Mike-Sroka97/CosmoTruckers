@@ -37,16 +37,24 @@ public class InaPractice : INAcombat
     [SerializeField] GameObject[] enemySelectButtons;
     [SerializeField] TextMeshProUGUI enemyNameText;
 
+    [Space(40)]
+    [Header("OtherEnemySelectStuffs")]
+    [SerializeField] GameObject otherEnemySelectGo;
+    [SerializeField] TextMeshProUGUI[] otherEnemySelectTMPs;
+    [SerializeField] string[] otherEnemySelectTextLines;
+    [SerializeField] GameObject[] otherEnemySelectButtons;
+    [SerializeField] TextMeshProUGUI otherEnemyNameText;
+    [SerializeField] string maliceMeme = "Yea I'm not doing that again :I";
+
     [Space(20)]
     [Header("EnemySprites")] //ID starts with 0 for dimension 1 feeble foe 1. +8 to id based on dimension ID
     [SerializeField] Sprite[] enemySprites;
     [SerializeField] string[] enemyNames;
-    [SerializeField] Sprite[] otherSprites;
-    [SerializeField] string[] otherNames;
 
     AutoSelectMeButton firstCharacterButton;
     AutoSelectMeButton firstMinigameCharacterButton;
     AutoSelectMeButton firstEnemySelectButton;
+    AutoSelectMeButton firstOtherEnemySelectButton;
     GameObject currentTrainee;
     [HideInInspector] public HUBController Hub;
     int traineeID;
@@ -60,6 +68,7 @@ public class InaPractice : INAcombat
         firstCharacterButton = transform.Find("CharacterSelectStuffs/Buttons/AeglarButton").GetComponent<AutoSelectMeButton>();
         firstMinigameCharacterButton = transform.Find("MinigameCharacterSelect/Buttons/MinigameCharacterButton").GetComponent<AutoSelectMeButton>();
         firstEnemySelectButton = transform.Find("EnemySelectStuffs/Buttons/ReturnButton").GetComponent<AutoSelectMeButton>();
+        firstOtherEnemySelectButton = transform.Find("OtherEnemySelectStuffs/Buttons/ReturnButton").GetComponent<AutoSelectMeButton>();
     }
 
     public void StartPracticeShutDown()
@@ -241,6 +250,39 @@ public class InaPractice : INAcombat
     }
 
     /// <summary>
+    /// God help me 2
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PrintOtherEnemySelect()
+    {
+        otherEnemySelectGo.SetActive(true);
+
+        //Print title text
+        StartCoroutine(PrintString(otherEnemySelectTextLines[0], otherEnemySelectTMPs[0]));
+        while (printingString)
+            yield return null;
+
+        //Enable return button
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        otherEnemySelectButtons[0].SetActive(true);
+
+        //Print all other foes and enable buttons
+        StartCoroutine(PrintString(otherEnemySelectTextLines[1], otherEnemySelectTMPs[1]));
+        while (printingString)
+            yield return null;
+
+        for(int i = 1; i < otherEnemySelectButtons.Length; i++)
+        {
+            yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+            otherEnemySelectButtons[i].SetActive(true);
+        }
+
+        //Enable player interaction
+        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        firstOtherEnemySelectButton.enabled = true;
+    }
+
+    /// <summary>
     /// Setups up the necessary data for dimension buttons
     /// </summary>
     /// <param name="buttonID"></param>
@@ -272,7 +314,6 @@ public class InaPractice : INAcombat
 
         firstCharacterButton.enabled = false;
 
-
         //Screen 2 - Minigame Character Select Primary
         minigameCharacterSelectTMP.text = "";
 
@@ -293,6 +334,13 @@ public class InaPractice : INAcombat
         firstEnemySelectButton.enabled = false;
 
         //Screen 4 - Minigame Character Select Secondary (Other)
+        foreach (TextMeshProUGUI tmp in otherEnemySelectTMPs)
+            tmp.text = "";
+
+        foreach (GameObject characterSelectButton in otherEnemySelectButtons)
+            characterSelectButton.SetActive(false);
+
+        otherEnemyNameText.text = "";
 
         //Screen 5 - Minigame Select
 
@@ -300,12 +348,20 @@ public class InaPractice : INAcombat
         SetAllScreensDisabled();
     }
 
+    /// <summary>
+    /// Disables all INA screens
+    /// </summary>
     private void SetAllScreensDisabled()
     {
         characterSelectGo.SetActive(false);
         minigameCharacterSelectGo.SetActive(false);
+        enemySelectGo.SetActive(false);
+        otherEnemySelectGo.SetActive(false);
     }    
 
+    /// <summary>
+    /// Sets up the character to play as screen
+    /// </summary>
     public void SetCharacterSelectScreen()
     {
         CleanUp();
@@ -313,6 +369,11 @@ public class InaPractice : INAcombat
         StartCoroutine(PrintCharacterSelectText());
     }
 
+    /// <summary>
+    /// Sets player data for minigames
+    /// </summary>
+    /// <param name="traineeIndex"></param>
+    /// <param name="characterName"></param>
     public void SetPlayer(int traineeIndex, string characterName)
     {
         traineeID = traineeIndex;
@@ -321,12 +382,19 @@ public class InaPractice : INAcombat
         SetMinigameCharacterSelectScreen();
     }
 
+    /// <summary>
+    /// Sets up the dimension screen
+    /// </summary>
     public void SetMinigameCharacterSelectScreen()
     {
         CleanUp();
         StartCoroutine(PrintMinigameCharacterSelect());
     }
 
+    /// <summary>
+    /// Sets up the dimension specific screen
+    /// </summary>
+    /// <param name="dimension"></param>
     public void SetEnemySelectScreen(int dimension)
     {
         CleanUp();
@@ -334,14 +402,20 @@ public class InaPractice : INAcombat
         StartCoroutine(PrintEnemySelect());
     }
 
+    public void SetOtherEnemySelectScreen()
+    {
+        CleanUp();
+        StartCoroutine(PrintOtherEnemySelect());
+    }
+
     public void TypeCharacterName(string characterName)
     {
         StartCoroutine(PrintString(characterName, characterNameText));
     }
 
-    public void TypeEnemyName(string enemyName)
+    public void TypeEnemyName(string enemyName, TextMeshProUGUI tmpToPrint)
     {
-        StartCoroutine(PrintString(enemyName, enemyNameText, true));
+        StartCoroutine(PrintString(enemyName, tmpToPrint, true));
     }
 
     private IEnumerator PrintString(string stringToPrint, TextMeshProUGUI textElementToPrintTo, bool replaceSpaces = false)
@@ -374,5 +448,11 @@ public class InaPractice : INAcombat
 
         characterImage.sprite = characterImages[traineeID];
         textElement.text = traineeName;
+    }
+
+    public void MaliceMeme()
+    {
+        otherEnemySelectTMPs[0].text = "";
+        StartCoroutine(PrintString(maliceMeme, otherEnemySelectTMPs[0]));
     }
 }
