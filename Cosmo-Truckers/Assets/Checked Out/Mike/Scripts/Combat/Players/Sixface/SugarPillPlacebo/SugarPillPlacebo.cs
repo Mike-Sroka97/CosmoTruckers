@@ -44,6 +44,9 @@ public class SugarPillPlacebo : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         //if Dizzy do the dizzy thing

@@ -19,6 +19,9 @@ public class FullCourse : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         foreach (Character character in CombatManager.Instance.GetCharactersSelected)

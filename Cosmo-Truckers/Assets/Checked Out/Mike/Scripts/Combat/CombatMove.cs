@@ -103,7 +103,8 @@ public class CombatMove : MonoBehaviour
         //TODO check if player controller is the same real world person
 
         players = FindObjectsOfType<Player>();
-        SetupPlayerMaterials();
+
+        SetupPlayerMaterials(FindObjectOfType<InaPractice>());
 
         for (int i = 0; i < players.Length; i++)
             players[i].transform.position = spawnPoints[i].position;
@@ -114,6 +115,9 @@ public class CombatMove : MonoBehaviour
 
     public virtual void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         if(multiplayer)
@@ -389,15 +393,30 @@ public class CombatMove : MonoBehaviour
         MoveEnded = true;
     }
 
-    private void SetupPlayerMaterials()
+    private void SetupPlayerMaterials(InaPractice inaPractice)
     {
-        foreach(Player player in players)
+        if (inaPractice)
         {
-            foreach (SpriteRenderer sprite in player.MyRenderers)
+            foreach (Player player in players)
             {
-                player.StartingMaterial = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
-                sprite.material = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
-                sprite.sortingOrder += player.MyCharacter.PlayerNumber - 1;
+                foreach (SpriteRenderer sprite in player.MyRenderers)
+                {
+                    player.StartingMaterial = inaPractice.PracticeMaterial;
+                    sprite.material = inaPractice.PracticeMaterial;
+                    sprite.sortingOrder += player.MyCharacter.PlayerNumber - 1;
+                }
+            }
+        }
+        else
+        {
+            foreach (Player player in players)
+            {
+                foreach (SpriteRenderer sprite in player.MyRenderers)
+                {
+                    player.StartingMaterial = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
+                    sprite.material = CombatManager.Instance.playerMaterials[player.MyCharacter.PlayerNumber - 1];
+                    sprite.sortingOrder += player.MyCharacter.PlayerNumber - 1;
+                }
             }
         }
     }

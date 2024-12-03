@@ -51,6 +51,9 @@ public class LengthyProcedure : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
         FindObjectOfType<LongDogMana>().AddBulletsToReserve();
     }

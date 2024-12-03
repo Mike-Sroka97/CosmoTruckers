@@ -31,6 +31,9 @@ public class PettyTheft : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }

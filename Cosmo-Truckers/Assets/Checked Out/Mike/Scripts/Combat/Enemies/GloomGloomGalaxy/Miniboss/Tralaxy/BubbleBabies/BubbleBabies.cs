@@ -30,6 +30,9 @@ public class BubbleBabies : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         Score = numberOfBubbles / 2;

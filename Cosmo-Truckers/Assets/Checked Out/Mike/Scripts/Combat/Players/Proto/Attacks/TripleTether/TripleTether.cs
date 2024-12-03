@@ -20,6 +20,9 @@ public class TripleTether : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
 
         foreach(Enemy enemy in CombatManager.Instance.CharactersSelected)

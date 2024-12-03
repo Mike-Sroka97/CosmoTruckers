@@ -19,6 +19,9 @@ public class HiveHealing : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         //Qmuav
         int healing = CalculateScore();
         DealDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], healing);

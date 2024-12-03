@@ -35,6 +35,9 @@ public class OrbitalCrust : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         int damage = CalculateScore();
         int stacks = CalculateAugmentScore();
 

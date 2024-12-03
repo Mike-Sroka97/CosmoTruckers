@@ -26,6 +26,9 @@ public class SpitBall : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)

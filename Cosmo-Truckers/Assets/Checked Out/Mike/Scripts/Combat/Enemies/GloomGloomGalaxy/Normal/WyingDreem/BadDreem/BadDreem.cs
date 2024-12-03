@@ -44,6 +44,9 @@ public class BadDreem : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
         CurrentScore += 0.5f;
         Score = (int)CurrentScore;

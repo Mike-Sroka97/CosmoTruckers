@@ -127,6 +127,9 @@ public class SolidShlurping : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int healing = CalculateScore();

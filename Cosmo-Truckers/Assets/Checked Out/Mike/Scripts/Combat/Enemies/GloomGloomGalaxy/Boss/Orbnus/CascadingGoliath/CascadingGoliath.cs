@@ -78,6 +78,9 @@ public class CascadingGoliath : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         if (FightWon)
             FindObjectOfType<OrbnusAI>().DieForReal();
     }

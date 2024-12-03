@@ -43,6 +43,9 @@ public class EnergonJab : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
 
         ProtoMana mana = CombatManager.Instance.GetCurrentPlayer.GetComponent<ProtoMana>();

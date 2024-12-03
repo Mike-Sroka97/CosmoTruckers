@@ -17,6 +17,9 @@ public class HeavyWeight : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int ironFurStacks = 0;

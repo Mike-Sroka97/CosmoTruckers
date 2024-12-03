@@ -12,6 +12,9 @@ public class CryOfFrustration : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         if (FightWon)
             FindObjectOfType<QmuavAI>().DieForReal();
     }

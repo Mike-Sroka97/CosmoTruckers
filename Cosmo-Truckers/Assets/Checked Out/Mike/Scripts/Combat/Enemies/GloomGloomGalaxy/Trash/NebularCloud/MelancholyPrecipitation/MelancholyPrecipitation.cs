@@ -43,6 +43,9 @@ public class MelancholyPrecipitation : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         AugmentScore = (int)currentTime;

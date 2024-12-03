@@ -14,6 +14,9 @@ public class Porkanator : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
 
         foreach(Character character in CombatManager.Instance.GetCharactersSelected)

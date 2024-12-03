@@ -19,6 +19,9 @@ public class Encrustable : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int stacks = CalculateAugmentScore();

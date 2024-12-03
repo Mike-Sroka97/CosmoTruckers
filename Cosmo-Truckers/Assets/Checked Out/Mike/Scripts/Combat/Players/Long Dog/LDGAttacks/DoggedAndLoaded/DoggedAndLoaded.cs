@@ -14,6 +14,9 @@ public class DoggedAndLoaded : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         //Calculate Damage
         if (Score < 0)
             Score = 0;

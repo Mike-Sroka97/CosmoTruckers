@@ -64,6 +64,9 @@ public class AstorIncubation : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int currentNumberOfAstorToSpawn = Score;

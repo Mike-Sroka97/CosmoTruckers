@@ -11,6 +11,9 @@ public class DeathKill : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         //player go die

@@ -11,6 +11,9 @@ public class GloomGuarded : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         CombatManager.Instance.GetCharactersSelected[0].TakeShielding(CalculateScore());

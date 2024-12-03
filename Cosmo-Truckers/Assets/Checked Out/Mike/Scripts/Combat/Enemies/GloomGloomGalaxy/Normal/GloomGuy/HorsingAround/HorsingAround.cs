@@ -13,6 +13,9 @@ public class HorsingAround : CombatMove
     }
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         if (PlayerDead)
             Score++;
 

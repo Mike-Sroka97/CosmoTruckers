@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class EnemyNameType : MonoBehaviour, ISelectHandler
 {
     [SerializeField] TextMeshProUGUI tmpToUpdate;
+    [SerializeField] bool updateEnemyId;
     InaPractice ina;
 
     private void Awake()
@@ -17,5 +18,8 @@ public class EnemyNameType : MonoBehaviour, ISelectHandler
     public void OnSelect(BaseEventData eventData)
     {
         ina.TypeEnemyName(GetComponent<TrainingButtonInfo>().CharacterName, tmpToUpdate);
+
+        if (updateEnemyId)
+            ina.SetEnemyId(GetComponent<TrainingButtonInfo>().EnemyID);
     }
 }

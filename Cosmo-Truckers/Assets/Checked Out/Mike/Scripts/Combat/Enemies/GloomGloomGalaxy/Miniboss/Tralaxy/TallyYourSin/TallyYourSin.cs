@@ -24,6 +24,9 @@ public class TallyYourSin : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
         int sorrowStacks = CalculateAugmentScore();
 

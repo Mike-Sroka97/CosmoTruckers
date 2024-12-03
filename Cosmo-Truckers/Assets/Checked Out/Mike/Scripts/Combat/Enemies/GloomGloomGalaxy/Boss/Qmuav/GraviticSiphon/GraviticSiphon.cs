@@ -23,6 +23,9 @@ public class GraviticSiphon : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         QmuavAI qmuav = FindObjectOfType<QmuavAI>();
 
         int damage = CalculateScore();

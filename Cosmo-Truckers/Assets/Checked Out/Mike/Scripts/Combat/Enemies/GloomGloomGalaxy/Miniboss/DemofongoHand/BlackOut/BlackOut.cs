@@ -49,6 +49,9 @@ public class BlackOut : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         if (Score > maxScore)

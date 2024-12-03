@@ -87,6 +87,9 @@ public class ShockingShock : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         //Get needed info
         PlayerCharacter player = null;
         Enemy enemy = null;

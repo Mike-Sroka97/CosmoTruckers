@@ -54,6 +54,9 @@ public class FreakOut : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int nitemareStacks = 0;

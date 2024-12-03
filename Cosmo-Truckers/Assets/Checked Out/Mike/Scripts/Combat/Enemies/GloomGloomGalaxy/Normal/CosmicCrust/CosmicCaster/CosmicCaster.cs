@@ -57,6 +57,9 @@ public class CosmicCaster : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int damage = CalculateScore();

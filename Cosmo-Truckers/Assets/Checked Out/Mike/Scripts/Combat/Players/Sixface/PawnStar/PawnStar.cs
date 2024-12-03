@@ -67,6 +67,9 @@ public class PawnStar : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         sixFaceMana = FindObjectOfType<SixFaceMana>();
 
         //if Dizzy do the dizzy thing

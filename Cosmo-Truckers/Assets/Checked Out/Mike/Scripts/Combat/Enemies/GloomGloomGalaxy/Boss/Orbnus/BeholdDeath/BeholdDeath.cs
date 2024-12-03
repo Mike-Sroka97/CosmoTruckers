@@ -44,6 +44,9 @@ public class BeholdDeath : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         for (int i = 0; i < CombatManager.Instance.GetCharactersSelected.Count; i++)
         {
             int damage = CalculateMultiplayerScore(PlayerScores[CombatManager.Instance.GetCharactersSelected[i].GetComponent<PlayerCharacter>()]);

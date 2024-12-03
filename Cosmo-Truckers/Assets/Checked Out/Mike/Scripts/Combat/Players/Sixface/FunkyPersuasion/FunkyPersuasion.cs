@@ -15,6 +15,9 @@ public class FunkyPersuasion : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
 
         Character target = CombatManager.Instance.CharactersSelected[0];

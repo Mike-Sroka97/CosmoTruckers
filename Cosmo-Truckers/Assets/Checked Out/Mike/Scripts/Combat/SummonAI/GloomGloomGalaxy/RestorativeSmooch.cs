@@ -6,6 +6,9 @@ public class RestorativeSmooch : CombatMove
 {
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         baseDamage = FindObjectOfType<DulaxyAI>().HealAmount;
         base.EndMove();
     }

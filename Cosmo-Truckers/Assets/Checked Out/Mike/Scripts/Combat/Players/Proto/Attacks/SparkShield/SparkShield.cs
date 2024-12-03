@@ -24,6 +24,9 @@ public class SparkShield : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         if (Score > maxScore)
             Score = maxScore;
 

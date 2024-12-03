@@ -11,36 +11,36 @@ public class INAcombat : MonoBehaviour
 
     [Space(20)]
     [Header("Screen Variables")]
-    [SerializeField] float screenOpenSpeed;
-    [SerializeField] float screenGoalDistance;
+    [SerializeField] protected float screenOpenSpeed;
+    [SerializeField] protected float screenGoalDistance;
     [SerializeField] protected Transform aboveMask;
-    [SerializeField] Transform topMask;
-    [SerializeField] Transform bottomMask;
+    [SerializeField] protected Transform topMask;
+    [SerializeField] protected Transform bottomMask;
 
     [Space(20)]
     [Header("Timer Variables")]
     [SerializeField] protected TextMeshProUGUI countDownTimer;
     [SerializeField] protected TextMeshProUGUI timer;
-    [SerializeField] int maxTime = 3;
-    [SerializeField] int shakeDuration;
-    [SerializeField] float shakeSpeedX;
-    [SerializeField] float shakeOffsetX;
-    [SerializeField] float shakeSpeedY;
-    [SerializeField] float shakeOffsetY;
+    [SerializeField] protected int maxTime = 3;
+    [SerializeField] protected int shakeDuration;
+    [SerializeField] protected float shakeSpeedX;
+    [SerializeField] protected float shakeOffsetX;
+    [SerializeField] protected float shakeSpeedY;
+    [SerializeField] protected float shakeOffsetY;
     [HideInInspector] public bool HoldCountDown;
     [HideInInspector] public UnityEvent AttackStarted = new UnityEvent();
 
     [Space(20)]
     [Header("Face Variables")]
-    [SerializeField] float faceWaitTime = 1f;
+    [SerializeField] protected float faceWaitTime = 1f;
     [SerializeField] protected Animator face;
 
-    string goText = "GO!";
-    const float INAoffset = -0.5f;
+    protected string goText = "GO!";
+    protected const float INAoffset = -0.5f;
 
     protected Vector3 startingPosition;
-    float topMaskStartingY;
-    float bottomMaskStartingY;
+    protected float topMaskStartingY;
+    protected float bottomMaskStartingY;
 
     protected virtual void Start()
     {

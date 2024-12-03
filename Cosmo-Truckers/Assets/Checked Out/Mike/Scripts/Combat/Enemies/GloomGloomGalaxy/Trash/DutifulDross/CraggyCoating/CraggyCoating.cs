@@ -13,6 +13,9 @@ public class CraggyCoating : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         AugmentScore = CalculateAugmentScore();
 
         foreach(Character character in CombatManager.Instance.GetCharactersSelected)

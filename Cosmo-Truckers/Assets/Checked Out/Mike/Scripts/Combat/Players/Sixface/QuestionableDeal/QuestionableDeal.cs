@@ -40,6 +40,9 @@ public class QuestionableDeal : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         if (Score > 0)

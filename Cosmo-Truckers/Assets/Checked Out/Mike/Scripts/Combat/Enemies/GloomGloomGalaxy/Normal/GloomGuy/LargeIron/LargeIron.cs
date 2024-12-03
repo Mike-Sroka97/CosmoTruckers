@@ -15,6 +15,9 @@ public class LargeIron : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int damage = CalculateScore();

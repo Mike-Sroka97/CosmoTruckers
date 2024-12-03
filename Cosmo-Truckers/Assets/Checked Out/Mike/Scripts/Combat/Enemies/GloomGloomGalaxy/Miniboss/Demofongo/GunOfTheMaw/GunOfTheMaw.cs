@@ -35,6 +35,9 @@ public class GunOfTheMaw : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true; 
 
         int DamageToAdd = 0;

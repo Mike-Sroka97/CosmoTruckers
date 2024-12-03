@@ -10,6 +10,7 @@ public class LockedAndDogged : CombatMove
     }
     public override void EndMove()
     {
-        throw new System.NotImplementedException();
+        if (FindObjectOfType<InaPractice>())
+            return;
     }
 }

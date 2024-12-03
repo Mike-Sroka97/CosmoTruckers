@@ -24,6 +24,9 @@ public class ElectroWhip : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
         CombatManager.Instance.CharactersSelected[0].GetComponent<Enemy>().TauntedBy = CombatManager.Instance.GetCurrentPlayer;
     }

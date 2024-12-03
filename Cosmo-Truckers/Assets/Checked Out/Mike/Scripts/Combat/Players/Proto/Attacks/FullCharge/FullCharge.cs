@@ -18,6 +18,9 @@ public class FullCharge : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         //Calculate Augment Stacks
         int augmentStacks = AugmentScore * augmentStacksPerScore;
         augmentStacks += baseAugmentStacks;

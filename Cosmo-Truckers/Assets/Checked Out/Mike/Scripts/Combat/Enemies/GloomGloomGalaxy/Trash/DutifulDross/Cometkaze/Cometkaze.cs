@@ -26,6 +26,9 @@ public class Cometkaze : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         if(currentTime > maxScoreTime)

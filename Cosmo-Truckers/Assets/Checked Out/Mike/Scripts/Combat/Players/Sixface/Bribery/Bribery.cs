@@ -125,6 +125,9 @@ public class Bribery : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(bribery);
 
         if (FindObjectOfType<SixFaceMana>().FaceType == SixFaceMana.FaceTypes.Hype)

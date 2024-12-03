@@ -55,6 +55,9 @@ public class StretchySpine : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         //kill summons
         //animate
         //set an animation to occur at ldgs next start turn

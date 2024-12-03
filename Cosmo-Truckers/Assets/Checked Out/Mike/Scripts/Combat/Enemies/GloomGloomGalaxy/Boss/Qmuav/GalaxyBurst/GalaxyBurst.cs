@@ -21,6 +21,9 @@ public class GalaxyBurst : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         int currentNumberOfIlkToSpawn = Score;

@@ -32,6 +32,9 @@ public class SplitMisery : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         //Player 1 damage and augment

@@ -44,6 +44,9 @@ public class FunGun : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
 
         //Calculate Damage

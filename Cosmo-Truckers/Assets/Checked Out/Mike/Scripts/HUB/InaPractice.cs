@@ -58,6 +58,7 @@ public class InaPractice : INAcombat
     [SerializeField] GameObject[] minigameSelectButtons;
     [SerializeField] TextMeshProUGUI[] miniGameCountTmps;
     [SerializeField] VideoPlayer videoPlayer;
+    [SerializeField] float endMinigameTime = 1.2f;
 
     [Space(20)]
     [Header("EnemySprites")] //ID starts with 0 for dimension 1 feeble foe 1. +8 to id based on dimension ID
@@ -74,14 +75,18 @@ public class InaPractice : INAcombat
     AutoSelectMeButton firstMinigameSelectButton;
     GameObject currentTrainee;
     [HideInInspector] public HUBController Hub;
+    [HideInInspector] public BaseAttackSO CurrentAttack => currentCharacterAttacks[currentMinigameIndex];
+    public Material PracticeMaterial;
     int traineeID;
     int enemyID;
+    int otherID;
     string traineeName;
     int dimensionID;
     bool printingString;
     int inCharacterMinigameSelect; //0 == player, 1 == enemy, 2 == other
     int currentMinigameIndex = 0;
     List<BaseAttackSO> currentCharacterAttacks = new List<BaseAttackSO>();
+    TrainingCombatHandler trainingCombatHandler;
     protected override void Start()
     {
         base.Start();
@@ -91,6 +96,11 @@ public class InaPractice : INAcombat
         firstEnemySelectButton = transform.Find("EnemySelectStuffs/Buttons/ReturnButton").GetComponent<AutoSelectMeButton>();
         firstOtherEnemySelectButton = transform.Find("OtherEnemySelectStuffs/Buttons/ReturnButton").GetComponent<AutoSelectMeButton>();
         firstMinigameSelectButton = transform.Find("MinigameSelectStuff/Buttons/Start").GetComponent<AutoSelectMeButton>();
+
+        trainingCombatHandler = GetComponent<TrainingCombatHandler>();
+
+        topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
     }
 
     public void StartPracticeShutDown()
@@ -145,7 +155,7 @@ public class InaPractice : INAcombat
     /// <returns></returns>
     private IEnumerator PrintCharacterSelectText()
     {
-        for(int i = 0; i < characterSelectTMPs.Length; i++)
+        for (int i = 0; i < characterSelectTMPs.Length; i++)
         {
             int currentCharacter = 0;
 
@@ -293,7 +303,7 @@ public class InaPractice : INAcombat
         while (printingString)
             yield return null;
 
-        for(int i = 1; i < otherEnemySelectButtons.Length; i++)
+        for (int i = 1; i < otherEnemySelectButtons.Length; i++)
         {
             yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
             otherEnemySelectButtons[i].SetActive(true);
@@ -338,14 +348,22 @@ public class InaPractice : INAcombat
         {
             currentCharacterAttacks = playerPrefabs[traineeID].GetComponent<PlayerCharacter>().GetAllBaseAttacks;
         }
-        else if(type == 1)
+        else if (type == 1)
         {
-            currentCharacterAttacks = enemyPrefabs[traineeID].GetComponent<Enemy>().GetAllAttacks.ToList();
+            currentCharacterAttacks = enemyPrefabs[enemyID].GetComponent<Enemy>().GetAllAttacks.ToList();
         }
         else
         {
-            currentCharacterAttacks = otherPrefabs[traineeID].GetComponent<Enemy>().GetAllAttacks.ToList();
+            currentCharacterAttacks = otherPrefabs[otherID].GetComponent<Enemy>().GetAllAttacks.ToList();
         }
+
+        List<BaseAttackSO> tempAttacks = new List<BaseAttackSO>();
+
+        foreach (BaseAttackSO attack in currentCharacterAttacks)
+            if (!attack.AutoCast)
+                tempAttacks.Add(attack);
+
+        currentCharacterAttacks = tempAttacks;
 
         videoPlayer.targetTexture.Release();
         videoPlayer.targetTexture.Create();
@@ -362,6 +380,7 @@ public class InaPractice : INAcombat
     {
         enemySelectButtons[buttonID].SetActive(true);
         enemySelectButtons[buttonID].GetComponent<TrainingButtonInfo>().CharacterName = enemyNames[buttonID - 1 + getEnemyIdModifier];
+        enemySelectButtons[buttonID].GetComponent<TrainingButtonInfo>().EnemyID = buttonID - 1 + getEnemyIdModifier;
         enemySelectButtons[buttonID].transform.Find("Mask/GameObject").GetComponent<Image>().sprite = enemySprites[buttonID - 1 + getEnemyIdModifier];
     }
 
@@ -381,7 +400,7 @@ public class InaPractice : INAcombat
     {
         StopAllCoroutines();
 
-        if(increment)
+        if (increment)
         {
             currentMinigameIndex++;
             if (currentMinigameIndex >= currentCharacterAttacks.Count)
@@ -473,7 +492,7 @@ public class InaPractice : INAcombat
         enemySelectGo.SetActive(false);
         otherEnemySelectGo.SetActive(false);
         minigameSelectGo.SetActive(false);
-    }    
+    }
 
     /// <summary>
     /// Sets up the character to play as screen
@@ -550,11 +569,20 @@ public class InaPractice : INAcombat
     /// <summary>
     /// Minigame select if you came from other screen
     /// </summary>
-    public void SetMinigameOtherSelectScreen()
+    public void SetMinigameOtherSelectScreen(int otherId = -1)
     {
+        if (otherId != -1)
+            otherID = otherId;
+
         CleanUp();
         inCharacterMinigameSelect = 2;
         StartCoroutine(PrintMinigameSelect(2));
+    }
+
+    private void ReturnToMinigameSelect()
+    {
+        CleanUp();
+        StartCoroutine(PrintMinigameSelect(inCharacterMinigameSelect));
     }
 
     /// <summary>
@@ -564,7 +592,7 @@ public class InaPractice : INAcombat
     {
         if (inCharacterMinigameSelect == 0)
             SetMinigameCharacterSelectScreen();
-        else if (inCharacterMinigameSelect == 1)
+        else if (inCharacterMinigameSelect == 2)
             SetOtherEnemySelectScreen();
         else
             SetEnemySelectScreen(dimensionID);
@@ -572,7 +600,10 @@ public class InaPractice : INAcombat
 
     public void StartMinigame()
     {
-        //TODO
+        CleanUp();
+        topMask.GetComponent<SpriteMask>().enabled = true;
+        bottomMask.GetComponent<SpriteMask>().enabled = true;
+        trainingCombatHandler.PopulateMinigameData();
     }
 
     public void TypeCharacterName(string characterName)
@@ -591,7 +622,7 @@ public class InaPractice : INAcombat
 
         textElementToPrintTo.text = "";
 
-        if(replaceSpaces)
+        if (replaceSpaces)
             stringToPrint = stringToPrint.Replace(" ", "\n");
 
         int currentCharacter = 0;
@@ -617,11 +648,178 @@ public class InaPractice : INAcombat
         textElement.text = traineeName;
     }
 
+    /// <summary>
+    /// Handles strings for selecting Malice in training
+    /// </summary>
     public void MaliceMeme()
     {
         string currentMeme = maliceMemes[Random.Range(0, maliceMemes.Length)];
 
         otherEnemySelectTMPs[0].text = "";
         StartCoroutine(PrintString(currentMeme, otherEnemySelectTMPs[0]));
+    }
+
+    public void SetEnemyId(int newEnemyId)
+    {
+        enemyID = newEnemyId;
+    }
+
+    public IEnumerator PrePreMinigameStuffs()
+    {
+        trainingCombatHandler.PauseCoroutine = true;
+
+        yield return new WaitForSeconds(endMinigameTime);
+
+        topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+        //CloseScreen
+        while (topMask.localPosition.y > topMaskStartingY)
+        {
+            topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+            bottomMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+            yield return null;
+        }
+
+        trainingCombatHandler.PauseCoroutine = false;
+    }
+
+    public IEnumerator PreMinigameStuffs()
+    {
+        trainingCombatHandler.PauseCoroutine = true;
+
+        aboveMask.gameObject.SetActive(true);
+
+        CombatMove minigame = GetComponentInChildren<CombatMove>();
+
+        //Disable Line/Trail Renderers
+        foreach (LineRenderer line in minigame.GetComponentsInChildren<LineRenderer>())
+            line.enabled = false;
+
+        foreach (TrailRenderer trail in minigame.GetComponentsInChildren<TrailRenderer>())
+            trail.enabled = false;
+
+        //Enable Line/Trail Renderers
+        foreach (LineRenderer line in GetComponentsInChildren<LineRenderer>())
+        {
+            if (line.GetComponent<SetupMinigameLineRenderer>() != null)
+                line.GetComponent<SetupMinigameLineRenderer>().SetLineLocalPositions(minigame);
+            else
+                line.enabled = true;
+        }
+
+        foreach (TrailRenderer trail in GetComponentsInChildren<TrailRenderer>())
+            trail.enabled = true;
+
+        transform.localPosition = goalPosition;
+
+        yield return new WaitForSeconds(faceWaitTime);
+
+        trainingCombatHandler.SpawnPlayers(playerPrefabs[traineeID].GetComponent<PlayerCharacter>());
+        GetComponentInChildren<CombatMove>().SetSpawns();
+
+        //OpenScreen
+        while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
+        {
+            topMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+            bottomMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+            yield return null;
+        }
+
+        topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+        // Set countdown timer text to null to start with
+        countDownTimer.text = "";
+
+        // Invoke Attack Started
+        AttackStarted.Invoke();
+
+        //Timer
+        countDownTimer.enabled = true;
+        countDownTimer.color = new Color(1, 1, 1, 1);
+        countDownTimer.transform.localScale = Vector3.one;
+
+        float currentTime = maxTime;
+
+        while (HoldCountDown)
+            yield return null;
+
+        while (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime;
+            int intTime = (int)currentTime;
+            intTime++;
+            countDownTimer.text = intTime.ToString();
+
+            yield return null;
+        }
+
+        // Set Go Text
+        string text;
+        if (minigame.GoTextReplacement != "")
+        {
+            text = minigame.GoTextReplacement.ToUpper();
+            if (text[text.Length - 1] != '!')
+                text += "!";
+        }
+
+        else
+            text = goText;
+
+        countDownTimer.text = text;
+
+        //Shake
+        currentTime = shakeDuration;
+
+        while (currentTime > 0)
+        {
+            countDownTimer.transform.localPosition = new Vector3(Mathf.Sin(Time.time * shakeSpeedX) * shakeOffsetX, INAoffset + (Mathf.Sin(Time.time * shakeSpeedY) * shakeOffsetY), 0);
+            currentTime -= Time.deltaTime;
+            countDownTimer.color = new Color(1, 1, 1, currentTime);
+            countDownTimer.transform.localScale = new Vector3(1 + (1 - currentTime), 1 + (1 - currentTime), 1 + (1 - currentTime));
+
+            yield return null;
+        }
+
+        GetComponentInChildren<CombatMove>().StartMove();
+
+        timer.enabled = true;
+
+        trainingCombatHandler.PauseCoroutine = false;
+    }
+
+    public IEnumerator MinigameCleanup()
+    {
+        aboveMask.gameObject.SetActive(false);
+
+        trainingCombatHandler.CleanupMinigame();
+
+        //CloseScreen
+        while (topMask.localPosition.y > topMaskStartingY)
+        {
+            topMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+            bottomMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(endMinigameTime);
+
+        //OpenScreen
+        while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)
+        {
+            topMask.localPosition += new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+            bottomMask.localPosition -= new Vector3(0, screenOpenSpeed * Time.deltaTime, 0);
+
+            yield return null;
+        }
+
+        topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
+        bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+        ReturnToMinigameSelect();
     }
 }

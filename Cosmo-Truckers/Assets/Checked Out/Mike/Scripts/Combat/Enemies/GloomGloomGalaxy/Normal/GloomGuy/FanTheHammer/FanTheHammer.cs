@@ -27,6 +27,9 @@ public class FanTheHammer : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         MoveEnded = true;
         if(PlayerDead)
         {

@@ -35,6 +35,9 @@ public class ToTongueOrNotToTongue : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
         CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(shloppedAug, CalculateAugmentScore());
     }

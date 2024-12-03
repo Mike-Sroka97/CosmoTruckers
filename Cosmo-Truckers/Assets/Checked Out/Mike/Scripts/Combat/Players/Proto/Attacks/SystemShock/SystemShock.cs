@@ -120,6 +120,9 @@ public class SystemShock : CombatMove
 
     public override void EndMove()
     {
+        if (FindObjectOfType<InaPractice>())
+            return;
+
         base.EndMove();
 
         //mana stuff
