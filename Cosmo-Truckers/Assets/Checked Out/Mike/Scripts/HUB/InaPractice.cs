@@ -87,6 +87,7 @@ public class InaPractice : INAcombat
     int currentMinigameIndex = 0;
     List<BaseAttackSO> currentCharacterAttacks = new List<BaseAttackSO>();
     TrainingCombatHandler trainingCombatHandler;
+    TextMeshProUGUI successText;
     protected override void Start()
     {
         base.Start();
@@ -101,6 +102,8 @@ public class InaPractice : INAcombat
 
         topMask.localPosition = new Vector3(0, topMaskStartingY + screenGoalDistance, 0);
         bottomMask.localPosition = new Vector3(0, bottomMaskStartingY - screenGoalDistance, 0);
+
+        successText = transform.Find("Score Text").GetComponent<TextMeshProUGUI>();
     }
 
     public void StartPracticeShutDown()
@@ -807,9 +810,13 @@ public class InaPractice : INAcombat
             yield return null;
         }
 
+        //TODO CUSTOM DISPLAY
+        successText.text = trainingCombatHandler.MiniGame.GetComponent<CombatMove>().TrainingDisplayText;
         trainingCombatHandler.CleanupMinigame();
 
-        yield return new WaitForSeconds(endMinigameTime);
+        yield return new WaitForSeconds(endMinigameTime * 3);
+
+        successText.text = "";
 
         //OpenScreen
         while (topMask.localPosition.y < topMaskStartingY + screenGoalDistance)

@@ -450,4 +450,6 @@ public class CombatMove : MonoBehaviour
         foreach (TrackPlayerDeath deathSource in GetComponentsInChildren<TrackPlayerDeath>())
             deathSource.Boss = true;
     }
+
+    public virtual string TrainingDisplayText => $"You scored {Score}/{maxScore}.";
 }

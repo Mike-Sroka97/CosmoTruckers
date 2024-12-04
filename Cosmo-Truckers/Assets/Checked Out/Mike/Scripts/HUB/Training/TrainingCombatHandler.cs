@@ -9,7 +9,7 @@ public class TrainingCombatHandler : MonoBehaviour
 
     [HideInInspector] public bool PauseCoroutine;
 
-    GameObject miniGame;
+    [HideInInspector] public GameObject MiniGame;
     BaseAttackSO attack;
     InaPractice INA;
     GameObject currentPlayer;
@@ -21,7 +21,7 @@ public class TrainingCombatHandler : MonoBehaviour
 
     public void PopulateMinigameData()
     {
-        miniGame = INA.CurrentAttack.CombatPrefab;
+        MiniGame = INA.CurrentAttack.CombatPrefab;
         attack = INA.CurrentAttack;
 
         StartCoroutine(StartMiniGame());
@@ -37,9 +37,9 @@ public class TrainingCombatHandler : MonoBehaviour
             while (PauseCoroutine)
                 yield return null;
 
-            miniGame = Instantiate(attack.CombatPrefab, INA.transform);
+            MiniGame = Instantiate(attack.CombatPrefab, INA.transform);
 
-            float miniGameTime = miniGame.GetComponent<CombatMove>().MinigameDuration;
+            float miniGameTime = MiniGame.GetComponent<CombatMove>().MinigameDuration;
 
             if (attack.BossMove)
                 Timer.text = "";
@@ -63,7 +63,7 @@ public class TrainingCombatHandler : MonoBehaviour
             //Boss move handler. Does not track time. Tracks Fight won and players dead
             if (attack.BossMove)
             {
-                while (!miniGame.GetComponentInChildren<CombatMove>().FightWon && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+                while (!MiniGame.GetComponentInChildren<CombatMove>().FightWon && !MiniGame.GetComponentInChildren<CombatMove>().PlayerDead && !MiniGame.GetComponentInChildren<CombatMove>().MoveEnded)
                 {
                     yield return null;
                 }
@@ -72,7 +72,7 @@ public class TrainingCombatHandler : MonoBehaviour
             //Timer and end move handler for non-boss moves
             else
             {
-                while (miniGameTime >= 0 && !miniGame.GetComponentInChildren<CombatMove>().PlayerDead && !miniGame.GetComponentInChildren<CombatMove>().MoveEnded)
+                while (miniGameTime >= 0 && !MiniGame.GetComponentInChildren<CombatMove>().PlayerDead && !MiniGame.GetComponentInChildren<CombatMove>().MoveEnded)
                 {
                     miniGameTime -= Time.deltaTime;
                     Timer.text = ((int)miniGameTime).ToString();
@@ -102,6 +102,6 @@ public class TrainingCombatHandler : MonoBehaviour
         //Clean up INA
         Destroy(currentPlayer);
 
-        miniGame.gameObject.SetActive(false);
+        MiniGame.gameObject.SetActive(false);
     }
 }
