@@ -12,7 +12,9 @@ public class CascadingGoliathHand : MonoBehaviour
     [SerializeField] float rotateSpeed;
     [SerializeField] Transform hand;
     [SerializeField] CascadingGoliathHand otherHand;
-    [SerializeField] Vector3 offScreenPosition; 
+    [SerializeField] Vector3 offScreenPosition;
+    [SerializeField] Collider2D[] collidersToDisable;
+    [SerializeField] SpriteRenderer handSprite; 
 
     Vector3 startPosition;
     Vector3 goalPosition;
@@ -22,12 +24,17 @@ public class CascadingGoliathHand : MonoBehaviour
     bool active;
     bool trackTime;
     float currentTime = 0;
-    Quaternion startingRotation;
+    Vector3 startingRotation;
+    Quaternion targetRotation = new Quaternion(0,0,0,0);
+    Material startingMaterial;
+    CascadingGoliath minigame; 
 
     private void Start()
     {
-        startPosition = hand.position;
-        startingRotation = transform.rotation;
+        minigame = FindObjectOfType<CascadingGoliath>();
+        startPosition = hand.localPosition;
+        startingRotation = hand.transform.localEulerAngles;
+        startingMaterial = handSprite.material; 
         players = FindObjectsOfType<Player>();
 
         if(startHand)
@@ -55,7 +62,7 @@ public class CascadingGoliathHand : MonoBehaviour
 
         if(currentTime >= stretchDelay)
         {
-            goalPosition = currentTarget.transform.position;
+            goalPosition = currentTarget.transform.localPosition;
             stretching = true;
             trackTime = false;
             currentTime = 0;
@@ -65,13 +72,16 @@ public class CascadingGoliathHand : MonoBehaviour
     private void LookAtPlayer()
     {
         if (stretching)
+        {
+            targetRotation.z = startingRotation.z; 
             return;
+        }
 
         CalculatePlayerDistances();
 
-        float angle = Mathf.Atan2(currentTarget.transform.position.y - transform.position.y, currentTarget.transform.position.x - transform.position.x) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.Euler(new Vector3(0, 0, angle));
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+        float angle = Mathf.Atan2(currentTarget.transform.localPosition.y - hand.localPosition.y, currentTarget.transform.localPosition.x - hand.localPosition.x) * Mathf.Rad2Deg;
+        targetRotation = Quaternion.Euler(new Vector3(startingRotation.x, startingRotation.y, angle)); 
+        hand.localRotation = Quaternion.RotateTowards(hand.localRotation, targetRotation, rotateSpeed * Time.deltaTime);
     }
 
     private void Stretch()
@@ -79,9 +89,12 @@ public class CascadingGoliathHand : MonoBehaviour
         if (!stretching)
             return;
 
-        hand.position = Vector2.MoveTowards(hand.position, goalPosition, stretchSpeed * Time.deltaTime);
+        // Set grab collider to active
+        SetGrabbingColliders(true, 1);
 
-        if(hand.position == goalPosition)
+        hand.localPosition = Vector2.MoveTowards(hand.localPosition, goalPosition, stretchSpeed * Time.deltaTime);
+
+        if(hand.localPosition == goalPosition)
         {
             stretching = false;
             active = false;
@@ -94,15 +107,23 @@ public class CascadingGoliathHand : MonoBehaviour
     {
         yield return new WaitForSeconds(retractDelay);
 
-        while(hand.position != startPosition)
+        // Set grabbing colliders to inactive
+        SetGrabbingColliders(false);
+        handSprite.material = minigame.OffMaterial;
+
+        while (hand.localPosition != startPosition)
         {
-            hand.position = Vector2.MoveTowards(hand.position, startPosition, retractSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime);
+            hand.localPosition = Vector2.MoveTowards(hand.localPosition, startPosition, retractSpeed * Time.deltaTime);
+            hand.localEulerAngles = Vector3.Lerp(hand.localEulerAngles, startingRotation, Time.deltaTime);
             yield return null;
         }
 
-        transform.rotation = startingRotation;
-        hand.position = startPosition;
+        // Set grab and hand colliders to active
+        SetGrabbingColliders(true, 2);
+        handSprite.material = startingMaterial;
+
+        hand.transform.localEulerAngles = startingRotation;
+        hand.localPosition = startPosition;
         otherHand.active = true;
         otherHand.trackTime = true;
         otherHand.CalculatePlayerDistances();
@@ -114,28 +135,35 @@ public class CascadingGoliathHand : MonoBehaviour
 
         foreach(Player player in players)
         {
-            if(Vector2.Distance(transform.position, player.transform.position) < closestDistance)
+            if(Vector2.Distance(hand.transform.localPosition, player.transform.localPosition) < closestDistance)
             {
                 currentTarget = player;
-                closestDistance = Vector2.Distance(transform.position, player.transform.position);
+                closestDistance = Vector2.Distance(hand.transform.localPosition, player.transform.localPosition);
             }
         }
     }
 
-
-    //Cole added 9/8/2023
     public IEnumerator MoveOffScreen()
     {
-        startPosition = offScreenPosition; 
+        startPosition = offScreenPosition;
+        SetGrabbingColliders(false);
 
-        while (hand.position != offScreenPosition)
+        while (hand.localPosition != offScreenPosition)
         {
-            hand.position = Vector2.MoveTowards(hand.position, offScreenPosition, retractSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime); 
+            hand.localPosition = Vector2.MoveTowards(hand.localPosition, offScreenPosition, retractSpeed * Time.deltaTime);
+            hand.localEulerAngles = Vector3.Lerp(hand.localEulerAngles, startingRotation, Time.deltaTime);
             yield return null; 
         }
 
-        transform.rotation = startingRotation; 
-        hand.position = offScreenPosition; 
+        hand.localEulerAngles = startingRotation; 
+        hand.localPosition = offScreenPosition; 
+    }
+
+    public void SetGrabbingColliders (bool state, int collidersToSet = 3)
+    {
+        for (int i = 0; i < collidersToSet; i++)
+        {
+            collidersToDisable[i].enabled = state; 
+        }
     }
 }

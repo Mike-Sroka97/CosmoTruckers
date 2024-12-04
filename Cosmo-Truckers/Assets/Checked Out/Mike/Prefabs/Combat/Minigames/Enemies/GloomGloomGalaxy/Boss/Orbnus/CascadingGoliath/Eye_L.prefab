@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8081456530779104705}
   - component: {fileID: 3704465809120193680}
   - component: {fileID: 9156897817800482363}
+  - component: {fileID: 7798090506876288708}
   m_Layer: 0
   m_Name: Eye_L
   m_TagString: Untagged
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4747bd19d09ad1a49a4a5bd8fcd31ec0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -121,3 +122,21 @@ MonoBehaviour:
   Multiplayer: 1
   Boss: 1
   TrackingDamage: 1
+--- !u!114 &7798090506876288708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 53494649873069300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e35979790b2eb48bbef03184b4e65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleToSpawn: {fileID: 1727853121647289968, guid: 0d9b2a4cc77469842bfb592c23239a90, type: 3}
+  isTrigger: 0
+  noSpecialCase: 0
+  deathParticle: 1
+  attackable: 0
+  destroyOnContact: 1

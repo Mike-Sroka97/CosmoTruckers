@@ -25,7 +25,7 @@ public class PorkanatorPig : MonoBehaviour
         if (collision.transform.name == "Saw Pit")
         {
             minigame.AugmentScore += scoreValue;
-            myParticleSpawner.SpawnDeathParticle(transform);
+            myParticleSpawner.SpawnParticle(transform, true);
             minigame.CheckAugmentSuccess(); 
             StartCoroutine(Die());
         }

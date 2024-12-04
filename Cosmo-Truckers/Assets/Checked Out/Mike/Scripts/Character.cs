@@ -175,6 +175,10 @@ public abstract class Character : MonoBehaviour
 
         // After damage is done, subtract Command Executing
         CombatManager.Instance.CommandsExecuting--;
+
+        // For Boss Move purposes
+        if (CombatManager.Instance.CommandsExecuting < 0)
+            CombatManager.Instance.CommandsExecuting = 0; 
     }
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
@@ -230,6 +234,10 @@ public abstract class Character : MonoBehaviour
 
         // After damage is done, subtract Command Executing
         CombatManager.Instance.CommandsExecuting--;
+
+        // For Boss Move purposes
+        if (CombatManager.Instance.CommandsExecuting < 0)
+            CombatManager.Instance.CommandsExecuting = 0;
     }
 
     protected void AdjustAugs(bool add, AugmentStackSO stack)

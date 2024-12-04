@@ -278,6 +278,17 @@ public class CombatMove : MonoBehaviour
         return augmentStacks;
     }
 
+    public KeyValuePair<bool, int> CalculateDamage(int currentDamage)
+    {
+        //1 being base damage
+        int DamageAdj = 1;
+
+        //Damage on players must be divided by 100 to multiply the final
+        DamageAdj = ((int)(currentDamage * (float)CombatManager.Instance.GetCurrentCharacter.Stats.Damage / 100 + CombatManager.Instance.GetCurrentCharacter.FlatDamageAdjustment));
+
+        return new KeyValuePair<bool, int>(pierces, DamageAdj);
+    }
+
     protected void GenerateLayout()
     {
         if(layouts.Length > 0)

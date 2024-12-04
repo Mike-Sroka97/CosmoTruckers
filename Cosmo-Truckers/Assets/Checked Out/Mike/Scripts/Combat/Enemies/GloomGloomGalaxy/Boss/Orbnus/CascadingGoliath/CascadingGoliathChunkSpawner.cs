@@ -20,9 +20,11 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
     int lastRandom = -1;
     int currentChunk = 0;
     bool finalNodeSpawned = false;
+    CombatMove minigame; 
 
     private void Start()
     {
+        minigame = FindObjectOfType<CombatMove>();
         StartCoroutine(SpawnChunk());
     }
 
@@ -57,7 +59,7 @@ public class CascadingGoliathChunkSpawner : MonoBehaviour
         {
             finalNodeSpawned = true;
             yield return new WaitForSeconds(noseWaitTime);
-            Instantiate(noseChunk, new Vector3(0, chunkSpawns[random].position.y, 0), noseChunk.transform.rotation, transform);
+            Instantiate(noseChunk, new Vector3(minigame.transform.position.x, chunkSpawns[random].position.y, minigame.transform.position.z), noseChunk.transform.rotation, transform);
         }
     }
 

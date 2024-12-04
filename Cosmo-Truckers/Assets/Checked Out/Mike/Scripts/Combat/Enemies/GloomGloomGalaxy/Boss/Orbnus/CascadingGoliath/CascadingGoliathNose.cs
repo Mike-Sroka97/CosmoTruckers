@@ -17,7 +17,7 @@ public class CascadingGoliathNose : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y <= minY)
+        if (transform.localPosition.y <= minY)
         {
             if(!endCalled)
             {
@@ -34,9 +34,9 @@ public class CascadingGoliathNose : MonoBehaviour
     {
         transform.Translate(Vector3.down * fallSpeed * Time.deltaTime);
 
-        if(transform.position.y <= minY)
+        if(transform.localPosition.y <= minY)
         {
-            transform.position = new Vector3(transform.position.x, minY, transform.position.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, minY, transform.localPosition.z);
         }
     }
 

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c6fa29a6ba2031643994c1c95eb9eda3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -185,8 +185,9 @@ MonoBehaviour:
   trackDeath: 1
   scoreIncrease: 0
   augmentScoreIncrease: 0
-  Multiplayer: 0
-  Boss: 0
+  overrideDamage: 0
+  Multiplayer: 1
+  Boss: 1
   TrackingDamage: 1
 --- !u!1 &4254312246739486922
 GameObject:
@@ -198,6 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1453596046680410281}
   - component: {fileID: 4682721311272634613}
+  - component: {fileID: 2463956860305402111}
   m_Layer: 0
   m_Name: FistCollider
   m_TagString: Untagged
@@ -236,6 +238,25 @@ CircleCollider2D:
   m_Offset: {x: -0.15, y: -0.05}
   serializedVersion: 2
   m_Radius: 1.25
+--- !u!114 &2463956860305402111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4254312246739486922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackDeath: 1
+  scoreIncrease: 0
+  augmentScoreIncrease: 0
+  overrideDamage: 30
+  Multiplayer: 1
+  Boss: 1
+  TrackingDamage: 1
 --- !u!1 &5997256236945732831
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +268,6 @@ GameObject:
   - component: {fileID: 5261113060310576784}
   - component: {fileID: 2656155633272772648}
   - component: {fileID: 7259166778353556809}
-  - component: {fileID: 3219731815240214842}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -311,7 +331,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 03ac127254fe31c418f32fc63a7b4fb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -331,7 +351,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5997256236945732831}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
   m_Name: 
@@ -339,21 +359,10 @@ MonoBehaviour:
   trackDeath: 0
   scoreIncrease: 0
   augmentScoreIncrease: 0
+  overrideDamage: 0
   Multiplayer: 0
-  Boss: 0
+  Boss: 1
   TrackingDamage: 1
---- !u!114 &3219731815240214842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5997256236945732831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4733dbfcce4e7d49bccce76c7ed2600, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6174884057393429145
 GameObject:
   m_ObjectHideFlags: 0
@@ -408,6 +417,7 @@ MonoBehaviour:
   hand: {fileID: 5261113060310576784}
   otherHand: {fileID: 0}
   offScreenPosition: {x: -26, y: 0.95, z: 0}
+  grabColliders: []
 --- !u!1 &7059765888137206222
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +429,6 @@ GameObject:
   - component: {fileID: 8739118830777710714}
   - component: {fileID: 9052759819241010052}
   - component: {fileID: 5438784560474402240}
-  - component: {fileID: 4058560432840238821}
   m_Layer: 0
   m_Name: GrabCollider
   m_TagString: Untagged
@@ -455,9 +464,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.25, y: 0}
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 1
 --- !u!114 &5438784560474402240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -481,24 +490,6 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   fistRotations: []
   fistCloseTime: 1.25
---- !u!114 &4058560432840238821
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7059765888137206222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78a765d940b18a0489455214baacc102, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trackDeath: 1
-  scoreIncrease: 0
-  augmentScoreIncrease: 0
-  Multiplayer: 0
-  Boss: 0
-  TrackingDamage: 1
 --- !u!1 &7226056533569386014
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +564,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 03ac127254fe31c418f32fc63a7b4fb9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

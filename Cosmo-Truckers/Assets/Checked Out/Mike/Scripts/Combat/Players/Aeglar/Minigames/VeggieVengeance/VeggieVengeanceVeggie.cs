@@ -69,7 +69,7 @@ public class VeggieVengeanceVeggie : MonoBehaviour
             {
                 aeglar.TakeDamage(); 
             }
-            particleSpawner.SpawnDeathParticle(transform); 
+            particleSpawner.SpawnParticle(transform, true); 
             Destroy(gameObject);
         }
         else if (collision.name == "TopKiller" || collision.name == "RightKiller" || collision.name == "BottomKiller")

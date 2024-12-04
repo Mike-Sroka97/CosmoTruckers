@@ -69,7 +69,7 @@ public class PorkanatorHurt : MonoBehaviour
     {
         if (collision.transform.name == "Saw Pit")
         {
-            myParticleSpawner.SpawnDeathParticle(transform); 
+            myParticleSpawner.SpawnParticle(transform, true); 
             Destroy(gameObject);
         }
         /*
@@ -86,7 +86,7 @@ public class PorkanatorHurt : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            myParticleSpawner.SpawnDeathParticle(transform);
+            myParticleSpawner.SpawnParticle(transform, true);
             Destroy(gameObject);
             /*
             myCollider.enabled = false;

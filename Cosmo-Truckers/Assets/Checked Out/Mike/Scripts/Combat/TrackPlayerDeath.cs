@@ -105,14 +105,17 @@ public class TrackPlayerDeath : MonoBehaviour
 
     private void AdjustMinigameScore(Player player)
     {
-
         if(Boss)
         {
             if (!player.iFrames)
             {
-                minigame.DealDamageOrHealing(player.MyCharacter, damage);
-                Death(player);
+                KeyValuePair<bool, int> damageValues = minigame.CalculateDamage(damage); 
+
+                player.MyCharacter.SwitchCombatOutcomes(EnumManager.CombatOutcome.Damage, damageValues.Value, damageValues.Key);
                 player.TakeDamage();
+                player.MyCharacter.MyVessel.AdjustCurrentHealthDisplay(player.MyCharacter.CurrentHealth); 
+                player.MyCharacter.MyVessel.AdjustShieldDisplay(player.MyCharacter.Shield); 
+                Death(player);
             }
         }
         else if (Multiplayer)

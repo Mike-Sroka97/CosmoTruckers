@@ -11,7 +11,7 @@ public class ORBFaceChunk : MonoBehaviour
 
     [SerializeField] float fallSpeed;
     [SerializeField] float yLimit;
-    [SerializeField] float rotateSpeed = 0f; 
+    [SerializeField] float rotateSpeed = 0f;
 
     SpriteRenderer mySpriteRenderer;
     bool movingLeft = true;
@@ -20,6 +20,7 @@ public class ORBFaceChunk : MonoBehaviour
     bool falling;
     Collider2D myCollider;
     Vector3 startingPosition;
+
 
     void Start()
     {
@@ -35,7 +36,7 @@ public class ORBFaceChunk : MonoBehaviour
         }
 
         myCollider.enabled = false; 
-        startingPosition = transform.position;
+        startingPosition = transform.localPosition;
     }
 
     public void StartToFall()
@@ -56,9 +57,9 @@ public class ORBFaceChunk : MonoBehaviour
 
         mySpriteRenderer.material = hurtMaterial;
         myCollider.enabled = true;
-        transform.position -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
+        transform.localPosition -= new Vector3(0, fallSpeed * Time.deltaTime, 0);
 
-        if (transform.position.y < yLimit)
+        if (transform.localPosition.y < yLimit)
         {
             Destroy(gameObject);
         }
@@ -89,18 +90,33 @@ public class ORBFaceChunk : MonoBehaviour
     {
         if (movingLeft)
         {
-            transform.position -= new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
-            if (transform.position.x < startingPosition.x - shakeXBounds)
+            transform.localPosition -= new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
+            if (transform.localPosition.x < startingPosition.x - shakeXBounds)
             {
                 movingLeft = !movingLeft;
             }
         }
         else
         {
-            transform.position += new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
-            if (transform.position.x > startingPosition.x + shakeXBounds)
+            transform.localPosition += new Vector3(shakeSpeed * Time.deltaTime, 0, 0);
+            if (transform.localPosition.x > startingPosition.x + shakeXBounds)
             {
                 movingLeft = !movingLeft;
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            if (GetComponent<ParticleSpawner>() != null)
+                GetComponent<ParticleSpawner>().SpawnParticle(transform, true);
+            else
+            {
+                GameObject particle = gameObject.GetComponentInChildren<ParticleSystem>().gameObject;
+                particle.SetActive(true); 
+                particle.transform.parent = FindObjectOfType<CombatMove>().transform;
             }
         }
     }

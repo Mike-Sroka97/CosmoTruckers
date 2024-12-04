@@ -7,15 +7,15 @@ public class ParticleSpawner : MonoBehaviour
     [SerializeField] GameObject particleToSpawn;
     [SerializeField] bool isTrigger = true;
 
-    [Header("If nSC is true, OnTrigger/Collision will spawn Particles")]
+    /// <summary>
+    /// If nSC is true, OnTrigger/Collision will spawn Particles
+    /// </summary>
     [SerializeField] bool noSpecialCase = false;
 
     [Header("DeathParticle only spawns once")]
     [SerializeField] bool deathParticle = true;
-
-    [Header("Success Attackable vs Success")]
     [SerializeField] bool attackable = false;
-
+    [SerializeField] bool destroyOnContact = false;
 
     bool hasSpawned = false; 
     CombatMove minigame; 
@@ -26,19 +26,16 @@ public class ParticleSpawner : MonoBehaviour
         minigame = FindObjectOfType<CombatMove>();
     }
 
-    public void SpawnParticle(Transform spawnPosition)
+    public void SpawnParticle(Transform spawnPosition, bool deathParticle = false)
     {
-        Instantiate(particleToSpawn, spawnPosition.position, particleToSpawn.transform.rotation, minigame.transform);
-    }
-
-    public void SpawnDeathParticle(Transform spawnPosition)
-    {
-        //Only spawn once
-        if (!hasSpawned)
+        if (!deathParticle || (deathParticle && !hasSpawned))
         {
             hasSpawned = true;
-            SpawnParticle(spawnPosition); 
+            Instantiate(particleToSpawn, spawnPosition.position, particleToSpawn.transform.rotation, minigame.transform);
         }
+
+        if (destroyOnContact)
+            Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -53,10 +50,9 @@ public class ParticleSpawner : MonoBehaviour
     {
         if (!isTrigger && noSpecialCase)
         {
-            ParticleChecks(collision.gameObject); 
+            ParticleChecks(collision.gameObject);
         }
     }
-
 
     private void ParticleChecks(GameObject collision)
     {
@@ -65,9 +61,7 @@ public class ParticleSpawner : MonoBehaviour
             if (collision.tag == "PlayerAttack")
             {
                 if (deathParticle)
-                {
-                    SpawnDeathParticle(transform);
-                }
+                    SpawnParticle(transform, true);
                 else
                 {
                     SpawnParticle(transform);
@@ -79,9 +73,7 @@ public class ParticleSpawner : MonoBehaviour
             if (collision.tag == "Player")
             {
                 if (deathParticle)
-                {
-                    SpawnDeathParticle(transform);
-                }
+                    SpawnParticle(transform, true);
                 else
                 {
                     SpawnParticle(transform);
