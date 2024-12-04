@@ -794,8 +794,9 @@ public class InaPractice : INAcombat
     public IEnumerator MinigameCleanup()
     {
         aboveMask.gameObject.SetActive(false);
+        FindObjectOfType<Player>().enabled = false;
 
-        trainingCombatHandler.CleanupMinigame();
+        yield return new WaitForSeconds(endMinigameTime);
 
         //CloseScreen
         while (topMask.localPosition.y > topMaskStartingY)
@@ -805,6 +806,8 @@ public class InaPractice : INAcombat
 
             yield return null;
         }
+
+        trainingCombatHandler.CleanupMinigame();
 
         yield return new WaitForSeconds(endMinigameTime);
 
