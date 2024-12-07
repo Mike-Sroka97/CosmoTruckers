@@ -797,7 +797,9 @@ public class InaPractice : INAcombat
     public IEnumerator MinigameCleanup()
     {
         aboveMask.gameObject.SetActive(false);
-        FindObjectOfType<Player>().enabled = false;
+
+        Player player = FindObjectOfType<Player>();
+        player.EndMoveSetup();
 
         yield return new WaitForSeconds(endMinigameTime);
 

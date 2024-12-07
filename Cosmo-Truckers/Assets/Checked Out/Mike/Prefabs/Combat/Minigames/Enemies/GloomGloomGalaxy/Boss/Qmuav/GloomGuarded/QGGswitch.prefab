@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9079275626924671889}
   - component: {fileID: 7841624689975651956}
   - component: {fileID: 4334713668205843304}
+  - component: {fileID: 6297409388534300930}
   m_Layer: 0
   m_Name: QGGswitch
   m_TagString: Untagged
@@ -73,10 +74,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 33a7ecc846033f94ebff319f64e6ebb2, type: 3}
-  m_Color: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
+  m_Sprite: {fileID: 440853248, guid: 0f6b3a90601275645bdde45b569d1e18, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,18 +100,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.2}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.48, y: 0.48}
+    oldSize: {x: 1.0833334, y: 1.0833334}
     newSize: {x: 0.48, y: 0.48}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.48, y: 0.48}
+  m_Size: {x: 0.48, y: 0.6}
   m_EdgeRadius: 0
 --- !u!114 &4334713668205843304
 MonoBehaviour:
@@ -126,4 +127,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeMaterial: {fileID: 2100000, guid: 9b038a0f88a52f24093636bb809354f3, type: 2}
   toggledMaterial: {fileID: 2100000, guid: a80cb6fb798437642bf8981e00ef4d14, type: 2}
+  canBeToggled: 1
   nextSwitch: {fileID: 0}
+  nextBlackHole: {fileID: 0}
+  openAnimation: {fileID: 7400000, guid: 50df9fad575fc7b44a5d3b61deba4c19, type: 2}
+  closeAnimation: {fileID: 7400000, guid: 51dea850e21469744b708352f8dde5b5, type: 2}
+  startMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+--- !u!95 &6297409388534300930
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5493882454556704291}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b838248e2495941438b2fef836c60f21, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

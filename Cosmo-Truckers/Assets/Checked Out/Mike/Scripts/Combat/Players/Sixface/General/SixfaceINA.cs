@@ -153,6 +153,13 @@ public class SixfaceINA : Player
         playerAnimator.ChangeAnimation(faceAnimator, clip);
     }
 
+    public override void EndMoveSetup()
+    {
+        SetSixFacesFace(sixFaceFaces[0]);
+        playerAnimator.ChangeAnimation(bodyAnimator, idle);
+        base.EndMoveSetup();
+    }
+
     #region Attack
     /// <summary>
     /// Six faces attack is traditional left, right, and up attack. His down attack creates an upward force the first time it is used in midair

@@ -6,12 +6,26 @@ public class GloomGuardSwitch : Switch
 {
     [SerializeField] GloomGuardSwitch nextSwitch;
     [SerializeField] GloomGuardedBlackHole nextBlackHole;
+    [SerializeField] AnimationClip openAnimation, closeAnimation;
+    [SerializeField] Material startMaterial; 
 
+    Animator myAnimator; 
     GloomGuarded minigame;
 
     private void Awake()
     {
         minigame = FindObjectOfType<GloomGuarded>();
+        myAnimator = GetComponent<Animator>();
+    }
+
+    protected override void Initialize()
+    {
+        base.Initialize();
+        myRenderer.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
+        myRenderer.material = startMaterial; 
+
+        if (CanBeToggled)
+            ActivateMe(); 
     }
 
     protected override void ToggleMe()
@@ -22,6 +36,8 @@ public class GloomGuardSwitch : Switch
             minigame.EndMove();
         else
         {
+            myAnimator.Play(closeAnimation.name);
+            myRenderer.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
             nextSwitch.ActivateMe();
             nextBlackHole.ActivateMe();
         }
@@ -31,7 +47,8 @@ public class GloomGuardSwitch : Switch
 
     public void ActivateMe()
     {
+        myAnimator.Play(openAnimation.name);
         CanBeToggled = true;
-        myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 1);
+        myRenderer.color = new Color(1, 1, 1, 1);
     }
 }

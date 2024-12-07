@@ -94,6 +94,12 @@ public class AeglarINA : Player
             iFrames = false;
     }
 
+    public override void EndMoveSetup()
+    {
+        playerAnimator.ChangeAnimation(myAnimator, idle);
+        base.EndMoveSetup();
+    }
+
     #region Attack
     /// <summary>
     /// Aeglar's attack will be a dash where he is an active hitbox during the process
