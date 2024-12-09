@@ -11,6 +11,8 @@ public class HiveHealing : CombatMove
 
     public override void StartMove()
     {
+        GetComponentInChildren<GravityManager>().Initialize();
+
         foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
             graviton.enabled = true;
 

@@ -108,6 +108,7 @@ public class SafeTINA : Player
     public override void EndMoveSetup()
     {
         playerAnimator.ChangeAnimation(myAnimator, idle);
+        myLineRenderer.enabled = false; 
         base.EndMoveSetup();
     }
 

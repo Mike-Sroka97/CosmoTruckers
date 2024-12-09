@@ -30,5 +30,6 @@ public class HiveHealingSwitch : Switch
         }
 
         minigame.Score--;
+        minigame.CheckScoreEqualsValue(0); 
     }
 }

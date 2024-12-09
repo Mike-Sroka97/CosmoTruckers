@@ -705,6 +705,10 @@ public class InaPractice : INAcombat
         foreach (TrailRenderer trail in minigame.GetComponentsInChildren<TrailRenderer>())
             trail.enabled = false;
 
+        transform.localPosition = goalPosition;
+
+        yield return new WaitForSeconds(faceWaitTime);
+
         //Enable Line/Trail Renderers
         foreach (LineRenderer line in GetComponentsInChildren<LineRenderer>())
         {
@@ -717,9 +721,6 @@ public class InaPractice : INAcombat
         foreach (TrailRenderer trail in GetComponentsInChildren<TrailRenderer>())
             trail.enabled = true;
 
-        transform.localPosition = goalPosition;
-
-        yield return new WaitForSeconds(faceWaitTime);
 
         trainingCombatHandler.SpawnPlayers(playerPrefabs[traineeID].GetComponent<PlayerCharacter>());
         GetComponentInChildren<CombatMove>().SetSpawns();

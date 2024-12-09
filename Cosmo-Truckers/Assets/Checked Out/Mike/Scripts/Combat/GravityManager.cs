@@ -10,7 +10,7 @@ public class GravityManager : MonoBehaviour
     public static List<Rigidbody2D> attractees = new List<Rigidbody2D>();
     public static bool isSimulatingLive = true;
 
-    private void Start()
+    public void Initialize()
     {
         Player[] players = FindObjectsOfType<Player>();
         foreach(Player player in players)
