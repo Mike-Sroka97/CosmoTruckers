@@ -31,6 +31,7 @@ public class GloomGuardSwitch : Switch
     protected override void ToggleMe()
     {
         minigame.Score--;
+        minigame.CheckScoreEqualsValue(0); 
 
         if (!nextSwitch)
             minigame.EndMove();
