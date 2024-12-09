@@ -5,6 +5,7 @@ using UnityEngine;
 public class HiveHealingSwitch : Switch
 {
     [SerializeField] HiveHealingBlackHoles[] blackHoles;
+    [SerializeField] Sprite offSprite; 
 
     HiveHealing minigame;
     bool stopItGetSomeHelp = false;
@@ -21,6 +22,7 @@ public class HiveHealingSwitch : Switch
             return;
 
         stopItGetSomeHelp = true;
+        myRenderer.sprite = offSprite;
 
         foreach (HiveHealingBlackHoles blackHole in blackHoles)
         {

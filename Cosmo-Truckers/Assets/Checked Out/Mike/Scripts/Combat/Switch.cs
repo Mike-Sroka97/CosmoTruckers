@@ -4,9 +4,9 @@ using UnityEngine;
 
 public abstract class Switch : MonoBehaviour
 {
-    [SerializeField] Material activeMaterial;
-    [SerializeField] Material toggledMaterial;
-    public bool CanBeToggled
+    [SerializeField] protected Material activeMaterial;
+    [SerializeField] protected Material toggledMaterial;
+    public virtual bool CanBeToggled
     { 
         get
         {
@@ -33,7 +33,7 @@ public abstract class Switch : MonoBehaviour
         Initialize(); 
     }
 
-    protected void Initialize()
+    protected virtual void Initialize()
     {
         myRenderer = GetComponent<SpriteRenderer>();
 

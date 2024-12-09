@@ -151,6 +151,12 @@ public class ProtoINA : Player
         negativeYBoundary = newNegY;
     }
 
+    public override void EndMoveSetup()
+    {
+        playerAnimator.ChangeAnimation(myAnimator, idle);
+        base.EndMoveSetup();
+    }
+
     #region Attack
     /// <summary>
     /// Whacko funny punch go haha

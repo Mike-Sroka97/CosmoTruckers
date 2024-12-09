@@ -83,4 +83,24 @@ public abstract class Player : MonoBehaviour
     }
 
     public abstract IEnumerator Damaged();
+
+    /// <summary>
+    /// Set up each individual player for when a move ends <br></br>
+    /// Used in training mode. 
+    /// </summary>
+    public virtual void EndMoveSetup()
+    {
+        Rigidbody2D body = GetComponent<Rigidbody2D>();
+
+        if (body != null)
+            body.velocity = new Vector2(0, body.velocity.y);
+
+        else
+        {
+            body = GetComponentInChildren<Rigidbody2D>();
+            body.velocity = new Vector2(0, body.velocity.y);
+        }
+
+        enabled = false; 
+    }
 }

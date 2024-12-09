@@ -105,6 +105,12 @@ public class SafeTINA : Player
         damagedCoroutineRunning = false; 
     }
 
+    public override void EndMoveSetup()
+    {
+        playerAnimator.ChangeAnimation(myAnimator, idle);
+        base.EndMoveSetup();
+    }
+
     #region Attack
     /// <summary>
     /// Regular horizontal and vertical attacks
