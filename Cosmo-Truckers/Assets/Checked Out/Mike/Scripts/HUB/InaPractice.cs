@@ -59,6 +59,7 @@ public class InaPractice : INAcombat
     [SerializeField] TextMeshProUGUI[] miniGameCountTmps;
     [SerializeField] VideoPlayer videoPlayer;
     [SerializeField] float endMinigameTime = 1.2f;
+    [SerializeField] BaseAttackSO[] playgrounds;
 
     [Space(20)]
     [Header("EnemySprites")] //ID starts with 0 for dimension 1 feeble foe 1. +8 to id based on dimension ID
@@ -210,7 +211,6 @@ public class InaPractice : INAcombat
             yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         }
 
-        //TODO select first button
         firstMinigameCharacterButton.enabled = true;
     }
 
@@ -350,6 +350,8 @@ public class InaPractice : INAcombat
         if (type == 0)
         {
             currentCharacterAttacks = playerPrefabs[traineeID].GetComponent<PlayerCharacter>().GetAllBaseAttacks;
+            if(currentCharacterAttacks[0] != playgrounds[traineeID])
+                currentCharacterAttacks.Insert(0, playgrounds[traineeID]);
         }
         else if (type == 1)
         {
