@@ -57,4 +57,6 @@ public class LengthyProcedure : CombatMove
         base.EndMove();
         FindObjectOfType<LongDogMana>().AddBulletsToReserve();
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} healing {Score * Damage + baseDamage} health to yourself. You also added one bullet to your reserve clip.";
 }

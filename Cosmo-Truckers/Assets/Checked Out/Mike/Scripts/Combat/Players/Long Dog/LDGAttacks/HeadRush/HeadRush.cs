@@ -47,4 +47,6 @@ public class HeadRush : CombatMove
             lastRandom = random;
         }  
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage.";
 }

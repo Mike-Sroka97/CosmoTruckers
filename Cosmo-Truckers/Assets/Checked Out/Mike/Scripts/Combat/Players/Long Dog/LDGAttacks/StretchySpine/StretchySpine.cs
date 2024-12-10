@@ -88,4 +88,6 @@ public class StretchySpine : CombatMove
 
         longDog.TakeShielding(currentShield);
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} gaining {Score * Damage + baseDamage} shield. You also stretched in front of your teammates to protect them.";
 }

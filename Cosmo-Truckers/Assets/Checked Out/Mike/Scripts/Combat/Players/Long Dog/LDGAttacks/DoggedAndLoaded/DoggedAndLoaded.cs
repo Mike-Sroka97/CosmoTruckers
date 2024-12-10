@@ -87,8 +87,5 @@ public class DoggedAndLoaded : CombatMove
 
     }
 
-    private void HandleBulletTypes()
-    {
-
-    }
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}. After reloading, you dealt {Score * Damage + baseDamage} damage with your gun.";
 }

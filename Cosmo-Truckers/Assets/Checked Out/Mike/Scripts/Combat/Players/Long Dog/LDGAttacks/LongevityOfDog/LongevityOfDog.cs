@@ -32,7 +32,7 @@ public class LongevityOfDog : CombatMove
 
         MoveEnded = true;
 
-        //Calculate Damage
+        //Calculate Score
         if (Score < 0)
             Score = 0;
         if (Score >= maxScore)
@@ -49,4 +49,6 @@ public class LongevityOfDog : CombatMove
         //Apply augment
         CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, augmentStacks);
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} giving a teammate {Score * augmentStacksPerScore + baseAugmentStacks} stacks of {DebuffToAdd.AugmentName}.";
 }

@@ -462,5 +462,5 @@ public class CombatMove : MonoBehaviour
             deathSource.Boss = true;
     }
 
-    public virtual string TrainingDisplayText => $"You scored {Score}/{maxScore}.";
+    public virtual string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}.";
 }

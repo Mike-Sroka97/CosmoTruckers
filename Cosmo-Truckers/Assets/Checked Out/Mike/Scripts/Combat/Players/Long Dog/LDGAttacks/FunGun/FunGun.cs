@@ -89,4 +89,6 @@ public class FunGun : CombatMove
 
         mana.Shoot();
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage with your gun.";
 }
