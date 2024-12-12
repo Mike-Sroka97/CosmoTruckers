@@ -6,15 +6,25 @@ public class AtomicImpact : CombatMove
 {
     [SerializeField] int numberOfHits = 3;
 
+    [SerializeField] int maxWaveCount = 2;
+    int currentWaveCount = 0;
+
     public override void StartMove()
     {
+        GetComponentInChildren<GravityManager>().Initialize();
+
+        currentWaveCount = maxWaveCount; 
         GenerateNextWave();
         base.StartMove();
     }
 
     public void GenerateNextWave()
     {
-        GenerateLayout();
+        if (currentWaveCount > 0)
+        {
+            currentWaveCount--;
+            GenerateLayout();
+        }
     }
 
     public override void EndMove()
@@ -25,3 +35,4 @@ public class AtomicImpact : CombatMove
         DealMultiHitDamageOrHealing(CombatManager.Instance.GetCharactersSelected[0], CalculateScore(), numberOfHits); 
     }
 }
+ 
