@@ -29,5 +29,5 @@ public class SeedSprout : CombatMove
         currentFlower++;
     }
 
-    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}. The target received {Score + baseAugmentStacks} stacks of {DebuffToAdd.AugmentName}.";
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}. The target received {Score + baseAugmentStacks} stack(s) of {DebuffToAdd.AugmentName}.";
 }

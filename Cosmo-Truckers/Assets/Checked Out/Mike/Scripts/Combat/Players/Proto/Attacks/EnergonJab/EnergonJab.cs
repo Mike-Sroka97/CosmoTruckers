@@ -51,11 +51,18 @@ public class EnergonJab : CombatMove
         ProtoMana mana = CombatManager.Instance.GetCurrentPlayer.GetComponent<ProtoMana>();
 
         if (mana.CurrentBattery == 0)
-        {
-            if (Score >= maxScore)
-                mana.UpdateMana(2);
-            else if (Score >= maxScore / 2)
-                mana.UpdateMana(1);
-        }
+            mana.UpdateMana(CalculateManaGain());
     }
+
+    private int CalculateManaGain()
+    {
+        if (Score >= maxScore)
+            return 2;
+        else if (Score >= maxScore / 2)
+            return 1;
+        else
+            return 0;
+    }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {baseDamage + Score * Damage} damage. You gained {CalculateManaGain()} battery charges.";
 }

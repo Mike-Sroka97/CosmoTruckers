@@ -135,4 +135,6 @@ public class SystemShock : CombatMove
             retention = 2;
         mana.AdjustRetention(retention); //3 because it is 1/3 of the debuff stacks to give out
     }
+
+    public override string TrainingDisplayText => $"You scored {AugmentScore = (AugmentScore > maxAugmentStacks ? maxAugmentStacks : AugmentScore)}/{maxAugmentStacks} giving your target {AugmentScore} stack(s) of {DebuffToAdd.AugmentName}. You retained {(AugmentScore / 3 > 2 ? 2 : AugmentScore / 3)} battery charges.";
 }

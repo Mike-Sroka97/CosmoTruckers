@@ -30,5 +30,7 @@ public class TripleTether : CombatMove
             enemy.TauntedBy = CombatManager.Instance.GetCurrentPlayer;
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} to your targets, and you taunted your targets.";
 }
     

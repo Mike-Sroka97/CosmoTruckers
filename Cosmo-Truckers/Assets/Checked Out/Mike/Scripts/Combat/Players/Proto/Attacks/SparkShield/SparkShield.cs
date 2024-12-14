@@ -32,7 +32,8 @@ public class SparkShield : CombatMove
 
         int shielding = baseDamage + Score * Damage;
 
-        CombatManager.Instance.GetCurrentCharacter.TakeShielding(shielding);
-        
+        CombatManager.Instance.GetCurrentCharacter.TakeShielding(shielding);        
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} gaining {baseDamage + Score * Damage} shield. You gained {AugmentScore} stack(s) of {DebuffToAdd.AugmentName}.";
 }

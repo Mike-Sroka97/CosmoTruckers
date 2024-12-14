@@ -50,5 +50,5 @@ public class LongevityOfDog : CombatMove
         CombatManager.Instance.GetCharactersSelected[0].AddAugmentStack(DebuffToAdd, augmentStacks);
     }
 
-    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} giving a teammate {Score * augmentStacksPerScore + baseAugmentStacks} stacks of {DebuffToAdd.AugmentName}.";
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} giving a teammate {Score * augmentStacksPerScore + baseAugmentStacks} stack(s) of {DebuffToAdd.AugmentName}.";
 }

@@ -32,4 +32,6 @@ public class FullCharge : CombatMove
         CombatManager.Instance.GetCurrentPlayer.AddAugmentStack(DebuffToAdd, 2); //always two on device in use
         FindObjectOfType<ProtoMana>().InUse = true;
     }
+
+    public override string TrainingDisplayText => $"You scored {(AugmentScore * augmentStacksPerScore + baseAugmentStacks > maxAugmentStacks ? maxAugmentStacks : AugmentScore * augmentStacksPerScore + baseAugmentStacks)}/{maxAugmentStacks} gaining {(AugmentScore * augmentStacksPerScore + baseAugmentStacks >  maxAugmentStacks ? maxAugmentStacks : AugmentScore * augmentStacksPerScore + baseAugmentStacks)} stack(s) of {megawatt.AugmentName}. In two turns, you battery will recharge.";
 }
