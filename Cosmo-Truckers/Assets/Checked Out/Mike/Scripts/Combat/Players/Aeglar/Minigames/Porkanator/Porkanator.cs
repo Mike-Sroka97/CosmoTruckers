@@ -31,4 +31,6 @@ public class Porkanator : CombatMove
             }
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {AugmentScore}/{maxAugmentStacks} giving each character targeted {AugmentScore} stacks of {DebuffToAdd.AugmentName}.";
 }

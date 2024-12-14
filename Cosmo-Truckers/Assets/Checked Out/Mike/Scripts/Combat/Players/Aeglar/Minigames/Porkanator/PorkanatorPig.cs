@@ -7,14 +7,12 @@ public class PorkanatorPig : MonoBehaviour
     [SerializeField] int scoreValue;
     [SerializeField] float fadeSpeed;
 
-    AeglarINA player;
     Porkanator minigame;
     SpriteRenderer myRenderer;
     ParticleSpawner myParticleSpawner; 
 
     private void Start()
     {
-        player = FindObjectOfType<AeglarINA>();
         minigame = FindObjectOfType<Porkanator>();
         myRenderer = GetComponent<SpriteRenderer>();
         myParticleSpawner = GetComponent<ParticleSpawner>(); 

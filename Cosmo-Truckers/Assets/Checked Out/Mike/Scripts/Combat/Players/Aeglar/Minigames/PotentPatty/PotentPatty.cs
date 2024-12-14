@@ -81,4 +81,6 @@ public class PotentPatty : CombatMove
             character.Resurrect(currentHealing);
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} resurrecting a target with {Score * Damage + baseDamage} health.";
 }

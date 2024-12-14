@@ -62,4 +62,6 @@ public class VeggieVengeance : CombatMove
                 character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} healing your target for {Score * Damage + baseDamage}. The target received a stack of {DebuffToAdd.AugmentName}.";
 }

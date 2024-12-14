@@ -53,7 +53,7 @@ public class FullCourse : CombatMove
             {
                 int currentDamage = character.CurrentHealth + character.AdjustAttackHealing(currentHealing) - character.Health;
                 currentHealing = character.Health - character.CurrentHealth;
-                character.SingleHealThenDamage(currentHealing, currentDamage, true); 
+                character.SingleHealThenDamage(currentHealing, currentDamage, true);
             }
             else
             {
@@ -64,4 +64,6 @@ public class FullCourse : CombatMove
             character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} healing all characters for {Score * Damage + baseDamage}. All characters received a stack of {DebuffToAdd.AugmentName}.";
 }

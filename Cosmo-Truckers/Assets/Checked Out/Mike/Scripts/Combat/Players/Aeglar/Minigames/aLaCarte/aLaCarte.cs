@@ -108,4 +108,6 @@ public class aLaCarte : CombatMove
             }
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}. You gained (1) of each ingredient. For every 3 points you scored, an ingredient summon was spawned.";
 }

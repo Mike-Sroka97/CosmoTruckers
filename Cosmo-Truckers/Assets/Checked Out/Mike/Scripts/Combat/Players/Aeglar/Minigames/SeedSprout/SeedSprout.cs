@@ -28,4 +28,6 @@ public class SeedSprout : CombatMove
         flowers[currentFlower].TrackTime = true;
         currentFlower++;
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}. The target received {Score + baseAugmentStacks} stacks of {DebuffToAdd.AugmentName}.";
 }
