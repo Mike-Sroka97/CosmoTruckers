@@ -34,8 +34,7 @@ public class CounterBop : CombatMove
 
         //Calculate total shields
         int totalShields = baseDamage;
-        for (int i = 0; i < Score; i++)
-            totalShields += Damage;
+        totalShields += Damage * Score;
 
         character.TakeShielding(totalShields);
 
@@ -52,4 +51,6 @@ public class CounterBop : CombatMove
         int random = Random.Range(0, aliveEnemies.Count);
         aliveEnemies[random].TauntedBy = character;
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} gaining {Score * Damage + baseDamage} shield and gaining {baseAugmentStacks} of {DebuffToAdd.AugmentName}. A random enemy was taunted too.";
 }

@@ -35,24 +35,7 @@ public class PowerPummel : CombatMove
         {
             foreach (Character character in CombatManager.Instance.GetCharactersSelected)
             {
-                int numberOfHits;
-
-                //Calculate Damage 
-                if (Score >= twoScoreValue)
-                {
-                    Score = 2;
-                    numberOfHits = twoScoreValue + baseNumberOfAttacks;
-                }
-                else if (Score >= oneScoreValue)
-                {
-                    Score = 1;
-                    numberOfHits = oneScoreValue + baseNumberOfAttacks;
-                }
-                else
-                {
-                    Score = 0;
-                    numberOfHits = baseNumberOfAttacks;
-                }
+                int numberOfHits = CalculateNumberOfHits();
 
                 //1 being base damage
                 float DamageAdj = 1;
@@ -68,4 +51,26 @@ public class PowerPummel : CombatMove
             }
         }
     }
+
+    private int CalculateNumberOfHits()
+    {
+        //Calculate Damage 
+        if (Score >= twoScoreValue)
+        {
+            Score = 2;
+            return twoScoreValue + baseNumberOfAttacks;
+        }
+        else if (Score >= oneScoreValue)
+        {
+            Score = 1;
+            return oneScoreValue + baseNumberOfAttacks;
+        }
+        else
+        {
+            Score = 0;
+            return baseNumberOfAttacks;
+        }
+    }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {(Score * Damage + baseDamage) / CalculateNumberOfHits()} damage {CalculateNumberOfHits()} times.";
 }

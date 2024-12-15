@@ -61,4 +61,6 @@ public class RageBlast : CombatMove
         base.EndMove();
         FindObjectOfType<SafeTMana>().SetCurrentAnger(CombatManager.Instance.GetCharactersSelected.Count);
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage to all enemies.";
 }

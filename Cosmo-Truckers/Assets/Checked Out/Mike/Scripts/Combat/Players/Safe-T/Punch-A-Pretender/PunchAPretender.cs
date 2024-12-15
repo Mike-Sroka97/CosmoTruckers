@@ -83,24 +83,7 @@ public class PunchAPretender : CombatMove
         if (CombatManager.Instance != null) //In the combat screen
         {
             SafeTCharacter character = CombatManager.Instance.GetCurrentPlayer.GetComponent<SafeTCharacter>();
-            int numberOfHits;
-
-            //Calculate Damage 
-            if (Score >= twoScoreValue)
-            {
-                Score = 2;
-                numberOfHits = twoScoreValue + baseNumberOfAttacks;
-            }
-            else if (Score >= oneScoreValue)
-            {
-                Score = 1;
-                numberOfHits = oneScoreValue + baseNumberOfAttacks;
-            }
-            else
-            {
-                Score = 0;
-                numberOfHits = 2;
-            }
+            int numberOfHits = CalculateNumberOfHits();
 
             //1 being base damage
             float DamageAdj = 1;
@@ -111,4 +94,27 @@ public class PunchAPretender : CombatMove
             character.GetComponent<Character>().TakeMultiHitDamage(baseDamage / numberOfHits + character.FlatDamageAdjustment, numberOfHits);
         }
     }
+
+    private int CalculateNumberOfHits()
+    {
+
+        //Calculate Damage 
+        if (Score >= twoScoreValue)
+        {
+            Score = 2;
+            return twoScoreValue  + baseNumberOfAttacks;
+        }
+        else if (Score >= oneScoreValue)
+        {
+            Score = 1;
+            return oneScoreValue + baseNumberOfAttacks;
+        }
+        else
+        {
+            Score = 0;
+            return 2;
+        }
+    }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} hitting yourself ({CalculateNumberOfHits()}) times and generating ({CalculateNumberOfHits()}) rage.";
 }
