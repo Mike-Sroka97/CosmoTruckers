@@ -37,4 +37,6 @@ public class PettyTheft : CombatMove
         base.EndMove();
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage.";
 }

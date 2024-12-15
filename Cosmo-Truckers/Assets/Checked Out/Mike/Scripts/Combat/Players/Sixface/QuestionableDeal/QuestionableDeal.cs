@@ -78,4 +78,6 @@ public class QuestionableDeal : CombatMove
 
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage.{(Score > 0 ? " If your target had any subduction, this dealt 999 damage instead.": "")}";
 }

@@ -138,4 +138,6 @@ public class Bribery : CombatMove
         base.EndMove();
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
+
+    public override string TrainingDisplayText => $"You scored {CalculateAugmentScore()}/{maxAugmentStacks} giving your target {CalculateAugmentScore()} stack(s) of {DebuffToAdd.AugmentName}. Your target gained a stack of {bribery.AugmentName}.";
 }

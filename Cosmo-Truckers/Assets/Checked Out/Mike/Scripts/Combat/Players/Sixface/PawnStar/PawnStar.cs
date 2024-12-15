@@ -106,10 +106,7 @@ public class PawnStar : CombatMove
         currentDamage += baseDamage;
 
         //Calculate Augment Stacks
-        int augmentStacks = AugmentScore * augmentStacksPerScore;
-        augmentStacks += baseAugmentStacks;
-        if (augmentStacks > maxAugmentStacks)
-            augmentStacks = maxAugmentStacks;
+        int augmentStacks = CalculateAugmentStacks();
 
         //Apply augment
         if (sixFaceMana.FaceType == SixFaceMana.FaceTypes.Hype)
@@ -139,4 +136,16 @@ public class PawnStar : CombatMove
         //Update face
         sixFaceMana.UpdateFace();
     }
+
+    private int CalculateAugmentStacks()
+    {
+        int augmentStacks = AugmentScore * augmentStacksPerScore;
+        augmentStacks += baseAugmentStacks;
+        if (augmentStacks > maxAugmentStacks)
+            return maxAugmentStacks;
+        else
+            return augmentStacks;
+    }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage. Your target gained {CalculateAugmentStacks()} stack(s) of {DebuffToAdd.AugmentName}.";
 }

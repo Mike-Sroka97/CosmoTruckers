@@ -81,9 +81,6 @@ public class SugarPillPlacebo : CombatMove
             currentHealing = Score * Damage;
             currentHealing += baseDamage;
 
-            //Calculate Augment Stacks
-            int augmentStacks = 1; //always applies placebo
-
             //1 being base damage
             float HealingAdj = 1;
 
@@ -93,7 +90,9 @@ public class SugarPillPlacebo : CombatMove
             character.TakeHealing((int)(currentHealing * HealingAdj + CombatManager.Instance.GetCurrentCharacter.FlatHealingAdjustment), pierces);
 
             //Apply augment
-            character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, augmentStacks);
+            character.GetComponent<Character>().AddAugmentStack(DebuffToAdd, baseAugmentStacks);
         }
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} healing a teammate for {Score * Damage + baseDamage}. Your target gained a stack of {DebuffToAdd.AugmentName}.";
 }

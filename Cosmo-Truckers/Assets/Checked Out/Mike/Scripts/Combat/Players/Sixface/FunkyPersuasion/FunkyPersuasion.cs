@@ -25,7 +25,7 @@ public class FunkyPersuasion : CombatMove
 
         foreach(AugmentStackSO augment in target.GetAUGS)
         {
-            if(augment.AugmentName == "Subduction")
+            if(augment.AugmentName == DebuffToAdd.AugmentName)
             {
                 subductionToAdd--;
                 break;
@@ -36,4 +36,6 @@ public class FunkyPersuasion : CombatMove
 
         FindObjectOfType<SixFaceMana>().UpdateFace();
     }
+
+    public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage. The target also received {DebuffToAdd.AugmentName}.";
 }
