@@ -16,6 +16,10 @@ public class GalaxyBurst : CombatMove
         foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
             graviton.enabled = true;
 
+        BasicProjectileSpawner[] spawners = FindObjectsOfType<BasicProjectileSpawner>();
+        foreach (BasicProjectileSpawner spawner in spawners)
+            spawner.StartSpawning(); 
+
         base.StartMove();
     }
 
