@@ -18,7 +18,7 @@ public class TaskMasterFlag : MonoBehaviour
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
             minigame.PlayerScores[player.MyCharacter]--;
             minigame.PlayerAugmentScores[player.MyCharacter]--;
-            player.enabled = false;
+            player.EndMoveSetup(); 
         }
     }
 }
