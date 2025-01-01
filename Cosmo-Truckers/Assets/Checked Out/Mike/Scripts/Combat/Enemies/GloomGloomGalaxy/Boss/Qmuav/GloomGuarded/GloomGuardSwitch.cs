@@ -31,14 +31,14 @@ public class GloomGuardSwitch : Switch
     protected override void ToggleMe()
     {
         minigame.Score--;
-        minigame.CheckScoreEqualsValue(0); 
+        minigame.CheckScoreEqualsValue(0);
+        myAnimator.Play(closeAnimation.name);
+        myRenderer.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
 
         if (!nextSwitch)
             minigame.EndMove();
         else
         {
-            myAnimator.Play(closeAnimation.name);
-            myRenderer.color = new Color(0.75f, 0.75f, 0.75f, 0.75f);
             nextSwitch.ActivateMe();
             nextBlackHole.ActivateMe();
         }

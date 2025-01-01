@@ -13,6 +13,8 @@ public class TaskMaster : CombatMove
     {
         SetupMultiplayer();
 
+        GetComponentInChildren<GravityManager>().Initialize();
+
         foreach (Graviton graviton in GetComponentsInChildren<Graviton>())
             graviton.enabled = true;
 
