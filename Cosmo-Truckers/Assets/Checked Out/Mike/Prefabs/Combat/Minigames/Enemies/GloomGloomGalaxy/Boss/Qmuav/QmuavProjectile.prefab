@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2090424221}
   - component: {fileID: 2604260576507084026}
   - component: {fileID: 8162718433765544266}
-  - component: {fileID: 7216900289044082441}
+  - component: {fileID: 1457264012914980084}
   m_Layer: 0
   m_Name: QmuavProjectile
   m_TagString: Untagged
@@ -196,23 +196,19 @@ MonoBehaviour:
   deathParticle: 1
   attackable: 0
   destroyOnContact: 1
---- !u!95 &7216900289044082441
-Animator:
-  serializedVersion: 4
+--- !u!114 &1457264012914980084
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2604260576507084020}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eaa566ac1431bb847bdeed747f8b8f6b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f847078e79db02746a06b399e9ab1083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: -551338214, guid: 9b841d39d42a0e94ea5d4633204cdd27, type: 3}
+  - {fileID: 250096576, guid: 9b841d39d42a0e94ea5d4633204cdd27, type: 3}
+  timeBetweenEachSprite: 0.5
