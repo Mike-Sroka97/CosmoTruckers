@@ -59,4 +59,16 @@ public class ObjectShaker : MonoBehaviour
             shakeTimer = 0;
         }
     }
+
+    /// <summary>
+    /// Shake for a duration then stop shaking
+    /// </summary>
+    /// <param name="duration"></param>
+    /// <returns></returns>
+    public IEnumerator ShakeForDuration(float duration)
+    {
+        SetShakeState(true); 
+        yield return new WaitForSeconds(duration);
+        SetShakeState(false);
+    }
 }

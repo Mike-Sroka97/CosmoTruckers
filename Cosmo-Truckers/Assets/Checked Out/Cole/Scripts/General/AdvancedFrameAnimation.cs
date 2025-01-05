@@ -34,6 +34,8 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     /// <param name="isHurt"></param>
     public void StartAnimationWithUniqueTime(float timeBeforeSwapping, bool isHurt = true)
     {
+        ResetValues();
+
         if (isHurt)
         {
             ChangeAnimation(hurtSprites, timeBetweenHurtSprites, timeBeforeSwapping, ref hurt);
@@ -103,7 +105,7 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("PlayerAttack") && !hurt)
+        if (collision.CompareTag("PlayerAttack") && !hurt && playerHitHurts)
         {
             SwitchToHurtAnimation(); 
         }

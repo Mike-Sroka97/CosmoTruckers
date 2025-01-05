@@ -5,6 +5,16 @@ using UnityEngine;
 public class CryOfFrustrationQmuav : MonoBehaviour
 {
     [SerializeField] int hitPoints = 5;
+    [SerializeField] float shakeDuration = 1f;
+    
+    ObjectShaker shaker;
+    AdvancedFrameAnimation animator; 
+
+    private void Start()
+    {
+        shaker = GetComponent<ObjectShaker>();
+        animator = GetComponent<AdvancedFrameAnimation>();
+    }
 
     public void SetHealth(int numberOfPlayers)
     {
@@ -22,6 +32,11 @@ public class CryOfFrustrationQmuav : MonoBehaviour
                 GetComponentInParent<CombatMove>().FightWon = true;
                 GetComponentInParent<CombatMove>().EndMove();
                 enabled = false;
+            }
+            else
+            {
+                StartCoroutine(shaker.ShakeForDuration(shakeDuration));
+                animator.StartAnimationWithUniqueTime(shakeDuration, isHurt: true); 
             }
         }
     }

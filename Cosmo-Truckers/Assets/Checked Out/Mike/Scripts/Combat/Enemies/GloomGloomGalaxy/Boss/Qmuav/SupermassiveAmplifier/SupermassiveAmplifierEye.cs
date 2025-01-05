@@ -21,7 +21,8 @@ public class SupermassiveAmplifierEye : MonoBehaviour
     bool trackTime = true;
     bool firing = false;
     float currentTime = 0;
-    Animator myAnimator; 
+    Animator myAnimator;
+    SupermassiveAmplifierBlackHole myBlackHole; 
 
     private void Start()
     {
@@ -86,7 +87,7 @@ public class SupermassiveAmplifierEye : MonoBehaviour
             float startingXvelocity = DetermineVelocity(true);
             float startingYvelocity = DetermineVelocity(false);
 
-            Graviton newGraviton = Instantiate(eyeProjectile, pupil.position, Quaternion.identity, transform.parent).GetComponent<Graviton>();
+            Graviton newGraviton = Instantiate(eyeProjectile, pupil.position, transform.rotation, transform.parent).GetComponent<Graviton>();
             newGraviton.SetInitialVelocity(new Vector3(startingXvelocity, startingYvelocity, 0));
             newGraviton.enabled = true;
 
@@ -97,6 +98,13 @@ public class SupermassiveAmplifierEye : MonoBehaviour
         currentTime = 0;
         firing = false;
         myAnimator.Play(idle.name);
+        StartCoroutine(SwapBlackHoleState()); 
+    }
+
+    IEnumerator SwapBlackHoleState()
+    {
+        yield return new WaitForSeconds(1.5f); // Idc how about that
+        myBlackHole.SetActiveState(!myBlackHole.ActiveState);
     }
 
     private float DetermineVelocity(bool x)
@@ -143,5 +151,10 @@ public class SupermassiveAmplifierEye : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public void SetBlackHole(SupermassiveAmplifierBlackHole bh)
+    {
+        myBlackHole = bh; 
     }
 }

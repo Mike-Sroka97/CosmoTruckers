@@ -201,12 +201,14 @@ MonoBehaviour:
   maxScore: 1
   augmentStacksPerScore: 1
   maxAugmentStacks: 1
+  minAugmentStacks: 0
   baseDamage: 30
   baseAugmentStacks: 0
   timeToEndMove: 1
   isDamaging: 1
   isHealing: 0
   pierces: 0
+  GoTextReplacement: 
   bossMove: 0
   FightWon: 0
   spawnTest: 0
@@ -747,6 +749,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: QmuavGravitySource
       objectReference: {fileID: 0}
+    - target: {fileID: 3666173300942268344, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3666173300942268345, guid: d784ab8df677a3d40a453dd4d1d811fc, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -867,6 +873,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8268568118534552080}
     m_Modifications:
+    - target: {fileID: 1088512074140277692, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 1.15
+      objectReference: {fileID: 0}
     - target: {fileID: 2473732224054565681, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_Name
       value: MG_ShakyBlock
@@ -885,7 +895,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.25
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalPosition.y
@@ -927,6 +937,14 @@ PrefabInstance:
       propertyPath: shakeDuration
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
 --- !u!4 &3852886384500501921 stripped
@@ -941,6 +959,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8268568118534552080}
     m_Modifications:
+    - target: {fileID: 1088512074140277692, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 1.15
+      objectReference: {fileID: 0}
     - target: {fileID: 2473732224054565681, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_Name
       value: MG_ShakyBlock (1)
@@ -959,7 +981,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.25
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5172359045514530811, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1000,6 +1022,14 @@ PrefabInstance:
     - target: {fileID: 6933739474103169875, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
       propertyPath: shakeDuration
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_Size.x
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7565180395138645188, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e59709afd27aa714c9f32ed1c596e597, type: 3}

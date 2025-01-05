@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class QmuavProjectile : MonoBehaviour
 {
-    [SerializeField] float maxVelocity = 8;
+    [SerializeField] protected float maxVelocity = 8;
     [SerializeField] bool repeat = true;
     [SerializeField] bool checkClamps = true;
 
@@ -15,20 +15,20 @@ public class QmuavProjectile : MonoBehaviour
     const float xClamp = 6.5f;
     const float yClamp = 5f;
 
-    private void Start()
+    protected virtual void Start()
     {
         myGraviton = GetComponent<Graviton>();
         myBody = GetComponent<Rigidbody2D>();
         startPosition = transform.localPosition;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         CheckClamps();
         LimitVelocity();
     }
 
-    private void CheckClamps()
+    protected void CheckClamps()
     {
         if (!checkClamps)
             return;
