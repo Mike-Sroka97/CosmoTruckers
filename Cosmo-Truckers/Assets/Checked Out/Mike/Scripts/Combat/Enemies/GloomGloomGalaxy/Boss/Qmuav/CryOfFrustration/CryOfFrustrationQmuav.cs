@@ -6,14 +6,21 @@ public class CryOfFrustrationQmuav : MonoBehaviour
 {
     [SerializeField] int hitPoints = 5;
     [SerializeField] float shakeDuration = 1f;
-    
+    [SerializeField] AnimationClip deathAnimation;
+    [SerializeField] float deathTime = 5f; 
+
     ObjectShaker shaker;
-    AdvancedFrameAnimation animator; 
+    AdvancedFrameAnimation frameAnimator;
+    Animator myAnimator;
+    CombatMove minigame;
+    bool startedDeath = false; 
 
     private void Start()
     {
         shaker = GetComponent<ObjectShaker>();
-        animator = GetComponent<AdvancedFrameAnimation>();
+        frameAnimator = GetComponent<AdvancedFrameAnimation>();
+        myAnimator = GetComponent<Animator>();
+        minigame = GetComponentInParent<CombatMove>(); 
     }
 
     public void SetHealth(int numberOfPlayers)
@@ -27,17 +34,32 @@ public class CryOfFrustrationQmuav : MonoBehaviour
         {
             hitPoints--;
 
-            if (hitPoints <= 0)
+            if (hitPoints <= 0 && !startedDeath)
             {
-                GetComponentInParent<CombatMove>().FightWon = true;
-                GetComponentInParent<CombatMove>().EndMove();
-                enabled = false;
+                startedDeath = true;
+                StartCoroutine(QmuavDead()); 
             }
             else
             {
                 StartCoroutine(shaker.ShakeForDuration(shakeDuration));
-                animator.StartAnimationWithUniqueTime(shakeDuration, isHurt: true); 
+                frameAnimator.StartAnimationWithUniqueTime(shakeDuration, isHurt: true); 
             }
         }
+    }
+
+    /// This is for when Qmuav dies and we do a little animation
+    private IEnumerator QmuavDead()
+    {
+        frameAnimator.StopAnimation();
+        frameAnimator.enabled = false;
+        myAnimator.enabled = true;
+        myAnimator.Play(deathAnimation.name); 
+
+        yield return new WaitForSeconds(deathTime);
+
+        minigame.EndMove();
+        minigame.FightWon = true;
+        shaker.enabled = false;
+        enabled = false;
     }
 }
