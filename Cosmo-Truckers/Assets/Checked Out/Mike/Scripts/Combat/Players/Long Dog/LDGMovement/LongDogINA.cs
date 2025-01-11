@@ -312,6 +312,26 @@ public class LongDogINA : Player
         myNose.enabled = false;
         myNose.GetComponent<LongDogNose>().enabled = false;
     }
+
+    public void LDGSpecialDeath()
+    {
+        headBody.enabled = false;
+        bodyBody.enabled = false;
+        canBark = false;
+        canMove = false;
+        canStretch = false;
+        buttStretching = false;
+        stretching = false;
+        myNose.enabled = false;
+        myNose.GetComponent<LongDogNose>().enabled = false;
+    }
+
+    public override void EndMoveSetup()
+    {
+        EndDraw();
+        base.EndMoveSetup();
+    }
+
     #endregion
 
     #region Jump
@@ -513,6 +533,9 @@ public class LongDogINA : Player
 
     IEnumerator Bark()
     {
+        MyRenderers[0].enabled = false; // Disable head renderer
+        MyRenderers[2].enabled = true; // Enable bark renderer
+
         barkArea.SetActive(true);
         playerAnimator.ChangeAnimation(headAnimator, barkHead);
         playerAnimator.ChangeAnimation(bodyAnimator, idleBody);
@@ -523,6 +546,9 @@ public class LongDogINA : Player
         myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
 
         yield return new WaitForSeconds(barkDuration);
+
+        MyRenderers[0].enabled = true; // Enable head renderer
+        MyRenderers[2].enabled = false; // Disable bark renderer
 
         barkArea.SetActive(false);
         canMove = true;

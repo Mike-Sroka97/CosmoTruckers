@@ -11,19 +11,32 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     [SerializeField] Sprite[] happySprites;
     [SerializeField] float timeBetweenHappySprites = 0.25f;
     [SerializeField] float happyTimeBeforeSwapping = 1f;
-    [SerializeField] bool playerHitHurts = false; 
+    [SerializeField] bool playerHitHurts = false;
+    [SerializeField] Material hurtMaterial; 
+    [SerializeField] Material happyMaterial; 
 
     bool hurt = false;
     bool happy = false; 
     float timer = 0f;
     float frameTimer = 0f;
     int currentFrame = -1; 
+    private float timeBeforeSwapping = 0f;
 
     public void SwitchToHurtAnimation()
     {
         StopAllCoroutines();
+        timeBeforeSwapping = timeBetweenHurtSprites;
         hurt = true;
         happy = false;
+        ResetValues();
+    }
+
+    public void SwitchToHappyAnimation()
+    {
+        StopAllCoroutines();
+        timeBeforeSwapping = timeBetweenHappySprites;
+        happy = true;
+        hurt = false;
         ResetValues();
     }
 
@@ -35,36 +48,37 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     public void StartAnimationWithUniqueTime(float timeBeforeSwapping, bool isHurt = true)
     {
         ResetValues();
+        this.timeBeforeSwapping = timeBeforeSwapping;
 
         if (isHurt)
         {
-            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, timeBeforeSwapping, ref hurt);
+            if (hurtMaterial != null)
+                mySpriteRenderer.material = hurtMaterial;
+            
+            StopAllCoroutines();
+            hurt = true;
+            happy = false;
+            ResetValues();
         }
         else
         {
-            ChangeAnimation(happySprites, timeBetweenHappySprites, timeBeforeSwapping, ref happy);
-        }
-    }
+            if (happyMaterial != null)
+                mySpriteRenderer.material = happyMaterial;
 
-    public void SwitchToHappyAnimation()
-    {
-        StopAllCoroutines();
-        happy = true;
-        hurt = false;
-        ResetValues(); 
+            StopAllCoroutines();
+            hurt = false;
+            happy = true;
+            ResetValues();
+        }
     }
 
     private void Update()
     {
         if (hurt)
-        {
-            ChangeAnimation(hurtSprites, timeBetweenHurtSprites, hurtTimeBeforeSwapping, ref hurt); 
-        }
+            ChangeAnimation(hurtSprites, timeBeforeSwapping, hurtTimeBeforeSwapping, ref hurt);
 
         if (happy)
-        {
-            ChangeAnimation(happySprites, timeBetweenHappySprites, happyTimeBeforeSwapping, ref happy);
-        }
+            ChangeAnimation(happySprites, timeBeforeSwapping, happyTimeBeforeSwapping, ref happy);
     }
 
     void ChangeAnimation(Sprite[] sprites, float timeBetweenSprites, float timeBeforeSwapping, ref bool boolToSet)

@@ -12,11 +12,13 @@ public class SimpleFrameAnimation : MonoBehaviour
 
     protected SpriteRenderer mySpriteRenderer;
     protected Image myImage;
-    protected int currentSprite = 0; 
+    protected int currentSprite = 0;
+    private Material defaultMaterial; 
 
     void Start()
     {
         mySpriteRenderer = GetComponent<SpriteRenderer>();
+        defaultMaterial = mySpriteRenderer.material;
         myImage = GetComponent<Image>();
 
         if (mySpriteRenderer)
@@ -31,6 +33,8 @@ public class SimpleFrameAnimation : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator ChangeSprites()
     {
+        mySpriteRenderer.material = defaultMaterial;
+
         if (currentSprite >= sprites.Length)
             currentSprite = 0;
 
