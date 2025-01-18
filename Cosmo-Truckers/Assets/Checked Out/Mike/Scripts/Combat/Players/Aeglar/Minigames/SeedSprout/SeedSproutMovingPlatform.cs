@@ -7,14 +7,21 @@ public class SeedSproutMovingPlatform : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float yDistance;
     [SerializeField] bool movingUp;
+    [SerializeField] float minStartingY = -5f;
+    [SerializeField] float maxStartingY = -2f;
 
     float startingY;
     Rigidbody2D myBody;
     bool checkDistance = false;
 
+    private void Start()
+    {
+        startingY = Random.Range(minStartingY, maxStartingY);
+        transform.position = new Vector3(transform.position.x, startingY, transform.position.z);
+    }
+
     public void StartMove()
     {
-        startingY = transform.position.y;
         myBody = GetComponent<Rigidbody2D>();
 
         if (movingUp)

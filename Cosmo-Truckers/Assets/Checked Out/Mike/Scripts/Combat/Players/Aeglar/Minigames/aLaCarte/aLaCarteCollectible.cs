@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class aLaCarteCollectible : MonoBehaviour
 {
+    [SerializeField] float layoutDelay = .15f;
+
     aLaCarte minigame;
     ParticleSpawner myParticleSpawner; 
 
@@ -19,9 +21,14 @@ public class aLaCarteCollectible : MonoBehaviour
         {
             myParticleSpawner.SpawnParticle(transform); 
             minigame.Score++;
-            minigame.CheckSuccess(); 
-            minigame.GenerateCurrentLayout();
-            Debug.Log(minigame.Score);
+            minigame.CheckSuccess();
+            StartCoroutine(LayoutDelay());
         }
+    }
+
+    IEnumerator LayoutDelay()
+    {
+        yield return new WaitForSeconds(layoutDelay);
+        minigame.GenerateCurrentLayout();
     }
 }

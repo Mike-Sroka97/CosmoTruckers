@@ -18,7 +18,7 @@ public class PlayerPickup : MonoBehaviour
     bool movingUp = true;
     float startingY;
 
-    private void Start()
+    protected virtual void Start()
     {
         startingY = transform.localPosition.y;
         minigame = FindObjectOfType<CombatMove>();

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8768373457163035736}
-  - component: {fileID: 8768373457163035741}
+  - component: {fileID: 7824751938546062998}
   - component: {fileID: 8768373457163035738}
   - component: {fileID: 8768373457163035739}
   m_Layer: 0
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8768373457163035741
+--- !u!114 &7824751938546062998
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,15 +43,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8768373457163035737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
+  m_Script: {fileID: 11500000, guid: 57314564a0eddc84ba3a7fb328286a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   score: 1
   moveSpeed: 0.1
   moveDistance: 0.06
-  endsMinigame: 0
   givesAugmentScore: 1
+  givesScore: 1
+  multiplayer: 0
   collectParticle: {fileID: 3813681424891259566, guid: fbc66b879479f3c40a45f1f864c4d74a, type: 3}
+  topY: 0.5
+  midY: -0.5
+  botY: -1.5
 --- !u!212 &8768373457163035738
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +95,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 40f18692d7fcbdb4aaa3a1d65afbb911, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
