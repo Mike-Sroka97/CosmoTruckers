@@ -9,6 +9,7 @@ public class VeggieVengeance : CombatMove
     public override void StartMove()
     {
         GenerateLayout();
+        FindObjectOfType<VeggieVengeanceSpawner>().Initialize();
         FindObjectOfType<VeggieVengeanceCannon>().StartMove();
 
         base.StartMove();

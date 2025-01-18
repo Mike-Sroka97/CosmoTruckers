@@ -52,6 +52,13 @@ public class VeggieVengeanceVeggie : MonoBehaviour
 
         if(currentTime >= waitTime)
         {
+            VeggieVengeanceSpawnPoint spawnPosition = FindObjectOfType<VeggieVengeanceSpawner>().GetSpawnPoint(); 
+            transform.position = spawnPosition.transform.position;
+
+            // Set these based on position of spawn point so projectiles are going in correct direction
+            initialUpForce = spawnPosition.GetInitialUpForce();
+            xVelocity = spawnPosition.GetXVelocity();
+
             trackTime = false;
             myBody.gravityScale = gravity;
             myBody.velocity = new Vector2(xVelocity, 0);
