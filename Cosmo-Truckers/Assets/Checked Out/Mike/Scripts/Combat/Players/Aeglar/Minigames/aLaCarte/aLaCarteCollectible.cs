@@ -7,22 +7,26 @@ public class aLaCarteCollectible : MonoBehaviour
     [SerializeField] float layoutDelay = .15f;
 
     aLaCarte minigame;
-    ParticleSpawner myParticleSpawner; 
+    ParticleSpawner myParticleSpawner;
+    SpriteRenderer myRenderer; 
 
     private void Start()
     {
         minigame = FindObjectOfType<aLaCarte>();
         myParticleSpawner = GetComponent<ParticleSpawner>();
+        myRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
+            myRenderer.enabled = false;
             myParticleSpawner.SpawnParticle(transform); 
             minigame.Score++;
-            minigame.CheckSuccess();
-            StartCoroutine(LayoutDelay());
+            
+            if (!minigame.CheckSuccess())
+                StartCoroutine(LayoutDelay());
         }
     }
 
@@ -30,5 +34,6 @@ public class aLaCarteCollectible : MonoBehaviour
     {
         yield return new WaitForSeconds(layoutDelay);
         minigame.GenerateCurrentLayout();
+        myRenderer.enabled = true;
     }
 }
