@@ -7,11 +7,13 @@ public class FullCourseProjectile : MonoBehaviour
     [SerializeField] bool goodProjectile;
     [SerializeField] float fallSpeed;
     [SerializeField] float rotateSpeed;
+    [SerializeField] float fallSpeedVariance = 0.2f;
 
     FullCourse minigame;
 
     private void Start()
     {
+        fallSpeed += Random.Range(-fallSpeedVariance, fallSpeedVariance);
         minigame = FindObjectOfType<FullCourse>();
     }
 

@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class FullCourse : CombatMove
 {
+    [SerializeField] Transform[] foodSpawns;
+    [SerializeField] float delayBetweenSpawns;
+    [SerializeField] GameObject goodFood;
+    [SerializeField] GameObject badFood;
+    [SerializeField] int spawnBadAfterThisManyFood = 3;
+
+    float currentSpawnTime = 0;
+    int lastSpawnIndex = -1;
+    int foodsSpawned;
+
     private void Start()
     {
         GenerateLayout();
@@ -16,6 +26,43 @@ public class FullCourse : CombatMove
 
         base.StartMove();
     }
+
+    protected override void Update()
+    {
+        if(trackTime)
+        {
+            currentSpawnTime += Time.deltaTime;
+
+            if(currentSpawnTime > delayBetweenSpawns)
+                SpawnFood();
+
+            base.Update();
+        }
+    }
+
+    private void SpawnFood()
+    {
+        currentSpawnTime = 0;
+
+        int currentSpawnIndex = Random.Range(0, foodSpawns.Length);
+
+        while(currentSpawnIndex == lastSpawnIndex)
+            currentSpawnIndex = Random.Range(0, foodSpawns.Length);
+
+        lastSpawnIndex = currentSpawnIndex;
+
+        if (foodsSpawned > spawnBadAfterThisManyFood)
+        {
+            Instantiate(badFood, foodSpawns[currentSpawnIndex]);
+            foodsSpawned = 0;
+        }
+        else
+        {
+            Instantiate(goodFood, foodSpawns[currentSpawnIndex]);
+            foodsSpawned++;
+        }
+    }
+
 
     public override void EndMove()
     {
