@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RageBlastLoop : MonoBehaviour
 {
-    [SerializeField] float moveSpeed;
+    [SerializeField] public float MoveSpeed;
     [SerializeField] float colorAdjuster;
 
     Rigidbody2D myBody;
@@ -13,15 +13,21 @@ public class RageBlastLoop : MonoBehaviour
     SpriteRenderer[] myRenderers;
     bool addedScore = false;
 
-    private void Start()
+    public void InitializeLoop(bool right)
     {
         myRenderers = GetComponentsInChildren<SpriteRenderer>();
         myCollider = GetComponentInChildren<CapsuleCollider2D>();
         myBody = GetComponent<Rigidbody2D>();
-        myBody.velocity = new Vector2(moveSpeed, 0);
         minigame = FindObjectOfType<RageBlast>();
-    }
 
+        if (right)
+        {
+            MoveSpeed = -MoveSpeed;
+            transform.localEulerAngles = new Vector3(0, 180, 0);
+        }
+
+        myBody.velocity = new Vector2(MoveSpeed, 0);
+    }
 
 
     public IEnumerator FadeOut()

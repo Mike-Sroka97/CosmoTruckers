@@ -6,39 +6,91 @@ public class RageBlast : CombatMove
 {
     [SerializeField] RageBlastPlatform[] platforms;
     [SerializeField] float timeToDisablePlatform;
+    [SerializeField] GameObject rbLoop;
+    [SerializeField] float ringsPerSide = 7;
+    [SerializeField] float minSpawnTime = .9f;
+    [SerializeField] float maxSpawnTime = 1.25f;
+    [SerializeField] float minSpawnHeight = -0.5f;
+    [SerializeField] float midSpawnHeight = 0f;
+    [SerializeField] float maxSpawnHeight = 0.5f;
+    [SerializeField] float xSpawn = 6.5f;
 
     int lastNumber = -1;
     int nonDuplicateRandom;
+    float currentRightWaitTime = 0f;
+    float currentLeftWaitTime = 0f;
+    float rightWaitTime;
+    float leftWaitTime;
+    int leftSpawned;
+    int rightSpawned;
+    bool trackPlatformTime = true;
 
     private void Start()
     {
         nonDuplicateRandom = lastNumber;
-    }
 
-    public override void StartMove()
-    {
-        GenerateLayout();
-        trackTime = true;
-
-        base.StartMove();
-    }
-
-    private void Update()
-    {
-        TrackTime();
+        rightWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
+        leftWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
     }
 
     protected override void TrackTime()
     {
-        if(trackTime)
-        {
-            currentTime += Time.deltaTime;
+        if (!trackTime)
+            return;
 
-            if (currentTime >= timeToDisablePlatform)
-            {
-                trackTime = false;
-                NextPlatform();
-            }
+        base.TrackTime();
+        TrackRingTime();
+        TrackPlatformTime();
+    }
+
+    private void TrackPlatformTime()
+    {
+        if (currentTime >= timeToDisablePlatform && trackPlatformTime)
+        {
+            trackPlatformTime = false;
+            NextPlatform();
+        }
+    }
+
+    private void TrackRingTime()
+    {
+        currentLeftWaitTime += Time.deltaTime;
+        currentRightWaitTime += Time.deltaTime;
+
+        if(currentLeftWaitTime >= leftWaitTime && leftSpawned < ringsPerSide)
+        {
+            currentLeftWaitTime = 0;
+            leftWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
+            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(-xSpawn, GetRandomHeight(), 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
+            loop.InitializeLoop(false);
+
+            leftSpawned++;
+        }
+        else if(currentRightWaitTime >= rightWaitTime && rightSpawned < ringsPerSide)
+        {
+            currentRightWaitTime = 0;
+            rightWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
+            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(xSpawn, GetRandomHeight(), 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
+            loop.InitializeLoop(true);
+
+            rightSpawned++;
+        }
+    }
+
+    private float GetRandomHeight()
+    {
+        int random = Random.Range(0, 3);
+
+        switch(random)
+        {
+            case (0):
+                return maxSpawnHeight;
+            case (1):
+                return midSpawnHeight;
+            case (2):
+                return minSpawnHeight;
+            default:
+                return maxSpawnHeight;
         }
     }
 
