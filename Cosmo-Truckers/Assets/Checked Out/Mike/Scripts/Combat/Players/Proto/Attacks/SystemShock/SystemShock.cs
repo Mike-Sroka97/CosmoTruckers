@@ -23,7 +23,6 @@ public class SystemShock : CombatMove
     private void Start()
     {
         // Make sure this isn't enabled it will kill the player immediately
-        FindObjectOfType<Rotator>().enabled = false;
         hittables = FindObjectsOfType<SystemShockHittable>();
         GenerateHittables();
     }
@@ -33,7 +32,6 @@ public class SystemShock : CombatMove
         SystemShockTurret[] turrets = FindObjectsOfType<SystemShockTurret>();
         foreach (SystemShockTurret turret in turrets)
             turret.Initialize();
-        FindObjectOfType<Rotator>().enabled = true;
 
         initialized = true;
 
