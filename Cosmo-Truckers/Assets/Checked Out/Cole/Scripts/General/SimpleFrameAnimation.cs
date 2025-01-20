@@ -33,8 +33,6 @@ public class SimpleFrameAnimation : MonoBehaviour
     /// <returns></returns>
     protected IEnumerator ChangeSprites()
     {
-        mySpriteRenderer.material = defaultMaterial;
-
         if (currentSprite >= sprites.Length)
             currentSprite = 0;
 

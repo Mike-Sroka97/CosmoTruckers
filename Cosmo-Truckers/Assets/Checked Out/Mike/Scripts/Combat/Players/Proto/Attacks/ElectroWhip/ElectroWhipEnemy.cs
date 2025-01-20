@@ -24,7 +24,7 @@ public class ElectroWhipEnemy : MonoBehaviour
     [Space(20)]
     [Header("Material Attributes")]
     [SerializeField] Material selectedMaterial;
-    SpriteRenderer mySpriteRenderer; 
+    SpriteRenderer mySpriteRenderer;
     Material defaultMaterial;
 
     ElectroWhipCenterBox box;
@@ -53,11 +53,11 @@ public class ElectroWhipEnemy : MonoBehaviour
         if (coinFlip == 1)
             rotationLeft = false;
 
-        if(startingRotation.z + rotationLimit > 360)
+        if (startingRotation.z + rotationLimit > 360)
         {
             overLoadedPositiveRotation = true;
         }
-        if(startingRotation.z - rotationLimit < 0)
+        if (startingRotation.z - rotationLimit < 0)
         {
             overLoadedNegativeRotation = true;
         }
@@ -71,23 +71,31 @@ public class ElectroWhipEnemy : MonoBehaviour
         box = FindObjectOfType<ElectroWhipCenterBox>();
         startingPos = transform.localPosition;
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-        defaultMaterial = mySpriteRenderer.material; 
+        defaultMaterial = mySpriteRenderer.material;
 
         UpdateLeash();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && !releashing)
-        {
-            mySpriteRenderer.material = selectedMaterial; 
+        if (collision.tag == "PlayerAttack" && !releashing && !isLeashed)
             box.ActivateMe(this);
-        }
+    }
+
+    public void SetToggleMaterial()
+    {
+        mySpriteRenderer.material = selectedMaterial;
     }
 
     public void Initialize()
     {
         active = true;
+
+        //detach
+        minigame.Score--;
+        isLeashed = false;
+        leash.enabled = false;
+        StartingVelocity();
     }
 
     private void Update()
@@ -98,23 +106,10 @@ public class ElectroWhipEnemy : MonoBehaviour
             return;
 
         //Unleashed Stuff
-        CheckLeash();
         UnleashedMovement();
 
         //Leash Stuff
         LeashRotation();
-        LeashMovement();
-    }
-
-    private void CheckLeash()
-    {
-        if(Vector3.Distance(leashPoints[0], leashPoints[1]) > breakDistance && isLeashed)
-        {
-            minigame.Score--;
-            isLeashed = false;
-            leash.enabled = false;
-            StartingVelocity();
-        }
     }
 
     private void StartingVelocity()
@@ -136,7 +131,6 @@ public class ElectroWhipEnemy : MonoBehaviour
             default:
                 break;
         }
-
     }
     private bool GroundCheck(Vector2 direction, bool horizontal)
     {
@@ -258,11 +252,11 @@ public class ElectroWhipEnemy : MonoBehaviour
         releashing = false;
         isLeashed = true;
         leash.enabled = true;
-        ResetThisEnemy();
     }
 
     public void ResetThisEnemy()
     {
-        mySpriteRenderer.material = defaultMaterial; 
+        if(!releashing && !isLeashed)
+            mySpriteRenderer.material = defaultMaterial; 
     }
 }

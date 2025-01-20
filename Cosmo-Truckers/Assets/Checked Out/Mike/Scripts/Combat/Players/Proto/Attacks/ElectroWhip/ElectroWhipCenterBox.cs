@@ -19,11 +19,11 @@ public class ElectroWhipCenterBox : MonoBehaviour
 
     public void ActivateMe(ElectroWhipEnemy enemy)
     {
-        if (currentEnemy != null)
-        {
-            currentEnemy.ResetThisEnemy(); 
-        }
+        foreach (ElectroWhipEnemy electroEnemy in FindObjectsOfType<ElectroWhipEnemy>())
+            if(electroEnemy != enemy)
+                electroEnemy.ResetThisEnemy();
 
+        enemy.SetToggleMaterial();
         currentEnemy = enemy;
         mySpriteRenderer.material = onMaterial;
         active = true; 
