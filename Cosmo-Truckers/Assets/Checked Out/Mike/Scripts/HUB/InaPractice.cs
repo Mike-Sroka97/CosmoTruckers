@@ -342,8 +342,7 @@ public class InaPractice : INAcombat
 
         //Setup minigame count stuffs
         yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
-        currentMinigameIndex = 0;
-        miniGameCountTmps[0].text = "1";
+        miniGameCountTmps[0].text = $"{currentMinigameIndex + 1}";
         miniGameCountTmps[1].text = "/";
 
         //Setup up minigame info based on type
@@ -595,6 +594,8 @@ public class InaPractice : INAcombat
     /// </summary>
     public void ReturnFromMinigameSelect()
     {
+        currentMinigameIndex = 0;
+
         if (inCharacterMinigameSelect == 0)
             SetMinigameCharacterSelectScreen();
         else if (inCharacterMinigameSelect == 2)
@@ -815,7 +816,7 @@ public class InaPractice : INAcombat
             yield return null;
         }
 
-        //TODO CUSTOM DISPLAY
+        //CUSTOM DISPLAY
         successText.text = trainingCombatHandler.MiniGame.GetComponent<CombatMove>().TrainingDisplayText;
         trainingCombatHandler.CleanupMinigame();
 
