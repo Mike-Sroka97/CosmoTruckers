@@ -72,13 +72,6 @@ public class PorkanatorHurt : MonoBehaviour
             myParticleSpawner.SpawnParticle(transform, true); 
             Destroy(gameObject);
         }
-        /*
-        if(collision.tag == "Player")
-        {
-            minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
-        }
-        */
     }
 
 
@@ -88,12 +81,6 @@ public class PorkanatorHurt : MonoBehaviour
         {
             myParticleSpawner.SpawnParticle(transform, true);
             Destroy(gameObject);
-            /*
-            myCollider.enabled = false;
-            myBody.bodyType = RigidbodyType2D.Static;
-            minigame.PlayerDead = true;
-            Debug.Log(minigame.PlayerDead);
-            */
         }
     }
 
