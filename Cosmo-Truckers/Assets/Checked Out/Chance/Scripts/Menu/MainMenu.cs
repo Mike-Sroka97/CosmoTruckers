@@ -1,9 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Mirror;
 using UnityEngine.UI;
-using System;
 using UnityEditor;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -316,7 +313,6 @@ public class MainMenu : MonoBehaviour
             Fade.GetComponent<Image>().color = new Color(0, 0, 0, Fade.GetComponent<Image>().color.a + (ZoomSpeed * Time.deltaTime));
             yield return null;
         }
-        FindObjectOfType<NetworkManager>().StartHost();
     }
 
     IEnumerator ClientFade()
@@ -332,7 +328,6 @@ public class MainMenu : MonoBehaviour
             Fade.GetComponent<Image>().color = new Color(0, 0, 0, Fade.GetComponent<Image>().color.a + (ZoomSpeed * Time.deltaTime));
             yield return null;
         }
-        FindObjectOfType<NetworkManager>().StartClient();
     }
 
     IEnumerator SpawnCharacter()

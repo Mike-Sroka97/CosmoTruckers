@@ -1,4 +1,3 @@
-using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -232,20 +231,6 @@ public class TurnOrder : MonoBehaviour
         if (CombatManager.Instance.InCombat)
         {
             yield return new WaitForSeconds(2.0f);
-
-            //If testing the game in real play mode
-            if (NetworkManager.singleton)
-            {
-                //TODO IF DUNGEONCONTROLLER.CURRENTNODE == BOSS
-                //if (CombatData.Instance.lastNode)
-                //{
-                //    //Currently only dungeon map
-                //    //Will need to change scene based on the last galaxy that the player was in
-                //    //Also need to mark this current dungeon as compleated if nessisarry
-                //    PlayerPrefs.SetInt("CurrentDungeon", PlayerPrefs.GetInt("CurrentDungeon", 0) + 1);
-                //    NetworkManager.singleton.ServerChangeScene("GloomGloomGalaxyOW");
-                //}
-            }
 
             //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
             if (CombatData.Instance)
