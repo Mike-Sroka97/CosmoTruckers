@@ -108,12 +108,14 @@ public class AeglarINA : Player
     {
         if (currentNumberOfAttacks < numberOfAttacks)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x < 0)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && transform.localEulerAngles.y != 0 && !DashingLeft && !DashingRight)
             {
+                CleanUpDash();
                 StartCoroutine(Dash(true));
             }
-            else if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && myBody.velocity.x > 0)
+            else if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && transform.localEulerAngles.y == 0 && !DashingLeft && !DashingRight)
             {
+                CleanUpDash();
                 StartCoroutine(Dash(false));
             }
         }
@@ -136,8 +138,9 @@ public class AeglarINA : Player
             currentNumberOfJumps = 0;
         }
 
-        if (Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps)
+        if (Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps && !DashingUp)
         {
+            CleanUpDash();
             StartCoroutine(Dash(true, true));
         }
     }
@@ -191,34 +194,29 @@ public class AeglarINA : Player
             currentNumberOfJumps++;
             verticalAttackArea.SetActive(true);
             playerAnimator.ChangeAnimation(myAnimator, dashUp);
+            DashingUp = true;
         }
         else
         {
             currentNumberOfAttacks++;
             horizontalAttackArea.SetActive(true);
             playerAnimator.ChangeAnimation(myAnimator, dashRight);
+            if (left)
+                DashingLeft = true;
+            else
+                DashingRight = true;
         }
 
-        canDash = false;
         canMove = false;
 
         myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
 
         if (up)
-        {
-            DashingUp = true;
             myBody.AddForce(new Vector2(0, jumpSpeed));
-        }
         else if (left)
-        {
-            DashingLeft = true;
             myBody.AddForce(new Vector2(-dashSpeed, dashUpForce));
-        }
         else
-        {
-            DashingRight = true;
             myBody.AddForce(new Vector2(dashSpeed, dashUpForce));
-        }
 
         float currentDashTime = 0;
         while (currentDashTime < dashDuration)
@@ -240,22 +238,21 @@ public class AeglarINA : Player
             yield return null;
         }
 
-        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
-        canDash = true;
+        CleanUpDash();
+    }
+    private void CleanUpDash()
+    {
         canMove = true;
-        if (up)
-        {
-            verticalAttackArea.SetActive(false);
-        }
-        else
-        {
-            horizontalAttackArea.SetActive(false);
-        }
-
+        myBody.velocity = new Vector2(xVelocityAdjuster, yVelocityAdjuster);
+        verticalAttackArea.SetActive(false);
+        horizontalAttackArea.SetActive(false);
         DashingUp = false;
         DashingLeft = false;
         DashingRight = false;
+
+        StopAllCoroutines();
     }
+
     public void SpecialMove()
     {
 
