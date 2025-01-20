@@ -75,13 +75,13 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     private void Update()
     {
         if (hurt)
-            ChangeAnimation(hurtSprites, timeBeforeSwapping, hurtTimeBeforeSwapping, ref hurt);
+            ChangeAnimation(hurtSprites, hurtTimeBeforeSwapping, ref hurt);
 
-        if (happy)
-            ChangeAnimation(happySprites, timeBeforeSwapping, happyTimeBeforeSwapping, ref happy);
+        else if (happy)
+            ChangeAnimation(happySprites, happyTimeBeforeSwapping, ref happy);
     }
 
-    void ChangeAnimation(Sprite[] sprites, float timeBetweenSprites, float timeBeforeSwapping, ref bool boolToSet)
+    void ChangeAnimation(Sprite[] sprites, float uniqueTimeBeforeSwapping, ref bool boolToSet)
     {
         if (currentFrame == -1)
         {
@@ -92,7 +92,7 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
         timer += Time.deltaTime;
         frameTimer += Time.deltaTime;
 
-        if (frameTimer >= timeBetweenSprites)
+        if (frameTimer >= timeBeforeSwapping)
         {
             currentFrame++;
 
@@ -103,9 +103,10 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
             frameTimer = 0f;
         }
 
-        if (timer > timeBeforeSwapping)
+        if (timer > uniqueTimeBeforeSwapping)
         {
             boolToSet = false;
+            mySpriteRenderer.material = defaultMaterial; 
             StartCoroutine(ChangeSprites());
         }
     }

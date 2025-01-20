@@ -13,7 +13,7 @@ public class SimpleFrameAnimation : MonoBehaviour
     protected SpriteRenderer mySpriteRenderer;
     protected Image myImage;
     protected int currentSprite = 0;
-    private Material defaultMaterial; 
+    protected Material defaultMaterial; 
 
     void Start()
     {
