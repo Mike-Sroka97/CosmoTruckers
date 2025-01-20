@@ -48,7 +48,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
 
     private void TrackAeglarDash()
     {
-        if (!aeglar.GetDashState() && canFire)
+        if (aeglar.DashingUp && canFire)
         {
               Shoot();
         }
