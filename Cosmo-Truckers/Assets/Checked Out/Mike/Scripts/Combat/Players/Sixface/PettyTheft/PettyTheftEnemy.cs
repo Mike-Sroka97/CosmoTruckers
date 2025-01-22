@@ -148,11 +148,10 @@ public class PettyTheftEnemy : MonoBehaviour
         Instantiate(deathParticle, deathParticleSpawn.position, Quaternion.identity, minigame.transform); 
 
         minigame.Score++;
-        Debug.Log(minigame.Score);
         Money.SetActive(true);
         onlyBob = true;
 
-        if(minigame.Score >= 5)
+        if(minigame.Score >= 4)
         {
             minigame.ActivateMoney();
         }
