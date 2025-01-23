@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CounterBop : CombatMove
 {
+    [SerializeField] 
+
+    int lastBall;
+
     private void Start()
     {
         GenerateLayout();
@@ -11,18 +15,12 @@ public class CounterBop : CombatMove
 
     public override void StartMove()
     {
-        CBCircleEnemy[] circleEnemies = FindObjectsOfType<CBCircleEnemy>();
-        CBStraightEnemy[] straightEnemies = FindObjectsOfType<CBStraightEnemy>();
-        CBWaveEnemy[] waveEnemies = FindObjectsOfType<CBWaveEnemy>();
-
-        foreach (CBCircleEnemy circleEnemy in circleEnemies)
-            circleEnemy.enabled = true;
-        foreach (CBStraightEnemy straightEnemy in straightEnemies)
-            straightEnemy.enabled = true;
-        foreach (CBWaveEnemy waveEnemy in waveEnemies)
-            waveEnemy.enabled = true;
-
         base.StartMove();
+    }
+
+    private void GenerateNextBall()
+    {
+
     }
 
     public override void EndMove()
