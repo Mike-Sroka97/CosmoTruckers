@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class CounterBop : CombatMove
 {
-    [SerializeField] 
+    [SerializeField] CounterBopJumpCheck[] jumpChecks;
 
-    int lastBall;
+    List<int> usedJumpChecks = new List<int>();
 
     private void Start()
-    {
-        GenerateLayout();
-    }
-
-    public override void StartMove()
-    {
-        base.StartMove();
+    { 
+        GenerateNextBall();
     }
 
     private void GenerateNextBall()
     {
+        int random = Random.Range(0, jumpChecks.Length);
 
+        while(usedJumpChecks.Contains(random))
+            random = Random.Range(0, jumpChecks.Length);
+
+        usedJumpChecks.Add(random);
+        jumpChecks[random].EnableBalls();
+    }
+
+    public void IncrementScore()
+    {
+        Score++;
+        GenerateNextBall();
     }
 
     public override void EndMove()
