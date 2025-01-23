@@ -339,7 +339,7 @@ public class CombatMove : MonoBehaviour
     /// <returns></returns>
     public bool CheckScoreEqualsValue(int value)
     {
-        if (Score == value) return CallDelayedEndMove();
+        if (Score >= value) return CallDelayedEndMove();
         return false;
     }
 

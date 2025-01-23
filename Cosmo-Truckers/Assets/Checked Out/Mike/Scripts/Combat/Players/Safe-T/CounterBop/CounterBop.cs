@@ -7,6 +7,7 @@ public class CounterBop : CombatMove
     [SerializeField] CounterBopJumpCheck[] jumpChecks;
 
     List<int> usedJumpChecks = new List<int>();
+    private int charges = 0;
 
     private void Start()
     { 
@@ -26,8 +27,14 @@ public class CounterBop : CombatMove
 
     public void IncrementScore()
     {
-        Score++;
+        charges++;
         GenerateNextBall();
+    }
+
+    public void HitBall()
+    {
+        Score = charges;
+        CheckScoreEqualsValue(0);
     }
 
     public override void EndMove()

@@ -9,12 +9,12 @@ public class CounterBopBag : MonoBehaviour
 
     private void Start()
     {
-        minigame = transform.parent.parent.GetComponent<CounterBop>();
+        minigame = transform.parent.parent.parent.GetComponent<CounterBop>();
     }
 
     private void HandleHit()
     {
-
+        minigame.HitBall();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
