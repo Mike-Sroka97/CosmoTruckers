@@ -13,7 +13,6 @@ public class FPddrActivated : MonoBehaviour
     [SerializeField] GameObject fpText;
     [SerializeField] float fpTextSpawnOffset = 1f;
 
-    List<string> collidedArrows = new List<string>();
     Collider2D myCollider; 
     FunkyPersuasion miniGame;
 
@@ -67,10 +66,6 @@ public class FPddrActivated : MonoBehaviour
             Vector3 fpSpawnLocation = new Vector3(collision.transform.position.x, transform.position.y + fpTextSpawnOffset, transform.position.z); 
             GameObject thisSuccessText = Instantiate(fpText, fpSpawnLocation, Quaternion.identity, miniGame.transform);
             thisSuccessText.GetComponent<SixFPText>().StartText(score); 
-        }
-        else if (arrow == null)
-        {
-            Debug.Log("Error: arrow is null"); 
         }
     }
 }

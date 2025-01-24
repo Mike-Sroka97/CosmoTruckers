@@ -4,13 +4,66 @@ using UnityEngine;
 
 public class FunkyPersuasion : CombatMove
 {
+    [SerializeField] Transform leftSpawn;
+    [SerializeField] Transform midSpawn;
+    [SerializeField] Transform rightSpawn;
+    [SerializeField] GameObject leftArrow;
+    [SerializeField] GameObject midArrow;
+    [SerializeField] GameObject rightArrow;
+    [SerializeField] float minSpawnTime;
+    [SerializeField] float maxSpawnTime;
+    [SerializeField] int arrowsToSpawn = 15;
+
+    float spawnTime;
+    float currentSpawnTime;
+    int currentNumberOfArrowsSpawned;
+
     private void Start()
     {
-        GenerateLayout();
+        spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
     }
-    public override void StartMove()
+
+    protected override void Update()
     {
-        base.StartMove();
+        TrackSpawner();
+        base.Update();
+    }
+
+    private void TrackSpawner()
+    {
+        if (!trackTime)
+            return;
+
+        currentSpawnTime += Time.deltaTime;
+
+        if(currentSpawnTime >= spawnTime && currentNumberOfArrowsSpawned < arrowsToSpawn)
+        {
+            currentSpawnTime = 0;
+            spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+            SpawnArrow();
+        }
+    }
+
+    private void SpawnArrow()
+    {
+        int row = Random.Range(0, 3);
+
+        switch(row)
+        {
+            case 0:
+                Instantiate(leftArrow, leftSpawn);
+                break;
+            case 1:
+                Instantiate(midArrow, midSpawn);
+                break;
+            case 2:
+                Instantiate(rightArrow, rightSpawn);
+                break;
+            default:
+                break;
+        }
+
+        currentNumberOfArrowsSpawned++;
     }
 
     public override void EndMove()
