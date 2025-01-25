@@ -177,6 +177,7 @@ MonoBehaviour:
   maxScore: 6
   augmentStacksPerScore: 1
   maxAugmentStacks: 3
+  minAugmentStacks: 0
   baseDamage: 16
   baseAugmentStacks: 1
   timeToEndMove: 1
@@ -587,6 +588,10 @@ PrefabInstance:
     - target: {fileID: 6295090700353293006, guid: b7ab1d0bcabf74541802d15e71ee6ba3, type: 3}
       propertyPath: m_Name
       value: Projectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 6295090700353293006, guid: b7ab1d0bcabf74541802d15e71ee6ba3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6295090700353293007, guid: b7ab1d0bcabf74541802d15e71ee6ba3, type: 3}
       propertyPath: m_RootOrder
@@ -1351,7 +1356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_SortingLayer
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3752091695785737132, guid: fa3c24a1a818c2a458c9c14c3dfc5c8a, type: 3}
       propertyPath: m_SortingLayerID

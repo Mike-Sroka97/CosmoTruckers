@@ -9,16 +9,16 @@ public class SystemShock : CombatMove
     [SerializeField] Transform[] zappers;
     [SerializeField] GameObject zap;
     [SerializeField] float zapDelay;
+    [SerializeField] SystemShockBlade[] blades;
+    [SerializeField] float timeToActivate = 3f;
 
     SystemShockHittable[] hittables;
-    ProtoINA proto;
     int lastRandom = -1;
     int lastRandomAgain = -1;
     int lastHittableRandom = -1;
     int lastHittableRandomAgain = -1;
     public int HittablesHit = 0;
     float currentTurretTime = 0;
-    bool initialized = false;
 
     private void Start()
     {
@@ -33,18 +33,32 @@ public class SystemShock : CombatMove
         foreach (SystemShockTurret turret in turrets)
             turret.Initialize();
 
-        initialized = true;
+        StartCoroutine(ActivateBeam());
 
         base.StartMove();
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (!initialized)
+        if (!trackTime)
             return;
 
         TrackScore();
-        TrackTime();
+        base.Update();
+    }
+
+    IEnumerator ActivateBeam()
+    {
+        yield return new WaitForSeconds(timeToActivate);
+
+        int random = Random.Range(0, blades.Length);
+
+        while(blades[random].Active)
+            random = Random.Range(0, blades.Length);
+
+        blades[random].StartBeam();
+
+        StartCoroutine(ActivateBeam());
     }
 
     private void TrackScore()
