@@ -42,6 +42,7 @@ public class SafeTINA : Player
     bool isJumping = false;
     bool canAttack = true;
     bool canRoll = true;
+    bool isRolling = false; 
     bool damagedCoroutineRunning = false;  
 
     float currentJumpStrength;
@@ -157,14 +158,14 @@ public class SafeTINA : Player
             canJump = true;
 
         // Hold Jump
-        if (Input.GetKey("space") && canJump && !isJumping)
+        if (Input.GetKey("space") && canJump && !isJumping && !isRolling)
         {
             canMove = false;
             canJump = false;
             isJumping = true;
             playerAnimator.ChangeAnimation(myAnimator, coil);
         }
-        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
+        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
         {
             if (!playerAnimator.IsCurrentAnimationPlaying(myAnimator, coil))
                 playerAnimator.ChangeAnimation(myAnimator, coil);
@@ -333,6 +334,7 @@ public class SafeTINA : Player
 
         playerAnimator.ChangeAnimation(myAnimator, roll);
 
+        isRolling = true;
         canJump = false;
         canRoll = false;
         canMove = false;
@@ -345,7 +347,17 @@ public class SafeTINA : Player
         {
             iFrames = false;
         }
-        playerAnimator.ChangeAnimation(myAnimator, idle);
+
+        if (!isJumping)
+        {
+            playerAnimator.ChangeAnimation(myAnimator, idle);
+        }
+        else
+        {
+            playerAnimator.ChangeAnimation(myAnimator, coil);
+        }
+
+        isRolling = false;
 
         yield return new WaitForSeconds(rollCD);
 
