@@ -19,6 +19,12 @@ public class SafeTINA : Player
 
     [SerializeField] float hopForceModifier;
     [SerializeField] float raycastHopHelper;
+    
+    /// <summary>
+    /// This is for shorthopping when you barely press the jump hold<br></br>
+    /// The minimum value a hop can be
+    /// </summary>
+    [SerializeField] float hopMinimumStrength;
 
     [Space(20)]
     [Header("Animations")]
@@ -150,6 +156,7 @@ public class SafeTINA : Player
         if (IsGrounded(raycastHopHelper) && !damaged && !dead)
             canJump = true;
 
+        // Hold Jump
         if (Input.GetKey("space") && canJump && !isJumping)
         {
             canMove = false;
@@ -180,6 +187,8 @@ public class SafeTINA : Player
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
+        
+        // Release Jump
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)))
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
@@ -188,8 +197,11 @@ public class SafeTINA : Player
             if (currentJumpStrength > jumpSpeed)
                 currentJumpStrength = jumpSpeed;
 
+            float jumpStrength = currentJumpStrength; 
+            if (jumpStrength < hopMinimumStrength) jumpStrength = hopMinimumStrength;
+
             myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
-            myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
+            myBody.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
