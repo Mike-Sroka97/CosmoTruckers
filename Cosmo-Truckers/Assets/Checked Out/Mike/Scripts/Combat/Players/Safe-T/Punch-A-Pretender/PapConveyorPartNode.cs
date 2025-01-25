@@ -28,16 +28,13 @@ public class PapConveyorPartNode : MonoBehaviour
         if(!badZone && collision.tag == "PlayerAttack")
         {
             minigame.Score++;
+            minigame.CheckSuccess(); 
 
             if (goodParticles != null)
             {
                 Instantiate(goodParticles, transform.position, goodParticles.transform.rotation, null);
             }
 
-            if(minigame.Score >= minigame.MaxScore)
-            {
-                minigame.EndMove();
-            }
             Debug.Log(minigame.Score);
             gameObject.SetActive(false);
         }
