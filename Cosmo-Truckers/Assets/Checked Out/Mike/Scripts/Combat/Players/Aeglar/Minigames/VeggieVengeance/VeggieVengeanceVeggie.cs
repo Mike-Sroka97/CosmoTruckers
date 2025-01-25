@@ -72,10 +72,10 @@ public class VeggieVengeanceVeggie : MonoBehaviour
         {
             minigame.Score += score;
             Debug.Log(minigame.Score);
+            
             if(score < 0)
-            {
-                aeglar.TakeDamage(); 
-            }
+                aeglar.TakeDamage();
+
             particleSpawner.SpawnParticle(transform, true); 
             Destroy(gameObject);
         }
