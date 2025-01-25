@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ClockOutKnockOut : CombatMove
 {
+    public Material hurtMaterial;
+    public Material noHurtMaterial;
+    public float hurtOpacity;
+
     private void Start()
     {
         GenerateLayout();

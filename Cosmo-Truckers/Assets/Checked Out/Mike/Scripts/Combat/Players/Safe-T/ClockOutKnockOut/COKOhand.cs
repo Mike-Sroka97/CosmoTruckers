@@ -14,8 +14,17 @@ public class COKOhand : MonoBehaviour
     [SerializeField] Collider2D[] allColliders;
     [SerializeField] Rigidbody2D[] bodiesToMove;
 
+    private SpriteRenderer[] myRenderers;
+    private ClockOutKnockOut minigame; 
+
     Rigidbody2D myBody;
     bool playerDamaged = false;
+
+    public void Awake()
+    {
+        minigame = FindObjectOfType<ClockOutKnockOut>();
+        myRenderers = GetComponentsInChildren<SpriteRenderer>(); 
+    }
 
     public void SetVelocity()
     {
@@ -44,6 +53,7 @@ public class COKOhand : MonoBehaviour
             {
                 collider.enabled = false;
             }
+            // Set the arm to move faster
             foreach (Rigidbody2D body in bodiesToMove)
             {
                 if (horizontalMatters)
@@ -56,12 +66,23 @@ public class COKOhand : MonoBehaviour
                 }
             }
 
+            // Set arm to transparent and no-hurt material
+            foreach (SpriteRenderer renderer in myRenderers)
+            {
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, minigame.hurtOpacity);
+                
+                if (renderer.material == minigame.hurtMaterial)
+                    renderer.material = minigame.noHurtMaterial; 
+            }
+
+            // Wait for a period
             yield return new WaitForSeconds(damagedDuration);
 
             foreach (Collider2D collider in allColliders)
             {
                 collider.enabled = true;
             }
+            // Return the arm to normal settings
             foreach (Rigidbody2D body in bodiesToMove)
             {
                 if (horizontalMatters)
@@ -73,6 +94,16 @@ public class COKOhand : MonoBehaviour
                     body.velocity = new Vector2(0, damagingSpeed);
                 }
             }
+
+            // Return to normal colors
+            foreach (SpriteRenderer renderer in myRenderers)
+            {
+                renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, 1f);
+
+                if (renderer.material == minigame.noHurtMaterial)
+                    renderer.material = minigame.hurtMaterial;
+            }
+
             playerDamaged = false;
         }
     }
