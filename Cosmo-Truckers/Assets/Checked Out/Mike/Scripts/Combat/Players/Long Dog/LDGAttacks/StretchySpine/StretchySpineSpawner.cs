@@ -16,7 +16,6 @@ public class StretchySpineSpawner : MonoBehaviour
     int tempType = -1;
     int random;
     float currentTime = 0;
-    float tempAngle;
 
     private void Update()
     {
@@ -44,7 +43,7 @@ public class StretchySpineSpawner : MonoBehaviour
             {
                 randomAngle = -randomAngle;
             }
-            tempAngle = randomAngle;
+
             Quaternion rotation = Quaternion.Euler(0, 0, randomAngle);
             if (random == 1)
             {

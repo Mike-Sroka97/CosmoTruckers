@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2067752096193635716}
   - component: {fileID: 2067752096193635718}
-  - component: {fileID: 2067752096193635717}
   - component: {fileID: 2373028632366153809}
-  - component: {fileID: 8107477115756755992}
+  - component: {fileID: 505327793163964228}
   m_Layer: 0
   m_Name: LowSuccessRate
   m_TagString: LDGNoInteraction
@@ -87,22 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
---- !u!114 &2067752096193635717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2067752096193635715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d438ede1e7fe7e24bb66aace33a7a18c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gateToDisable: {fileID: 0}
-  gateToEnable: {fileID: 0}
-  successToGive: 1
-  lowerSuccessRate: 1
 --- !u!70 &2373028632366153809
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,7 +102,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.6, y: 0.45}
   m_Direction: 1
---- !u!114 &8107477115756755992
+--- !u!114 &505327793163964228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,7 +111,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2067752096193635715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d15fc2ef2bc11ba4bbc9013af9e1b84d, type: 3}
+  m_Script: {fileID: 11500000, guid: b492bede5d83f224eb7a59d89d2b1dd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotateSpeed: 90
+  score: 1
+  moveSpeed: 0.4
+  moveDistance: 0.2
+  givesAugmentScore: 0
+  givesScore: 1
+  multiplayer: 0
+  collectParticle: {fileID: 0}
