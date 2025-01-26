@@ -74,32 +74,32 @@ public class SystemShock : CombatMove
     {
         base.TrackTime();
 
-        currentTurretTime += Time.deltaTime;
+        //currentTurretTime += Time.deltaTime;
 
-        if(currentTurretTime >= zapDelay)
-        {
-            currentTurretTime = 0;
+        //if(currentTurretTime >= zapDelay)
+        //{
+        //    currentTurretTime = 0;
 
-            int randomOne = UnityEngine.Random.Range(0, zappers.Length);
+        //    int randomOne = UnityEngine.Random.Range(0, zappers.Length);
 
-            while(randomOne == lastRandom || randomOne == lastRandomAgain)
-            {
-                randomOne = UnityEngine.Random.Range(0, zappers.Length);
-            }
+        //    while(randomOne == lastRandom || randomOne == lastRandomAgain)
+        //    {
+        //        randomOne = UnityEngine.Random.Range(0, zappers.Length);
+        //    }
 
-            int randomTwo = UnityEngine.Random.Range(0, zappers.Length);
+        //    int randomTwo = UnityEngine.Random.Range(0, zappers.Length);
 
-            while (randomTwo == lastRandom || randomTwo == lastRandomAgain || randomTwo == randomOne)
-            {
-                randomTwo = UnityEngine.Random.Range(0, zappers.Length);
-            }
+        //    while (randomTwo == lastRandom || randomTwo == lastRandomAgain || randomTwo == randomOne)
+        //    {
+        //        randomTwo = UnityEngine.Random.Range(0, zappers.Length);
+        //    }
 
-            lastRandom = randomOne;
-            lastRandomAgain = randomTwo;
+        //    lastRandom = randomOne;
+        //    lastRandomAgain = randomTwo;
 
-            Instantiate(zap, zappers[randomOne]);
-            Instantiate(zap, zappers[randomTwo]);
-        }
+        //    Instantiate(zap, zappers[randomOne]);
+        //    Instantiate(zap, zappers[randomTwo]);
+        //}
     }
 
     private void GenerateHittables()

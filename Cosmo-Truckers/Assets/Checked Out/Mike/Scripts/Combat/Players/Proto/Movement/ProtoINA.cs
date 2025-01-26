@@ -28,11 +28,17 @@ public class ProtoINA : Player
     [Space(20)]
     [Header("Animations")]
     [SerializeField] AnimationClip idle;
+    [SerializeField] AnimationClip unchargedIdle;
     [SerializeField] AnimationClip move;
+    [SerializeField] AnimationClip unchargedMove;
     [SerializeField] AnimationClip jump;
+    [SerializeField] AnimationClip unchargedJump;
     [SerializeField] AnimationClip attackRight;
+    [SerializeField] AnimationClip unchargedAttackRight;
     [SerializeField] AnimationClip attackUp;
+    [SerializeField] AnimationClip unchargedAttackUp;
     [SerializeField] AnimationClip hurt;
+    [SerializeField] AnimationClip unchargedHurt;
     [SerializeField] AnimationClip teleport;
     [SerializeField] GameObject dyingProto;
 
@@ -93,7 +99,10 @@ public class ProtoINA : Player
         canMove = false;
         canTeleport = false;
         float damagedTime = 0;
-        playerAnimator.ChangeAnimation(myAnimator, hurt);
+        if (canTeleport)
+            playerAnimator.ChangeAnimation(myAnimator, hurt);
+        else
+            playerAnimator.ChangeAnimation(myAnimator, unchargedHurt);
 
         while (damagedTime < iFrameDuration)
         {
@@ -104,7 +113,11 @@ public class ProtoINA : Player
                 canAttack = true;
                 canMove = true;
                 canTeleport = true;
-                playerAnimator.ChangeAnimation(myAnimator, idle);
+
+                if(canTeleport)
+                    playerAnimator.ChangeAnimation(myAnimator, idle);
+                else
+                    playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
             }
             yield return new WaitForSeconds(damageFlashSpeed);
         }
@@ -120,7 +133,10 @@ public class ProtoINA : Player
             if (!damaged && !dead && Input.GetKey("space") && canMove)
             {
                 if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(jump.name) && currentJumpHoldTime >= jumpMaxHoldTime)
-                    playerAnimator.ChangeAnimation(myAnimator, idle);
+                    if (canTeleport)
+                        playerAnimator.ChangeAnimation(myAnimator, idle);
+                    else
+                        playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
 
                 canJump = true;
             }
@@ -153,7 +169,10 @@ public class ProtoINA : Player
 
     public override void EndMoveSetup()
     {
-        playerAnimator.ChangeAnimation(myAnimator, idle);
+        if (canTeleport)
+            playerAnimator.ChangeAnimation(myAnimator, idle);
+        else
+            playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         base.EndMoveSetup();
     }
 
@@ -182,21 +201,30 @@ public class ProtoINA : Player
 
         if(horizontal)
         {
-            playerAnimator.ChangeAnimation(myAnimator, attackRight);
+            if (canTeleport)
+                playerAnimator.ChangeAnimation(myAnimator, attackRight);
+            else
+                playerAnimator.ChangeAnimation(myAnimator, unchargedAttackRight);
             horizontalAttackArea.SetActive(true);
             yield return new WaitForSeconds(attackDuration);
             horizontalAttackArea.SetActive(false);
         }
         else
         {
-            playerAnimator.ChangeAnimation(myAnimator, attackUp);
+            if (canTeleport)
+                playerAnimator.ChangeAnimation(myAnimator, attackUp);
+            else
+                playerAnimator.ChangeAnimation(myAnimator, unchargedAttackUp);
             verticalAttackArea.SetActive(true);
             yield return new WaitForSeconds(attackDuration);
             verticalAttackArea.SetActive(false);
 
         }
 
-        playerAnimator.ChangeAnimation(myAnimator, idle);
+        if (canTeleport)
+            playerAnimator.ChangeAnimation(myAnimator, idle);
+        else
+            playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         yield return new WaitForSeconds(attackCD);
         canAttack = true;
     }
@@ -218,7 +246,10 @@ public class ProtoINA : Player
             canJump = false;
             isJumping = true;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
-            playerAnimator.ChangeAnimation(myAnimator, jump);
+            if (canTeleport)
+                playerAnimator.ChangeAnimation(myAnimator, jump);
+            else
+                playerAnimator.ChangeAnimation(myAnimator, unchargedJump);
         }
         else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
@@ -249,7 +280,10 @@ public class ProtoINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
             if(myBody.velocity.y == 0 && !horizontalAttackArea.activeInHierarchy)
-                playerAnimator.ChangeAnimation(myAnimator, move);
+                if (canTeleport)
+                    playerAnimator.ChangeAnimation(myAnimator, move);
+                else
+                    playerAnimator.ChangeAnimation(myAnimator, unchargedMove);
         }
         else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
         {
@@ -259,13 +293,19 @@ public class ProtoINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
             }
             if(myBody.velocity.y == 0 && !horizontalAttackArea.activeInHierarchy)
-                playerAnimator.ChangeAnimation(myAnimator, move);
+                if (canTeleport)
+                    playerAnimator.ChangeAnimation(myAnimator, move);
+                else
+                    playerAnimator.ChangeAnimation(myAnimator, unchargedMove);
         }
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
             if(myBody.velocity.x == 0 && myBody.velocity.y <= 0 && !IsTeleporting && canAttack && !isJumping && isGrounded)
-                playerAnimator.ChangeAnimation(myAnimator, idle);
+                if (canTeleport)
+                    playerAnimator.ChangeAnimation(myAnimator, idle);
+                else
+                    playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         }
     }
     #endregion
@@ -285,7 +325,10 @@ public class ProtoINA : Player
             myBody.velocity = new Vector2(0, myBody.velocity.y);
 
             transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
-            playerAnimator.ChangeAnimation(myAnimator, idle);
+            if (canTeleport)
+                playerAnimator.ChangeAnimation(myAnimator, idle);
+            else
+                playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         }
         else if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
         {
@@ -583,6 +626,23 @@ public class ProtoINA : Player
         yield return new WaitForSeconds(teleportCD - teleportHoldTime);
 
         canTeleport = true;
+        DetermineCurrentChargedAnimation();
+    }
+
+    private void DetermineCurrentChargedAnimation()
+    {
+        if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedIdle.name))
+            playerAnimator.ChangeAnimation(myAnimator, idle);
+        else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedMove.name))
+            playerAnimator.ChangeAnimation(myAnimator, move);
+        else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedJump.name))
+            playerAnimator.ChangeAnimation(myAnimator, jump);
+        else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedAttackRight.name))
+            playerAnimator.ChangeAnimation(myAnimator, attackRight);
+        else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedAttackUp.name))
+            playerAnimator.ChangeAnimation(myAnimator, attackUp);
+        else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedHurt.name))
+            playerAnimator.ChangeAnimation(myAnimator, hurt);
     }
 
     #endregion
