@@ -5,16 +5,21 @@ using UnityEngine;
 
 public class VeggieVengeanceSpawnPoint : MonoBehaviour
 {
-    Vector2 initialUpForce = new Vector2(4.6f, 5.21f);
     [SerializeField] Vector2 xVelocity;
+    Vector2 initialUpForce; 
+
+    private void Awake()
+    {
+        initialUpForce = FindObjectOfType<VeggieVengeanceSpawner>().GetInitialUpForce(); 
+    }
 
     public float GetInitialUpForce()
     {
-        return (float)Math.Round(UnityEngine.Random.Range(initialUpForce.x, initialUpForce.y), 2); 
+        return (float)Math.Round(UnityEngine.Random.Range(initialUpForce.x, initialUpForce.y), 1); 
     }
 
     public float GetXVelocity()
     {
-        return (float)Math.Round(UnityEngine.Random.Range(xVelocity.x, xVelocity.y), 2);
+        return (float)Math.Round(UnityEngine.Random.Range(xVelocity.x, xVelocity.y), 1);
     }
 }

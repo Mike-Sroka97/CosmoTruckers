@@ -68,7 +68,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
 
     private void SetCannonMaterials()
     {
-        if (canPlay && !aeglar.GetIFramesState())
+        if (canPlay && !aeglar.damaged)
         {
             if (canFire && aeglar.GetDashState())
             {
@@ -79,7 +79,7 @@ public class VeggieVengeanceCannon : MonoBehaviour
                 cannonSpriteRenderer.material = cannonToggledMaterial; 
             }
         }
-        else if (aeglar.GetIFramesState())
+        else if (aeglar.damaged)
         {
             cannonSpriteRenderer.material = cannonHurtMaterial; 
         } 

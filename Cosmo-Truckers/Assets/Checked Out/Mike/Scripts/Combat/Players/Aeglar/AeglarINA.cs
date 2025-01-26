@@ -68,8 +68,6 @@ public class AeglarINA : Player
 
     public bool GetDashState() { return canDash; }
 
-    public bool GetIFramesState() { return iFrames; }
-
     public override IEnumerator Damaged()
     {
         float damagedTime = 0;
@@ -80,7 +78,7 @@ public class AeglarINA : Player
         while (damagedTime < iFrameDuration)
         {
             damagedTime += Time.deltaTime;
-            if (damagedTime > damagedDuration && !dead)
+            if (damagedTime > damagedDuration && !dead && damaged)
             {
                 canDash = true;
                 canMove = true;
