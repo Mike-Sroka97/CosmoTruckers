@@ -6,39 +6,15 @@ public class EnergonJab : CombatMove
 {
     [SerializeField] float timeBetweenShockAreaActivations;
 
-    EnergonJabShockArea[] shockAreas;
+    EnergonJabDVD[] dvds;
     int lastRandom = -1;
-    int lastlastRandom = -1;
 
     private void Start()
     {
         GenerateLayout();
         currentTime = 2.5f;
-        shockAreas = FindObjectsOfType<EnergonJabShockArea>();
-    }
-
-    protected override void TrackTime()
-    {
-        if (!trackTime)
-            return;
-
-        base.TrackTime();
-        
-        if(currentTime >= timeBetweenShockAreaActivations)
-        {
-            currentTime = 0;
-            int random = UnityEngine.Random.Range(0, shockAreas.Length);
-
-            while(random == lastRandom || random == lastlastRandom)
-            {
-                random = UnityEngine.Random.Range(0, shockAreas.Length);
-            }
-
-            lastlastRandom = lastRandom;
-            lastRandom = random;
-
-            shockAreas[random].ActivateMe();
-        }
+        dvds = GetComponentsInChildren<EnergonJabDVD>();
+        SetNextBall();
     }
 
     public override void EndMove()
@@ -52,6 +28,16 @@ public class EnergonJab : CombatMove
 
         if (mana.CurrentBattery == 0)
             mana.UpdateMana(CalculateManaGain());
+    }
+
+    public void SetNextBall()
+    {
+        int random = Random.Range(0, dvds.Length);
+
+        while (random == lastRandom)
+            random = Random.Range(0, dvds.Length);
+
+        dvds[random].ActivateMe();
     }
 
     private int CalculateManaGain()

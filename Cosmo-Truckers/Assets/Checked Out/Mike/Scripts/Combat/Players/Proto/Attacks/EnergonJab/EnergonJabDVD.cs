@@ -4,58 +4,41 @@ using UnityEngine;
 
 public class EnergonJabDVD : DVDlogoMovement
 {
-    [SerializeField] float disableTime;
-    [SerializeField] float alpha;
-    [SerializeField] Material disabledMaterial; 
+    [SerializeField] Material disabledMaterial;
+    [SerializeField] Material enabledMaterial;
 
-    float currentTime = 0;
-    bool trackTime = false;
     SpriteRenderer myRenderer;
-    Material startMaterial;  
     EnergonJab minigame;
-    AdvancedFrameAnimation myAnimation; 
+    AdvancedFrameAnimation myAnimation;
+    private bool active;
 
-    private void Start()
+    private void Awake()
     {
         minigame = GetComponentInParent<EnergonJab>();
         myRenderer = GetComponent<SpriteRenderer>();
         myAnimation= GetComponent<AdvancedFrameAnimation>();
-        startMaterial = myRenderer.material;
         Initialize();
         RandomStartVelocity();
     }
 
-    private void Update()
+    public void ActivateMe()
     {
-        Movement();
-        TrackTime();
-    }
-    
-    private void TrackTime()
-    {
-        if (!trackTime)
-            return;
-
-        currentTime += Time.deltaTime;
-
-        if(currentTime >= disableTime)
-        {
-            currentTime = 0;
-            trackTime = false;
-            myRenderer.material = startMaterial;
-        }
+        myRenderer.material = enabledMaterial;
+        myAnimation.SwitchToHappyAnimation();
+        active = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && !trackTime)
+        if(collision.tag == "PlayerAttack" && active)
         {
-            trackTime = true;
+            active = false;
             minigame.Score++;
             minigame.CheckSuccess();
             // Start the hit animation and then it will automatically swap back
-            myAnimation.StartAnimationWithUniqueTime(disableTime);
+            myAnimation.SwitchToHurtAnimation();
             myRenderer.material = disabledMaterial;
+            minigame.SetNextBall();
         }
     }
 }
