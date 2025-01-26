@@ -51,12 +51,12 @@ public class StretchySpineProjectile : MonoBehaviour
             if(good)
             {
                 minigame.Score += 2;
-                frameAnimation.SwitchToHappyAnimation(); 
+                frameAnimation.SwitchToEmotion(isHurt: false); 
             }
             else
             {
                 minigame.Score -= 1;
-                frameAnimation.SwitchToHurtAnimation(); 
+                frameAnimation.SwitchToEmotion(isHurt: true); 
             }
 
             GetComponent<ParticleSpawner>().SpawnParticle(transform); 

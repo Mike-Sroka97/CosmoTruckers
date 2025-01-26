@@ -42,7 +42,7 @@ public class CryOfFrustrationQmuav : MonoBehaviour
             else
             {
                 StartCoroutine(shaker.ShakeForDuration(shakeDuration));
-                frameAnimator.StartAnimationWithUniqueTime(shakeDuration, isHurt: true); 
+                frameAnimator.SwitchToEmotion(isHurt: true, timeBeforeSwapping: shakeDuration); 
             }
         }
     }

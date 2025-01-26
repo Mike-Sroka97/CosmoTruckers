@@ -13,50 +13,79 @@ public class SimpleFrameAnimation : MonoBehaviour
     protected SpriteRenderer mySpriteRenderer;
     protected Image myImage;
     protected int currentSprite = 0;
-    protected Material defaultMaterial; 
+    protected Material defaultMaterial;
+
+    protected Sprite[] animationSprites;
+    protected float animationTime;
+    protected float timer = 0;
+
+    private bool canPlayAnimation = true; 
 
     void Start()
     {
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-        defaultMaterial = mySpriteRenderer.material;
         myImage = GetComponent<Image>();
 
-        if (mySpriteRenderer)
-            StartCoroutine(ChangeSprites());
-        if (myImage)
-            StartCoroutine(ChangeImages());
+        defaultMaterial = mySpriteRenderer.material;
+        animationTime = timeBetweenEachSprite;
+        animationSprites = sprites; 
     }
-    
+
+    private void Update()
+    {
+        if (canPlayAnimation)
+        {
+            timer += Time.deltaTime;
+
+            if (mySpriteRenderer != null)
+                Animate();
+            else if (myImage != null)
+                AnimateImage();
+        }
+    }
+
+    protected virtual void Animate()
+    {
+        if (timer > animationTime)
+        {
+            mySpriteRenderer.sprite = animationSprites[currentSprite];
+            currentSprite++;
+            timer = 0;
+
+            if (currentSprite >= animationSprites.Length)
+                currentSprite = 0;
+        }
+    }
+
+    protected virtual void AnimateImage()
+    {
+        if (timer > animationTime)
+        {
+            myImage.sprite = animationSprites[currentSprite];
+            currentSprite++;
+            timer = 0;
+
+            if (currentSprite >= animationSprites.Length)
+                currentSprite = 0;
+        }
+    }
+
     /// <summary>
-    /// Default sprite swapping
+    /// Zero out the animation values
     /// </summary>
-    /// <returns></returns>
-    protected IEnumerator ChangeSprites()
+    protected void ResetValues()
     {
-        if (currentSprite >= sprites.Length)
-            currentSprite = 0;
-
-        mySpriteRenderer.sprite = sprites[currentSprite];
-        yield return new WaitForSeconds(timeBetweenEachSprite);
-        currentSprite++;
-
-        StartCoroutine(ChangeSprites());
-    }
-
-    protected IEnumerator ChangeImages()
-    {
-        if (currentSprite >= sprites.Length)
-            currentSprite = 0;
-
-        myImage.sprite = sprites[currentSprite];
-        yield return new WaitForSeconds(timeBetweenEachSprite);
-        currentSprite++;
-
-        StartCoroutine(ChangeImages());
+        currentSprite = 0; 
+        timer = 0;
     }
 
     public void StopAnimation()
     {
-        StopAllCoroutines(); 
+        canPlayAnimation = false;
+    }
+
+    public void StartAnimation()
+    {
+        canPlayAnimation = true;
     }
 }

@@ -15,114 +15,74 @@ public class AdvancedFrameAnimation : SimpleFrameAnimation
     [SerializeField] Material hurtMaterial; 
     [SerializeField] Material happyMaterial; 
 
-    bool hurt = false;
-    bool happy = false; 
-    float timer = 0f;
-    float frameTimer = 0f;
-    int currentFrame = -1; 
-    private float timeBeforeSwapping = 0f;
+    private bool hurt = false;
+    private bool happy = false; 
 
-    public void SwitchToHurtAnimation()
+    /// <summary>
+    /// Switch to a new emotion. <br></br>
+    /// By default, this is set up for hurt. 
+    /// </summary>
+    /// <param name="isHurt">Switches to hurt by default, otherwise will switch to happy animation</param>
+    /// <param name="loopAnimation">Does not loop by default. Setting this to true will loop it until ReturnToDefault() is called</param>
+    /// <param name="timeBeforeSwapping">Time before swapping back to default. If left alone, it will use a default time.</param>
+    public void SwitchToEmotion(bool isHurt = true, bool loopAnimation = false, float timeBeforeSwapping = 0f)
     {
-        StopAllCoroutines();
-        timeBeforeSwapping = timeBetweenHurtSprites;
-        hurt = true;
-        happy = false;
         ResetValues();
-    }
+        hurt = isHurt;
+        happy = !isHurt; 
 
-    public void SwitchToHappyAnimation()
-    {
-        StopAllCoroutines();
-        timeBeforeSwapping = timeBetweenHappySprites;
-        happy = true;
-        hurt = false;
-        ResetValues();
+        if (hurt)
+        {
+            animationTime = timeBetweenHurtSprites; 
+            animationSprites = hurtSprites; 
+        }
+        else if (happy)
+        {
+            animationTime = timeBetweenHappySprites;
+            animationSprites = happySprites;
+        }
+
+        if (!loopAnimation)
+            StartCoroutine(DelayedReturnToDefault(timeBeforeSwapping)); 
     }
 
     /// <summary>
-    /// Pass in a unique amount of time to the animation before swapping back to default
+    /// Wait for a short period before returning to the default animation
     /// </summary>
-    /// <param name="timeBeforeSwapping"></param>
-    /// <param name="isHurt"></param>
-    public void StartAnimationWithUniqueTime(float timeBeforeSwapping, bool isHurt = true)
+    /// <returns></returns>
+    private IEnumerator DelayedReturnToDefault(float timeBeforeSwapping = 0f)
+    {
+        // Either use unique time before swapping to default, or just use the default for the emotion
+        float delayTime = timeBeforeSwapping; 
+
+        if (happy && timeBeforeSwapping == 0f)
+            delayTime = happyTimeBeforeSwapping;
+
+        if (hurt && timeBeforeSwapping == 0f)
+            delayTime = hurtTimeBeforeSwapping; 
+
+        yield return new WaitForSeconds(delayTime);
+
+        ReturnToDefault();
+    }
+
+    /// <summary>
+    /// Returns to the default animation
+    /// </summary>
+    public void ReturnToDefault()
     {
         ResetValues();
-        this.timeBeforeSwapping = timeBeforeSwapping;
-
-        if (isHurt)
-        {
-            if (hurtMaterial != null)
-                mySpriteRenderer.material = hurtMaterial;
-            
-            StopAllCoroutines();
-            hurt = true;
-            happy = false;
-            ResetValues();
-        }
-        else
-        {
-            if (happyMaterial != null)
-                mySpriteRenderer.material = happyMaterial;
-
-            StopAllCoroutines();
-            hurt = false;
-            happy = true;
-            ResetValues();
-        }
-    }
-
-    private void Update()
-    {
-        if (hurt)
-            ChangeAnimation(hurtSprites, hurtTimeBeforeSwapping, ref hurt);
-
-        else if (happy)
-            ChangeAnimation(happySprites, happyTimeBeforeSwapping, ref happy);
-    }
-
-    void ChangeAnimation(Sprite[] sprites, float uniqueTimeBeforeSwapping, ref bool boolToSet)
-    {
-        if (currentFrame == -1)
-        {
-            currentFrame = 0; 
-            mySpriteRenderer.sprite = sprites[currentFrame];
-        }
-
-        timer += Time.deltaTime;
-        frameTimer += Time.deltaTime;
-
-        if (frameTimer >= timeBeforeSwapping)
-        {
-            currentFrame++;
-
-            if (currentFrame >= sprites.Length)
-                currentFrame = 0;
-
-            mySpriteRenderer.sprite = sprites[currentFrame];
-            frameTimer = 0f;
-        }
-
-        if (timer > uniqueTimeBeforeSwapping)
-        {
-            boolToSet = false;
-            mySpriteRenderer.material = defaultMaterial; 
-            StartCoroutine(ChangeSprites());
-        }
-    }
-
-    void ResetValues()
-    {
-        currentFrame = -1;
-        timer = 0;
-        frameTimer = 0;
+        animationTime = timeBetweenEachSprite;
+        animationSprites = sprites; 
+        hurt = false;
+        happy = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerAttack") && !hurt && playerHitHurts)
         {
-            SwitchToHurtAnimation(); 
+            SwitchToEmotion(); 
         }
     }
 }

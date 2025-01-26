@@ -6,39 +6,26 @@ public class EnergonJab : CombatMove
 {
     [SerializeField] float timeBetweenShockAreaActivations;
 
-    EnergonJabShockArea[] shockAreas;
-    int lastRandom = -1;
-    int lastlastRandom = -1;
+    EnergonJabDVD[] dvds;
+    List<Transform> spawnParents = new List<Transform>();
+    List<Transform> coils = new List<Transform>();
+    List<int> dvdsToActivate = new List<int>() { 0, 1, 2, 3 };
 
     private void Start()
     {
         GenerateLayout();
-        currentTime = 2.5f;
-        shockAreas = FindObjectsOfType<EnergonJabShockArea>();
-    }
+        dvds = GetComponentsInChildren<EnergonJabDVD>();
 
-    protected override void TrackTime()
-    {
-        if (!trackTime)
-            return;
+        Transform objectSpawns = GameObject.Find("ObjectSpawns").transform;
+        foreach (Transform spawn in objectSpawns)
+            spawnParents.Add(spawn);
 
-        base.TrackTime();
-        
-        if(currentTime >= timeBetweenShockAreaActivations)
-        {
-            currentTime = 0;
-            int random = UnityEngine.Random.Range(0, shockAreas.Length);
+        Transform coilParent = GameObject.Find("Coils").transform;
+        foreach (Transform coil in coilParent)
+            coils.Add(coil);
 
-            while(random == lastRandom || random == lastlastRandom)
-            {
-                random = UnityEngine.Random.Range(0, shockAreas.Length);
-            }
-
-            lastlastRandom = lastRandom;
-            lastRandom = random;
-
-            shockAreas[random].ActivateMe();
-        }
+        RandomizeSpawnPositions();
+        SetNextBall();
     }
 
     public override void EndMove()
@@ -52,6 +39,34 @@ public class EnergonJab : CombatMove
 
         if (mana.CurrentBattery == 0)
             mana.UpdateMana(CalculateManaGain());
+    }
+
+    private void RandomizeSpawnPositions()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            int randomDvdPosition = Random.Range(0, spawnParents[i].childCount);
+            dvds[i].transform.position = spawnParents[i].GetChild(randomDvdPosition).position;
+
+            // Don't let DVD and Coil spawn in the same location
+            int randomCoilPosition = randomDvdPosition; 
+            while (randomCoilPosition == randomDvdPosition)
+                randomCoilPosition = Random.Range(0, spawnParents[i].childCount);
+
+            coils[i].position = spawnParents[i].GetChild(randomCoilPosition).position;
+        }
+    }
+
+    public void SetNextBall()
+    {
+        if (dvdsToActivate.Count > 0)
+        {
+            int random = dvdsToActivate[Random.Range(0, dvdsToActivate.Count)];
+            dvds[random].ActivateMe();
+
+            // Make it so you have to go to all four quadrants
+            dvdsToActivate.Remove(random);
+        }
     }
 
     private int CalculateManaGain()
