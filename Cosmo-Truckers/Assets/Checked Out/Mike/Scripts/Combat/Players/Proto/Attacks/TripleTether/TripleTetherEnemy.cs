@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class TripleTetherEnemy : MonoBehaviour
 {
-    [SerializeField] int health;
     [SerializeField] GameObject deathParticles; 
 
     //Movement
@@ -192,14 +191,10 @@ public class TripleTetherEnemy : MonoBehaviour
 
     public void TakeDamage()
     {
-        health--;
         minigame.Score++;
-
-        if(health <= 0)
-        {
-            Instantiate(deathParticles, transform.position, deathParticles.transform.rotation, minigame.transform); 
-            Destroy(gameObject);
-        }
+        minigame.CheckSuccess();
+        Instantiate(deathParticles, transform.position, deathParticles.transform.rotation, minigame.transform);
+        Destroy(gameObject);
     }
 
     private void SetCurrentTime()
