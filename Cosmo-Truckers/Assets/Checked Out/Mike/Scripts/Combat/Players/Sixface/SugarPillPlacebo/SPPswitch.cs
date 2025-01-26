@@ -9,53 +9,51 @@ public class SPPswitch : MonoBehaviour
     [SerializeField] SPPlayoutGenerator mySpawnZone;
     [SerializeField] Material toggledMaterial;
     [SerializeField] Sprite toggledSprite;
+    [SerializeField] Sprite defaultSprite;
+    [SerializeField] Material defaultMaterial;
     [SerializeField] GameObject moneyParticle;
+    [SerializeField] bool left;
 
     Collider2D myCollider;
     SpriteRenderer myRenderer;
-    Material defaultMaterial;
-    Sprite defaultSprite;
-    TMP_Text timerText;
-    CombatMove minigame; 
+    SugarPillPlacebo minigame; 
 
     private void Start()
     {
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
-        defaultMaterial = myRenderer.material; 
-        defaultSprite = myRenderer.sprite;
-        timerText = GetComponentInChildren<TMP_Text>();
+        minigame = FindObjectOfType<SugarPillPlacebo>();
 
-        minigame = GameObject.FindObjectOfType<CombatMove>();
-    }
-
-    private void Update()
-    {
-        if (minigame.MoveEnded && timerText.gameObject.activeInHierarchy)
-        {
-            timerText.gameObject.SetActive(false); 
-        }
+        if (minigame.CurrentSwitch != this)
+            DisableMe();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "PlayerAttack")
         {
-
             Instantiate(moneyParticle, transform.position, Quaternion.identity, minigame.transform);
             myDefaultDeadZone.SetActive(false);
-            myCollider.enabled = false;
-            myRenderer.material = toggledMaterial;
-            myRenderer.sprite = toggledSprite; 
-            mySpawnZone.GenerateLayout(timerText);
+            DisableMe(); 
+            mySpawnZone.GenerateLayout(left);
         }
     }
 
     public void ResetMe()
     {
-        myDefaultDeadZone.SetActive(true);
-        myCollider.enabled = true;
-        myRenderer.material = defaultMaterial;
-        myRenderer.sprite = defaultSprite;
+        if (minigame.CurrentSwitch == this)
+        {
+            myDefaultDeadZone.SetActive(true);
+            myCollider.enabled = true;
+            myRenderer.material = defaultMaterial;
+            myRenderer.sprite = defaultSprite;
+        }
+    }
+
+    private void DisableMe()
+    {
+        myCollider.enabled = false;
+        myRenderer.material = toggledMaterial;
+        myRenderer.sprite = toggledSprite;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class SugarPillPlacebo : CombatMove
 {
     [HideInInspector] public Vector3 CurrentCheckPointLocation;
+    public SPPswitch CurrentSwitch;
 
     SixFaceMana sixFaceMana;
 

@@ -31,9 +31,7 @@ public class SPPsendBack : MonoBehaviour
     private void MovePlayer()
     {
         if(layoutGenerator)
-        {
             layoutGenerator.DestroyMe();
-        }
 
         Instantiate(sendBackParticle, player.position, Quaternion.identity, minigame.transform);
         player.position = minigame.CurrentCheckPointLocation;

@@ -14,7 +14,6 @@ public class SPPlayoutGenerator : MonoBehaviour
     int random = -1;
     int lastRandom = -1;
     GameObject currentActiveLayout;
-    TMP_Text timerText; 
 
     private void Update()
     {
@@ -25,33 +24,29 @@ public class SPPlayoutGenerator : MonoBehaviour
             {
                 DestroyMe();
             }
-            else
-            {
-                timerText.text = (Mathf.RoundToInt(layoutDuration - currentTime)).ToString();
-            }
         }
     }
 
     public void DestroyMe()
     {
-        timerText.text = ""; 
         currentTime = 0;
         activeLayout = false;
         mySwitch.ResetMe();
         Destroy(currentActiveLayout);
     }
 
-    public void GenerateLayout(TMP_Text text)
+    public void GenerateLayout(bool left)
     {
-        timerText = text;
         activeLayout = true;
 
         while(random == lastRandom)
-        {
-            random = UnityEngine.Random.Range(0, layouts.Length);
-        }
+            random = Random.Range(0, layouts.Length);
 
         lastRandom = random;
+
         currentActiveLayout = Instantiate(layouts[random], transform);
+
+        if (!left)
+            currentActiveLayout.transform.localEulerAngles = new Vector3(currentActiveLayout.transform.localEulerAngles.x, 180, currentActiveLayout.transform.localEulerAngles.z);
     }
 }

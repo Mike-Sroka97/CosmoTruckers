@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerPickup : MonoBehaviour
 {
-    [SerializeField] int score = 1;
+    [SerializeField] protected int score = 1;
     [SerializeField] float moveSpeed;
     [SerializeField] float moveDistance;
-    [SerializeField] bool givesAugmentScore = false;
-    [SerializeField] bool givesScore = true;
+    [SerializeField] protected bool givesAugmentScore = false;
+    [SerializeField] protected bool givesScore = true;
     [HideInInspector] public bool multiplayer;
 
     [Header("PS on Collect (can be empty)")]

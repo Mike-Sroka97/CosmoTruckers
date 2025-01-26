@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SPPcheckpoint : MonoBehaviour
 {
+    [SerializeField] SPPswitch mySwitch;
 
     SugarPillPlacebo minigame;
 
@@ -14,10 +15,12 @@ public class SPPcheckpoint : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if (collision.tag == "Player" && minigame.CurrentSwitch != mySwitch)
         {
             minigame.CurrentCheckPointLocation = transform.position;
-            Destroy(gameObject);
+            minigame.CurrentSwitch = mySwitch;
+            mySwitch.ResetMe();
+            FindObjectOfType<SPPlayoutGenerator>().DestroyMe();
         }
     }
 }
