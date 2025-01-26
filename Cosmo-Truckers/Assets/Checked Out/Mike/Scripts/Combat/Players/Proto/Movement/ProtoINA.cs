@@ -330,11 +330,11 @@ public class ProtoINA : Player
             else
                 playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         }
-        else if(Input.GetKey(KeyCode.Mouse1) && canTeleport)
+        else if(Input.GetKey(KeyCode.Mouse1) && canTeleport && isTeleporting)
         {
             TeleportSprites();
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport)
+        else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport && isTeleporting)
         {
             isTeleporting = false;
             foreach (SpriteRenderer sprite in teleportSprites)
