@@ -28,7 +28,7 @@ public class DVDlogoMovement : MonoBehaviour
         Movement();
     }
 
-    protected virtual bool GroundCheck(Vector2 direction, bool horizontal)
+    private bool GroundCheck(Vector2 direction, bool horizontal)
     {
         if (horizontal)
         {
@@ -59,7 +59,7 @@ public class DVDlogoMovement : MonoBehaviour
 
     protected void RandomStartVelocity()
     {
-        int random = Random.Range(0, 4);
+        int random = UnityEngine.Random.Range(0, 4);
 
         switch(random)
         {
