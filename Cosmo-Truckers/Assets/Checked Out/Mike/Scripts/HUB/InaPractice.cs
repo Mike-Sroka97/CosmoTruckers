@@ -28,7 +28,7 @@ public class InaPractice : INAcombat
     [SerializeField] string minigameCharacterSelectText;
     [SerializeField] TextMeshProUGUI minigameCharacterSelectTMP;
     [SerializeField] GameObject[] minigameCharacterSelectButtonGOs;
-    [SerializeField] float minigameCharacterSelectButtonsWaitTime = 0.1f;
+    [SerializeField] float minigameCharacterSelectButtonsWaitTime = 0.01f;
     [SerializeField] Sprite[] characterImages;
 
     [Space(40)]
@@ -169,19 +169,21 @@ public class InaPractice : INAcombat
 
                 currentCharacter++;
 
-                yield return new WaitForSeconds(characterWaitTime);
+                //yield return new WaitForSeconds(characterWaitTime);
             }
         }
 
-        yield return new WaitForSeconds(characterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(characterSelectButtonsWaitTime);
 
         foreach (GameObject characterSelectButton in characterSelectButtonGOs)
         {
             characterSelectButton.SetActive(true);
-            yield return new WaitForSeconds(characterSelectButtonsWaitTime);
+            //yield return new WaitForSeconds(characterSelectButtonsWaitTime);
         }
 
         firstCharacterButton.enabled = true;
+
+        yield return null;
     }
 
     /// <summary>
@@ -200,18 +202,20 @@ public class InaPractice : INAcombat
 
             currentCharacter++;
 
-            yield return new WaitForSeconds(characterWaitTime);
+            //yield return new WaitForSeconds(characterWaitTime);
         }
 
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
 
         foreach (GameObject minigameCharacterSelectButton in minigameCharacterSelectButtonGOs)
         {
             minigameCharacterSelectButton.SetActive(true);
-            yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+            //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         }
 
         firstMinigameCharacterButton.enabled = true;
+
+        yield return null;
     }
 
     /// <summary>
@@ -228,7 +232,7 @@ public class InaPractice : INAcombat
             yield return null;
 
         //Enable return button
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         enemySelectButtons[0].SetActive(true);
 
         //Print Feeble foes and enable buttons
@@ -236,13 +240,13 @@ public class InaPractice : INAcombat
         while (printingString)
             yield return null;
 
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(1);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(2);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(3);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(4);
 
         //Print Fierce foes and enable buttons
@@ -250,13 +254,13 @@ public class InaPractice : INAcombat
         while (printingString)
             yield return null;
 
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(5);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(6);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(7);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(8);
 
         //Print Minibosses and enable buttons
@@ -264,9 +268,9 @@ public class InaPractice : INAcombat
         while (printingString)
             yield return null;
 
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(9);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(10);
 
         //Print Bosses and enable buttons
@@ -274,13 +278,13 @@ public class InaPractice : INAcombat
         while (printingString)
             yield return null;
 
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(11);
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         SetupEnemyButton(12);
 
         //Enable player interaction
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         firstEnemySelectButton.enabled = true;
     }
 
@@ -298,7 +302,7 @@ public class InaPractice : INAcombat
             yield return null;
 
         //Enable return button
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         otherEnemySelectButtons[0].SetActive(true);
 
         //Print all other foes and enable buttons
@@ -308,12 +312,12 @@ public class InaPractice : INAcombat
 
         for (int i = 1; i < otherEnemySelectButtons.Length; i++)
         {
-            yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+            //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
             otherEnemySelectButtons[i].SetActive(true);
         }
 
         //Enable player interaction
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         firstOtherEnemySelectButton.enabled = true;
     }
 
@@ -332,16 +336,16 @@ public class InaPractice : INAcombat
 
         for (int i = 0; i < minigameSelectButtons.Length; i++)
         {
-            yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+            //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
             minigameSelectButtons[i].SetActive(true);
         }
 
         //Enable player interaction
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         firstMinigameSelectButton.enabled = true;
 
         //Setup minigame count stuffs
-        yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
+        //yield return new WaitForSeconds(minigameCharacterSelectButtonsWaitTime);
         miniGameCountTmps[0].text = $"{currentMinigameIndex + 1}";
         miniGameCountTmps[1].text = "/";
 
@@ -639,10 +643,12 @@ public class InaPractice : INAcombat
 
             currentCharacter++;
 
-            yield return new WaitForSeconds(characterWaitTime);
+            //yield return new WaitForSeconds(characterWaitTime);
         }
 
         printingString = false;
+
+        yield return null;
     }
 
     public void SetPlayerMinigameButton(GameObject characterButton)
