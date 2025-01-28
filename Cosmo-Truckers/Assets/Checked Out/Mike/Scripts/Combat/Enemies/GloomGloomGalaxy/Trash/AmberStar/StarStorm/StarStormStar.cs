@@ -65,7 +65,7 @@ public class StarStormStar : MonoBehaviour
             minigame.AugmentScore++;
             Destroy(gameObject);
         }
-        else if(collision.GetComponent<StarStormBlock>())
+        else if(collision.gameObject.name == "SSblock")
         {
             Destroy(gameObject);
         }
