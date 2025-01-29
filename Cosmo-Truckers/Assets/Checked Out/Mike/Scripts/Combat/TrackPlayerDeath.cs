@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrackPlayerDeath : MonoBehaviour
 {
     [SerializeField] bool trackDeath = true;
-    [Header("Score/Aug Increase actually decreases")]
+    [Header("Score/Aug Increase actually decreases (NOT TRUE)")]
     [SerializeField] int scoreIncrease = 0;
     [SerializeField] int augmentScoreIncrease = 0;
     [SerializeField] int overrideDamage = 0;
@@ -125,8 +125,8 @@ public class TrackPlayerDeath : MonoBehaviour
             {
                 Death(player);
                 player.TakeDamage();
-                minigame.PlayerScores[player.MyCharacter] -= scoreIncrease;
-                minigame.PlayerAugmentScores[player.MyCharacter] -= augmentScoreIncrease;
+                minigame.PlayerScores[player.MyCharacter] += scoreIncrease;
+                minigame.PlayerAugmentScores[player.MyCharacter] += augmentScoreIncrease;
             }
         }
         else
@@ -135,8 +135,8 @@ public class TrackPlayerDeath : MonoBehaviour
             {
                 Death(player);
                 player.TakeDamage();
-                minigame.Score -= scoreIncrease;
-                minigame.AugmentScore -= augmentScoreIncrease;
+                minigame.Score += scoreIncrease;
+                minigame.AugmentScore += augmentScoreIncrease;
             }
         }
     }

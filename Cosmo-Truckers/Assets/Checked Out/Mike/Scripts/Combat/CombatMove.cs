@@ -462,5 +462,33 @@ public class CombatMove : MonoBehaviour
             deathSource.Boss = true;
     }
 
-    public virtual string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore}.";
+    protected int GetFinalScore()
+    {
+        if (Score < 0)
+            return 0;
+        else if (Score > maxScore)
+            return maxScore;
+        else
+            return Score;
+    }
+
+    protected int GetFinalAugmentStackCount()
+    {
+        if (AugmentScore < 0)
+            return 0;
+        else if (AugmentScore * augmentStacksPerScore + baseAugmentStacks > maxAugmentStacks)
+            return maxAugmentStacks;
+        else
+            return AugmentScore * augmentStacksPerScore + baseAugmentStacks;
+    }
+
+    protected int GetFinalEnemyScore()
+    {
+        if (maxScore - GetFinalScore() >= 0)
+            return maxScore - GetFinalScore();
+        else
+            return 0;
+    }
+
+    public virtual string TrainingDisplayText => $"You scored {GetFinalScore()}/{maxScore}.";
 }
