@@ -6,32 +6,22 @@ using UnityEngine;
 public class SPPlayoutGenerator : MonoBehaviour
 {
     [SerializeField] GameObject[] layouts;
-    [SerializeField] SPPswitch mySwitch;
-    [SerializeField] float layoutDuration;
 
-    float currentTime = 0;
+    SugarPillPlacebo minigame; 
     bool activeLayout = false;
     int random = -1;
     int lastRandom = -1;
     GameObject currentActiveLayout;
 
-    private void Update()
+    private void Awake()
     {
-        if(activeLayout)
-        {
-            currentTime += Time.deltaTime;
-            if(currentTime > layoutDuration)
-            {
-                DestroyMe();
-            }
-        }
+        minigame = FindObjectOfType<SugarPillPlacebo>(); 
     }
 
     public void DestroyMe()
     {
-        currentTime = 0;
         activeLayout = false;
-        mySwitch.ResetMe();
+        minigame.CurrentSwitch.ResetMe();
         Destroy(currentActiveLayout);
     }
 
@@ -43,7 +33,6 @@ public class SPPlayoutGenerator : MonoBehaviour
             random = Random.Range(0, layouts.Length);
 
         lastRandom = random;
-
         currentActiveLayout = Instantiate(layouts[random], transform);
 
         if (!left)

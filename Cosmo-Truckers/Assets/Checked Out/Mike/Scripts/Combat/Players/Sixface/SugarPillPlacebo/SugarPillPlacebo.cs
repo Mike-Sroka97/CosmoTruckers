@@ -6,6 +6,7 @@ public class SugarPillPlacebo : CombatMove
 {
     [HideInInspector] public Vector3 CurrentCheckPointLocation;
     public SPPswitch CurrentSwitch;
+    public GameObject DefaultDeadZone;
 
     SixFaceMana sixFaceMana;
 
