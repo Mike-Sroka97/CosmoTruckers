@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class WhiteNoise : CombatMove
 {
-    private void Start()
-    {
-        GenerateLayout();
-    }
-
     public override void StartMove()
     {
         FollowerNoise[] followerNoise = GetComponentsInChildren<FollowerNoise>();
@@ -21,5 +16,7 @@ public class WhiteNoise : CombatMove
             noise.enabled = true;
 
         base.StartMove();
-    }    
+    }
+
+    public override string TrainingDisplayText => $"You scored {GetFinalEnemyScore()}/{maxScore} taking {GetFinalScore() * Damage + baseDamage} damage. You also gained {GetFinalAugmentStackCount()} stacks of {DebuffToAdd.AugmentName}.";
 }

@@ -26,7 +26,7 @@ public class FollowerNoise : MonoBehaviour
 
     private void Start()
     {
-        playerPosition = GameObject.FindGameObjectWithTag("Player");
+        playerPosition = FindObjectOfType<PlayerBody>().gameObject;
         myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
         minigame = GetComponentInParent<WhiteNoise>();
         myCollider = GetComponent<Collider2D>();
