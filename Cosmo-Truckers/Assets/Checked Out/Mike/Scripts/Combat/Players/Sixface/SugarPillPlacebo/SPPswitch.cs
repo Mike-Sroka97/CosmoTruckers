@@ -5,7 +5,6 @@ using TMPro;
 
 public class SPPswitch : MonoBehaviour
 {
-    [SerializeField] GameObject myDefaultDeadZone;
     [SerializeField] SPPlayoutGenerator mySpawnZone;
     [SerializeField] Material toggledMaterial;
     [SerializeField] Sprite toggledSprite;
@@ -33,7 +32,7 @@ public class SPPswitch : MonoBehaviour
         if(collision.tag == "PlayerAttack")
         {
             Instantiate(moneyParticle, transform.position, Quaternion.identity, minigame.transform);
-            myDefaultDeadZone.SetActive(false);
+            minigame.DefaultDeadZone.SetActive(false);
             DisableMe(); 
             mySpawnZone.GenerateLayout(left);
         }
@@ -43,7 +42,7 @@ public class SPPswitch : MonoBehaviour
     {
         if (minigame.CurrentSwitch == this)
         {
-            myDefaultDeadZone.SetActive(true);
+            minigame.DefaultDeadZone.SetActive(true);
             myCollider.enabled = true;
             myRenderer.material = defaultMaterial;
             myRenderer.sprite = defaultSprite;

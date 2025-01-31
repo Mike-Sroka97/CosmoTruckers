@@ -35,5 +35,6 @@ public class SPPsendBack : MonoBehaviour
 
         Instantiate(sendBackParticle, player.position, Quaternion.identity, minigame.transform);
         player.position = minigame.CurrentCheckPointLocation;
+        minigame.DefaultDeadZone.SetActive(true);
     }
 }

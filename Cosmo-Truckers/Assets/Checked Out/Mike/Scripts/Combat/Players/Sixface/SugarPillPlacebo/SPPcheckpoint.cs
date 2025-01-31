@@ -15,12 +15,16 @@ public class SPPcheckpoint : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && minigame.CurrentSwitch != mySwitch)
+        if (collision.tag == "Player" )
         {
             minigame.CurrentCheckPointLocation = transform.position;
-            minigame.CurrentSwitch = mySwitch;
-            mySwitch.ResetMe();
-            FindObjectOfType<SPPlayoutGenerator>().DestroyMe();
+            
+            if (minigame.CurrentSwitch != mySwitch)
+            {
+                minigame.CurrentSwitch = mySwitch;
+                mySwitch.ResetMe();
+                FindObjectOfType<SPPlayoutGenerator>().DestroyMe();
+            }
         }
     }
 }
