@@ -17,6 +17,7 @@ public class RandomNoise : MonoBehaviour
     WhiteNoise minigame;
     bool active = false;
     bool initialized = false;
+    TrackPlayerDeath myDeath;
 
     public void NewSpawn()
     {
@@ -40,12 +41,15 @@ public class RandomNoise : MonoBehaviour
 
         startingColor = myRenderer.color;
         outlineStartMaterial = outlineRenderer.material;
+        myDeath = GetComponent<TrackPlayerDeath>();
     }
 
     IEnumerator Fade()
     {
         while(myRenderer.color.a < 1)
         {
+            myDeath.enabled = false;
+
             myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, myRenderer.color.a + Time.deltaTime * fadeSpeed);
             myFillRenderer.color = myRenderer.color;
             outlineRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, 
@@ -58,11 +62,12 @@ public class RandomNoise : MonoBehaviour
                 active = true;
                 myCollider.enabled = true;
                 outlineRenderer.material = outlineAttackMaterial;
-
             }
         }
         while (myRenderer.color.a > 0)
         {
+            myDeath.enabled = true;
+
             myRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, myRenderer.color.a - Time.deltaTime * fadeOutSpeed);
             myFillRenderer.color = myRenderer.color;
             outlineRenderer.color = new Color(myRenderer.color.r, myRenderer.color.g, 
@@ -77,23 +82,5 @@ public class RandomNoise : MonoBehaviour
             }
         }
         active = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            minigame.Score++;
-            minigame.AugmentScore++;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            minigame.Score++;
-            minigame.AugmentScore++;
-        }
     }
 }

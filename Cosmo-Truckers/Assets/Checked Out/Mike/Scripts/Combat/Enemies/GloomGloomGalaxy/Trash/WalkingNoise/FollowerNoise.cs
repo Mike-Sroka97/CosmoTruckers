@@ -22,13 +22,11 @@ public class FollowerNoise : MonoBehaviour
     SpriteRenderer myRenderer;
     Collider2D myCollider;
     float currentSpeed;
-    WhiteNoise minigame;
 
     private void Start()
     {
         playerPosition = FindObjectOfType<PlayerBody>().gameObject;
         myRenderer = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        minigame = GetComponentInParent<WhiteNoise>();
         myCollider = GetComponent<Collider2D>();
 
         currentSpeed = moveTowardsSpeed;
@@ -79,23 +77,5 @@ public class FollowerNoise : MonoBehaviour
         outlineRenderer.material = outlineStartMaterial; 
         myCollider.enabled = false;
         isShocking = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            minigame.Score++;
-            minigame.AugmentScore++;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            minigame.Score++;
-            minigame.AugmentScore++;
-        }
     }
 }
