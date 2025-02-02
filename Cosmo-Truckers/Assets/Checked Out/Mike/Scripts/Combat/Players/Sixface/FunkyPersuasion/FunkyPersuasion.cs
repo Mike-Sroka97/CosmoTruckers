@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class FunkyPersuasion : CombatMove
 {
@@ -14,6 +15,7 @@ public class FunkyPersuasion : CombatMove
     [SerializeField] float maxSpawnTime;
     [SerializeField] int arrowsToSpawn = 15;
 
+    int lastArrow = -1; 
     float spawnTime;
     float currentSpawnTime;
     int currentNumberOfArrowsSpawned;
@@ -48,7 +50,13 @@ public class FunkyPersuasion : CombatMove
     {
         int row = Random.Range(0, 3);
 
-        switch(row)
+        // Spawning multiple up arrows in a row is problematic
+        while (row == lastArrow && lastArrow == 1)
+            row = Random.Range(0, 3);
+
+        lastArrow = row;
+
+        switch (row)
         {
             case 0:
                 Instantiate(leftArrow, leftSpawn);
