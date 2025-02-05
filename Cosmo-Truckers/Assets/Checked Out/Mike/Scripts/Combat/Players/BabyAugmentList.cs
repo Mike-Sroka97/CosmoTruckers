@@ -30,7 +30,7 @@ public class BabyAugmentList : MonoBehaviour
             {
                 babyAugments[i].UpdateSlot(myCharacter.GetAUGS[i]);
 
-                if(vesselAugments.Length > 0)
+                if (vesselAugments != null && vesselAugments.Length > 0)
                     vesselAugments[i].UpdateSlot(myCharacter.GetAUGS[i]);
             }
             else
