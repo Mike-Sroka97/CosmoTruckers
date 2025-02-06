@@ -24,9 +24,16 @@ public class SimpleFrameAnimation : MonoBehaviour
     void Start()
     {
         mySpriteRenderer = GetComponent<SpriteRenderer>();
-        myImage = GetComponent<Image>();
+        
+        if (mySpriteRenderer != null)
+        {
+            defaultMaterial = mySpriteRenderer.material;
+        }
+        else
+        {
+            myImage = GetComponent<Image>();
+        }
 
-        defaultMaterial = mySpriteRenderer.material;
         animationTime = timeBetweenEachSprite;
         animationSprites = sprites; 
     }

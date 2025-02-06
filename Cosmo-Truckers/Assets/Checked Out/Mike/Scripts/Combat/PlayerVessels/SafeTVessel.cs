@@ -18,22 +18,24 @@ public class SafeTVessel : PlayerVessel
 
     public override void ManaTracking()
     {
-        //reset mana
+        // Reset mana
         foreach (Image node in angerNodesLeft)
             node.sprite = pipSprites[0];
         foreach (Image node in angerNodesRight)
             node.sprite = pipSprites[0];
+        angerFace.sprite = angerFaceSprites[0];
 
-        //set current mana
+        // Set current mana
         safeTMana = MyMana.GetComponent<SafeTMana>();
         int totalAnger = safeTMana.GetCurrentAnger();
         int totalRage = safeTMana.GetCurrentRage();
 
+        // Update the sprites based on total anger / rage
         for (int i = 0; i < totalAnger; i++)
         {
+            angerFace.sprite = angerFaceSprites[totalRage];
             angerNodesLeft[i].sprite = pipSprites[totalRage];
             angerNodesRight[i].sprite = pipSprites[totalRage];
-            angerFace.sprite = angerFaceSprites[totalRage];
         }
     }
 
@@ -80,7 +82,8 @@ public class SafeTVessel : PlayerVessel
         // Spawn combat stars like normal
         for (int i = 0; i < numberOfHits; i++)
         {
-            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, i);
+            finalStarAnimationWaitTime = CallSpawnCombatStar(outcome, text, MyCharacter.CombatStarsCurrentLayer);
+            MyCharacter.CombatStarsCurrentLayer++;
 
             // Allow the stars to wait a small period of time between spawning each one
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
