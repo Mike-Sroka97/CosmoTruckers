@@ -11,18 +11,33 @@ public class SafeTVessel : PlayerVessel
     [SerializeField] Image angerFace;
     [SerializeField] Sprite[] pipSprites;
     [SerializeField] Sprite[] angerFaceSprites;
+    [SerializeField] float noAngerAlpha = 0.5f;
 
+    Color defaultColor = new Color(1, 1, 1, 1);
+    Color noAngerColor; 
     SafeTMana safeTMana;
 
     const int ragePip = 3;
+
+    public override void Initialize(PlayerCharacter player)
+    {
+        noAngerColor = new Color(1, 1, 1, noAngerAlpha); 
+        base.Initialize(player);
+    }
 
     public override void ManaTracking()
     {
         // Reset mana
         foreach (Image node in angerNodesLeft)
+        {
             node.sprite = pipSprites[0];
+            node.color = noAngerColor; 
+        }
         foreach (Image node in angerNodesRight)
+        {
             node.sprite = pipSprites[0];
+            node.color = noAngerColor;
+        }
         angerFace.sprite = angerFaceSprites[0];
 
         // Set current mana
@@ -33,6 +48,10 @@ public class SafeTVessel : PlayerVessel
         // Update the sprites based on total anger / rage
         for (int i = 0; i < totalAnger; i++)
         {
+            // set pips to default color
+            angerNodesLeft[i].color = defaultColor;
+            angerNodesRight[i].color = defaultColor; 
+
             angerFace.sprite = angerFaceSprites[totalRage];
             angerNodesLeft[i].sprite = pipSprites[totalRage];
             angerNodesRight[i].sprite = pipSprites[totalRage];
