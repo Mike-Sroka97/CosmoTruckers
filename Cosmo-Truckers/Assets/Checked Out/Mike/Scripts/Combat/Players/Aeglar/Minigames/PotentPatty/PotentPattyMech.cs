@@ -62,7 +62,7 @@ public class PotentPattyMech : MonoBehaviour
         isDashing = true;
 
         myBody.velocity = new Vector2(xVelocity, myBody.velocity.y);
-        while(!aeglar.GetDashState())
+        while(aeglar.DashingLeft || aeglar.DashingRight)
         {
             yield return null;
         }
