@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8726284159320962572}
   - component: {fileID: 8726284159320962571}
   - component: {fileID: 8726284159320962574}
+  - component: {fileID: 9064640230408150809}
   m_Layer: 0
   m_Name: Neutron
   m_TagString: Untagged
@@ -74,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 1c92d6b5cd3f0cd4b8a5600e5e1e6153, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -119,8 +120,6 @@ MonoBehaviour:
   isProton: 0
   isNeutron: 1
   isElectron: 0
-  moveSpeedX: 2
-  moveSpeedY: 2
 --- !u!50 &8726284159320962574
 Rigidbody2D:
   serializedVersion: 4
@@ -142,3 +141,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9064640230408150809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8726284159320962569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 0.015
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 1

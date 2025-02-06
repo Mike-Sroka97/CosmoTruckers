@@ -16,7 +16,7 @@ public class ObjectShaker : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startingPosition = transform.position;
+        startingPosition = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -34,17 +34,17 @@ public class ObjectShaker : MonoBehaviour
         {
             if (childShaker)
             {
-                startingPosition = transform.parent.position;
+                startingPosition = transform.parent.localPosition;
             }
 
             shakeTimer += Time.deltaTime;
             randomPosition = startingPosition + (Random.insideUnitCircle * maxDistance);
 
-            transform.position = randomPosition;
+            transform.localPosition = randomPosition;
         }
         else
         {
-            transform.position = startingPosition;
+            transform.localPosition = startingPosition;
             shakeTimer = 0;
         }
     }
@@ -55,7 +55,7 @@ public class ObjectShaker : MonoBehaviour
 
         if (!state)
         {
-            transform.position = startingPosition;
+            transform.localPosition = startingPosition;
             shakeTimer = 0;
         }
     }
