@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1240010066086541254}
   - component: {fileID: 7466326574645227185}
   m_Layer: 0
-  m_Name: SixBody
+  m_Name: SixBodyShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,12 +24,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1875961544252311}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6051215937718189869}
+  m_Father: {fileID: 5581773979779673576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7466326574645227185
@@ -108,7 +108,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126895907315687858}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 93580954364804575}
   - component: {fileID: 7346349843996093776}
   m_Layer: 0
-  m_Name: SixHead
+  m_Name: SixHeadShield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,13 +157,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2338039679830995068}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6051215937718189869}
-  m_RootOrder: 1
+  m_Father: {fileID: 441149516729628872}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7346349843996093776
 SpriteRenderer:
@@ -227,6 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5581773979779673576}
   - component: {fileID: 2046719876904219800}
+  - component: {fileID: 4230570452002420592}
   m_Layer: 0
   m_Name: SixBody
   m_TagString: Untagged
@@ -245,7 +246,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1240010066086541254}
   m_Father: {fileID: 5312666828644580223}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -301,6 +303,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &4230570452002420592
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2466514123662452099}
+  m_Enabled: 1
+  m_SortingLayerID: -793516377
+  m_SortingLayer: 2
+  m_SortingOrder: 0
 --- !u!1 &2604815247331149066
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +381,6 @@ Transform:
   - {fileID: 5312666828644580223}
   - {fileID: 6850866816749174339}
   - {fileID: 1029289871386914511}
-  - {fileID: 6051215937718189869}
   - {fileID: 5030135642606811171}
   - {fileID: 8288668721310281870}
   - {fileID: 8792251988114128201}
@@ -506,55 +518,6 @@ MonoBehaviour:
   Tutorial: 0
   TutorialAttackName: 
   FaceType: 5
---- !u!1 &6452645031521872784
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6051215937718189869}
-  - component: {fileID: 1178408042439909935}
-  m_Layer: 0
-  m_Name: SixShieldArt
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6051215937718189869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6452645031521872784}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1240010066086541254}
-  - {fileID: 93580954364804575}
-  m_Father: {fileID: 3450167628942748650}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1178408042439909935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6452645031521872784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82b38625e6bf45a4b8094f4f6c48d9f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPoint: {fileID: 1029289871386914511}
-  endPoint: {fileID: 6850866816749174339}
-  frequency: 0.65
 --- !u!1 &7170897696809631924
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,6 +528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 441149516729628872}
   - component: {fileID: 3453169766858096178}
+  - component: {fileID: 2904755705082348069}
   m_Layer: 0
   m_Name: SixHead
   m_TagString: Untagged
@@ -583,7 +547,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 93580954364804575}
   m_Father: {fileID: 5312666828644580223}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -639,6 +604,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &2904755705082348069
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7170897696809631924}
+  m_Enabled: 1
+  m_SortingLayerID: -793516377
+  m_SortingLayer: 2
+  m_SortingOrder: 0
 --- !u!1 &8455632191419736574
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,7 +647,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3450167628942748650}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -877,7 +853,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_AnchorMax.x
@@ -971,7 +947,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1861,7 +1837,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_LocalPosition.x

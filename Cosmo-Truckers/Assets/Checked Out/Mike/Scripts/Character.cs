@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
 
 public abstract class Character : MonoBehaviour
@@ -909,11 +910,25 @@ public abstract class Character : MonoBehaviour
 
         //Rest order then add new combat spot
         foreach (SpriteRenderer renderer in TargetingSprites)
+        {
             renderer.sortingOrder -= oldSpot;
+
+            // Organize sorting groups
+            SortingGroup sortGroup = renderer.transform.GetComponent<SortingGroup>(); 
+            if (sortGroup != null)
+                sortGroup.sortingOrder -= oldSpot; 
+        }
         foreach (SpriteRenderer renderer in ShieldSprites)
             renderer.sortingOrder -= oldSpot;
         foreach (SpriteRenderer renderer in TargetingSprites)
+        {
             renderer.sortingOrder += CombatSpot;
+
+            // Organize sorting groups
+            SortingGroup sortGroup = renderer.transform.GetComponent<SortingGroup>();
+            if (sortGroup != null)
+                sortGroup.sortingOrder += CombatSpot;
+        }
         foreach (SpriteRenderer renderer in ShieldSprites)
             renderer.sortingOrder += CombatSpot;
 

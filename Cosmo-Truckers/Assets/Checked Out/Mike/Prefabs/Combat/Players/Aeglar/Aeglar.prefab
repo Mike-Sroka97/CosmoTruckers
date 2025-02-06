@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3659533867145293282}
   - component: {fileID: 2296873150587924425}
   m_Layer: 0
-  m_Name: aeglar shield art
+  m_Name: AeglarShieldArt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 358171823883473868}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 564899436680103188}
-  m_RootOrder: 3
+  m_Father: {fileID: 1813977199742773284}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2296873150587924425
 SpriteRenderer:
@@ -118,7 +118,6 @@ Transform:
   - {fileID: 1330469655585991945}
   - {fileID: 292790914280012308}
   - {fileID: 1813977199742773284}
-  - {fileID: 3659533867145293282}
   - {fileID: 3436814023941415673}
   - {fileID: 2665163986924275395}
   - {fileID: 7552246956649590646}
@@ -321,7 +320,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 564899436680103188}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -456,8 +455,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1813977199742773284}
   - component: {fileID: 6626052926661616670}
+  - component: {fileID: 579532096015212788}
   m_Layer: 0
-  m_Name: aeglar art
+  m_Name: AeglarArt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,7 +474,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3659533867145293282}
   m_Father: {fileID: 564899436680103188}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -530,6 +531,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &579532096015212788
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5960939635178144935}
+  m_Enabled: 1
+  m_SortingLayerID: -793516377
+  m_SortingLayer: 2
+  m_SortingOrder: 0
 --- !u!1001 &2340104128858573458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -539,7 +551,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 325711387760479313, guid: 0d517952dca8dec42a07b5668e19f80f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,7 +613,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 516298699796159642, guid: feef19e82adbfdc41b8344548487e488, type: 3}
       propertyPath: m_LocalPosition.x
@@ -772,7 +784,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 23976775786283945, guid: 97a568b619f603244b719a01e8ee1d38, type: 3}
       propertyPath: m_AnchorMax.x
