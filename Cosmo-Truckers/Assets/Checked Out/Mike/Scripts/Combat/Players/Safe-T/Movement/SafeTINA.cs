@@ -42,7 +42,8 @@ public class SafeTINA : Player
     bool isJumping = false;
     bool canAttack = true;
     bool canRoll = true;
-    bool isRolling = false; 
+    bool isRolling = false;
+    bool jumpCancel = false; 
     bool damagedCoroutineRunning = false;  
 
     float currentJumpStrength;
@@ -55,15 +56,12 @@ public class SafeTINA : Player
     Animator myAnimator;
     PlayerAnimator playerAnimator;
 
-    float originalMoveSpeed;
-
     private void Start()
     {
         PlayerInitialize();
 
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
-        originalMoveSpeed = MoveSpeed;
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
@@ -158,14 +156,15 @@ public class SafeTINA : Player
             canJump = true;
 
         // Hold Jump
-        if (Input.GetKey("space") && canJump && !isJumping && !isRolling)
+        if (Input.GetKey("space") && canJump && !isJumping && !isRolling && !jumpCancel)
         {
             canMove = false;
             canJump = false;
             isJumping = true;
             playerAnimator.ChangeAnimation(myAnimator, coil);
         }
-        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
+        // Charge Jump
+        else if (Input.GetKey("space") && isJumping && !jumpCancel && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
         {
             if (!playerAnimator.IsCurrentAnimationPlaying(myAnimator, coil))
                 playerAnimator.ChangeAnimation(myAnimator, coil);
@@ -188,9 +187,17 @@ public class SafeTINA : Player
             currentJumpStrength = currentJumpHoldTime * jumpSpeedAccrual;
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
-        
+        // Ensure Max Jump visual while on ground
+        else if (Input.GetKey("space") && isJumping && !jumpCancel && currentJumpHoldTime >= jumpMaxHoldTime && !isRolling)
+        {
+            if (IsGrounded(0.05f))
+            {
+                // Fixes issue with charging in the air and landing after max charge is reached
+                HandleLineRenderer(jumpMaxHoldTime);
+            }
+        }
         // Release Jump
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)))
+        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)) && !jumpCancel)
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
@@ -198,11 +205,11 @@ public class SafeTINA : Player
             if (currentJumpStrength > jumpSpeed)
                 currentJumpStrength = jumpSpeed;
 
-            float jumpStrength = currentJumpStrength; 
-            if (jumpStrength < hopMinimumStrength) jumpStrength = hopMinimumStrength;
+            // Set minimum jump strength
+            if (currentJumpStrength < hopMinimumStrength) currentJumpStrength = hopMinimumStrength;
 
             myBody.velocity = new Vector2(myBody.velocity.x, yVelocityAdjuster);
-            myBody.AddForce(new Vector2(0, jumpStrength), ForceMode2D.Impulse);
+            myBody.AddForce(new Vector2(0, currentJumpStrength), ForceMode2D.Impulse);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
@@ -213,13 +220,28 @@ public class SafeTINA : Player
                 iFrames = false;
             }
         }
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space"))
+        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && !jumpCancel)
         {
             HandleLineRenderer(startingHeight);
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
             isJumping = false;
+
+            if (!damagedCoroutineRunning)
+            {
+                iFrames = false;
+            }
+        }
+        // Jump cancel reset
+        else if (jumpCancel && Input.GetKeyUp("space") && !Input.GetKey("space"))
+        {
+            HandleLineRenderer(startingHeight);
+            currentJumpHoldTime = 0;
+            currentJumpStrength = 0;
+            canMove = true;
+            isJumping = false;
+            jumpCancel = false;
 
             if (!damagedCoroutineRunning)
             {
@@ -308,6 +330,8 @@ public class SafeTINA : Player
             currentJumpHoldTime = 0;
             currentJumpStrength = 0;
             canMove = true;
+            jumpCancel = true;
+            playerAnimator.ChangeAnimation(myAnimator, idle);
 
             if (!damagedCoroutineRunning)
             {
@@ -358,6 +382,7 @@ public class SafeTINA : Player
         }
 
         isRolling = false;
+        canJump = true; 
 
         yield return new WaitForSeconds(rollCD);
 
