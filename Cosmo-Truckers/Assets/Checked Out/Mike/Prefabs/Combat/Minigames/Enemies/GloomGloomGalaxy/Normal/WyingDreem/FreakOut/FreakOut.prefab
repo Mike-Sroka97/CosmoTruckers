@@ -317,10 +317,10 @@ MonoBehaviour:
   - {fileID: 3718386251024222179}
   - {fileID: 3718386251473872791}
   - {fileID: 3718386252393894548}
-  activeSpike: {fileID: 2833153735039053498, guid: 84138c91d56bc584ab27174e55765985, type: 3}
-  nonActiveSpike: {fileID: 2758850061736072988, guid: 76a2d19fbf428cb438415d78cb5891af, type: 3}
-  materialLossDelay: 1
-  spinDelay: 0.5
+  spikePrefab: {fileID: 2833153735039053498, guid: 84138c91d56bc584ab27174e55765985, type: 3}
+  safeSpikePrefab: {fileID: 2758850061736072988, guid: 76a2d19fbf428cb438415d78cb5891af, type: 3}
+  materialFlashDelay: 0.25
+  spinDelay: 1.5
   rotations:
   - -270
   - -225
@@ -338,6 +338,7 @@ MonoBehaviour:
   newRoundDelay: 1
   rotationTimeModifier: 45
   rotationSpeed: 5
+  flashTimes: 6
 --- !u!1 &3718386252063088612
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +435,7 @@ MonoBehaviour:
   maxScore: 0
   augmentStacksPerScore: 1
   maxAugmentStacks: 2
+  minAugmentStacks: 0
   baseDamage: 0
   baseAugmentStacks: 0
   timeToEndMove: 1
@@ -470,7 +472,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3718386252230232500}
   m_LocalRotation: {x: 0, y: -0, z: 0.9238796, w: -0.38268325}
-  m_LocalPosition: {x: -2.25, y: 2.25, z: 0}
+  m_LocalPosition: {x: -2, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

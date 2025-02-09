@@ -11,19 +11,22 @@ public class FreakOut : CombatMove
 
     private void Start()
     {
+        StartCoroutine(StartSpawnSpikes());
         spawner = GetComponentInChildren<FreakOutSpikeSpawner>();
-        Invoke("SpawnSpikes", startDelay);
     }
 
     public override void StartMove()
     {
-        base.StartMove();
-
-        GetComponentInChildren<FreakOutSpikeSpawner>().enabled = true;
-
+        spawner.enabled = true;
         SetupMultiplayer();
 
         base.StartMove();
+    }
+
+    private IEnumerator StartSpawnSpikes()
+    {
+        yield return new WaitForSeconds(startDelay);
+        SpawnSpikes(); 
     }
 
     public void SpawnSpikes()

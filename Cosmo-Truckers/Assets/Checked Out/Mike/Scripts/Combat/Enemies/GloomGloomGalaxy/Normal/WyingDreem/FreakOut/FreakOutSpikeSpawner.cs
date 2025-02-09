@@ -5,17 +5,19 @@ using UnityEngine;
 public class FreakOutSpikeSpawner : MonoBehaviour
 {
     [SerializeField] Transform[] spawns;
-    [SerializeField] GameObject activeSpike;
-    [SerializeField] GameObject nonActiveSpike;
-    [SerializeField] float materialLossDelay;
+    [SerializeField] GameObject spikePrefab;
+    [SerializeField] GameObject safeSpikePrefab;
+    [SerializeField] float materialFlashDelay;
     [SerializeField] float spinDelay;
     [SerializeField] float[] rotations;
     [SerializeField] float fireDelay;
     [SerializeField] float newRoundDelay;
     [SerializeField] float rotationTimeModifier;
     [SerializeField] float rotationSpeed;
+    [SerializeField] int flashTimes = 3; 
 
     List<FreakOutSpike> spikes = new List<FreakOutSpike>();
+    FreakOutSpike nonActiveSpike;
     FreakOut minigame;
 
     private void Start()
@@ -27,18 +29,18 @@ public class FreakOutSpikeSpawner : MonoBehaviour
     {
         for(int i = 0; i < spawns.Length; i++)
         {
-            GameObject spike;
-
             if(activeSpikes[i])
             {
-                spike = Instantiate(activeSpike, spawns[i]);
+                FreakOutSpike spike = Instantiate(spikePrefab, spawns[i]).GetComponent<FreakOutSpike>();
+                spike.Initialize(); 
+                spikes.Add(spike);
             }
             else
             {
-                spike = Instantiate(nonActiveSpike, spawns[i]);
+                nonActiveSpike = Instantiate(safeSpikePrefab, spawns[i]).GetComponent<FreakOutSpike>();
+                nonActiveSpike.Initialize(); 
+                spikes.Add(nonActiveSpike);
             }
-
-            spikes.Add(spike.GetComponent<FreakOutSpike>());
         }
 
         StartCoroutine(SpikeActivation());
@@ -46,14 +48,30 @@ public class FreakOutSpikeSpawner : MonoBehaviour
 
     IEnumerator SpikeActivation()
     {
-        yield return new WaitForSeconds(materialLossDelay + 1); // +1 for animation duration
+        // Wait for the spikes to spin in
+        yield return new WaitForSeconds(spinDelay);
 
-        foreach(FreakOutSpike spike in spikes)
+        // F.U. buddy, F.U. 
+        Vector3 scale = nonActiveSpike.transform.localScale;
+        nonActiveSpike.GetComponent<Animator>().enabled = false;
+        nonActiveSpike.transform.localScale = scale;
+
+        // Flash the spikes
+        for (int i = 0; i < flashTimes; i++)
         {
-            spike.RemoveOutline();
+            if (i % 2 == 0)
+            {
+                nonActiveSpike.SetOutline(false);
+            }
+            else
+            {
+                nonActiveSpike.SetOutline(true);
+            }
+
+            yield return new WaitForSeconds(materialFlashDelay); 
         }
 
-        yield return new WaitForSeconds(spinDelay);
+        nonActiveSpike.SetOutline(true);
 
         //handle spinning
         int random = UnityEngine.Random.Range(0, rotations.Length);
@@ -76,6 +94,9 @@ public class FreakOutSpikeSpawner : MonoBehaviour
 
         yield return new WaitForSeconds(fireDelay);
 
+        // F.U. buddy, F.U
+        nonActiveSpike.GetComponent<Animator>().enabled = true; 
+        
         foreach (FreakOutSpike spike in spikes)
         {
             spike.SetMoving();

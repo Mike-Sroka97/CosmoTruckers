@@ -8,14 +8,15 @@ public class FreakOutSpike : MonoBehaviour
     [SerializeField] float moveSpeed;
 
     bool isMoving;
-
+    Material hurtMaterial; 
     SpriteRenderer myRenderer;
     Animator myAnimator;
     CombatMove minigame; 
 
-    private void Start()
+    public void Initialize()
     {
         myRenderer = GetComponent<SpriteRenderer>();
+        hurtMaterial = myRenderer.material;
         myAnimator = GetComponent<Animator>();
         minigame = FindObjectOfType<CombatMove>(); 
     }
@@ -33,9 +34,18 @@ public class FreakOutSpike : MonoBehaviour
         transform.position = Vector2.MoveTowards(transform.position, minigame.transform.position, moveSpeed * Time.deltaTime);
     }
 
-    public void RemoveOutline()
+    public void SetOutline(bool hurt)
     {
-        myRenderer.material = defaultMaterial;
+        if (hurt) 
+        { 
+            myRenderer.material = hurtMaterial;
+            myRenderer.color = new Color(1, 1, 1, 1); 
+        }
+        else 
+        { 
+            myRenderer.material = defaultMaterial;
+            myRenderer.color = new Color(1, 1, 1, 0.5f);
+        }
     }
 
     public void SetMoving()

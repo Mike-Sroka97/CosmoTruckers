@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BadDreemScoreTracker : MonoBehaviour
 {
-    bool trackTime = false;
+    bool trackScoreTime = false;
     BadDreem minigame;
 
     private void Start()
@@ -19,19 +19,19 @@ public class BadDreemScoreTracker : MonoBehaviour
 
     private void TrackTime()
     {
-        if(trackTime)
+        if(trackScoreTime)
             minigame.CurrentScore += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player")
-            trackTime = false;
+            trackScoreTime = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Player")
-            trackTime = true;
+            trackScoreTime = true;
     }
 }
