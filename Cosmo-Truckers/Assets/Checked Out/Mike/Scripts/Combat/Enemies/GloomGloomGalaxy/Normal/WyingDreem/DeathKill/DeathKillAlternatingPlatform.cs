@@ -33,6 +33,7 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
     {
         TrackTime();
 
+        /*
         if (isOn)
         {
             flashTime += Time.deltaTime; 
@@ -53,6 +54,7 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
             }
 
         }
+        */ 
     }
 
     private void Toggle()
