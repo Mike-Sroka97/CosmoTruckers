@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class DeathKillHeart : MonoBehaviour
 {
-    [SerializeField] Transform[] nodes;
     [SerializeField] float moveSpeed;
     [SerializeField] Material successHitMaterial, iFrameMaterial;
-    [SerializeField] AnimationClip hurtAnimation; 
+    [SerializeField] AnimationClip hurtAnimation;
 
-    int currentIndex;
+    DeathKillNode[] nodes;
+    DeathKillNode currentNode;
     Collider2D myCollider;
     DeathKill minigame;
     Animator myAnimator; 
@@ -19,8 +19,10 @@ public class DeathKillHeart : MonoBehaviour
 
     private void Start()
     {
-        currentIndex = UnityEngine.Random.Range(0, 2); 
-        transform.position = nodes[currentIndex].position;
+        nodes = FindObjectsOfType<DeathKillNode>(); 
+
+        currentNode = nodes[UnityEngine.Random.Range(0, nodes.Length)];
+        transform.position = currentNode.transform.position;
         myCollider = GetComponent<Collider2D>();
         minigame = FindObjectOfType<DeathKill>();
         myAnimator = GetComponent<Animator>();
@@ -36,9 +38,9 @@ public class DeathKillHeart : MonoBehaviour
         if (!isMoving)
             return;
 
-        transform.position = Vector2.MoveTowards(transform.position, nodes[currentIndex].position, moveSpeed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, currentNode.transform.position, moveSpeed * Time.deltaTime);
 
-        if(transform.position == nodes[currentIndex].position)
+        if(transform.position == currentNode.transform.position)
         {
             isMoving = false;
             myCollider.enabled = true;
@@ -57,13 +59,10 @@ public class DeathKillHeart : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().material = iFrameMaterial;
             myAnimator.Play(hurtAnimation.name); 
 
-            if (minigame.Score == 0)
+            if (!minigame.CheckScoreEqualsValue(0))
             {
-                minigame.EndMove(); 
-            }
-            else
-            {
-                currentIndex += 2;
+                DeathKillNode temp = currentNode; 
+                currentNode = temp.GetAlternateNode(); 
                 isMoving = true;
             }
         }
