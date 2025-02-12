@@ -17,7 +17,7 @@ public class SeedSproutMovingPlatform : MonoBehaviour
     private void Start()
     {
         startingY = Random.Range(minStartingY, maxStartingY);
-        transform.position = new Vector3(transform.position.x, startingY, transform.position.z);
+        transform.localPosition = new Vector3(transform.localPosition.x, startingY, transform.localPosition.z);
     }
 
     public void StartMove()
@@ -48,7 +48,7 @@ public class SeedSproutMovingPlatform : MonoBehaviour
 
         if(movingUp)
         {
-            if(startingY + yDistance < transform.position.y)
+            if(startingY + yDistance < transform.localPosition.y)
             {
                 movingUp = !movingUp;
                 myBody.velocity = new Vector2(0, -moveSpeed);
@@ -56,7 +56,7 @@ public class SeedSproutMovingPlatform : MonoBehaviour
         }
         else
         {
-            if (startingY - yDistance > transform.position.y)
+            if (startingY - yDistance > transform.localPosition.y)
             {
                 movingUp = !movingUp;
                 myBody.velocity = new Vector2(0, moveSpeed);

@@ -61,7 +61,7 @@ public class RageBlast : CombatMove
         {
             currentLeftWaitTime = 0;
             leftWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
-            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(-xSpawn, GetRandomHeight(), 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
+            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(-xSpawn + transform.position.x, GetRandomHeight() + transform.position.y, 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
             loop.InitializeLoop(false);
 
             leftSpawned++;
@@ -70,7 +70,7 @@ public class RageBlast : CombatMove
         {
             currentRightWaitTime = 0;
             rightWaitTime = Random.Range(minSpawnTime, maxSpawnTime);
-            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(xSpawn, GetRandomHeight(), 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
+            RageBlastLoop loop = Instantiate(rbLoop, new Vector3(xSpawn + transform.position.x, GetRandomHeight() + transform.position.y, 0), transform.rotation, transform).GetComponent<RageBlastLoop>();
             loop.InitializeLoop(true);
 
             rightSpawned++;
@@ -96,13 +96,13 @@ public class RageBlast : CombatMove
 
     public void NextPlatform()
     {
-        while(lastNumber == nonDuplicateRandom)
-        {
-            lastNumber = UnityEngine.Random.Range(0, platforms.Length);
-        }
+        //while(lastNumber == nonDuplicateRandom)
+        //{
+        //    lastNumber = UnityEngine.Random.Range(0, platforms.Length);
+        //}
 
-        nonDuplicateRandom = lastNumber;
-        platforms[nonDuplicateRandom].DisableMe();
+        //nonDuplicateRandom = lastNumber;
+        //platforms[nonDuplicateRandom].DisableMe();
     }
 
     public override void EndMove()
