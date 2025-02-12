@@ -246,8 +246,12 @@ public class ElectroWhipEnemy : MonoBehaviour
             yield return null;
         }
 
-        if(!isLeashed)
+        if (!isLeashed)
+        {
             minigame.Score++;
+            minigame.CheckSuccess();
+        }
+
 
         releashing = false;
         isLeashed = true;
