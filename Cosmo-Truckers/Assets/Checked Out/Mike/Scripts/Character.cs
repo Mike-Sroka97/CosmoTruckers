@@ -222,7 +222,7 @@ public abstract class Character : MonoBehaviour
 
                 foreach (AugmentStackSO aug in AUGS)
                 {
-                    if (aug.OnDamage && damage > 0)
+                    if (aug.OnDamage && damage > 0 && aug.GetAugment())
                     {
                         aug.GetAugment().Trigger();
                     }
