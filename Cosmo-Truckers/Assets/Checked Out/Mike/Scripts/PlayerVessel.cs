@@ -150,7 +150,7 @@ public class PlayerVessel : MonoBehaviour
 
     public virtual IEnumerator DamageHealingEffect(bool damage, int damageHealingAmount, EnumManager.CombatOutcome outcome, int numberOfHits = 1)
     {
-        CombatManager.Instance.CommandsExecuting++;
+        CombatManager.Instance.CommandsExecutingIncrement();
 
         // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
         while (LocalCommandsExecuting > 0)
@@ -175,7 +175,7 @@ public class PlayerVessel : MonoBehaviour
             yield return new WaitForSeconds(CombatManager.Instance.CombatStarSpawnWaitTime);
 
             // Make sure the turn doesn't end prematurely
-            CombatManager.Instance.CommandsExecuting++; 
+            CombatManager.Instance.CommandsExecutingIncrement(); 
 
             // Call the TakeDamage method to destroy the bubble shield
             MyCharacter.SwitchCombatOutcomes(EnumManager.CombatOutcome.Damage, damageHealingAmount, piercing: false);
@@ -255,7 +255,7 @@ public class PlayerVessel : MonoBehaviour
 
     public virtual IEnumerator ShieldEffect(int shieldAmount)
     {
-        CombatManager.Instance.CommandsExecuting++;
+        CombatManager.Instance.CommandsExecutingIncrement();
 
         // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
         while (LocalCommandsExecuting > 0)

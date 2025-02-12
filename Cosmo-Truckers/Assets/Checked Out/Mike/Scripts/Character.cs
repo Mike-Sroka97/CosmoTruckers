@@ -175,11 +175,11 @@ public abstract class Character : MonoBehaviour
         }
 
         // After damage is done, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
 
         // For Boss Move purposes
         if (CombatManager.Instance.CommandsExecuting < 0)
-            CombatManager.Instance.CommandsExecuting = 0; 
+            CombatManager.Instance.CommandsExecutingReset(); 
     }
 
     public virtual void TakeMultiHitDamage(int damage, int numberOfHits, bool defensePiercing = false)
@@ -234,11 +234,11 @@ public abstract class Character : MonoBehaviour
         }
 
         // After damage is done, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
 
         // For Boss Move purposes
         if (CombatManager.Instance.CommandsExecuting < 0)
-            CombatManager.Instance.CommandsExecuting = 0;
+            CombatManager.Instance.CommandsExecutingReset();
     }
 
     protected void AdjustAugs(bool add, AugmentStackSO stack)
@@ -262,7 +262,7 @@ public abstract class Character : MonoBehaviour
         CurrentHealth = healing;
 
         // After healing is done, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     public virtual void TakeMultiHitHealing(int healing, int numberOfHeals, bool ignoreVigor = false)
@@ -270,7 +270,7 @@ public abstract class Character : MonoBehaviour
         if (Dead)
         {
             // If character is dead, subtract Command Executing
-            CombatManager.Instance.CommandsExecuting--;
+            CombatManager.Instance.CommandsExecutingDecrement();
             return;
         }
 
@@ -283,7 +283,7 @@ public abstract class Character : MonoBehaviour
         }
 
         // After healing, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     public virtual void TakeShielding(int shieldAmount)
@@ -291,7 +291,7 @@ public abstract class Character : MonoBehaviour
         if (Dead)
         {
             // If character is dead, subtract Command Executing
-            CombatManager.Instance.CommandsExecuting--;
+            CombatManager.Instance.CommandsExecutingDecrement();
             return;
         }
 
@@ -301,7 +301,7 @@ public abstract class Character : MonoBehaviour
             Shield = shieldAmount;
 
         // After taking shield damage, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     // Coroutine needs to be called on object that isn't inactive
@@ -481,7 +481,7 @@ public abstract class Character : MonoBehaviour
             AdjustAugs(false, aug);
 
         // An additional subtract to Commands Executing for Die
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     public virtual void Resurrect(int newHealth, bool ignoreVigor = false)

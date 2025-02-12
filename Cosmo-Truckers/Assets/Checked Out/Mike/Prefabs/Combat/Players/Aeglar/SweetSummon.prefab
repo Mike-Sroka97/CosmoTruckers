@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 2358050458137765480}
   - component: {fileID: 2358050458137765482}
   - component: {fileID: 2358050458137765481}
+  - component: {fileID: -5062360723962988127}
   m_Layer: 0
   m_Name: SweetSummon
   m_TagString: Untagged
@@ -643,6 +644,7 @@ MonoBehaviour:
       m_Calls: []
   Stunned: 0
   Tireless: 0
+  CombatStarsCurrentLayer: 0
   BubbleShielded: 0
   Dead: 0
   spaceTaken: 1
@@ -650,8 +652,6 @@ MonoBehaviour:
   attacks: []
   damageText: {fileID: 2358050456566777150}
   healingText: {fileID: 2358050456750736897}
-  damageColor: {r: 1, g: 0, b: 0, a: 1}
-  healingColor: {r: 0, g: 1, b: 0, a: 1}
   IsBoss: 0
   SpecialTargetConditions: 0
   CurrentTargets: []
@@ -659,6 +659,7 @@ MonoBehaviour:
   TakesCombatSpot: 1
   IsTrash: 0
   characterName: Sweet Golem
+  deathAnimation: {fileID: 7400000, guid: 5b90353bb45abd44783903d8fa16b467, type: 2}
   manaType: 2
 --- !u!114 &2358050458137765481
 MonoBehaviour:
@@ -685,6 +686,26 @@ MonoBehaviour:
   TrueRestoration: 0
   Gravity: 1
   TrueGravity: 0
+--- !u!95 &-5062360723962988127
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358050458137765485}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4aa669b2d13a00a4a97ebcab605d3cb6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3959837035698708474
 GameObject:
   m_ObjectHideFlags: 0

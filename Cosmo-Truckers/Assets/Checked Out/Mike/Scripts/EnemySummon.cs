@@ -9,6 +9,14 @@ public class EnemySummon : Enemy
         EnemyManager.Instance.EnemyCombatSpots[CombatSpot] = null;
         TurnOrder.Instance.RemoveFromSpeedList(Stats);
         base.Die();
+        StartCoroutine(WaitToDestroy()); 
+    }
+
+    IEnumerator WaitToDestroy()
+    {
+        while (CombatManager.Instance.CommandsExecuting > 0)
+            yield return null;
+
         Destroy(gameObject);
     }
 }

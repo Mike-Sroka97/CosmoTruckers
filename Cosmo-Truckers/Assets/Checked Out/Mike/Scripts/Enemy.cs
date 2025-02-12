@@ -200,7 +200,7 @@ public class Enemy : Character
 
     protected virtual IEnumerator DamageHealingEffect(bool damage, string text, EnumManager.CombatOutcome outcome, int originalValue, bool piercing, int numberOfHits = 1)
     {
-        CombatManager.Instance.CommandsExecuting++;
+        CombatManager.Instance.CommandsExecutingIncrement();
 
         // Fixes multilple damage/healing effect calls spawning it at same time. Can't use CommandsExecuting because it would mess up Multi-Target attacks
         while (LocalCommandsExecuting > 0)
@@ -247,7 +247,7 @@ public class Enemy : Character
     public override void Die()
     {
         // An additional add to Commands Executing for Die
-        CombatManager.Instance.CommandsExecuting++;
+        CombatManager.Instance.CommandsExecutingIncrement();
 
         // Start the Death Animation, which calls base.Die()
         StartCoroutine(DeathAnimation()); 

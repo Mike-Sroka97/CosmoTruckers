@@ -64,7 +64,7 @@ public class CombatManager : MonoBehaviour
 
     private void Awake() => Instance = this;
     [HideInInspector] public bool TargetsSelected = true;
-    [HideInInspector] public int CommandsExecuting;
+    [HideInInspector] public int CommandsExecuting { get; private set; }
     [HideInInspector] public Character AttackingCharacter;
 
     private void Start()
@@ -533,6 +533,24 @@ public class CombatManager : MonoBehaviour
             else
                 enemy.CurrentTargets.Add(enemy.TauntedBy);
         }
+    }
+
+    public void CommandsExecutingIncrement() 
+    { 
+        CommandsExecuting++; 
+    }
+
+    public void CommandsExecutingDecrement()
+    {
+        CommandsExecuting--;
+    }
+
+    /// <summary>
+    /// Set CommandsExecuting to zero
+    /// </summary>
+    public void CommandsExecutingReset()
+    {
+        CommandsExecuting = 0; 
     }
 
     IEnumerator DisplayAttack(BaseAttackSO attack, List<PlayerCharacter> charactersToSpawn)

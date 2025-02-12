@@ -113,7 +113,7 @@ public class LongDogCharacter : PlayerCharacter
         }
 
         // After damage is done, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     public override void TakeHealing(int healing, bool ignoreVigor = false)
@@ -162,7 +162,7 @@ public class LongDogCharacter : PlayerCharacter
         }
 
         // After damage is done, subtract Command Executing
-        CombatManager.Instance.CommandsExecuting--;
+        CombatManager.Instance.CommandsExecutingDecrement();
     }
 
     private int AdjustDamageHealingBasedOnBodyParts(int amount, bool damage)
