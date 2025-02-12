@@ -7,7 +7,6 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
     [SerializeField] bool startsOn;
     [SerializeField] float timeToSwitch;
     [SerializeField] float flashWaitTime = 0.25f;
-    [SerializeField] Color flash = new Color(0.8f, 0.8f, 0.8f, 1);
 
     Color on = new Color(1, 1, 1, 1);
     Color off = new Color(1, 1, 1, 0.25f);
@@ -24,6 +23,9 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
     {
         myCollider = GetComponent<Collider2D>();
         myRenderer = GetComponent<SpriteRenderer>();
+        on = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 1f); 
+        off = new Color(myRenderer.color.r, myRenderer.color.g, myRenderer.color.b, 0.25f); 
+
         isOn = startsOn;
 
         Toggle();
@@ -32,29 +34,6 @@ public class DeathKillAlternatingPlatform : MonoBehaviour
     private void Update()
     {
         TrackTime();
-
-        /*
-        if (isOn)
-        {
-            flashTime += Time.deltaTime; 
-            if (flashTime > flashWaitTime)
-            {
-                if (!flashOn)
-                {
-                    myRenderer.color = flash;
-                    flashOn = true; 
-                }
-                else
-                {
-                    myRenderer.color = on;
-                    flashOn = false;
-                }
-
-                flashTime = 0;
-            }
-
-        }
-        */ 
     }
 
     private void Toggle()
