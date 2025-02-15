@@ -28,6 +28,12 @@ public class ObjectShaker : MonoBehaviour
         }
     }
 
+    public void SetNewValues(float distance, float timeBetween)
+    {
+        maxDistance = distance;
+        timeBetweenResets = timeBetween;
+    }
+
     private void Shake()
     {
         if (shakeTimer < timeBetweenResets)
