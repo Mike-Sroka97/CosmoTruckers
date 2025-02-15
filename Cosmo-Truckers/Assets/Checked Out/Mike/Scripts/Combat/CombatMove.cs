@@ -386,7 +386,7 @@ public class CombatMove : MonoBehaviour
     {
         float timeRemaining = MinigameDuration - currentTime;
 
-        if (timeRemaining > timeToEndMove)
+        if (timeRemaining > timeToEndMove && !endMoveCalled)
         {
             if (MoveEnded)
                 return false;

@@ -6,35 +6,44 @@ public class CounterBop : CombatMove
 {
     [SerializeField] CounterBopJumpCheck[] jumpChecks;
 
+    CounterBopFace safeTFace; 
     List<int> usedJumpChecks = new List<int>();
     private int charges = 0;
 
     private void Start()
     { 
+        safeTFace = FindObjectOfType<CounterBopFace>();
         GenerateNextBall();
     }
 
     private void GenerateNextBall()
     {
-        int random = Random.Range(0, jumpChecks.Length);
+        if (charges < maxScore)
+        {
+            int random = Random.Range(0, jumpChecks.Length);
 
-        while(usedJumpChecks.Contains(random))
-            random = Random.Range(0, jumpChecks.Length);
+            while (usedJumpChecks.Contains(random))
+                random = Random.Range(0, jumpChecks.Length);
 
-        usedJumpChecks.Add(random);
-        jumpChecks[random].EnableBalls();
+            usedJumpChecks.Add(random);
+            jumpChecks[random].EnableBalls();
+        }
     }
 
     public void IncrementScore()
     {
-        charges++;
-        GenerateNextBall();
+        if (charges < maxScore)
+        {
+            safeTFace.IncrementScore(charges);
+            charges++;
+            GenerateNextBall();
+        }
     }
 
     public void HitBall()
     {
         Score = charges;
-        CheckScoreEqualsValue(0);
+        CheckSuccess();
     }
 
     public override void EndMove()
