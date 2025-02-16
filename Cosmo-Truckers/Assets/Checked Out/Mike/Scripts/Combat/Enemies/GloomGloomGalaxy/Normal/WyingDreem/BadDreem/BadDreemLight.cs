@@ -9,10 +9,12 @@ public class BadDreemLight : MonoBehaviour
 
     int currentIndex = 0;
     Transform parent;
+    CombatMove minigame; 
 
     private void Start()
     {
         parent = transform.parent;
+        minigame = FindObjectOfType<CombatMove>();
     }
 
     private void Update()
@@ -22,10 +24,13 @@ public class BadDreemLight : MonoBehaviour
 
     private void MoveToWaypoint()
     {
-        if (currentIndex >= waypoints.Length)
-            return;
+        if (!minigame.MoveEnded)
+        {
+            if (currentIndex >= waypoints.Length)
+                return;
 
-        parent.position = Vector2.MoveTowards(parent.position, waypoints[currentIndex].position, moveSpeed * Time.deltaTime);
+            parent.position = Vector2.MoveTowards(parent.position, waypoints[currentIndex].position, moveSpeed * Time.deltaTime);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

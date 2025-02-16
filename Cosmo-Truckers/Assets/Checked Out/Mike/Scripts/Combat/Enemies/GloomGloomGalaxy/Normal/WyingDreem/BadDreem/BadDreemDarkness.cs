@@ -72,6 +72,4 @@ public class BadDreemDarkness : MonoBehaviour
         startScale = transform.localScale;
         startWaiting = true;
     }
-
-
 }
