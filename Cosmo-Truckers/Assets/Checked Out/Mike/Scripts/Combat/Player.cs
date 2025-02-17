@@ -92,13 +92,17 @@ public abstract class Player : MonoBehaviour
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
 
-        if (body != null)
-            body.velocity = new Vector2(0, body.velocity.y);
-
-        else
+        // If parent player exists, let it handle the movement still
+        if (transform.parent.GetComponent<ParentPlayer>() == null)
         {
-            body = GetComponentInChildren<Rigidbody2D>();
-            body.velocity = new Vector2(0, body.velocity.y);
+            if (body != null)
+                body.velocity = new Vector2(0, body.velocity.y);
+
+            else
+            {
+                body = GetComponentInChildren<Rigidbody2D>();
+                body.velocity = new Vector2(0, body.velocity.y);
+            }
         }
 
         enabled = false; 

@@ -41,10 +41,9 @@ public class QDpufferFish : MonoBehaviour
     {
         if(collision.tag == "PlayerAttack")
         {
-            Instantiate(deathParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().gameObject.transform);
-
-            myRenderer.enabled = false;
             myCollider.enabled = false;
+            Instantiate(deathParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().gameObject.transform);
+            myRenderer.enabled = false;
             transform.eulerAngles = Vector3.zero;
             gust.SetActive(true);
             enabled = false;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -15,13 +16,15 @@ public class FunkyPersuasion : CombatMove
     [SerializeField] float maxSpawnTime;
     [SerializeField] int arrowsToSpawn = 15;
 
-    int lastArrow = -1; 
+    List<int> Arrows = new List<int>();
+
     float spawnTime;
     float currentSpawnTime;
-    int currentNumberOfArrowsSpawned;
+    int currentNumberOfArrowsSpawned = 0;
 
     private void Start()
     {
+        CreateArrowList();
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
     }
 
@@ -46,15 +49,10 @@ public class FunkyPersuasion : CombatMove
         }
     }
 
+    // Actually spawn the arrows
     private void SpawnArrow()
     {
-        int row = Random.Range(0, 3);
-
-        // Spawning multiple up arrows in a row is problematic
-        while (row == lastArrow && lastArrow == 1)
-            row = Random.Range(0, 3);
-
-        lastArrow = row;
+        int row = Arrows[currentNumberOfArrowsSpawned]; 
 
         switch (row)
         {
@@ -72,6 +70,42 @@ public class FunkyPersuasion : CombatMove
         }
 
         currentNumberOfArrowsSpawned++;
+    }
+
+    // Create a list of ints to use for spawning arrow types
+    private void CreateArrowList()
+    {
+        int currentArrow = 0;
+        int lastArrow = -1;
+        int duplicateRow = 0; 
+
+        for (int i = 0; i < arrowsToSpawn; i++)
+        {
+            currentArrow = Random.Range(0, 3);
+
+            // Problems occur with vertical arrows spawning more than one in a row
+            if (currentArrow == 1 && lastArrow == 1)
+                currentArrow = (MathHelpers.RandomBool() == true) ? 2 : 0;
+
+            // Check if arrows in the row are the same as previous and if there have been arrows in the same row more than twice in a row
+            while (currentArrow == lastArrow && duplicateRow >= 2)
+                currentArrow = Random.Range(0, 3);
+
+            if (currentArrow != lastArrow)
+            {
+                duplicateRow = 0;
+            }
+            else
+            {
+                duplicateRow++; 
+            }
+
+            // Set the last arrow to the current arrow
+            lastArrow = currentArrow;
+
+            // Add this arrow to the list
+            Arrows.Add(currentArrow);
+        }
     }
 
     public override void EndMove()
