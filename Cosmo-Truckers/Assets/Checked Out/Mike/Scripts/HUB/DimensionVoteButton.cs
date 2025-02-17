@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DimensionVoteButton : MonoBehaviour
 {
-    [SerializeField] int voteValue;
     [SerializeField] string dimensionName;
     [SerializeField] DimensionVoteController voteController;
+    [SerializeField] string sceneToLoad;
 
     public void OpenConfirmationMenu()
     {
-        voteController.OpenConfirmationMenu(voteValue, dimensionName);
+        voteController.OpenConfirmationMenu(dimensionName, sceneToLoad);
     }
 }

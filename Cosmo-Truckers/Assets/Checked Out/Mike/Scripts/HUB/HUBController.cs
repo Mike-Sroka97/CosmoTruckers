@@ -13,15 +13,14 @@ public class HUBController : MonoBehaviour
     [SerializeField] GameObject dataLogGO;
     [SerializeField] MainHubButton[] mainHubButtons;
 
-    int playersLockedIn;
+    private void Start()
+    {
+        CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
+        CameraController.Instance.NormalizePositionRotation();
+    }
 
     public void DisableAll()
     {
-        playersLockedIn++;
-
-        //start dimension load if every player in the player manager has voted
-        //if(playersLockedIn < playersInLobby)
-
         gameObject.SetActive(false);
     }
 

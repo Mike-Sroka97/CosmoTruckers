@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class CameraController : MonoBehaviour
     [HideInInspector] public int CommandsExecuting;
     [HideInInspector] public bool CurrentlyExecutingCommand => CommandsExecuting > 0;
 
-    SpriteRenderer vignette;
+    Image vignette;
     TextMeshProUGUI text;
     Camera myCamera;
 
@@ -44,7 +45,7 @@ public class CameraController : MonoBehaviour
         if(!Instance)
             Instance = this;
 
-        vignette = transform.Find("CameraVignette").GetComponent<SpriteRenderer>();
+        vignette = transform.Find("CameraVignette").GetComponent<Image>();
         text = GetComponentInChildren<TextMeshProUGUI>();
         myCamera = GetComponent<Camera>();
         myPixelator = GetComponent<Pixelation>();
@@ -85,6 +86,18 @@ public class CameraController : MonoBehaviour
         posYclamp = maxY;
 
         Leader = leaderTransform;
+    }
+
+    public IEnumerator HubSceneLoad(string sceneToLoad)
+    {
+        StartCoroutine(FadeVignette(false));
+
+        yield return null;
+
+        while (CommandsExecuting > 0)
+            yield return null;
+
+        SceneManager.LoadScene(sceneToLoad);
     }
 
     public IEnumerator OwCharacterActionSelect(string sceneToLoad, UnityEvent eventToInvoke)
@@ -129,7 +142,7 @@ public class CameraController : MonoBehaviour
             {
                 vignette.color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 if (vignetteChildCount > 0)
-                    vignette.GetComponentsInChildren<SpriteRenderer>()[1].color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                    vignette.GetComponentsInChildren<Image>()[1].color -= new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
             }
         else
@@ -137,7 +150,7 @@ public class CameraController : MonoBehaviour
             {
                 vignette.color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 if (vignetteChildCount > 0)
-                    vignette.GetComponentsInChildren<SpriteRenderer>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
+                    vignette.GetComponentsInChildren<Image>()[1].color += new Color(0, 0, 0, fadeSpeed * Time.deltaTime);
                 yield return null;
 
                 myPixelator.Unpixelate();
@@ -261,5 +274,11 @@ public class CameraController : MonoBehaviour
         myCamera.orthographicSize = size;
 
         CommandsExecuting--; 
+    }
+
+    public void NormalizePositionRotation()
+    {
+        transform.position = new Vector3(0, 0, -10);
+        transform.rotation = Quaternion.identity;
     }
 }
