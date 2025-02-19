@@ -28,11 +28,10 @@ public class TallyYourSinSin : MonoBehaviour
     public void FireMe(Transform playerTransform)
     {
         transform.parent = transform.parent.parent;
-        transform.right = playerTransform.position - transform.position;
-        StartCoroutine(FireCo());
+        StartCoroutine(FireCo(playerTransform));
     }
 
-    IEnumerator FireCo()
+    IEnumerator FireCo(Transform playerTransform)
     {
         for (int i = 0; i < attackSprites.Length; i++)
         {
@@ -43,6 +42,8 @@ public class TallyYourSinSin : MonoBehaviour
         myRotator.RotateSpeed = angryRotateSpeed; 
 
         yield return new WaitForSeconds(fireDelay);
+
+        transform.right = playerTransform.position - transform.position;
 
         lerpToColor = false; 
         float currentTime = 0;
