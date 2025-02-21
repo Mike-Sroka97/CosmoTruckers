@@ -72,7 +72,7 @@ public class DialogManager : MonoBehaviour
     // Public Variables
     public int CurrentTextFile { get; private set; } = 0;
 
-    public static readonly string[] BasePlayerNames = new string[] { "AEGLAR", "SAFE-T", "PROTO", "SIX FACE" };
+    public static readonly string[] BasePlayerNames = new string[] { "AEGLAR", "PROTO", "SAFE-T", "SIX FACE" };
 
     // Public bools
     public bool AnimatingDialogBox { get; private set; }

@@ -106,7 +106,7 @@ public abstract class CutsceneController : MonoBehaviour
                 if (DialogManager.BasePlayerNames[j] == actor.actorName)
                 {
                     finalPlayerActors[j] = actor;
-                    finalPlayerActors[j].actorID = j + 1;
+                    finalPlayerActors[j].actorID = j;
                     //This is a base character, so we will use the first dialog
                     DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetAllDialogs(textFiles[DialogManager.Instance.CurrentTextFile])[0]);
                     basePlayerFound = true;
@@ -133,7 +133,7 @@ public abstract class CutsceneController : MonoBehaviour
                     finalPlayerActors[j] = remainingPlayerActors[i];
                     // Set the dialog for this player slot to be a specific actor dialog
                     DialogManager.Instance.SetDialog(j, DialogManager.Instance.TextParser.GetActorDialog(textFiles[DialogManager.Instance.CurrentTextFile], remainingPlayerActors[i].actorName)); 
-                    finalPlayerActors[j].actorID = j + 1;
+                    finalPlayerActors[j].actorID = j;
                     break;
                 }
             }
