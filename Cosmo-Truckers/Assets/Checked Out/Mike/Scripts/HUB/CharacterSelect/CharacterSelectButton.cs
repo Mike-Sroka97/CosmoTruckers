@@ -12,10 +12,16 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
     [SerializeField] [TextArea] string characterDescription;
     [SerializeField] GameObject selectedGO;
     [SerializeField] float characterWaitTime;
+    [HideInInspector] public bool CurrentlyPrinting;
     TextMeshProUGUI characterText;
     TextMeshProUGUI characterYapAuraText;
+    CharacterSelectController characterController;
+
     private void OnEnable()
     {
+        if (!characterController)
+            characterController = transform.parent.parent.GetComponent<CharacterSelectController>();
+
         characterText = transform.parent.parent.Find("CharacterName").GetComponent<TextMeshProUGUI>();
         characterYapAuraText = transform.parent.parent.Find("CharacterYapAura").GetComponent<TextMeshProUGUI>();
 
@@ -27,18 +33,20 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
         //        return;
         //    }
         //}
-
-        if (selectedGO)
-            selectedGO.SetActive(false);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        StartCoroutine(PrintText());
+        if(!CurrentlyPrinting)
+            StartCoroutine(PrintText());
     }
 
-    IEnumerator PrintText()
+    public IEnumerator PrintText()
     {
+        CurrentlyPrinting = true;
+        characterText = transform.parent.parent.Find("CharacterName").GetComponent<TextMeshProUGUI>();
+        characterYapAuraText = transform.parent.parent.Find("CharacterYapAura").GetComponent<TextMeshProUGUI>();
+
         characterText.text = "";
         characterYapAuraText.text = "";
 
@@ -55,6 +63,8 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
             yield return new WaitForSeconds(characterWaitTime);
         }
+
+        CurrentlyPrinting = false;
     }
 
     public void OnDeselect(BaseEventData eventData)
@@ -64,9 +74,25 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public void SelectCharacter()
     {
-        if (selectedGO.activeInHierarchy)
+        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID))
             return;
 
+        characterController.ResetSelectedImages();
         selectedGO.SetActive(true);
+        characterController.UpdateCharacterImageOnSlotButton(characterID);
+    }
+
+    public void OverrideSelectCharacter()
+    {
+        if (!characterController)
+            characterController = transform.parent.parent.GetComponent<CharacterSelectController>();
+
+        selectedGO.SetActive(true);
+    }
+
+    public void DeselectCharacter()
+    {
+        if (selectedGO)
+            selectedGO.SetActive(false);
     }
 }
