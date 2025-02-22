@@ -13,10 +13,39 @@ public class HUBController : MonoBehaviour
     [SerializeField] GameObject dataLogGO;
     [SerializeField] MainHubButton[] mainHubButtons;
 
+    [SerializeField] Sprite[] silhouetteSprites;
+    [HideInInspector] public CharacterSilhouette[] CharacterSilhouettes;
+    CharacterSelectController characterSelectController;
+
+    [Space(50)]
+    [Header("DEBUG")]
+    public bool AllCharactersUnlocked;
+
     private void Start()
     {
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
         CameraController.Instance.NormalizePositionRotation();
+
+        CharacterSilhouettes = GetComponentsInChildren<CharacterSilhouette>(true);
+        characterSelectController = GetComponentInChildren<CharacterSelectController>(true);
+        characterSelectController.PopulateBaseData();
+        SetSilhouettes();
+    }
+
+    public void SetSilhouettes()
+    {
+        for (int i = 0; i < characterSelectController.InUseIds.Count; i++)
+            CharacterSilhouettes[i].SetSprite(silhouetteSprites[characterSelectController.InUseIds[i]]);
+    }
+
+    public void SetSilhouette(int i)
+    {
+        CharacterSilhouettes[i].SetSprite(silhouetteSprites[characterSelectController.InUseIds[i]]);
+    }
+
+    public void AnimateSilhouette(int i)
+    {
+        CharacterSilhouettes[i].GetComponent<Animator>().Play("Jaunt Down");
     }
 
     public void DisableAll()

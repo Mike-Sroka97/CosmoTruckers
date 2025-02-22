@@ -83,12 +83,13 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public void SelectCharacter()
     {
-        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID) || !ValidateUnlockedStatus())
+        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID) || !ValidateUnlockedStatus() || characterController.Hub.CharacterSilhouettes[characterController.CurrentId].Jaunting)
             return;
 
         characterController.ResetSelectedImages();
         selectedGO.SetActive(true);
         characterController.UpdateCharacterImageOnSlotButton(characterID);
+        characterController.Hub.AnimateSilhouette(characterController.CurrentId);
     }
 
     public void OverrideSelectCharacter()
@@ -112,6 +113,6 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     private bool ValidateUnlockedStatus()
     {
-        return characterID < playerData.UnlockedPlayerIDs.Count && characterID >= 0 && playerData.UnlockedPlayerIDs[characterID];
+        return (characterID < playerData.UnlockedPlayerIDs.Count && characterID >= 0 && playerData.UnlockedPlayerIDs[characterID]) || characterController.Hub.AllCharactersUnlocked;
     }
 }

@@ -8,13 +8,14 @@ public class CharacterSelectController : MonoBehaviour
     public Sprite[] CharacterSprites;
     public int CurrentId;
     public List<int> InUseIds = new List<int>();
+    public HUBController Hub;
 
     List<CharacterSlotButton> characterSlotButtons = new List<CharacterSlotButton>();
     List<CharacterSelectButton> characterSelectButtons = new List<CharacterSelectButton>();
 
     private void Awake()
     {
-        PopulateBaseData();
+        Hub = GetComponentInParent<HUBController>();
     }
 
     /// <summary>
@@ -34,12 +35,12 @@ public class CharacterSelectController : MonoBehaviour
             StartCoroutine(characterSelectButtons[CurrentId].PrintText());
     }
 
-    private void PopulateBaseData()
+    public void PopulateBaseData()
     {
         if (characterSlotButtons.Count <= 0)
         {
-            characterSlotButtons = GetComponentsInChildren<CharacterSlotButton>().ToList();
-            characterSelectButtons = GetComponentsInChildren<CharacterSelectButton>().ToList();
+            characterSlotButtons = GetComponentsInChildren<CharacterSlotButton>(true).ToList();
+            characterSelectButtons = GetComponentsInChildren<CharacterSelectButton>(true).ToList();
 
             foreach (CharacterSlotButton button in characterSlotButtons)
                 InUseIds.Add(button.SelectedCharacterId);
@@ -51,7 +52,6 @@ public class CharacterSelectController : MonoBehaviour
     /// </summary>
     public void SetDefaultSelectedImage()
     {
-        PopulateBaseData();
         characterSelectButtons[characterSlotButtons[CurrentId].SelectedCharacterId].OverrideSelectCharacter();
     }
 
