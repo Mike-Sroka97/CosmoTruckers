@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LongDogINA : Player
 {
@@ -46,6 +47,8 @@ public class LongDogINA : Player
     [SerializeField] float coyoteTime;
 
     LongDogNeck currentLine;
+        [HideInInspector]
+    public UnityEvent FlipEvent = new UnityEvent();
 
     bool canJump = false;
     bool isJumping = false;
@@ -290,6 +293,8 @@ public class LongDogINA : Player
                 completedRotation = true;
             }
         }
+
+        FlipEvent?.Invoke(); 
         yield return new WaitForSeconds(postSpinCD);
 
         body.transform.localPosition = buttStartingLocation;

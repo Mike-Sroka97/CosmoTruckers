@@ -68,7 +68,7 @@ public class FGGun : MonoBehaviour
             else if(currentTime >= fireRate / 2 && !nextGun)
             {
                 nextGun = true;
-                minigame.NextGun();
+                //minigame.NextGun();
             }
         }
         else
