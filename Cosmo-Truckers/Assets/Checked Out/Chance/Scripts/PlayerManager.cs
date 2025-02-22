@@ -29,17 +29,6 @@ public class PlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Load in the player data for this character and set it for online play
-    /// </summary>
-    /// <param name="id">ID number of current character</param>
-    public void SetPlayerCharacter(int id)
-    {
-        PlayerData = SaveManager.Load(id);
-        if (PlayerData == null)
-            PlayerData = new SaveData();
-    }
-
-    /// <summary>
     /// Set players for dungeon to load
     /// </summary>
     /// <param name="newPlayers"></param>

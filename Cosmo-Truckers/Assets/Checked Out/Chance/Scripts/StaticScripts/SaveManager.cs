@@ -7,10 +7,49 @@ using UnityEngine;
 [System.Serializable]
 public static class SaveManager
 {
+    static bool TutorialFinished;
+
     //Set name of save file here defaults to auto save if no name is set
     static string GameName = "SaveData";
 
+    const string tutorialStatus = "/tutorialFinished.data";
+    const string playerUnlocks = "/unlockedCharacters.data";
     const string dimensionOne = "/dimensionOne.data";
+
+    public static void SaveTutorialStatus(bool finished)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + tutorialStatus;
+        FileStream stream = new FileStream(path, FileMode.Create);
+
+        formatter.Serialize(stream, finished);
+        stream.Close();
+    }
+
+    public static TutorialData LoadTutorialStatus()
+    {
+        string path = Application.persistentDataPath + tutorialStatus;
+
+        if (File.Exists(path))
+        {
+            //Load save data if it does exist
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            TutorialData data = (TutorialData)formatter.Deserialize(stream);
+
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            //Create save data if it doesn't exist
+            TutorialData data = new TutorialData();
+            SaveTutorialStatus(data.TutorialFinished);
+            return data;
+        }
+    }
 
     public static void SaveDimensionOne(DimensionOneLevelData data)
     {
@@ -47,32 +86,42 @@ public static class SaveManager
         }
     }
 
-    public static void Save(SaveData data, int character)
+    public static void SaveCharacterUnlockStatus(int characterId)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
-        Directory.CreateDirectory(path);
-        path = Path.Combine(path, GameName);
+        string path = Application.persistentDataPath + playerUnlocks;
+        FileStream stream = new FileStream(path, FileMode.Create);
 
-        using (FileStream stream = new FileStream(path, FileMode.Create))
-            formatter.Serialize(stream, JsonUtility.ToJson(data));
+        formatter.Serialize(stream, data);
+        stream.Close();
     }
 
-    public static SaveData Load(int character)
-    {
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
-        path = Path.Combine(path, GameName);
+    //public static void Save(SaveData data, int character)
+    //{
+    //    BinaryFormatter formatter = new BinaryFormatter();
+    //    string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
+    //    Directory.CreateDirectory(path);
+    //    path = Path.Combine(path, GameName);
 
-        if (!File.Exists(path)) return null;
+    //    using (FileStream stream = new FileStream(path, FileMode.Create))
+    //        formatter.Serialize(stream, JsonUtility.ToJson(data));
+    //}
 
-        BinaryFormatter formatter = new BinaryFormatter();
-        string data;
+    //public static SaveData Load(int character)
+    //{
+    //    string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
+    //    path = Path.Combine(path, GameName);
 
-        using (FileStream stream = new FileStream(path, FileMode.Open))
-            data = formatter.Deserialize(stream) as string;
+    //    if (!File.Exists(path)) return null;
 
-        return JsonUtility.FromJson<SaveData>(data);
-    }
+    //    BinaryFormatter formatter = new BinaryFormatter();
+    //    string data;
+
+    //    using (FileStream stream = new FileStream(path, FileMode.Open))
+    //        data = formatter.Deserialize(stream) as string;
+
+    //    return JsonUtility.FromJson<SaveData>(data);
+    //}
 
     public static bool DeleteSave(int character)
     {
@@ -85,24 +134,4 @@ public static class SaveManager
 
         return true;
     }
-}
-
-[System.Serializable]
-public class SaveData
-{
-    public SaveData()
-    {
-        PlayerCurrentHP = -1;
-        PlayerCurrentDebuffs = new();
-        TutorialFinished = false;
-        Unlocked = false;
-    }
-
-    [Header("Combat data")]
-    public int PlayerCurrentHP;
-    public List<AugmentStackSO> PlayerCurrentDebuffs;
-
-    [Header("Other vars")]
-    public bool TutorialFinished;
-    public bool Unlocked;
 }
