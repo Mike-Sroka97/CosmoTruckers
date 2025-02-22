@@ -8,7 +8,6 @@ public class PlayerManager : MonoBehaviour
 
     public List<CharacterSO> AllCharacters;
     public List<int> ActivePlayerIDs = new List<int>() { 0, 1, 2, 3 };
-    [SerializeField] SaveData PlayerData;
 
     /// <summary>
     /// Sets non destroyable manager

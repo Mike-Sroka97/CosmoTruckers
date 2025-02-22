@@ -16,6 +16,7 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
     TextMeshProUGUI characterText;
     TextMeshProUGUI characterYapAuraText;
     CharacterSelectController characterController;
+    PlayerData playerData;
 
     private void OnEnable()
     {
@@ -24,6 +25,11 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
         characterText = transform.parent.parent.Find("CharacterName").GetComponent<TextMeshProUGUI>();
         characterYapAuraText = transform.parent.parent.Find("CharacterYapAura").GetComponent<TextMeshProUGUI>();
+
+        playerData = SaveManager.LoadPlayerData();
+
+        if (characterID < playerData.UnlockedPlayerIDs.Count && characterID >= 0 && !playerData.UnlockedPlayerIDs[characterID] && transform.Find("CharacterImage"))
+            transform.Find("CharacterImage").GetComponent<Image>().color = Color.black;
 
         //foreach (CharacterSO character in PlayerManager.Instance.SelectedCharacters)
         //{
@@ -37,7 +43,10 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public void OnSelect(BaseEventData eventData)
     {
-        if(!CurrentlyPrinting)
+        characterText.text = "";
+        characterYapAuraText.text = "";
+
+        if (!CurrentlyPrinting && ValidateUnlockedStatus())
             StartCoroutine(PrintText());
     }
 
@@ -74,7 +83,7 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public void SelectCharacter()
     {
-        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID))
+        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID) || !ValidateUnlockedStatus())
             return;
 
         characterController.ResetSelectedImages();
@@ -99,5 +108,10 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
     public void SetCharacterIDs()
     {
         PlayerManager.Instance.SetActivePlayers(characterController.InUseIds);
+    }
+
+    private bool ValidateUnlockedStatus()
+    {
+        return characterID < playerData.UnlockedPlayerIDs.Count && characterID >= 0 && playerData.UnlockedPlayerIDs[characterID];
     }
 }

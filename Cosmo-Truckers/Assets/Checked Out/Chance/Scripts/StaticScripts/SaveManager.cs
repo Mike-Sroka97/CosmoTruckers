@@ -86,7 +86,7 @@ public static class SaveManager
         }
     }
 
-    public static void SaveCharacterUnlockStatus(int characterId)
+    public static void SavePlayerData(PlayerData data)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + playerUnlocks;
@@ -94,6 +94,32 @@ public static class SaveManager
 
         formatter.Serialize(stream, data);
         stream.Close();
+    }
+
+    public static PlayerData LoadPlayerData()
+    {
+        string path = Application.persistentDataPath + playerUnlocks;
+
+        if (File.Exists(path))
+        {
+            //Load save data if it does exist
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            PlayerData data = (PlayerData)formatter.Deserialize(stream);
+
+            stream.Close();
+
+            return data;
+        }
+        else
+        {
+            //Create save data if it doesn't exist
+            PlayerData data = new PlayerData();
+            data.InitialSetup();
+            SavePlayerData(data);
+            return data;
+        }
     }
 
     //public static void Save(SaveData data, int character)

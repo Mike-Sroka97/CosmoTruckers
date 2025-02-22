@@ -1,18 +1,34 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+[Serializable]
+public class PlayerData
 {
-    // Start is called before the first frame update
-    void Start()
+    public Dictionary<int, bool> UnlockedPlayerIDs;
+
+    public void SavePlayerData(int unlockID)
     {
-        
+        PlayerData loadData = SaveManager.LoadPlayerData();
+        loadData.UnlockedPlayerIDs[unlockID] = true;
+        SaveManager.SavePlayerData(loadData);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadPlayerData()
     {
-        
+        PlayerData loadData = SaveManager.LoadPlayerData();
+        UnlockedPlayerIDs = loadData.UnlockedPlayerIDs;
+    }
+
+    public void InitialSetup()
+    {
+        UnlockedPlayerIDs = new Dictionary<int, bool>();
+        UnlockedPlayerIDs.Add(0, true);
+        UnlockedPlayerIDs.Add(1, true);
+        UnlockedPlayerIDs.Add(2, true);
+        UnlockedPlayerIDs.Add(3, true);
+        UnlockedPlayerIDs.Add(4, false);
+        UnlockedPlayerIDs.Add(5, false);
+        UnlockedPlayerIDs.Add(6, false);
+        UnlockedPlayerIDs.Add(7, false);
     }
 }
