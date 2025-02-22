@@ -235,11 +235,6 @@ public class TurnOrder : MonoBehaviour
             //Not using the network manager, will cause issues if we load in the dungeon so just reload this scene for now
             if (CombatData.Instance)
             {
-                foreach (var character in FindObjectsOfType<PlayerCharacter>())
-                {
-                    EnemyManager.Instance.SavePlayerData(character);
-                }
-
                 CombatManager.Instance.EndCharacterCombatEffects();
                 //No change scene
                 //Bring up INA and redraw the dungeon

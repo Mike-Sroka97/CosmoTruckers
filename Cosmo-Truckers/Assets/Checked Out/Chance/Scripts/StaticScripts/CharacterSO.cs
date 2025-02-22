@@ -10,8 +10,4 @@ public class CharacterSO : ScriptableObject
     public Sprite CharacterImage;
     [Header("Combat vars")]
     public GameObject CombatPlayerSpawn;
-
-    [Space(10)]
-    public List<Sprite> AltCharacterImages; //Change to Sprites once we have some
-    public int SpriteChoice = -1;
 }

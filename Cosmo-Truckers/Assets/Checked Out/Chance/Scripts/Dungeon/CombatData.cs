@@ -6,7 +6,7 @@ public class CombatData : MonoBehaviour
     public bool TESTING = true;
 
     public static CombatData Instance;
-    public List<PlayerManager> PlayersToSpawn = new();
+    public List<GameObject> PlayersToSpawn = new();
 
     private void Awake()
     {

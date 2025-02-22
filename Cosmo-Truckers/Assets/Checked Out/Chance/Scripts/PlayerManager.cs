@@ -6,16 +6,27 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
 
-    [SerializeField] List<CharacterSO> AllCharacters;
-    public List<CharacterSO> SelectedCharacters;
-
-    //The current character the player has selected to play
-    public int PlayerID;
-    CharacterSO Player;
+    public List<CharacterSO> AllCharacters;
+    public List<int> ActivePlayerIDs = new List<int>() { 0, 1, 2, 3 };
     [SerializeField] SaveData PlayerData;
-    public SaveData GetPlayerData { get => PlayerData; }
-    public CharacterSO GetPlayer { get => AllCharacters[PlayerID]; }
-    private void Awake() => Instance = this;
+
+    /// <summary>
+    /// Sets non destroyable manager
+    /// </summary>
+    private void Awake()
+    {
+        PlayerManager[] objs = FindObjectsOfType<PlayerManager>();
+
+        if (objs.Length > 1)
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+        if (!Instance)
+            Instance = this;
+    }
 
     /// <summary>
     /// Load in the player data for this character and set it for online play
@@ -26,5 +37,14 @@ public class PlayerManager : MonoBehaviour
         PlayerData = SaveManager.Load(id);
         if (PlayerData == null)
             PlayerData = new SaveData();
+    }
+
+    /// <summary>
+    /// Set players for dungeon to load
+    /// </summary>
+    /// <param name="newPlayers"></param>
+    public void SetActivePlayers(List<int> newPlayers)
+    {
+        ActivePlayerIDs = newPlayers;
     }
 }

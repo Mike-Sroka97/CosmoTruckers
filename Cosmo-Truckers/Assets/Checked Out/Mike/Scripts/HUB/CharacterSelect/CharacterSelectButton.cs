@@ -95,4 +95,9 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
         if (selectedGO)
             selectedGO.SetActive(false);
     }
+
+    public void SetCharacterIDs()
+    {
+        PlayerManager.Instance.SetActivePlayers(characterController.InUseIds);
+    }
 }
