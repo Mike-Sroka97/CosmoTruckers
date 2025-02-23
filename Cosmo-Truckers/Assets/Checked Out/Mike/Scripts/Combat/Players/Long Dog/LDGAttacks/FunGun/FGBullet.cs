@@ -16,7 +16,6 @@ public class FGBullet : MonoBehaviour
     Collider2D myCollider;
     Rigidbody2D myRigidBody;
 
-    float defaultGravityScale = 1f; 
     float moveToNoseTime = 0.25f; 
     float moveToNoseTimer = 0f; 
 
@@ -27,7 +26,6 @@ public class FGBullet : MonoBehaviour
         nose = FindObjectOfType<LongDogNose>().transform;
         myCollider = GetComponent<Collider2D>();
         myRigidBody = GetComponent<Rigidbody2D>();
-        defaultGravityScale = myRigidBody.gravityScale;
 
         player.FlipEvent.AddListener(ShootBullet);
     }
@@ -40,7 +38,7 @@ public class FGBullet : MonoBehaviour
             attached = true;
             StartCoroutine(MoveToNose());
         }
-        else if (collision.tag == "EnemyDamaging")
+        else if (collision.tag == "EnemyDamaging" )
         {
             Instantiate(destroyParticle, transform.position, Quaternion.identity, minigame.transform);
             Destroy(gameObject); 
@@ -80,9 +78,6 @@ public class FGBullet : MonoBehaviour
         {
             transform.parent = minigame.transform; 
 
-            // Remove all listeners, and then call for next bullet to be spawned
-            player.FlipEvent.RemoveListener(ShootBullet);
-
             // Re-enable the collider and rigid body
             myCollider.enabled = true;
             myRigidBody.isKinematic = false;
@@ -94,6 +89,9 @@ public class FGBullet : MonoBehaviour
 
             // Apply force to the bullet
             myRigidBody.AddForce(force, ForceMode2D.Impulse);
+            FindObjectOfType<FGBulletSpawner>().SpawnBullet();
+
+            attached = false; 
         }
     }
 

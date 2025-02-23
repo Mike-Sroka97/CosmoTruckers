@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class FunGun : CombatMove
 {
-    FGBulletSpawner spawner; 
-
     private void Start()
     {
         GenerateLayout();
@@ -12,9 +10,7 @@ public class FunGun : CombatMove
     public override void StartMove()
     {
         base.StartMove();
-
-        spawner = FindObjectOfType<FGBulletSpawner>();
-        spawner.SpawnBullet();
+        FindObjectOfType<FGBulletSpawner>().SpawnBullet();
     }
 
     public override void EndMove()
