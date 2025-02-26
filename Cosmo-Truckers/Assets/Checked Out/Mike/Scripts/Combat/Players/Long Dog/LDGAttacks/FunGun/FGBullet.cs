@@ -41,6 +41,10 @@ public class FGBullet : MonoBehaviour
         else if (collision.tag == "EnemyDamaging" )
         {
             Instantiate(destroyParticle, transform.position, Quaternion.identity, minigame.transform);
+            
+            if (FindObjectsOfType<FGBullet>().Length <= 1)
+                FindObjectOfType<FGBulletSpawner>().SpawnBullet();
+
             Destroy(gameObject); 
         }
     }
