@@ -74,7 +74,7 @@ public class FunGun : CombatMove
         float differential = oscillatorValues.y - oscillatorValues.x; 
         float value1 = Random.Range(0, differential);
         oscillators[0].SetFrequency(oscillatorValues.x + value1); 
-        oscillators[1].SetFrequency(oscillatorValues.y + (differential - value1)); 
+        oscillators[1].SetFrequency(oscillatorValues.y - value1); 
     }
 
     public override string TrainingDisplayText => $"You scored {Score = (Score > maxScore ? maxScore : Score)}/{maxScore} dealing {Score * Damage + baseDamage} damage with your gun.";
