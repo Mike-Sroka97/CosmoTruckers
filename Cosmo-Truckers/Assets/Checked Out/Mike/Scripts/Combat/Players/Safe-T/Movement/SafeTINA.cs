@@ -55,6 +55,7 @@ public class SafeTINA : Player
     Collider2D myCollider;
     Animator myAnimator;
     PlayerAnimator playerAnimator;
+    AudioDevice myAudioDevice; 
 
     private void Start()
     {
@@ -65,6 +66,7 @@ public class SafeTINA : Player
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
+        myAudioDevice = GetComponentInChildren<AudioDevice>();
     }
 
     private void Update()
@@ -162,6 +164,9 @@ public class SafeTINA : Player
             canJump = false;
             isJumping = true;
             playerAnimator.ChangeAnimation(myAnimator, coil);
+
+            // Play SFX: Jump Charge
+            myAudioDevice.PlaySound("JumpCharge");
         }
         // Charge Jump
         else if (Input.GetKey("space") && isJumping && !jumpCancel && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
@@ -196,7 +201,7 @@ public class SafeTINA : Player
                 HandleLineRenderer(jumpMaxHoldTime);
             }
         }
-        // Release Jump
+        // Release Jump - Jump
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)) && !jumpCancel)
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
@@ -215,11 +220,18 @@ public class SafeTINA : Player
             canMove = true;
             isJumping = false;
 
+            // Play SFX: Jump
+            myAudioDevice.PlaySound(SfxPlayerMg.Jump.ToString());
+
+            // Stop SFX: Jump Charge
+            myAudioDevice.StopSound("JumpCharge");
+
             if (!damagedCoroutineRunning)
             {
                 iFrames = false;
             }
         }
+        // Release Jump - Airborne (disables line renderer)
         else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && !jumpCancel)
         {
             HandleLineRenderer(startingHeight);
@@ -227,6 +239,9 @@ public class SafeTINA : Player
             currentJumpStrength = 0;
             canMove = true;
             isJumping = false;
+
+            // Stop SFX: Jump Charge
+            myAudioDevice.StopSound("JumpCharge");
 
             if (!damagedCoroutineRunning)
             {
@@ -242,6 +257,9 @@ public class SafeTINA : Player
             canMove = true;
             isJumping = false;
             jumpCancel = false;
+
+            // Stop SFX: Jump Charge
+            myAudioDevice.StopSound("JumpCharge");
 
             if (!damagedCoroutineRunning)
             {
@@ -356,6 +374,7 @@ public class SafeTINA : Player
             myBody.velocity = new Vector2(-rollSpeed, myBody.velocity.y);
         }
 
+        myAudioDevice.StopAllAndPlay("Special"); 
         playerAnimator.ChangeAnimation(myAnimator, roll);
 
         isRolling = true;
