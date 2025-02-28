@@ -7,11 +7,9 @@ using static UnityEditor.Progress;
 public class AudioDevice : MonoBehaviour
 {
     [Serializable]
-    /// <summary>
-    /// Class used for adding audio to this device
-    /// </summary>
     private class Audio
     {
+        // Class used for adding audio to this device
         public string Name;
         public AudioClip AudioClip;
         public bool Loop;
@@ -99,13 +97,9 @@ public class AudioDevice : MonoBehaviour
             }
         }
 
-        if (sourceToPlay == null)
+        if (sourceToPlay != null)
         {
-            Debug.LogError("There is no audio on this device with that name!");
-        }
-        else
-        {
-            sourceToPlay.Play(); 
+            sourceToPlay.Play();
         }
     }
 

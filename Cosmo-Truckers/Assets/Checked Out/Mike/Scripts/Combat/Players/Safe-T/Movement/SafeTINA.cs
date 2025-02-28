@@ -55,7 +55,6 @@ public class SafeTINA : Player
     Collider2D myCollider;
     Animator myAnimator;
     PlayerAnimator playerAnimator;
-    AudioDevice myAudioDevice; 
 
     private void Start()
     {
@@ -66,7 +65,6 @@ public class SafeTINA : Player
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
-        myAudioDevice = GetComponentInChildren<AudioDevice>();
     }
 
     private void Update()
@@ -114,6 +112,7 @@ public class SafeTINA : Player
 
     public override void EndMoveSetup()
     {
+        myAudioDevice.StopSound("JumpCharge"); 
         playerAnimator.ChangeAnimation(myAnimator, idle);
         myLineRenderer.enabled = false; 
         base.EndMoveSetup();
