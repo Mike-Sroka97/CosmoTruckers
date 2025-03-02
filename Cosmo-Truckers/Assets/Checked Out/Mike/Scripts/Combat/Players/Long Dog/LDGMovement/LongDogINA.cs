@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static Unity.VisualScripting.Member;
+using static UnityEngine.UI.Image;
 
 public class LongDogINA : Player
 {
@@ -49,10 +51,12 @@ public class LongDogINA : Player
     LongDogNeck currentLine;
         [HideInInspector]
     public UnityEvent FlipEvent = new UnityEvent();
+    [SerializeField] private float maxStretchPitch = 3f; 
+    [SerializeField] private float stretchPitchRate = 3f; 
 
     bool canJump = false;
     bool isJumping = false;
-    bool stretching = false;
+    bool stretching = false; 
     bool buttStretching = false;
     bool canStretch = true; //make sure to set this to false ONLY when ass is retracting to skull
     bool canMove = true;
@@ -200,6 +204,26 @@ public class LongDogINA : Player
         yield return new WaitForSeconds(stretchStartupTime);
         startupStretch = false;
     }
+    
+    private IEnumerator StretchingSound()
+    {
+        AudioSource stretch = myAudioDevice.PlaySound("Stretch");
+        float originalPitch = 1f;
+        float timer = 0f; 
+
+        while (stretching && stretch.pitch < maxStretchPitch)
+        {
+            timer += Time.deltaTime;
+            stretch.pitch = Mathf.Lerp(originalPitch, maxStretchPitch, timer / stretchPitchRate);
+            yield return null; 
+        }
+    }
+
+    private void ResetStretchingSound()
+    {
+        AudioSource stretch = myAudioDevice.StopSound("Stretch");
+        stretch.pitch = 1f; 
+    }
 
     void BeginDraw()
     {
@@ -208,6 +232,7 @@ public class LongDogINA : Player
         myNose.enabled = true; myNose.GetComponent<LongDogNose>().enabled = true;
         body.transform.SetParent(transform);
         myBody.gravityScale = 0;
+        StartCoroutine(StretchingSound());
 
         currentLine = Instantiate(linePrefab, neckSpawn.localPosition, neckSpawn.localRotation, transform).GetComponent<LongDogNeck>();
     }
@@ -218,6 +243,7 @@ public class LongDogINA : Player
     }
     void EndDraw()
     {
+        ResetStretchingSound();
         attackArea.SetActive(false);
         headBody.enabled = true;
         bodyBody.enabled = false;
@@ -316,6 +342,7 @@ public class LongDogINA : Player
         stretching = false;
         myNose.enabled = false;
         myNose.GetComponent<LongDogNose>().enabled = false;
+        ResetStretchingSound(); 
     }
 
     public void LDGSpecialDeath()
@@ -329,6 +356,7 @@ public class LongDogINA : Player
         stretching = false;
         myNose.enabled = false;
         myNose.GetComponent<LongDogNose>().enabled = false;
+        ResetStretchingSound(); 
     }
 
     public override void EndMoveSetup()

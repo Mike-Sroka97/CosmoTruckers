@@ -38,6 +38,7 @@ public class TrackPlayerDeath : MonoBehaviour
                     return;
 
                 player.dead = true;
+                player.Death(); 
 
                 minigame.PlayersDead[player.MyCharacter] = true;
 
@@ -49,9 +50,12 @@ public class TrackPlayerDeath : MonoBehaviour
                 if(allDead)
                     minigame.PlayerDead = true;
             }
-
             else
+            {
                 minigame.PlayerDead = true;
+                player.Death();
+            }
+                
         }
     }
 

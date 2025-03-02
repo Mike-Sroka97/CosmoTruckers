@@ -65,6 +65,11 @@ public abstract class Player : MonoBehaviour
         }
     }
 
+    public void Death()
+    {
+        myAudioDevice.PlaySound("Death"); 
+    }
+
     protected void UpdateOutline()
     {
         //iFrame color outline

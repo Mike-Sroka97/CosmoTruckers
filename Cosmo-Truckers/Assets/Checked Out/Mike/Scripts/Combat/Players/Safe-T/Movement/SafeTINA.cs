@@ -138,6 +138,7 @@ public class SafeTINA : Player
 
     IEnumerator SafeTAttack(GameObject attack)
     {
+        myAudioDevice.PlaySound("Attack"); 
         canAttack = false;
         attack.SetActive(true);
         yield return new WaitForSeconds(attackDuration);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using static UnityEditor.Progress;
 
 public class AudioDevice : MonoBehaviour
@@ -47,33 +48,44 @@ public class AudioDevice : MonoBehaviour
     /// Play the sound passed in
     /// </summary>
     /// <param name="name"></param>
-    public void PlaySound(string name)
+    public AudioSource PlaySound(string name)
     {
         if (myAudioSources.TryGetValue(name, out AudioSource source))
         {
             source.Play(); 
+            return source;
         }
         else
         {
             Debug.LogError("There is no audio on this device with that name!"); 
-            return; 
+            return null; 
         }
+    }
+
+    /// <summary>
+    /// Plays a random sound out of a passed-in array of names
+    /// </summary>
+    public AudioSource PlayRandomSound(string[] names)
+    {
+        int random = UnityEngine.Random.Range(0, names.Length);
+        return PlaySound(names[random]);
     }
 
     /// <summary>
     /// Stop the sound passed in
     /// </summary>
     /// <param name="name"></param>
-    public void StopSound(string name)
+    public AudioSource StopSound(string name)
     {
         if (myAudioSources.TryGetValue(name, out AudioSource source))
         {
             source.Stop();
+            return source;
         }
         else
         {
             Debug.LogError("There is no audio on this device with that name!");
-            return;
+            return null;
         }
     }
 
@@ -81,7 +93,7 @@ public class AudioDevice : MonoBehaviour
     /// Stops all other sounds on this device and plays the specified sound
     /// </summary>
     /// <param name="name"></param>
-    public void StopAllAndPlay(string name)
+    public AudioSource StopAllAndPlay(string name)
     {
         AudioSource sourceToPlay = null;
 
@@ -100,7 +112,10 @@ public class AudioDevice : MonoBehaviour
         if (sourceToPlay != null)
         {
             sourceToPlay.Play();
+            return sourceToPlay; 
         }
+
+        return null; 
     }
 
     private void OnDestroy()

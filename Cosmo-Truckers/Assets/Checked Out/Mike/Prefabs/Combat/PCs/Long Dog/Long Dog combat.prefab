@@ -222,6 +222,8 @@ MonoBehaviour:
   FlipEvent:
     m_PersistentCalls:
       m_Calls: []
+  maxStretchPitch: 15
+  stretchPitchRate: 10
 --- !u!114 &223950482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,6 +1020,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 805849437263682060}
     m_Modifications:
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.data[0].Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.data[0].Name
+      value: Stretch
+      objectReference: {fileID: 0}
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.data[1].Name
+      value: Death
+      objectReference: {fileID: 0}
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.data[0].AudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: da9eb563785faf34e993bcf9457bb7ce, type: 3}
+    - target: {fileID: -8843767133932257953, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
+      propertyPath: myAudio.Array.data[1].AudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1963319f67771274a871a109608d01ac, type: 3}
     - target: {fileID: 35774674571848164, guid: c6d8d6b8976140e4e9d8818ed8fc073e, type: 3}
       propertyPath: m_Name
       value: AudioDevice
