@@ -30,6 +30,7 @@ public abstract class Player : MonoBehaviour
 
     protected Rigidbody2D myBody;
     public PlayerCharacter MyCharacter;
+    protected AudioDevice myAudioDevice;
 
     //Things that can be affected by buffs / debuffs
     protected float initialGravityModifier;
@@ -49,6 +50,8 @@ public abstract class Player : MonoBehaviour
         if(!myBody)
             myBody = GetComponent<Rigidbody2D>();
         DebuffInit();
+
+        myAudioDevice = GetComponentInChildren<AudioDevice>();
     }
 
     public void TakeDamage()
@@ -60,6 +63,11 @@ public abstract class Player : MonoBehaviour
             iFrames = true;
             StartCoroutine(Damaged());
         }
+    }
+
+    public void Death()
+    {
+        myAudioDevice.PlaySound("Death"); 
     }
 
     protected void UpdateOutline()

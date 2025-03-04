@@ -19,4 +19,9 @@ public class Oscillator : MonoBehaviour
         Vector3 newPosition = Vector3.Lerp(startPoint.position, endPoint.position, t);
         transform.position = newPosition;
     }
+
+    public void SetFrequency(float frequency)
+    {
+        this.frequency = frequency; 
+    }
 }

@@ -167,7 +167,7 @@ public class MainMenu : MonoBehaviour
         PlayerPrefs.SetFloat("Music", MusicSlider.value);
         PlayerPrefs.SetFloat("SFX", SFXSlider.value);
 
-        AudioManager.Instance.CheckVolume();
+        //AudioManager.Instance.CheckVolume();
 
         PlayerPrefs.Save();
     }
@@ -182,17 +182,17 @@ public class MainMenu : MonoBehaviour
         ResolutionDropDown.value = 2;
         SetResolution();
 
-        AudioManager.Instance.CheckVolume();
+        //AudioManager.Instance.CheckVolume();
     }
 
     public void TestSFXVol(float vol)
     {
-        if(OptionOptions.activeInHierarchy)
-            AudioManager.Instance.TestSFXVolume(vol);
+        //if(OptionOptions.activeInHierarchy)
+            //AudioManager.Instance.TestSFXVolume(vol);
     }
     public void TestMusicVol(float vol)
     {
-        AudioManager.Instance.TestMusicVolume(vol);
+        //AudioManager.Instance.TestMusicVolume(vol);
     }
 
     IEnumerator MenuChange(float direction)
@@ -282,7 +282,7 @@ public class MainMenu : MonoBehaviour
         foreach (GameObject obj in MainMenuScreen)
             obj.SetActive(true);
 
-        AudioManager.Instance.MenuMusicSwap(Time.timeSinceLevelLoad);
+        //AudioManager.Instance.MenuMusicSwap(Time.timeSinceLevelLoad);
 
         //Fade out of black
         while (Camera.main.orthographicSize < 5)
