@@ -187,6 +187,8 @@ public class AeglarINA : Player
 
     IEnumerator Dash(bool left, bool up = false)
     {
+        myAudioDevice.PlaySound("Dash"); 
+
         if (up)
         {
             currentNumberOfJumps++;
