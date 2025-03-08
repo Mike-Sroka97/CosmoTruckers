@@ -71,4 +71,37 @@ public static class MathHelpers
             list[n] = value;
         }
     }
+
+    /// <summary>
+    /// Find nearest parent of type with depth
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="type"></param>
+    /// <param name="searchingTransform"></param>
+    /// <param name="depth"></param>
+    /// <returns></returns>
+    public static T FindNearestParentOfType<T>(Transform searchingTransform, int depth = 3)
+    {
+        //Search parents equal to depth to find object of type
+        for(int i = 0; i < depth; i++)
+        {
+            //checking if current parent contains desired type
+            if (searchingTransform.GetComponent<T>() != null)
+                return searchingTransform.GetComponent<T>();
+
+            //parent at next depth
+            searchingTransform = searchingTransform.parent;
+
+            //parent at current depth does not exist
+            if(!searchingTransform)
+            {
+                Debug.LogError("Depth exceeded number of parents *retard*");
+                return default(T);
+            }
+        }
+
+        //no objects within specified depth contain desired type
+        Debug.LogError("No object of type was found within specified depth");
+        return default(T);
+    }
 }

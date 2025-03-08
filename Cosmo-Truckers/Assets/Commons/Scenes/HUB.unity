@@ -3930,6 +3930,7 @@ GameObject:
   - component: {fileID: 230752169}
   - component: {fileID: 230752168}
   - component: {fileID: 230752167}
+  - component: {fileID: 230752170}
   m_Layer: 0
   m_Name: Player (1)
   m_TagString: Untagged
@@ -4040,9 +4041,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSlotButton, Assembly-CSharp
-        m_MethodName: ActivateMe
+      - m_Target: {fileID: 230752170}
+        m_TargetAssemblyTypeName: SpellCraftingCharacterSelectButton, Assembly-CSharp
+        m_MethodName: SelectMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4052,6 +4053,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &230752170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230752165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf0c1aa94b143c46bdc28fe926733f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
 --- !u!1 &231874422
 GameObject:
   m_ObjectHideFlags: 0
@@ -19470,6 +19484,7 @@ GameObject:
   - component: {fileID: 1131705414}
   - component: {fileID: 1131705413}
   - component: {fileID: 1131705412}
+  - component: {fileID: 1131705415}
   m_Layer: 0
   m_Name: Player (2)
   m_TagString: Untagged
@@ -19580,9 +19595,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSlotButton, Assembly-CSharp
-        m_MethodName: ActivateMe
+      - m_Target: {fileID: 1131705415}
+        m_TargetAssemblyTypeName: SpellCraftingCharacterSelectButton, Assembly-CSharp
+        m_MethodName: SelectMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19592,6 +19607,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1131705415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131705410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf0c1aa94b143c46bdc28fe926733f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
 --- !u!1 &1133329366
 GameObject:
   m_ObjectHideFlags: 0
@@ -23120,6 +23148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1345753922}
+  - component: {fileID: 1345753923}
   m_Layer: 0
   m_Name: SpellCrafting
   m_TagString: Untagged
@@ -23148,6 +23177,25 @@ Transform:
   m_Father: {fileID: 1360460425}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1345753923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345753921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb27c9f6bd8c4f45a3f430245269c4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterSprites:
+  - {fileID: 21300000, guid: b1147285d0ceb09429d2c62ab2830cb8, type: 3}
+  - {fileID: 21300000, guid: cf189b79bd1c5b54ab331aea071b719b, type: 3}
+  - {fileID: 21300000, guid: 0207d7fdbf3444041b92ce84c4bb19e3, type: 3}
+  - {fileID: 21300000, guid: 2eed34c71fe218447a2b37f6c6bc6c15, type: 3}
+  - {fileID: 21300000, guid: 73ae51fe959ead74291d21257195b362, type: 3}
+  CurrentCharacterId: 0
 --- !u!1 &1353268751
 GameObject:
   m_ObjectHideFlags: 0
@@ -25053,6 +25101,7 @@ GameObject:
   - component: {fileID: 1469777202}
   - component: {fileID: 1469777201}
   - component: {fileID: 1469777200}
+  - component: {fileID: 1469777203}
   m_Layer: 0
   m_Name: Player (4)
   m_TagString: Untagged
@@ -25163,9 +25212,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSlotButton, Assembly-CSharp
-        m_MethodName: ActivateMe
+      - m_Target: {fileID: 1469777203}
+        m_TargetAssemblyTypeName: SpellCraftingCharacterSelectButton, Assembly-CSharp
+        m_MethodName: SelectMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25175,6 +25224,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1469777203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1469777198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf0c1aa94b143c46bdc28fe926733f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
 --- !u!1 &1472914511
 GameObject:
   m_ObjectHideFlags: 0
@@ -25339,6 +25401,7 @@ GameObject:
   - component: {fileID: 1482089730}
   - component: {fileID: 1482089729}
   - component: {fileID: 1482089728}
+  - component: {fileID: 1482089731}
   m_Layer: 0
   m_Name: Player (3)
   m_TagString: Untagged
@@ -25449,9 +25512,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSlotButton, Assembly-CSharp
-        m_MethodName: ActivateMe
+      - m_Target: {fileID: 1482089731}
+        m_TargetAssemblyTypeName: SpellCraftingCharacterSelectButton, Assembly-CSharp
+        m_MethodName: SelectMe
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25461,6 +25524,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1482089731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482089726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf0c1aa94b143c46bdc28fe926733f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
 --- !u!1 &1483953775
 GameObject:
   m_ObjectHideFlags: 0
