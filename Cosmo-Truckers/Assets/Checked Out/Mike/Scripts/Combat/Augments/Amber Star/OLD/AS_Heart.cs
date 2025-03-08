@@ -19,7 +19,7 @@ public class AS_Heart : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "EnemyDamaging")
+        if(collision.CompareTag("EnemyDamaging"))
         {
             StartCoroutine(FlashRed());
             int totalDamage = Int32.Parse(damageTotal.text);

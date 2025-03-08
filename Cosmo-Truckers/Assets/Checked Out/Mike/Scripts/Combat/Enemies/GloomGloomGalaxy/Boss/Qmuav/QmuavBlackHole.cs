@@ -11,7 +11,7 @@ public class QmuavBlackHole : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && collision.GetComponentInParent<Player>())
+        if(collision.CompareTag("Player") && collision.GetComponentInParent<Player>())
         {
             collision.GetComponentInParent<Graviton>().IsAttractee = false;
 

@@ -38,7 +38,7 @@ public class LoDShape : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if((collision.name == "Attack Zone" || collision.tag == "Player") && minigame.Score == 0)
+        if((collision.CompareTag("Attack Zone") || collision.CompareTag("Player")) && minigame.Score == 0)
         {
             myRenderer.material = minigame.offMaterial;
             myCollider.enabled = false;

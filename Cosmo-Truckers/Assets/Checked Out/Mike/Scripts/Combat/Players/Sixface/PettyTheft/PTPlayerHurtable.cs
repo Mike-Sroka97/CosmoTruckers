@@ -6,7 +6,7 @@ public class PTPlayerHurtable : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack")
+        if (collision.CompareTag("PlayerAttack"))
         {
             GetComponentInParent<PettyTheftEnemy>().Hurt();
         }

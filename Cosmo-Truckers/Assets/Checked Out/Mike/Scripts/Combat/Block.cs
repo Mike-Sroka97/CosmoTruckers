@@ -13,7 +13,7 @@ public class Block : MonoBehaviour
 
     protected virtual void DestroyMe(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack")
+        if (collision.CompareTag("PlayerAttack"))
         {
             SpawnParticle(); 
             Destroy(gameObject);

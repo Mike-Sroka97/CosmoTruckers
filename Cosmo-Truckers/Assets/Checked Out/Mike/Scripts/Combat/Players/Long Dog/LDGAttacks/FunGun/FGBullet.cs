@@ -32,13 +32,13 @@ public class FGBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack" && player.GetStretching() && !attached)
+        if (collision.CompareTag("PlayerAttack") && player.GetStretching() && !attached)
         {
             Debug.Log("Attacked!"); 
             attached = true;
             StartCoroutine(MoveToNose());
         }
-        else if (collision.tag == "EnemyDamaging" )
+        else if (collision.CompareTag("EnemyDamaging") )
         {
             Instantiate(destroyParticle, transform.position, Quaternion.identity, minigame.transform);
             

@@ -57,8 +57,8 @@ public class ParticleSpawner : MonoBehaviour
     private void ParticleChecks(GameObject collision)
     {
         if (attackable)
-        {
-            if (collision.tag == "PlayerAttack")
+        {   
+            if (collision.CompareTag("PlayerAttack"))
             {
                 if (deathParticle)
                     SpawnParticle(transform, true);
@@ -70,7 +70,7 @@ public class ParticleSpawner : MonoBehaviour
         }
         else
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag("Player"))
             {
                 if (deathParticle)
                     SpawnParticle(transform, true);

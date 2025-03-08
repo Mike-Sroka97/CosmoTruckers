@@ -39,7 +39,7 @@ public class SystemShockHittable : MonoBehaviour
     {
         Debug.Log(collision);
 
-        if (collision.tag == "PlayerAttack" && !Hit)
+        if (collision.CompareTag("PlayerAttack") && !Hit)
         {
             minigame.AugmentScore++;
             minigame.CheckAugmentSuccess(); 

@@ -26,7 +26,7 @@ public class MelancholyPrecipitationPlatform : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Player")
+        if(collision.transform.CompareTag("Player"))
         {
             trackTime = true;
         }

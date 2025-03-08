@@ -47,7 +47,7 @@ public class OrbitalCrustStalactite : MonoBehaviour
                 parentBody.velocity = Vector2.zero;
                 Destroy(parentBody);
             }
-            if (collision.tag == "Player")
+            if (collision.CompareTag("Player"))
             {
                 Instantiate(deathParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().transform);
                 Destroy(transform.parent.gameObject); 

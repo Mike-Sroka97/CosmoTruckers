@@ -28,7 +28,7 @@ public class LargeIronTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack" && !clock.PlayerFired)
+        if (collision.CompareTag("PlayerAttack") && !clock.PlayerFired)
         {
             clock.Fire();
             clock.PlayerFired = true;

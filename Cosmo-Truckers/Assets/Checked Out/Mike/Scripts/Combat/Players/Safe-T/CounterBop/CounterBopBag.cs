@@ -24,7 +24,7 @@ public class CounterBopBag : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && canBeHit)
+        if(collision.CompareTag("PlayerAttack") && canBeHit)
         {
             canBeHit = false;
             HandleHit();

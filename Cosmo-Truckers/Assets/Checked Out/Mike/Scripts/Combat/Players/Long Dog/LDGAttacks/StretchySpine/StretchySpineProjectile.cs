@@ -34,7 +34,7 @@ public class StretchySpineProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.CompareTag("Player"))
         {
             movingRight = false;
             myBody.velocity = Vector2.zero;
@@ -44,7 +44,7 @@ public class StretchySpineProjectile : MonoBehaviour
             gameObject.transform.GetChild(0).GetComponent<SimpleRotation>().enabled = true; 
             Invoke("SpecialDestroy", 2.5f);
         }
-        else if(collision.tag == "LDGNoInteraction" && collision.gameObject.name != "SoftPlatform")
+        else if(collision.CompareTag("LDGNoInteraction") && collision.gameObject.name != "SoftPlatform")
         {
             AdvancedFrameAnimation frameAnimation = collision.gameObject.GetComponent<AdvancedFrameAnimation>();
 

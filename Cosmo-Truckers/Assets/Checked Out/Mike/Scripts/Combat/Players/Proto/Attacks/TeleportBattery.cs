@@ -83,7 +83,7 @@ public class TeleportBattery : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.CompareTag("Player"))
         {
             if(proto == null)
                 proto = FindObjectOfType<ProtoINA>();

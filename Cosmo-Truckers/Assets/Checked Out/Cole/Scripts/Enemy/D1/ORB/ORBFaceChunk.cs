@@ -108,7 +108,7 @@ public class ORBFaceChunk : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             if (GetComponent<ParticleSpawner>() != null)
                 GetComponent<ParticleSpawner>().SpawnParticle(transform, true);

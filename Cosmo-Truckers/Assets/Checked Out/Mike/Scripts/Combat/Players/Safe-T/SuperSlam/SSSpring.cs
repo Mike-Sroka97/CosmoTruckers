@@ -54,7 +54,7 @@ public class SSSpring : MonoBehaviour
 
         if (isButton)
         {
-            if (collision.transform.tag == "Player" && !springToggled)
+            if (collision.transform.CompareTag("Player") && !springToggled)
             {
                 foreach (ContactPoint2D contact in collision.contacts)
                 {
@@ -76,7 +76,7 @@ public class SSSpring : MonoBehaviour
     {
         if (!isButton)
         {
-            if (collision.tag == "Player")
+            if (collision.CompareTag("Player"))
             {
                 SpringToggleState(false);
                 otherObject.ButtonToggleState(false);
@@ -85,7 +85,7 @@ public class SSSpring : MonoBehaviour
         
         if (isButton)
         {
-            if (collision.tag == "PlayerAttack" && !springToggled)
+            if (collision.CompareTag("PlayerAttack") && !springToggled)
             {
                 ButtonToggleState(true);
                 otherObject.SpringToggleState(true);

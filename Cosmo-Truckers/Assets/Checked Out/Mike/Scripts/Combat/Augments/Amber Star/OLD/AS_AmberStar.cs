@@ -31,7 +31,7 @@ public class AS_AmberStar : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerNonHurtable")
+        if (collision.CompareTag("PlayerNonHurtable"))
         {
             Destroy(gameObject);
         }

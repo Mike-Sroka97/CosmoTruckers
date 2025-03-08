@@ -31,7 +31,7 @@ public class SSPostule : MonoBehaviour
         if(!playerBody)
             playerBody = FindObjectOfType<SafeTINA>().GetComponent<Rigidbody2D>();
 
-        if (collision.transform.tag == "Player" && !collided)
+        if (collision.transform.CompareTag("Player") && !collided)
         {
             foreach (ContactPoint2D contact in collision.contacts)
             {
@@ -50,7 +50,7 @@ public class SSPostule : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.tag == "PlayerAttack" && !collided)
+        if (collision.transform.CompareTag("PlayerAttack") && !collided)
         {
             collided = true;
             DamageGonzor();

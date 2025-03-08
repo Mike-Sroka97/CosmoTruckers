@@ -104,7 +104,7 @@ public class EyeGouger : CombatMove
         {
             foreach (Collider2D collider in colliders)
             {
-                if (collider.tag == "Player")
+                if (collider.CompareTag("Player"))
                     return false;
             }
         }

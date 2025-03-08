@@ -78,7 +78,7 @@ public class ElectroWhipEnemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack" && !releashing && !isLeashed)
+        if (collision.CompareTag("PlayerAttack") && !releashing && !isLeashed)
             box.ActivateMe(this);
     }
 

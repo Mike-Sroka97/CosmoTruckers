@@ -10,7 +10,7 @@ public class EncrustableBombBlock : Block
 
     protected override void DestroyMe(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack")
+        if (collision.CompareTag("PlayerAttack"))
         {
             StartCoroutine(Blast());
         }

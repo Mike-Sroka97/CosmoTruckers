@@ -29,7 +29,7 @@ public class SPPswitch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.CompareTag("PlayerAttack"))
         {
             Instantiate(moneyParticle, transform.position, Quaternion.identity, minigame.transform);
             minigame.DefaultDeadZone.SetActive(false);
