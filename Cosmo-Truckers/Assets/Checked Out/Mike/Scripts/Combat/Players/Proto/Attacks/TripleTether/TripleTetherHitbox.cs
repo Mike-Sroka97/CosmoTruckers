@@ -34,7 +34,7 @@ public class TripleTetherHitbox : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.CompareTag("PlayerAttack"))
         {
             parent.TakeDamage();
             StartCoroutine(DisableMe());

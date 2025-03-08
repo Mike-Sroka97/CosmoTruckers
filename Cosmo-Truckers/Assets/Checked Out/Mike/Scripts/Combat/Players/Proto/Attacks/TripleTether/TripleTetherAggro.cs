@@ -13,7 +13,7 @@ public class TripleTetherAggro : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.CompareTag("Player"))
         {
             parent.Aggro = true;
         }
@@ -21,7 +21,7 @@ public class TripleTetherAggro : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             parent.Aggro = false;
         }

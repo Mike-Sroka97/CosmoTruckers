@@ -24,7 +24,7 @@ public class CosmicCasterCollectable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.CompareTag("Player"))
         {
             Instantiate(particle, transform.position, Quaternion.identity, minigame.transform);
             myCollider.enabled = false;

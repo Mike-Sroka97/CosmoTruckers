@@ -53,7 +53,7 @@ public abstract class Switch : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && CanBeToggled)
+        if(collision.CompareTag("PlayerAttack") && CanBeToggled)
         {
             CanBeToggled = false;
             ToggleMe();

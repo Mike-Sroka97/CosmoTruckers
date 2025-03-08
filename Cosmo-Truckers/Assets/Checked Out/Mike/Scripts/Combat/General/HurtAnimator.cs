@@ -21,7 +21,7 @@ public class HurtAnimator : MonoBehaviour
     {
         if (playerAttacksHurt)
         {
-            if (collision.tag == "PlayerAttack")
+            if (collision.CompareTag("PlayerAttack"))
             {
                 animator.SwitchToEmotion(isHurt: true); 
             }
@@ -40,7 +40,7 @@ public class HurtAnimator : MonoBehaviour
     {
         if (playerAttacksHurt)
         {
-            if (collision.gameObject.tag == "PlayerAttack")
+            if (collision.gameObject.CompareTag("PlayerAttack"))
             {
                 animator.SwitchToEmotion(isHurt: true);
             }

@@ -16,7 +16,7 @@ public class HeadRushResetVolume : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && !collision.GetComponent<LongDogNeck>())
+        if(collision.CompareTag("Player") && !collision.GetComponent<LongDogNeck>())
         {
             gate.SetActive(true);
             bigSuccess.SetActive(true);

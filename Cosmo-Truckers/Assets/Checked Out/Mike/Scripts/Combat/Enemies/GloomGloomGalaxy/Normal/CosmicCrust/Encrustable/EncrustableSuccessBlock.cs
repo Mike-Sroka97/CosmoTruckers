@@ -13,7 +13,7 @@ public class EncrustableSuccessBlock : Block
 
     protected override void DestroyMe(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.CompareTag("PlayerAttack"))
         {
             minigame.AugmentScore--;
             minigame.CheckAugmentSuccessForEnemyAttack(); 

@@ -16,7 +16,7 @@ public class PapMovePlayer : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             if (Input.GetKey(KeyCode.D) && !player.GetIsJumping())
             {

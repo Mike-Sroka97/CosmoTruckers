@@ -86,7 +86,7 @@ public class PainfulPresentsPresent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (myRenderer.sprite == badSprite && collision.tag == "Player")
+        if (myRenderer.sprite == badSprite && collision.CompareTag("Player"))
         {
             Instantiate(badParticle, transform.position, badParticle.transform.rotation, FindObjectOfType<CombatMove>().transform);
             Destroy(gameObject);

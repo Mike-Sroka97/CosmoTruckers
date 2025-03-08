@@ -24,13 +24,13 @@ public class CascadingGoliathNodes : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && !iFrames)
+        if(collision.CompareTag("PlayerAttack") && !iFrames)
         {
             StartCoroutine(Iframes());
             currentHit++;
         }
 
-        if(collision.tag == "PlayerAttack" && currentHit >= hitpoints)
+        if(collision.CompareTag("PlayerAttack") && currentHit >= hitpoints)
         {
             Hit = true;
             GetComponent<SpriteRenderer>().sprite = disabledCrackSprite;

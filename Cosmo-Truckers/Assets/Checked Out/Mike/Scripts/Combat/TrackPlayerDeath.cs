@@ -64,7 +64,7 @@ public class TrackPlayerDeath : MonoBehaviour
         if (!TrackingDamage)
             return;
 
-        if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
+        if (collision.CompareTag("Player") && collision.GetComponent<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
             AdjustMinigameScore(player);
@@ -76,7 +76,7 @@ public class TrackPlayerDeath : MonoBehaviour
         if (!TrackingDamage)
             return;
 
-        if (collision.tag == "Player" && collision.GetComponent<PlayerBody>())
+        if (collision.CompareTag("Player") && collision.GetComponent<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
             AdjustMinigameScore(player);
@@ -89,7 +89,7 @@ public class TrackPlayerDeath : MonoBehaviour
             return;
 
         //Because Players have rigidbodies, it always treats the collision GO as the parent, not the GO with the collider on it 
-        if (collision.transform.tag == "Player" && collision.transform.GetComponentInChildren<PlayerBody>())
+        if (collision.transform.CompareTag("Player") && collision.transform.GetComponentInChildren<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
             AdjustMinigameScore(player);
@@ -101,7 +101,7 @@ public class TrackPlayerDeath : MonoBehaviour
         if (!TrackingDamage)
             return;
 
-        if (collision.transform.tag == "Player" && collision.transform.GetComponentInChildren<PlayerBody>())
+        if (collision.transform.CompareTag("Player") && collision.transform.GetComponentInChildren<PlayerBody>())
         {
             Player player = collision.transform.GetComponentInChildren<PlayerBody>().Body;
             AdjustMinigameScore(player);

@@ -35,7 +35,7 @@ public class BadDreemLight : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "EnemyNonDamaging")
+        if(collision.CompareTag("EnemyNonDamaging"))
         {
             currentIndex++;
             Destroy(collision.gameObject);

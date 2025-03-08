@@ -16,7 +16,7 @@ public class LPSuccess : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.tag == "PlayerAttack" || collision.transform.tag == "Player")
+        if(collision.transform.CompareTag("PlayerAttack") || collision.transform.CompareTag("Player"))
         {
             if (!hasTriggered)
             {

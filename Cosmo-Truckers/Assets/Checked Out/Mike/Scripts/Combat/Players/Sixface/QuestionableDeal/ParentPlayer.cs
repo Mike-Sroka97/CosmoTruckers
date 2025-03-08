@@ -29,7 +29,7 @@ public class ParentPlayer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.CompareTag("Player"))
         {
             Player player = collision.transform.GetComponentInChildren<Player>();
             if (player == null)
@@ -47,7 +47,7 @@ public class ParentPlayer : MonoBehaviour
         if (permanentVelocityAdjustment)
             return;
 
-           if (collision.transform.tag == "Player")
+           if (collision.transform.CompareTag("Player"))
         {
             Player player = collision.transform.GetComponentInChildren<Player>();
             if (player == null)

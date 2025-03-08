@@ -39,7 +39,7 @@ public class QDpufferFish : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.CompareTag("PlayerAttack"))
         {
             myCollider.enabled = false;
             Instantiate(deathParticle, transform.position, Quaternion.identity, FindObjectOfType<CombatMove>().gameObject.transform);

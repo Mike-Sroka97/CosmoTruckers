@@ -67,7 +67,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             isAggro = true;
         }
@@ -75,7 +75,7 @@ public class ToTongueOrNotToTongueSpitter : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             currentShootTime = 0;
             isAggro = false;

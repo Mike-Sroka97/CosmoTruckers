@@ -75,7 +75,7 @@ public class CascadingGoliathHandSuspension : MonoBehaviour
     {
         Player playerCollision = collision.GetComponentInParent<Player>();
 
-        if (playerCollision && collision.tag == "Player")
+        if (playerCollision && collision.CompareTag("Player"))
         {
             SetGrabState(true); 
         }

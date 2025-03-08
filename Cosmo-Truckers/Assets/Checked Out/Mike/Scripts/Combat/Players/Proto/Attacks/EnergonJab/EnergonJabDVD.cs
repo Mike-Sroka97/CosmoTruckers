@@ -36,7 +36,7 @@ public class EnergonJabDVD : DVDlogoMovement
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack" && active)
+        if(collision.CompareTag("PlayerAttack") && active)
         {
             active = false;
             minigame.Score++;

@@ -32,7 +32,7 @@ public class LockedAndDoggedProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "LDGNoInteraction" || collision.transform.tag == "Ground")
+        if(collision.transform.CompareTag("LDGNoInteraction") || collision.transform.CompareTag("Ground"))
         {
             Physics2D.IgnoreCollision(collision.gameObject.GetComponent<Collider2D>(), myCollider);
         }
@@ -41,18 +41,18 @@ public class LockedAndDoggedProjectile : MonoBehaviour
             myBody.gravityScale = newGravityScale;
         }
 
-        if(collision.transform.tag == "Player")
+        if(collision.transform.CompareTag("Player"))
         {
             naturallyFalling = true;
             myBody.gravityScale = newGravityScale;
         }
-        else if(collision.transform.tag == "PlayerNonHurtable")
+        else if(collision.transform.CompareTag("PlayerNonHurtable"))
         {
             minigame.Score += scoreValue;
             Debug.Log("Your score is: " + minigame.Score);
             Destroy(gameObject);
         }
-        else if(collision.transform.tag == "PlayerHurtable")
+        else if(collision.transform.CompareTag("PlayerHurtable"))
         {
             Destroy(gameObject);
         }

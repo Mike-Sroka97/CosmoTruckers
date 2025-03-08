@@ -35,14 +35,14 @@ public class FullCourseProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(goodProjectile && collision.tag == "Player")
+        if(goodProjectile && collision.CompareTag("Player"))
         {
             minigame.Score++;
             minigame.CheckSuccess(); 
             Debug.Log(minigame.Score);
             Destroy(gameObject);
         }
-        else if(collision.tag == "Player")
+        else if(collision.CompareTag("Player"))
         {
             Destroy(gameObject);
         }

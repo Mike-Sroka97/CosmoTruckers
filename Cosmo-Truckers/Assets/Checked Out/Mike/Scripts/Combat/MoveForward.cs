@@ -19,7 +19,7 @@ public class MoveForward : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && destroyOnContact)
+        if(collision.CompareTag("Player") && destroyOnContact)
         {
             if (particleTrail != null)
             {

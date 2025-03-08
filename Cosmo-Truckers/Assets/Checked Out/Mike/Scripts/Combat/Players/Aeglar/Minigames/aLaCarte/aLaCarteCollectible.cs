@@ -19,7 +19,7 @@ public class aLaCarteCollectible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player"))
         {
             myRenderer.enabled = false;
             myParticleSpawner.SpawnParticle(transform); 

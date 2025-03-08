@@ -45,7 +45,7 @@ public class SparkShieldCollectable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.tag == "Player")
+        if (collision.transform.CompareTag("Player"))
             TypeSpecificTrigger(FindObjectOfType<Player>().iFrames);
     }
 }

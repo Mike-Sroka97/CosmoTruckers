@@ -35,7 +35,7 @@ public class FullChargeCore : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "PlayerAttack" && !Following)
+        if (collision.CompareTag("PlayerAttack") && !Following)
         {
             foreach(FullChargeNode node in fullChargeNodes)
             {

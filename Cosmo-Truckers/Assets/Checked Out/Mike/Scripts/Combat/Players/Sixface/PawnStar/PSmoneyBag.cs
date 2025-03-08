@@ -69,7 +69,7 @@ public class PSmoneyBag : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PlayerAttack")
+        if(collision.CompareTag("PlayerAttack"))
         {
             minigame.Score++;
             minigame.CheckSuccess(); 
