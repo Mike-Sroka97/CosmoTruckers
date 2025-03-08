@@ -5,9 +5,12 @@ using UnityEngine.UI;
 
 public class SpellCraftingCharacterSelectButton : MonoBehaviour
 {
+    [SerializeField] Sprite myActiveSprite;
+    [SerializeField] Sprite myDeactiveSprite;
     [SerializeField] int id;
 
     SpellCraftingController controller;
+    Image myImage;
     Image characterImage;
 
     /// <summary>
@@ -30,5 +33,16 @@ public class SpellCraftingCharacterSelectButton : MonoBehaviour
             controller = MathHelpers.FindNearestParentOfType<SpellCraftingController>(transform);
 
         controller.CurrentCharacterId = PlayerManager.Instance.ActivePlayerIDs[id];
+
+        controller.ResetSelectedCharacter();
+        myImage.sprite = myActiveSprite;
+    }
+
+    public void ResetButton()
+    {
+        if (!myImage)
+            myImage = GetComponent<Image>();
+
+        myImage.sprite = myDeactiveSprite;
     }
 }
