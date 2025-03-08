@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5524533862943196987}
   - component: {fileID: 5524533862943196988}
   - component: {fileID: 5524533862943196989}
+  - component: {fileID: 3512776475061096586}
   m_Layer: 0
   m_Name: BigSeed
   m_TagString: Untagged
@@ -49,8 +50,9 @@ MonoBehaviour:
   score: 2
   moveSpeed: 0.1
   moveDistance: 0.06
-  endsMinigame: 1
   givesAugmentScore: 1
+  givesScore: 1
+  multiplayer: 0
   collectParticle: {fileID: 3813681424891259566, guid: fbc66b879479f3c40a45f1f864c4d74a, type: 3}
 --- !u!212 &5524533862943196988
 SpriteRenderer:
@@ -91,7 +93,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 73707659
-  m_SortingLayer: 4
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c7b80a630409bb54f8b137fbaf55914f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -120,3 +122,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
   m_Radius: 0.4
+--- !u!114 &3512776475061096586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524533862943196991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f33c24cfad5ac44cbef312d01aa2023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHittable: 0
+  playerSuccess: 1

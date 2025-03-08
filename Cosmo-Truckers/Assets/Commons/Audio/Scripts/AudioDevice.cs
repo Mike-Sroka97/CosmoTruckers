@@ -58,16 +58,10 @@ public class AudioDevice : MonoBehaviour
     /// <param name="name"></param>
     public AudioSource PlaySound(string name)
     {
-        if (myAudioSources.TryGetValue(name, out AudioSource source))
-        {
-            source.Play(); 
-            return source;
-        }
-        else
-        {
-            Debug.LogError("There is no audio on this device with that name!"); 
-            return null; 
-        }
+        AudioSource source = GetSound(name);
+        if (source != null) { source.Play(); }
+
+        return source;
     }
 
     /// <summary>
@@ -85,16 +79,10 @@ public class AudioDevice : MonoBehaviour
     /// <param name="name"></param>
     public AudioSource StopSound(string name)
     {
-        if (myAudioSources.TryGetValue(name, out AudioSource source))
-        {
-            source.Stop();
-            return source;
-        }
-        else
-        {
-            Debug.LogError("There is no audio on this device with that name!");
-            return null;
-        }
+        AudioSource source = GetSound(name);
+        if (source != null) { source.Stop(); }
+
+        return source;
     }
 
     /// <summary>
@@ -124,6 +112,23 @@ public class AudioDevice : MonoBehaviour
         }
 
         return null; 
+    }
+
+    /// <summary>
+    /// Get a sound from the device
+    /// </summary>
+    /// <param name="name"></param>
+    public AudioSource GetSound(string name)
+    {
+        if (myAudioSources.TryGetValue(name, out AudioSource source))
+        {
+            return source;
+        }
+        else
+        {
+            Debug.LogError("There is no audio on this device with that name!");
+            return null;
+        }
     }
 
     private void OnDestroy()
