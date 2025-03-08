@@ -32,6 +32,14 @@ public abstract class Player : MonoBehaviour
     public PlayerCharacter MyCharacter;
     protected AudioDevice myAudioDevice;
 
+    /// <summary>
+    /// Public audio device getter
+    /// </summary>
+    public AudioDevice MyAudioDevice
+    {
+        get { return myAudioDevice; }
+    }
+
     //Things that can be affected by buffs / debuffs
     protected float initialGravityModifier;
 
