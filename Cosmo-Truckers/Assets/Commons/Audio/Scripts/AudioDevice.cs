@@ -8,7 +8,7 @@ using static UnityEditor.Progress;
 public class AudioDevice : MonoBehaviour
 {
     [Serializable]
-    private class Audio
+    public class Audio
     {
         // Class used for adding audio to this device
         public string Name;
@@ -21,6 +21,14 @@ public class AudioDevice : MonoBehaviour
     /// </summary>
     [SerializeField] List<Audio> myAudio = new List<Audio>();
     
+    /// <summary>
+    /// Public getter for the audio on this device
+    /// </summary>
+    public List<Audio> MyAudio
+    {
+        get { return myAudio; }
+    }
+
     /// <summary>
     /// The sources on this device
     /// </summary>
