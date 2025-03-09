@@ -9,11 +9,15 @@ public class SpellCraftingController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI yapAura;
     [SerializeField] CharacterSpellData[] spellData;
+    [SerializeField] TextMeshProUGUI commonTokens;
+    [SerializeField] TextMeshProUGUI rareTokens;
+    [SerializeField] TextMeshProUGUI legendaryTokens;
 
     public Sprite[] CharacterSprites;
 
     [HideInInspector] public int CurrentCharacterId;
     List<SpellCraftingCharacterSelectButton> characterSelectButtons = new List<SpellCraftingCharacterSelectButton>();
+    PlayerData playerData;
 
     private void OnEnable()
     {
@@ -26,6 +30,13 @@ public class SpellCraftingController : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
             characterSelectButtons[i].SetCharacterImage(CharacterSprites[PlayerManager.Instance.ActivePlayerIDs[i]]);
+
+        //set token text
+        playerData = SaveManager.LoadPlayerData();
+        
+        commonTokens.text = $"x{playerData.CommonSpellTokens} C";
+        rareTokens.text = $"x{playerData.RareSpellTokens} R";
+        legendaryTokens.text = $"x{playerData.LegendarySpellTokens} L";
     }
 
     public void SetYapAura(int id, bool spec)
