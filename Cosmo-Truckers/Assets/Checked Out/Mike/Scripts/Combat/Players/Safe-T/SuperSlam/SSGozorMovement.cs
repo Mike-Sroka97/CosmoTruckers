@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -22,7 +23,8 @@ public class SSGozorMovement : MonoBehaviour
     float originalMoveSpeed;
     bool movingTowardPoint1 = true;
     bool minigameStarted = false;
-
+    
+    [HideInInspector] public AudioDevice myAudioDevice; 
     [HideInInspector] public bool trackTime = false;
 
     private void Start()
@@ -31,6 +33,7 @@ public class SSGozorMovement : MonoBehaviour
         moveSpeed = 0;
         point0 = transform.parent.Find("GozorPoint (0)");
         point1 = transform.parent.Find("GozorPoint (1)");
+        myAudioDevice = GetComponentInChildren<AudioDevice>();
     }
 
     private void Update()
@@ -72,6 +75,8 @@ public class SSGozorMovement : MonoBehaviour
 
     public IEnumerator FlashMe(bool firstTime)
     {
+        StopLaserSounds(); 
+
         if (hitNumber == 0)
         {
             moveSpeed = 0;
@@ -147,8 +152,21 @@ public class SSGozorMovement : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stops all laser sounds
+    /// </summary>
+    private void StopLaserSounds()
+    {
+        // Stop sounds
+        myAudioDevice.StopSound("LaserCharge");
+        myAudioDevice.StopSound("LaserFire");
+        myAudioDevice.StopSound("LaserLoop");
+    }
+
     public void EarlyEndMinigame(Material offMaterial)
     {
+        StopLaserSounds(); 
+
         foreach (SpriteRenderer sprite in mySprites)
         {
             sprite.material = offMaterial;

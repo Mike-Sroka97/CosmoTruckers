@@ -27,7 +27,8 @@ public class SSGun : MonoBehaviour
     Vector3 fullScale;
     Vector3 currentScale;
     bool isFiring = false;
-    bool laserIsAnimating = false; 
+    bool laserIsAnimating = false;
+    SSGozorMovement gozor; 
     [HideInInspector] public bool trackTime;
 
     private void Start()
@@ -35,6 +36,7 @@ public class SSGun : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         myParticleUpdater = GetComponent<ParticleUpdater>();
         myParticleUpdater.SetParticleState(false);
+        gozor = MathHelpers.FindNearestParentOfType<SSGozorMovement>(transform); 
 
         //Set scaling
         zeroScale = new Vector3(0, laser.localScale.y, laser.localScale.z);
@@ -115,6 +117,8 @@ public class SSGun : MonoBehaviour
     private IEnumerator StartLaser()
     {
         Instantiate(chargeParticle, barrel);
+        // Play laser charge sound
+        gozor.myAudioDevice.PlaySound("LaserCharge");
 
         yield return new WaitForSeconds(chargeTime);
 
@@ -140,6 +144,11 @@ public class SSGun : MonoBehaviour
         GameObject shockwave = Instantiate(shockwaveParticle, barrel);
         float rotation = -transform.eulerAngles.z;
         shockwave.GetComponent<ParticleRotation>().SetParticleRotations((rotation), true);
+        
+        // Play shockwave sounds
+        gozor.myAudioDevice.StopSound("LaserCharge");
+        gozor.myAudioDevice.PlaySound("LaserFire");
+        gozor.myAudioDevice.PlaySound("LaserLoop");
     }
 
     private void RotateMe()
