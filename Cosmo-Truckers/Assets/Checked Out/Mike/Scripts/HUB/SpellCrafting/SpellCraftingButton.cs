@@ -6,10 +6,18 @@ using UnityEngine.EventSystems;
 public class SpellCraftingButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     public bool Spec = true;
+    public Rarity RarityType;
     [SerializeField] int id;
 
     SpellCraftingController controller;
     bool unlocked;
+
+    public enum Rarity
+    {
+        Common,
+        Rare,
+        Legendary,
+    }
 
     public void OnSelect(BaseEventData eventData)
     {
