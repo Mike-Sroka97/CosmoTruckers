@@ -138,7 +138,7 @@ public abstract class DungeonController : MonoBehaviour
         positiveNodes = new List<GameObject>();
         determinedEventNodes = new List<GameObject>();
 
-        MathHelpers.Shuffle(nonCombatNodes);
+        HelperFunctions.Shuffle(nonCombatNodes);
         int currentNodeCount = 0;
 
         if(debugging)
@@ -195,7 +195,7 @@ public abstract class DungeonController : MonoBehaviour
             nodeLayoutPositions.Add(nodeLayoutTransforms[i]);
         }
 
-        MathHelpers.Shuffle(nodeLayouts);
+        HelperFunctions.Shuffle(nodeLayouts);
 
         List<DNode> allEventNodes = new List<DNode>();
 
@@ -232,7 +232,7 @@ public abstract class DungeonController : MonoBehaviour
             }
         }
 
-        MathHelpers.Shuffle(determinedEventNodes);
+        HelperFunctions.Shuffle(determinedEventNodes);
 
         for(int i = 0; i < determinedEventNodes.Count; i++)
         {

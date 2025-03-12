@@ -8,7 +8,7 @@ public class RealityTear : EventNodeBase
     {
         //swap positions
         int[] players = new int[] { 0, 1, 2, 3 };
-        MathHelpers.Shuffle(players);
+        HelperFunctions.Shuffle(players);
 
         for (int i = 0; i < PlayerVesselManager.Instance.PlayerVessels.Length; i++)
             PlayerVesselManager.Instance.PlayerVessels[players[i]].MyCharacter.FlipCharacter(i, true);

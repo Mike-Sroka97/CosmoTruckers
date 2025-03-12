@@ -11,7 +11,7 @@ public class FrightenedDwarfStar : EventNodeBase
     protected override void Start()
     {
         base.Start();
-        evilStar = MathHelpers.RandomBool();
+        evilStar = HelperFunctions.RandomBool();
     }
 
     public override void Initialize(EventNodeHandler handler)

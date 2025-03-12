@@ -16,27 +16,35 @@ public class SpellCraftingController : MonoBehaviour
     public Sprite[] CharacterSprites;
 
     [HideInInspector] public int CurrentCharacterId;
+    [HideInInspector] public PlayerData PlayerData;
     List<SpellCraftingCharacterSelectButton> characterSelectButtons = new List<SpellCraftingCharacterSelectButton>();
-    PlayerData playerData;
+    List<SpellCraftingButton> spellAndSpecButtons = new List<SpellCraftingButton>();
 
     private void OnEnable()
     {
         CurrentCharacterId = PlayerManager.Instance.ActivePlayerIDs[0];
 
+        //set player select buttons
         if (characterSelectButtons.Count <= 0)
             characterSelectButtons = GetComponentsInChildren<SpellCraftingCharacterSelectButton>().ToList();
 
         characterSelectButtons[0].SelectMe();
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < characterSelectButtons.Count; i++)
             characterSelectButtons[i].SetCharacterImage(CharacterSprites[PlayerManager.Instance.ActivePlayerIDs[i]]);
 
         //set token text
-        playerData = SaveManager.LoadPlayerData();
+        PlayerData = SaveManager.LoadPlayerData();
         
-        commonTokens.text = $"x{playerData.CommonSpellTokens} C";
-        rareTokens.text = $"x{playerData.RareSpellTokens} R";
-        legendaryTokens.text = $"x{playerData.LegendarySpellTokens} L";
+        commonTokens.text = $"x{PlayerData.CommonSpellTokens} C";
+        rareTokens.text = $"x{PlayerData.RareSpellTokens} R";
+        legendaryTokens.text = $"x{PlayerData.LegendarySpellTokens} L";
+
+        //set spell and spec buttons
+        if (spellAndSpecButtons.Count <= 0)
+            spellAndSpecButtons = GetComponentsInChildren<SpellCraftingButton>().ToList();
+
+        ResetSpellUnlockedStatus();
     }
 
     public void SetYapAura(int id, bool spec)
@@ -56,5 +64,14 @@ public class SpellCraftingController : MonoBehaviour
     {
         foreach (SpellCraftingCharacterSelectButton button in characterSelectButtons)
             button.ResetButton();
+
+        ResetSpellUnlockedStatus();
+    }
+
+    private void ResetSpellUnlockedStatus()
+    {
+        foreach (SpellCraftingButton button in spellAndSpecButtons)
+            if (!button.Spec)
+                button.CheckUnlockedStatus();
     }
 }

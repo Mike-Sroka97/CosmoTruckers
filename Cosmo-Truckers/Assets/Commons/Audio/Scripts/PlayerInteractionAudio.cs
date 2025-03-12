@@ -57,7 +57,7 @@ public class PlayerInteractionAudio : MonoBehaviour
     /// <param name="playerTransform"></param>
     private void PlayHitSound(Transform playerTransform, string sound = HitSound)
     {
-        Player player = MathHelpers.FindNearestParentOfType<Player>(playerTransform);
+        Player player = HelperFunctions.FindNearestParentOfType<Player>(playerTransform);
 
         if (player.MyAudioDevice.GetSound(sound).isPlaying)
             return;

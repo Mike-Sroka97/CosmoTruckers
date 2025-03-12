@@ -30,7 +30,7 @@ public class SpellCraftingCharacterSelectButton : MonoBehaviour
     public void SelectMe()
     {
         if(!controller)
-            controller = MathHelpers.FindNearestParentOfType<SpellCraftingController>(transform);
+            controller = HelperFunctions.FindNearestParentOfType<SpellCraftingController>(transform);
 
         controller.CurrentCharacterId = PlayerManager.Instance.ActivePlayerIDs[id];
 

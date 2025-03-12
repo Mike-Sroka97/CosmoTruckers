@@ -12,7 +12,7 @@ public class CrustyCorridor : EventNodeBase
     protected override void Start()
     {
         base.Start();
-        safePath = MathHelpers.RandomBool();
+        safePath = HelperFunctions.RandomBool();
     }
 
     public void TraverseTheCrustyCorridor()

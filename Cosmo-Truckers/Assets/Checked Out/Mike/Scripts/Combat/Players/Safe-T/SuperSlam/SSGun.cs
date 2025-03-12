@@ -36,7 +36,7 @@ public class SSGun : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         myParticleUpdater = GetComponent<ParticleUpdater>();
         myParticleUpdater.SetParticleState(false);
-        gozor = MathHelpers.FindNearestParentOfType<SSGozorMovement>(transform); 
+        gozor = HelperFunctions.FindNearestParentOfType<SSGozorMovement>(transform); 
 
         //Set scaling
         zeroScale = new Vector3(0, laser.localScale.y, laser.localScale.z);

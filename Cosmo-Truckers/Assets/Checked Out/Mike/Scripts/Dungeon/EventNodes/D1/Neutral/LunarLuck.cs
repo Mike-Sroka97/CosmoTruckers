@@ -13,7 +13,7 @@ public class LunarLuck : EventNodeBase
 
     protected override void Start()
     {
-        heads = MathHelpers.RandomBool();
+        heads = HelperFunctions.RandomBool();
         base.Start();
     }
 

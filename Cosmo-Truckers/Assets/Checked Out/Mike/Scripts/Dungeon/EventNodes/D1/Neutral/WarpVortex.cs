@@ -12,7 +12,7 @@ public class WarpVortex : EventNodeBase
         foreach(PlayerVessel vessel in PlayerVesselManager.Instance.PlayerVessels)
             currentHealth.Add(vessel.MyCharacter.CurrentHealth);
 
-        MathHelpers.Shuffle(currentHealth);
+        HelperFunctions.Shuffle(currentHealth);
 
         //heal or damage when swapping with pierce
         for(int i = 0; i < 4; i++)

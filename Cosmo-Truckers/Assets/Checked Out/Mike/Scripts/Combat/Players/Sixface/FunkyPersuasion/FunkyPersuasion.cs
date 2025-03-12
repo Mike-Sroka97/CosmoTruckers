@@ -85,7 +85,7 @@ public class FunkyPersuasion : CombatMove
 
             // Problems occur with vertical arrows spawning more than one in a row
             if (currentArrow == 1 && lastArrow == 1)
-                currentArrow = (MathHelpers.RandomBool() == true) ? 2 : 0;
+                currentArrow = (HelperFunctions.RandomBool() == true) ? 2 : 0;
 
             // Check if arrows in the row are the same as previous and if there have been arrows in the same row more than twice in a row
             while (currentArrow == lastArrow && duplicateRow >= 2)

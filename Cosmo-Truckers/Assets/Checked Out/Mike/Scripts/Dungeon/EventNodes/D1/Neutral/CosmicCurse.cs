@@ -12,8 +12,8 @@ public class CosmicCurse : EventNodeBase
     {
         base.Start();
 
-        MathHelpers.Shuffle(buffs);
-        MathHelpers.Shuffle(debuffs);
+        HelperFunctions.Shuffle(buffs);
+        HelperFunctions.Shuffle(debuffs);
 
         for(int i = 0; i < 3; i++)
             myButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = $"<color=green>[Gain (1) {buffs[i].AugmentName}]</color><color=red> [Gain (1) {debuffs[i].AugmentName}]";
