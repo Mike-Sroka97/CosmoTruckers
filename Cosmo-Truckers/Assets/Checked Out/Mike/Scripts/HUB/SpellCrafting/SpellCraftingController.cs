@@ -43,6 +43,7 @@ public class SpellCraftingController : MonoBehaviour
             spellAndSpecButtons = GetComponentsInChildren<SpellCraftingButton>().ToList();
 
         ResetSpellUnlockedStatus();
+        ResetSpec();
     }
 
     public void SetYapAura(int id, bool spec)
@@ -64,6 +65,7 @@ public class SpellCraftingController : MonoBehaviour
             button.ResetButton();
 
         ResetSpellUnlockedStatus();
+        ResetSpec();
     }
 
     public void ResetLockShake()
@@ -78,6 +80,13 @@ public class SpellCraftingController : MonoBehaviour
         foreach (SpellCraftingButton button in spellAndSpecButtons)
             if (!button.Spec)
                 button.CheckUnlockedStatus();
+    }
+
+    public void ResetSpec()
+    {
+        foreach (SpellCraftingButton button in spellAndSpecButtons)
+            if (button.Spec)
+                button.CheckSelectedStatus();
     }
 
     public void SetTokenText()

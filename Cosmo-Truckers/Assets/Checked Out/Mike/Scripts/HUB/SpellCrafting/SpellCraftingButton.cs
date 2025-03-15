@@ -16,6 +16,7 @@ public class SpellCraftingButton : MonoBehaviour, ISelectHandler, IDeselectHandl
     bool shaking;
     Image lockImage;
     Material defaultMaterial;
+    Image selectedImage;
 
     public enum Rarity
     {
@@ -78,6 +79,34 @@ public class SpellCraftingButton : MonoBehaviour, ISelectHandler, IDeselectHandl
             lockImage.gameObject.SetActive(true);
             unlocked = false;
         }
+    }
+
+    /// <summary>
+    /// Sets the selected visual on spec buttons
+    /// </summary>
+    public void CheckSelectedStatus()
+    {
+        if (!controller)
+            controller = HelperFunctions.FindNearestParentOfType<SpellCraftingController>(transform);
+        if (!selectedImage)
+            selectedImage = transform.Find("SelectedGO").GetComponent<Image>();
+
+        if (controller.PlayerData.SelectedSpecs[controller.CurrentCharacterId] == id)
+            selectedImage.enabled = true;
+        else
+            selectedImage.enabled = false;
+    }
+
+    /// <summary>
+    /// Selects and saves a spec
+    /// </summary>
+    public void AttemptSpecSelect()
+    {
+        if (controller.PlayerData.SelectedSpecs[controller.CurrentCharacterId] == id)
+            return;
+
+        controller.PlayerData = controller.PlayerData.SaveSpecSelection(controller.CurrentCharacterId, id);
+        controller.ResetSpec();
     }
 
     /// <summary>
