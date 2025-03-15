@@ -21,8 +21,13 @@ public class PlayerCharacter : Character
     public UI_PlayerTurnStart SelectionUI;
     [SerializeField] GameObject wheel;
     [SerializeField] GameObject augList;
+    [SerializeField] int id;
 
     [SerializeField] protected List<BaseAttackSO> attacks;
+    [SerializeField] private List<BaseAttackSO> spec1Attacks;
+    [SerializeField] private List<BaseAttackSO> spec2Attacks;
+    [SerializeField] private List<BaseAttackSO> spec3Attacks;
+
     protected List<BaseAttackSO> attackClones = new List<BaseAttackSO>();
 
     [Space(10)]
@@ -52,6 +57,10 @@ public class PlayerCharacter : Character
 
     private void Start()
     {
+        //spec stuff
+        DetermineSpells();
+
+        //not spec stuff
         foreach (AugmentStackSO augment in passiveAugments)
             if (!AUGS.Contains(augment))
                 AddAugmentStack(augment);
@@ -64,7 +73,6 @@ public class PlayerCharacter : Character
 
         manaBase = GetComponent<Mana>();
         turnOrder = FindObjectOfType<TurnOrder>();
-        myRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private int playerIntent = 0;
@@ -376,5 +384,32 @@ public class PlayerCharacter : Character
         }
 
         MyVessel.UpdateHealthText();
+    }
+
+    private void DetermineSpells()
+    {
+        PlayerData data = SaveManager.LoadPlayerData();
+
+        switch (data.SelectedSpecs[id])
+        {
+            case 0:
+                SpecSpells(0, 5);
+                break;
+            case 1:
+                SpecSpells(5, 10);
+                break;
+            case 2:
+                SpecSpells(10, 15);
+                break;
+            default:
+                break;
+        }
+
+        void SpecSpells(int start, int end)
+        {
+            for (int i = start; i < end; i++)
+                if (data.UnlockedSpells[new Tuple<int, int>(id, i)])
+                    attacks.Add(spec1Attacks[i]);
+        }
     }
 }
