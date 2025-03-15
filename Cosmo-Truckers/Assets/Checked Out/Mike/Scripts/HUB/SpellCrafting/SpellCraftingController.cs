@@ -68,6 +68,13 @@ public class SpellCraftingController : MonoBehaviour
         ResetSpellUnlockedStatus();
     }
 
+    public void ResetLockShake()
+    {
+        foreach (SpellCraftingButton button in spellAndSpecButtons)
+            if(!button.Spec)
+                button.LockShake(false);
+    }
+
     private void ResetSpellUnlockedStatus()
     {
         foreach (SpellCraftingButton button in spellAndSpecButtons)

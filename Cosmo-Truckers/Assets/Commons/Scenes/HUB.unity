@@ -533,6 +533,7 @@ GameObject:
   - component: {fileID: 28686408}
   - component: {fileID: 28686410}
   - component: {fileID: 28686409}
+  - component: {fileID: 28686411}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -598,6 +599,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 28686407}
   m_CullTransparentMesh: 1
+--- !u!114 &28686411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28686407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &30751095
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,9 +2522,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 174857588}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2532,6 +2549,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 2
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &176157557
 GameObject:
   m_ObjectHideFlags: 0
@@ -2965,9 +2983,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 185198132}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2992,6 +3010,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 13
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &190357089
 GameObject:
   m_ObjectHideFlags: 0
@@ -4359,9 +4378,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 234307493}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4386,6 +4405,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 10
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &243171101
 GameObject:
   m_ObjectHideFlags: 0
@@ -7839,6 +7859,7 @@ GameObject:
   - component: {fileID: 429366767}
   - component: {fileID: 429366769}
   - component: {fileID: 429366768}
+  - component: {fileID: 429366770}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -7904,6 +7925,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429366766}
   m_CullTransparentMesh: 1
+--- !u!114 &429366770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429366766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &434505042
 GameObject:
   m_ObjectHideFlags: 0
@@ -10896,9 +10933,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 556055206}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10923,6 +10960,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 5
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &556602992
 GameObject:
   m_ObjectHideFlags: 0
@@ -11204,9 +11242,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 576855576}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11231,6 +11269,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 3
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &577475184
 GameObject:
   m_ObjectHideFlags: 0
@@ -13794,6 +13833,7 @@ GameObject:
   - component: {fileID: 752230646}
   - component: {fileID: 752230648}
   - component: {fileID: 752230647}
+  - component: {fileID: 752230649}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -13859,6 +13899,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752230645}
   m_CullTransparentMesh: 1
+--- !u!114 &752230649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752230645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &759332211
 GameObject:
   m_ObjectHideFlags: 0
@@ -14324,6 +14380,7 @@ GameObject:
   - component: {fileID: 781534766}
   - component: {fileID: 781534768}
   - component: {fileID: 781534767}
+  - component: {fileID: 781534769}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -14389,6 +14446,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 781534765}
   m_CullTransparentMesh: 1
+--- !u!114 &781534769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781534765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &802986918
 GameObject:
   m_ObjectHideFlags: 0
@@ -15659,6 +15732,7 @@ GameObject:
   - component: {fileID: 939861960}
   - component: {fileID: 939861962}
   - component: {fileID: 939861961}
+  - component: {fileID: 939861963}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -15724,6 +15798,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939861959}
   m_CullTransparentMesh: 1
+--- !u!114 &939861963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 939861959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1001 &943893337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15792,6 +15882,7 @@ GameObject:
   - component: {fileID: 944511144}
   - component: {fileID: 944511146}
   - component: {fileID: 944511145}
+  - component: {fileID: 944511147}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -15857,6 +15948,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944511143}
   m_CullTransparentMesh: 1
+--- !u!114 &944511147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944511143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &945207701
 GameObject:
   m_ObjectHideFlags: 0
@@ -16003,6 +16110,7 @@ GameObject:
   - component: {fileID: 958432972}
   - component: {fileID: 958432974}
   - component: {fileID: 958432973}
+  - component: {fileID: 958432975}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -16068,6 +16176,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958432971}
   m_CullTransparentMesh: 1
+--- !u!114 &958432975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958432971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &958658291
 GameObject:
   m_ObjectHideFlags: 0
@@ -18711,6 +18835,7 @@ GameObject:
   - component: {fileID: 1059088899}
   - component: {fileID: 1059088901}
   - component: {fileID: 1059088900}
+  - component: {fileID: 1059088902}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -18776,6 +18901,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1059088898}
   m_CullTransparentMesh: 1
+--- !u!114 &1059088902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059088898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1081555208
 GameObject:
   m_ObjectHideFlags: 0
@@ -19715,6 +19856,7 @@ GameObject:
   - component: {fileID: 1133329367}
   - component: {fileID: 1133329369}
   - component: {fileID: 1133329368}
+  - component: {fileID: 1133329370}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -19780,6 +19922,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133329366}
   m_CullTransparentMesh: 1
+--- !u!114 &1133329370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1133329366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1134112451
 GameObject:
   m_ObjectHideFlags: 0
@@ -20463,9 +20621,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1170802276}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20490,6 +20648,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 12
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1176570836
 GameObject:
   m_ObjectHideFlags: 0
@@ -21719,9 +21878,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1240585418}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21746,6 +21905,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 8
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1244450434
 GameObject:
   m_ObjectHideFlags: 0
@@ -23271,7 +23431,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1345753922
 Transform:
   m_ObjectHideFlags: 0
@@ -23312,7 +23472,7 @@ MonoBehaviour:
     - DPS
     - Utility
     spells:
-    - Force Feed
+    - Potent Patty
     - Cherry Pop
     - Infectious Growth
     - Pork Sweats
@@ -23372,7 +23532,7 @@ MonoBehaviour:
     - Support
     - DPS
     spells:
-    - Strong Harm
+    - Funky Persuasion
     - Shady Business
     - Quarterly Blow
     - Threatening Aura
@@ -24980,9 +25140,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1439531690}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25007,6 +25167,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 1
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1442845905
 GameObject:
   m_ObjectHideFlags: 0
@@ -26042,9 +26203,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1500979003}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26069,6 +26230,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 2
   id: 4
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1502002976
 GameObject:
   m_ObjectHideFlags: 0
@@ -26691,9 +26853,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1539808570}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26718,6 +26880,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 0
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1557520061
 GameObject:
   m_ObjectHideFlags: 0
@@ -26729,6 +26892,7 @@ GameObject:
   - component: {fileID: 1557520062}
   - component: {fileID: 1557520064}
   - component: {fileID: 1557520063}
+  - component: {fileID: 1557520065}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -26794,6 +26958,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1557520061}
   m_CullTransparentMesh: 1
+--- !u!114 &1557520065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1557520061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1559368380
 GameObject:
   m_ObjectHideFlags: 0
@@ -27411,6 +27591,7 @@ GameObject:
   - component: {fileID: 1568913096}
   - component: {fileID: 1568913098}
   - component: {fileID: 1568913097}
+  - component: {fileID: 1568913099}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -27476,6 +27657,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1568913095}
   m_CullTransparentMesh: 1
+--- !u!114 &1568913099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1568913095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1572587315
 GameObject:
   m_ObjectHideFlags: 0
@@ -27747,9 +27944,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1575838938}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27774,6 +27971,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 2
   id: 9
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1583236974
 GameObject:
   m_ObjectHideFlags: 0
@@ -29983,9 +30181,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1661471019}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30010,6 +30208,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 11
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1667125906
 GameObject:
   m_ObjectHideFlags: 0
@@ -32051,6 +32250,7 @@ GameObject:
   - component: {fileID: 1775418176}
   - component: {fileID: 1775418178}
   - component: {fileID: 1775418177}
+  - component: {fileID: 1775418179}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -32116,6 +32316,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1775418175}
   m_CullTransparentMesh: 1
+--- !u!114 &1775418179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775418175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1778688496
 GameObject:
   m_ObjectHideFlags: 0
@@ -32672,6 +32888,7 @@ MonoBehaviour:
   Spec: 1
   RarityType: 0
   id: 1
+  shakingMaterial: {fileID: 0}
 --- !u!1 &1804952783
 GameObject:
   m_ObjectHideFlags: 0
@@ -33543,6 +33760,7 @@ GameObject:
   - component: {fileID: 1853746796}
   - component: {fileID: 1853746798}
   - component: {fileID: 1853746797}
+  - component: {fileID: 1853746799}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -33608,6 +33826,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1853746795}
   m_CullTransparentMesh: 1
+--- !u!114 &1853746799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1853746795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1862144246
 GameObject:
   m_ObjectHideFlags: 0
@@ -33619,6 +33853,7 @@ GameObject:
   - component: {fileID: 1862144247}
   - component: {fileID: 1862144249}
   - component: {fileID: 1862144248}
+  - component: {fileID: 1862144250}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -33684,6 +33919,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862144246}
   m_CullTransparentMesh: 1
+--- !u!114 &1862144250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862144246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &1870128866
 GameObject:
   m_ObjectHideFlags: 0
@@ -34772,9 +35023,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 1913131652}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34799,6 +35050,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 2
   id: 14
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &1914575028
 GameObject:
   m_ObjectHideFlags: 0
@@ -35084,6 +35336,7 @@ MonoBehaviour:
   Spec: 1
   RarityType: 0
   id: 2
+  shakingMaterial: {fileID: 0}
 --- !u!1 &1949378991
 GameObject:
   m_ObjectHideFlags: 0
@@ -37302,6 +37555,7 @@ MonoBehaviour:
   Spec: 1
   RarityType: 0
   id: 0
+  shakingMaterial: {fileID: 0}
 --- !u!1 &2073843486
 GameObject:
   m_ObjectHideFlags: 0
@@ -37796,9 +38050,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 2114502788}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37823,6 +38077,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 0
   id: 6
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &2128611368
 GameObject:
   m_ObjectHideFlags: 0
@@ -37969,6 +38224,7 @@ GameObject:
   - component: {fileID: 2139941587}
   - component: {fileID: 2139941589}
   - component: {fileID: 2139941588}
+  - component: {fileID: 2139941590}
   m_Layer: 0
   m_Name: LockedImage
   m_TagString: Untagged
@@ -38034,6 +38290,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139941586}
   m_CullTransparentMesh: 1
+--- !u!114 &2139941590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139941586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93c18f20d593f214cad0b64a2589091b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 2
+  timeBetweenResets: 0.2
+  childShaker: 0
+  shakeState: 0
 --- !u!1 &2140513082
 GameObject:
   m_ObjectHideFlags: 0
@@ -38158,9 +38430,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterSelectButton, Assembly-CSharp
-        m_MethodName: SelectCharacter
+      - m_Target: {fileID: 2140513089}
+        m_TargetAssemblyTypeName: SpellCraftingButton, Assembly-CSharp
+        m_MethodName: AttemptUnlock
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -38185,6 +38457,7 @@ MonoBehaviour:
   Spec: 0
   RarityType: 1
   id: 7
+  shakingMaterial: {fileID: 2100000, guid: 993ad812ee573d442b043bb63aad6c89, type: 2}
 --- !u!1 &2141543772
 GameObject:
   m_ObjectHideFlags: 0
