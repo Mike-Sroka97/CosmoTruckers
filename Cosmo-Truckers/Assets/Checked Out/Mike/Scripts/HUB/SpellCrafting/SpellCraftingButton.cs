@@ -96,6 +96,8 @@ public class SpellCraftingButton : MonoBehaviour, ISelectHandler, IDeselectHandl
         else
         {
             unlocked = true;
+            controller.PlayerData.SaveSpellUnlock(new System.Tuple<int, int>(controller.CurrentCharacterId, id), true, RarityType);
+            controller.SetTokenText();
             controller.ResetLockShake();
             lockImage.gameObject.SetActive(false);
         }
@@ -106,6 +108,9 @@ public class SpellCraftingButton : MonoBehaviour, ISelectHandler, IDeselectHandl
     /// </summary>
     public void LockShake(bool shake)
     {
+        if (!lockImage)
+            return;
+
         shaking = shake;
 
         if (shake)

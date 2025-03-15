@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using static SpellCraftingButton;
 
 [Serializable]
 public class PlayerData
@@ -26,22 +27,13 @@ public class PlayerData
     /// </summary>
     /// <param name="spell"></param>
     /// <param name="unlock"></param>
-    public void SaveSpellUnlock(Tuple<int, int> spell, bool unlock = true)
+    public void SaveSpellUnlock(Tuple<int, int> spell, bool unlock = true, Rarity rarity = Rarity.Common)
     {
+        if (unlock)
+            SaveTokenExchange(rarity, -1);
         PlayerData loadData = SaveManager.LoadPlayerData();
-        UnlockedSpells[spell] = unlock;
+        loadData.UnlockedSpells[spell] = unlock;
         SaveManager.SavePlayerData(loadData);
-    }
-
-    public void TempSetDick()
-    {
-        const int totalCharacters = 8;
-        const int totalSpells = 15;
-
-        UnlockedSpells = new Dictionary<Tuple<int, int>, bool>();
-        for (int i = 0; i < totalCharacters; i++)
-            for (int j = 0; j < totalSpells; j++)
-                UnlockedSpells.Add(new Tuple<int, int>(i, j), false);
     }
 
     /// <summary>
@@ -49,19 +41,19 @@ public class PlayerData
     /// </summary>
     /// <param name="type"></param>
     /// <param name="amount"></param>
-    public void SaveTokenExchange(int type, int amount = 1)
+    public void SaveTokenExchange(Rarity rarity, int amount = 1)
     {
         PlayerData loadData = SaveManager.LoadPlayerData();
         
-        switch(type)
+        switch(rarity)
         {
-            case 0:
+            case Rarity.Common:
                 loadData.CommonSpellTokens += amount;
                 break;
-            case 1:
+            case Rarity.Rare:
                 loadData.RareSpellTokens += amount;
                 break;
-            case 2:
+            case Rarity.Legendary:
                 loadData.LegendarySpellTokens += amount;
                 break;
             default:

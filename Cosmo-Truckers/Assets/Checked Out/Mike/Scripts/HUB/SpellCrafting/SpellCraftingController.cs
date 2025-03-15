@@ -35,10 +35,8 @@ public class SpellCraftingController : MonoBehaviour
 
         //set token text
         PlayerData = SaveManager.LoadPlayerData();
-        
-        commonTokens.text = $"x{PlayerData.CommonSpellTokens} C";
-        rareTokens.text = $"x{PlayerData.RareSpellTokens} R";
-        legendaryTokens.text = $"x{PlayerData.LegendarySpellTokens} L";
+
+        SetTokenText();
 
         //set spell and spec buttons
         if (spellAndSpecButtons.Count <= 0)
@@ -80,5 +78,14 @@ public class SpellCraftingController : MonoBehaviour
         foreach (SpellCraftingButton button in spellAndSpecButtons)
             if (!button.Spec)
                 button.CheckUnlockedStatus();
+    }
+
+    public void SetTokenText()
+    {
+        PlayerData = SaveManager.LoadPlayerData();
+
+        commonTokens.text = $"x{PlayerData.CommonSpellTokens} C";
+        rareTokens.text = $"x{PlayerData.RareSpellTokens} R";
+        legendaryTokens.text = $"x{PlayerData.LegendarySpellTokens} L";
     }
 }
