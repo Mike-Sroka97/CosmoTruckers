@@ -16,6 +16,7 @@ public class HUBController : MonoBehaviour
     [SerializeField] Sprite[] silhouetteSprites;
     [HideInInspector] public CharacterSilhouette[] CharacterSilhouettes;
     CharacterSelectController characterSelectController;
+    PlayerData playerData;
 
     [Space(50)]
     [Header("DEBUG")]
@@ -23,6 +24,8 @@ public class HUBController : MonoBehaviour
 
     private void Start()
     {
+
+        playerData = SaveManager.LoadPlayerData();
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
         CameraController.Instance.NormalizePositionRotation();
 
@@ -34,13 +37,14 @@ public class HUBController : MonoBehaviour
 
     public void SetSilhouettes()
     {
-        for (int i = 0; i < characterSelectController.InUseIds.Count; i++)
-            CharacterSilhouettes[i].SetSprite(silhouetteSprites[characterSelectController.InUseIds[i]]);
+        PlayerData data = SaveManager.LoadPlayerData();
+        for (int i = 0; i < data.SelectedCharacters.Count; i++)
+            CharacterSilhouettes[i].SetSprite(silhouetteSprites[data.SelectedCharacters[i]]);
     }
 
     public void SetSilhouette(int i)
     {
-        CharacterSilhouettes[i].SetSprite(silhouetteSprites[characterSelectController.InUseIds[i]]);
+        CharacterSilhouettes[i].SetSprite(silhouetteSprites[characterSelectController.PlayerData.SelectedCharacters[i]]);
     }
 
     public void AnimateSilhouette(int i)

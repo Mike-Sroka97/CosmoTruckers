@@ -7,15 +7,16 @@ public class CharacterSelectController : MonoBehaviour
 {
     public Sprite[] CharacterSprites;
     public int CurrentId;
-    public List<int> InUseIds = new List<int>();
     public HUBController Hub;
 
     List<CharacterSlotButton> characterSlotButtons = new List<CharacterSlotButton>();
     List<CharacterSelectButton> characterSelectButtons = new List<CharacterSelectButton>();
+    [HideInInspector] public PlayerData PlayerData;
 
     private void Awake()
     {
         Hub = GetComponentInParent<HUBController>();
+        PlayerData = SaveManager.LoadPlayerData();
     }
 
     /// <summary>
@@ -41,9 +42,6 @@ public class CharacterSelectController : MonoBehaviour
         {
             characterSlotButtons = GetComponentsInChildren<CharacterSlotButton>(true).ToList();
             characterSelectButtons = GetComponentsInChildren<CharacterSelectButton>(true).ToList();
-
-            foreach (CharacterSlotButton button in characterSlotButtons)
-                InUseIds.Add(button.SelectedCharacterId);
         }
     }
 
@@ -79,7 +77,7 @@ public class CharacterSelectController : MonoBehaviour
     /// <param name="newId"></param>
     public void UpdateCharacterImageOnSlotButton(int newId)
     {
-        InUseIds[CurrentId] = newId;
+        PlayerData.SelectedCharacters[CurrentId] = newId;
         characterSlotButtons[CurrentId].SetButton(newId);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,15 +31,6 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
         if (characterID < playerData.UnlockedPlayerIDs.Count && characterID >= 0 && !playerData.UnlockedPlayerIDs[characterID] && transform.Find("CharacterImage"))
             transform.Find("CharacterImage").GetComponent<Image>().color = Color.black;
-
-        //foreach (CharacterSO character in PlayerManager.Instance.SelectedCharacters)
-        //{
-        //    if (character.PlayerID == characterID)
-        //    {
-        //        selectedGO.SetActive(true);
-        //        return;
-        //    }
-        //}
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -83,13 +75,16 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
 
     public void SelectCharacter()
     {
-        if (selectedGO.activeInHierarchy || characterController.InUseIds.Contains(characterID) || !ValidateUnlockedStatus() || characterController.Hub.CharacterSilhouettes[characterController.CurrentId].Jaunting)
+
+
+        if (selectedGO.activeInHierarchy || characterController.PlayerData.SelectedCharacters.Contains(characterID) || !ValidateUnlockedStatus() || characterController.Hub.CharacterSilhouettes[characterController.CurrentId].Jaunting)
             return;
 
         characterController.ResetSelectedImages();
         selectedGO.SetActive(true);
         characterController.UpdateCharacterImageOnSlotButton(characterID);
         characterController.Hub.AnimateSilhouette(characterController.CurrentId);
+        characterController.PlayerData = characterController.PlayerData.SaveCharacterSelection(characterController.CurrentId, characterID);
     }
 
     public void OverrideSelectCharacter()
@@ -104,11 +99,6 @@ public class CharacterSelectButton : MonoBehaviour, ISelectHandler, IDeselectHan
     {
         if (selectedGO)
             selectedGO.SetActive(false);
-    }
-
-    public void SetCharacterIDs()
-    {
-        PlayerManager.Instance.SetActivePlayers(characterController.InUseIds);
     }
 
     private bool ValidateUnlockedStatus()

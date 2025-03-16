@@ -8,6 +8,7 @@ public class PlayerData
     public Dictionary<int, bool> UnlockedPlayerIDs;
     public Dictionary<Tuple<int, int>, bool> UnlockedSpells;
     public Dictionary<int, int> SelectedSpecs;
+    public List<int> SelectedCharacters;
     public int CommonSpellTokens = 0;
     public int RareSpellTokens = 0;
     public int LegendarySpellTokens = 0;
@@ -74,6 +75,12 @@ public class PlayerData
         SaveManager.SavePlayerData(loadData);
     }
 
+    /// <summary>
+    /// Save a spec being selected
+    /// </summary>
+    /// <param name="characterId"></param>
+    /// <param name="spec"></param>
+    /// <returns></returns>
     public PlayerData SaveSpecSelection(int characterId, int spec)
     {
         PlayerData loadData = SaveManager.LoadPlayerData();
@@ -82,6 +89,27 @@ public class PlayerData
             loadData.SetupSpecs();
 
         loadData.SelectedSpecs[characterId] = spec;
+        SaveManager.SavePlayerData(loadData);
+        return loadData;
+    }
+
+    /// <summary>
+    /// Save a character selection
+    /// </summary>
+    /// <param name="slot"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public PlayerData SaveCharacterSelection(int slot, int id)
+    {
+        PlayerData loadData = SaveManager.LoadPlayerData();
+
+        if (SelectedCharacters == null)
+        {
+            SetupSelectedCharacters();
+            loadData.SelectedCharacters = SelectedCharacters;
+        }
+
+        loadData.SelectedCharacters[slot] = id;
         SaveManager.SavePlayerData(loadData);
         return loadData;
     }
@@ -108,6 +136,7 @@ public class PlayerData
         SetupSpells();
         SetupTokens();
         SetupSpecs();
+        SetupSelectedCharacters();
     }
 
     /// <summary>
@@ -158,5 +187,16 @@ public class PlayerData
 
         for (int i = 0; i < totalCharacters; i++)
             SelectedSpecs.Add(i, 0); //select first spec
+    }
+
+    /// <summary>
+    /// Defualt Characters
+    /// </summary>
+    private void SetupSelectedCharacters()
+    {
+        SelectedCharacters = new List<int>();
+
+        for (int i = 0; i < 4; i++)
+            SelectedCharacters.Add(i);
     }
 }

@@ -32,7 +32,7 @@ public class SpellCraftingCharacterSelectButton : MonoBehaviour
         if(!controller)
             controller = HelperFunctions.FindNearestParentOfType<SpellCraftingController>(transform);
 
-        controller.CurrentCharacterId = PlayerManager.Instance.ActivePlayerIDs[id];
+        controller.CurrentCharacterId = controller.PlayerData.SelectedCharacters[id];
 
         controller.ResetSelectedCharacter();
         myImage.sprite = myActiveSprite;

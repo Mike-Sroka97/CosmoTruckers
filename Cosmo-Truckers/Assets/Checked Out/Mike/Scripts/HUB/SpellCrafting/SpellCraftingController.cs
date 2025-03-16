@@ -22,7 +22,9 @@ public class SpellCraftingController : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrentCharacterId = PlayerManager.Instance.ActivePlayerIDs[0];
+        PlayerData = SaveManager.LoadPlayerData();
+
+        CurrentCharacterId = PlayerData.SelectedCharacters[0];
 
         //set player select buttons
         if (characterSelectButtons.Count <= 0)
@@ -31,10 +33,9 @@ public class SpellCraftingController : MonoBehaviour
         characterSelectButtons[0].SelectMe();
 
         for (int i = 0; i < characterSelectButtons.Count; i++)
-            characterSelectButtons[i].SetCharacterImage(CharacterSprites[PlayerManager.Instance.ActivePlayerIDs[i]]);
+            characterSelectButtons[i].SetCharacterImage(CharacterSprites[PlayerData.SelectedCharacters[i]]);
 
         //set token text
-        PlayerData = SaveManager.LoadPlayerData();
 
         SetTokenText();
 

@@ -88,7 +88,7 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        if (CombatData.Instance.PlayersToSpawn.Count > 0)
+        if (CombatData.Instance.PlayersToSpawn.Count > 0 && CombatData.Instance.TESTING)
         {
             PlayersToSpawn.Clear();
             foreach (GameObject player in CombatData.Instance.PlayersToSpawn)
@@ -96,8 +96,10 @@ public class EnemyManager : MonoBehaviour
         }
         else
         {
+            PlayerData data = SaveManager.LoadPlayerData();
+
             PlayersToSpawn.Clear();
-            foreach (int player in PlayerManager.Instance.ActivePlayerIDs)
+            foreach (int player in data.SelectedCharacters)
                 PlayersToSpawn.Add(PlayerManager.Instance.AllCharacters[player].CombatPlayerSpawn);
         }
 
