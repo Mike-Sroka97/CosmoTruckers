@@ -7,7 +7,6 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
 
     public List<CharacterSO> AllCharacters;
-    public List<int> ActivePlayerIDs = new List<int>() { 0, 1, 2, 3 };
 
     /// <summary>
     /// Sets non destroyable manager
@@ -25,14 +24,5 @@ public class PlayerManager : MonoBehaviour
 
         if (!Instance)
             Instance = this;
-    }
-
-    /// <summary>
-    /// Set players for dungeon to load
-    /// </summary>
-    /// <param name="newPlayers"></param>
-    public void SetActivePlayers(List<int> newPlayers)
-    {
-        ActivePlayerIDs = newPlayers;
     }
 }
