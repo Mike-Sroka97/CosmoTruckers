@@ -14,6 +14,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     /// </summary>
     public class RebindActionUI : MonoBehaviour
     {
+        private void Awake()
+        {
+            duplicateBindingsManager = HelperFunctions.FindNearestParentOfType<DuplicateBindingsManager>(transform); 
+        }
+
         /// <summary>
         /// Reference to the action that is to be rebound.
         /// </summary>
@@ -258,17 +263,15 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             if (!ResolveActionAndBinding(out var action, out var bindingIndex))
                 return;
 
+            bool allCompositeParts = false;
+
             // If the binding is a composite, we need to rebind each part in turn.
-            if (action.bindings[bindingIndex].isComposite || action.bindings[bindingIndex].isPartOfComposite)
+            if (action.bindings[bindingIndex].isComposite)
             {
-                var firstPartIndex = bindingIndex + 1;
-                if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isPartOfComposite)
-                    PerformInteractiveRebind(action, firstPartIndex, allCompositeParts: true);
+                allCompositeParts = true;
             }
-            else
-            {
-                PerformInteractiveRebind(action, bindingIndex);
-            }
+
+            PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
         }
 
         private void PerformInteractiveRebind(InputAction action, int bindingIndex, bool allCompositeParts = false)
@@ -305,26 +308,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                         action.Enable();
                         m_RebindOverlay?.SetActive(false);
                         m_RebindStopEvent?.Invoke(this, operation);
-                        
-                        if (CheckForDuplicateBindings(action, bindingIndex, allCompositeParts))
-                        {
-                            action.RemoveBindingOverride(bindingIndex);
-                            CleanUp(); 
-                            PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
-                            return; 
-                        }
 
+                        CheckForDuplicateBindings(action, bindingIndex, allCompositeParts); 
                         UpdateBindingDisplay();
                         CleanUp();
-
-                        // If there's more composite parts we should bind, initiate a rebind
-                        // for the next part.
-                        if (allCompositeParts)
-                        {
-                            var nextBindingIndex = bindingIndex + 1;
-                            if (nextBindingIndex < action.bindings.Count && action.bindings[nextBindingIndex].isPartOfComposite)
-                                PerformInteractiveRebind(action, nextBindingIndex, true);
-                        }
                     });
 
             // If it's a part binding, show the name of the part in the UI.
@@ -356,35 +343,38 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         /// <summary>
         /// Check for any duplicate bindings
         /// </summary>
-        /// <param name="action"></param>
-        /// <param name="bindingIndex"></param>
+        /// <param name="newAction"></param>
+        /// <param name="newBindingIndex"></param>
         /// <param name="allCompositeParts"></param>
         /// <returns></returns>
-        private bool CheckForDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
+        private bool CheckForDuplicateBindings(InputAction newAction, int newBindingIndex, bool allCompositeParts = false)
         {
-            InputBinding newBinding = action.bindings[bindingIndex];
+            InputBinding newBinding = newAction.bindings[newBindingIndex];
 
-            foreach (InputBinding binding in action.actionMap.bindings)
+            if (!allCompositeParts)
             {
-                // If the binding is equal to the new binding, skip it
-                if (binding.action == newBinding.action)
-                    continue; 
-
-                // If the bindings' effective paths are identical, return true
-                if (binding.effectivePath == newBinding.effectivePath)
+                for (int i = 0; i < newAction.actionMap.bindings.Count; i++)
                 {
-                    Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
-                    return true; 
+                    InputBinding binding = newAction.actionMap.bindings[i];
+
+                    // If the bindings' effective paths are identical, return true
+                    if (binding.effectivePath == newBinding.effectivePath)
+                    {
+                        duplicateBindingsManager.RebindDuplicate(this, binding);
+                        Debug.Log("Duplicate binding found: " + binding.effectivePath);
+                        return true;
+                    }
                 }
             }
-
-            // Iterates over all bindings before the current binding (composite example: WASD works, but you don't want WWSD.)
-            if (allCompositeParts)
+            // For composite bindings like a single WASD binding where the user types in all 4 back to back
+            else
             {
-                for (int i = 1; i < bindingIndex; i++)
+                for (int i = 1; i < newBindingIndex; i++)
                 {
-                    if (action.bindings[i].effectivePath == newBinding.overridePath)
+                    if (newAction.bindings[i].effectivePath == newBinding.overridePath)
                     {
+                        InputBinding binding = newAction.actionMap.bindings[i];
+                        duplicateBindingsManager.RebindDuplicate(this, binding);
                         Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
                         return true;
                     }
@@ -476,6 +466,9 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         [Tooltip("What text should be displayed fo rthe action label?")]
         [SerializeField]
         private string m_ActionLabelString;
+
+        [SerializeField]
+        private DuplicateBindingsManager duplicateBindingsManager;
 
         [Tooltip("Event that is triggered when the way the binding is display should be updated. This allows displaying "
             + "bindings in custom ways, e.g. using images instead of text.")]

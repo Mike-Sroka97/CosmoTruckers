@@ -6,7 +6,13 @@ using UnityEngine.InputSystem;
 public class ResetDeviceBindings : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions; 
-    [SerializeField] private string targetControlScheme; 
+    [SerializeField] private string targetControlScheme;
+    private DuplicateBindingsManager duplicateBindings; 
+
+    private void Start()
+    {
+        duplicateBindings = GetComponent<DuplicateBindingsManager>();
+    }
 
     /// <summary>
     /// Resets ALL bindings (for example, keyboard, gamepad, etc) in an input action map.  
@@ -17,6 +23,8 @@ public class ResetDeviceBindings : MonoBehaviour
         {
             map.RemoveAllBindingOverrides();
         }
+
+        // duplicateBindings.RemoveAllDuplicates();
     }
 
     public void ResetControlSchemeBindings()
@@ -28,5 +36,7 @@ public class ResetDeviceBindings : MonoBehaviour
                 action.RemoveBindingOverride(InputBinding.MaskByGroup(targetControlScheme)); 
             }
         }
+
+        // duplicateBindings.RemoveAllDuplicates();
     }
 }
