@@ -20,6 +20,7 @@ public class DuplicateBindingsManager : MonoBehaviour
     /// <param name="duplicateBindingIndex"></param>
     public void RebindDuplicate(RebindActionUI originalActionUI, InputBinding bindingToFind)
     {
+
         RebindActionUI duplicateRebindUIObject = null;
         InputAction duplicateAction = null;
         int duplicateIndex = -1; 
@@ -29,7 +30,7 @@ public class DuplicateBindingsManager : MonoBehaviour
             rebindActions[i].ResolveActionAndBinding(out InputAction action, out int bindingIndex);
             InputBinding loopedBinding = action.bindings[bindingIndex];
 
-            if (loopedBinding == bindingToFind && rebindActions[i] != originalActionUI)
+            if (loopedBinding.effectivePath == bindingToFind.effectivePath && rebindActions[i] != originalActionUI)
             {
                 duplicateAction = action; 
                 duplicateIndex = bindingIndex;

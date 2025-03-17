@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     {
         private void Awake()
         {
-            duplicateBindingsManager = HelperFunctions.FindNearestParentOfType<DuplicateBindingsManager>(transform); 
+            duplicateBindingsManager = HelperFunctions.FindNearestParentOfType<DuplicateBindingsManager>(transform, 5); 
         }
 
         /// <summary>

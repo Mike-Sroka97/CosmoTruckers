@@ -32,10 +32,45 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             if (string.IsNullOrEmpty(deviceLayoutName) || string.IsNullOrEmpty(controlPath))
                 return;
 
+            bool containsPlayStationDevice = false;
+            bool containsSwitchDevice = false; 
+
+            // Determine what type of controller is plugged in
+            foreach (InputDevice device in InputSystem.devices)
+            {
+                if (device.description.deviceClass.Contains("Dual"))
+                {
+                    containsPlayStationDevice = true;
+                    break; 
+                }
+                else if (device.description.deviceClass.Contains("Switch"))
+                {
+                    containsSwitchDevice = true;
+                    break;
+                }
+            }
+            string[] joyStickNames = Input.GetJoystickNames();
+            for (int i = 0; i < joyStickNames.Length; i++)
+            {
+                if (joyStickNames[i].Contains("Dual"))
+                {
+                    containsPlayStationDevice = true;
+                    break; 
+                }
+                else if (joyStickNames[i].Contains("Pro"))
+                {
+                    containsSwitchDevice = true;
+                    break;
+                }
+            }
+
+            // DualSense Wireless Controller
+            // Pro Controller
+
             var icon = default(Sprite);
-            if (InputSystem.IsFirstLayoutBasedOnSecond(deviceLayoutName, "DualShockGamepad"))
+            if (InputSystem.IsFirstLayoutBasedOnSecond(deviceLayoutName, "DualShockGamepad") || containsPlayStationDevice)
                 icon = ps4.GetSprite(controlPath);
-            else if (InputSystem.IsFirstLayoutBasedOnSecond(deviceLayoutName, "Gamepad"))
+            else if (InputSystem.IsFirstLayoutBasedOnSecond(deviceLayoutName, "Gamepad") && !containsPlayStationDevice && !containsSwitchDevice)
                 icon = xbox.GetSprite(controlPath);
 
             var textComponent = component.bindingText;
@@ -90,6 +125,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             {
                 // From the input system, we get the path of the control on device. So we can just
                 // map from that to the sprites we have for gamepads.
+
                 switch (controlPath)
                 {
                     case "buttonSouth": return buttonSouth;
