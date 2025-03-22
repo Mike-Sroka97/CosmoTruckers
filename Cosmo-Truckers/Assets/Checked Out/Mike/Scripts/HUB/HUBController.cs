@@ -21,6 +21,7 @@ public class HUBController : MonoBehaviour
     [Space(50)]
     [Header("DEBUG")]
     public bool AllCharactersUnlocked;
+    public bool AllDataLogEntriesUnlocked;
 
     private void Start()
     {

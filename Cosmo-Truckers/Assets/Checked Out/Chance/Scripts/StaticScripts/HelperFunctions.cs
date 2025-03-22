@@ -80,7 +80,7 @@ public static class HelperFunctions
     /// <param name="searchingTransform"></param>
     /// <param name="depth"></param>
     /// <returns></returns>
-    public static T FindNearestParentOfType<T>(Transform searchingTransform, int depth = 3)
+    public static T FindNearestParentOfType<T>(Transform searchingTransform, int depth = 10)
     {
         //Search parents equal to depth to find object of type
         for(int i = 0; i < depth; i++)

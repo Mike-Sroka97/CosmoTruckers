@@ -1,0 +1,62 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class DataLogController : MonoBehaviour
+{
+    [Header("Main Screen")]
+    [SerializeField] GameObject mainScreen;
+
+    [Space(20)]
+    [Header("Secondary Screens")]
+    [SerializeField] GameObject secondaryScreens;
+    [SerializeField] GameObject staffScreen;
+    [SerializeField] GameObject dimensionsScreen;
+
+    [Space(20)]
+    [Header("Tertiary Screens")]
+    [SerializeField] GameObject coworkerScreen;
+    [SerializeField] GameObject friendlySummonsScreen;
+
+    [Space(20)]
+    [Header("Yap")]
+    public TextMeshProUGUI DataYapAura;
+
+    /// <summary>
+    /// On enable sets default state of the data log
+    /// </summary>
+    private void OnEnable()
+    {
+        ResetMe();
+    }
+
+    /// <summary>
+    /// Sets default state of the data log
+    /// </summary>
+    public void ResetMe()
+    {
+        mainScreen.SetActive(true);
+        secondaryScreens.SetActive(false);
+        DataYapAura.text = "";
+    }
+
+    /// <summary>
+    /// Primes secondary screens
+    /// </summary>
+    private void SetSecondaryScreens()
+    {
+        mainScreen.SetActive(false);
+        staffScreen.SetActive(false);
+        coworkerScreen.SetActive(false);
+        friendlySummonsScreen.SetActive(false);
+        secondaryScreens.SetActive(true);
+        DataYapAura.text = "";
+    }
+
+    public void SetSecondaryScreen(GameObject screenToSet)
+    {
+        SetSecondaryScreens();
+        screenToSet.SetActive(true);
+    }
+}
