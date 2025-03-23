@@ -24,7 +24,7 @@ public class HubSettingSubScreen : MonoBehaviour
         screenRightButton.navigation = NewNavigation(screenRightButton.navigation, newUp: screenRightButtonUp);
 
         // Setup sub screen left/right new navigations
-        subLeftButtonDown.navigation = NewNavigation(subLeftButtonDown.navigation, newDown: subLeftButtonDown);
+        subScreenLeftButton.navigation = NewNavigation(subScreenLeftButton.navigation, newDown: subLeftButtonDown);
         subScreenRightButton.navigation = NewNavigation(subScreenRightButton.navigation, newDown: subRightButtonDown);
     }
 
