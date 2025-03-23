@@ -20,7 +20,6 @@ public class DuplicateBindingsManager : MonoBehaviour
     /// <param name="duplicateBindingIndex"></param>
     public void RebindDuplicate(RebindActionUI originalActionUI, InputBinding bindingToFind)
     {
-
         RebindActionUI duplicateRebindUIObject = null;
         InputAction duplicateAction = null;
         int duplicateIndex = -1; 

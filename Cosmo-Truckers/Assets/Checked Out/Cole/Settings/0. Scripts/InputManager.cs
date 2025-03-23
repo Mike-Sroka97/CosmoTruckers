@@ -34,8 +34,9 @@ public class InputManager : MonoBehaviour
     private InputAction actionSwapAction;
     #endregion
 
-    public bool RebindingKey { get; private set; } = false; 
-    private PlayerInput playerInput;
+    public bool RebindingKey { get; private set; } = false;
+    [HideInInspector]
+    public PlayerInput PlayerInput { get; private set; }
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     private TMP_Text textToModify;
@@ -49,6 +50,7 @@ public class InputManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+            PlayerInput = GetComponent<PlayerInput>();
         }
         else
         {
@@ -59,9 +61,7 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        playerInput = GetComponent<PlayerInput>();
         SetupInputActions(); 
-
         string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty); 
 
         if (string.IsNullOrEmpty(rebinds))
@@ -70,7 +70,7 @@ public class InputManager : MonoBehaviour
         }
         else
         {
-            playerInput.actions.LoadBindingOverridesFromJson(rebinds);
+            PlayerInput.actions.LoadBindingOverridesFromJson(rebinds);
         }
     }
 
@@ -81,13 +81,13 @@ public class InputManager : MonoBehaviour
 
     public void SetupInputActions()
     {
-        moveAction = playerInput.actions[PlayerActions.Move.ToString()];
-        jumpAction = playerInput.actions[PlayerActions.Jump.ToString()];
-        attackAction = playerInput.actions[PlayerActions.Attack.ToString()];
-        specialAction = playerInput.actions[PlayerActions.Special.ToString()]; 
-        selectAction = playerInput.actions[PlayerActions.Select.ToString()]; 
-        backAction = playerInput.actions[PlayerActions.Back.ToString()];  
-        actionSwapAction = playerInput.actions[PlayerActions.ActionSwap.ToString()];  
+        moveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
+        jumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
+        attackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
+        specialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
+        selectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
+        backAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
+        actionSwapAction = PlayerInput.actions[PlayerActions.ActionSwap.ToString()];  
     }
 
     public void UpdateInputs()
@@ -108,13 +108,13 @@ public class InputManager : MonoBehaviour
         ActionSwapPressed = actionSwapAction.WasPressedThisFrame();
     }
 
-    private enum PlayerActionMaps
+    public enum PlayerActionMaps
     {
         Player, 
         UI,
     }
 
-    private enum PlayerActions
+    public enum PlayerActions
     {
         Move, 
         Jump, 

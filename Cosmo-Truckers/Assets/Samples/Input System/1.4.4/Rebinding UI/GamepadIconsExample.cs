@@ -1,5 +1,6 @@
 using System;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.DefaultInputActions;
 
 ////TODO: have updateBindingUIEvent receive a control path string, too (in addition to the device layout name)
 
@@ -121,6 +122,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             public Sprite rightStickRight;
             public Sprite rightStickPress;
 
+            // No need to assign in inspector
+            public Sprite leftStickX; 
+            public Sprite leftStickY; 
+
             public Sprite GetSprite(string controlPath)
             {
                 // From the input system, we get the path of the control on device. So we can just
@@ -152,6 +157,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                     case "leftStick/up": return leftStickUp;
                     case "leftStick/down": return leftStickDown; 
                     case "leftStickPress": return leftStickPress;
+                    case "leftStick/x": return leftStickX;
+                    case "leftStick/y": return leftStickY;
 
                     // Right Stick                    
                     case "rightStick/left": return rightStickLeft;

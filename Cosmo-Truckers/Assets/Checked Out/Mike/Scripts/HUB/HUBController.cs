@@ -10,6 +10,7 @@ public class HUBController : MonoBehaviour
     [SerializeField] GameObject spellCraftingGO;
     [SerializeField] InaPractice trainingIna;
     [SerializeField] GameObject emotesGO;
+    [SerializeField] GameObject settingsGO;
     [SerializeField] GameObject dataLogGO;
     [SerializeField] MainHubButton[] mainHubButtons;
 
@@ -129,6 +130,21 @@ public class HUBController : MonoBehaviour
         else
         {
             emotesGO.SetActive(false);
+            mainOptionsGO.SetActive(true);
+        }
+    }
+
+    public void Settings(bool open)
+    {
+        if (open)
+        {
+            CloseButtons();
+            settingsGO.SetActive(true);
+            mainOptionsGO.SetActive(false);
+        }
+        else
+        {
+            settingsGO.SetActive(false);
             mainOptionsGO.SetActive(true);
         }
     }
