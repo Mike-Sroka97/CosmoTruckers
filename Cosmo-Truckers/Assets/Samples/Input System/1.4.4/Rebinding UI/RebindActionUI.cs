@@ -234,25 +234,45 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             string oldOverridePath = newBinding.overridePath; 
 
             // Remove the current binding
-            action.RemoveBindingOverride(bindingIndex);
+            //action.RemoveBindingOverride(bindingIndex);
 
             foreach (InputAction otherAction in action.actionMap.actions)
             {
-                // If the other action is equal to the action passed in, then skip it
-                if (otherAction == action)
-                    continue; 
+                // If the other action is equal to the action passed in and not part of a composite, skip it
+                if (otherAction == action && !newBinding.isPartOfComposite && !newBinding.isComposite)
+                    continue;
 
                 // Otherwise, check all bindings for duplicates within the action
                 for (int i = 0; i < otherAction.bindings.Count; i++)
                 {
                     InputBinding _binding = otherAction.bindings[i];
+                    string swapOverridePath = _binding.overridePath;
                     // If override path is equal to the new binding's path, swap the bindings
-                    if (_binding.overridePath == newBinding.path)
+                    if (_binding.effectivePath == newBinding.path)
                     {
-                        otherAction.ApplyBindingOverride(i, oldOverridePath);
+                        if (swapOverridePath != null)
+                        {
+                            action.ApplyBindingOverride(bindingIndex, swapOverridePath);
+                        }
+                        else
+                        {
+                            action.RemoveBindingOverride(bindingIndex);
+                        }
+
+                        if (oldOverridePath != null)
+                        {
+                            otherAction.ApplyBindingOverride(i, oldOverridePath);
+                        }
+                        else
+                        {
+                            otherAction.RemoveBindingOverride(i);
+                        }
+                        return; 
                     }
                 }
             }
+
+            action.RemoveBindingOverride(bindingIndex);
         }
 
         /// <summary>
