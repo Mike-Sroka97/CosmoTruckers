@@ -1,8 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Samples.RebindUI;
-using TMPro; 
 
 public class DuplicateBindingsManager : MonoBehaviour
 {
