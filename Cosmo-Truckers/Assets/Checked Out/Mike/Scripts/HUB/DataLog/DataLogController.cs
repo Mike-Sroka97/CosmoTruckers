@@ -10,14 +10,8 @@ public class DataLogController : MonoBehaviour
 
     [Space(20)]
     [Header("Secondary Screens")]
-    [SerializeField] GameObject secondaryScreens;
-    [SerializeField] GameObject staffScreen;
-    [SerializeField] GameObject dimensionsScreen;
-
-    [Space(20)]
-    [Header("Tertiary Screens")]
-    [SerializeField] GameObject coworkerScreen;
-    [SerializeField] GameObject friendlySummonsScreen;
+    [SerializeField] GameObject secondaryScreen;
+    [SerializeField] GameObject[] secondaryScreens;
 
     [Space(20)]
     [Header("Yap")]
@@ -37,7 +31,7 @@ public class DataLogController : MonoBehaviour
     public void ResetMe()
     {
         mainScreen.SetActive(true);
-        secondaryScreens.SetActive(false);
+        secondaryScreen.SetActive(false);
         DataYapAura.text = "";
     }
 
@@ -47,10 +41,9 @@ public class DataLogController : MonoBehaviour
     private void SetSecondaryScreens()
     {
         mainScreen.SetActive(false);
-        staffScreen.SetActive(false);
-        coworkerScreen.SetActive(false);
-        friendlySummonsScreen.SetActive(false);
-        secondaryScreens.SetActive(true);
+        foreach (GameObject go in secondaryScreens)
+            go.SetActive(false);
+        secondaryScreen.SetActive(true);
         DataYapAura.text = "";
     }
 
