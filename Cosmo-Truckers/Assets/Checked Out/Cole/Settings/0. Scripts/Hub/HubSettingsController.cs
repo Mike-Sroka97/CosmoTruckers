@@ -18,10 +18,14 @@ public class HubSettingsController : MonoBehaviour
     [SerializeField] GameObject gamepadScreenGO;
     [SerializeField] GameObject[] gamepadLayoutSubScreenGOs;
 
+    SettingsData data;
     private int currentSubScreen = 0;
 
     private void OnEnable()
     {
+        if (data == null)
+            data = SettingsManager.LoadSettingsData();
+
         selectScreenGO.SetActive(true);
     }
 
@@ -101,36 +105,11 @@ public class HubSettingsController : MonoBehaviour
                     keyboardSubScreenGOs[i].SetActive(false);
                 }
             }
-
-            // Disable gamepad screens
-            gamepadScreenGO.SetActive(false);
         }
         else
         {
             keyboardScreenGO.SetActive(false);
             CloseKeyboardSubScreens(); 
-        }
-    }
-
-    /// <summary>
-    /// Open the gamepad control settings screen
-    /// </summary>
-    public void OpenGamepadControlScreen(bool open)
-    {
-        if (open)
-        {
-            gamepadScreenGO.SetActive(true);
-            // Load which layout the player chose last and enable it here
-
-            // Disable keyboard screens
-            keyboardScreenGO.SetActive(false);
-            CloseKeyboardSubScreens();
-        }
-        else
-        {
-            selectScreenGO.SetActive(true);
-            CloseGamepadSubScreens(); 
-            gamepadScreenGO.SetActive(false);
         }
     }
 
@@ -182,6 +161,86 @@ public class HubSettingsController : MonoBehaviour
     {
         foreach (GameObject screen in keyboardSubScreenGOs)
             screen.SetActive(false);
+    }
+
+    /// <summary>
+    /// Swap between Keyboard or Gamepad control screens
+    /// </summary>
+    public void SwapControlScreens()
+    {
+        if (!gamepadScreenGO.activeSelf)
+        {
+            OpenGamepadControlScreen(true); 
+            OpenKeyboardControlScreen(false);
+        }
+        else
+        {
+            OpenKeyboardControlScreen(true); 
+            OpenGamepadControlScreen(false);
+        }
+    }
+
+    /// <summary>
+    /// Open the Gamepad control settings screen.
+    /// </summary>
+    public void OpenGamepadControlScreen(bool open)
+    {
+        if (open)
+        {
+            // Enable keyboard screen and minigame sub screen, disable all other sub screens
+            gamepadScreenGO.SetActive(true);
+            for (int i = 0; i < gamepadLayoutSubScreenGOs.Length; i++)
+            {
+                if (i == data.GamepadLayout)
+                {
+                    gamepadLayoutSubScreenGOs[i].SetActive(true);
+                }
+                else
+                {
+                    gamepadLayoutSubScreenGOs[i].SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            gamepadScreenGO.SetActive(false);
+            CloseGamepadSubScreens();
+        }
+    }
+
+    public void NextGamepadLayout(bool right)
+    {
+        if (right)
+        {
+            data.GamepadLayout++;
+
+            if (data.GamepadLayout == gamepadLayoutSubScreenGOs.Length)
+            {
+                gamepadLayoutSubScreenGOs[data.GamepadLayout - 1].SetActive(false);
+                gamepadLayoutSubScreenGOs[0].SetActive(true);
+                data.GamepadLayout = 0;
+            }
+            else
+            {
+                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
+                gamepadLayoutSubScreenGOs[data.GamepadLayout - 1].SetActive(false);
+            }
+        }
+        else
+        {
+            data.GamepadLayout--;
+            if (data.GamepadLayout == -1)
+            {
+                data.GamepadLayout = keyboardSubScreenGOs.Length - 1;
+                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
+                gamepadLayoutSubScreenGOs[0].SetActive(false);
+            }
+            else
+            {
+                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
+                gamepadLayoutSubScreenGOs[data.GamepadLayout + 1].SetActive(false);
+            }
+        }
     }
 
     private void CloseGamepadSubScreens()

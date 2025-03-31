@@ -13,15 +13,17 @@ public class HubSettingSubScreen : MonoBehaviour
 
     [Header("New Down/Up Buttons")]
     [SerializeField] Button screenLeftButtonUp;
+    [SerializeField] Button screenLeftButtonDown;
     [SerializeField] Button screenRightButtonUp;
+    [SerializeField] Button screenRightButtonDown;
     [SerializeField] Button subLeftButtonDown;
     [SerializeField] Button subRightButtonDown;
 
     private void OnEnable()
     {
         // Setup main screen left/right new navigations
-        screenLeftButton.navigation = NewNavigation(screenLeftButton.navigation, newUp: screenLeftButtonUp);
-        screenRightButton.navigation = NewNavigation(screenRightButton.navigation, newUp: screenRightButtonUp);
+        screenLeftButton.navigation = NewNavigation(screenLeftButton.navigation, newUp: screenLeftButtonUp, newDown: screenLeftButtonDown);
+        screenRightButton.navigation = NewNavigation(screenRightButton.navigation, newUp: screenRightButtonUp, newDown: screenRightButtonDown);
 
         // Setup sub screen left/right new navigations
         subScreenLeftButton.navigation = NewNavigation(subScreenLeftButton.navigation, newDown: subLeftButtonDown);
