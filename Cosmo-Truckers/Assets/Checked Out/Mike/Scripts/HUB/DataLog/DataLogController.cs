@@ -22,6 +22,7 @@ public class DataLogController : MonoBehaviour
     public TextMeshProUGUI DataYapAura;
 
     [HideInInspector] public int currentDimension;
+    [HideInInspector] public DataLogData DataLogData;
 
     /// <summary>
     /// On enable sets default state of the data log
@@ -29,6 +30,8 @@ public class DataLogController : MonoBehaviour
     private void OnEnable()
     {
         ResetMe();
+
+        DataLogData = SaveManager.LoadDataLogData();
     }
 
     /// <summary>
@@ -91,5 +94,10 @@ public class DataLogController : MonoBehaviour
     public void SetFriendlySummonScreen()
     {
         SetSecondaryScreen(friendlySummonsScreens[currentDimension - 1]);
+    }
+
+    public bool DataFileUnlocked(string key)
+    {
+        return DataLogData.DataFiles[key];
     }
 }

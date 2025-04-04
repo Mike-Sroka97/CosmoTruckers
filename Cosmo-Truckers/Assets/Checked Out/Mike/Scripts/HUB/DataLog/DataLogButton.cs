@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,9 +8,9 @@ public class DataLogButton : MonoBehaviour, ISelectHandler, IDeselectHandler
 {
     //TODO add key value to determine if it is locked on awake
     [SerializeField] [TextArea] string dataText;
+    [SerializeField] string dataFileKey = "";
 
     DataLogController controller;
-    bool locked = false;
 
     public void OnDeselect(BaseEventData eventData)
     {
@@ -19,17 +20,21 @@ public class DataLogButton : MonoBehaviour, ISelectHandler, IDeselectHandler
     public void OnSelect(BaseEventData eventData)
     {
         controller.DataYapAura.text = "";
-        controller.DataYapAura.text = dataText;
+
+        if(DetermineUnlocked())
+            controller.DataYapAura.text = dataText;
     }
 
     private void Awake()
     {
         controller = HelperFunctions.FindNearestParentOfType<DataLogController>(transform);
-        DetermineLocked();
+
+        if (!DetermineUnlocked())
+            transform.Find("Text").GetComponent<TextMeshProUGUI>().text = "";
     }
 
-    private void DetermineLocked()
+    private bool DetermineUnlocked()
     {
-        //TODO determine locked state
+        return dataFileKey == "" || controller.DataFileUnlocked(dataFileKey);
     }
 }

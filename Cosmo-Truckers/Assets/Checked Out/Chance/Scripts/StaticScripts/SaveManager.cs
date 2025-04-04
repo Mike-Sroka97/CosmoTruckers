@@ -14,6 +14,7 @@ public static class SaveManager
 
     const string tutorialStatus = "/tutorialFinished.data";
     const string playerUnlocks = "/unlockedCharacters.data";
+    const string dataLogUnlocks = "/unlockedDataFiles.data";
     const string dimensionOne = "/dimensionOne.data";
 
     public static void SaveTutorialStatus(bool finished)
@@ -89,7 +90,7 @@ public static class SaveManager
     public static void SavePlayerData(PlayerData data)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + playerUnlocks;
+        string path = Application.persistentDataPath + dataLogUnlocks;
         FileStream stream = new FileStream(path, FileMode.Create);
 
         formatter.Serialize(stream, data);
@@ -122,32 +123,42 @@ public static class SaveManager
         }
     }
 
-    //public static void Save(SaveData data, int character)
-    //{
-    //    BinaryFormatter formatter = new BinaryFormatter();
-    //    string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
-    //    Directory.CreateDirectory(path);
-    //    path = Path.Combine(path, GameName);
+    public static void SaveDataLogData(DataLogData data)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string path = Application.persistentDataPath + dataLogUnlocks;
+        FileStream stream = new FileStream(path, FileMode.Create);
 
-    //    using (FileStream stream = new FileStream(path, FileMode.Create))
-    //        formatter.Serialize(stream, JsonUtility.ToJson(data));
-    //}
+        formatter.Serialize(stream, data);
+        stream.Close();
+    }
 
-    //public static SaveData Load(int character)
-    //{
-    //    string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
-    //    path = Path.Combine(path, GameName);
+    public static DataLogData LoadDataLogData()
+    {
+        string path = Application.persistentDataPath + dataLogUnlocks;
 
-    //    if (!File.Exists(path)) return null;
+        if (File.Exists(path))
+        {
+            //Load save data if it does exist
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
 
-    //    BinaryFormatter formatter = new BinaryFormatter();
-    //    string data;
+            DataLogData data = (DataLogData)formatter.Deserialize(stream);
+            data.ResetData();
 
-    //    using (FileStream stream = new FileStream(path, FileMode.Open))
-    //        data = formatter.Deserialize(stream) as string;
+            stream.Close();
 
-    //    return JsonUtility.FromJson<SaveData>(data);
-    //}
+            return data;
+        }
+        else
+        {
+            //Create save data if it doesn't exist
+            DataLogData data = new DataLogData();
+            data.InitialSetup();
+            SaveDataLogData(data);
+            return data;
+        }
+    }
 
     public static bool DeleteSave(int character)
     {
