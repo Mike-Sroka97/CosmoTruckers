@@ -33,6 +33,8 @@ public class DataLogData
     {
         if (DataFiles.Count == 0)
             SetupDataFiles();
+
+        SaveManager.SaveDataLogData(this);
     }
 
     /// <summary>
@@ -42,6 +44,15 @@ public class DataLogData
     {
         DataFiles.Clear();
         InitialSetup();
+    }
+
+    /// <summary>
+    /// Saves new data file unlock
+    /// </summary>
+    public void SaveDataFileUnlock(string dataFile)
+    {
+        DataFiles[dataFile] = true;
+        SaveManager.SaveDataLogData(this);
     }
 
     /// <summary>
@@ -103,5 +114,12 @@ public class DataLogData
         //Dungeon Friendly Summons
         DataFiles.Add("Empty Nova", false);
         DataFiles.Add("Dulaxy", false);
+
+        //Places
+        DataFiles.Add("Nova's Landing", false);
+        DataFiles.Add("Constellation Cavern", false);
+        DataFiles.Add("Klippsol's Kove", false);
+        DataFiles.Add("Hall of the Orbiters", false);
+        DataFiles.Add("Qmuav's Entropy", false);
     }
 }

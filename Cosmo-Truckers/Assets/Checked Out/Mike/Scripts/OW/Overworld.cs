@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Overworld : MonoBehaviour
 {
     [SerializeField] protected bool debugging;
+    [SerializeField] string dataFileKey;
 
     public OverworldNode CurrentNode;
     public float minCameraX;
@@ -19,6 +20,10 @@ public abstract class Overworld : MonoBehaviour
     private void Start()
     {
         OverworldInitialize();
+
+        DataLogData dataLogData = SaveManager.LoadDataLogData();
+        dataLogData.SaveDataFileUnlock(dataFileKey);
+
     }
 
     public void CameraFadeFinished()

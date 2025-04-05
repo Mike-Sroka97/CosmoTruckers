@@ -144,7 +144,6 @@ public static class SaveManager
             FileStream stream = new FileStream(path, FileMode.Open);
 
             DataLogData data = (DataLogData)formatter.Deserialize(stream);
-            data.ResetData();
 
             stream.Close();
 

@@ -16,6 +16,7 @@ public class DataLogController : MonoBehaviour
     [SerializeField] GameObject[] enemiesScreens;
     [SerializeField] GameObject[] enemySummonsScreens;
     [SerializeField] GameObject[] friendlySummonsScreens;
+    [SerializeField] GameObject[] placesScreens;
 
     [Space(20)]
     [Header("Yap")]
@@ -94,6 +95,11 @@ public class DataLogController : MonoBehaviour
     public void SetFriendlySummonScreen()
     {
         SetSecondaryScreen(friendlySummonsScreens[currentDimension - 1]);
+    }
+
+    public void SetPlacesScreen()
+    {
+        SetSecondaryScreen(placesScreens[currentDimension - 1]);
     }
 
     public bool DataFileUnlocked(string key)

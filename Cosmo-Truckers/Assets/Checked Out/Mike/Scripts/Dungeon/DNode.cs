@@ -30,6 +30,7 @@ public class DNode : MonoBehaviour
     public bool EndNode;
     public bool EventFinished;
     public bool CombatDone;
+    [SerializeField] private string[] dataFilesToUnlock;
 
     //Transforms for player to traverse per direction
     public List<Transform> SelectedTransforms = new List<Transform>();
@@ -117,9 +118,11 @@ public class DNode : MonoBehaviour
     private void MoveToNode()
     {
         Active = false;
+        UnlockDataFiles();
         StartCoroutine(character.Move(currentlySelectedNode, linePositions));
         linePositions.Clear();
     }
+
     public void SelectNode(bool left)
     {
         if (NodeData.GetComponent<DungeonEventNode>() && !EventFinished)
@@ -217,8 +220,11 @@ public class DNode : MonoBehaviour
             SetupLineRendererers();
     }
 
-    public void LeavingNodeCleanup()
+    private void UnlockDataFiles()
     {
-        CleanupLineRenderers();
+        DataLogData dataLogData = SaveManager.LoadDataLogData();
+
+        foreach(string dataFile in dataFilesToUnlock)
+            dataLogData.SaveDataFileUnlock(dataFile);
     }
 }
