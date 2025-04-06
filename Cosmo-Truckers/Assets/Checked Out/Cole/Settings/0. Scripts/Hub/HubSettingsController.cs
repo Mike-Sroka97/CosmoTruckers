@@ -245,7 +245,7 @@ public class HubSettingsController : MonoBehaviour
         }
 
         // Save the settings data
-        SettingsData.SaveGamepadLayoutSelection(gamePadLayout); 
+        SettingsData = SettingsData.SaveGamepadLayoutSelection(gamePadLayout); 
     }
 
     private void CloseGamepadSubScreens()
