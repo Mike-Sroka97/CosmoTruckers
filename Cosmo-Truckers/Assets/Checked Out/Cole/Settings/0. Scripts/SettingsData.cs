@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class SettingsData
 {
     // Controls Data
-    public int GamepadLayout;
+    public int GamepadLayout = -1;
     // Volume Data
-    public int MasterVolume; 
-    public int MusicVolume; 
-    public int SfxVolume; 
-    public int DialogVolume; 
+    public int MasterVolume = -1; 
+    public int MusicVolume = -1; 
+    public int SfxVolume = -1; 
+    public int DialogVolume = -1; 
 
     /// <summary>
     /// Setup default values for settings
@@ -31,7 +31,24 @@ public class SettingsData
     }
 
     /// <summary>
-    /// Setup default control specs
+    /// Save the gameplad layout being selected
+    /// </summary>
+    /// <param name="layoutToSave"></param>
+    /// <returns></returns>
+    public SettingsData SaveGamepadLayoutSelection(int layoutToSave)
+    {
+        SettingsData loadData = SettingsManager.LoadSettingsData();
+
+        if (loadData.GamepadLayout == -1)
+            loadData.SetupControls();
+
+        loadData.GamepadLayout = layoutToSave; 
+        SettingsManager.SaveSettingsData(loadData);
+        return loadData;
+    }
+
+    /// <summary>
+    /// Initial setup for default control specs
     /// </summary>
     private void SetupControls()
     {
@@ -39,7 +56,7 @@ public class SettingsData
     }
 
     /// <summary>
-    /// Setup default sound settings
+    /// Initial setup for default sound settings
     /// </summary>
     private void SetupSounds()
     {

@@ -18,15 +18,14 @@ public class HubSettingsController : MonoBehaviour
     [SerializeField] GameObject gamepadScreenGO;
     [SerializeField] GameObject[] gamepadLayoutSubScreenGOs;
 
-    SettingsData data;
+    [HideInInspector] public SettingsData SettingsData;
     private int currentSubScreen = 0;
 
     private void OnEnable()
     {
-        if (data == null)
-            data = SettingsManager.LoadSettingsData();
-
+        SettingsData = SettingsManager.LoadSettingsData();
         selectScreenGO.SetActive(true);
+
     }
 
     /// <summary>
@@ -81,6 +80,7 @@ public class HubSettingsController : MonoBehaviour
         {
             selectScreenGO.SetActive(true);
             OpenKeyboardControlScreen(false);
+            OpenGamepadControlScreen(false); 
             controlsMainScreenGO.SetActive(false);
         }
     }
@@ -191,7 +191,7 @@ public class HubSettingsController : MonoBehaviour
             gamepadScreenGO.SetActive(true);
             for (int i = 0; i < gamepadLayoutSubScreenGOs.Length; i++)
             {
-                if (i == data.GamepadLayout)
+                if (i == SettingsData.GamepadLayout)
                 {
                     gamepadLayoutSubScreenGOs[i].SetActive(true);
                 }
@@ -210,37 +210,42 @@ public class HubSettingsController : MonoBehaviour
 
     public void NextGamepadLayout(bool right)
     {
+        int gamePadLayout = SettingsData.GamepadLayout; 
+
         if (right)
         {
-            data.GamepadLayout++;
+            gamePadLayout++;
 
-            if (data.GamepadLayout == gamepadLayoutSubScreenGOs.Length)
+            if (gamePadLayout == gamepadLayoutSubScreenGOs.Length)
             {
-                gamepadLayoutSubScreenGOs[data.GamepadLayout - 1].SetActive(false);
+                gamepadLayoutSubScreenGOs[gamePadLayout - 1].SetActive(false);
                 gamepadLayoutSubScreenGOs[0].SetActive(true);
-                data.GamepadLayout = 0;
+                gamePadLayout = 0;
             }
             else
             {
-                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
-                gamepadLayoutSubScreenGOs[data.GamepadLayout - 1].SetActive(false);
+                gamepadLayoutSubScreenGOs[gamePadLayout].SetActive(true);
+                gamepadLayoutSubScreenGOs[gamePadLayout - 1].SetActive(false);
             }
         }
         else
         {
-            data.GamepadLayout--;
-            if (data.GamepadLayout == -1)
+            gamePadLayout--;
+            if (gamePadLayout == -1)
             {
-                data.GamepadLayout = keyboardSubScreenGOs.Length - 1;
-                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
+                gamePadLayout = keyboardSubScreenGOs.Length - 1;
+                gamepadLayoutSubScreenGOs[gamePadLayout].SetActive(true);
                 gamepadLayoutSubScreenGOs[0].SetActive(false);
             }
             else
             {
-                gamepadLayoutSubScreenGOs[data.GamepadLayout].SetActive(true);
-                gamepadLayoutSubScreenGOs[data.GamepadLayout + 1].SetActive(false);
+                gamepadLayoutSubScreenGOs[gamePadLayout].SetActive(true);
+                gamepadLayoutSubScreenGOs[gamePadLayout + 1].SetActive(false);
             }
         }
+
+        // Save the settings data
+        SettingsData.SaveGamepadLayoutSelection(gamePadLayout); 
     }
 
     private void CloseGamepadSubScreens()

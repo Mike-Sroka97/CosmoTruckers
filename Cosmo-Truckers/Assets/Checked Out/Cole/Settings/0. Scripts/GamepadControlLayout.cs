@@ -4,7 +4,18 @@ using UnityEngine.InputSystem;
 
 public class GamepadControlLayout : MonoBehaviour
 {
-    public GamepadBinding[] ChangingLayoutBindings; 
+    private RebindSaveLoad saveLoad; 
+    public GamepadBinding[] ChangingLayoutBindings;
+
+    private void Awake()
+    {
+        saveLoad = GetComponent<RebindSaveLoad>(); 
+    }
+
+    private void OnEnable()
+    {
+        SetBinding();
+    }
 
     /// <summary>
     /// Set the action to THIS binding<br></br>
@@ -12,10 +23,14 @@ public class GamepadControlLayout : MonoBehaviour
     /// </summary>
     public void SetBinding()
     {
-        foreach (GamepadBinding layoutItem in ChangingLayoutBindings)
+        foreach (GamepadBinding changingBinding in ChangingLayoutBindings)
         {
-            InputActionRebindingExtensions.ApplyBindingOverride(layoutItem.Action, layoutItem.Binding);
+            string newBindingPath = $"<Gamepad>/{changingBinding.NewBindingPath}"; 
+            InputAction action = changingBinding.Action.action;
+            InputActionRebindingExtensions.ApplyBindingOverride(action, changingBinding.BindingIndex, newBindingPath);
         }
+
+        saveLoad.SavePlayerSettings(); 
     }
 }
 
@@ -23,5 +38,40 @@ public class GamepadControlLayout : MonoBehaviour
 public class GamepadBinding
 {
     public InputActionReference Action;
-    public InputBinding Binding;
+    public int BindingIndex = 0;
+    public string NewBindingPath = string.Empty;
 }
+
+/*  POSSIBLE BINDINGS FOR GAMEPAD
+    buttonEast
+    buttonNorth,
+    buttonSouth,
+    buttonWest,
+    dpad/down,
+    dpad/left
+    dpad/right
+    dpad/up
+    leftShoulder
+    leftStick/down
+    leftStick/left
+    leftStick/right
+    leftStick/up
+    leftStickPress
+    leftTrigger
+    rightShoulder
+    rightStick/down
+    rightStick/left
+    rightStick/right
+    rightStick/up
+    rightStickPress
+    rightTrigger
+    select
+    start
+    touchpadButton
+    leftTriggerButton
+    rightTriggerButton
+    systemButton
+    leftStick
+    rightStick
+    dpad
+*/ 

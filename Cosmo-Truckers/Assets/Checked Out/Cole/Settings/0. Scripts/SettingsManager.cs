@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -35,15 +32,22 @@ public static class SettingsManager
 
             stream.Close();
 
-            return data;
+            // If data isn't null return this data, otherwise it will run CreateSettingsData
+            if (data != null)
+            {
+                return data;
+            }
         }
-        else
-        {
-            //Create save data if it doesn't exist
-            SettingsData data = new SettingsData();
-            data.InitialSetup();
-            SaveSettingsData(data);
-            return data;
-        }
+
+        return CreateSettingsData();
+    }
+
+    private static SettingsData CreateSettingsData()
+    {
+        //Create save data if it doesn't exist
+        SettingsData data = new SettingsData();
+        data.InitialSetup();
+        SaveSettingsData(data);
+        return data;
     }
 }
