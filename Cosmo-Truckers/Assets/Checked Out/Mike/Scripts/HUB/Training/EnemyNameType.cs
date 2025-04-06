@@ -17,7 +17,10 @@ public class EnemyNameType : MonoBehaviour, ISelectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        ina.TypeEnemyName(GetComponent<TrainingButtonInfo>().CharacterName, tmpToUpdate);
+        if (GetComponent<TrainingButtonInfo>().DetermineLockedState())
+            ina.TypeEnemyName("", tmpToUpdate);
+        else
+            ina.TypeEnemyName(GetComponent<TrainingButtonInfo>().CharacterName, tmpToUpdate);
 
         if (updateEnemyId)
             ina.SetEnemyId(GetComponent<TrainingButtonInfo>().EnemyID);

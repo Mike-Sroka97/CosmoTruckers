@@ -15,6 +15,9 @@ public class TrainingCharacterButton : Button, ISelectHandler
 
     public void SetTrainingCharacter(int traineeIndex)
     {
+        if (GetComponent<TrainingButtonInfo>().DetermineLockedState())
+            return;
+
         ina.SetPlayer(traineeIndex, GetComponent<TrainingButtonInfo>().CharacterName);
     }
 
