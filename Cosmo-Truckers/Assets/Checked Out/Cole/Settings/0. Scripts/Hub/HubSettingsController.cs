@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; 
 
 public class HubSettingsController : MonoBehaviour
 {
@@ -20,12 +18,17 @@ public class HubSettingsController : MonoBehaviour
 
     [HideInInspector] public SettingsData SettingsData;
     private int currentSubScreen = 0;
+    private VolumeButton[] volumeButtons;
+
+    private void Awake()
+    {
+        volumeButtons = FindObjectsOfType<VolumeButton>(true);
+    }
 
     private void OnEnable()
     {
         SettingsData = SettingsManager.LoadSettingsData();
         selectScreenGO.SetActive(true);
-
     }
 
     /// <summary>
@@ -34,15 +37,6 @@ public class HubSettingsController : MonoBehaviour
     public void OpenVideoScreen()
     {
         videoScreenGO.SetActive(true);
-        selectScreenGO.SetActive(false);
-    }
-
-    /// <summary>
-    /// Open the audio settings screen
-    /// </summary>
-    public void OpenAudioScreen()
-    {
-        audioScreenGO.SetActive(true);
         selectScreenGO.SetActive(false);
     }
 
@@ -253,5 +247,126 @@ public class HubSettingsController : MonoBehaviour
         foreach (GameObject screen in gamepadLayoutSubScreenGOs)
             screen.SetActive(false);
     }
+    #endregion
+
+    #region Audio 
+    /// <summary>
+    /// Open the audio settings screen
+    /// </summary>
+    public void OpenAudioScreen(bool open)
+    {
+        if (open)
+        {
+            UpdateSliders();
+            audioScreenGO.SetActive(true);
+            selectScreenGO.SetActive(false);
+        }
+        else
+        {
+            selectScreenGO.SetActive(true);
+            audioScreenGO.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Attempts to increase/decrease the volume of this audio type by 10
+    /// </summary>
+    /// <param name="audioType"></param>
+    /// <param name="audioType"></param>
+    public void IncreaseVolume(VolumeButton volumeButton)
+    {
+        int currentVolume = GetCurrentVolumeTypeVolume(volumeButton); 
+
+        // Modify the current volume
+        if (volumeButton.VolumeIncreaseButton)
+        {
+            // Increment the current volume
+            currentVolume += SettingsManager.VolumeIncrement;
+            if (currentVolume > SettingsManager.MaxVolume)
+                return; 
+        }
+        else
+        {
+            // Decrease the current volume
+            currentVolume -= SettingsManager.VolumeIncrement;
+            if (currentVolume < 0)
+                return; 
+        }
+
+        // Set the volume type to the updated volume
+        switch (volumeButton.AudioType)
+        {
+            case SettingsManager.AudioTypes.Music:
+                SettingsData.MusicVolume = currentVolume; break;
+            case SettingsManager.AudioTypes.Sfx:
+                SettingsData.SfxVolume = currentVolume; break;
+            case SettingsManager.AudioTypes.Dialog:
+                SettingsData.DialogVolume = currentVolume; break;
+            case SettingsManager.AudioTypes.Master:
+            default:
+                SettingsData.MasterVolume = currentVolume;
+                break;
+        }
+
+        // Update the slider to the modified value
+        volumeButton.AudioSlider.value = currentVolume;
+    }
+
+    /// <summary>
+    /// Save all current volume values
+    /// </summary>
+    public void SaveVolume()
+    {
+        // Save the settings data
+        SettingsData = SettingsData.SaveVolume(SettingsData);
+
+        AudioManager.Instance.UpdateVolumes(SettingsData);
+    }
+
+    /// <summary>
+    /// Reset all volume to their default values
+    /// </summary>
+    public void ResetAllVolume()
+    {
+        SettingsData = SettingsData.ResetVolume();
+        UpdateSliders(); 
+    }
+
+    /// <summary>
+    /// Update all sliders to match their actual volume position
+    /// </summary>
+    private void UpdateSliders()
+    {
+        int currentVolume = 0; 
+
+        foreach (VolumeButton button in volumeButtons)
+        {
+            currentVolume = GetCurrentVolumeTypeVolume(button);
+            button.AudioSlider.value = currentVolume;
+        }
+    }
+
+    private int GetCurrentVolumeTypeVolume(VolumeButton volumeButton)
+    {
+        int currentVolume = 0;
+
+        // Set the current volume to the correct volume type's level
+        switch (volumeButton.AudioType)
+        {
+            case SettingsManager.AudioTypes.Music:
+                currentVolume = SettingsData.MusicVolume; break;
+            case SettingsManager.AudioTypes.Sfx:
+                currentVolume = SettingsData.SfxVolume; break;
+            case SettingsManager.AudioTypes.Dialog:
+                currentVolume = SettingsData.DialogVolume; break;
+            case SettingsManager.AudioTypes.Master:
+            default:
+                currentVolume = SettingsData.MasterVolume;
+                break;
+        }
+
+        return currentVolume; 
+    }
+
     #endregion
 }

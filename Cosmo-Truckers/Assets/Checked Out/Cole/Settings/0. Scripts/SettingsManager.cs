@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -6,7 +7,8 @@ using UnityEngine;
 public static class SettingsManager
 {
     const string settingsData = "/settings.data";
-    public const int MaxGamepadLayouts = 3;
+    public const int VolumeIncrement = 10;
+    public const int MaxVolume = 100;
 
     public static void SaveSettingsData(SettingsData data)
     {
@@ -49,5 +51,14 @@ public static class SettingsManager
         data.InitialSetup();
         SaveSettingsData(data);
         return data;
+    }
+
+    [Serializable]
+    public enum AudioTypes
+    {
+        Master,
+        Music,
+        Sfx,
+        Dialog
     }
 }

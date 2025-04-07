@@ -28,6 +28,13 @@ public class AudioManager : MonoBehaviour
     public List<AudioSource> SfxSources = new List<AudioSource>();
     public float SfxVolume { get; private set; } = 1f;
 
+    // Dialog
+    /// <summary>
+    /// List of all Dialog Audio Sources
+    /// </summary>
+    public List<AudioSource> DialogSources = new List<AudioSource>();
+    public float DialogVolume { get; private set; } = 1f;
+
     //Set instance or remove object
     void Awake()
     {
@@ -212,6 +219,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update the tracks playing with the new modified volumes
+    /// </summary>
+    public void UpdateMusicVolumes()
+    {
+        CurrentMusic.volume = MusicVolume * MasterVolume;
+        AlternateMusic.volume = MusicVolume * MasterVolume;
+    }
+
     [Serializable]
     private class Music
     {
@@ -220,8 +236,23 @@ public class AudioManager : MonoBehaviour
         public AudioClip AudioClip;
     }
     #endregion
+
+    /// <summary>
+    /// Update all audio volumes
+    /// </summary>
+    /// <param name="data"></param>
+    public void UpdateVolumes(SettingsData data)
+    {
+        MasterVolume = data.MasterVolume / 100f;
+        MusicVolume = data.MusicVolume / 100f;
+        SfxVolume = data.SfxVolume / 100f;
+        DialogVolume = data.DialogVolume / 100f;
+
+        UpdateSfxVolumes();
+    }
 }
 
+[Serializable]
 public enum MusicTracks
 {
     None,
