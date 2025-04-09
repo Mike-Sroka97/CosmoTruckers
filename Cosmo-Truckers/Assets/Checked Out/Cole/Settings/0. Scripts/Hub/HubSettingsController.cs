@@ -310,6 +310,8 @@ public class HubSettingsController : MonoBehaviour
 
         // Update the slider to the modified value
         volumeButton.AudioSlider.value = currentVolume;
+
+        SaveVolume(); 
     }
 
     /// <summary>
@@ -317,9 +319,8 @@ public class HubSettingsController : MonoBehaviour
     /// </summary>
     public void SaveVolume()
     {
-        // Save the settings data
+        // Save the settings data and update it
         SettingsData = SettingsData.SaveVolume(SettingsData);
-
         AudioManager.Instance.UpdateVolumes(SettingsData);
     }
 
@@ -328,8 +329,10 @@ public class HubSettingsController : MonoBehaviour
     /// </summary>
     public void ResetAllVolume()
     {
+        // Reset the volue, update the sliders, and save
         SettingsData = SettingsData.ResetVolume();
-        UpdateSliders(); 
+        UpdateSliders();
+        SaveVolume(); 
     }
 
     /// <summary>

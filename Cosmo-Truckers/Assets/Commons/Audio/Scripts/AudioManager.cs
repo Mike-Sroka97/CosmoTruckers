@@ -41,8 +41,11 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            SetupMusic(); 
             DontDestroyOnLoad(this);
+            SetupMusic();
+
+            SettingsData temporarySettingsData = SettingsManager.LoadSettingsData();
+            UpdateVolumes(temporarySettingsData);
         }
         else
         {
@@ -249,6 +252,7 @@ public class AudioManager : MonoBehaviour
         DialogVolume = data.DialogVolume / 100f;
 
         UpdateSfxVolumes();
+        UpdateMusicVolumes(); 
     }
 }
 
