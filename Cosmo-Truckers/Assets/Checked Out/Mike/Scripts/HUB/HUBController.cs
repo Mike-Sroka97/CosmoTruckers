@@ -18,6 +18,7 @@ public class HUBController : MonoBehaviour
     [HideInInspector] public CharacterSilhouette[] CharacterSilhouettes;
     CharacterSelectController characterSelectController;
     PlayerData playerData;
+    SettingsData settingsData;
 
     [Space(50)]
     [Header("DEBUG")]
@@ -26,8 +27,8 @@ public class HUBController : MonoBehaviour
 
     private void Start()
     {
-
         playerData = SaveManager.LoadPlayerData();
+        settingsData = SettingsManager.LoadSettingsData();
         CameraController.Instance.StartCoroutine(CameraController.Instance.FadeVignette(true));
         CameraController.Instance.NormalizePositionRotation();
 
