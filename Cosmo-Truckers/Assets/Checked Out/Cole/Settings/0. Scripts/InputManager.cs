@@ -34,13 +34,8 @@ public class InputManager : MonoBehaviour
     private InputAction actionSwapAction;
     #endregion
 
-    public bool RebindingKey { get; private set; } = false;
     [HideInInspector]
     public PlayerInput PlayerInput { get; private set; }
-
-    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
-    private TMP_Text textToModify;
-    private InputActionReference currentInputAction;
     private const string RebindsKey = "rebinds";
 
     //Set instance or remove object
@@ -61,8 +56,7 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        SetupInputActions(); 
-        string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty); 
+        string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty);
 
         if (string.IsNullOrEmpty(rebinds))
         {
@@ -72,11 +66,13 @@ public class InputManager : MonoBehaviour
         {
             PlayerInput.actions.LoadBindingOverridesFromJson(rebinds);
         }
+
+        SetupInputActions();
     }
 
     private void Update()
     {
-        UpdateInputs(); 
+        UpdateInputs();
     }
 
     public void SetupInputActions()
