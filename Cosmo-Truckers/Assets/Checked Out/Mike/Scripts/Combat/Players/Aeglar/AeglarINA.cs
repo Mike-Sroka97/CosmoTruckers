@@ -37,6 +37,7 @@ public class AeglarINA : Player
     const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
     int currentNumberOfJumps = 0;
+    InputManager inputManager; 
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class AeglarINA : Player
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
+        inputManager = InputManager.Instance;
     }
 
     private void Update()
@@ -106,12 +108,12 @@ public class AeglarINA : Player
     {
         if (currentNumberOfAttacks < numberOfAttacks)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && transform.localEulerAngles.y != 0 && !DashingLeft && !DashingRight)
+            if (inputManager.AttackPressed && canDash && transform.localEulerAngles.y != 0 && !DashingLeft && !DashingRight)
             {
                 CleanUpDash();
                 StartCoroutine(Dash(true));
             }
-            else if (Input.GetKeyDown(KeyCode.Mouse0) && canDash && transform.localEulerAngles.y == 0 && !DashingLeft && !DashingRight)
+            else if (inputManager.AttackPressed && canDash && transform.localEulerAngles.y == 0 && !DashingLeft && !DashingRight)
             {
                 CleanUpDash();
                 StartCoroutine(Dash(false));
@@ -136,7 +138,7 @@ public class AeglarINA : Player
             currentNumberOfJumps = 0;
         }
 
-        if (Input.GetKeyDown("space") && currentNumberOfJumps < numberOfJumps && !DashingUp)
+        if (inputManager.JumpPressed && currentNumberOfJumps < numberOfJumps && !DashingUp)
         {
             CleanUpDash();
             StartCoroutine(Dash(true, true));
@@ -152,7 +154,7 @@ public class AeglarINA : Player
     {
         if (!canMove || damaged || dead) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+        if (inputManager.MoveInput.x < 0)
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             playerAnimator.ChangeAnimation(myAnimator, move);
@@ -162,7 +164,7 @@ public class AeglarINA : Player
                 transform.eulerAngles = new Vector3(transform.rotation.eulerAngles.x, 180, transform.rotation.eulerAngles.z);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+        else if (inputManager.MoveInput.x > 0)
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             playerAnimator.ChangeAnimation(myAnimator, move);
