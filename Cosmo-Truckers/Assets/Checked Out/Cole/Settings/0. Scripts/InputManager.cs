@@ -24,12 +24,12 @@ public class InputManager : MonoBehaviour
     #endregion
 
     #region Input Actions
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction attackAction;
-    private InputAction specialAction;
-    private InputAction selectAction;
-    private InputAction backAction;
+    public InputAction MoveAction { get; private set; }
+    public InputAction JumpAction { get; private set; }
+    public InputAction AttackAction { get; private set; }
+    public InputAction SpecialAction { get; private set; }
+    public InputAction SelectAction { get; private set; }
+    public InputAction BackAction { get; private set; }
     #endregion
 
     [HideInInspector]
@@ -78,12 +78,12 @@ public class InputManager : MonoBehaviour
     #region Setup
     public void SetupInputActions()
     {
-        moveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
-        jumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
-        attackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
-        specialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
-        selectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
-        backAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
+        MoveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
+        JumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
+        AttackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
+        SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
+        SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
+        BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
     }
 
     public void SetupMinigameInputs()
@@ -92,33 +92,33 @@ public class InputManager : MonoBehaviour
 
         
         // MINIGAME - JUMP
-        jumpAction.performed += JumpPerformed; 
-        jumpAction.canceled += JumpCancelled;
+        JumpAction.performed += JumpPerformed; 
+        JumpAction.canceled += JumpCancelled;
 
         // MINIGAME - ATTACK
-        attackAction.performed += AttackPerformed;
-        attackAction.canceled += AttackCancelled;
+        AttackAction.performed += AttackPerformed;
+        AttackAction.canceled += AttackCancelled;
 
         // MINIGAME - Special
-        specialAction.performed += SpecialPerformed;
-        specialAction.canceled += SpecialCancelled;
+        SpecialAction.performed += SpecialPerformed;
+        SpecialAction.canceled += SpecialCancelled;
     }
 
     public void SetupUiInputs()
     {
         // UI
-        SelectPressed = selectAction.WasPressedThisFrame();
-        BackPressed = backAction.WasPressedThisFrame();
+        SelectPressed = SelectAction.WasPressedThisFrame();
+        BackPressed = BackAction.WasPressedThisFrame();
     }
     #endregion
 
     #region Minigame
     private void UpdateMinigameAcitons()
     {
-        MoveInput = moveAction.ReadValue<Vector2>();
-        JumpPressed = jumpAction.WasPressedThisFrame();
-        AttackPressed = attackAction.WasPressedThisFrame();
-        SpecialPressed = specialAction.WasPressedThisFrame();
+        MoveInput = MoveAction.ReadValue<Vector2>();
+        JumpPressed = JumpAction.WasPressedThisFrame();
+        AttackPressed = AttackAction.WasPressedThisFrame();
+        SpecialPressed = SpecialAction.WasPressedThisFrame();
     }
 
     private void JumpPerformed(InputAction.CallbackContext context)
