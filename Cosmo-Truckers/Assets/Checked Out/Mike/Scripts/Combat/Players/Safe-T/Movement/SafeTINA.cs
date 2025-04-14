@@ -55,7 +55,6 @@ public class SafeTINA : Player
     Collider2D myCollider;
     Animator myAnimator;
     PlayerAnimator playerAnimator;
-    InputManager inputManager;
 
     private void Start()
     {
@@ -66,7 +65,6 @@ public class SafeTINA : Player
         currentJumpStrength = 0;
         myBody = GetComponent<Rigidbody2D>();
         myCollider = transform.Find("Body").GetComponent<Collider2D>();
-        inputManager = InputManager.Instance;
     }
 
     private void Update()

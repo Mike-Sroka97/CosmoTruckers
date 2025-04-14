@@ -37,7 +37,6 @@ public class AeglarINA : Player
     const float distance = 0.05f;
     int currentNumberOfAttacks = 0;
     int currentNumberOfJumps = 0;
-    InputManager inputManager; 
 
     private void Start()
     {
@@ -47,7 +46,6 @@ public class AeglarINA : Player
         myAnimator = GetComponentInChildren<Animator>();
         playerAnimator = GetComponent<PlayerAnimator>();
         myCollider = transform.Find("AeglarBody").GetComponent<Collider2D>();
-        inputManager = InputManager.Instance;
     }
 
     private void Update()
