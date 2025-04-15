@@ -31,6 +31,7 @@ public abstract class Player : MonoBehaviour
     protected Rigidbody2D myBody;
     public PlayerCharacter MyCharacter;
     protected AudioDevice myAudioDevice;
+    protected InputManager inputManager;
 
     /// <summary>
     /// Public audio device getter
@@ -60,6 +61,7 @@ public abstract class Player : MonoBehaviour
         DebuffInit();
 
         myAudioDevice = GetComponentInChildren<AudioDevice>();
+        inputManager = InputManager.Instance;
     }
 
     public void TakeDamage()

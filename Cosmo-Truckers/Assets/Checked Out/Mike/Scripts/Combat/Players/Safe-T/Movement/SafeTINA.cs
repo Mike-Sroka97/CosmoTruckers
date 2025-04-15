@@ -124,12 +124,12 @@ public class SafeTINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack && !isJumping)
+        if (inputManager.AttackPressed && inputManager.MoveInput.y > 0 && canAttack && !isJumping)
         {
             playerAnimator.ChangeAnimation(myAnimator, punchUp);
             StartCoroutine(SafeTAttack(upAttackArea));
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack && !isJumping)
+        else if (inputManager.AttackPressed && canAttack && !isJumping)
         {
             playerAnimator.ChangeAnimation(myAnimator, punchRight, speed: 2);
             StartCoroutine(SafeTAttack(horizontalAttackArea));
@@ -158,7 +158,7 @@ public class SafeTINA : Player
             canJump = true;
 
         // Hold Jump
-        if (Input.GetKey("space") && canJump && !isJumping && !isRolling && !jumpCancel)
+        if (inputManager.JumpHeld && canJump && !isJumping && !isRolling && !jumpCancel)
         {
             canMove = false;
             canJump = false;
@@ -169,7 +169,7 @@ public class SafeTINA : Player
             myAudioDevice.PlaySound("JumpCharge");
         }
         // Charge Jump
-        else if (Input.GetKey("space") && isJumping && !jumpCancel && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
+        else if (inputManager.JumpHeld && isJumping && !jumpCancel && currentJumpHoldTime < jumpMaxHoldTime && !isRolling)
         {
             if (!playerAnimator.IsCurrentAnimationPlaying(myAnimator, coil))
                 playerAnimator.ChangeAnimation(myAnimator, coil);
@@ -193,7 +193,7 @@ public class SafeTINA : Player
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
         }
         // Ensure Max Jump visual while on ground
-        else if (Input.GetKey("space") && isJumping && !jumpCancel && currentJumpHoldTime >= jumpMaxHoldTime && !isRolling)
+        else if (inputManager.JumpHeld && isJumping && !jumpCancel && currentJumpHoldTime >= jumpMaxHoldTime && !isRolling)
         {
             if (IsGrounded(0.05f))
             {
@@ -202,7 +202,7 @@ public class SafeTINA : Player
             }
         }
         // Release Jump - Jump
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && (IsGrounded(raycastHopHelper)) && !jumpCancel)
+        else if (isJumping && inputManager.JumpAction.WasReleasedThisFrame() && !inputManager.JumpHeld && (IsGrounded(raycastHopHelper)) && !jumpCancel)
         {
             playerAnimator.ChangeAnimation(myAnimator, jump);
             HandleLineRenderer(startingHeight);
@@ -232,7 +232,7 @@ public class SafeTINA : Player
             }
         }
         // Release Jump - Airborne (disables line renderer)
-        else if (isJumping && Input.GetKeyUp("space") && !Input.GetKey("space") && !jumpCancel)
+        else if (isJumping && inputManager.JumpAction.WasReleasedThisFrame() && !inputManager.JumpHeld && !jumpCancel)
         {
             HandleLineRenderer(startingHeight);
             currentJumpHoldTime = 0;
@@ -249,7 +249,7 @@ public class SafeTINA : Player
             }
         }
         // Jump cancel reset
-        else if (jumpCancel && Input.GetKeyUp("space") && !Input.GetKey("space"))
+        else if (jumpCancel && inputManager.JumpAction.WasReleasedThisFrame() && !inputManager.JumpHeld)
         {
             HandleLineRenderer(startingHeight);
             currentJumpHoldTime = 0;
@@ -298,7 +298,7 @@ public class SafeTINA : Player
     {
         if (!canMove || damaged || dead) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+        if (inputManager.MoveInput.x < 0)
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
@@ -311,7 +311,7 @@ public class SafeTINA : Player
                 playerAnimator.ChangeAnimation(myAnimator, move);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+        else if (inputManager.MoveInput.x > 0)
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
 
@@ -341,7 +341,7 @@ public class SafeTINA : Player
     /// </summary>
     public void SpecialMove()
     {
-        if(isJumping && Input.GetKeyDown(KeyCode.Mouse1))
+        if(isJumping && inputManager.SpecialPressed)
         {
             HandleLineRenderer(startingHeight);
             isJumping = false;
@@ -356,7 +356,7 @@ public class SafeTINA : Player
                 iFrames = false;
             }
         }
-        else if(!isJumping && Input.GetKeyDown(KeyCode.Mouse1) && canRoll && (myBody.velocity.x > 0 || myBody.velocity.x < 0))
+        else if(!isJumping && inputManager.SpecialPressed && canRoll && (myBody.velocity.x > 0 || myBody.velocity.x < 0))
         {
             StartCoroutine(Roll());
             canMove = false;

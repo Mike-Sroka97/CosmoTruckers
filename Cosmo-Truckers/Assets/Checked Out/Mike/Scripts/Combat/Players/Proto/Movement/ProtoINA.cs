@@ -185,11 +185,13 @@ public class ProtoINA : Player
         if (isTeleporting)
             return;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0) && canAttack && Input.GetKey(KeyCode.W))
+        // Attack up
+        if(inputManager.AttackPressed && canAttack && inputManager.MoveInput.y > 0)
         {
             StartCoroutine(ProtoAttack(false));
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        // Regular attack
+        else if (inputManager.AttackPressed && canAttack)
         {
             StartCoroutine(ProtoAttack(true));
         }
@@ -241,7 +243,7 @@ public class ProtoINA : Player
 
         IsGrounded();
 
-        if (Input.GetKeyDown("space") && canJump && !isJumping)
+        if (inputManager.JumpPressed && canJump && !isJumping)
         {
             canJump = false;
             isJumping = true;
@@ -251,7 +253,7 @@ public class ProtoINA : Player
             else
                 playerAnimator.ChangeAnimation(myAnimator, unchargedJump);
         }
-        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
+        else if (inputManager.JumpHeld && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentCoyoteTime = coyoteTime;
             currentJumpHoldTime += Time.deltaTime;
@@ -272,7 +274,7 @@ public class ProtoINA : Player
     {
         if (!canMove || dead || damaged || isTeleporting) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+        if (inputManager.MoveInput.x < 0)
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y == 0)
@@ -285,7 +287,7 @@ public class ProtoINA : Player
                 else
                     playerAnimator.ChangeAnimation(myAnimator, unchargedMove);
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+        else if (inputManager.MoveInput.x > 0)
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
@@ -319,7 +321,7 @@ public class ProtoINA : Player
         if (damaged || dead)
             return;
 
-        if(Input.GetKeyDown(KeyCode.Mouse1) && canTeleport)
+        if(inputManager.SpecialPressed && canTeleport)
         {
             isTeleporting = true;
             myBody.velocity = new Vector2(0, myBody.velocity.y);
@@ -330,11 +332,11 @@ public class ProtoINA : Player
             else
                 playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         }
-        else if(Input.GetKey(KeyCode.Mouse1) && canTeleport && isTeleporting)
+        else if(inputManager.SpecialHeld && canTeleport && isTeleporting)
         {
             TeleportSprites();
         }
-        else if (Input.GetKeyUp(KeyCode.Mouse1) && canTeleport && isTeleporting)
+        else if (inputManager.SpecialAction.WasReleasedThisFrame() && canTeleport && isTeleporting)
         {
             isTeleporting = false;
             foreach (SpriteRenderer sprite in teleportSprites)
@@ -347,7 +349,8 @@ public class ProtoINA : Player
 
     private void TeleportSprites()
     {
-        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        // Left and Up
+        if (inputManager.MoveInput.x < 0 && inputManager.MoveInput.y > 0)
         {
             if (teleportSprites[0].enabled == false)
             {
@@ -365,7 +368,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 1;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        // Left and Down
+        else if (inputManager.MoveInput.x < 0 && inputManager.MoveInput.y < 0)
         {
             if (teleportSprites[1].enabled == false)
             {
@@ -383,7 +387,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 2;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        // Right and Down
+        else if (inputManager.MoveInput.x > 0 && inputManager.MoveInput.y < 0)
         {
             if (teleportSprites[2].enabled == false)
             {
@@ -401,7 +406,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 3;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        // Right and Up
+        else if (inputManager.MoveInput.x > 0 && inputManager.MoveInput.y > 0)
         {
             if (teleportSprites[3].enabled == false)
             {
@@ -419,7 +425,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 4;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.A))
+        // Left
+        else if (inputManager.MoveInput.x < 0 && inputManager.MoveInput.y == 0)
         {
             if (teleportSprites[4].enabled == false)
             {
@@ -437,7 +444,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 5;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.W))
+        // Up
+        else if (inputManager.MoveInput.y > 0 && inputManager.MoveInput.x == 0)
         {
             if (teleportSprites[5].enabled == false)
             {
@@ -455,7 +463,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 6;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.S))
+        // Down
+        else if (inputManager.MoveInput.y < 0 && inputManager.MoveInput.x == 0)
         {
             if (teleportSprites[6].enabled == false)
             {
@@ -473,7 +482,8 @@ public class ProtoINA : Player
             lastTeleportHeld = 7;
             currentTPhelperTime = 0;
         }
-        else if (Input.GetKey(KeyCode.D))
+        // Right
+        else if (inputManager.MoveInput.x > 0 && inputManager.MoveInput.y == 0)
         {
             if (teleportSprites[7].enabled == false)
             {
@@ -514,7 +524,8 @@ public class ProtoINA : Player
 
     private void Teleport()
     {
-        if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 1)
+        // Left and Up
+        if((inputManager.MoveInput.x < 0 && inputManager.MoveInput.y > 0) || lastTeleportHeld == 1)
         {
             if(!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[0].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -523,7 +534,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if((Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 2)
+        // Left and Down
+        else if((inputManager.MoveInput.x < 0 && inputManager.MoveInput.y < 0) || lastTeleportHeld == 2)
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[1].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -532,7 +544,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) || lastTeleportHeld == 3)
+        // Right and Down
+        else if ((inputManager.MoveInput.x > 0 && inputManager.MoveInput.y < 0) || lastTeleportHeld == 3)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[2].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -541,7 +554,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if ((Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) || lastTeleportHeld == 4)
+        // Right and Up
+        else if ((inputManager.MoveInput.x > 0 && inputManager.MoveInput.y > 0) || lastTeleportHeld == 4)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[3].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -550,7 +564,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.A) || lastTeleportHeld == 5)
+        // Left
+        else if (inputManager.MoveInput.x < 0 || lastTeleportHeld == 5)
         {
             if (!(transform.position.x - teleportDistance < negativeXBoundary) && !teleportSprites[4].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -559,7 +574,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.W) || lastTeleportHeld == 6)
+        // Up
+        else if (inputManager.MoveInput.y > 0 || lastTeleportHeld == 6)
         {
             if (!(transform.position.y + teleportDistance > positiveYBoundary) && !teleportSprites[5].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -568,7 +584,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.S) || lastTeleportHeld == 7)
+        // Down
+        else if (inputManager.MoveInput.y < 0 || lastTeleportHeld == 7)
         {
             if (!(transform.position.y - teleportDistance < negativeYBoundary) && !teleportSprites[6].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {
@@ -577,7 +594,8 @@ public class ProtoINA : Player
                 StartCoroutine(TeleportCooldown());
             }
         }
-        else if (Input.GetKey(KeyCode.D) || lastTeleportHeld == 8)
+        // Right
+        else if (inputManager.MoveInput.x > 0 || lastTeleportHeld == 8)
         {
             if (!(transform.position.x + teleportDistance > positiveXBoundary) && !teleportSprites[7].GetComponent<Collider2D>().IsTouchingLayers(layermask))
             {

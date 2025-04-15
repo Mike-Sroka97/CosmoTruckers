@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,36 +12,28 @@ public class InputManager : MonoBehaviour
     public Vector2 MoveInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool JumpHeld { get; private set; }
-    public bool JumpReleased { get; private set; }
     public bool AttackPressed { get; private set; }
+    public bool AttackHeld { get; private set; }
     public bool SpecialPressed { get; private set; }
     public bool SpecialHeld { get; private set; }
-    public bool SpecialReleased { get; private set; }
     #endregion
 
     #region  UI Input Values
     public bool SelectPressed { get; private set; }
     public bool BackPressed { get; private set; }
-    public bool ActionSwapPressed { get; private set; }
     #endregion
 
     #region Input Actions
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction attackAction;
-    private InputAction specialAction;
-    private InputAction selectAction;
-    private InputAction backAction;
-    private InputAction actionSwapAction;
+    public InputAction MoveAction { get; private set; }
+    public InputAction JumpAction { get; private set; }
+    public InputAction AttackAction { get; private set; }
+    public InputAction SpecialAction { get; private set; }
+    public InputAction SelectAction { get; private set; }
+    public InputAction BackAction { get; private set; }
     #endregion
 
-    public bool RebindingKey { get; private set; } = false;
     [HideInInspector]
     public PlayerInput PlayerInput { get; private set; }
-
-    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
-    private TMP_Text textToModify;
-    private InputActionReference currentInputAction;
     private const string RebindsKey = "rebinds";
 
     //Set instance or remove object
@@ -61,8 +54,7 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        SetupInputActions(); 
-        string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty); 
+        string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty);
 
         if (string.IsNullOrEmpty(rebinds))
         {
@@ -72,47 +64,96 @@ public class InputManager : MonoBehaviour
         {
             PlayerInput.actions.LoadBindingOverridesFromJson(rebinds);
         }
+
+        SetupInputActions();
+        SetupMinigameInputs();
+        SetupUiInputs();
     }
 
     private void Update()
     {
-        UpdateInputs(); 
+        UpdateMinigameAcitons();
     }
 
+    #region Setup
     public void SetupInputActions()
     {
-        moveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
-        jumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
-        attackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
-        specialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
-        selectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
-        backAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
-        actionSwapAction = PlayerInput.actions[PlayerActions.ActionSwap.ToString()];  
+        MoveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
+        JumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
+        AttackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
+        SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
+        SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
+        BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
     }
 
-    public void UpdateInputs()
+    public void SetupMinigameInputs()
     {
-        // MINIGAME
-        MoveInput = moveAction.ReadValue<Vector2>(); 
-        JumpPressed = jumpAction.WasPressedThisFrame();
-        JumpHeld = jumpAction.IsPressed(); 
-        JumpReleased = jumpAction.WasReleasedThisFrame();
-        AttackPressed = attackAction.WasPressedThisFrame(); 
-        SpecialPressed = specialAction.WasPressedThisFrame();
-        SpecialHeld = specialAction.IsPressed();
-        SpecialReleased = specialAction.WasReleasedThisFrame();
+        // MINIGAME - MOVE
 
+        
+        // MINIGAME - JUMP
+        JumpAction.performed += JumpPerformed; 
+        JumpAction.canceled += JumpCancelled;
+
+        // MINIGAME - ATTACK
+        AttackAction.performed += AttackPerformed;
+        AttackAction.canceled += AttackCancelled;
+
+        // MINIGAME - Special
+        SpecialAction.performed += SpecialPerformed;
+        SpecialAction.canceled += SpecialCancelled;
+    }
+
+    public void SetupUiInputs()
+    {
         // UI
-        SelectPressed = selectAction.WasPressedThisFrame();
-        BackPressed = backAction.WasPressedThisFrame();
-        ActionSwapPressed = actionSwapAction.WasPressedThisFrame();
+        SelectPressed = SelectAction.WasPressedThisFrame();
+        BackPressed = BackAction.WasPressedThisFrame();
+    }
+    #endregion
+
+    #region Minigame
+    private void UpdateMinigameAcitons()
+    {
+        MoveInput = MoveAction.ReadValue<Vector2>();
+        JumpPressed = JumpAction.WasPressedThisFrame();
+        AttackPressed = AttackAction.WasPressedThisFrame();
+        SpecialPressed = SpecialAction.WasPressedThisFrame();
     }
 
-    public enum PlayerActionMaps
+    private void JumpPerformed(InputAction.CallbackContext context)
     {
-        Player, 
-        UI,
+        JumpHeld = true;
     }
+
+    private void JumpCancelled(InputAction.CallbackContext context)
+    {
+        JumpPressed = false;
+        JumpHeld = false;
+    }
+
+    private void AttackPerformed(InputAction.CallbackContext context)
+    {
+        AttackHeld = true;
+    }
+
+    private void AttackCancelled(InputAction.CallbackContext context)
+    {
+        AttackPressed = false;
+        AttackHeld = false;
+    }
+
+    private void SpecialPerformed(InputAction.CallbackContext context)
+    {
+        SpecialHeld = true;
+    }
+
+    private void SpecialCancelled(InputAction.CallbackContext context)
+    {
+        SpecialPressed = false;
+        SpecialHeld = false;
+    }
+    #endregion
 
     public enum PlayerActions
     {

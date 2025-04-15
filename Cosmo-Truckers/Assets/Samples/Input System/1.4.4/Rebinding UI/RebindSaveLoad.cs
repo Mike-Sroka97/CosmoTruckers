@@ -12,7 +12,7 @@ public class RebindSaveLoad : MonoBehaviour
         if (!string.IsNullOrEmpty(rebinds))
             actions.LoadBindingOverridesFromJson(rebinds);
 
-        RebindActionUI[] rebindUI = FindObjectsOfType<RebindActionUI>();
+        RebindActionUI[] rebindUI = FindObjectsOfType<RebindActionUI>(true);
 
         foreach (RebindActionUI thisRebind in rebindUI)
             thisRebind.UpdateBindingDisplay();

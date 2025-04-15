@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.InputAction;
 
 ////TODO: localization support
 
@@ -305,13 +306,21 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 m_RebindOperation = null;
             }
 
+            var controlScheme = InputManager.Instance.PlayerInput.currentControlScheme; 
+            if (controlScheme != "Keyboard")
+            {
+                m_RebindOverlay?.SetActive(false);
+                UpdateBindingDisplay();
+                CleanUp();
+                return; 
+            }
+
             // Disable the action to prevent errors
-            action.Disable(); 
+            action.Disable();
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                 .WithCancelingThrough("<Keyboard>/escape")
-                .WithCancelingThrough("<Gamepad>/start")
                 .OnCancel(
                     operation =>
                     {
