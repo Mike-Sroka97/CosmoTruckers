@@ -130,7 +130,7 @@ public class ProtoINA : Player
     {
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
-            if (!damaged && !dead && Input.GetKey("space") && canMove)
+            if (!damaged && !dead && inputManager.JumpPressed && canMove)
             {
                 if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(jump.name) && currentJumpHoldTime >= jumpMaxHoldTime)
                     if (canTeleport)

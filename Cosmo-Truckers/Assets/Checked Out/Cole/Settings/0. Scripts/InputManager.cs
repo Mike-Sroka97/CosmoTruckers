@@ -34,7 +34,17 @@ public class InputManager : MonoBehaviour
 
     [HideInInspector]
     public PlayerInput PlayerInput { get; private set; }
+   
+    /// <summary>
+    /// The gamepad joystick must be at a position above this value for the input to be considered for that axis
+    /// </summary>
+    public float GamePadMoveValueFloor = 0.25f;
+    [SerializeField] private string currentScheme = "Keyboard";
+    
+    private float lastSchemeSwitchTime = 0f;
+    private float switchSchemeCooldown = 0.5f;
     private const string RebindsKey = "rebinds";
+    private KeyChecker keyChecker; 
 
     //Set instance or remove object
     void Awake()
@@ -65,93 +75,170 @@ public class InputManager : MonoBehaviour
             PlayerInput.actions.LoadBindingOverridesFromJson(rebinds);
         }
 
+        keyChecker = GetComponent<KeyChecker>();
         SetupInputActions();
-        SetupMinigameInputs();
-        SetupUiInputs();
     }
 
     private void Update()
     {
         UpdateMinigameAcitons();
+
+        // Check and update control scheme
+        SwapControlScheme();
     }
 
-    #region Setup
     public void SetupInputActions()
     {
         MoveAction = PlayerInput.actions[PlayerActions.Move.ToString()];
         JumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
         AttackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
-        SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()]; 
-        SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()]; 
-        BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];  
+        SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()];
+        SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()];
+        BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];
     }
 
-    public void SetupMinigameInputs()
+    # region Control Scheme  
+
+    private void TrySwitchScheme(string scheme)
     {
-        // MINIGAME - MOVE
+        if (Time.time - lastSchemeSwitchTime < switchSchemeCooldown)
+            return;
 
-        
-        // MINIGAME - JUMP
-        JumpAction.performed += JumpPerformed; 
-        JumpAction.canceled += JumpCancelled;
-
-        // MINIGAME - ATTACK
-        AttackAction.performed += AttackPerformed;
-        AttackAction.canceled += AttackCancelled;
-
-        // MINIGAME - Special
-        SpecialAction.performed += SpecialPerformed;
-        SpecialAction.canceled += SpecialCancelled;
+        SwitchControlScheme(scheme);
+        lastSchemeSwitchTime = Time.time;
     }
-
-    public void SetupUiInputs()
+    private void SwitchControlScheme(string newScheme)
     {
-        // UI
-        SelectPressed = SelectAction.WasPressedThisFrame();
-        BackPressed = BackAction.WasPressedThisFrame();
+        if (PlayerInput == null)
+            return;
+
+        InputDevice deviceToUse = null;
+
+        if (newScheme == "Keyboard")
+        {
+            deviceToUse = Keyboard.current;
+        }
+        else if (newScheme == "Gamepad")
+        {
+            deviceToUse = Gamepad.current;
+        }
+
+        if (deviceToUse != null)
+        {
+            PlayerInput.SwitchCurrentControlScheme(newScheme, deviceToUse);
+            currentScheme = newScheme;
+        }
     }
+
+    private void SwapControlScheme()
+    {
+        bool gamepadInput = TrackGamePadActions(); 
+        bool keyboardInput = TrackKeyboardActions();
+
+        if (gamepadInput)
+        {
+            if (currentScheme != "Gamepad")
+                TrySwitchScheme("Gamepad");
+        }
+        else if (keyboardInput)
+        {
+            if (currentScheme != "Keyboard")
+                TrySwitchScheme("Keyboard");
+        }
+    }
+
+    private bool TrackGamePadActions()
+    {
+        Gamepad gamePad = Gamepad.current;
+        if (gamePad == null) return false;
+
+        // Check if any button has been pressed
+        return gamePad.buttonSouth.wasPressedThisFrame
+            || gamePad.buttonNorth.wasPressedThisFrame
+            || gamePad.buttonEast.wasPressedThisFrame
+            || gamePad.buttonWest.wasPressedThisFrame
+            || gamePad.leftStick.ReadValue().magnitude > 0.2f
+            || gamePad.rightStick.ReadValue().magnitude > 0.2f
+            || gamePad.dpad.ReadValue().magnitude > 0.2f
+            || gamePad.rightTrigger.ReadValue() > 0.1f
+            || gamePad.leftTrigger.ReadValue() > 0.1f
+            || gamePad.rightShoulder.wasPressedThisFrame
+            || gamePad.leftShoulder.wasPressedThisFrame
+            || gamePad.startButton.wasPressedThisFrame
+            || gamePad.selectButton.wasPressedThisFrame;
+    }
+    private bool TrackKeyboardActions()
+    {
+        foreach (Key key in keyChecker.allKeys)
+        {
+            if (Keyboard.current[key].wasPressedThisFrame)
+            {
+                return true; 
+            }
+        }
+
+        if (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame)
+        {
+            return true; 
+        }
+
+        return false; 
+    }
+
     #endregion
 
     #region Minigame
     private void UpdateMinigameAcitons()
     {
-        MoveInput = MoveAction.ReadValue<Vector2>();
+        // MOVEMENT
+        MoveInputs(); 
         JumpPressed = JumpAction.WasPressedThisFrame();
+        JumpHeld = JumpAction.IsPressed(); 
         AttackPressed = AttackAction.WasPressedThisFrame();
+        AttackHeld = AttackAction.IsPressed();
         SpecialPressed = SpecialAction.WasPressedThisFrame();
-    }
+        SpecialHeld = SpecialAction.IsPressed();
 
-    private void JumpPerformed(InputAction.CallbackContext context)
-    {
-        JumpHeld = true;
-    }
+        // UI
+        SelectPressed = SelectAction.WasPressedThisFrame();
+        BackPressed = BackAction.WasPressedThisFrame();
 
-    private void JumpCancelled(InputAction.CallbackContext context)
-    {
-        JumpPressed = false;
-        JumpHeld = false;
-    }
 
-    private void AttackPerformed(InputAction.CallbackContext context)
-    {
-        AttackHeld = true;
     }
-
-    private void AttackCancelled(InputAction.CallbackContext context)
+    /// <summary>
+    /// Define the Move Inputs with a floor for what is considered an input
+    /// This fixes issues with aiming in one direction when the other is slightly pressed on a Joystick
+    /// </summary>
+    private void MoveInputs()
     {
-        AttackPressed = false;
-        AttackHeld = false;
-    }
+        Vector2 moveValues = MoveAction.ReadValue<Vector2>();
+        float xMultiplier = moveValues.x < 0 ? -1 : 1;
+        float yMultiplier = moveValues.y < 0 ? -1 : 1;
 
-    private void SpecialPerformed(InputAction.CallbackContext context)
-    {
-        SpecialHeld = true;
-    }
+        if (moveValues.x != 0)
+        {
+            if ((moveValues.x < 0 && moveValues.x > GamePadMoveValueFloor) || (moveValues.x > 0 && moveValues.x < GamePadMoveValueFloor))
+            {
+                moveValues.x = 0;
+            }
+            else
+            {
+                moveValues.x = 1 * xMultiplier; 
+            }
+        }
+        if (moveValues.y != 0)
+        {
+            if ((moveValues.y < 0 && moveValues.y > GamePadMoveValueFloor) || (moveValues.y > 0 && moveValues.y < GamePadMoveValueFloor))
+            {
+                moveValues.y = 0;
+            }
+            else
+            {
+                moveValues.y = 1 * yMultiplier;
+            }
+        }
 
-    private void SpecialCancelled(InputAction.CallbackContext context)
-    {
-        SpecialPressed = false;
-        SpecialHeld = false;
+        MoveInput = moveValues; 
     }
     #endregion
 
@@ -164,5 +251,10 @@ public class InputManager : MonoBehaviour
         Select,
         Back, 
         ActionSwap,
+    }
+
+    private void OnDestroy()
+    {
+        // Populate this when needed
     }
 }
