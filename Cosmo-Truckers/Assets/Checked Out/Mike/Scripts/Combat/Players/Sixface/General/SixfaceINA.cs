@@ -85,7 +85,7 @@ public class SixfaceINA : Player
     {
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, distance, layermask))
         {
-            if(!damaged && !dead && !Input.GetKey("space"))
+            if(!damaged && !dead && !inputManager.JumpHeld)
             {
                 canJump = true;
                 canPogo = true;
@@ -166,13 +166,15 @@ public class SixfaceINA : Player
     /// </summary>
     public void Attack()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.W) && canAttack)
+        // Attack Up
+        if(inputManager.AttackPressed && inputManager.MoveInput.y > 0 && canAttack)
         {
             playerAnimator.ChangeAnimation(bodyAnimator, upAttack);
             SetSixFacesFace(sixFaceFaces[1]);
             StartCoroutine(SixFaceAttack(upAttackArea));
         }
-        else if(Input.GetKeyDown(KeyCode.Mouse0) && Input.GetKey(KeyCode.S) && canAttack && (currentJumpHoldTime != 0 || canHover))
+        // Attack Down
+        else if(inputManager.AttackPressed && inputManager.MoveInput.y < 0 && canAttack && (currentJumpHoldTime != 0 || canHover))
         {
             if(canPogo)
             {
@@ -189,7 +191,7 @@ public class SixfaceINA : Player
                 StartCoroutine(SixFaceAttack(downAttackArea));
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
+        else if (inputManager.AttackPressed && canAttack)
         {
             playerAnimator.ChangeAnimation(bodyAnimator, horizontalAttack);
             SetSixFacesFace(sixFaceFaces[3]);
@@ -224,13 +226,13 @@ public class SixfaceINA : Player
             myBody.velocity = new Vector2(myBody.velocity.x, maxYvelocity);
         }
 
-        if (Input.GetKeyDown("space") && canJump && !isJumping)
+        if (inputManager.JumpPressed && canJump && !isJumping)
         {
             canJump = false;
             isJumping = true;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed);
         }
-        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
+        else if (inputManager.JumpHeld && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentCoyoteTime = coyoteTime;
             currentJumpHoldTime += Time.deltaTime;
@@ -248,13 +250,14 @@ public class SixfaceINA : Player
 
     #region Movement
     /// <summary>
-    /// Aeglar's movement will cause short spurts of movements. There is an associated cooldown to this
+    /// Six Face's movement is basic
     /// </summary>
     public void Movement()
     {
         if (!canMove) return;
 
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+        // Move Left
+        if (inputManager.MoveInput.x < 0)
         {
             myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y + yVelocityAdjuster);
             if (transform.rotation.eulerAngles.y == 0)
@@ -268,7 +271,8 @@ public class SixfaceINA : Player
                 SetSixFacesFace(sixFaceFaces[0]);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+        // Move Right
+        else if (inputManager.MoveInput.x > 0)
         {
             myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
             if (transform.rotation.eulerAngles.y != 0)
@@ -282,6 +286,7 @@ public class SixfaceINA : Player
                 SetSixFacesFace(sixFaceFaces[0]);
             }
         }
+        // No movement
         else
         {
             myBody.velocity = new Vector2(xVelocityAdjuster, myBody.velocity.y);
@@ -299,11 +304,11 @@ public class SixfaceINA : Player
 
     #region SpecialMove
     /// <summary>
-    /// Aeglar's attack will also make him dash. That will bundle the Special move and attack for him
+    /// Six Face's "special move" is holding jump, which allows him to hover
     /// </summary>
     public void SpecialMove()
     {
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space)) && canHover)
+        if ((inputManager.JumpPressed || inputManager.JumpHeld) && canHover)
         {
             if (IsHovering && Grounded())
             {

@@ -202,8 +202,6 @@ public class InputManager : MonoBehaviour
         // UI
         SelectPressed = SelectAction.WasPressedThisFrame();
         BackPressed = BackAction.WasPressedThisFrame();
-
-
     }
     /// <summary>
     /// Define the Move Inputs with a floor for what is considered an input
