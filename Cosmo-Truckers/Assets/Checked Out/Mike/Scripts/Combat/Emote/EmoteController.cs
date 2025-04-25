@@ -19,6 +19,8 @@ public class EmoteController : MonoBehaviour
     bool open;
     bool scrolling;
     private bool canOpen = true;
+    private InputManager inputManager; 
+
     public bool CanOpen
     {
         get
@@ -39,6 +41,8 @@ public class EmoteController : MonoBehaviour
 
     private void OnEnable()
     {
+        inputManager = InputManager.Instance; 
+
         currentlySelectedEmote = 0;
 
         emoteSlots = GetComponentsInChildren<Emote>().ToList();
@@ -77,7 +81,7 @@ public class EmoteController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (inputManager.EmoteMenuPressed)
         {
             if (open)
             {
@@ -92,13 +96,13 @@ public class EmoteController : MonoBehaviour
             open = !open;
         }
 
-        else if (Input.GetKeyDown(KeyCode.A) && open && !scrolling)
+        else if (inputManager.MoveInput.x < 0 && open && !scrolling)
             StartCoroutine(Scroll(false));
 
-        else if (Input.GetKeyDown(KeyCode.D) && open && !scrolling)
+        else if (inputManager.MoveInput.x > 0 && open && !scrolling)
             StartCoroutine(Scroll(true));
 
-        else if (Input.GetKeyDown(KeyCode.Space) && open && !scrolling)
+        else if (inputManager.SelectPressed && open && !scrolling)
             SpawnEmote();
     }
 

@@ -58,15 +58,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "ActionSwap",
-                    "type": "Button",
-                    "id": "ea1a0984-31d2-48f5-af03-0c100ffa1085",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -188,28 +179,6 @@
                     "processors": "StickDeadzone",
                     "groups": "Gamepad",
                     "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4ca442a3-1dde-40a6-8312-3097d18cee8e",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "ActionSwap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e9273844-c61c-46f6-b0d0-b80ea98012a1",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "ActionSwap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -355,6 +324,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EmoteMenuOpen",
+                    "type": "Button",
+                    "id": "a05b6bf5-d17b-45ec-bed9-bc69dcb02e71",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -421,6 +399,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "AugmentNavigateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a4729011-3ac5-40f8-853d-1057845332b8",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "EmoteMenuOpen",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d52a19ba-a323-4286-b76e-7b338c1786c4",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "EmoteMenuOpen",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

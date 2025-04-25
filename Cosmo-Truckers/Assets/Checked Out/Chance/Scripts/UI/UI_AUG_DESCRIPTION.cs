@@ -112,12 +112,12 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
             MoveRight();
         }
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if(inputManager.AugNavLeftPressed)
             SelectCharacter(true);
-        else if(Input.GetKeyDown(KeyCode.E))
+        else if(inputManager.AugNavLeftPressed)
             SelectCharacter(false);
 
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        else if (inputManager.BackPressed)
         {
             gameObject.SetActive(false);
         }

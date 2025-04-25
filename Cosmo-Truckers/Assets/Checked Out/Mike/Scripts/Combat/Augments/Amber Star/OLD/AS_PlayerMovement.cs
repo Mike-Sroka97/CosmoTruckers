@@ -19,13 +19,13 @@ public class AS_PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        if (Input.GetKeyDown(KeyCode.A) && transform.position.x > playerPositions[0].position.x)
+        if (InputManager.Instance.MoveInput.x < 0 && transform.position.x > playerPositions[0].position.x)
         {
             OnCD = true;
             playerPosition--;
             transform.position = playerPositions[playerPosition].position;
         }
-        else if (Input.GetKeyDown(KeyCode.D) && transform.position.x < playerPositions[playerPositions.Length - 1].position.x)
+        else if (InputManager.Instance.MoveInput.x > 0 && transform.position.x < playerPositions[playerPositions.Length - 1].position.x)
         {
             OnCD = true;
             playerPosition++;

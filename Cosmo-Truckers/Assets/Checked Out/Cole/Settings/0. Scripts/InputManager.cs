@@ -18,6 +18,13 @@ public class InputManager : MonoBehaviour
     public bool SpecialHeld { get; private set; }
     #endregion
 
+    #region Combat Input Values
+    public bool AttackDescPressed { get; private set; }
+    public bool AugNavRightPressed { get; private set; }
+    public bool AugNavLeftPressed { get; private set; }
+    public bool EmoteMenuPressed { get; private set; }
+    #endregion
+
     #region  UI Input Values
     public bool SelectPressed { get; private set; }
     public bool BackPressed { get; private set; }
@@ -30,6 +37,10 @@ public class InputManager : MonoBehaviour
     public InputAction SpecialAction { get; private set; }
     public InputAction SelectAction { get; private set; }
     public InputAction BackAction { get; private set; }
+    public InputAction AttackDescOpenAction { get; private set; }
+    public InputAction AugNavRightAction { get; private set; }
+    public InputAction AugNavLeftAction { get; private set; }
+    public InputAction EmoteMenuAction { get; private set; }
     #endregion
 
     [HideInInspector]
@@ -77,7 +88,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        UpdateMinigameAcitons();
+        UpdateActions();
 
         // Check and update control scheme
         SwapControlScheme();
@@ -91,10 +102,68 @@ public class InputManager : MonoBehaviour
         SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()];
         SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()];
         BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];
+        AttackDescOpenAction = PlayerInput.actions[PlayerActions.AttackDescriptionOpen.ToString()];
+        AugNavRightAction = PlayerInput.actions[PlayerActions.AugmentNavigateRight.ToString()];
+        AugNavLeftAction = PlayerInput.actions[PlayerActions.AugmentNavigateLeft.ToString()];
+        EmoteMenuAction = PlayerInput.actions[PlayerActions.EmoteMenuOpen.ToString()];
     }
 
-    # region Control Scheme  
+    #region Control Scheme  
+    private void SwapControlScheme()
+    {
+        bool gamepadInput = TrackGamePadActions();
+        bool keyboardInput = TrackKeyboardActions();
 
+        if (gamepadInput)
+        {
+            if (currentScheme != "Gamepad")
+                TrySwitchScheme("Gamepad");
+        }
+        else if (keyboardInput)
+        {
+            if (currentScheme != "Keyboard")
+                TrySwitchScheme("Keyboard");
+        }
+    }
+    private bool TrackGamePadActions()
+    {
+        Gamepad gamePad = Gamepad.current;
+        if (gamePad == null) return false;
+
+        // Check if any button has been pressed
+        return gamePad.buttonSouth.wasPressedThisFrame
+            || gamePad.buttonNorth.wasPressedThisFrame
+            || gamePad.buttonEast.wasPressedThisFrame
+            || gamePad.buttonWest.wasPressedThisFrame
+            || gamePad.leftStick.ReadValue().magnitude > 0.2f
+            || gamePad.rightStick.ReadValue().magnitude > 0.2f
+            || gamePad.dpad.ReadValue().magnitude > 0.2f
+            || gamePad.rightTrigger.ReadValue() > 0.1f
+            || gamePad.leftTrigger.ReadValue() > 0.1f
+            || gamePad.rightShoulder.wasPressedThisFrame
+            || gamePad.leftShoulder.wasPressedThisFrame
+            || gamePad.startButton.wasPressedThisFrame
+            || gamePad.selectButton.wasPressedThisFrame;
+    }
+    private bool TrackKeyboardActions()
+    {
+        // Check each key in the key checker if it was pressed this frame
+        foreach (Key key in keyChecker.allKeys)
+        {
+            if (Keyboard.current[key].wasPressedThisFrame)
+            {
+                return true;
+            }
+        }
+
+        // Check the mouse buttons to determine if they were pressed this frame
+        if (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame)
+        {
+            return true;
+        }
+
+        return false;
+    }
     private void TrySwitchScheme(string scheme)
     {
         if (Time.time - lastSchemeSwitchTime < switchSchemeCooldown)
@@ -125,66 +194,10 @@ public class InputManager : MonoBehaviour
             currentScheme = newScheme;
         }
     }
-
-    private void SwapControlScheme()
-    {
-        bool gamepadInput = TrackGamePadActions(); 
-        bool keyboardInput = TrackKeyboardActions();
-
-        if (gamepadInput)
-        {
-            if (currentScheme != "Gamepad")
-                TrySwitchScheme("Gamepad");
-        }
-        else if (keyboardInput)
-        {
-            if (currentScheme != "Keyboard")
-                TrySwitchScheme("Keyboard");
-        }
-    }
-
-    private bool TrackGamePadActions()
-    {
-        Gamepad gamePad = Gamepad.current;
-        if (gamePad == null) return false;
-
-        // Check if any button has been pressed
-        return gamePad.buttonSouth.wasPressedThisFrame
-            || gamePad.buttonNorth.wasPressedThisFrame
-            || gamePad.buttonEast.wasPressedThisFrame
-            || gamePad.buttonWest.wasPressedThisFrame
-            || gamePad.leftStick.ReadValue().magnitude > 0.2f
-            || gamePad.rightStick.ReadValue().magnitude > 0.2f
-            || gamePad.dpad.ReadValue().magnitude > 0.2f
-            || gamePad.rightTrigger.ReadValue() > 0.1f
-            || gamePad.leftTrigger.ReadValue() > 0.1f
-            || gamePad.rightShoulder.wasPressedThisFrame
-            || gamePad.leftShoulder.wasPressedThisFrame
-            || gamePad.startButton.wasPressedThisFrame
-            || gamePad.selectButton.wasPressedThisFrame;
-    }
-    private bool TrackKeyboardActions()
-    {
-        foreach (Key key in keyChecker.allKeys)
-        {
-            if (Keyboard.current[key].wasPressedThisFrame)
-            {
-                return true; 
-            }
-        }
-
-        if (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame || Mouse.current.middleButton.wasPressedThisFrame)
-        {
-            return true; 
-        }
-
-        return false; 
-    }
-
     #endregion
 
-    #region Minigame
-    private void UpdateMinigameAcitons()
+    #region Actions
+    private void UpdateActions()
     {
         // MOVEMENT
         MoveInputs(); 
@@ -194,6 +207,12 @@ public class InputManager : MonoBehaviour
         AttackHeld = AttackAction.IsPressed();
         SpecialPressed = SpecialAction.WasPressedThisFrame();
         SpecialHeld = SpecialAction.IsPressed();
+
+        // COMBAT
+        AttackDescPressed= AttackAction.WasPressedThisFrame();
+        AugNavRightPressed = AugNavRightAction.WasPressedThisFrame();
+        AugNavLeftPressed = AugNavLeftAction.WasPressedThisFrame();
+        EmoteMenuPressed = EmoteMenuAction.WasPressedThisFrame();
 
         // UI
         SelectPressed = SelectAction.WasPressedThisFrame();
@@ -244,7 +263,10 @@ public class InputManager : MonoBehaviour
         Special,
         Select,
         Back, 
-        ActionSwap,
+        AttackDescriptionOpen, 
+        AugmentNavigateRight, 
+        AugmentNavigateLeft,
+        EmoteMenuOpen, 
     }
 
     private void OnDestroy()

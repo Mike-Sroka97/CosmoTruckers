@@ -304,7 +304,7 @@ public class RegularTextManager : MonoBehaviour
     }
     private void CheckPlayerInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (InputManager.Instance.SelectPressed)
         {
             if (CanAdvance())
             {

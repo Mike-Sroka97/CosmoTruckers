@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public abstract class AttackUI : MonoBehaviour
 {
@@ -26,6 +24,7 @@ public abstract class AttackUI : MonoBehaviour
     protected PlayerCharacter currentPlayer;
     Transform heheHahaCircle;
     public UnityEvent AttackSelected = new UnityEvent();
+    InputManager inputManager;
 
     public void StartTurn(PlayerCharacter player)
     {
@@ -68,6 +67,7 @@ public abstract class AttackUI : MonoBehaviour
     private void OnEnable()
     {
         attackDescriptionActive = false;
+        inputManager = InputManager.Instance;
     }
 
     private void OnDisable()
@@ -84,28 +84,28 @@ public abstract class AttackUI : MonoBehaviour
     {
         if (!spinning && !CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls)
         {
-            if(Input.GetKeyDown(KeyCode.E) && !attackDescriptionActive)
+            if(inputManager.AttackDescPressed && !attackDescriptionActive)
             {
                 attackDescriptionActive = true;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(true);
                 UpdateAttackDescription();
             }
-            else if(Input.GetKeyDown(KeyCode.E) && attackDescriptionActive)
+            else if(inputManager.AttackDescPressed && attackDescriptionActive)
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (inputManager.MoveInput.x < 0)
             {
                 RotateWheel(-rotationDistance);
                 if (attackDescriptionActive)
                     UpdateAttackDescription();
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (inputManager.MoveInput.x > 0)
             {
                 RotateWheel(rotationDistance);
             }
-            else if(Input.GetKeyDown(KeyCode.Space))
+            else if(inputManager.SelectPressed)
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);
