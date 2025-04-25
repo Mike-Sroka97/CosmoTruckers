@@ -174,7 +174,7 @@ public class LongDogINA : Player
     /// </summary>
     public void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && canStretch && !IsGrounded() && !iFrames)
+        if (inputManager.AttackPressed && canStretch && !IsGrounded() && !iFrames)
         {
             canStretch = false;
             myBody.velocity = Vector2.zero;
@@ -185,14 +185,14 @@ public class LongDogINA : Player
             StartCoroutine(StartStretch());
             BeginDraw();
         }
-        else if(Input.GetKey(KeyCode.Mouse0) && stretching)
+        else if(inputManager.AttackHeld && stretching)
         {
             if(currentLine != null)
             {
                 Draw();
             }
         }
-        else if(Input.GetKeyUp(KeyCode.Mouse0) && stretching)
+        else if(inputManager.AttackAction.WasReleasedThisFrame() && stretching)
         {
             EndDraw();
         }
@@ -378,14 +378,14 @@ public class LongDogINA : Player
 
         IsGroundedJump();
 
-        if (Input.GetKeyDown("space") && canJump && !isJumping)
+        if (inputManager.JumpPressed && canJump && !isJumping)
         {
             canJump = false;
             isJumping = true;
             myBody.velocity = new Vector2(myBody.velocity.x, jumpSpeed + yVelocityAdjuster);
             playerAnimator.ChangeAnimation(bodyAnimator, stretchBody);
         }
-        else if (Input.GetKey("space") && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
+        else if (inputManager.JumpHeld && isJumping && currentJumpHoldTime < jumpMaxHoldTime)
         {
             currentCoyoteTime = coyoteTime;
             currentJumpHoldTime += Time.deltaTime;
@@ -414,13 +414,13 @@ public class LongDogINA : Player
 
             if(head.transform.eulerAngles.y != 0)
             {
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+                if (inputManager.MoveInput.x < 0)
                 {
                     goingLeft = false;
                     goingRight = true;
                     head.transform.Rotate(new Vector3(0, 0, -stretchRotateSpeed * Time.deltaTime));
                 }
-                else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+                else if (inputManager.MoveInput.x > 0)
                 {
                     goingLeft = true;
                     goingRight = false;
@@ -439,13 +439,13 @@ public class LongDogINA : Player
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+                if (inputManager.MoveInput.x < 0)
                 {
                     goingLeft = true;
                     goingRight = false;
                     head.transform.Rotate(new Vector3(0, 0, stretchRotateSpeed * Time.deltaTime));
                 }
-                else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+                else if (inputManager.MoveInput.x > 0)
                 {
                     goingLeft = false;
                     goingRight = true;
@@ -477,7 +477,7 @@ public class LongDogINA : Player
             goingLeft = false;
             goingRight = false;
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.A))
+            if (inputManager.MoveInput.x < 0)
             {
                 myBody.velocity = new Vector2(-MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 if (head.transform.eulerAngles != new Vector3(0, 0, 0))
@@ -492,7 +492,7 @@ public class LongDogINA : Player
                 if (postSpin)
                     postSpin = false;
             }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.D))
+            else if (inputManager.MoveInput.x > 0)
             {
                 myBody.velocity = new Vector2(MoveSpeed + xVelocityAdjuster, myBody.velocity.y);
                 if(head.transform.eulerAngles != new Vector3(0, 180, 0))
@@ -531,7 +531,7 @@ public class LongDogINA : Player
         if (Physics2D.BoxCast(myCollider.bounds.center, myCollider.bounds.size, 0, Vector2.down, .05f, layermask))
         {
 
-            if (!damaged && Input.GetKey("space") && canMove && !stretching && !dead)
+            if (!damaged && inputManager.JumpHeld && canMove && !stretching && !dead)
             {
                 canJump = true;
             }
@@ -558,7 +558,7 @@ public class LongDogINA : Player
     /// </summary>
     public void SpecialMove()
     {
-        if(canBark && !stretching && !damaged && !dead && Input.GetKeyDown(KeyCode.Mouse1))
+        if(canBark && !stretching && !damaged && !dead && inputManager.SpecialPressed)
         {
             StartCoroutine(Bark());
         }
