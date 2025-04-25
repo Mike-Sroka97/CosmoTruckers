@@ -66,11 +66,7 @@ public class InputManager : MonoBehaviour
     {
         string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty);
 
-        if (string.IsNullOrEmpty(rebinds))
-        {
-            return; 
-        }
-        else
+        if (!string.IsNullOrEmpty(rebinds))
         {
             PlayerInput.actions.LoadBindingOverridesFromJson(rebinds);
         }

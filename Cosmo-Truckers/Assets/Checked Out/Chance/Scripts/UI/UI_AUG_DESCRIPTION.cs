@@ -28,12 +28,14 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
     Image leftArrow;
     Image rightArrow;
     INAstatDisplay statDisplay;
+    InputManager inputManager; 
 
     private void OnEnable()
     {
         leftArrow = transform.Find("Canvas/Arrows/Left Arrow").GetComponent<Image>();
         rightArrow = transform.Find("Canvas/Arrows/Right Arrow").GetComponent<Image>();
         statDisplay = GetComponentInChildren<INAstatDisplay>();
+        inputManager = InputManager.Instance; 
     }
 
     private void OnDisable()
@@ -89,22 +91,22 @@ public class UI_AUG_DESCRIPTION : MonoBehaviour
         if (CombatManager.Instance.GetCurrentCharacter.GetComponent<PlayerCharacter>().RevokeControls)
             return;
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (inputManager.MoveInput.y > 0)
         {
             //-4
             MoveUp();
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (inputManager.MoveInput.x > 0)
         {
             //-1
             MoveLeft();
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (inputManager.MoveInput.y < 0)
         {
             //+4
             MoveDown();
         }
-        else if (Input.GetKeyDown(KeyCode.D))
+        else if (inputManager.MoveInput.x < 0)
         {
             //+1
             MoveRight();
