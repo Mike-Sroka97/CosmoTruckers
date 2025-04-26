@@ -662,6 +662,5 @@ public class ProtoINA : Player
         else if (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(unchargedHurt.name))
             playerAnimator.ChangeAnimation(myAnimator, hurt);
     }
-
     #endregion
 }

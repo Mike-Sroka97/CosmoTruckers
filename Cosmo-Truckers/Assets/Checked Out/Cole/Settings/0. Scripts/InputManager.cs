@@ -1,7 +1,6 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Steamworks; 
 
 [System.Serializable]
 public class InputManager : MonoBehaviour
@@ -45,13 +44,9 @@ public class InputManager : MonoBehaviour
 
     [HideInInspector]
     public PlayerInput PlayerInput { get; private set; }
-   
-    /// <summary>
-    /// The gamepad joystick must be at a position above this value for the input to be considered for that axis
-    /// </summary>
-    public float GamePadMoveValueFloor = 0.25f;
-    [SerializeField] private string currentScheme = "Keyboard";
+    public float GamePadMoveValueFloor { get; private set; } = 0.25f; // The gamepad joystick must be at a position above this value for the input to be considered for that axis
     
+    [SerializeField] private string currentScheme = "Keyboard";
     private float lastSchemeSwitchTime = 0f;
     private float switchSchemeCooldown = 0.5f;
     private const string RebindsKey = "rebinds";
@@ -75,6 +70,12 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
+        // Disable the Steam API
+        if (SteamManager.Initialized)
+        {
+            SteamInput.Shutdown(); 
+        }
+
         string rebinds = PlayerPrefs.GetString(RebindsKey, string.Empty);
 
         if (!string.IsNullOrEmpty(rebinds))
@@ -225,31 +226,67 @@ public class InputManager : MonoBehaviour
     private void MoveInputs()
     {
         Vector2 moveValues = MoveAction.ReadValue<Vector2>();
+        Vector2 originalReadValue = moveValues; 
         float xMultiplier = moveValues.x < 0 ? -1 : 1;
         float yMultiplier = moveValues.y < 0 ? -1 : 1;
 
-        if (moveValues.x != 0)
+        // If move values is actually receiving data, continue
+        if (moveValues.magnitude > 0)
         {
-            if ((moveValues.x < 0 && moveValues.x > GamePadMoveValueFloor) || (moveValues.x > 0 && moveValues.x < GamePadMoveValueFloor))
+            if (moveValues.x != 0)
             {
-                moveValues.x = 0;
+                if (Mathf.Abs(moveValues.x) < GamePadMoveValueFloor)
+                {
+                    moveValues.x = 0;
+                }
+                else
+                {
+                    moveValues.x = 1 * xMultiplier;
+                }
             }
-            else
+            if (moveValues.y != 0)
             {
-                moveValues.x = 1 * xMultiplier; 
+                if (Mathf.Abs(moveValues.y) < GamePadMoveValueFloor)
+                {
+                    moveValues.y = 0;
+                }
+                else
+                {
+                    moveValues.y = 1 * yMultiplier;
+                }
+            }
+
+            // We are at the end of modifying the move values. At least one value was originally > 0, but we have the Vector2 as 0,0.
+            // Set one value to be higher than 0. 
+            if (originalReadValue.magnitude > 0 && moveValues.magnitude == 0)
+            {
+                // X has value, Y does not
+                if (originalReadValue.x != 0 && originalReadValue.y == 0)
+                {
+                    moveValues.x = 1 * xMultiplier;
+                }
+                // Y has value, X does not
+                else if (originalReadValue.x == 0 && originalReadValue.y != 0)
+                {
+                    moveValues.y = 1 * yMultiplier;
+                }
+                // Both vectors have a value
+                else
+                {
+                    // Choose a higher value and set that one
+                    if (Mathf.Abs(originalReadValue.x) > Mathf.Abs(originalReadValue.y))
+                    {
+                        moveValues.x = 1 * xMultiplier;
+                    }
+                    else
+                    {
+                        moveValues.y = 1 * yMultiplier;
+                    }
+                }
             }
         }
-        if (moveValues.y != 0)
-        {
-            if ((moveValues.y < 0 && moveValues.y > GamePadMoveValueFloor) || (moveValues.y > 0 && moveValues.y < GamePadMoveValueFloor))
-            {
-                moveValues.y = 0;
-            }
-            else
-            {
-                moveValues.y = 1 * yMultiplier;
-            }
-        }
+
+
 
         MoveInput = moveValues; 
     }
