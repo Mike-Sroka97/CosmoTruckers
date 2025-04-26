@@ -27,6 +27,9 @@ public class TrainingButtonInfo : MonoBehaviour
     /// <returns></returns>
     public bool DetermineLockedState()
     {
+        if (FindObjectOfType<HUBController>().AllCharactersUnlocked)
+            return false;
+
         DataLogData dataLogData = SaveManager.LoadDataLogData();
         return CharacterName != "" && !dataLogData.DataFiles[CharacterName];
     }
