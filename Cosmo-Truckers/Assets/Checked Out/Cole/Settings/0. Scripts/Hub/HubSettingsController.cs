@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI; 
 
 public class HubSettingsController : MonoBehaviour
 {
@@ -15,6 +14,8 @@ public class HubSettingsController : MonoBehaviour
     [SerializeField] GameObject[] keyboardSubScreenGOs;
     [SerializeField] GameObject gamepadScreenGO;
     [SerializeField] GameObject[] gamepadLayoutSubScreenGOs;
+    [SerializeField] GameObject initialResetScreenGO; 
+    [SerializeField] GameObject resetAreYouSureScreenGO; 
 
     [HideInInspector] public SettingsData SettingsData;
     private int currentSubScreen = 0;
@@ -46,15 +47,6 @@ public class HubSettingsController : MonoBehaviour
     public void OpenGameplayScreen()
     {
         gameplayScreenGO.SetActive(true);
-        selectScreenGO.SetActive(false);
-    }
-
-    /// <summary>
-    /// Open the game save settings screen
-    /// </summary>
-    public void OpenGameSaveScreen()
-    {
-        gameSaveScreenGO.SetActive(true);
         selectScreenGO.SetActive(false);
     }
 
@@ -369,6 +361,56 @@ public class HubSettingsController : MonoBehaviour
         }
 
         return currentVolume; 
+    }
+
+    #endregion
+
+    #region Game Save
+
+    /// <summary>
+    /// Open the game save settings screen
+    /// </summary>
+    public void OpenGameSaveScreen(bool open)
+    {
+        if (open)
+        {
+            gameSaveScreenGO.SetActive(true);
+            initialResetScreenGO.SetActive(true);
+            selectScreenGO.SetActive(false);
+        }
+        else
+        {
+            gameSaveScreenGO.SetActive(false);
+            initialResetScreenGO.SetActive(false);
+            selectScreenGO.SetActive(true);
+        }
+
+    }
+
+    /// <summary>
+    /// Open the Are You Sure screen for resetting save data
+    /// </summary>
+    public void AreYouSureScreen(bool open)
+    {
+        if (open)
+        {
+            resetAreYouSureScreenGO.SetActive(true);
+            initialResetScreenGO.SetActive(false);
+        }
+        else
+        {
+            initialResetScreenGO.SetActive(true);
+            resetAreYouSureScreenGO.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// Reset all of the game's save data
+    /// </summary>
+    public void ResetSaveData()
+    {
+        SaveManager.DeleteAllSaveData(); 
+        AreYouSureScreen(false); 
     }
 
     #endregion

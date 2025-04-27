@@ -168,4 +168,32 @@ public static class SaveManager
 
         return true;
     }
+
+    /// <summary>
+    /// Delete all save data 
+    /// This excludes the tutorial data
+    /// </summary>
+    /// <returns></returns>
+    public static bool DeleteAllSaveData()
+    {
+        // Reset Player Data
+        PlayerData playerData = new PlayerData();
+        playerData.InitialSetup();
+        SavePlayerData(playerData);
+        if (playerData == null) return false;
+
+        // Reset Data Log Data
+        DataLogData dataLogData = new DataLogData();
+        dataLogData.InitialSetup();
+        SaveDataLogData(dataLogData);
+        if (dataLogData == null) return false;
+
+        // Reset D1 Level Data
+        DimensionOneLevelData d1Data = new DimensionOneLevelData();
+        SaveDimensionOne(d1Data);
+        if (d1Data == null) return false;
+
+        // If all data has been reset, return true
+        return true; 
+    }
 }
