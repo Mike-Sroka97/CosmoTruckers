@@ -290,11 +290,14 @@ public class HubSettingsController : MonoBehaviour
         switch (volumeButton.AudioType)
         {
             case SettingsManager.AudioTypes.Music:
-                SettingsData.MusicVolume = currentVolume; break;
+                SettingsData.MusicVolume = currentVolume; 
+                break;
             case SettingsManager.AudioTypes.Sfx:
-                SettingsData.SfxVolume = currentVolume; break;
+                SettingsData.SfxVolume = currentVolume; 
+                break;
             case SettingsManager.AudioTypes.Dialog:
-                SettingsData.DialogVolume = currentVolume; break;
+                SettingsData.DialogVolume = currentVolume; 
+                break;
             case SettingsManager.AudioTypes.Master:
             default:
                 SettingsData.MasterVolume = currentVolume;
@@ -303,6 +306,9 @@ public class HubSettingsController : MonoBehaviour
 
         // Update the slider to the modified value
         volumeButton.AudioSlider.value = currentVolume;
+
+        // Play the test sound based on the volume
+        AudioManager.Instance.PlayTestSound(currentVolume);
 
         SaveVolume(); 
     }

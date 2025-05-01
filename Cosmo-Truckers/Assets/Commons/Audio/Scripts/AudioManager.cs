@@ -13,27 +13,35 @@ public class AudioManager : MonoBehaviour
     public AudioMixer MasterMixer;
     public float MasterVolume { get; private set; } = 1f;
 
-    // Music
+    #region Music Variables
     [SerializeField] private List<Music> AllTracks = new List<Music>();
     public float MusicVolume { get; private set; } = 0.5f;
     public AudioSource CurrentMusic { get; private set; }
     public AudioSource AlternateMusic { get; private set; }
     private Dictionary<MusicTracks, AudioClip> tracks = new Dictionary<MusicTracks, AudioClip>();
     private MusicTracks CurrentTrack = MusicTracks.None;
+    #endregion
 
-    // SFX
+    #region SFX Variables
     /// <summary>
     /// List of all Sfx Audio Sources
     /// </summary>
     public List<AudioSource> SfxSources = new List<AudioSource>();
     public float SfxVolume { get; private set; } = 1f;
+    #endregion
 
-    // Dialog
+    #region Dialog Variables
     /// <summary>
     /// List of all Dialog Audio Sources
     /// </summary>
     public List<AudioSource> DialogSources = new List<AudioSource>();
     public float DialogVolume { get; private set; } = 1f;
+    #endregion
+
+    /// <summary>
+    /// This sound will play when the user is modifying the audio settings
+    /// </summary>
+    [SerializeField] private AudioSource TestSound;
 
     //Set instance or remove object
     void Awake()
@@ -239,6 +247,39 @@ public class AudioManager : MonoBehaviour
         public AudioClip AudioClip;
     }
     #endregion
+
+    #region Dialog
+
+    /// <summary>
+    /// Add a new Dialog audio source to the list for updating purposes
+    /// </summary>
+    /// <param name="source"></param>
+    public void AddDialogSource(AudioSource source)
+    {
+        source.volume = DialogVolume * MasterVolume;
+        source.outputAudioMixerGroup = MasterMixer.FindMatchingGroups("Dialog")[0];
+        DialogSources.Add(source);
+    }
+
+    /// <summary>
+    /// Remove a Dialog audio source from the list that has been destroyed to avoid future duplications
+    /// </summary>
+    public void RemoveDialogSource(AudioSource source)
+    {
+        DialogSources.Remove(source);
+    }
+
+    #endregion
+
+    /// <summary>
+    /// Play the Test Sound
+    /// </summary>
+    /// <param name="volumeToPlay"></param>
+    public void PlayTestSound(float volumeToPlay)
+    {
+        TestSound.volume = (volumeToPlay / 100f) * MasterVolume;
+        TestSound.Play(); 
+    }
 
     /// <summary>
     /// Update all audio volumes
