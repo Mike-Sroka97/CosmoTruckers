@@ -16,6 +16,7 @@ public class HubSettingsController : MonoBehaviour
     [SerializeField] GameObject[] gamepadLayoutSubScreenGOs;
     [SerializeField] GameObject initialResetScreenGO; 
     [SerializeField] GameObject resetAreYouSureScreenGO; 
+    [SerializeField] GameObject resetFinalMessage; 
 
     [HideInInspector] public SettingsData SettingsData;
     private int currentSubScreen = 0;
@@ -376,6 +377,8 @@ public class HubSettingsController : MonoBehaviour
         {
             gameSaveScreenGO.SetActive(true);
             initialResetScreenGO.SetActive(true);
+            resetAreYouSureScreenGO.SetActive(false);
+            resetFinalMessage.SetActive(false);
             selectScreenGO.SetActive(false);
         }
         else
@@ -390,7 +393,7 @@ public class HubSettingsController : MonoBehaviour
     /// <summary>
     /// Open the Are You Sure screen for resetting save data
     /// </summary>
-    public void AreYouSureScreen(bool open)
+    public void ResetAreYouSureScreen(bool open)
     {
         if (open)
         {
@@ -399,18 +402,22 @@ public class HubSettingsController : MonoBehaviour
         }
         else
         {
-            initialResetScreenGO.SetActive(true);
-            resetAreYouSureScreenGO.SetActive(false);
+            OpenGameSaveScreen(true); 
         }
     }
 
-    /// <summary>
-    /// Reset all of the game's save data
-    /// </summary>
-    public void ResetSaveData()
+    public void ResetFinalMessage(bool open)
     {
-        SaveManager.DeleteAllSaveData(); 
-        AreYouSureScreen(false); 
+        if (open)
+        {
+            resetFinalMessage.SetActive(true);
+            resetAreYouSureScreenGO.SetActive(false);
+        }
+        else
+        {
+            SaveManager.DeleteAllSaveData();
+            OpenGameSaveScreen(true);
+        }
     }
 
     #endregion
