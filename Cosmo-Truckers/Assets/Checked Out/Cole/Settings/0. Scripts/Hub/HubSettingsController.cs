@@ -30,25 +30,59 @@ public class HubSettingsController : MonoBehaviour
     private void OnEnable()
     {
         SettingsData = SettingsManager.LoadSettingsData();
+        OpenSelectScreen(); 
+    }
+
+    public void OpenSelectScreen()
+    {
+        // Set the main select screen active
         selectScreenGO.SetActive(true);
+
+        // Set all other screens to be false
+        videoScreenGO.SetActive(false);
+        controlsMainScreenGO.SetActive(false);
+        keyboardScreenGO.SetActive(false);
+        CloseKeyboardSubScreens();
+        CloseGamepadSubScreens();
+        audioScreenGO.SetActive(false);
+        gameplayScreenGO.SetActive(false);
+        gameSaveScreenGO.SetActive(false);
+        initialResetScreenGO.SetActive(false);
+        resetAreYouSureScreenGO.SetActive(false);
+        resetFinalMessage.SetActive(false);
+        currentSubScreen = 0;
     }
 
     /// <summary>
     /// Open the video settings screen
     /// </summary>
-    public void OpenVideoScreen()
+    public void OpenVideoScreen(bool open)
     {
-        videoScreenGO.SetActive(true);
-        selectScreenGO.SetActive(false);
+        if (open)
+        {
+            videoScreenGO.SetActive(true);
+            selectScreenGO.SetActive(false);
+        }
+        else
+        {
+            OpenSelectScreen(); 
+        }
     }
 
     /// <summary>
     /// Open the gameplay settings screen
     /// </summary>
-    public void OpenGameplayScreen()
+    public void OpenGameplayScreen(bool open)
     {
-        gameplayScreenGO.SetActive(true);
-        selectScreenGO.SetActive(false);
+        if (open)
+        {
+            gameplayScreenGO.SetActive(true);
+            selectScreenGO.SetActive(false);
+        }
+        else
+        {
+
+        }
     }
 
     #region Controls Screens
@@ -65,10 +99,7 @@ public class HubSettingsController : MonoBehaviour
         }
         else
         {
-            selectScreenGO.SetActive(true);
-            OpenKeyboardControlScreen(false);
-            OpenGamepadControlScreen(false); 
-            controlsMainScreenGO.SetActive(false);
+            OpenSelectScreen(); 
         }
     }
 
