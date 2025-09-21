@@ -8,9 +8,14 @@ public class DungeonCombatNode : MonoBehaviour
     public string SceneToLoad;
 
     [SerializeField] List<GameObject> enemiesToSpawn;
+    [SerializeField] bool playMusicOnCombatStart = true;
+    private SceneMusic combatMusic; 
 
     public IEnumerator StartCombat(DNode currentNode)
     {
+        // Grab the combat music
+        combatMusic = GetComponent<SceneMusic>();
+
         //Set dungeon refs
         CombatManager.Instance.LastCameraPosition = CameraController.Instance.transform.position;
         CombatManager.Instance.DungeonCharacterInstance = CameraController.Instance.Leader;
@@ -19,11 +24,11 @@ public class DungeonCombatNode : MonoBehaviour
         CameraController.Instance.Leader = null;
         currentNode.Active = false;
 
-        //Set Enemies
+        // Set Enemies
         EnemyManager.Instance.EnemiesToSpawn = enemiesToSpawn;
         EnemyManager.Instance.InitializeEnemys();
 
-        //Start the flippy floppy as long as it is in scene
+        // Start the flippy floppy as long as it is in scene
         FlipLoadAnimation flip = FindObjectOfType<FlipLoadAnimation>();
         if (flip)
         {
@@ -31,7 +36,11 @@ public class DungeonCombatNode : MonoBehaviour
             yield return new WaitUntil(() => !flip.IsFlipping);
         }
 
-        //Start 
+        // Start 
         TurnOrder.Instance.StartTurnOrder();
+
+        // Play the music when combat starts, unless music will be played later for cinematic effect
+        if (playMusicOnCombatStart)
+            combatMusic.PlaySceneTrack(); 
     }
 }
