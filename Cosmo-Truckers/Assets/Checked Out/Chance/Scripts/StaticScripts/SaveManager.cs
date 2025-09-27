@@ -5,8 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public static class SaveManager
 {
-    static bool TutorialFinished;
-
     //Set name of save file here defaults to auto save if no name is set
     static string GameName = "SaveData";
 
