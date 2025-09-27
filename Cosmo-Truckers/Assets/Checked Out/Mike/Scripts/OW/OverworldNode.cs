@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 
 public class OverworldNode : MonoBehaviour
@@ -41,6 +37,16 @@ public class OverworldNode : MonoBehaviour
     public UnityEvent MapEventInteraction;
 
     protected SpriteRenderer myRenderer;
+
+    /// <summary>
+    /// The second layer of Overworld music to play
+    /// </summary>
+    [SerializeField] SceneMusic AdditionalOverworldMusic;
+
+    /// <summary>
+    /// Whether to start (true) or stop (false) additional overworld music
+    /// </summary>
+    [SerializeField] bool owMusicState;
 
     protected virtual void Start()
     {
@@ -213,6 +219,15 @@ public class OverworldNode : MonoBehaviour
             myRenderer.sprite = activeInteractiveUsedNode;
 
         SetupLineRendererers();
+
+        // Determine if the Additional Overworld Music exists, and if it should be played or stopped
+        if (AdditionalOverworldMusic != null)
+        {
+            if (owMusicState)
+                AudioManager.Instance.PlayAlternateTrack(AdditionalOverworldMusic);
+            else
+                AudioManager.Instance.StopAlternateTrack(AdditionalOverworldMusic.FadeDuration); 
+        }
     }
 
     public void LeavingNodeCleanup()

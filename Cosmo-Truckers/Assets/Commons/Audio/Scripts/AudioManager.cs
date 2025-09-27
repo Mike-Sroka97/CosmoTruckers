@@ -1,9 +1,8 @@
 using System;
-using System.Collections; 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using static Unity.VisualScripting.Member;
 
 public class AudioManager : MonoBehaviour
 {
@@ -20,6 +19,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource AlternateMusic { get; private set; }
     private Dictionary<MusicTracks, AudioClip> tracks = new Dictionary<MusicTracks, AudioClip>();
     private MusicTracks CurrentTrack = MusicTracks.None;
+    private MusicTracks CurrentAlternateTrack = MusicTracks.None;
     #endregion
 
     #region SFX Variables
@@ -121,23 +121,32 @@ public class AudioManager : MonoBehaviour
     /// Fade in a track
     /// </summary>
     /// <param name="track"></param>
-    /// <param name="duration"></param>
-    public void PlayTrack(MusicTracks track, float duration, float fadeBetweenDuration = 0f)
+    /// <param name="fadeDuration"></param>
+    public void PlayTrack(MusicTracks track, float fadeDuration, float fadeBetweenDuration = 0f)
     {
         if (CurrentTrack != track)
         {
             if (tracks.TryGetValue(track, out AudioClip clip))
             {
-                StartCoroutine(FadeInNewTrack(CurrentMusic, duration, clip, fadeBetweenDuration));
+                CurrentTrack = track; 
+                StartCoroutine(FadeInNewTrack(CurrentMusic, fadeDuration, clip, fadeBetweenDuration));
             }
+            else
+                Debug.Log($"Attempting to play {track}, but track cannot be found!");
         }
         else
         {
             Debug.Log($"Attempting to play {track}, but track is already playing!"); 
         }
     }
+
+    /// <summary>
+    /// Stops the current primary track
+    /// </summary>
+    /// <param name="duration"></param>
     public void StopTrack(float duration)
     {
+        CurrentTrack = MusicTracks.None; 
         StartCoroutine(FadeTrack(CurrentMusic, duration, null));
     }
 
@@ -147,38 +156,54 @@ public class AudioManager : MonoBehaviour
     /// <param name="track"></param>
     /// <param name="duration"></param>
     /// <param name="fadeBetweenDuration"></param>
-    public void PlayAlternateTrack(MusicTracks track, float duration)
+    public void PlayAlternateTrack(MusicTracks track, float fadeDuration)
     {
-        if (CurrentTrack != track)
+        if (CurrentAlternateTrack != track)
         {
             if (tracks.TryGetValue(track, out AudioClip clip))
             {
-                StartCoroutine(FadeInNewTrack(AlternateMusic, duration, clip));
+                CurrentAlternateTrack = track;
+                StartCoroutine(FadeInNewTrack(AlternateMusic, fadeDuration, clip, alternateTrack: true));
             }
+            else
+                Debug.Log($"Attempting to play {track}, but track cannot be found!");
         }
         else
-        {
             Debug.Log($"Attempting to play {track}, but track is already playing!");
-        }
     }
-    public void StopAlternateTrack(float duration)
+
+    /// <summary>
+    /// Fades in alternate track
+    /// </summary>
+    /// <param name="sceneMusic"></param>
+    public void PlayAlternateTrack(SceneMusic sceneMusic)
     {
-        StartCoroutine(FadeTrack(AlternateMusic, duration, null));
+        PlayAlternateTrack(sceneMusic.MusicTracks, sceneMusic.FadeDuration);
+    }
+
+    /// <summary>
+    /// Stop the alternate track playing
+    /// </summary>
+    /// <param name="duration"></param>
+    public void StopAlternateTrack(float fadeDuration)
+    {
+        CurrentAlternateTrack = MusicTracks.None; 
+        StartCoroutine(FadeTrack(AlternateMusic, fadeDuration, null));
     }
 
     /// <summary>
     /// Fade out current track and fade in new one
     /// </summary>
     /// <param name="source"></param>
-    /// <param name="duration"></param>
+    /// <param name="fadeDuration"></param>
     /// <param name="newTrack"></param>
-    /// <param name="fadeBetweenDuration"></param>
+    /// <param name="fadeBetweenDuration">A pause between fading out the old song and fading in the new song</param>
     /// <returns></returns>
-    private IEnumerator FadeInNewTrack(AudioSource source, float duration, AudioClip newTrack, float fadeBetweenDuration = 0f)
+    private IEnumerator FadeInNewTrack(AudioSource source, float fadeDuration, AudioClip newTrack, float fadeBetweenDuration = 0f, bool alternateTrack = false)
     {
         if (source.isPlaying)
         {
-            StartCoroutine(FadeTrack(source, duration, null, fadeIn: false));
+            StartCoroutine(FadeTrack(source, fadeDuration, null, fadeIn: false, alternateTrack: alternateTrack));
 
             yield return new WaitForEndOfFrame();
 
@@ -188,15 +213,21 @@ public class AudioManager : MonoBehaviour
             yield return new WaitForSeconds(fadeBetweenDuration);
         }
 
-        StartCoroutine(FadeTrack(source, duration, newTrack, fadeIn: true));
+        StartCoroutine(FadeTrack(source, fadeDuration, newTrack, fadeIn: true, alternateTrack: alternateTrack));
     }
+
 
     /// <summary>
     /// Fade out current song. <br></br>
     /// Fade in new song if one is passed in.
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="fadeDuration"></param>
+    /// <param name="newTrack"></param>
+    /// <param name="fadeIn"></param>
+    /// <param name="time">The time to start the music at. This is particularily useful for Atlernate Tracks.</param>
     /// <returns></returns>
-    private IEnumerator FadeTrack(AudioSource source, float duration, AudioClip newTrack, bool fadeIn = false)
+    private IEnumerator FadeTrack(AudioSource source, float fadeDuration, AudioClip newTrack, bool fadeIn = false, bool alternateTrack = false)
     {
         float original = source.volume;
 
@@ -205,7 +236,7 @@ public class AudioManager : MonoBehaviour
         {
             while (source.volume > 0f)
             {
-                source.volume -= original * Time.deltaTime / duration;
+                source.volume -= original * Time.deltaTime / fadeDuration;
                 yield return null;
             }
 
@@ -220,9 +251,13 @@ public class AudioManager : MonoBehaviour
             source.clip = newTrack;
             source.Play();
 
+            // Set the current time of the Alternate Track to the same time as the Current Music
+            if (alternateTrack)
+                source.time = CurrentMusic.time;
+
             while (source.volume < original)
             {
-                source.volume += original * Time.deltaTime / duration;
+                source.volume += original * Time.deltaTime / fadeDuration;
                 yield return null;
             }
 
@@ -307,6 +342,7 @@ public enum MusicTracks
     Hub_NowheresEnd, 
     Hub_Training, 
     D1_Overworld, 
+    D1_Overworld2, 
     D1_Dungeon, 
     D1_Combat, 
     D1_Miniboss, 
