@@ -398,7 +398,7 @@ public class DialogManager : MonoBehaviour
             // Get the actor ID for this line and the dialog associated with that actor
             if (int.TryParse(tags[0], out currentID))
             {
-                int dialogToGrab = currentID - 1;
+                int dialogToGrab = currentID;
 
                 // Non-players don't need to worry about this. Grab the base dialog
                 if (dialogToGrab > 3)
@@ -472,7 +472,7 @@ public class DialogManager : MonoBehaviour
                 firstDialog = true;
 
             // Tell the actor to deliver the line
-            actors[currentID - 1].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
+            actors[currentID].DeliverLine(currentLine, lastID, firstDialog, speakerDirection, waitTime);
             
             // The Dialog Box will always be set to updating after this, set it here to prevent Advance Scene from isntantly being called again
             UpdatingDialogBox = true;
@@ -720,12 +720,11 @@ public class DialogManager : MonoBehaviour
         dialogTextAnimations = null;
 
         AdvanceSceneCalls = 0; 
-        currentLineIndex = 0; 
+        currentLineIndex = allLinesCount; 
         CurrentTextFile++; 
 
         DialogIsPlaying = false;
         FirstTimeSetupComplete = false;
-        actors = null; 
     }
     #endregion
 

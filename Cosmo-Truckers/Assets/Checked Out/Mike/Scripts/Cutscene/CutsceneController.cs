@@ -213,7 +213,7 @@ public abstract class CutsceneController : MonoBehaviour
                 npcActor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
 
                 // Set the actor in the correct spot in the array
-                actors[actorSpots[i].GetActorNumber() - 1] = npcActor;
+                actors[actorSpots[i].GetActorNumber()] = npcActor;
             }
             // Otherwise it's a player actor
             else
@@ -238,7 +238,7 @@ public abstract class CutsceneController : MonoBehaviour
                     actor.Initialize(actorSpots[i].GetSortingLayer(), actorSpots[i].GetFacingRight());
 
                     // Set the actor in the correct spot in the array
-                    actors[actorSpots[i].GetActorNumber() - 1] = actor;
+                    actors[actorSpots[i].GetActorNumber()] = actor;
                 }
                 else
                     Debug.LogError("Prefab couldn't find an actor spot to spawn at!");

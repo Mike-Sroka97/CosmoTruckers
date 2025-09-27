@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TutorialOpeningCutscene : CutsceneController
 {
@@ -124,7 +125,7 @@ public class TutorialOpeningCutscene : CutsceneController
 
         yield return null;
 
-        while (cameraController.transform.Find("CameraVignette").GetComponent<SpriteRenderer>().color.a < 1)
+        while (cameraController.transform.Find("CameraVignette").GetComponent<Image>().color.a < 1)
             yield return null;
 
         End();
