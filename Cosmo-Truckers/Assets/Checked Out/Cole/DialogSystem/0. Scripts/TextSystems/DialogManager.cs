@@ -92,10 +92,6 @@ public class DialogManager : MonoBehaviour
     {
         if (Instance == null)
         {
-            // Grab the audio source and add it to the Audio Manager list
-            audioSource = gameObject.AddComponent<AudioSource>();
-            AudioManager.Instance.AddDialogSource(audioSource);
-
             // Make sure it has scripts
             SetupLocalScripts();
 
@@ -107,6 +103,13 @@ public class DialogManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+    }
+
+    private void Start()
+    {
+        // Grab the audio source and add it to the Audio Manager list
+        audioSource = gameObject.AddComponent<AudioSource>();
+        AudioManager.Instance.AddDialogSource(audioSource);
     }
 
     #region New Dialog Info
