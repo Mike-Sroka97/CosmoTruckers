@@ -104,7 +104,7 @@ public class TutorialOpeningCutscene : CutsceneController
 
         yield return new WaitForSeconds(anchorHitClip.length); 
 
-        //execute camera shake - ship gets hit
+        // Execute camera shake - ship gets hit
         StartCoroutine(cameraController.Shake(2f, 80, .1f));
 
         while (cameraController.CommandsExecuting > 0)
@@ -115,12 +115,13 @@ public class TutorialOpeningCutscene : CutsceneController
         // give a second before starting the dialog
         yield return new WaitForSeconds(2f);
 
-        // Advance the scene
+        // THIRD DIALOG
         StartCoroutine(DialogManager.Instance.AdvanceScene());
 
         while (DialogManager.Instance.DialogIsPlaying)
             yield return null;
 
+        // THIRD DIALOG is finished, fade out
         StartCoroutine(cameraController.FadeVignette(false));
 
         yield return null;

@@ -720,7 +720,7 @@ public class DialogManager : MonoBehaviour
         dialogTextAnimations = null;
 
         AdvanceSceneCalls = 0; 
-        currentLineIndex = allLinesCount; 
+        currentLineIndex = 0; 
         CurrentTextFile++; 
 
         DialogIsPlaying = false;

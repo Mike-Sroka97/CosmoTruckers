@@ -403,7 +403,7 @@ public class TutorialTurnOrder : TurnOrder
 
     private void NewTurnStartup(int turnDialogNumber)
     {
-        //MyINATalker.SetupINATalker(turnDialogs[turnDialogNumber].inaTurnDialogs, turnDialogs[turnDialogNumber].textBoxPositions);
+        MyINATalker.SetupINATalker(turnDialogs[turnDialogNumber].inaTurnDialogs, turnDialogs[turnDialogNumber].textBoxPositions);
 
         if (currentCharacter != null)
             RemoveCurrentListeners(); 
@@ -430,8 +430,8 @@ public class TutorialTurnOrder : TurnOrder
     }
     private void AttackStartedAddListeners()
     {
-        //MyINACombat.AttackStarted.AddListener(SetHoldCountDownTrue);
-        //MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
+        MyINACombat.AttackStarted.AddListener(SetHoldCountDownTrue);
+        MyINACombat.AttackStarted.AddListener(MyINATalker.INAStartNextDialog);
     }
     private void SetHoldCountDownTrue()
     {

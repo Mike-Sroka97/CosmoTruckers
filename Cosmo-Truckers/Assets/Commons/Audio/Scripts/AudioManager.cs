@@ -188,7 +188,7 @@ public class AudioManager : MonoBehaviour
     public void StopAlternateTrack(float fadeDuration)
     {
         CurrentAlternateTrack = MusicTracks.None; 
-        StartCoroutine(FadeTrack(AlternateMusic, fadeDuration, null));
+        StartCoroutine(FadeTrack(AlternateMusic, fadeDuration, null, alternateTrack: true));
     }
 
     /// <summary>
