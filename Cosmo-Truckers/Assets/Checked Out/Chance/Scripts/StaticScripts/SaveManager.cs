@@ -8,71 +8,54 @@ public static class SaveManager
     //Set name of save file here defaults to auto save if no name is set
     static string GameName = "SaveData";
 
-    const string tutorialStatus = "/tutorialFinished.data";
+    const string tutorialStatus = "/tutorialFinished.xml";
     const string playerUnlocks = "/unlockedCharacters.data";
     const string dataLogUnlocks = "/unlockedDataFiles.data";
     const string dimensionOne = "/dimensionOne.data";
 
-    public static void SaveTutorialStatus(bool finished)
+    public static void SaveTutorialStatus(TutorialData data)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + tutorialStatus;
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, finished);
-        stream.Close();
+        string json = JsonUtility.ToJson(data, true);
+        string path = Application.persistentDataPath + "/TutorialData.json";
+        File.WriteAllText(path, json);
     }
 
     public static TutorialData LoadTutorialStatus()
     {
-        string path = Application.persistentDataPath + tutorialStatus;
-
+        string path = Application.persistentDataPath + tutorialStatus + ".json";
         if (File.Exists(path))
         {
-            //Load save data if it does exist
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            string json = File.ReadAllText(path);
+            TutorialData loadedData = JsonUtility.FromJson<TutorialData>(json);
 
-            TutorialData data = (TutorialData)formatter.Deserialize(stream);
-
-            stream.Close();
-
-            return data;
+            return loadedData;
         }
         else
         {
             //Create save data if it doesn't exist
             TutorialData data = new TutorialData();
-            SaveTutorialStatus(data.TutorialFinished);
+            SaveTutorialStatus(data);
             return data;
         }
     }
 
     public static void SaveDimensionOne(DimensionOneLevelData data)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + dimensionOne;
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, data);
-        stream.Close();
+        string json = JsonUtility.ToJson(data, true);
+        string path = Application.persistentDataPath + "/DimensionOneLevelData.json";
+        File.WriteAllText(path, json);
     }
 
     public static DimensionOneLevelData LoadDimensionOne()
     {
-        string path = Application.persistentDataPath + dimensionOne;
+        string path = Application.persistentDataPath + dimensionOne + ".json";
 
         if(File.Exists(path))
         {
-            //Load save data if it does exist
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            string json = File.ReadAllText(path);
+            DimensionOneLevelData loadedData = JsonUtility.FromJson<DimensionOneLevelData>(json);
 
-            DimensionOneLevelData data = (DimensionOneLevelData)formatter.Deserialize(stream);
-
-            stream.Close();
-
-            return data;
+            return loadedData;
         }
         else
         {
@@ -85,29 +68,21 @@ public static class SaveManager
 
     public static void SavePlayerData(PlayerData data)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + dataLogUnlocks;
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, data);
-        stream.Close();
+        string json = JsonUtility.ToJson(data, true);
+        string path = Application.persistentDataPath + "/PlayerData.json";
+        File.WriteAllText(path, json);
     }
 
     public static PlayerData LoadPlayerData()
     {
-        string path = Application.persistentDataPath + playerUnlocks;
+        string path = Application.persistentDataPath + playerUnlocks + ".json";
 
         if (File.Exists(path))
         {
-            //Load save data if it does exist
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
+            string json = File.ReadAllText(path);
+            PlayerData loadedData = JsonUtility.FromJson<PlayerData>(json);
 
-            PlayerData data = (PlayerData)formatter.Deserialize(stream);
-
-            stream.Close();
-
-            return data; 
+            return loadedData;
         }
         else
         {
@@ -121,12 +96,9 @@ public static class SaveManager
 
     public static void SaveDataLogData(DataLogData data)
     {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + dataLogUnlocks;
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        formatter.Serialize(stream, data);
-        stream.Close();
+        string json = JsonUtility.ToJson(data, true);
+        string path = Application.persistentDataPath + "/DataLogData.json";
+        File.WriteAllText(path, json);
     }
 
     public static DataLogData LoadDataLogData()
@@ -153,18 +125,6 @@ public static class SaveManager
             SaveDataLogData(data);
             return data;
         }
-    }
-
-    public static bool DeleteSave(int character)
-    {
-        string path = Path.Combine(Application.persistentDataPath, $"SaveData{Application.version}{character}");
-        path = Path.Combine(path, GameName);
-
-        if (!File.Exists(path)) return false;
-
-        File.Delete(path);
-
-        return true;
     }
 
     /// <summary>

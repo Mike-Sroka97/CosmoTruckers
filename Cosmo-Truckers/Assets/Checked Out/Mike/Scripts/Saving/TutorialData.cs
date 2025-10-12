@@ -7,7 +7,7 @@ public class TutorialData
 
     public void SaveTutorialData()
     {
-        SaveManager.SaveTutorialStatus(TutorialFinished);
+        SaveManager.SaveTutorialStatus(this);
     }
 
     public void LoadTutorialData()

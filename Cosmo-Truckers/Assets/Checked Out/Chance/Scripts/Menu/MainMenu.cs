@@ -22,6 +22,11 @@ public class MainMenu : MonoBehaviour
     [SerializeField] string hub;
     [SerializeField] string tutorial;
 
+    private void Start()
+    {
+        StartCoroutine(CameraController.Instance.FadeVignette(true));
+    }
+
     private void Update()
     {
         if(StartUp && Input.anyKeyDown)
