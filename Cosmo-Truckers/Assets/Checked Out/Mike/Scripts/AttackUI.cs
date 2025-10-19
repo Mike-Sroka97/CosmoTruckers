@@ -105,7 +105,7 @@ public abstract class AttackUI : MonoBehaviour
             {
                 RotateWheel(rotationDistance);
             }
-            else if(inputManager.SelectPressed)
+            else if(inputManager.SubmitPressed)
             {
                 attackDescriptionActive = false;
                 CombatManager.Instance.AttackDescription.gameObject.SetActive(false);

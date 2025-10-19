@@ -8,12 +8,34 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
 
     #region  Minigame Input Values
+    /// <summary>
+    /// X and Y input for moving in a minigame
+    /// </summary>
     public Vector2 MoveInput { get; private set; }
-    public bool JumpPressed { get; private set; }
+    /// <summary>
+    /// Jump button pressed<br></br>
+    /// This is also used for selecting
+    /// </summary>
+    public bool JumpPressed { get; private set; }   
+    /// <summary>
+    /// Jump button held
+    /// </summary>
     public bool JumpHeld { get; private set; }
+    /// <summary>
+    /// Attach button pressed
+    /// </summary>
     public bool AttackPressed { get; private set; }
+    /// <summary>
+    /// Attach button held
+    /// </summary>
     public bool AttackHeld { get; private set; }
+    /// <summary>
+    /// Special button pressed
+    /// </summary>
     public bool SpecialPressed { get; private set; }
+    /// <summary>
+    /// Special button held
+    /// </summary>
     public bool SpecialHeld { get; private set; }
     #endregion
 
@@ -25,7 +47,7 @@ public class InputManager : MonoBehaviour
     #endregion
 
     #region  UI Input Values
-    public bool SelectPressed { get; private set; }
+    public bool SubmitPressed { get; private set; }
     public bool BackPressed { get; private set; }
     #endregion
 
@@ -34,7 +56,7 @@ public class InputManager : MonoBehaviour
     public InputAction JumpAction { get; private set; }
     public InputAction AttackAction { get; private set; }
     public InputAction SpecialAction { get; private set; }
-    public InputAction SelectAction { get; private set; }
+    public InputAction SubmitAction { get; private set; }
     public InputAction BackAction { get; private set; }
     public InputAction AttackDescOpenAction { get; private set; }
     public InputAction AugNavRightAction { get; private set; }
@@ -101,7 +123,7 @@ public class InputManager : MonoBehaviour
         JumpAction = PlayerInput.actions[PlayerActions.Jump.ToString()];
         AttackAction = PlayerInput.actions[PlayerActions.Attack.ToString()];
         SpecialAction = PlayerInput.actions[PlayerActions.Special.ToString()];
-        SelectAction = PlayerInput.actions[PlayerActions.Select.ToString()];
+        SubmitAction = PlayerInput.actions[PlayerActions.Submit.ToString()];
         BackAction = PlayerInput.actions[PlayerActions.Back.ToString()];
         AttackDescOpenAction = PlayerInput.actions[PlayerActions.AttackDescriptionOpen.ToString()];
         AugNavRightAction = PlayerInput.actions[PlayerActions.AugmentNavigateRight.ToString()];
@@ -126,6 +148,7 @@ public class InputManager : MonoBehaviour
                 TrySwitchScheme("Keyboard");
         }
     }
+
     private bool TrackGamePadActions()
     {
         Gamepad gamePad = Gamepad.current;
@@ -216,7 +239,7 @@ public class InputManager : MonoBehaviour
         EmoteMenuPressed = EmoteMenuAction.WasPressedThisFrame();
 
         // UI
-        SelectPressed = SelectAction.WasPressedThisFrame();
+        SubmitPressed = SubmitAction.WasPressedThisFrame();
         BackPressed = BackAction.WasPressedThisFrame();
     }
     /// <summary>
@@ -298,7 +321,7 @@ public class InputManager : MonoBehaviour
         Jump, 
         Attack,
         Special,
-        Select,
+        Submit,
         Back, 
         AttackDescriptionOpen, 
         AugmentNavigateRight, 
