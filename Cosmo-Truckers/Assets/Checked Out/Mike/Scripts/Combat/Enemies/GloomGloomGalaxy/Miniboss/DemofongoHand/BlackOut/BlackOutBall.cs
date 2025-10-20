@@ -57,7 +57,7 @@ public class BlackOutBall : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(!deathTracker.TrackingDamage)
+        if(!deathTracker.TrackingDamage && collision.tag == "Player")
         {
             minigame.Score++;
             myRenderer.material = successMaterial;
