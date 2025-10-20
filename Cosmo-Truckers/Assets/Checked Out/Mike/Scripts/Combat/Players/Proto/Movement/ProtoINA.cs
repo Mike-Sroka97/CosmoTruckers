@@ -97,12 +97,12 @@ public class ProtoINA : Player
         canJump = false;
         canAttack = false;
         canMove = false;
-        canTeleport = false;
-        float damagedTime = 0;
         if (canTeleport)
             playerAnimator.ChangeAnimation(myAnimator, hurt);
         else
             playerAnimator.ChangeAnimation(myAnimator, unchargedHurt);
+        canTeleport = false;
+        float damagedTime = 0;
 
         while (damagedTime < iFrameDuration)
         {
@@ -169,9 +169,9 @@ public class ProtoINA : Player
 
     public override void EndMoveSetup()
     {
-        if (canTeleport)
+        if (canTeleport && !damaged)
             playerAnimator.ChangeAnimation(myAnimator, idle);
-        else
+        else if(!damaged)
             playerAnimator.ChangeAnimation(myAnimator, unchargedIdle);
         base.EndMoveSetup();
     }
