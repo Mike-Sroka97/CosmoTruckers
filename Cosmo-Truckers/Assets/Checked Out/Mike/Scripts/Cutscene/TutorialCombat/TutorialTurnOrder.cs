@@ -69,6 +69,9 @@ public class TutorialTurnOrder : TurnOrder
     {
         turn++;
 
+        // Enable the UI action map
+        InputManager.Instance.PlayerInput.actions.FindActionMap("UI").Enable(); 
+
         switch (turn)
         {
             // If you want to skip dialog, comment out "NewTurnStartup" and listener for "SetHoldCountDownTrue"

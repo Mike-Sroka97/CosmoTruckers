@@ -102,7 +102,7 @@ public class EmoteController : MonoBehaviour
         else if (inputManager.MoveInput.x > 0 && open && !scrolling)
             StartCoroutine(Scroll(true));
 
-        else if (inputManager.SelectPressed && open && !scrolling)
+        else if (inputManager.SubmitPressed && open && !scrolling)
             SpawnEmote();
     }
 
